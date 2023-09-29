@@ -1,0 +1,125 @@
+\documentclass
+  [ acmsmall
+  , pdftex
+  , dvipsnames
+  , review
+  , nonacm
+  , screen
+  , authordraft
+  ]{acmart}
+
+\usepackage[utf8]{inputenc}
+
+% quiver is for quiver figures
+\usepackage{quiver}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{amsthm}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage[
+  colorinlistoftodos,
+  prependcaption,
+  % disable,
+]{todonotes}
+\usepackage{fontenc}
+
+\usepackage{minted}
+
+\usepackage{subcaption}
+
+\usepackage{hyperref}
+
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+
+\usepackage{listings}
+\lstset{
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  stringstyle=\slshape\color{green!40!black},
+  basicstyle=\ttfamily\small,
+  language=Python,
+  morekeywords={*, self},
+  commentstyle=\slshape\color{black!60},
+  tabsize=2,
+}
+
+
+\usepackage{adjustbox}
+
+\input{preamble}
+\input{macros}
+\input{sample.tikzstyles}
+\input{hypergraph.tikzstyles}
+\input{hypergraph.tikzdefs}
+
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+% These are for comments
+\newcommand\question[1]{{\color{azure}#1}}
+\newcommand\update[1]{{\color{americanrose}#1}}
+
+\usepackage{mathtools,mathrsfs}
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+
+
+\usepackage{import}
+
+% category names
+\newcommand{\Ecospans}{{\catname{ECsp_{D}(EHyp_{\Sigma})}}}
+\newcommand{\MdaEcospans}{{\catname{MAECsp_{D}(EHyp_{\Sigma})}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{\overline{MAECsp_{D}(EHyp_{\Sigma})}}}}
+
+% There is already a remark in the preamble, but it does
+% not work for some reason
+\newtheorem{remark}{Remark}
+
+\makeatletter
+\newsavebox{\@brx}
+\newcommand{\llangle}[1][]{\savebox{\@brx}{\(\m@th{#1\langle}\)}%
+  \mathopen{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\newcommand{\rrangle}[1][]{\savebox{\@brx}{\(\m@th{#1\rangle}\)}%
+  \mathclose{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\makeatother
+
+
+\title{Equivalence Hypergraphs: Semantics of E-Graphs and their Generalization to Monoidal Theories}
+\author{Chris Barrett, Dan Ghica, Aleksei Tiurin}
+
+\begin{document}
+
+
+
+\begin{abstract}
+Abstract.
+\end{abstract}
+
+\maketitle
+
+% some sections might be commented out as overleaf compilation times out.
+
+% \input{sections/introduction}
+\input{sections/categorical_semantics}
+\input{sections/combinatorial_semantics}
+
+\input{sections/soundness_and_completeness}
+
+\input{sections/e-graph-translation}
+\input{sections/conclusion}
+
+\subsection*{Acknowledgements}
+Sadrzadeh Mehrnoosh 
+
+\clearpage
+\bibliographystyle{acm}
+\bibliography{bibliography}
+
+\end{document}

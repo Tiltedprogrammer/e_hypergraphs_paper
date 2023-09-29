@@ -1,0 +1,70 @@
+\usepackage{docmute}
+\usepackage{hyperref}
+\usepackage{proof}
+
+\usepackage{xifthen}
+\ifthenelse{\isundefined{\ismain}}{
+  \newcommand{\ismain}{0}
+}{}
+
+\usepackage{enumitem}
+
+
+\usepackage[draft]{tikzit}
+
+\usepackage{amsthm,amsmath}%,amssymb}
+ 
+\newcommand{\ignora}[1]{ }
+
+\ignora{
+\usepackage{aliascnt}
+% alias-counters
+\newaliascnt{definition}{thm}
+\newaliascnt{proposition}{thm} 
+\newaliascnt{lemma}{thm}
+\newaliascnt{corollary}{thm}
+\newaliascnt{conjecture}{thm}
+\newaliascnt{remark}{thm}
+\newaliascnt{example}{thm}
+\newaliascnt{examples}{thm}
+\newaliascnt{assumption}{thm}
+\newaliascnt{construction}{thm}
+\newaliascnt{claim}{thm}
+
+% \theoremstyle{plain}
+\theoremstyle{definition}
+
+\newtheorem{theorem}[thm]{Theorem}
+\newtheorem{proposition}[proposition]{Proposition} 
+\aliascntresetthe{proposition}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newtheorem{assumption}[assumption]{Assumption}
+\aliascntresetthe{assumption}
+\newtheorem{construction}[construction]{Construction}
+\aliascntresetthe{construction}
+\newtheorem{claim}[claim]{Claim}
+\aliascntresetthe{claim}
+
+\theoremstyle{definition}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newtheorem{examples}[examples]{Examples}
+\aliascntresetthe{examples}
+}
+
+\usepackage{cleveref} % after hyperref!
+% possibly new thm environment
+% \newtheorem{satz}[thm]{Satz}
+
+
+% \newcommand{\TODO}[1]{{{\color{red}[\textbf{TODO:} #1]}}}
+% \newcommand{\TODO}[1]{}

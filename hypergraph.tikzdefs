@@ -1,0 +1,101 @@
+\usetikzlibrary{arrows.meta,shapes.multipart}
+\usepackage{amsmath}%,amssymb}
+\usepackage{amsfonts,mathrsfs}
+\usepackage{xspace}
+% \usepackage{txfonts}
+% \usepackage{bm}
+
+% Two Colored Diamond Split 
+% \makeatletter
+% \tikzset{diamond split part fill/.style  args={#1,#2}{%
+%  alias=tmp@name, 
+%   postaction={%
+%     insert path={
+%      \pgfextra{% 
+%      \pgfpointdiff{\pgfpointanchor{\pgf@node@name}{center}}%
+%                   {\pgfpointanchor{\pgf@node@name}{east}}%            
+%      \pgfmathsetmacro\insiderad{\pgf@x}
+%       \fill[#2] (\pgf@node@name.base) ([xshift=-\pgflinewidth]\pgf@node@name.east) --
+%                           ([yshift=\pgflinewidth]\pgf@node@name.south) --
+%                           ([yshift=-\pgflinewidth]\pgf@node@name.north) --
+%                           cycle;
+%       \fill[#1] (\pgf@node@name.base) ([xshift=\pgflinewidth]\pgf@node@name.west) --
+%                           ([yshift=\pgflinewidth]\pgf@node@name.south) --
+%                           ([yshift=-\pgflinewidth]\pgf@node@name.north) --
+%                           cycle;            
+%          }}}}}  
+%  \makeatother
+
+\makeatletter
+\tikzset{diamond split part fill/.style  args={#1,#2}{%
+ alias=tmp@name, 
+  postaction={%
+    insert path={
+     \pgfextra{% 
+     \pgfpointdiff{\pgfpointanchor{\pgf@node@name}{center}}%
+                  {\pgfpointanchor{\pgf@node@name}{east}}%            
+     \pgfmathsetmacro\insiderad{\pgf@x}
+      \fill[#2] (\pgf@node@name.base) ([xshift=2\pgflinewidth]\pgf@node@name.east) --
+                          ([yshift=-2\pgflinewidth]\pgf@node@name.south) --
+                          ([yshift=2\pgflinewidth]\pgf@node@name.north) --
+                          cycle;
+      \fill[#1] (\pgf@node@name.base) ([xshift=-2\pgflinewidth]\pgf@node@name.west) --
+                          ([yshift=-2\pgflinewidth]\pgf@node@name.south) --
+                          ([yshift=2\pgflinewidth]\pgf@node@name.north) --
+                          cycle;
+      \draw[black] (\pgf@node@name.base) ([xshift=2\pgflinewidth]\pgf@node@name.east) --
+                          ([yshift=-2\pgflinewidth]\pgf@node@name.south) --
+                          ([xshift=-2\pgflinewidth]\pgf@node@name.west) --
+                          ([yshift=2\pgflinewidth]\pgf@node@name.north) --
+                          cycle;
+         }}}}}  
+ \makeatother
+
+
+\newcommand{\HC}[1]{\ensuremath{\textbf{HC}_{#1}}\xspace}
+\newcommand{\HR}[1]{\ensuremath{\textbf{HR}_{#1}}\xspace}
+\newcommand{\BA}[1]{\ensuremath{\textbf{BA}_{#1}}\xspace}
+\newcommand{\FS}[1]{\ensuremath{\textbf{FS}_{#1}}\xspace}
+
+\newcommand{\rewr}{\rightsquigarrow} % rewriting relation
+\newcommand{\lrewr}{\leftsquigarrow} % rewriting relation
+\newcommand{\tlrewr}{\,{^*}\!\!\leftsquigarrow} % transitive closure of the rewriting relation
+\newcommand{\Rlrewr}{\,{_{\mathcal{R}}}\!\!\leftsquigarrow} % transitive closure of the rewriting relation
+\newcommand{\Rtlrewr}{\,{^*_{\mathcal{R}}}\!\!\leftsquigarrow} % transitive closure of the rewriting relation
+
+\newcommand{\srS}{\scalebox{0.5}{\begin{tikzpicture} \node [red dot] {}; \end{tikzpicture}}}
+\newcommand{\sblS}{\scalebox{0.5}{\begin{tikzpicture} \node [black dot] {}; \end{tikzpicture}}}
+
+% rewriting systems
+\newcommand{\Trans}[1]{\overset{{\scriptstyle \star \hspace{6pt}}}{#1}}
+\newcommand{\LTrans}[1]{\overset{{\hspace{6pt} \scriptstyle \star}}{#1}}
+\newcommand{\RLTrans}[1]{\overset{{\scriptstyle \star \hspace{4pt}}}{#1}}
+\newcommand{\Rew}[1]{\Rightarrow_{\scriptscriptstyle #1} }
+\newcommand{\LRew}[1]{{}_{\! \scriptscriptstyle #1} \! \! \Leftarrow}
+\newcommand{\RLRew}[1]{ \Leftrightarrow_{\scriptscriptstyle #1} }
+\newcommand{\RS}{\mathcal{R}}
+%\newcommand{\itf}[1]{{#1}^{\scriptstyle \triangleright}}  % the transformation on rules that make red interfaces available
+\newcommand{\itf}[1]{{#1}^{\scriptstyle \diamond}}  % the transformation on rules that make red interfaces available
+\newcommand{\itd}[1]{\bar{#1}}  % the transformation on rules that duplicates interfaces
+\newcommand{\TRS}{\itf{\RS}} % transformed system for one def of rules
+\newcommand{\TRSC}{\RS_{\srS}^{\scriptstyle \diamond}}
+\newcommand{\TRSd}{\itd{\mathcal{R}}} % transformed system for the dup def of rules
+\newcommand{\nf}[1]{\downarrow \!\!{#1}} % normal form
+
+
+\newcommand{\DPOstep}[1]{\rightsquigarrow_{\scriptscriptstyle{#1}}}
+\newcommand{\LDPOstep}[1]{\leftsquigarrow_{\scriptscriptstyle{#1}}} % rewriting relation
+\newcommand{\DPOtlrewr}{\,{^*}\!\! \LDPOstep} % transitive closure of the rewriting relation
+\newcommand{\DPORlrewr}{\,{_{\mathcal{R}}}\!\!\DPOlrewr} % transitive closure of the rewriting relation
+\newcommand{\DPORtlrewr}{\,{^*_{\mathcal{R}}}\!\!\DPOlrewr} % transitive closure of the rewriting relation
+\newcommand{\DPOrewRlrewr}{\,{_{\scriptscriptstyle{\rewiring{\Phi(\mathcal{R})}}}}\!\!\LDPOstep{}} % transitive closure of the rewriting relation
+
+
+\newcommand{\sem}[1]{\ensuremath{ [\! [ #1 ] \! ]}}
+\newcommand{\chrome}[1]{\ensuremath{#1_{\srS}}}%{\ensuremath{\funF( #1 )}}
+\newcommand{\semE}[1]{\ensuremath{ [\! [ #1 ] \! ]_{\scriptscriptstyle E}}}
+\newcommand{\isosem}[1]{\langle\! \langle #1 \rangle \! \rangle}
+
+
+\newcommand{\rewiring}[1]{\ulcorner #1 \urcorner}
+

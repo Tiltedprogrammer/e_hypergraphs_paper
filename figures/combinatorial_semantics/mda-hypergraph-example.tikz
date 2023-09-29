@@ -1,0 +1,63 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (62) at (-18, -0.5) {};
+		\node [style=none] (63) at (-11, -0.5) {};
+		\node [style=none] (64) at (-18, -10.5) {};
+		\node [style=none] (65) at (-11, -10.5) {};
+		\node [style=node, label={above:0}] (66) at (-16, 3) {};
+		\node [style=node, label={above:1}] (67) at (-14.5, 3) {};
+		\node [style=none] (69) at (-17, 4.5) {};
+		\node [style=none] (70) at (-17, 2) {};
+		\node [style=none] (71) at (-12, 2) {};
+		\node [style=none] (72) at (-12, 4.5) {};
+		\node [style=node, label={above:0}] (73) at (-16.5, -1.5) {};
+		\node [style=node, label={above:1}] (74) at (-14.5, -1.5) {};
+		\node [style=hedge] (75) at (-15.5, -3.5) {$f$};
+		\node [style=node, label={above:4}] (77) at (-15.25, -14.5) {};
+		\node [style=none] (78) at (-16.25, -13) {};
+		\node [style=none] (79) at (-16.25, -15.5) {};
+		\node [style=none] (80) at (-12.5, -15.5) {};
+		\node [style=none] (81) at (-12.5, -13) {};
+		\node [style=none] (82) at (-14.5, 1.5) {};
+		\node [style=none] (83) at (-14.5, 0.5) {};
+		\node [style=none] (84) at (-14.5, -11.5) {};
+		\node [style=none] (85) at (-14.5, -12.5) {};
+		\node [style=node, label={above:5}] (101) at (-13.75, -14.5) {};
+		\node [style=node, label={above:2}] (105) at (-13, 3) {};
+		\node [style=node] (106) at (-14.5, -5.5) {};
+		\node [style=node] (107) at (-16.5, -9.5) {};
+		\node [style=hedge] (108) at (-13.5, -7.5) {$h$};
+		\node [style=node] (109) at (-13.5, -9.5) {};
+		\node [style=node, label={above:3}] (110) at (-12.5, -1.5) {};
+		\node [style=hedge] (111) at (-12.5, -3.5) {$g$};
+		\node [style=node] (112) at (-12.5, -5.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (62.center)
+			 to (64.center)
+			 to (65.center)
+			 to (63.center)
+			 to cycle;
+		\draw [style=boundary frame] (69.center)
+			 to (72.center)
+			 to (71.center)
+			 to (70.center)
+			 to cycle;
+		\draw [bend right=15] (73) to (75);
+		\draw [bend left=15] (74) to (75);
+		\draw [style=boundary frame] (78.center)
+			 to (81.center)
+			 to (80.center)
+			 to (79.center)
+			 to cycle;
+		\draw [style=diredge] (82.center) to (83.center);
+		\draw [style=diredge] (85.center) to (84.center);
+		\draw [bend left=15] (75) to (106);
+		\draw [bend right=15] (75) to (107);
+		\draw (110) to (111);
+		\draw (112) to (111);
+		\draw [bend left=15] (112) to (108);
+		\draw [bend left=15] (108) to (106);
+		\draw (108) to (109);
+	\end{pgfonlayer}
+\end{tikzpicture}

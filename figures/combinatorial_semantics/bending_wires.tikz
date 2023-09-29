@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none, label={above:n}] (0) at (-4.5, 4.5) {};
+		\node [style=small box] (1) at (-4.5, 2.5) {$f$};
+		\node [style=none, label={below:m}] (2) at (-4.5, 0.5) {};
+		\node [style=none] (3) at (-2.5, 2.5) {};
+		\node [style=none] (4) at (-0.5, 2.5) {};
+		\node [style=none] (5) at (-1.5, 3) {$\ulcorner \cdot \urcorner$};
+		\node [style=small box] (7) at (1.5, 2.5) {$f$};
+		\node [style=none, label={below:m}] (8) at (1.5, 0.5) {};
+		\node [style=none, label={below:n}] (9) at (3.25, 0.5) {};
+		\node [style=none, label={right:n}] (10) at (1.5, 3.5) {};
+		\node [style=none] (11) at (3.25, 3.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (0.center) to (1);
+		\draw (2.center) to (1);
+		\draw [style=map edge] (3.center) to (4.center);
+		\draw (8.center) to (7);
+		\draw (7)
+			 to (10.center)
+			 to [bend left=90, looseness=1.25] (11.center)
+			 to (9.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

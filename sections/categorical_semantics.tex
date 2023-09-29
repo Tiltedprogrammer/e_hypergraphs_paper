@@ -1,0 +1,183 @@
+\newtheorem*{notation*}{Notation}
+
+\section{Categorical Semantics}
+
+\subsection{Symmetric Monoidal Categories and String Diagrams}
+
+We will assume familiarity with the definition of category,  functor and natural transformation.
+\begin{notation*}
+We use the following notation: given a catgeory $\mathbb{C}$, we write $ob(\mathbb{C})$ for the set of objects $\mathbb{C}(A,B)$ for hom-sets and $f: A \to B$ for $f \in \mathbb{C}(A,B)$. We write $\textbf{id}_A$ for the identity on $A$ and commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$. 
+We will often omit subscripts on identities and natural transformations where it can be inferred. 
+\end{notation*}
+\begin{definition}
+A \textit{strict symmetric monoidal category (SMC)} $(\mathbb{C}, \otimes, 1)$ is given by a category $\mathbb{C}$ with the following equipment: 
+\begin{itemize}
+\item a \textit{tensor product} functor $\otimes: \mathbb{C} \times \mathbb{C} \to \mathbb{C}$,
+\item a \textit{tensor unit} object $1 \in ob(\mathbb{C})$, 
+\item the \textit{symmetry} natural isomorphism: $\sigma: A \otimes B \to B \otimes A$
+\item and such that: $A \otimes (B \otimes C) = (A \otimes B) \otimes C$ ,  $1 \otimes A = A$ ,  $A \otimes 1 = A$
+\end{itemize}
+satisfying certain coherence conditions [MacLane].  A \textit{permutations and products category (PROP)} is a symmetric monoidal category where every object is the n-fold tensor product of some distinguished object $A$. In this case, we will enote the n-fold tensor product of the distinguished object by simply $n$, so that $n \otimes m = n+m$.
+
+A \textit{strict symmetric monoidal functor} $F: (\mathbb{C}, \otimes_\mathbb{C}, 1_\mathbb{C}) \to (\mathbb{D}, \otimes_\mathbb{D}, 1_\mathbb{D})$ is given by an underlying functor $F: \mathbb{C} \to \mathbb{D}$ such that 
+\[
+ 1_{\mathbb{D}} = F(1_{\mathbb{C}})
+ \qquad F(A \otimes_{\mathbb{C}} B) = F(A) \otimes_{\mathbb{D}} F(B)\ ,
+\]
+satisfying certain coherence conditions. 
+We adopt the convention that $\otimes$ binds more tightly than $(;\!)$. 
+A \textit{PROP functor} is additionally identity-on-objects. 
+\end{definition}
+
+String diagrams for {SMCs} are constructed as in Figure 1. Note, $\textsf{id}_0$ is denoted by the empty diagram. 
+
+
+\subsection{Symmetric Monoidal Theories and PROPs. }
+
+A presentation of an algebraic theory is traditionally given by a set together with a \textit{signature} of $n$-ary operations and a set of \textit{equations} -- formally,  pairs of terms freely generated over the signature.  
+
+For example, the \textit{semilattice signature} consists of a single binary operation $+$.  Given a set $A$, this can be used to freely generate terms according to the following grammar.
+\begin{align*}
+	\infer{x_1, \ldots, x_n \vdash x_j}{x_i \in A} \qquad \infer{\Gamma \vdash t_1 + t_2}{\Gamma \vdash t_1 && \Gamma \vdash t_2} 
+\end{align*}
+Such terms may be organized into a Cartesian category, with morphisms given by tuples of terms of the following form,  and composition is given by substitution of terms for free variables.  
+\[
+	x_1, \ldots, x_n \vdash (t_1, \ldots, t_m) : n \to m\ .
+\]
+A set of equations can then be given as a set of parallel pairs of morphisms.  
+For example, the equations for the theory of semilattices are the following.
+\[
+	x,y,z \vdash x+(y+z) = (x+y)+z : 3 \to 1\ \qquad  
+    x,y \vdash x+y = y+x \qquad 
+    x \vdash x+x = x
+\]
+Now, quotienting the category by the least congruence identifying every such parallel pair, we recover a category whose morphisms are \textit{equivalence classes} of terms modulo the expected equations. 
+This gives a categorical presentation of an algebraic theory, known as its \textit{Lawvere category}. 
+Importantly,  its category of models (\textit{i.e.}, category of functors to \textbf{Set}) is equivalent to the expected category of models of the algebraic theory in question.  
+
+Presenting algebraic theories as Lawvere categories gives a framework in which the concept is amenable to generalization.  We are interested here in symmetric monoidal theories, which are generalizations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  Lawvere categories will be generalized to particular symmetric monoidal categories called PROPs, but the ideas are otherwise as described above. 
+\begin{definition}
+A \textit{monoidal signature} $\Sigma$ is given by a set of \textit{generators} $f: n \to m$,  with \textit{arity} $n$ and \textit{coarity} $m$.  A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
+\end{definition}
+Analogous to freely generating terms over an algebraic signature,  we now consider terms freely generated over a monoidal signature.  These are naturally arranged into a particular form of symmetric monoidal category: a PROP. 
+
+We can form a category $\textbf{Sig}$ of monoidal signatures and signature homomorphisms.  There is an evident forgetful functor $U: \textsf{PROP} \to \textsf{Sig}$ from the category of PROPs, which considers every morphism of a PROP as an operation of a signature, forgetting the remaining structure of the category.   Its left adjoint $F$, pictured below, left,  generates a free PROP over a monoidal signature.
+% https://q.uiver.app/#q=WzAsNixbMCwxLCJcXHRleHRiZntTaWd9Il0sWzIsMSwiXFx0ZXh0YmZ7UFJPUH0iXSxbMSwxLCJcXHJvdGF0ZWJveHs5MH17XFx2ZGFzaH0iXSxbMywwLCJcXFNpZ21hIl0sWzUsMCwiVUYoXFxTaWdtYSkiXSxbNSwyLCJVKFxcbWF0aGJie0N9KSJdLFswLDEsIkYiLDAseyJjdXJ2ZSI6LTJ9XSxbMSwwLCJVIiwwLHsiY3VydmUiOi0yfV0sWzMsNCwiaSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzMsNSwiXFxmb3JhbGwgaiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzQsNSwiXFxleGlzdHMgVShcXGxsYnJhY2tldCAtIFxccnJicmFja2V0KSJdXQ==
+\[\begin{tikzcd}
+	&&& \Sigma && {UF(\Sigma)} \\
+	{\textsf{Sig}} & {\ \  \perp} & {\textsf{PROP}} \\
+	&&&&& {U(\mathbb{C})}
+	\arrow["F", bend left, from=2-1, to=2-3]
+	\arrow["U", bend left, from=2-3, to=2-1]
+	\arrow["i", hook, from=1-4, to=1-6]
+	\arrow["{\forall j}", from=1-4, to=3-6]
+	\arrow["{\exists U(\llbracket - \rrbracket)}", from=1-6, to=3-6]
+\end{tikzcd}\]
+The corresponding universal property is given above, right.  The signature morphism $i:\Sigma \to UF(\Sigma)$ is given by the obvious inclusion.  Roughly,  for every PROP $\mathbb{C}$, a signature homomorphism $f: \Sigma \to U(\mathbb{C})$ , which chooses a term of $\mathbb{C}$ for each generator $\Sigma$,  uniquely determines a functor $\llbracket - \rrbracket: F(\Sigma) \to \mathbb{C}$ which preserves this choice.  In the sequel, we will name the free functor $F$ as $\textsf{PROP}(-): \textsf{Sig} \to \textsf{PROP}$. 
+
+\begin{definition}
+The free \textit{products and permutations category} over a monoidal signature $\Sigma$ is $\textsf{PROP}(\Sigma)$.  
+\end{definition}
+The free category $\textsf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
+
+We can now specify an equation associated with a monoidal signature as a pair of parallel morphisms of the form above, leading to the following definition.
+\begin{definition}
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $\phi,\psi: n \to m$. 
+\end{definition}
+Finally, analogous to a Lawvere theory, we define a \textit{symmetric monoidal theory}. 
+\begin{definition}
+A \textit{symmetric monoidal theory} $\textsf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by $\textsf{PROP}(\Sigma)$ quotiented by the least congruence including $\mathcal{E}$.
+\end{definition}
+
+It will often be convenient to present SMTs in terms of string diagrams [which are technically equiv classes of arrows?!] 
+\begin{example}
+The SMT of \textit{commutative comonoids} is given by the following generators, ${\Delta, !}$, depicted in string diagrammatic form:
+\[
+    \tikzfig{categorical-semantics/Cartesian-equipment}
+\]
+together with the following associativity, commutativity and unitality equations, again given in terms of string diagrams. 
+\[
+    \tikzfig{categorical-semantics/Cartesian-theory}
+\]
+\end{example}
+
+\begin{example}
+The Cartesian SMT is given by a set of generators $\Sigma_C$, together with the generators and equations of the SMT of commutative monoids, and the following additional naturality equations, for every $c \in \Sigma_C$
+\[
+    \tikzfig{categorical-semantics/Cartesian-naturality}
+\]
+By Fox's Theoem [cite],  $\textsf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
+\end{example}
+
+\subsection{Semilattice Enriched Monoidal Categories}
+
+We will use enrichment to axiomatize the e-box structure as the ``join" or``sum" of two morphisms $f,g: A \to B$ as $f + g: A \to B$.  More precisely our hom-sets will be given the structure of a semilattice.  
+
+Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{Semilattice}).  In this case,  hom-sets are generalized to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
+\[
+	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
+\]
+is defined as a $M$-morphism.  In other words,  composition must respect the additional structure on hom-sets.  
+In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
+We omit further details of the general case of enrichment here, and instead work with the following more concrete defintion, where $M = \textbf{Semilattice}$. 
+
+
+%\begin{definition}
+%A \textit{semigroup} is a pair $(A, +)$ of a set $A$ together with an associative binary operation $+: A \times A \to A$.  We say a semigroup is \textit{commutative} when $+$ is {commutative} and \textit{idempotent} when $+$ is idempotent.  
+%Because we will only be concerned with commutative, idempotent semigroups in this paper, we will now often abbreviate the former to simply ``semigroup". 
+%\end{definition}
+
+\begin{definition}
+A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
+\begin{align*}
+f ; (g+h) &= f;g + f;h &
+(f+g) ; h &= f;h + g;h \\
+f \otimes (g+h) &= f \otimes g + f \otimes h & 
+(f+g) \otimes h &= f \otimes h + g \otimes h,
+%\item A set $ob(\mathbb{C})$ of objects;
+%\item For every pair $A,B \in ob(\mathbb{C})$, a hom-semigroup $Hom(A,B)$;
+%\item An element $\textsf{id}_{A,B} \in Hom(A,B)$; 
+\end{align*}
+Note,  we take $(;\!)$ and $\otimes$ to bind more tightly than $+$.
+
+A \textit{semilattice enriched strict SMC (PROP) functor} $F: (\mathbb{C}, \otimes, 1,+) \to (\mathbb{D}, \otimes, 1,+)$ is given by a strict SMC (PROP) functor on the underlying SMCs (PROPs) which additionally satisfies $F(f+g) = F(f)+F(g)$. 
+\end{definition}
+Note, in particular,  that semigroups \update{semilattice?} do not require a unit for $+$. {This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must also be a categorical coproduct -- a degeneracy we wish to avoid.}
+
+
+As before, there is an evident forgetful functor $U: \textsf{PROP}^+ \to \textsf{PROP}$ from the category of semilattice enriched PROPs, which forgets the semilattice structure on hom-sets. Its left adjoint $F$, pictured below, generates the free enrichmenet of a PROP. 
+% https://q.uiver.app/#q=WzAsNixbMCwxLCJcXHRleHRzZntQUk9QfSJdLFsyLDEsIlxcdGV4dHNme1BST1B9XisiXSxbMSwxLCJcXHBlcnAiXSxbMywwLCJcXFNpZ21hIl0sWzUsMCwiVUYoXFxTaWdtYSkiXSxbNSwyLCJVKFxcbWF0aGJie0N9KSJdLFswLDEsIkYiLDAseyJjdXJ2ZSI6LTJ9XSxbMSwwLCJVIiwwLHsiY3VydmUiOi0yfV0sWzMsNCwiaSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzMsNSwiXFxmb3JhbGwgaiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzQsNSwiXFxleGlzdHMgVShcXGxsYnJhY2tldCAtIFxccnJicmFja2V0KSJdXQ==
+\[\begin{tikzcd}
+	&&& \mathbb{C} && {UF(\mathbb{C})} \\
+	{\textsf{PROP}} & \perp & {\textsf{PROP}^+} \\
+	&&&&& {U(\mathbb{D})}
+	\arrow["F", bend left, from=2-1, to=2-3]
+	\arrow["U", bend left, from=2-3, to=2-1]
+	\arrow["i", hook, from=1-4, to=1-6]
+	\arrow["{\forall j}"', hook, from=1-4, to=3-6]
+	\arrow["{\exists U(\llbracket - \rrbracket)}", from=1-6, to=3-6]
+\end{tikzcd}
+\]
+The corresponding universal property is given above, right. The symmetric monoidal functor $i: \mathbb{C} \to UF(\mathbb{C})$ is given by the obvious inclusion of symmetric monoidal categories.  In the sequel, we will name the free functor $F$ as $(-)^+: \textsf{PROP} \to \textsf{PROP}^+$.  We further name the composition of the functors $\textsf{PROP}(-)$ and $\textsf{SMT}(-)$ with $(-)^+$ as $\textsf{PROP}^+(-), \textsf{SMT}^+(-): \textsf{Sig} \to \textsf{PROP}^+$: these generate the free enriched PROP and freely enriched SMT over a monoidal signature and presentation of a symmetric monidal theory, respectively.  
+
+\begin{definition}
+The free enriched PROP over a monoidal signature $\Sigma$ is $\textsf{PROP}^+(\Sigma)$. 
+The freely enriched SMT over a monoidal signature $\Sigma$ is $\textsf{SMT}^+(\Sigma, \mathcal{E})$. 
+\end{definition}
+The free category $\textsf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, as well as $f+g$, quotiented by the axioms of an enriched symmetric monoidal category.  
+
+To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the binary operation on morphisms.  This will later be used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
+
+Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
+
+We use string diagrams informally in this paper, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. Indeed, the diagrammatic language itself is not really novel and is similar to \textit{e.g.}, \cite{duncan_generalised_2009}. 
+
+\begin{figure}
+\[  
+    \scalebox{0.75}{
+	\tikzfig{categorical-semantics/egraph-strings-equations}
+    }
+\]
+\caption{Equations for a  semilattice enriched symmetric monoidal category}
+\label{fig:string-equations}
+\end{figure}

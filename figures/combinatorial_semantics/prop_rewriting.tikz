@@ -1,0 +1,56 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none, label={above:$m$}] (0) at (-7.5, -1.5) {};
+		\node [style=semilarge horizontal box] (1) at (-7.5, -3.5) {$a$};
+		\node [style=none, label={below:$n$}] (2) at (-7.5, -5.5) {};
+		\node [style=none] (3) at (-4.5, -3.5) {=};
+		\node [style=none, label={above:$m$}] (4) at (-1.5, 1.5) {};
+		\node [style=large horizontal box] (5) at (-1.5, -0.5) {$a_1$};
+		\node [style=none] (8) at (-0.5, -0.5) {};
+		\node [style=none] (9) at (-2.5, -0.5) {};
+		\node [style=small box] (10) at (-2.5, -3.5) {$l$};
+		\node [style=none] (11) at (-2.5, -6.5) {};
+		\node [style=none, label={right:$i$}] (12) at (-2.5, -2) {};
+		\node [style=none, label={right:$j$}] (13) at (-2.5, -5) {};
+		\node [style=none] (14) at (-0.5, -6.5) {};
+		\node [style=none, label={below:$n$}] (15) at (-1.5, -8.5) {};
+		\node [style=none, label={right:$k$}] (16) at (-0.5, -3.5) {};
+		\node [style=large horizontal box] (17) at (-1.5, -6.5) {$a_2$};
+		\node [style=none, label={above:$m$}] (18) at (3.5, -1.5) {};
+		\node [style=semilarge horizontal box] (19) at (3.5, -3.5) {$b$};
+		\node [style=none, label={below:$n$}] (20) at (3.5, -5.5) {};
+		\node [style=none] (21) at (6.5, -3.5) {=};
+		\node [style=none, label={above:$m$}] (22) at (9.5, 1.5) {};
+		\node [style=large horizontal box] (23) at (9.5, -0.5) {$a_1$};
+		\node [style=none] (24) at (10.5, -0.5) {};
+		\node [style=none] (25) at (8.5, -0.5) {};
+		\node [style=small box] (26) at (8.5, -3.5) {$r$};
+		\node [style=none] (27) at (8.5, -6.5) {};
+		\node [style=none, label={right:$i$}] (28) at (8.5, -2) {};
+		\node [style=none, label={right:$j$}] (29) at (8.5, -5) {};
+		\node [style=none] (30) at (10.5, -6.5) {};
+		\node [style=none, label={below:$n$}] (31) at (9.5, -8.5) {};
+		\node [style=none, label={right:$k$}] (32) at (10.5, -3.5) {};
+		\node [style=large horizontal box] (33) at (9.5, -6.5) {$a_2$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (0.center) to (1);
+		\draw (1) to (2.center);
+		\draw (4.center) to (5);
+		\draw (8.center) to (14.center);
+		\draw (15.center) to (17);
+		\draw (9.center) to (12.center);
+		\draw (12.center) to (10);
+		\draw (13.center) to (10);
+		\draw (11.center) to (13.center);
+		\draw (18.center) to (19);
+		\draw (19) to (20.center);
+		\draw (22.center) to (23);
+		\draw (24.center) to (30.center);
+		\draw (31.center) to (33);
+		\draw (25.center) to (28.center);
+		\draw (28.center) to (26);
+		\draw (29.center) to (26);
+		\draw (27.center) to (29.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -1,0 +1,40 @@
+\section{Soundness and Completeness}
+
+\update{Below I kind of use $\llbracket - \rrbracket$ to define itself when using $\llbracket \mathcal{E} \rrbracket$.}
+In this section, we will build a correspondence between terms in a semilattice enriched $\textsf{PROP}^{+}(\Sigma)$ and morphisms in $\WellTypedMdaEcospans$. Similarly to $\textsf{PROP}^{+}(\Sigma)$ where terms are defined up to semilattice enrichment and SMC equations we will say that two terms $G$ and $F$ in $\WellTypedMdaEcospans$ are equal when $G \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} F$. As SMC equations are absorbed by e-hypergraph representation we only quotient by $\llbracket \mathcal{E} \rrbracket$. We are now ready to build a semilattice-enriched SMC functor 
+
+\[
+\llbracket - \rrbracket : \textsf{PROP}^{+}(\Sigma) \to \WellTypedMdaEcospans
+\]
+
+by freeness, it suffices to define how the functor acts on generators. As $\textsf{PROP}(\Sigma)$ and $\textsf{PROP}^{+}(\Sigma)$ essentially have the same set of generators we can reuse the functor $\llbracket \cdot \rrbracket: \textsf{PROP}(\Sigma) \to \catname{MACsp_{D}(Hyp_{\Sigma})}$ from~\cite{Frobenius2} and then follow the inclusion $\mathcal{I}$ defined in~\ref{functor:I}. Everything else follows by defining
+
+\begin{enumerate}
+    \item $\llbracket f;g \rrbracket = \llbracket f \rrbracket ; \llbracket g \rrbracket$  for $f,g \in \Sigma$;
+    \item $\llbracket f \otimes g \rrbracket = \llbracket f \rrbracket \otimes \llbracket g \rrbracket$  for $f,g \in \Sigma$;
+    \item $\llbracket f + g \rrbracket = \llbracket f \rrbracket + \llbracket g \rrbracket$  for $f,g \in \Sigma$;
+\end{enumerate}
+
+this also makes the functor into a semilattice-enriched SMC one on the nose.
+
+\update{Anything about soundness? I.e. if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$? Because $f = g$ is modulo semilattice-enriched SMC equations we have to show that $\llbracket f \rrbracket \Rrightarrow \llbracket g \rrbracket$. Doesn't it require the soundness of rewriting?
+}
+
+\begin{theorem}[$\llbracket - \rrbracket$ is faithful]
+
+Essentially we need to show that if $\llbracket f \rrbracket = \llbracket g \rrbracket$ then $f = g$ which is equivalent to if $\llbracket f \rrbracket \not = \llbracket g \rrbracket$ then $f \not = g$. First, we note that we have a \question{weak (modulo commutativity)} normal form for any cospan in $\WellTypedMdaEcospans$ which is achieved by merging all hierarchical edges into a single hierarchical edge making it top-level, that is, every cospan is representable as below
+
+\[
+\scalebox{0.75}{
+\tikzfig{soundness_and_completeness/normal_form}
+}
+\]
+
+where all $A_1\; \ldots \;A_n$ do not contain any hierarchical edges. We will write such form as $A_1 + \ldots A_n$ Then, $\llbracket f \rrbracket \not = \llbracket g \rrbracket$ leads to two options
+
+\begin{itemize}
+    \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_m$ where $n \not = m$. By functoriality and weak normal form in $\textsf{PROP}^{+}(\Sigma)$, $f = a_1 + \ldots + a_n$, $g = b_1 + \ldots b_m$ and $\llbracket f \rrbracket = \llbracket a_1 \rrbracket + \ldots + \llbracket a_n \rrbracket$, $\llbracket g \rrbracket = \llbracket b_1 \rrbracket + \ldots \llbracket b_m \rrbracket$. This essentially means that $f \not = g$ as it has different number of summands. 
+    \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_n$. Then there exists a permutation $\sigma$ and an index $i$ such that $ A_i  \not =  B_{\sigma(i)}$. By functoriality there exists $a_i$ such that $\llbracket a_i \rrbracket = A_i$ and $b_j$ such that $\llbracket b_j \rrbracket = B_{\sigma(i)}$. As $A_i$ does not have any hierarchical edges it effectively lives in $\mathcal{I}(\catname{MACsp_{D}(Hyp_{\Sigma})})$. By faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ it follows that $a_i \not = b_j$ and $f \not = g$. \update{Prove that $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful?}
+\end{itemize}
+
+\end{theorem}
