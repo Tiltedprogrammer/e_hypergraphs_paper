@@ -5,16 +5,15 @@
   , review
   , nonacm
   , screen
-  , authordraft
+  % , authordraft
   ]{acmart}
 
 \usepackage[utf8]{inputenc}
 
 % quiver is for quiver figures
-\usepackage{quiver}
+% \usepackage{quiver}
 \usepackage{tikz}
 \usepackage{tikz-network}
-\usepackage{amsthm}
 \usepackage{xspace}
 \usepackage{xargs}
 \usepackage[
@@ -66,7 +65,7 @@
 \newcommand\question[1]{{\color{azure}#1}}
 \newcommand\update[1]{{\color{americanrose}#1}}
 
-\usepackage{mathtools,mathrsfs}
+% \usepackage{mathtools,mathrsfs}
 \usepackage{tikz-cd}
 \usepackage{tikzit}
 
@@ -105,14 +104,11 @@ Abstract.
 
 \maketitle
 
-% some sections might be commented out as overleaf compilation times out.
 
-% \input{sections/introduction}
+\input{sections/introduction}
 \input{sections/categorical_semantics}
 \input{sections/combinatorial_semantics}
-
 \input{sections/soundness_and_completeness}
-
 \input{sections/e-graph-translation}
 \input{sections/conclusion}
 

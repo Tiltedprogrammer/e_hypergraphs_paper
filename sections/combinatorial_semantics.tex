@@ -416,24 +416,26 @@ To build a proper correspondence between terms in an enriched category and e-hyp
 
 % https://q.uiver.app/#q=WzAsOCxbMCwxLCJleHQoWCkiXSxbMSwwLCJYIl0sWzIsMCwiQSJdLFszLDAsIn5ZIl0sWzQsMSwiZXh0KFkpIl0sWzEsMiwiWCciXSxbMiwyLCJBJyJdLFszLDIsIlknIl0sWzAsMSwiIiwyLHsiY3VydmUiOi0yfV0sWzEsMl0sWzMsMl0sWzQsMywiIiwwLHsiY3VydmUiOjJ9XSxbNCw3LCIiLDIseyJjdXJ2ZSI6LTJ9XSxbNyw2XSxbNSw2XSxbMCw1LCIiLDAseyJjdXJ2ZSI6Mn1dLFsxLDUsIlxcYWxwaGEiLDFdLFsyLDYsIlxcYmV0YSIsMV0sWzMsNywiXFxnYW1tYSIsMV1d
 
-\[
-\begin{tikzcd}
-	& X & A & {~Y} \\
-	{ext(X)} &&&& {ext(Y)} \\
-	& {X'} & {A'} & {Y'}
-	\arrow[curve={height=-12pt}, from=2-1, to=1-2]
-	\arrow[from=1-2, to=1-3]
-	\arrow[from=1-4, to=1-3]
-	\arrow[curve={height=12pt}, from=2-5, to=1-4]
-	\arrow[curve={height=-12pt}, from=2-5, to=3-4]
-	\arrow[from=3-4, to=3-3]
-	\arrow[from=3-2, to=3-3]
-	\arrow[curve={height=12pt}, from=2-1, to=3-2]
-	\arrow["\alpha"{description}, from=1-2, to=3-2]
-	\arrow["\beta"{description}, from=1-3, to=3-3]
-	\arrow["\gamma"{description}, from=1-4, to=3-4]
-\end{tikzcd}
-\]
+\Aleksei{Redraw this diagram in tikzit because importing 'quiver' introduces error}
+
+% \[
+% \begin{tikzcd}
+% 	& X & A & {~Y} \\
+% 	{ext(X)} &&&& {ext(Y)} \\
+% 	& {X'} & {A'} & {Y'}
+% 	\arrow[curve={height=-12pt}, from=2-1, to=1-2]
+% 	\arrow[from=1-2, to=1-3]
+% 	\arrow[from=1-4, to=1-3]
+% 	\arrow[curve={height=12pt}, from=2-5, to=1-4]
+% 	\arrow[curve={height=-12pt}, from=2-5, to=3-4]
+% 	\arrow[from=3-4, to=3-3]
+% 	\arrow[from=3-2, to=3-3]
+% 	\arrow[curve={height=12pt}, from=2-1, to=3-2]
+% 	\arrow["\alpha"{description}, from=1-2, to=3-2]
+% 	\arrow["\beta"{description}, from=1-3, to=3-3]
+% 	\arrow["\gamma"{description}, from=1-4, to=3-4]
+% \end{tikzcd}
+% \]
 
 are isomorphic if $\alpha$, $\beta$ and $\gamma$ are isomorphisms and the diagram above commutes.
 
@@ -880,7 +882,7 @@ The propositions above make $\WellTypedMdaEcospans$ into a proper symmetric mono
 
 \[
 \mathcal{I} : \catname{MACsp_{D}(Hyp_\Sigma)}
-\xhookrightarrow{} \WellTypedMdaEcospans
+\xrightarrow{} \WellTypedMdaEcospans
 \]\label{functor:I} 
 
 For any mda-cospan $X \xrightarrow{} A \xleftarrow{} Y$ in $\catname{MACsp_{D}(Hyp_{\Sigma})}$ there is a corresponding well-typed mda-cospan in $\WellTypedMdaEcospans$: $X \xrightarrow{} X \xrightarrow{} B \xleftarrow{} Y \xleftarrow{} Y$, where $B$ is an e-hypergraph lifting of $A$ where  $\# = \varnothing$, and $<_{c} = \varnothing$. It is well-typed on the nose as it has no hierarchical edges.
@@ -1376,6 +1378,8 @@ Pushout complement is then computed by removing the image of $m$ from the target
     \end{figure}
     
 \end{example}
+
+\Aleksei{This figure yeilds "Dimension too large". Need to fix it.}
 
 Unlike SMC equations the equations for semilattice enriched categories are not absorbed by e-hypergraph representation and hence to further build a correspondence between $\textsf{PROP}^{+}(\Sigma)$ and $\WellTypedMdaEcospans$ we add them as structural rewrite rules into $\llbracket \mathcal{R}^+ \rrbracket$. Recall that the category $\catname{EHyp_{\Sigma}}$ does not have all pushouts and hence we need to explicitly show that the pushouts that we need exist.
 
