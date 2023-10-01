@@ -36,6 +36,7 @@ jobs:
         with:
           root_file: main.aux
           compiler: bibtex
+          args:
       - name: pdflatex main
         if: always()
         uses: dante-ev/latex-action@latest
