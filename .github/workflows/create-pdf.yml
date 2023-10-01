@@ -1,0 +1,71 @@
+name: create-pdf
+
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Set release name
+        id: name
+        run: echo "name=$(date +'%Y-%m-%d-%H%M')" >> $GITHUB_OUTPUT
+      - name: Create a new release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: ${{ steps.name.outputs.name }}
+          tag_name: ${{ steps.name.outputs.name }}
+      - name: pdflatex main
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: main.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape 
+      - name: bibtex main
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: main.aux
+          compiler: bibtex
+          args:
+      - name: pdflatex main
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: main.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
+      - name: pdflatex main
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: main.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
+      - name: Upload the PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: main.pdf
+          asset_name: paper.pdf
+          asset_content_type: pdf
+      - name: Delete older releases
+        if: always()
+        uses: dev-drprasad/delete-older-releases@v0.2.0
+        with:
+          keep_latest: 1
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
