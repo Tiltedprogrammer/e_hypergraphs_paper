@@ -23,7 +23,9 @@ jobs:
           release_name: ${{ steps.name.outputs.name }}
           tag_name: ${{ steps.name.outputs.name }}
       - run: pwd
-      - run: ls
+      - run: 
+          ls -a
+          ls -a ../
       - name: pdflatex main
         uses: dante-ev/latex-action@latest
         with:
