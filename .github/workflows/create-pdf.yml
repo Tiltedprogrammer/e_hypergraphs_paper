@@ -11,6 +11,8 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
       - name: Set release name
         id: name
         run: echo "name=$(date +'%Y-%m-%d-%H%M')" >> $GITHUB_OUTPUT
@@ -22,11 +24,6 @@ jobs:
         with:
           release_name: ${{ steps.name.outputs.name }}
           tag_name: ${{ steps.name.outputs.name }}
-      - run: pwd
-      - run: 
-          ls -a
-      - run:
-          ls -a ../
       - name: pdflatex main
         uses: dante-ev/latex-action@latest
         with:
