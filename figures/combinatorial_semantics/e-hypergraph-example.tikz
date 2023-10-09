@@ -48,51 +48,6 @@
 		\node [style=none] (59) at (0.5, 9.5) {};
 		\node [style=none] (60) at (-1.75, 6.5) {};
 		\node [style=none] (61) at (-1.75, 5.5) {};
-		\node [style=none] (62) at (-19, 0) {};
-		\node [style=none] (63) at (-12, 0) {};
-		\node [style=none] (64) at (-19, -15.75) {};
-		\node [style=none] (65) at (-12, -15.75) {};
-		\node [style=node, label={above:0}] (66) at (-17.75, 3) {};
-		\node [style=node, label={above:1}] (67) at (-16.25, 3) {};
-		\node [style=node, label={above:3}] (68) at (-13, 3) {};
-		\node [style=none] (69) at (-19, 4.5) {};
-		\node [style=none] (70) at (-19, 2) {};
-		\node [style=none] (71) at (-12, 2) {};
-		\node [style=none] (72) at (-12, 4.5) {};
-		\node [style=node, label={above:0}] (73) at (-16.25, -1.25) {};
-		\node [style=node, label={above:1}] (74) at (-14.75, -1.25) {};
-		\node [style=hedge] (75) at (-15.5, -3.5) {$f$};
-		\node [style=node] (76) at (-15.5, -5.75) {};
-		\node [style=node, label={above:6}] (77) at (-17.75, -19.25) {};
-		\node [style=none] (78) at (-19, -17.75) {};
-		\node [style=none] (79) at (-19, -20.25) {};
-		\node [style=none] (80) at (-12, -20.25) {};
-		\node [style=none] (81) at (-12, -17.75) {};
-		\node [style=none] (82) at (-15.75, 1.5) {};
-		\node [style=none] (83) at (-15.75, 0.5) {};
-		\node [style=none] (84) at (-15.5, -16.25) {};
-		\node [style=none] (85) at (-15.5, -17.25) {};
-		\node [style=none] (86) at (-15, 4.5) {};
-		\node [style=none] (87) at (-15, 2) {};
-		\node [style=none] (88) at (-18.5, -7.25) {};
-		\node [style=none] (89) at (-12.5, -7.25) {};
-		\node [style=none] (90) at (-18.5, -12.25) {};
-		\node [style=none] (91) at (-12.5, -12.25) {};
-		\node [style=node, label={above:2}] (92) at (-17, -8.25) {};
-		\node [style=none] (93) at (-15.5, -7.25) {};
-		\node [style=none] (94) at (-15.5, -12.25) {};
-		\node [style=node, label={below:4}] (95) at (-17, -10.75) {};
-		\node [style=node, label={above:3}] (96) at (-14, -8.25) {};
-		\node [style=node, label={below:5}] (97) at (-14, -10.75) {};
-		\node [style=hedge] (98) at (-17, -9.5) {$g$};
-		\node [style=hedge] (99) at (-14, -9.5) {$h$};
-		\node [style=node, label={below:6}] (100) at (-15.5, -13.5) {};
-		\node [style=node, label={above:4}] (101) at (-15.25, -19.25) {};
-		\node [style=node, label={above:5}] (102) at (-13.25, -19.25) {};
-		\node [style=none] (103) at (-16.5, -17.75) {};
-		\node [style=none] (104) at (-16.5, -20.25) {};
-		\node [style=node, label={above:2}] (105) at (-14.25, 3) {};
-		\node [style=none] (106) at (-8.5, -9.5) {$:=$};
 		\node [style=node, label={above:6}] (107) at (-1.5, -24) {};
 		\node [style=none] (108) at (-2.75, -22.5) {};
 		\node [style=none] (109) at (-2.75, -25) {};
@@ -140,40 +95,6 @@
 			 to (57.center)
 			 to cycle;
 		\draw [style=diredge] (60.center) to (61.center);
-		\draw [style=graph frame] (62.center)
-			 to (64.center)
-			 to (65.center)
-			 to (63.center)
-			 to cycle;
-		\draw [style=boundary frame] (69.center)
-			 to (72.center)
-			 to (71.center)
-			 to (70.center)
-			 to cycle;
-		\draw [bend right=15] (73) to (75);
-		\draw [bend left=15] (74) to (75);
-		\draw (75) to (76);
-		\draw [style=boundary frame] (78.center)
-			 to (81.center)
-			 to (80.center)
-			 to (79.center)
-			 to cycle;
-		\draw [style=diredge] (82.center) to (83.center);
-		\draw [style=diredge] (85.center) to (84.center);
-		\draw [style={vertical_delimiter}] (86.center) to (87.center);
-		\draw [style={e_hyperedge}] (90.center)
-			 to (91.center)
-			 to (89.center)
-			 to (88.center)
-			 to cycle;
-		\draw (76) to (93.center);
-		\draw [style=dashed edge] (93.center) to (94.center);
-		\draw (92) to (98);
-		\draw (98) to (95);
-		\draw (96) to (99);
-		\draw (99) to (97);
-		\draw (94.center) to (100);
-		\draw [style={vertical_delimiter}] (103.center) to (104.center);
 		\draw [style=boundary frame] (108.center)
 			 to (111.center)
 			 to (110.center)
