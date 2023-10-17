@@ -3,40 +3,132 @@
 \section{Soundness and Completeness}
 
 \update{Below I kind of use $\llbracket - \rrbracket$ to define itself when using $\llbracket \mathcal{E} \rrbracket$.}
-In this section, we will build a correspondence between terms in a semilattice enriched $\textsf{PROP}^{+}(\Sigma)$ and morphisms in $\WellTypedMdaEcospans$. Similarly to $\textsf{PROP}^{+}(\Sigma)$ where terms are defined up to semilattice enrichment and SMC equations we will say that two terms $G$ and $F$ in $\WellTypedMdaEcospans$ are equal when $G \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} F$. As SMC equations are absorbed by e-hypergraph representation we only quotient by $\llbracket \mathcal{E} \rrbracket$. We are now ready to build a semilattice-enriched SMC functor 
+In this section, we will build a correspondence between terms in a semilattice enriched $\textsf{PROP}^{+}(\Sigma)$ and morphisms in $\WellTypedMdaEcospans$.
+Similarly to $\textsf{PROP}^{+}(\Sigma)$ where terms are defined up to semilattice enrichment and SMC equations we will say that two morphisms $G$ and $F$ in $\WellTypedMdaEcospans$ are equal when $G \Rrightarrow{}_{\mathcal{S}} F$. 
+As SMC equations are absorbed by e-hypergraph representation we only quotient by $\mathcal{S}$. 
+We are now ready to build a semilattice-enriched SMC functor 
 
 \[
-\llbracket - \rrbracket : \textsf{PROP}^{+}(\Sigma) \to \WellTypedMdaEcospans
+[\cdot] : \textsf{PROP}^{+}(\Sigma) \to \WellTypedMdaEcospans
 \]
 
-by freeness, it suffices to define how the functor acts on generators. As $\textsf{PROP}(\Sigma)$ and $\textsf{PROP}^{+}(\Sigma)$ essentially have the same set of generators we can reuse the functor $\llbracket \cdot \rrbracket: \textsf{PROP}(\Sigma) \to \catname{MACsp_{D}(Hyp_{\Sigma})}$ from~\cite{Frobenius2} and then follow the inclusion $\mathcal{I}$ defined in~\ref{functor:I}. Everything else follows by defining
+by freeness, it suffices to define how the functor acts on generators.
+As $\textsf{PROP}(\Sigma)$ and $\textsf{PROP}^{+}(\Sigma)$ essentially have the same set of generators we can reuse the functor $\llbracket \cdot \rrbracket: \textsf{PROP}(\Sigma) \to \MdaCospans$ from~\cite{Frobenius2} and then follow the inclusion $\mathcal{I}$ defined in~\ref{functor:I}.
+Everything else follows by defining
 
 \begin{enumerate}
-    \item $\llbracket f;g \rrbracket = \llbracket f \rrbracket ; \llbracket g \rrbracket$  for $f,g \in \Sigma$;
-    \item $\llbracket f \otimes g \rrbracket = \llbracket f \rrbracket \otimes \llbracket g \rrbracket$  for $f,g \in \Sigma$;
-    \item $\llbracket f + g \rrbracket = \llbracket f \rrbracket + \llbracket g \rrbracket$  for $f,g \in \Sigma$;
+    \item $[ f;g ] = [ f ] ; [ g ]$  for $f,g \in \Sigma$;
+    \item $[ f \otimes g ] = [ f ] \otimes [ g ]$  for $f,g \in \Sigma$;
+    \item $[ f + g ] = [ f ] + [ g ]$  for $f,g \in \Sigma$;
 \end{enumerate}
 
 this also makes the functor into a semilattice-enriched SMC one on the nose.
+% \update{This essentially means that $[\cdot] = \llbracket \cdot \rrbracket ; \mathcal{I}$ plus three equations above.}
 
 \update{Anything about soundness? I.e. if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$? Because $f = g$ is modulo semilattice-enriched SMC equations we have to show that $\llbracket f \rrbracket \Rrightarrow \llbracket g \rrbracket$. Doesn't it require the soundness of rewriting?
 }
 
+\begin{theorem}
+    If $f = g$ in $PROP^{+}(\Sigma)$ then $[f] \Rrightarrow_{\mathcal{S}} [g]$ in $\WellTypedMdaEcospans$.
+    \begin{proof}
+        \update{
+            By induction on the number of applied equations to turn $f$ into $g$?
+            E.g. $f = g$ in one step essentially means that $f = l$ for some $l$ in~\ref{fig:string-equations} and $g = r$ (or the other way around).
+            Then we need to show that $[f] \Rrightarrow_{\langle l, r \rangle \in \mathcal{S}} [g']$ and $[g'] = [g]$.
+            }
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    $[\cdot] : PROP^{+}(\Sigma) \to \sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is sound in a sense that
+    if $f = g$ in $PROP^{+}(\Sigma)$ then $[f] = [g]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$
+\end{corollary}
+
+
+\begin{proposition}
+    Functor $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful.
+    \begin{proof}
+        Consider the commutative diagram below.
+
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXHRleHR7UFJPUH0oXFxTaWdtYSkiXSxbMiwwLCJcXHRleHR7UFJPUH1eeyt9KFxcU2lnbWEpIl0sWzAsMiwiXFxNZGFDb3NwYW5zIl0sWzIsMiwiXFxzZnJhY3tcXFdlbGxUeXBlZE1kYUVjb3NwYW5zfXtcXG1hdGhjYWx7U319Il0sWzAsMSwiXFxtYXRoY2Fse0p9Il0sWzAsMiwiXFxsbGJyYWNrZXQgXFxjZG90IFxccnJicmFja2V0IiwyXSxbMSwzLCJbXFxjZG90XSJdLFsyLDMsIlxcbWF0aGNhbHtJfSIsMl1d
+        \[
+        \begin{tikzcd}
+            {\text{PROP}(\Sigma)} && {\text{PROP}^{+}(\Sigma)} \\
+            \\
+            \MdaCospans && {\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}}
+            \arrow["{\mathcal{J}}", from=1-1, to=1-3]
+            \arrow["{\llbracket \cdot \rrbracket}"', from=1-1, to=3-1]
+            \arrow["{[\cdot]}", from=1-3, to=3-3]
+            \arrow["{\mathcal{I}}"', from=3-1, to=3-3]
+        \end{tikzcd}
+        \]
+    \end{proof}
+
+    $\llbracket \cdot \rrbracket$ is faithfull by Corollary 4.3 in~\cite{Frobenius}.
+    $\mathcal{J}$ is an inclusion that maps terms in $\textsf{PROP}(\Sigma)$ to SMC fragment of $\textsf{PROP}^{+}(\Sigma)$ and is automatically faithful. 
+    Similarly, $\mathcal{I}$ is faithful because it is inclusion.
+    Then, by composition, $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful. 
+\end{proposition}
+
 \begin{theorem}[$\llbracket - \rrbracket$ is faithful]
+\begin{proof}
+Essentially we need to show that if $\llbracket f \rrbracket = \llbracket g \rrbracket$ then $f = g$ which is equivalent to if $f \not = g$ then $\llbracket f \rrbracket \not = \llbracket g \rrbracket$.
+First, we note that we have a \question{weak (modulo commutativity)} normal form for any term in $PROP^{+}(\Sigma)$ which is achieved by applying distributivity for tensor and composition as well as unpacking equations, that is, every term is representable as in Figure~\ref{fig:normal_form_string} where $\phi_1,\;\ldots\;,\phi_n$ are pure SMC terms.
+\update{It is not actaully a `normal' form because we can still apply SMC equations, so it should be normal modulo SMC and commutativity}.
 
-Essentially we need to show that if $\llbracket f \rrbracket = \llbracket g \rrbracket$ then $f = g$ which is equivalent to if $\llbracket f \rrbracket \not = \llbracket g \rrbracket$ then $f \not = g$. First, we note that we have a \question{weak (modulo commutativity)} normal form for any cospan in $\WellTypedMdaEcospans$ which is achieved by merging all hierarchical edges into a single hierarchical edge making it top-level, that is, every cospan is representable as below
+\begin{figure}
+    \[
+    \scalebox{0.75}{
+        \tikzfig{soundness_and_completeness/normal_form_string}
+    }    
+    \]
+    \caption{Weak normal form of a term in $PROP^{+}(\Sigma)$}
+    \label{fig:normal_form_string}
+\end{figure}
 
+Then we get a corresponding cospan for such weak normal form in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ as in Figure~\ref{fig:normal_form_ehyp}
+
+\begin{figure}
+    
 \[
 \scalebox{0.75}{
 \tikzfig{soundness_and_completeness/normal_form}
 }
 \]
+\caption{Interpretation of the weak normal form in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$}
+\label{fig:normal_form_ehyp}
+\end{figure}
 
-where all $A_1\; \ldots \;A_n$ do not contain any hierarchical edges. We will write such form as $A_1 + \ldots A_n$ Then, $\llbracket f \rrbracket \not = \llbracket g \rrbracket$ leads to two options
+where all $A_1\; \ldots \;A_n$ do not contain any hierarchical edges.
+We will write such forms as $\phi_1 + \ldots \phi_n$ and $A_1 + \ldots A_n$ respectively.
+Then, $\llbracket f \rrbracket \not = \llbracket g \rrbracket$ leads to two options
+
+% \begin{itemize}
+%     \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_m$ where $n \not = m$. By functoriality and weak normal form in $\textsf{PROP}^{+}(\Sigma)$, $f = a_1 + \ldots + a_n$, $g = b_1 + \ldots b_m$ and $\llbracket f \rrbracket = \llbracket a_1 \rrbracket + \ldots + \llbracket a_n \rrbracket$, $\llbracket g \rrbracket = \llbracket b_1 \rrbracket + \ldots \llbracket b_m \rrbracket$. This essentially means that $f \not = g$ as it has different number of summands. 
+%     \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_n$. Then there exists a permutation $\sigma$ and an index $i$ such that $ A_i  \not =  B_{\sigma(i)}$. By functoriality there exists $a_i$ such that $\llbracket a_i \rrbracket = A_i$ and $b_j$ such that $\llbracket b_j \rrbracket = B_{\sigma(i)}$. As $A_i$ does not have any hierarchical edges it effectively lives in $\mathcal{I}(\catname{MACsp_{D}(Hyp_{\Sigma})})$. By faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ it follows that $a_i \not = b_j$ and $f \not = g$. \update{Prove that $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful?}
+% \end{itemize}
+
+Now, assume that $f = \phi_1 + \ldots + \phi_n$ and $g = \psi_1 + \ldots + \psi_m$.
+Then, by functoriality, $[f] = [A_1] + \ldots + [A_n]$ and $g = [B_1] + \ldots + [B_m]$. 
+$f \not g$ gives us two options.
 
 \begin{itemize}
-    \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_m$ where $n \not = m$. By functoriality and weak normal form in $\textsf{PROP}^{+}(\Sigma)$, $f = a_1 + \ldots + a_n$, $g = b_1 + \ldots b_m$ and $\llbracket f \rrbracket = \llbracket a_1 \rrbracket + \ldots + \llbracket a_n \rrbracket$, $\llbracket g \rrbracket = \llbracket b_1 \rrbracket + \ldots \llbracket b_m \rrbracket$. This essentially means that $f \not = g$ as it has different number of summands. 
-    \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_n$. Then there exists a permutation $\sigma$ and an index $i$ such that $ A_i  \not =  B_{\sigma(i)}$. By functoriality there exists $a_i$ such that $\llbracket a_i \rrbracket = A_i$ and $b_j$ such that $\llbracket b_j \rrbracket = B_{\sigma(i)}$. As $A_i$ does not have any hierarchical edges it effectively lives in $\mathcal{I}(\catname{MACsp_{D}(Hyp_{\Sigma})})$. By faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ it follows that $a_i \not = b_j$ and $f \not = g$. \update{Prove that $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful?}
+    \item $n \not = m$. Then $[f] \not = [g]$ as they are simply not isomorphic cospans of e-hypegraphs as they have different number of summands.
+    \item $n = m$. Then there exists a permutation $\sigma$ and index $i$ such that $\phi_i \not = \psi_{\sigma(i)}$. Remember that these are just SMC terms and by faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ we get $A_i \not = B_{\sigma(i)}$ and $[f] \not = [g]$.
 \end{itemize}
 
+\end{proof}
+\end{theorem}
+
+\question{Is proof ok?}
+
+\begin{theorem}
+
+    Let $\mathcal{R}$ be a rewriting system on $\textsf{PROP}(\Sigma)$.
+    $f \Rightarrow{}_{\mathcal{R}^{+}}$ iff $[f] \Rrightarrow{}_{[\mathcal{R}^{+}]} [g]$.
+    \begin{proof}
+        \update{It is tempting to reuse a similar result for $\llbracket \cdot \rrbracket$ because according to our definition $f \Rrightarrow_{\mathcal{R}^{+}}$ means that there is an SMC piece $f'$ inside some box that rewrites to $g'$.
+            But we only have this result for $\llangle \cdot \rrangle$ for terms with bent wires which is a functor to $PROP + Frob$.
+        }
+    \end{proof}
 \end{theorem}
