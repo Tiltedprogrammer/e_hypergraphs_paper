@@ -34,6 +34,7 @@ A recently proposed,  alternative solution to this problem is \textit{equality s
 
 The use of \textit{equality graphs (e-graphs)} \cite{EggPaper} -- a generalization of the typical directed acylcic graph (DAG) representation of terms to include equivalence classes -- to compactly represent the set of equivalent programs is what makes the technique tractable in practise, where the naive approach is clearly unfeasible. 
 
+\update{Move focus from semantics of e-graphs to their extension to monoidal theories?}
 While equality saturation is a state-of-the-art optimization technique, the formal mathematical theory of e-graphs is perhaps underdeveloped. In this paper, we contribute a categorical understanding of e-graphs and their rewriting. Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple \textit{semilattice-enriched} Cartesian categories, where the semilattice \textit{join} allows us to consider formal sets of terms (string diagrams, morphisms). 
 
 However, we do not develop the categorical perspective purely for its own sake: rephrasing the formalism of e-graphs in terms of algebraic theories and Cartesian categories suggests a natural generalization to monoidal theories. Therefore, our theoretical development leads to new potential domains of application, including optimziation of string diagrams representing digital \cite{ghica_compositional_2023} and quantum circuits
