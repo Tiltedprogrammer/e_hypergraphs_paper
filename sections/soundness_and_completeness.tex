@@ -36,6 +36,9 @@ this also makes the functor into a semilattice-enriched SMC one on the nose.
             E.g. $f = g$ in one step essentially means that $f = l$ for some $l$ in~\ref{fig:string-equations} and $g = r$ (or the other way around).
             Then we need to show that $[f] \Rrightarrow_{\langle l, r \rangle \in \mathcal{S}} [g']$ and $[g'] = [g]$.
             }
+        \question{Can we use normal form here as well? $f = g$ means there exists $h$ such that $f =_{SMC^{+}} h$ and $h =_{SMC^{+}}$ and $h$ is of the form $\phi_1 + \ldots + \phi_n$?
+                  Then we need to show that $[f] \Rrightarrow_{\mathcal{S}} [h]$ and $[h] \Rrightarrow_{\mathcal{S}} [g]$.
+        }
     \end{proof}
 \end{theorem}
 
@@ -124,9 +127,61 @@ $f \not g$ gives us two options.
 
 \begin{theorem}
 
-    Let $\mathcal{R}$ be a rewriting system on $\textsf{PROP}(\Sigma)$.
-    $f \Rightarrow{}_{\mathcal{R}^{+}}$ iff $[f] \Rrightarrow{}_{[\mathcal{R}^{+}]} [g]$.
+    Let $\mathcal{R}$ be a rewriting system on $\textsf{PROP}(\Sigma)$ and $\langle l, r \rangle \in \mathcal{R}$.
+    $a \Rightarrow{}^{+}_{\langle l, r \rangle} b$ iff $[a] \Rrightarrow{}^{+}_{\langle [l], [r] \rangle} [b]$.
     \begin{proof}
+        $a \Rrightarrow^{+}_{\langle l, r \rangle} b$ means that either
+        \begin{itemize}
+            \item $a$ and $b$ are decomposable as
+                  \[
+                    \scalebox{0.75}{
+                        \tikzfig{combinatorial_semantics/prop_rewriting}
+                    }
+                  \]
+                  \question{Here we can probably just reuse the proof going to $\ulcorner a \urcorner$ and then the result follows by functoriality of $[\cdot]$ (or $\llangle \cdot \rrangle$)}
+            \item or
+                 \[
+                    \scalebox{0.75}{
+                        \tikzfig{combinatorial_semantics/prop_plus_rewriting}
+                    }   
+                 \]
+                 and $a' \Rightarrow_{\langle l,r \rangle} b'$. This gives us the following decomposition in cospans
+                 % https://q.uiver.app/#q=WzAsMjcsWzAsNCwibSJdLFsxLDQsIkFfMSJdLFsyLDQsImkgKyBrIl0sWzMsNCwiOyJdLFs0LDAsImkiXSxbNSwwLCJYXzEiXSxbNiwwLCJqIl0sWzUsMiwiXFx2ZG90cyJdLFs1LDQsIkEnIl0sWzQsNCwiaSJdLFs2LDQsImoiXSxbNSwxLCIrIl0sWzUsMywiKyJdLFs1LDUsIisiXSxbNSw2LCJcXHZkb3RzIl0sWzUsNywiKyJdLFs0LDgsImkiXSxbNSw4LCJYX3ciXSxbNiw4LCJqIl0sWzcsNCwiXFxvdGltZXMiXSxbOCw0LCJrIl0sWzksNCwiayJdLFsxMCw0LCJrIl0sWzExLDQsIjsiXSxbMTIsNCwiaiArIGsiXSxbMTMsNCwiQV8yIl0sWzE0LDQsIm4iXSxbMCwxXSxbMiwxXSxbNCw1XSxbNiw1XSxbOSw4XSxbMTAsOF0sWzE4LDE3XSxbMTYsMTddLFsyMCwyMV0sWzIyLDIxXSxbMjYsMjVdLFsyNCwyNV1d
+                \[
+                    \adjustbox{scale=0.5, center}{
+                % \scalebox{0.75}{
+                    \begin{tikzcd}
+                    &&&& i & {X_1} & j \\
+                    &&&&& {+} \\
+                    &&&&& \vdots \\
+                    &&&&& {+} \\
+                    m & {A_1} & {i + k} & {;} & i & {A'} & j & \otimes & k & k & k & {;} & {j + k} & {A_2} & n \\
+                    &&&&& {+} \\
+                    &&&&& \vdots \\
+                    &&&&& {+} \\
+                    &&&& i & {X_w} & j
+                    \arrow[from=5-1, to=5-2]
+                    \arrow[from=5-3, to=5-2]
+                    \arrow[from=1-5, to=1-6]
+                    \arrow[from=1-7, to=1-6]
+                    \arrow[from=5-5, to=5-6]
+                    \arrow[from=5-7, to=5-6]
+                    \arrow[from=9-7, to=9-6]
+                    \arrow[from=9-5, to=9-6]
+                    \arrow[from=5-9, to=5-10]
+                    \arrow[from=5-11, to=5-10]
+                    \arrow[from=5-15, to=5-14]
+                    \arrow[from=5-13, to=5-14]
+                \end{tikzcd}}
+                \]
+                and there is a convex match of $L$ in $A'$.
+                It is then also down-closed and conflict reflecting as $A'$ is not hierarchical.
+                Need to show that arising pushout complement is a boundary complement.
+                \question{A problem is that the above terms does not decompose into a form of $A';C$ where $C$ is a pushout complement.
+                This happens because we take composition along the external interfaces and this $A'$ is within a box, so it is not a part of an external interface.
+                }
+                \Aleksei{discuss this. We can simplify PROP+ rewriting to just a box, but still have a problem with context C}
+        \end{itemize}
         \update{It is tempting to reuse a similar result for $\llbracket \cdot \rrbracket$ because according to our definition $f \Rrightarrow_{\mathcal{R}^{+}}$ means that there is an SMC piece $f'$ inside some box that rewrites to $g'$.
             But we only have this result for $\llangle \cdot \rrangle$ for terms with bent wires which is a functor to $PROP + Frob$.
         }

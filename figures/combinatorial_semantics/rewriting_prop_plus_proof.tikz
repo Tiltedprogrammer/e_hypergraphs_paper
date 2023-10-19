@@ -1,0 +1,205 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none, label={above:$m$}] (0) at (-11.5, -2.5) {};
+		\node [style=semilarge horizontal box] (1) at (-11.5, -4.5) {$a$};
+		\node [style=none, label={below:$n$}] (2) at (-11.5, -6.5) {};
+		\node [style=none] (3) at (-8.5, -4.5) {=};
+		\node [style=none] (4) at (-1.5, 1.5) {};
+		\node [style=very large horizontal box] (5) at (-1.5, -0.5) {$a_1$};
+		\node [style=none] (8) at (1.5, -0.5) {};
+		\node [style=none] (9) at (-3, -0.5) {};
+		\node [style=none] (11) at (-3, -9.5) {};
+		\node [style=none, label={right:$i$}] (12) at (-3, -1.75) {};
+		\node [style=none, label={right:$j$}] (13) at (-3, -7.75) {};
+		\node [style=none] (14) at (1.5, -9.5) {};
+		\node [style=none, label={below:$n$}] (15) at (-1.5, -11.5) {};
+		\node [style=none, label={right:$k$}] (16) at (1.5, -5) {};
+		\node [style=very large horizontal box] (17) at (-1.5, -9.5) {$a_2$};
+		\node [style=none] (34) at (-6, -3) {};
+		\node [style=e-box-interface] (35) at (-3, -3) {};
+		\node [style=none] (36) at (0, -3) {};
+		\node [style=none] (37) at (0, -6) {};
+		\node [style=none] (38) at (-6, -6) {};
+		\node [style=e-box-interface] (39) at (-3, -6) {};
+		\node [style=small box] (40) at (-3, -4.5) {$a'$};
+		\node [style=none] (41) at (-3, -3) {};
+		\node [style=none] (42) at (-3, -6) {};
+		\node [style=none] (43) at (-4, -3) {};
+		\node [style=none] (44) at (-4, -6) {};
+		\node [style=none] (45) at (-2, -3) {};
+		\node [style=none] (46) at (-2, -6) {};
+		\node [style=none] (47) at (-5, -4.5) {$\ldots$};
+		\node [style=none] (48) at (-1, -4.5) {$\ldots$};
+		\node [style=none, label={above:$m$}] (49) at (52.75, -2.5) {};
+		\node [style=semilarge horizontal box] (50) at (52.75, -4.5) {$b$};
+		\node [style=none, label={below:$n$}] (51) at (52.75, -6.5) {};
+		\node [style=none] (52) at (55.75, -4.5) {=};
+		\node [style=none, label={above:$m$}] (53) at (62.75, 1.5) {};
+		\node [style=very large horizontal box] (54) at (62.75, -0.5) {$a_1$};
+		\node [style=none] (55) at (65.75, -0.5) {};
+		\node [style=none] (56) at (61.25, -0.5) {};
+		\node [style=none] (57) at (61.25, -9.5) {};
+		\node [style=none, label={right:$i$}] (58) at (61.25, -1.75) {};
+		\node [style=none, label={right:$j$}] (59) at (61.25, -7.75) {};
+		\node [style=none] (60) at (65.75, -9.5) {};
+		\node [style=none, label={below:$n$}] (61) at (62.75, -11.5) {};
+		\node [style=none, label={right:$k$}] (62) at (65.75, -5) {};
+		\node [style=very large horizontal box] (63) at (62.75, -9.5) {$a_2$};
+		\node [style=none] (64) at (58.25, -3) {};
+		\node [style=e-box-interface] (65) at (61.25, -3) {};
+		\node [style=none] (66) at (64.25, -3) {};
+		\node [style=none] (67) at (64.25, -6) {};
+		\node [style=none] (68) at (58.25, -6) {};
+		\node [style=e-box-interface] (69) at (61.25, -6) {};
+		\node [style=small box] (70) at (61.25, -4.5) {$b'$};
+		\node [style=none] (71) at (61.25, -3) {};
+		\node [style=none] (72) at (61.25, -6) {};
+		\node [style=none] (73) at (60.25, -3) {};
+		\node [style=none] (74) at (60.25, -6) {};
+		\node [style=none] (75) at (62.25, -3) {};
+		\node [style=none] (76) at (62.25, -6) {};
+		\node [style=none] (77) at (59.25, -4.5) {$\ldots$};
+		\node [style=none] (78) at (63.25, -4.5) {$\ldots$};
+		\node [style=none] (79) at (28.75, -4.5) {=};
+		\node [style=none, label={above:$m$}] (80) at (43.75, 1.5) {};
+		\node [style=very large horizontal box] (81) at (43.75, -0.5) {$a_1$};
+		\node [style=none] (82) at (46.75, -0.5) {};
+		\node [style=none] (83) at (42.25, -0.5) {};
+		\node [style=none] (84) at (42.25, -9.5) {};
+		\node [style=none, label={right:$i$}] (85) at (42.25, -1.75) {};
+		\node [style=none, label={right:$j$}] (86) at (42.25, -7.75) {};
+		\node [style=none] (87) at (46.75, -9.5) {};
+		\node [style=none, label={below:$n$}] (88) at (43.75, -11.5) {};
+		\node [style=none, label={right:$k$}] (89) at (46.75, -5) {};
+		\node [style=very large horizontal box] (90) at (43.75, -9.5) {$a_2$};
+		\node [style=none] (91) at (39.25, -3) {};
+		\node [style=e-box-interface] (92) at (42.25, -3) {};
+		\node [style=none] (93) at (45.25, -3) {};
+		\node [style=none] (94) at (45.25, -6) {};
+		\node [style=none] (95) at (39.25, -6) {};
+		\node [style=e-box-interface] (96) at (42.25, -6) {};
+		\node [style=small box] (97) at (42.25, -4.5) {$a'$};
+		\node [style=none] (98) at (42.25, -3) {};
+		\node [style=none] (99) at (42.25, -6) {};
+		\node [style=none] (100) at (41.25, -3) {};
+		\node [style=none] (101) at (41.25, -6) {};
+		\node [style=none] (102) at (43.25, -3) {};
+		\node [style=none] (103) at (43.25, -6) {};
+		\node [style=none] (104) at (40.25, -4.5) {$\ldots$};
+		\node [style=none] (105) at (44.25, -4.5) {$\ldots$};
+		\node [style=none] (106) at (0, 4.75) {};
+		\node [style=none] (107) at (4.5, 2.5) {};
+		\node [style=none, label={below:$m$}] (109) at (4.5, -11.5) {};
+		\node [style=none] (110) at (-0.75, 1.5) {$m$};
+		\node [style=none] (111) at (7.5, -4.5) {=};
+		\node [style=large horizontal box] (113) at (20.5, -9.5) {$a_1^{*}$};
+		\node [style=none] (114) at (17.5, -7.5) {};
+		\node [style=none] (115) at (13.5, -0.5) {};
+		\node [style=none] (116) at (13.5, -9.5) {};
+		\node [style=none, label={right:$i$}] (117) at (13.5, -1.75) {};
+		\node [style=none, label={right:$j$}] (118) at (13.5, -7.75) {};
+		\node [style=none] (119) at (15.75, -9.5) {};
+		\node [style=none, label={below:$n$}] (120) at (15, -11.5) {};
+		\node [style=none, label={right:$k$}] (121) at (17.5, -7) {};
+		\node [style=large horizontal box] (122) at (15, -9.5) {$a_2$};
+		\node [style=none] (123) at (10.5, -3) {};
+		\node [style=e-box-interface] (124) at (13.5, -3) {};
+		\node [style=none] (125) at (16.5, -3) {};
+		\node [style=none] (126) at (16.5, -6) {};
+		\node [style=none] (127) at (10.5, -6) {};
+		\node [style=e-box-interface] (128) at (13.5, -6) {};
+		\node [style=small box] (129) at (13.5, -4.5) {$a'$};
+		\node [style=none] (130) at (13.5, -3) {};
+		\node [style=none] (131) at (13.5, -6) {};
+		\node [style=none] (132) at (12.5, -3) {};
+		\node [style=none] (133) at (12.5, -6) {};
+		\node [style=none] (134) at (14.5, -3) {};
+		\node [style=none] (135) at (14.5, -6) {};
+		\node [style=none] (136) at (11.5, -4.5) {$\ldots$};
+		\node [style=none] (137) at (15.5, -4.5) {$\ldots$};
+		\node [style=none] (138) at (13.5, 2) {};
+		\node [style=none] (139) at (20.5, 2) {};
+		\node [style=none, label={below:$m$}] (140) at (20.5, -11.5) {};
+		\node [style=none] (141) at (15.75, 2.5) {$m$};
+		\node [style=none] (144) at (19.25, -9.5) {};
+		\node [style=none] (145) at (17, 5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (0.center) to (1);
+		\draw (1) to (2.center);
+		\draw (4.center) to (5);
+		\draw (8.center) to (14.center);
+		\draw (15.center) to (17);
+		\draw (9.center) to (12.center);
+		\draw (11.center) to (13.center);
+		\draw [style=dashed edge] (37.center)
+			 to (38.center)
+			 to (34.center)
+			 to (36.center)
+			 to cycle;
+		\draw (12.center) to (35);
+		\draw (41.center) to (40);
+		\draw (42.center) to (40);
+		\draw [style=dashed edge] (43.center) to (44.center);
+		\draw [style=dashed edge] (45.center) to (46.center);
+		\draw (42.center) to (13.center);
+		\draw (49.center) to (50);
+		\draw (50) to (51.center);
+		\draw (53.center) to (54);
+		\draw (55.center) to (60.center);
+		\draw (61.center) to (63);
+		\draw (56.center) to (58.center);
+		\draw (57.center) to (59.center);
+		\draw [style=dashed edge] (67.center)
+			 to (68.center)
+			 to (64.center)
+			 to (66.center)
+			 to cycle;
+		\draw (58.center) to (65);
+		\draw (71.center) to (70);
+		\draw (72.center) to (70);
+		\draw [style=dashed edge] (73.center) to (74.center);
+		\draw [style=dashed edge] (75.center) to (76.center);
+		\draw (72.center) to (59.center);
+		\draw (80.center) to (81);
+		\draw (82.center) to (87.center);
+		\draw (88.center) to (90);
+		\draw (83.center) to (85.center);
+		\draw (84.center) to (86.center);
+		\draw [style=dashed edge] (94.center)
+			 to (95.center)
+			 to (91.center)
+			 to (93.center)
+			 to cycle;
+		\draw (85.center) to (92);
+		\draw (98.center) to (97);
+		\draw (99.center) to (97);
+		\draw [style=dashed edge] (100.center) to (101.center);
+		\draw [style=dashed edge] (102.center) to (103.center);
+		\draw (99.center) to (86.center);
+		\draw [in=-150, out=90] (4.center) to (106.center);
+		\draw [bend left=60] (106.center) to (107.center);
+		\draw (107.center) to (109.center);
+		\draw [bend right=45] (114.center) to (119.center);
+		\draw (120.center) to (122);
+		\draw (115.center) to (117.center);
+		\draw (116.center) to (118.center);
+		\draw [style=dashed edge] (126.center)
+			 to (127.center)
+			 to (123.center)
+			 to (125.center)
+			 to cycle;
+		\draw (117.center) to (124);
+		\draw (130.center) to (129);
+		\draw (131.center) to (129);
+		\draw [style=dashed edge] (132.center) to (133.center);
+		\draw [style=dashed edge] (134.center) to (135.center);
+		\draw (131.center) to (118.center);
+		\draw [bend right=45] (144.center) to (114.center);
+		\draw (140.center) to (113);
+		\draw (139.center) to (113);
+		\draw (115.center) to (138.center);
+		\draw [bend left=45] (145.center) to (139.center);
+		\draw [bend left=45] (138.center) to (145.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
