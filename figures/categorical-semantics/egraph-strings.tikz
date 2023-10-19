@@ -131,6 +131,10 @@
 		\node [style=none] (145) at (-11, 4) {$\phi$};
 		\node [style=none] (151) at (-9, 4) {$::=$};
 		\node [style=round box] (152) at (-0.75, 0) {$c$};
+		\node [style=none] (153) at (-0.875, 0.95) {};
+		\node [style=none] (154) at (-0.625, 1.075) {};
+		\node [style=none] (155) at (-0.875, -1.05) {};
+		\node [style=none] (156) at (-0.625, -0.925) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=black dash] (9.center) to (10.center);
@@ -209,5 +213,7 @@
 		\draw (129.center) to (130.center);
 		\draw (141.center) to (136.center);
 		\draw (138.center) to (142.center);
+		\draw (153.center) to (154.center);
+		\draw (155.center) to (156.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

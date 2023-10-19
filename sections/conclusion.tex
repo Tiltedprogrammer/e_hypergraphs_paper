@@ -1,11 +1,34 @@
 % !TEX root = ../main.tex
 
 
-\section{Conclusion and Further Work}
+\section{Conclusion}
 
-\begin{itemize}
-\item implementation for ZX
-\item computational linguistics
-\item traced categories, hypergraphs for traced comonoids and full e-graphs
-\item closed categories, hierarchical hypergraphs and lambda-calculus (example)
-\end{itemize}
+We have described a categorical semantics for e-graphs over algebraic theories in terms of Cartesian categories enriched over a semilattice, and defined a natural generalization to account for monoidal theories in terms of SMCs,  similarly enriched.  Having described a translation of e-graphs into our formalism, we developed a combinatorial representation of morphisms in our free category which factor out the structural SMC equations, but remain sensitive to the complexity-relevant equations induced by the enrichment.  The design of such a representation and its corresponding  rewrite theory proved delicate, and -- together with its proof of completeness -- constitute the main technical contributions of the paper.  Finally, we considered an analogue of e-rewriting in our setting, pushing towards the practical considerations necessary for an implementation of our ideas.  Although we believe our work forms a solid basis for a formal mathematical theory of (acyclic) e-graphs,  there are a number of extensions which we intend to investigate in the future.
+
+\subsection{Future Work and Applications}
+
+We have already alluded to the fact we deal with only \textit{acyclic} e-graphs in this paper.  Nevertheless,  within this setting we present a generalization from Cartesian to (symmetric) monoidal theories,  giving rise to a host of potential new domains of application.  Further,  the string diagrammatic and graph rewriting framework we set up is ameenable to extension, including lifting the acyclicity restriction. 
+
+\begin{figure}\label{fig:applications}
+\[
+	\scalebox{0.75}{
+	\tikzfig{combinatorial_semantics/example-e-graphs}
+	}
+\]
+\caption{Example applications of e-hypergraphs.  Left, the ZX-calculus.  Right, the $\lambda$-calculus as represented by string diagrams for Cartesian closed categories.  }
+\end{figure}
+
+Symmetric monoidal theories have received significant attention over recent years: the ZX-calculus can be used to characterize quantum processes, with applications to optimization of quantum circuits [cite] ; similar theories also characterize signal flow diagrams 
+\cite{baldan_categorical_2014}, digital circuits 
+\cite{ghica_operational_2021}, as well as having application to computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  In future work, we hope to apply our generalization of e-graphs to optimization problems in these domains (e.g. Figure \ref{fig:applications})
+
+The theories described above often have more structure than simply being symmetric monoidal: for example, they may contain comonoids, Frobenius algebras or traced structure (as in the case of e-graphs with cycles),  and this structure can be exploited to give more natural (in the sense of factoring out more equations) combinatorial representations.  In the above cases, such representations and their DPO-rewriting theory is well-studied 
+\cite{ghica_rewriting_2023} % traced comonoid
+[cite, cite, cite].  We consider that our development of hierarchical "e-box" structure within string diagrams and their associated (e-)hypergraphs ( categorically,  semilattice enrichment) is essentially orthogonal to these developments, and so ought to be easily combined to give notions of e-hypergraphs specifically suited to the optimization of these particular monoidal theories. 
+
+A particularly interesting extension that we intend to consider is the combination of our "e-structure" with (Cartesian) \textit{closed} categories, allowing the natural combination of e-graph optimization techniques with the $\lambda$-calculus.  The corresponding combinatorial representation would build on the recent work \cite{ghica_hierarchical_2023, alvarez-picallo_rewriting_2022, alvarez-picallo_functorial_2021}. % hierarchical  
+
+In Figure \ref{fig:let-calculus} we give an example term calculus corresponding to our categorical semantics.  Although undeveloped here, the first author intends to develop this idea, extending the calculus of \cite{heijltjes_functional_2023,barrett_functional_2023} into a natural term language for such string diagrams. 
+We also mention that our developments would also naturally combine with recent work on string diagrams for \textit{non-strict} symmetric monoidal categories \cite{wilson_string_2023}.  % non-strict categories
+Finally, we intend to develop implementations of the theory developed here,  with an ultimate aim of providing a tool for optimization of monoidal theories and assessing its practicality on real-world problems, such as those considered in the various domains mentioned above. 
+
