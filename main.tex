@@ -11,7 +11,9 @@
 \usepackage[utf8]{inputenc}
 
 % quiver is for quiver figures
+% including quiver redefines \Bbbk which leads to an error
 % \usepackage{quiver}
+
 \usepackage{tikz}
 \usepackage{tikz-network}
 \usepackage{xspace}
@@ -82,6 +84,8 @@
 \newcommand{\MdaEcospans}{{\catname{MAECsp_{D}(EHyp_{\Sigma})}}}
 \newcommand{\WellTypedMdaEcospans}{{\catname{\overline{MAECsp_{D}(EHyp_{\Sigma})}}}}
 
+% conflict
+\newcommand{\conflict}{{\#}}
 % There is already a remark in the preamble, but it does
 % not work for some reason
 \newtheorem{remark}{Remark}

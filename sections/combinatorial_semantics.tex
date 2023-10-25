@@ -171,6 +171,61 @@ Vertical and horizontal compositions of mda-cospans are mda-cospans, identities 
 \end{theorem}
 This theorem essentially states a correspondence between morphisms in SMC (string diagrams) and mda-cospans of hypergraphs.
 
+\begin{remark}[Pushout in $\catname{Hyp_{\Sigma}}$]
+    Consider a diagram below
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAC0QBfU9TXfIRQBGclVqMWbABrdeIDNjwEiZYePrNWiEAE05fJYKKj11TVJ0AdK3ABmAJzoBjYNIDUursBvYAtgAEAEpcBgr8ykLIAEyk0RqS2iAAitziMFAA5vBEoI4QfkhkIDgQSKISWmx2YfmFiMWlSLGVliCZINQMdABGMAwAChHGOg5YmQAWOLUOBeXUTYgAzOaJbL6OLsBYAPrC3r5YgSEzc4gtiyutSRtOrrvRB7ZHwaE8ebP1F2WIACzUfTAUCQAFolsULEkAFY7aKdEDdPqDYYqUbjKaneoVRb-ECA4HLCFrHQw4SYpBXHGrKo6JhpLhAA
+
+\[
+    \adjustbox{scale=1}{
+        \begin{tikzcd}
+        Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{i_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
+        Y \arrow[r, "\sfrac{i_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
+                                                                        &                                                                  & Q
+        \end{tikzcd}
+    }
+\]
+
+Pushout of two hypergraphs $X = \{V_{X}, E_{X}, s_{X}, t_{X}\}$ and $Y = \{V_{Y}, E_{Y}, s_{Y}, t_{Y}\}$ (we will omit labelling functions here since they are irrelevant) along $Z$ is computed in two steps.
+First, a coproduct of $X$ and $Y$ is taken which is $X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X} + s_{Y}, t_{X} + t_{Y} \}$.
+Then, consider a relation 
+\[
+    S = \{(x_i,y_j), (y_j, x_i) \in (X+Y) \times (X+Y)\; | \; \exists z \in Z \; . \; x_i = f(z) \text{ and } y_j = g(z) \text{where $x_i \in X$ and $y_j \in Y$ }\}
+% \cup \{(x,x) \in (X+Y) \times (X+Y) \text{ where $x \in X$}\} \cup \{(y,y) \in (X+Y) \times (X+Y) \text{ where $y \in Y$}\}$ 
+\]
+and let relation $R$ be its reflexive and transitive closure. $R$ is then an equivalence relation since $S$ is symmetric.
+
+A quotient of $X+Y$ by this relation denoted by 
+\[
+    \sfrac{X+Y}{\sim R} = \{\sfrac{V_{X} + V_{Y}}{\sim R}, \sfrac{E_{X} + E_{Y}}{\sim R}, \sfrac{s_{X} + s_{Y}}{\sim R}, \sfrac{t_{X} + t_{Y}}{\sim R}\}
+\]
+where $\sfrac{s_{X} + s_{Y}}{\sim R} : \sfrac{E_{X} + E_{Y}}{\sim R} \to \sfrac{V_{X} + V_{Y}}{\sim R}$ now maps equivalence classes to equivalence classes.
+Note that if $s : e_1 \mapsto \{v_1,v_2\}$ and $s : e_2 \mapsto \{v_3,v_4\}$  and $e_1 \sim e_2$ then $\sfrac{s}{\sim R} : [e_1,e_2] \to \{[v_1,v_3],[v_2,v_4]\}$ because $f$ and $g$ are homomorphisms.
+Then, $\sfrac{i_1}{\sim R}$ maps $y \in Y$ to its equivalence class and likewise for $\sfrac{i_2}{\sim R}$.
+we will denote the equivalence classes in $\sfrac{X + Y}{\sim R}$ as $[x]$ and $[y]$ depending on their pre-image being either in $X$ or $Y$.
+Before we procced, we need to show that $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ are homomorphisms.
+Let $e_{x}$ be an edge in $X$ and $v_x$ is its source. We need to check that $\sfrac{i_1}{\sim R}(v_x) = (\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x)$.
+$\sfrac{i_1}{\sim R}(v_x) = [v_x]$ and $(\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x) = \sfrac{s_{X}}{\sim R}([e_x]) = [v_x]$ and hence $\sfrac{i_1}{\sim R}$ is a homomorphism, simialrly $\sfrac{i_2}{\sim R}$ is.
+Now, the square obviously commutes.
+To show that $\sfrac{X + Y}{\sim R}$ is a pushout we need to argue that for each $Q$ and morphisms $j_1$ and $j_2$ such that the above square commutes there is a unique $u$ such that $j_1 = \sfrac{i_1}{\sim R} ; u$ and $j_2 = \sfrac{i_2}{\sim R} ; u$.
+We will define such $u$ as $u([x]) = j_1(x)$ and $u([y]) = j_2(y)$ and claim that is it a well-defined function by showing that if $t_1 = t_2$ then $u(t_1) = u(t_2)$.
+There are three options
+\begin{itemize}
+    \item $t_1 = [x]$ and $t_2 = [x]$, where $[x]$ is a singleton equivalence class.
+          The property then holds on the nose.
+    \item $t_1 = [y]$ and $t_2 = [y]$, where $[y]$ is a singleton equivalence class.
+    The property then holds on the nose.
+    \item $t_1 = [x]$ and $t_2 = [y]$ and there exists at least one $z$ in $Z$ such that $x = f(z)$ and $y = g(z)$.
+          By applying $j_1$ to the first we get $j_1(f(z)) = j_1(x)$ and similarly for $j_2$: $j_2(g(z)) = j_2(y)$ and $j_1(x) = j_2(y)$ by commutativity.
+          Hence, $u([x]) = u([y])$. 
+\end{itemize}
+
+Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.
+Finally, $u$ is unique.
+Assume, that there exists $w : \sfrac{X+Y}{\sim R} \to Q$ for the same $j_1$ and $j_2$.
+In order for them to commute $w([x]) = j_1(x)$ and $w([y]) = j_2(y)$ which is the same as $u$.
+That is, $j_1$ and $j_2$ determine $u$ uniquely.
+
+\end{remark}
 
 Now we are ready to define e-hypergraphs which are a combinatorial representation of enriched PROPs.
 
@@ -180,7 +235,11 @@ Now we are ready to define e-hypergraphs which are a combinatorial representatio
     The labelling $l$ is modified to include an extra value $\bot \;$ $l :E_{\mathcal{G}} \to \Sigma + 1$. With an abuse of notation, we will confuse $\mathcal{G}$ with $V_{\mathcal{G}} \cup E_{\mathcal{G}}$, when treating it as a set.
     
     $<_c \subset \mathcal{G} \times \mathcal{G}$ is a child relation imposing a partial order on $\mathcal{G}$.
-    We require that for a given $x \in \mathcal{G}$ a set of all predecessors of $x\;$ $[x) = \{x' \in \mathcal{G} \;||\; x' <_c x\; \}$ is finite and consists of edges $e \in E_{\mathcal{G}}$ such that $l(e) = \bot$ only. Next, each $x$ has at most one immediate predecessor. Such order was called a \textbf{well-founded arborescent} strict partial order in~\cite{orders_and_events}.
+    We require that for a given $x \in \mathcal{G}$ a set of all predecessors of $x\;$ $[x) = \{x' \in \mathcal{G} \;||\; x' <_c x\; \}$ is finite and consists of edges $e \in E_{\mathcal{G}}$ such that $l(e) = \bot$ only.
+    Next, each $x$ has at most one immediate predecessor.
+    \update{We will denote the fact that $e$ is an immediate predecessor of $v$ as $e <_c^{\mu} v$.}
+    % , which essentially makes $<_{c}$ into a function that for any given $x$ returns its immediate predecessor.
+    Such order was called a \textbf{well-founded arborescent} strict partial order in~\cite{orders_and_events}.
     Similarly, a set of all successors is $(x] = \{x' \in \mathcal{G} \; ||\; x < x'\}$ where $x'$ can be a node or an edge. 
     % An edge $e \in E_{\mathcal{G}}$ is unlabelled, i.e. $l(e) = \bot$ iff $(e] \not = \varnothing$.
     Finally, we require that $<_c$ respects connectivity, i.e. if $v \in s(e)$ then $e' < e$ iff $e' <_c v$.
@@ -258,7 +317,7 @@ An example of an e-hypergraph can be found in Figure~\ref{fig:e-cospan}. The e-h
 
 
 \begin{definition}{E-hypergraphs homomorphism}
-    
+\label{def:e-homo}    
 A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
 
 \begin{enumerate}
@@ -389,8 +448,77 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
 \end{definition}
 
 \begin{remark}
-    Similarly to $\catname{Hyp_{\Sigma}}$ pushouts in $\catname{EHyp_{\Sigma}}$ are computed on the underlying sets of nodes and edges.
-    However, unlike $\catname{Hyp_{\Sigma}}$ $\catname{EHyp_{\Sigma}}$ is not \textit{adhesive} meaning that not all pushouts along monos exist.
+
+    We will compute pushouts in $\catname{EHyp_{\Sigma}}$ similarly to $\catname{EHyp_{\Sigma}}$.
+    Recall the diagram below.
+    \[
+    \adjustbox{scale=1}{
+        \begin{tikzcd}
+        Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{i_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
+        Y \arrow[r, "\sfrac{i_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
+                                                                        &                                                                  & Q
+        \end{tikzcd}
+    }
+    \]
+
+    The pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
+    First, a coproduct of $X+Y$ is computed which is 
+    \[
+        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X} + s_{Y}, t_{X} + t_{Y}, \#_{X} + \#_{Y}, <_{c,X} + <_{c,Y} \}
+    \] 
+    once again omitting the labelling function.
+    And consider a relation $S = \{(x,y), (y,x) \in (X+Y) \times (X+Y) \; | \;\exists z \in Z \; . \; f(z) = x \text{ and } g(z) = y \}$ and let $R$ be its reflexive and transitive closure.
+    We then quotient $X + Y$ by $R$ and claim that it is a pushout.
+    \[
+        \sfrac{X + Y}{\sim R} = \{\sfrac{V_{X} + V_{Y}}{\sim R}, \sfrac{E_{X} + E_{Y}}{\sim R}, \sfrac{s_{X} + s_{Y}}{\sim R}, \sfrac{t_{X} + t_{Y}}{\sim R}, \sfrac{\#_{X} + \#_{Y}}{\sim R}, \sfrac{<_{c,X} + <_{c,Y}}{\sim R} \}    
+    \]
+    where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$.
+    \[
+    \sfrac{(<_{c,X} + <_{c,Y})}{\sim R} \subseteq \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(E_{X} + E_{Y})}{\sim R} \to \sfrac{(E_{X} + E_{Y})}{\sim R}
+    \]
+    \question{Below $e$ and $v$ do not necessarily mean edges and nodes, $v$ can be an edge as well.}
+    \question{I also kind of intuitively inventing the quotient of a relation, is there any accepted notion for this?}
+    and, whenever $e_{X} <_{c,X}^{\mu} v_{X}$ and $e_{Y} <_{c,Y}^{\mu} v_{Y}$ and $v_{x} R v_{y}$ then $e_{X} R e_{Y}$.
+    The latter condition means two things
+    \begin{itemize}
+        \label{cond:essential_for_pushout}
+        \item if $[z) = \varnothing$ then either $[f(z)) = \varnothing$ or $[g(z)) = \varnothing$.
+              \question{This point formally defines what it means to 'inherit' a relation.
+                        Let's say $v_1 = f(z)$ and $v_2 = g(z)$ and $e_1 <_{c,X}^{\mu} v_1$ and $[v_2) = \varnothing$,
+                        then, having $e_1 <_{c} [v_1,v_2]$ is fine as it does not break the condition of a predecessor being unique.}
+              \update{This point also says when we can compute a pushout: either non of X and Y should have a parent for $f(z)$ and $g(z)$ or only one of them should.}
+        \item if $[z) \not = \varnothing$ then there exists $z'$ such that $z' <_{c}^{\mu} z$ and $[g(z'), f(z')] <_{c}^{\mu} [g(z), f(z)]$
+    \end{itemize}
+    Then,
+    \[
+        \sfrac{\conflict_{X} + \conflict_{Y}}{\sim R} \subseteq \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(E_{X} + E_{Y})}{\sim R} \times \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R}
+    \]
+    meaning that whenever $e_1 \conflict e_2$ and $e_1' \conflict e_2'$ and $e_1 R e_1'$ then $[e_1, e_1'] \conflict e_2$ and $[e_1, e_1'] \conflict e_2'$.
+    $\sfrac{i_1}{\sim R}$ then maps $x \to [x]$ and $\sfrac{i_2}{\sim R}$ maps $y \to [y]$.
+    Before we proceed we need to check that $\sfrac{(X + Y)}{\sim R}$ is indeed an e-hypergraph.
+    Since $X + Y$ is clearly an e-hypergraph, we need to check whether identification breaks any of the requirements (1-7) above.
+    \begin{enumerate}
+        \item Assume $[x_1,y_1] <_{c} [x_2,y_2]$ and $[x_1, y_1] \conflict [x_3]$ which means that $x_1 \conflict x_3$.
+              Hence $x_2 \conflict x_3$ (because $X$ is an e-hypergraph) and $[x_2,y_2] \conflict [x_3]$. Similarly, if $[x_1, y_1] \conflict [y_3]$ and $y_1 \conflict y_3$.
+        \item $\sfrac{\conflict}{\sim R}$ and $\sfrac{<_{c}}{\sim R}$ are disjoint because we quotient only inside the relations.
+        \item Again, we only quotient $\conflict$ on $x$ and $y$ for which original relation is defined.
+        \item This follows from $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ being homomorphisms.
+        \item We just perform transitive closure of the complement. \update{Maybe we can get rid of this point and instead later just take transitive closure of the complement when talking about interfaces}
+        \item Assume $[x_1, y_1] \conflict [x_2,y_2]$ and $[x_2,y_2] \conflict [x_3,y_3]$ and all of them are distinct.
+              Then $[x_1,y_1] \conflict [x_3,y_3]$ because either $x_1 \conflict x_3$ or $y_1 \conflict y_3$ (otherwise they would not have been merged into the same equivalence class).
+        \item We never merge $x_1$ and $x_2$ such that $x_1 <_{c} x_2$ into the same equivalence class because morphisms should preserve the order.
+    \end{enumerate}
+
+    Then we need to check that $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ are indeed homomorphisms.
+    For these we need to check that conditions (2-3) in~\ref{def:e-homo} are satisfied.
+    Let's check for $\sfrac{i_1}{\sim R}$.
+    We identify elements from $X$ with elements from $Y$ which does not affect (2) and the same reasoning applies to (3).
+    (1) was proved earlier for $\catname{Hyp_{\Sigma}}$.
+
+    Finally, by following essentially the same argument as for pushout in $\catname{Hyp_{\Sigma}}$ we can conclude that the structure defined above is indeed a pushout in $\catname{EHyp_{\Sigma}}$ and we know precise conditions under which this concrete pushout exists.
+\end{remark}
+
+\begin{example}
     Consider an example span below in Figure~\ref{fig:pushout_fail}.
 \begin{figure}[h!]
     \centering
@@ -402,11 +530,9 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     \label{fig:pushout_fail}
 \end{figure}
 
-    In order to build a commuting square which is a pushout the immediate predecessors of $f$ should be identified in the pushout because any element of an e-hypergraph has only one immediate predecessor.
-    However, such identification is not possible as these predecessors have different types.
+    The pushout defined above does not exist for this span because neither of the set of predecessors of the images of $f$ are $\varnothing$ which violates~\ref{cond:essential_for_pushout}.
     Luckily, we do not need arbitrary pushouts and pushouts that we actually need do exist.
-    \update{In general, in the pushout $A \xrightarrow{f} D \xleftarrow{g} B$, $D$ would inherit the relations from $A$ and $B$ when the relations are not mutually exclusive.}
-\end{remark}
+\end{example}
 
 
 To build a proper correspondence between terms in an enriched category and e-hypergraphs we introduce e-hypergraphs with interfaces.
@@ -586,8 +712,10 @@ By abusing the notation we will also refer to the images of $f_{ext}$, $g_{ext}$
     They are computed as shown above: a disjoint union of the input interface of the left component of the composition with the input interface of the right component of the composition except for the nodes in the image of the outermost output interface of the left component is taken.
     Similarly for the output interface.
     In particular, $\{0,1,2,3\} \uplus (\{6,7,8,9,10\} \setminus \{6\}) = \{0,1,2,3,7,8,9,10\}$.
-    The conflict and child relations in the pushout are a disjoint union of the corresponding relations from pushout components.
-    Note that pushout for such composition always exists as the nodes that are being identified are unrelated: they are not in conflict with anything and the sets of their predecessors are empty.
+    % The conflict and child relations in the pushout are a disjoint union of the corresponding relations from pushout components.
+    \update{Note that pushout for such composition always exists as the interface in the middle is descrete (meaning nodes in it have no predecessors) and nodes in the images of the middle interface are at the outermost level as well.
+    Thus the span satisfies~\ref{cond:essential_for_pushout}.
+    }
 \end{remark}
 
 \begin{figure}
