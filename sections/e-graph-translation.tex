@@ -1,52 +1,52 @@
 % !TEX root = ../main.tex
 
 \section{E-Rewriting for E-Hypergraphs}
-
-The (convex) \textit{matching} of one e-hypergraph $L$ (\textit{e.g.}, the left-hand side of a rewrite rule) into another e-hypergraph $G$ was defined in the previous section as a monic morphism $L \to G$ (whose image is additionally convex, \update{consistent}). In other words, it corresponds to finding a subgraph isomorphic to $L$ within $G$ (subject to conditions respecting the hierarchical and conflict structures). 
-
-
-However, in general we will have to explode the e-hypergraph, by applying the structural rules for (horizontal, vertical) congruence first, in order to find such a match. In this section, we define the  e-matching (and subsequent e-rewriting) as the problem of finding matches (and applying rewrites) within an e-hypergraph \textit{without} first inducing duplication of subgraphs. We begin first with definitions, before proceeding to prove them correct with respect to the plain notion of matching (rewriting). 
-
-\begin{definition}[Projection]
-The set of projections of an e-hypergraph $G$ are \update{project each e-box}.    
-\end{definition}
-
-\begin{definition}[E-matching]
-We define the \textit{e-matching problem} as follows: given two e-hypergraphs \update{(with interfaces??)} $L$ and $G$, we say that a convex subgraph $G' \subseteq G$ is a \textit{e-match} for $L$ if there exists a projection of $G'$ which isomorphic to $L$.
-\end{definition}
-
-\update{What about refolding graph?}
-\begin{lemma}[Correctness of e-matching]
-$G' \subseteq G$ is an e-match for $L$ if and only if there is a sequence of structural rewrites $G \to^* H$ such that $L$ is a match in $H$.
-\end{lemma}
-\begin{proof}
-The implication
-
-The converse direction is trivial. 
-\end{proof}
-
-\begin{definition}[E-matching]
-Given an e-match $G' \subset G$ of $L$, 
-define its e-rewriting as the application of the DPO rewriting rule $G' \to G' + L$  to the match $L \to G$ induced by the ematching. \update{diagram? interfaces?}
-\end{definition}
-
-\begin{definition}[E-rewriting]
-
-Given a rewrite rule $L \to R$ and an e-match $G' \subset G$ of $L$ in $G$, define the \textit{e-rewriting} of $L \to R$ in $G$ to $H$, written $G \Rightarrow_{L \to R}^e H$, where $H$ is defined as the result of applying DPO-rewriting of the rewrite $G \to G+R$ to the match $L$ in $G$. \update{interfaces.}
-\end{definition}
-
-In order to state the correctness of e-rewriting, we first require the notion of \textit{maximal unfolding} of an e-hypergraph to a normal form. 
-\begin{definition}
-Given an e-hypergraph $G$, there exists a sequence of structural rewrites transforming it to the form $G_1 + \ldots + G_n$, where each $G_i$ is a plain hypergraph. This is called its \textit{sharing normal form}.
-\end{definition}
-\update{Above should be lemma then defn.}
-
-
-\begin{lemma}[Correctness of e-rewriting]
-Statement?
-\end{lemma}
-
-In the case of plain string diagrams represented as (mda-)hypergraphs, the problem of finding a matching of the left-hand side of a rewrite rule % is essentially the (induced??) sub-hypergraph isomorphism problem [up to interfaces, and convexity?]
-
-
-Informally, for every e-box $e = \phi_1 + \ldots + \phi_n$ appearing in a string diagram $\psi$ as $\psi\{\phi_1 + \ldots + \phi_n\}$ we can define the $i$th projection of $e$ in $\psi$ as $\pi^e_i = \phi\{\psi_i\}$. 
+%
+%The (convex) \textit{matching} of one e-hypergraph $L$ (\textit{e.g.}, the left-hand side of a rewrite rule) into another e-hypergraph $G$ was defined in the previous section as a monic morphism $L \to G$ (whose image is additionally convex, \update{consistent}). In other words, it corresponds to finding a subgraph isomorphic to $L$ within $G$ (subject to conditions respecting the hierarchical and conflict structures). 
+%
+%
+%However, in general we will have to explode the e-hypergraph, by applying the structural rules for (horizontal, vertical) congruence first, in order to find such a match. In this section, we define the  e-matching (and subsequent e-rewriting) as the problem of finding matches (and applying rewrites) within an e-hypergraph \textit{without} first inducing duplication of subgraphs. We begin first with definitions, before proceeding to prove them correct with respect to the plain notion of matching (rewriting). 
+%
+%\begin{definition}[Projection]
+%The set of projections of an e-hypergraph $G$ are \update{project each e-box}.    
+%\end{definition}
+%
+%\begin{definition}[E-matching]
+%We define the \textit{e-matching problem} as follows: given two e-hypergraphs \update{(with interfaces??)} $L$ and $G$, we say that a convex subgraph $G' \subseteq G$ is a \textit{e-match} for $L$ if there exists a projection of $G'$ which isomorphic to $L$.
+%\end{definition}
+%
+%\update{What about refolding graph?}
+%\begin{lemma}[Correctness of e-matching]
+%$G' \subseteq G$ is an e-match for $L$ if and only if there is a sequence of structural rewrites $G \to^* H$ such that $L$ is a match in $H$.
+%\end{lemma}
+%\begin{proof}
+%The implication
+%
+%The converse direction is trivial. 
+%\end{proof}
+%
+%\begin{definition}[E-matching]
+%Given an e-match $G' \subset G$ of $L$, 
+%define its e-rewriting as the application of the DPO rewriting rule $G' \to G' + L$  to the match $L \to G$ induced by the ematching. \update{diagram? interfaces?}
+%\end{definition}
+%
+%\begin{definition}[E-rewriting]
+%
+%Given a rewrite rule $L \to R$ and an e-match $G' \subset G$ of $L$ in $G$, define the \textit{e-rewriting} of $L \to R$ in $G$ to $H$, written $G \Rightarrow_{L \to R}^e H$, where $H$ is defined as the result of applying DPO-rewriting of the rewrite $G \to G+R$ to the match $L$ in $G$. \update{interfaces.}
+%\end{definition}
+%
+%In order to state the correctness of e-rewriting, we first require the notion of \textit{maximal unfolding} of an e-hypergraph to a normal form. 
+%\begin{definition}
+%Given an e-hypergraph $G$, there exists a sequence of structural rewrites transforming it to the form $G_1 + \ldots + G_n$, where each $G_i$ is a plain hypergraph. This is called its \textit{sharing normal form}.
+%\end{definition}
+%\update{Above should be lemma then defn.}
+%
+%
+%\begin{lemma}[Correctness of e-rewriting]
+%Statement?
+%\end{lemma}
+%
+%In the case of plain string diagrams represented as (mda-)hypergraphs, the problem of finding a matching of the left-hand side of a rewrite rule % is essentially the (induced??) sub-hypergraph isomorphism problem [up to interfaces, and convexity?]
+%
+%
+%Informally, for every e-box $e = \phi_1 + \ldots + \phi_n$ appearing in a string diagram $\psi$ as $\psi\{\phi_1 + \ldots + \phi_n\}$ we can define the $i$th projection of $e$ in $\psi$ as $\pi^e_i = \phi\{\psi_i\}$. 
