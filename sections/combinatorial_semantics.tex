@@ -186,38 +186,104 @@ This theorem essentially states a correspondence between morphisms in SMC (strin
 \]
 
 Pushout of two hypergraphs $X = \{V_{X}, E_{X}, s_{X}, t_{X}\}$ and $Y = \{V_{Y}, E_{Y}, s_{Y}, t_{Y}\}$ (we will omit labelling functions here since they are irrelevant) along $Z$ is computed in two steps.
-First, a coproduct of $X$ and $Y$ is taken which is $X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X} + s_{Y}, t_{X} + t_{Y} \}$.
-Then, consider a relation 
+First, a coproduct of $X$ and $Y$ is taken which is 
 \[
-    S = \{(x_i,y_j), (y_j, x_i) \in (X+Y) \times (X+Y)\; | \; \exists z \in Z \; . \; x_i = f(z) \text{ and } y_j = g(z) \text{where $x_i \in X$ and $y_j \in Y$ }\}
-% \cup \{(x,x) \in (X+Y) \times (X+Y) \text{ where $x \in X$}\} \cup \{(y,y) \in (X+Y) \times (X+Y) \text{ where $y \in Y$}\}$ 
+    X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X + Y}, t_{X+Y}\}
 \]
-and let relation $R$ be its reflexive and transitive closure. $R$ is then an equivalence relation since $S$ is symmetric.
+where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $\langle s'_{X}, s'_{Y} \rangle : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};i_{1,V}^{*}$ and $s'_{Y} = s_{Y};i_{2,V}^{*}$ where $i_1,i_2$ are corresponding coproduct injections, similarly for $t_{X+Y}$.
+Recall that each arrow in $\catname{Hyp_{\Sigma}}$ is a pair of arrows for edges and nodes and we will further use subscripts $V$ and $E$ when referring to these functions.
+Then, consider relations 
+\[
+    S_{V} = \{(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \; \exists z \in V_{Z} \; . \; x_i = f_{V};i_{1,V}(z) \text{ and } y_j = g_{V};i_{2,V}(z) \text{where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\}
+\]
+\[
+    S_{E} = \{(x_i,y_j) \in (E_{X} + E_{Y}) \times (E_{X} + E_{Y})\; | \; \exists z \in E_{Z} \; . \; x_i = f_{E};i_{1,E}(z) \text{ and } y_j = g_{E};i_{2,E}(z) \text{where $x_i \in E_{X}$ and $y_j \in E_{Y}$ }\}
+\]
+and let relations $R_{V}$ and $R_{E}$ be their reflexive symmetric and transitive closures respectively.
 
-A quotient of $X+Y$ by this relation denoted by 
+\begin{lemma}
+    $x R y$ implies that either $x = y$ or there exists a sequence $(a_1,\ldots,a_{n-1},{a_n})$ such that $x = a_1$ and $y = a_{n}$ such that $a_k S a_{k+1}$ or $a_{k + 1} S a_{k}$ for $k < n$.
+\end{lemma}
+
+A quotient of $X+Y$ by these relation is 
 \[
-    \sfrac{X+Y}{\sim R} = \{\sfrac{V_{X} + V_{Y}}{\sim R}, \sfrac{E_{X} + E_{Y}}{\sim R}, \sfrac{s_{X} + s_{Y}}{\sim R}, \sfrac{t_{X} + t_{Y}}{\sim R}\}
+    \sfrac{X+Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X+Y}}{\sim (R_{V},R_{E})}\}
 \]
-where $\sfrac{s_{X} + s_{Y}}{\sim R} : \sfrac{E_{X} + E_{Y}}{\sim R} \to \sfrac{V_{X} + V_{Y}}{\sim R}$ now maps equivalence classes to equivalence classes.
-Note that if $s : e_1 \mapsto \{v_1,v_2\}$ and $s : e_2 \mapsto \{v_3,v_4\}$  and $e_1 \sim e_2$ then $\sfrac{s}{\sim R} : [e_1,e_2] \to \{[v_1,v_3],[v_2,v_4]\}$ because $f$ and $g$ are homomorphisms.
-Then, $\sfrac{i_1}{\sim R}$ maps $y \in Y$ to its equivalence class and likewise for $\sfrac{i_2}{\sim R}$.
-we will denote the equivalence classes in $\sfrac{X + Y}{\sim R}$ as $[x]$ and $[y]$ depending on their pre-image being either in $X$ or $Y$.
-Before we procced, we need to show that $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ are homomorphisms.
-Let $e_{x}$ be an edge in $X$ and $v_x$ is its source. We need to check that $\sfrac{i_1}{\sim R}(v_x) = (\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x)$.
-$\sfrac{i_1}{\sim R}(v_x) = [v_x]$ and $(\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x) = \sfrac{s_{X}}{\sim R}([e_x]) = [v_x]$ and hence $\sfrac{i_1}{\sim R}$ is a homomorphism, simialrly $\sfrac{i_2}{\sim R}$ is.
-Now, the square obviously commutes.
-To show that $\sfrac{X + Y}{\sim R}$ is a pushout we need to argue that for each $Q$ and morphisms $j_1$ and $j_2$ such that the above square commutes there is a unique $u$ such that $j_1 = \sfrac{i_1}{\sim R} ; u$ and $j_2 = \sfrac{i_2}{\sim R} ; u$.
-We will define such $u$ as $u([x]) = j_1(x)$ and $u([y]) = j_2(y)$ and claim that is it a well-defined function by showing that if $t_1 = t_2$ then $u(t_1) = u(t_2)$.
+where $\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})} : \sfrac{E_{X} + E_{Y}}{\sim R_{E}} \to (\sfrac{V_{X} + V_{Y}}{\sim R_{V}})^{*}$.
+In particular, there is an obvious surjective function $s_1 : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim R_{V}})$ and $s_1^{*}$ is its extension to sequences. 
+Let $s_2 : E_{X} + E_{Y} \to (\sfrac{V_{X} + V_{Y}}{\sim R_{V}})^{*} = s_{X+Y};s_1^{*}$ and then $\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}([e]) = s_{X+Y};s_1^{*}(e)$ where $[e]$ denotes the equivalence class of $e$ in $E_{X} + E_{Y}$.
+We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has in image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
+We need to check that if $t_1 = t_2$ then $\sfrac{s_{X+Y}}{\sim (R_{V,E})}(t_1) = \sfrac{s_{X+Y}}{\sim (R_{V,E})}(t_2)$. 
 There are three options
-\begin{itemize}
-    \item $t_1 = [x]$ and $t_2 = [x]$, where $[x]$ is a singleton equivalence class.
-          The property then holds on the nose.
-    \item $t_1 = [y]$ and $t_2 = [y]$, where $[y]$ is a singleton equivalence class.
-    The property then holds on the nose.
-    \item $t_1 = [x]$ and $t_2 = [y]$ and there exists at least one $z$ in $Z$ such that $x = f(z)$ and $y = g(z)$.
-          By applying $j_1$ to the first we get $j_1(f(z)) = j_1(x)$ and similarly for $j_2$: $j_2(g(z)) = j_2(y)$ and $j_1(x) = j_2(y)$ by commutativity.
-          Hence, $u([x]) = u([y])$. 
-\end{itemize}
+\begin{enumerate}
+    \item $t_1 = [e_{y}^{1}]$ and $t_2 = [e_{y}^{2}]$
+    \item $t_1 = [e_{x}^{1}]$ and $t_2 = [e_{x}^{2}]$
+    \item $t_1 = [e_{x}]$ and $t_2 = [e_{y}]$ 
+\end{enumerate}
+We will prove the last point (all the others are analogous).
+\begin{proof}
+    According to the lemma above $[e_{x}] = [e_{y}]$ gives us two options.
+    \begin{enumerate}
+        \item Either $e_{x} = e_{y}$
+        \item or there is a sequence $w = (a_1, \ldots, a_{n})$.
+    \end{enumerate}
+    In the first case the equality holds on the nose.
+    We then prove the second case by induction on the length of $w$.
+    \begin{itemize}
+        \item In the case $|w| = 2$, $e_{x} S e_{y}$ which means that there exists $z$ in $E_{Z}$ such that $f_{E};i_{1,E}(z) = e_{x}$ and $g_{E};i_{2,E}(z) = e_{y}$.
+              Recall that because $f$ and $g$ are homomorphisms, the following equalities hold
+              \[
+                s_{Z};f_{V}^{*};i_{1,V}^{*}(z) = f_{E};i_{1,E};s_{X+Y}(z) = s_{X+Y}(e_{x})
+              \]
+              \[
+                s_{Z};g_{V}^{*};i_{2,V}^{*}(z) = g_{E};i_{2,E};s_{X+Y}(z) = s_{X+Y}(e_{y})
+              \]
+              Then,
+              \[
+                \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}([e_{x}]) = s_{X+Y};s_{1}^{*}(e_{x}) = s_{Z};f_{V}^{*};i_{1,V}^{*};s_{1}^{*}(z)
+              \]
+              and
+              \[
+                \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}([e_{y}]) = s_{X+Y};s_{1}^{*}(e_{y}) = s_{Z};g_{V}^{*};i_{2,V}^{*};s_{1}^{*}(z)
+              \]
+              Then, by noting that $f_{V};i_{1,V}(z) = g_{V};i_{2,V}(z)$ for all $z$ in $V_{Z}$ (because $\sfrac{V_{X} + V_{Y}}{\sim R_{V}}$ is so defined) we have $s_{X+Y};s_1^{*}(e_{x}) = s_{X+Y};s_2^{*}(e_{y})$.
+        \item Suppose if $e_{x} S e_{y}$ by a chain of length $n$ or less then $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(e_{y})$.
+        \item Now suppose $e_{x} S e_{y}$ by a chain $w = (a_1, \ldots, a_{n+1})$ and a subchain $(a_1, \ldots, a_{n})$ satisfies the inductive hypothesis and hence $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(a_{n})$.
+              Note that $S_{E}, S_{V}$ relate only elements with the pre-image in $E_{X}$ (respectively, $V_{X}$) with elements with the pre-image in $E_{Y}$ (respectively, $V_{Y}$). 
+              Elements with the pre-image in the same set are not related.
+              Then we have $a_n S a_{n+1} = e_{y}$ and need to show that $s_{X+Y};s_1^{*}(a_{n+1}) = s_{X+Y};s_{1}^{*}(e_{y})$.
+              This follows by exactly the same argument as the base case as $a_{n+1}$ is necessarily in $E_{X}$.
+              And we finally have $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(a_{n+1}) = s_{X+Y};s_{1}^{*}(e_{y})$.
+    \end{itemize}
+    \update{Looks fine?}
+\end{proof}
+
+Next $\sfrac{i_{1,V}}{\sim R_{V}} : V_{X} \to \sfrac{V_{X} + V_{Y}}{\sim R_{V}} = i_{1,V};s'$ where $s' : V_{X}+V_{Y} \to \sfrac{V_{X} + V_{Y}}{\sim R_{V}}$.
+and 
+$\sfrac{i_{1,E}}{\sim R_{E}} : E_{X} \to \sfrac{E_{X} + E_{Y}}{\sim R_{E}} = i_{1,E};s'$, similarly for $\sfrac{i_{2,E}}{\sim R_{E}}$ and $\sfrac{i_{2,V}}{\sim R_{V}}$.
+We need to show
+\begin{enumerate}
+    \item $s_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = \sfrac{i_{1,E}}{\sim R_{E}};\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(e)$
+    \item $t_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = \sfrac{i_{1,E}}{\sim R_{E}};\sfrac{t_{X+Y}}{\sim (R_{V},R_{E})}(e)$
+\end{enumerate}
+and likewise for $i_{2}$.
+Let's check the first one.
+$s_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = s_{X};i_{1,V}^{*};s'^{*}(e)$ which is a homomorphism because $i_{1,V}$ and \update{$s'$ are}.
+
+% Note that if $s : e_1 \mapsto \{v_1,v_2\}$ and $s : e_2 \mapsto \{v_3,v_4\}$  and $e_1 \sim e_2$ then $\sfrac{s}{\sim R} : [e_1,e_2] \to \{[v_1,v_3],[v_2,v_4]\}$ because $f$ and $g$ are homomorphisms.
+% Then, $\sfrac{i_1}{\sim R}$ maps $y \in Y$ to its equivalence class and likewise for $\sfrac{i_2}{\sim R}$.
+% we will denote the equivalence classes in $\sfrac{X + Y}{\sim R}$ as $[x]$ and $[y]$ depending on their pre-image being either in $X$ or $Y$.
+% Before we procced, we need to show that $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ are homomorphisms.
+% Let $e_{x}$ be an edge in $X$ and $v_x$ is its source. We need to check that $\sfrac{i_1}{\sim R}(v_x) = (\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x)$.
+% $\sfrac{i_1}{\sim R}(v_x) = [v_x]$ and $(\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x) = \sfrac{s_{X}}{\sim R}([e_x]) = [v_x]$ and hence $\sfrac{i_1}{\sim R}$ is a homomorphism, simialrly $\sfrac{i_2}{\sim R}$ is.
+Now, the square obviously commutes.
+To show that $\sfrac{X + Y}{\sim (R_{V},R_{E})}$ is a pushout we need to argue that for each $Q$ and morphisms $j_1 = (j_{1,V}, j_{1,E})$ and $j_2 = (j_{2,V}, j_{2,E})$ such that the above square commutes there is a unique $u = (u_{V}, u_{E})$ such that $j_1 = \sfrac{i_{1}}{\sim (R_{V},R_{E})} ; u$ and $j_2 = \sfrac{i_2}{\sim (R_{V},R_{E})} ; u$.
+We will define such $u$ as $u_{E}([e_{x}]) = j_{1,E}(e_{x})$ and $u_{E}([e_{y}]) = j_{2,E}(e_y)$ (similarly for $u_{V}$) and claim that it is a well-defined function by showing that if $t_1 = t_2$ then $u_{E}(t_1) = u_{E}(t_2)$.
+There are three options analogoues to the proof above, so we will show the base case for $t_1 = [e_{x}]$ and $t_2 = [e_{y}]$.
+$t_1 = [e_x]$ and $t_2 = [e_y]$ and $t_1 = t_2$ implies that there exists at least one $z$ in $E_{Z}$ such that $e_{x} = f_{E}(z)$ and $[e_{x}] = \sfrac{i_{1,V}}{\sim R_{V}}(e_x)$, and $e_y = g_{E}(z)$ $[e_{y}] = \sfrac{i_{2,V}}{\sim R_{V}}(e_y)$.
+By applying $j_{1,E}$ to the first we get $j_{1,E};f_{E}(z) = j_{1,E}(e_x)$ and similarly for $j_{2,E}$: $j_{2,E};g_{E}(z) = j_{2,E}(e_y)$ and $j_{1,E}(e_{x}) = j_{2,E}(e_{y})$ by commutativity.
+Hence, $u_{E}([e_x]) = u_{E}([e_y])$.
+\update{Above $e_x$ and $e_y$ are different from $e_x$ and $e_y$ from the first proof. This is probablty not good.}
 
 Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.
 Finally, $u$ is unique.
@@ -474,8 +540,9 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     \]
     where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$.
     \[
-    \sfrac{(<_{c,X} + <_{c,Y})}{\sim R} \subseteq \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(E_{X} + E_{Y})}{\sim R} \to \sfrac{(E_{X} + E_{Y})}{\sim R}
+    \sfrac{(<_{c,X+Y})}{\sim (R_{V},R_{E})} \subseteq \sfrac{(V_{X} + V_{Y})}{\sim R_{V}} + \sfrac{(E_{X} + E_{Y})}{\sim R_{E}} \times \sfrac{(E_{X} + E_{Y})}{\sim R_{E}}
     \]
+    \update{We shall probably first define the quotient of the immediate parent because it is essentially a function and it will follow the same argument as the source function}
     \question{Below $e$ and $v$ do not necessarily mean edges and nodes, $v$ can be an edge as well.}
     \question{I also kind of intuitively inventing the quotient of a relation, is there any accepted notion for this?}
     and, whenever $e_{X} <_{c,X}^{\mu} v_{X}$ and $e_{Y} <_{c,Y}^{\mu} v_{Y}$ and $v_{x} R v_{y}$ then $e_{X} R e_{Y}$.
@@ -608,12 +675,11 @@ First, $A +_{f_{ext};f, g_{ext};g} B$ is computed which is a pushout below
 Then, new feet for $A +_{f_{ext};f,g_{ext};g} B$ are computed as below
 
 \[
-X_{ext} \xrightarrow{f_{ext}} X \uplus (Y' \setminus Y_{ext}) \xrightarrow{h} A +_{f_{ext};f,g_{ext};g} B \xleftarrow{k} Z \uplus (Y \setminus Y_{ext}) \xleftarrow{g_{ext}} Z_{ext}
+X_{ext} \xrightarrow{f_{ext};i_1} X \uplus (Y' \setminus Y_{ext}) \xrightarrow{h} A +_{f_{ext};f,g_{ext};g} B \xleftarrow{k} Z \uplus (Y \setminus Y_{ext}) \xleftarrow{g_{ext};i_1} Z_{ext}
 \]
-
-since $X,Y,Z,Y', Y_{ext}$ are all discrete, $\uplus$ and $\setminus$ are standard set operations.
+where $i_1$ is a coproduct injection.
+Since $X,Y,Z,Y', Y_{ext}$ are all discrete, $\uplus$ and $\setminus$ are standard set operations.
 $h = a;p_1 + g|_{Y' \setminus Y_{ext}};p_2$, $k = b;p_2 + f|_{Y \setminus Y_{ext}};p_1$.
-\question{Is this a standard syntax for a narrowed function?}
 
 % \[
 % \begin{tikzcd}
@@ -623,10 +689,11 @@ $h = a;p_1 + g|_{Y' \setminus Y_{ext}};p_2$, $k = b;p_2 + f|_{Y \setminus Y_{ext
 % \]
 
 % and then the disjoint union is just a coproduct. 
-Defining cospans up to isomorphism, associativity of coproducts and pushouts, and the presence of an id-cospan turns this construction into a valid category.
+Defining cospans up to isomorphism, associativity of coproducts and pushouts, and the presence of an id-cospan turns this construction into a proper category.
 
 Similarly to~\ref{def:cspd} this category has a symmetric monoidal product given by a coproduct in $\catname{EHyp_{\Sigma}}$ which makes it into an SMC.
-More precisely, below are cospans for tensor product and symmetry. Tensor unit is given by the unit in $\catname{EHyp_{\Sigma}}$.
+More precisely, below are cospans for tensor product and symmetry.
+Tensor unit is given by the initial object in $\catname{EHyp_{\Sigma}}$.
 
 
 % https://q.uiver.app/#q=WzAsMTcsWzAsMCwiZXh0KFgpIl0sWzEsMCwiWCJdLFsyLDAsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzAsMiwiZXh0KFgnKSJdLFsxLDIsIlgnIl0sWzIsMiwiQiJdLFszLDIsIlknIl0sWzQsMiwiZXh0KFknKSJdLFsyLDEsIlxcb3RpbWVzIl0sWzUsMSwiOj0iXSxbNiwxLCJleHQoWCkrZXh0KFgnKSJdLFs4LDEsIlgrWCciXSxbMTAsMSwiQStCIl0sWzEyLDEsIlkrWSciXSxbMTQsMSwiZXh0KFkpK2V4dChZJykiXSxbMCwxLCJmX3tleHR9Il0sWzQsMywiZ197ZXh0fSIsMl0sWzMsMiwiZyIsMl0sWzEsMiwiZiJdLFs1LDYsImYnX3tleHR9Il0sWzYsNywiZiciXSxbOCw3LCJnJyIsMl0sWzksOCwiZydfe2V4dH0iLDJdLFsxMiwxMywiZl97ZXh0fStmJ197ZXh0fSJdLFsxMywxNCwiZitmJyJdLFsxNSwxNCwiZytnJyIsMl0sWzE2LDE1LCJnX3tleHR9ICsgZydfe2V4dH0iLDJdXQ==
@@ -634,8 +701,8 @@ More precisely, below are cospans for tensor product and symmetry. Tensor unit i
 \adjustbox{scale=0.6, center}{
 \begin{tikzcd}
 	{X_{ext}} & X & A & Y & {Y_{ext}} \\
-	&& \otimes &&& {:=} & {X_{ext}+ext(X')} && {X+X'} && {A+B} && {Y+Y'} && {Y_{ext}+Y'_{ext}} \\
-	{ext(X')} & {X'} & B & {Y'} & {Y'_{ext}}
+	&& \otimes &&& {:=} & {X_{ext}+X'_{ext}} && {X+X'} && {A+B} && {Y+Y'} && {Y_{ext}+Y'_{ext}} \\
+	{X'_{ext}} & {X'} & B & {Y'} & {Y'_{ext}}
 	\arrow["{f_{ext}}", from=1-1, to=1-2]
 	\arrow["{g_{ext}}"', from=1-5, to=1-4]
 	\arrow["g"', from=1-4, to=1-3]
@@ -709,7 +776,7 @@ By abusing the notation we will also refer to the images of $f_{ext}$, $g_{ext}$
     Consider an example in Figure~\ref{fig:e-hyp_composition_example} below.
     The pushout is depicted in Figure~\ref{fig:e-hyp_composition_example_2}.
     New interfaces are shown in Figure~\ref{fig:e-hyp_composition_example_3}.
-    They are computed as shown above: a disjoint union of the input interface of the left component of the composition with the input interface of the right component of the composition except for the nodes in the image of the outermost output interface of the left component is taken.
+    They are computed as shown: a disjoint union of the input interface of the left component of the composition with the input interface of the right component of the composition except for the nodes in the image of the outermost output interface of the left component is taken.
     Similarly for the output interface.
     In particular, $\{0,1,2,3\} \uplus (\{6,7,8,9,10\} \setminus \{6\}) = \{0,1,2,3,7,8,9,10\}$.
     % The conflict and child relations in the pushout are a disjoint union of the corresponding relations from pushout components.
