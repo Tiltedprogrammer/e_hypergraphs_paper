@@ -544,18 +544,20 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     The pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
     First, a coproduct of $X+Y$ is computed which is 
     \[
-        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X} + s_{Y}, t_{X} + t_{Y}, \#_{X} + \#_{Y}, <_{c,X} + <_{c,Y} \}
+        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \#_{X+Y}, <_{c,X+Y} \}
     \] 
-    once again omitting the labelling function.
-    And consider a relation $S = \{(x,y), (y,x) \in (X+Y) \times (X+Y) \; | \;\exists z \in Z \; . \; f(z) = x \text{ and } g(z) = y \}$ and let $R$ be its reflexive and transitive closure.
-    We then quotient $X + Y$ by $R$ and claim that it is a pushout.
+    once again omitting the labelling function and where source and target functions are as before.
+    And consider the same relations $S_{V},S_{E}$ and $R_{V}, R_{E}$.
+    We then quotient $X + Y$ by $R_{V},R_{E}$ and claim that it is a pushout.
     \[
-        \sfrac{X + Y}{\sim R} = \{\sfrac{V_{X} + V_{Y}}{\sim R}, \sfrac{E_{X} + E_{Y}}{\sim R}, \sfrac{s_{X} + s_{Y}}{\sim R}, \sfrac{t_{X} + t_{Y}}{\sim R}, \sfrac{\#_{X} + \#_{Y}}{\sim R}, \sfrac{<_{c,X} + <_{c,Y}}{\sim R} \}    
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X,Y}}{\sim ()}, \sfrac{\#_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{<_{c,X + Y}}{\sim (R_{V},R_{E})} \}    
     \]
-    where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$.
+    where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$ and we will further omit writing the relations explicitly.
     \[
-    \sfrac{(<_{c,X+Y})}{\sim (R_{V},R_{E})} \subseteq \sfrac{(V_{X} + V_{Y})}{\sim R_{V}} + \sfrac{(E_{X} + E_{Y})}{\sim R_{E}} \times \sfrac{(E_{X} + E_{Y})}{\sim R_{E}}
+    \sfrac{(<_{c,X+Y})}{\sim} \subseteq \sfrac{(V_{X} + V_{Y})}{\sim R_{V}} + \sfrac{(E_{X} + E_{Y})}{\sim R_{E}} \times \sfrac{(E_{X} + E_{Y})}{\sim R_{E}}
     \]
+    such that for each $(x_1, x_2) \in <_{c, X+Y}$ $\sfrac{<_{c,X+Y}}{\sim}$ contains $([x_1],[x_2])$.
+    
     \update{We shall probably first define the quotient of the immediate parent because it is essentially a function and it will follow the same argument as the source function}
     \question{Below $e$ and $v$ do not necessarily mean edges and nodes, $v$ can be an edge as well.}
     \question{I also kind of intuitively inventing the quotient of a relation, is there any accepted notion for this?}
