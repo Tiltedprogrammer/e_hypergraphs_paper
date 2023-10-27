@@ -202,35 +202,40 @@ Then, consider relations
 and let relations $R_{V}$ and $R_{E}$ be their reflexive symmetric and transitive closures respectively.
 
 \begin{lemma}
-    $x R y$ implies that either $x = y$ or there exists a sequence $(a_1,\ldots,a_{n-1},{a_n})$ such that $x = a_1$ and $y = a_{n}$ such that $a_k S a_{k+1}$ or $a_{k + 1} S a_{k}$ for $k < n$.
+    $x R y$ if and only if either $x = y$ or there exists a sequence $(a_1,\ldots,a_{n-1},{a_n})$ such that $x = a_1$ and $y = a_{n}$ such that $a_k S a_{k+1}$ or $a_{k + 1} S a_{k}$ for $k < n$.
 \end{lemma}
 
 A quotient of $X+Y$ by these relation is 
 \[
     \sfrac{X+Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X+Y}}{\sim (R_{V},R_{E})}\}
 \]
-where $\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})} : \sfrac{E_{X} + E_{Y}}{\sim R_{E}} \to (\sfrac{V_{X} + V_{Y}}{\sim R_{V}})^{*}$.
-In particular, there is an obvious surjective function $s_1 : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim R_{V}})$ and $s_1^{*}$ is its extension to sequences. 
-Let $s_2 : E_{X} + E_{Y} \to (\sfrac{V_{X} + V_{Y}}{\sim R_{V}})^{*} = s_{X+Y};s_1^{*}$ and then $\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}([e]) = s_{X+Y};s_1^{*}(e)$ where $[e]$ denotes the equivalence class of $e$ in $E_{X} + E_{Y}$.
+We will then refer to $\sim (R_{V},R_{E})$ just as $\sim$, i.e. writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and the exact relation will be clear from the context.
+We have 
+\[
+    \sfrac{s_{X+Y}}{\sim} : \sfrac{E_{X} + E_{Y}}{\sim} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*}
+\]
+In particular, there is an obvious surjective function $[-]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[-]_{V}^{*}$ is its extension to sequences. 
+Let $s_2 : E_{X} + E_{Y} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*} = s_{X+Y};[-]^{*}$ and then $\sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[-]^{*}(e) = [s_{X+Y}(e)]^{*}$.
+There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
 We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has in image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
-We need to check that if $t_1 = t_2$ then $\sfrac{s_{X+Y}}{\sim (R_{V,E})}(t_1) = \sfrac{s_{X+Y}}{\sim (R_{V,E})}(t_2)$. 
+We need to check that if $t_1 \sim t_2$ then $\sfrac{s_{X+Y}}{\sim}([t_1]) = \sfrac{s_{X+Y}}{\sim}([t_2])$. 
 There are three options
 \begin{enumerate}
-    \item $t_1 = [e_{y}^{1}]$ and $t_2 = [e_{y}^{2}]$
-    \item $t_1 = [e_{x}^{1}]$ and $t_2 = [e_{x}^{2}]$
-    \item $t_1 = [e_{x}]$ and $t_2 = [e_{y}]$ 
+    \item $t_1 = e_{y}^{1}$ and $t_2 = e_{y}^{2}$
+    \item $t_1 = e_{x}^{1}$ and $t_2 = e_{x}^{2}$
+    \item $t_1 = e_{x}$ and $t_2 = e_{y}$ 
 \end{enumerate}
 We will prove the last point (all the others are analogous).
 \begin{proof}
-    According to the lemma above $[e_{x}] = [e_{y}]$ gives us two options.
+    According to the lemma above $e_{x} \sim e_{y}$ gives us two options.
     \begin{enumerate}
         \item Either $e_{x} = e_{y}$
-        \item or there is a sequence $w = (a_1, \ldots, a_{n})$.
+        \item or there is a sequence $w = (a_1, \ldots, a_{n})$ such that $a_1 = e_{x}$ and $a_{n} = e_{y}$.
     \end{enumerate}
     In the first case the equality holds on the nose.
     We then prove the second case by induction on the length of $w$.
     \begin{itemize}
-        \item In the case $|w| = 2$, $e_{x} S e_{y}$ which means that there exists $z$ in $E_{Z}$ such that $f_{E};i_{1,E}(z) = e_{x}$ and $g_{E};i_{2,E}(z) = e_{y}$.
+        \item In the case $|w| = 2$, $e_{x} S e_{y}$ (or $e_{y} S e_{x}$) which means that there exists $z$ in $E_{Z}$ such that $f_{E};i_{1,E}(z) = e_{x}$ and $g_{E};i_{2,E}(z) = e_{y}$.
               Recall that because $f$ and $g$ are homomorphisms, the following equalities hold
               \[
                 s_{Z};f_{V}^{*};i_{1,V}^{*}(z) = f_{E};i_{1,E};s_{X+Y}(z) = s_{X+Y}(e_{x})
@@ -240,38 +245,44 @@ We will prove the last point (all the others are analogous).
               \]
               Then,
               \[
-                \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}([e_{x}]) = s_{X+Y};s_{1}^{*}(e_{x}) = s_{Z};f_{V}^{*};i_{1,V}^{*};s_{1}^{*}(z)
+                \sfrac{s_{X+Y}}{\sim}([e_{x}]) = [s_{X+Y}(e_{x})]^{*} = [s_{Z};f_{V}^{*};i_{1,V}^{*}(z)]^{*}
               \]
               and
               \[
-                \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}([e_{y}]) = s_{X+Y};s_{1}^{*}(e_{y}) = s_{Z};g_{V}^{*};i_{2,V}^{*};s_{1}^{*}(z)
+                \sfrac{s_{X+Y}}{\sim}([e_{y}]) = [s_{X+Y}(e_{y})]^{*} = [s_{Z};g_{V}^{*};i_{2,V}^{*}(z)]^{*}
               \]
-              Then, by noting that $f_{V};i_{1,V}(z) = g_{V};i_{2,V}(z)$ for all $z$ in $V_{Z}$ (because $\sfrac{V_{X} + V_{Y}}{\sim R_{V}}$ is so defined) we have $s_{X+Y};s_1^{*}(e_{x}) = s_{X+Y};s_2^{*}(e_{y})$.
-        \item Suppose if $e_{x} S e_{y}$ by a chain of length $n$ or less then $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(e_{y})$.
+              Then, by noting that $f_{V};i_{1,V}(z) = g_{V};i_{2,V}(z)$ for all $z$ in $V_{Z}$ (because $\sfrac{V_{X} + V_{Y}}{\sim}$ is so defined) we have $[s_{X+Y};(e_{x})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
+        \item Suppose if $e_{x} S e_{y}$ by a chain of length $n$ or less then $[s_{X+Y}(e_{x})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
         \item Now suppose $e_{x} S e_{y}$ by a chain $w = (a_1, \ldots, a_{n+1})$ and a subchain $(a_1, \ldots, a_{n})$ satisfies the inductive hypothesis and hence $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(a_{n})$.
               Note that $S_{E}, S_{V}$ relate only elements with the pre-image in $E_{X}$ (respectively, $V_{X}$) with elements with the pre-image in $E_{Y}$ (respectively, $V_{Y}$). 
               Elements with the pre-image in the same set are not related.
-              Then we have $a_n S a_{n+1} = e_{y}$ and need to show that $s_{X+Y};s_1^{*}(a_{n+1}) = s_{X+Y};s_{1}^{*}(e_{y})$.
+              Then we have $a_n S a_{n+1} = e_{y}$ and need to show that $[s_{X+Y}(a_{n+1})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
               This follows by exactly the same argument as the base case as $a_{n+1}$ is necessarily in $E_{X}$.
-              And we finally have $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(a_{n+1}) = s_{X+Y};s_{1}^{*}(e_{y})$.
+              And we finally have $[s_{X+Y}(e_{x})]^{*} = [s_{X+Y}(a_{n+1})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
     \end{itemize}
     \update{Looks fine?}
 \end{proof}
 
-Next $\sfrac{i_{1,V}}{\sim R_{V}} : V_{X} \to \sfrac{V_{X} + V_{Y}}{\sim R_{V}} = i_{1,V};s_1$.
-and 
-$\sfrac{i_{1,E}}{\sim R_{E}} : E_{X} \to \sfrac{E_{X} + E_{Y}}{\sim R_{E}} = i_{1,E};s_{E}'$, similarly for $\sfrac{i_{2,E}}{\sim R_{E}}$ and $\sfrac{i_{2,V}}{\sim R_{V}}$.
+Next 
+\[
+    \sfrac{i_{1,V}}{\sim} : V_{X} \to \sfrac{V_{X} + V_{Y}}{\sim} = [i_{1,V}]
+\]
+and
+\[
+\sfrac{i_{1,E}}{\sim} : E_{X} \to \sfrac{E_{X} + E_{Y}}{\sim} = [i_{1,E}]
+\]
+similarly for $\sfrac{i_{2,E}}{\sim}$ and $\sfrac{i_{2,V}}{\sim}$
 We need to show
 \begin{enumerate}
-    \item $s_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = \sfrac{i_{1,E}}{\sim R_{E}};\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(e)$
-    \item $t_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = \sfrac{i_{1,E}}{\sim R_{E}};\sfrac{t_{X+Y}}{\sim (R_{V},R_{E})}(e)$
+    \item $s_{X};(\sfrac{i_{1,V}}{\sim})^{*}(e) = \sfrac{i_{1,E}}{\sim};\sfrac{s_{X+Y}}{\sim}(e)$
+    \item $t_{X};(\sfrac{i_{1,V}}{\sim})^{*}(e) = \sfrac{i_{1,E}}{\sim};\sfrac{t_{X+Y}}{\sim}(e)$
 \end{enumerate}
 and likewise for $i_{2}$.
-Let's check the first one for which we first need to check that $(s'_{E},s_{1})$ is a homomorphisms, i.e.
+Let's check the first one for which we first need to check that $([-]_{E},[-]_{V})$ is a homomorphisms, i.e.
 \[
-s_{X+Y};s_1^{*}(e) = s'_{E};\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(e) = \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(s'_{E}(e)) = s_{X+Y};s_1^{*}(e)
+[s_{X+Y}(e)]^{*} = \sfrac{s_{X+Y}}{\sim}([e]) = [s_{X+Y}(e)]^{*}
 \]
-hence, $(\sfrac{i_{1,V}}{\sim R_{V}}, \sfrac{i_{1,E}}{\sim R_{V}})$ is a homomorphism because $(i_{1,V},i_{1,E})$ and $(s_1,s'_{E})$ are.
+hence, $(\sfrac{i_{1,V}}{\sim}, \sfrac{i_{1,E}}{\sim})$ is a homomorphism because $(i_{1,V},i_{1,E})$ and $([-]_{E},[-]_{V})$ are.
 
 % Note that if $s : e_1 \mapsto \{v_1,v_2\}$ and $s : e_2 \mapsto \{v_3,v_4\}$  and $e_1 \sim e_2$ then $\sfrac{s}{\sim R} : [e_1,e_2] \to \{[v_1,v_3],[v_2,v_4]\}$ because $f$ and $g$ are homomorphisms.
 % Then, $\sfrac{i_1}{\sim R}$ maps $y \in Y$ to its equivalence class and likewise for $\sfrac{i_2}{\sim R}$.
@@ -280,18 +291,18 @@ hence, $(\sfrac{i_{1,V}}{\sim R_{V}}, \sfrac{i_{1,E}}{\sim R_{V}})$ is a homomor
 % Let $e_{x}$ be an edge in $X$ and $v_x$ is its source. We need to check that $\sfrac{i_1}{\sim R}(v_x) = (\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x)$.
 % $\sfrac{i_1}{\sim R}(v_x) = [v_x]$ and $(\sfrac{i_1}{\sim R};\sfrac{s_{X}}{\sim R})(e_x) = \sfrac{s_{X}}{\sim R}([e_x]) = [v_x]$ and hence $\sfrac{i_1}{\sim R}$ is a homomorphism, simialrly $\sfrac{i_2}{\sim R}$ is.
 Now, the square obviously commutes.
-To show that $\sfrac{X + Y}{\sim (R_{V},R_{E})}$ is a pushout we need to argue that for each $Q$ and morphisms $j_1 = (j_{1,V}, j_{1,E})$ and $j_2 = (j_{2,V}, j_{2,E})$ such that the above square commutes there is a unique $u = (u_{V}, u_{E})$ such that $j_1 = \sfrac{i_{1}}{\sim (R_{V},R_{E})} ; u$ and $j_2 = \sfrac{i_2}{\sim (R_{V},R_{E})} ; u$.
-We will define such $u$ as $u_{E}([e_{x}]) = j_{1,E}(e_{x})$ and $u_{E}([e_{y}]) = j_{2,E}(e_y)$ (similarly for $u_{V}$) and claim that it is a well-defined function by showing that if $t_1 = t_2$ then $u_{E}(t_1) = u_{E}(t_2)$.
-There are three options analogoues to the proof above, so we will show the base case for $t_1 = [e_{x}]$ and $t_2 = [e_{y}]$.
-$t_1 = [e_x]$ and $t_2 = [e_y]$ and $t_1 = t_2$ implies that there exists at least one $z$ in $E_{Z}$ such that $e_{x} = f_{E}(z)$ and $[e_{x}] = \sfrac{i_{1,V}}{\sim R_{V}}(e_x)$, and $e_y = g_{E}(z)$ $[e_{y}] = \sfrac{i_{2,V}}{\sim R_{V}}(e_y)$.
-By applying $j_{1,E}$ to the first we get $j_{1,E};f_{E}(z) = j_{1,E}(e_x)$ and similarly for $j_{2,E}$: $j_{2,E};g_{E}(z) = j_{2,E}(e_y)$ and $j_{1,E}(e_{x}) = j_{2,E}(e_{y})$ by commutativity.
-Hence, $u_{E}([e_x]) = u_{E}([e_y])$.
-\update{Above $e_x$ and $e_y$ are different from $e_x$ and $e_y$ from the first proof. This is probablty not good.}
+To show that $\sfrac{X + Y}{\sim}$ is a pushout we need to argue that for each $Q$ and morphisms $j_1 = (j_{1,V}, j_{1,E})$ and $j_2 = (j_{2,V}, j_{2,E})$ such that the above square commutes there is a unique $u = (u_{V}, u_{E})$ such that $j_1 = \sfrac{i_{1}}{\sim} ; u$ and $j_2 = \sfrac{i_2}{\sim} ; u$.
+We will define such $u$ as $u_{E}([i_{1,E}(e_{x})]) = j_{1,E}(e_{x})$ and $u_{E}([i_{2,E}(e_{y})]) = j_{2,E}(e_y)$ (similarly for $u_{V}$) and claim that it is a well-defined function by showing that if $t_1 \sim t_2$ then $u_{E}(t_1) = u_{E}(t_2)$.
+There are three options analogoues to the proof above, so we will show the base case for $t_1 = i_{1,E}(e_{x})$ and $t_2 = i_{2,E}(e_{y})$.
+$t_1 \sim t_2$ implies that there exists at least one $z$ in $E_{Z}$ such that $i_{1,E}(e_{x}) = f_{E};i_{1,E}(z)$ (or $e_{x} = f_{E}(z)$) and $[i_{1,E}(e_{x})] = \sfrac{i_{1,V}}{\sim}(e_x)$, and $e_y = g_{E}(z)$ $[in_{2,E}(e_{y})] = \sfrac{i_{2,V}}{\sim}(e_y)$.
+By applying $j_{1,E}$ to the first we get $j_{1,E}(f_{E}(z)) = j_{1,E}(e_x)$ and similarly for $j_{2,E}$: $j_{2,E}(g_{E}(z)) = j_{2,E}(e_y)$ and $j_{1,E}(e_{x}) = j_{2,E}(e_{y})$ by commutativity.
+Hence, $u_{E}([in_{1,E}(e_x)]) = u_{E}([in_{2,E}(e_y)])$.
+\update{Above $e_x$ and $e_y$ are different from $e_x$ and $e_y$ from the first proof, i.e. they are in $E_{X}$ and $E_{Y}$. This is probablty not good.}
 
 Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.
 Finally, $u$ is unique.
 Assume, that there exists $w : \sfrac{X+Y}{\sim R} \to Q$ for the same $j_1$ and $j_2$.
-In order for them to commute $w([x]) = j_1(x)$ and $w([y]) = j_2(y)$ which is the same as $u$.
+In order for them to commute $w_{E}([i_{1,E}(x)]) = j_1(x)$ and $w([in_{2,E}(y)]) = j_2(y)$ (similarly for $w_{V}$) which is the same as $u_{E}$.
 That is, $j_1$ and $j_2$ determine $u$ uniquely.
 
 \end{remark}
