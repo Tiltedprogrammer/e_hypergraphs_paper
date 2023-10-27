@@ -258,17 +258,20 @@ We will prove the last point (all the others are analogous).
     \update{Looks fine?}
 \end{proof}
 
-Next $\sfrac{i_{1,V}}{\sim R_{V}} : V_{X} \to \sfrac{V_{X} + V_{Y}}{\sim R_{V}} = i_{1,V};s'$ where $s' : V_{X}+V_{Y} \to \sfrac{V_{X} + V_{Y}}{\sim R_{V}}$.
+Next $\sfrac{i_{1,V}}{\sim R_{V}} : V_{X} \to \sfrac{V_{X} + V_{Y}}{\sim R_{V}} = i_{1,V};s_1$.
 and 
-$\sfrac{i_{1,E}}{\sim R_{E}} : E_{X} \to \sfrac{E_{X} + E_{Y}}{\sim R_{E}} = i_{1,E};s'$, similarly for $\sfrac{i_{2,E}}{\sim R_{E}}$ and $\sfrac{i_{2,V}}{\sim R_{V}}$.
+$\sfrac{i_{1,E}}{\sim R_{E}} : E_{X} \to \sfrac{E_{X} + E_{Y}}{\sim R_{E}} = i_{1,E};s_{E}'$, similarly for $\sfrac{i_{2,E}}{\sim R_{E}}$ and $\sfrac{i_{2,V}}{\sim R_{V}}$.
 We need to show
 \begin{enumerate}
     \item $s_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = \sfrac{i_{1,E}}{\sim R_{E}};\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(e)$
     \item $t_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = \sfrac{i_{1,E}}{\sim R_{E}};\sfrac{t_{X+Y}}{\sim (R_{V},R_{E})}(e)$
 \end{enumerate}
 and likewise for $i_{2}$.
-Let's check the first one.
-$s_{X};(\sfrac{i_{1,V}}{\sim R_{V}})^{*}(e) = s_{X};i_{1,V}^{*};s'^{*}(e)$ which is a homomorphism because $i_{1,V}$ and \update{$s'$ are}.
+Let's check the first one for which we first need to check that $(s'_{E},s_{1})$ is a homomorphisms, i.e.
+\[
+s_{X+Y};s_1^{*}(e) = s'_{E};\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(e) = \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}(s'_{E}(e)) = s_{X+Y};s_1^{*}(e)
+\]
+hence, $(\sfrac{i_{1,V}}{\sim R_{V}}, \sfrac{i_{1,E}}{\sim R_{V}})$ is a homomorphism because $(i_{1,V},i_{1,E})$ and $(s_1,s'_{E})$ are.
 
 % Note that if $s : e_1 \mapsto \{v_1,v_2\}$ and $s : e_2 \mapsto \{v_3,v_4\}$  and $e_1 \sim e_2$ then $\sfrac{s}{\sim R} : [e_1,e_2] \to \{[v_1,v_3],[v_2,v_4]\}$ because $f$ and $g$ are homomorphisms.
 % Then, $\sfrac{i_1}{\sim R}$ maps $y \in Y$ to its equivalence class and likewise for $\sfrac{i_2}{\sim R}$.
