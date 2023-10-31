@@ -567,7 +567,7 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     Assume that $u$ is an element of $E_{X+Y}$ (the case for a node is similar).
     \begin{enumerate}
         \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) \not = \varnothing$.
-              The last requirement means that there necessarily exist $x = <_{c,X}^{\mu}(f_{E}(z)) = f_{E}(<_{c,Z}^{\mu}(z))$ and $y = <_{c,Y}^{\mu}(g_{E}(z)) = g_{E}(<_{c,Z}(z))$.
+              The last requirement means that there necessarily exist $x = <_{c,X}^{\mu}(f_{E}(z)) = f_{E}(<_{c,Z}^{\mu}(z))$ and $y = <_{c,Y}^{\mu}(g_{E}(z)) = g_{E}(<_{c,Z}^{\mu}(z))$.
               We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$
         \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) = \varnothing$ and $[f(z)) = \varnothing$ $[g(z)) \not = \varnothing$.
               The last condition means that there exists $e_y = <_{c,Y}^{\mu}(g(z))$.
@@ -575,7 +575,7 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
         \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) = \varnothing$ and $[f(z)) \not = \varnothing$ $[g(z)) = \varnothing$.
               The one before the last condition means that there exists $e_x = <_{c,X}^{\mu}(f(z))$.
               We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [f_{E};<_{c,X}^{\mu};i_{1,E}(z)] = [i_{1,E}(e_x)]$.
-        \item $u$ has no pre-image in $Z$ and then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}(u)]$
+        \item $u$ has no pre-image in $Z$ and then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$
     \end{enumerate}
     Clearly, all the cases above are disjoint.
     Let's check that this is a well-defined function.
@@ -592,7 +592,7 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
         \]
         and
         \[ 
-            [f_{e};i_{1,E}(z')] = [g_{e};i_{2,E}(z')]
+            [f_{E};i_{1,E}(z')] = [g_{E};i_{2,E}(z')]
         \]
         by commutativity.
         \item The other conditions satisfy functionality by definition.
@@ -608,23 +608,23 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                 \item $e$ has a pre-image $z$ in $E_{Z}$.
                     \begin{itemize}
                         \item If $[z) \not = \varnothing$.
-                              Then, by definition, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]_{E}) = [<_{c,X+Y}(e)]_{E}$ which is what we need.
+                              Then, by definition, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]_{E}) = [<_{c,X+Y}^{\mu}(e)]_{E}$ which is what we need.
                         \item If $[z) = \varnothing$ and $[f_{E}(z)) = \varnothing$ and $[g_{E}(z)) \not = \varnothing$.
-                              Because $i_{2,E}$ is a homomorphism, we have $<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z)) = i_{2,E}(<_{c,Y}(g_{E}(z))) = i_{2,E}(e_{y})$.
+                              Because $i_{2,E}$ is a homomorphism, we have $<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z)) = i_{2,E}(<_{c,Y}^{\mu}(g_{E}(z))) = i_{2,E}(e_{y})$.
                               We next have either $e = f_{E};i_{1,E}(z)$ in which case $[e) = \varnothing$ because $i_{1,E}$ is a coproduct injection and \update{we do not require homomorphism-ness for such $e$}.
                               Or, $e = g_{E};i_{2,E}(z)$ and 
                               \[
-                              <_{c,\sfrac{X+Y}{\sim}}([e]) = [g_{E};<_{c,Y}{\mu};i_{2,E}(z)]_{E} = [i_{2,E}(e_{y})]
+                              <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]) = [g_{E};<_{c,Y}^{\mu};i_{2,E}(z)]_{E} = [i_{2,E}(e_{y})]
                               \]
                               and
                               \begin{align*}
-                                [<_{c,X+Y}(e)] = [<_{c,X+Y}(g_{E};i_{2,E}(z))] &= \\
+                                [<_{c,X+Y}^{\mu}(e)] = [<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z))] &= \\
                                 &\text{because $[g_{E}(z)) \not = \varnothing$ and $i_{2,E}$ is homomorphism}\\
                                  = [i_{2,E}(<_{c,Y}(g_{E}(z)))] = [i_{2,E}(e_{y})]
                               \end{align*}
                               so we get
                               \[
-                              <_{c,\sfrac{X+Y}{\sim}}([e]) = [<_{c,X+Y}(e)]
+                              <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]) = [<_{c,X+Y}^{\mu}(e)]
                               \]
                         \item The remaining case is analogous.
                     \end{itemize}
