@@ -299,7 +299,7 @@ By applying $j_{1,E}$ to the first we get $j_{1,E}(f_{E}(z)) = j_{1,E}(e_x)$ and
 Hence, $u_{E}([in_{1,E}(e_x)]) = u_{E}([in_{2,E}(e_y)])$.
 \update{Above $e_x$ and $e_y$ are different from $e_x$ and $e_y$ from the first proof, i.e. they are in $E_{X}$ and $E_{Y}$. This is probablty not good.}
 
-Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.
+\question{Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.}
 Finally, $u$ is unique.
 Assume, that there exists $w : \sfrac{X+Y}{\sim R} \to Q$ for the same $j_1$ and $j_2$.
 In order for them to commute $w_{E}([i_{1,E}(x)]) = j_1(x)$ and $w([in_{2,E}(y)]) = j_2(y)$ (similarly for $w_{V}$) which is the same as $u_{E}$.
@@ -403,7 +403,8 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
 \begin{enumerate}
     \item $\phi$ is hypergraph homomorphism
     
-    \item if $x_1$ is the immediate predecessor of $x_2$ in $\mathcal{F}$ then $\phi(x_1)$ is the immediate predecessor of $\phi(x_2)$ in $\mathcal{G}$
+    \item $\phi(<_{c,\mathcal{F}}^{\mu}(x)) = <_{c,\mathcal{G}}^{\mu}(\phi(x))$.
+          \update{We do not require such an equation when $[x) = \varnothing$}.
 
     % \item
     % $x_1 \#_{\mathcal{F}} x_2$ iff $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
@@ -545,60 +546,248 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     First, a coproduct of $X+Y$ is computed which is 
     \[
         X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \#_{X+Y}, <_{c,X+Y} \}
-    \] 
+    \]
+    
     once again omitting the labelling function and where source and target functions are as before.
     And consider the same relations $S_{V},S_{E}$ and $R_{V}, R_{E}$.
-    We then quotient $X + Y$ by $R_{V},R_{E}$ and claim that it is a pushout.
+
+    % \update{Now $<_{c,{X+Y}} : V_{X} + V_{Y} + E_{X} + E_{Y} \to E_{X} + E_{Y} + \bot_{X} + \bot_{Y}$
+    % And let's get back to the case when $<_{c,Z}^{\mu}(z) = \bot_{Z}$, $<_{c,X}^{\mu}(f_{V}(z)) = \bot_{X}$, $f_{E}(\bot_{Z}) = \bot_{X}$ and $g_{E}(\bot_{Z}) = <_{c,Y}^{\mu}(g_{V}(z))$
+    % We then want to show that $[<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))] = [<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))]$
+    % Note that we have $[i_{1,E}(\bot_{X})] = [i_{2,E}(<_{c,Y}^{\mu}(g_{V}(z)))]$ and $[<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))] = [i_{1,V}(\bot_{X})]$ because $i_{1,V}$ is a coproduct injection and $<_{c}^{\mu}(\bot) = \bot$.
+    % Now, because $g_{V};i_{2,V}$ is a homomorphism: $<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z)) = g_{V};i_{2,V}(<_{c,Z}(z)) = i_{2,V}(<_{c,Y}^{\mu}(g_{V}(z)))$
+    % }
+    We then quotient the sets of edges and nodes in $X + Y$ by $R_{V},R_{E}$
     \[
-        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X,Y}}{\sim ()}, \sfrac{\#_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{<_{c,X + Y}}{\sim (R_{V},R_{E})} \}    
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \#_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{c,\sfrac{X + Y}{\sim (R_{V},R_{E})}} \}    
     \]
     where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$ and we will further omit writing the relations explicitly.
-    \[
-    \sfrac{(<_{c,X+Y})}{\sim} \subseteq \sfrac{(V_{X} + V_{Y})}{\sim R_{V}} + \sfrac{(E_{X} + E_{Y})}{\sim R_{E}} \times \sfrac{(E_{X} + E_{Y})}{\sim R_{E}}
-    \]
-    such that for each $(x_1, x_2) \in <_{c, X+Y}$ $\sfrac{<_{c,X+Y}}{\sim}$ contains $([x_1],[x_2])$.
-    
-    \update{We shall probably first define the quotient of the immediate parent because it is essentially a function and it will follow the same argument as the source function}
-    \question{Below $e$ and $v$ do not necessarily mean edges and nodes, $v$ can be an edge as well.}
-    \question{I also kind of intuitively inventing the quotient of a relation, is there any accepted notion for this?}
-    and, whenever $e_{X} <_{c,X}^{\mu} v_{X}$ and $e_{Y} <_{c,Y}^{\mu} v_{Y}$ and $v_{x} R v_{y}$ then $e_{X} R e_{Y}$.
-    The latter condition means two things
-    \begin{itemize}
-        \label{cond:essential_for_pushout}
-        \item if $[z) = \varnothing$ then either $[f(z)) = \varnothing$ or $[g(z)) = \varnothing$.
-              \question{This point formally defines what it means to 'inherit' a relation.
-                        Let's say $v_1 = f(z)$ and $v_2 = g(z)$ and $e_1 <_{c,X}^{\mu} v_1$ and $[v_2) = \varnothing$,
-                        then, having $e_1 <_{c} [v_1,v_2]$ is fine as it does not break the condition of a predecessor being unique.}
-              \update{This point also says when we can compute a pushout: either non of X and Y should have a parent for $f(z)$ and $g(z)$ or only one of them should.}
-        \item if $[z) \not = \varnothing$ then there exists $z'$ such that $z' <_{c}^{\mu} z$ and $[g(z'), f(z')] <_{c}^{\mu} [g(z), f(z)]$
-    \end{itemize}
-    Then,
-    \[
-        \sfrac{\conflict_{X} + \conflict_{Y}}{\sim R} \subseteq \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(E_{X} + E_{Y})}{\sim R} \times \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R}
-    \]
-    meaning that whenever $e_1 \conflict e_2$ and $e_1' \conflict e_2'$ and $e_1 R e_1'$ then $[e_1, e_1'] \conflict e_2$ and $[e_1, e_1'] \conflict e_2'$.
-    $\sfrac{i_1}{\sim R}$ then maps $x \to [x]$ and $\sfrac{i_2}{\sim R}$ maps $y \to [y]$.
-    Before we proceed we need to check that $\sfrac{(X + Y)}{\sim R}$ is indeed an e-hypergraph.
-    Since $X + Y$ is clearly an e-hypergraph, we need to check whether identification breaks any of the requirements (1-7) above.
+    Recall that $<_{c}$ is essentially a transitive clousure of $<_{c}^{\mu}$ and hence we can first define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]_{E})$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]_{V})$.
+    For this we will consider several cases where \update{$f$ and $g$ are mono. I require mono just to simplify things, we can get rid of this requirement if everything else is ok.}.
+    Assume that $u$ is an element of $E_{X+Y}$ (the case for a node is similar).
     \begin{enumerate}
-        \item Assume $[x_1,y_1] <_{c} [x_2,y_2]$ and $[x_1, y_1] \conflict [x_3]$ which means that $x_1 \conflict x_3$.
-              Hence $x_2 \conflict x_3$ (because $X$ is an e-hypergraph) and $[x_2,y_2] \conflict [x_3]$. Similarly, if $[x_1, y_1] \conflict [y_3]$ and $y_1 \conflict y_3$.
-        \item $\sfrac{\conflict}{\sim R}$ and $\sfrac{<_{c}}{\sim R}$ are disjoint because we quotient only inside the relations.
-        \item Again, we only quotient $\conflict$ on $x$ and $y$ for which original relation is defined.
-        \item This follows from $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ being homomorphisms.
-        \item We just perform transitive closure of the complement. \update{Maybe we can get rid of this point and instead later just take transitive closure of the complement when talking about interfaces}
-        \item Assume $[x_1, y_1] \conflict [x_2,y_2]$ and $[x_2,y_2] \conflict [x_3,y_3]$ and all of them are distinct.
-              Then $[x_1,y_1] \conflict [x_3,y_3]$ because either $x_1 \conflict x_3$ or $y_1 \conflict y_3$ (otherwise they would not have been merged into the same equivalence class).
-        \item We never merge $x_1$ and $x_2$ such that $x_1 <_{c} x_2$ into the same equivalence class because morphisms should preserve the order.
+        \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) \not = \varnothing$.
+              The last requirement means that there necessarily exist $x = <_{c,X}^{\mu}(f_{E}(z)) = f_{E}(<_{c,Z}^{\mu}(z))$ and $y = <_{c,Y}^{\mu}(g_{E}(z)) = g_{E}(<_{c,Z}(z))$.
+              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$
+        \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) = \varnothing$ and $[f(z)) = \varnothing$ $[g(z)) \not = \varnothing$.
+              The last condition means that there exists $e_y = <_{c,Y}^{\mu}(g(z))$.
+              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [g_{E};<_{c,Y}^{\mu};i_{2,E}(z)] = [i_{2,E}(e_y)]$.
+        \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) = \varnothing$ and $[f(z)) \not = \varnothing$ $[g(z)) = \varnothing$.
+              The one before the last condition means that there exists $e_x = <_{c,X}^{\mu}(f(z))$.
+              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [f_{E};<_{c,X}^{\mu};i_{1,E}(z)] = [i_{1,E}(e_x)]$.
+        \item $u$ has no pre-image in $Z$ and then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}(u)]$
     \end{enumerate}
+    Clearly, all the cases above are disjoint.
+    Let's check that this is a well-defined function.
+    Suppose $t_1 \sim t_2$ then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_1]) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_2])$.
+    $t_1 \sim t_2$ implies there is $z$ such that $t_1 = f_{E};i_{1,E}(z)$ and $t_2 = g_{E};i_{2,E}(z)$.
+    Then we need to consider the first three cases outlined above.
+    \begin{itemize}
+        \item If there exists $z' = <_{c,Z}^{\mu}(z)$ then 
+        \[
+            [<_{c,X+Y}^{\mu}(f_{E};i_{1,E}(z))] = [f_{E};i_{1,E}(<_{c,Z}^{\mu}(z))] = [f_{E};i_{1,E}(z')]
+        \]
+        \[
+            [<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z))] = [g_{E};i_{2,E}(<_{c,Z}^{\mu}(z))] = [g_{E};i_{2,E}(z')]
+        \]
+        and
+        \[ 
+            [f_{e};i_{1,E}(z')] = [g_{e};i_{2,E}(z')]
+        \]
+        by commutativity.
+        \item The other conditions satisfy functionality by definition.
+    \end{itemize}
 
-    Then we need to check that $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ are indeed homomorphisms.
-    For these we need to check that conditions (2-3) in~\ref{def:e-homo} are satisfied.
-    Let's check for $\sfrac{i_1}{\sim R}$.
-    We identify elements from $X$ with elements from $Y$ which does not affect (2) and the same reasoning applies to (3).
-    (1) was proved earlier for $\catname{Hyp_{\Sigma}}$.
+    We also need to makes sure that $[]_{E} : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and $[]_{V} : V_{X} + V_{Y} \to \sfrac{V_{X} + V_{Y}}{\sim}$ are homomorphisms.
+    \begin{enumerate}
+        \item $s_{X+Y};[]_{V}^{*}(e) = []_{E};s_{\sfrac{X+Y}{\sim}}(e)$
+              This is the same as in $\catname{Hyp_{\Sigma}}$.
+        \item $[<_{c,X+Y}^{\mu}(e)]_{E} = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]_{E})$ for $e$ such that $[e) \not = \varnothing$.
+              Let's make case analysis on $[e]_{E}$.
+              \begin{itemize}
+                \item $e$ has a pre-image $z$ in $E_{Z}$.
+                    \begin{itemize}
+                        \item If $[z) \not = \varnothing$.
+                              Then, by definition, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]_{E}) = [<_{c,X+Y}(e)]_{E}$ which is what we need.
+                        \item If $[z) = \varnothing$ and $[f_{E}(z)) = \varnothing$ and $[g_{E}(z)) \not = \varnothing$.
+                              Because $i_{2,E}$ is a homomorphism, we have $<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z)) = i_{2,E}(<_{c,Y}(g_{E}(z))) = i_{2,E}(e_{y})$.
+                              We next have either $e = f_{E};i_{1,E}(z)$ in which case $[e) = \varnothing$ because $i_{1,E}$ is a coproduct injection and \update{we do not require homomorphism-ness for such $e$}.
+                              Or, $e = g_{E};i_{2,E}(z)$ and 
+                              \[
+                              <_{c,\sfrac{X+Y}{\sim}}([e]) = [g_{E};<_{c,Y}{\mu};i_{2,E}(z)]_{E} = [i_{2,E}(e_{y})]
+                              \]
+                              and
+                              \begin{align*}
+                                [<_{c,X+Y}(e)] = [<_{c,X+Y}(g_{E};i_{2,E}(z))] &= \\
+                                &\text{because $[g_{E}(z)) \not = \varnothing$ and $i_{2,E}$ is homomorphism}\\
+                                 = [i_{2,E}(<_{c,Y}(g_{E}(z)))] = [i_{2,E}(e_{y})]
+                              \end{align*}
+                              so we get
+                              \[
+                              <_{c,\sfrac{X+Y}{\sim}}([e]) = [<_{c,X+Y}(e)]
+                              \]
+                        \item The remaining case is analogous.
+                    \end{itemize}
+                \item If $e$ has no pre-image in $E_{Z}$ then homomorphism-ness of $[]_{E}$ is similar to the first case above.
+              \end{itemize}
+    \end{enumerate}
+    The proof for when $e$ is a node is analogous.
 
-    Finally, by following essentially the same argument as for pushout in $\catname{Hyp_{\Sigma}}$ we can conclude that the structure defined above is indeed a pushout in $\catname{EHyp_{\Sigma}}$ and we know precise conditions under which this concrete pushout exists.
+    Let's now prove the universal property.
+    $u_{E}([i_{1,E}(x)]) = j_{1,E}(x)$ and $u_{E}([i_{2,E}(y)]) = j_2(y)$.
+    We will need to check that this a well-defined function, while homomorphism-ness follows from homomorphism-ness of $j_{1,E}$ and $j_{2,E}$.
+
+    Let's say that $t_1 \sim t_2$ then $u_{E}([t_1]) = u_{E}([t_2])$.
+    $u_{E}([t_1]) = u_{E}(f_{E};i_{1,E}(z)) = j_1{f_{E}(z)}$ and $u_{E}([t_2]) = u_{E}(g_{E};i_{2,E}(z)) = j_{2}(g_{E}(z))$ which are equal by commutativity.
+    
+    \update{TODO: $\conflict$}
+    % We can think of relation $<_{c,X+Y}$ as of a function $<_{c} : V_{X+Y} + E_{X+Y} \to {E_{X+Y}}^{*}$, i.e. a function that for each node or edge returns the sequence of their predecessors.
+    % Then we can define the quotienting as before
+    % \[
+    % \sfrac{(<_{c,X+Y})}{\sim}([u]) = [<_{c,X+Y}(u)]_{E}^{*}\\
+    % \]
+    % or, if we consider a function that returns the immediate predecessor
+    % \[
+    % \sfrac{(<_{c,X+Y}^{\mu})}{\sim}([u]) = [<_{c,X+Y}^{\mu}(u)]_{E}
+    % \]
+    % To check that the function is well-defined we need to check that if $t_1 \sim t_2$ then $\sfrac{<_{c,X+Y}^{\mu}}{\sim}([t_1]) = \sfrac{<_{c,X+Y}^{\mu}}{\sim}([t_2])$ or $[<_{c,X+Y}^{\mu}(t_1)] = [<_{c,X+Y}^{\mu}(t_2)]$.
+    % Once again, $t_1 \sim t_2$ (suppose these are nodes) implies there exists $z$ such that $t_1 = f_{V}(z);i_{1,V}(z)$ and $t_2 = g_{V};i_{2,V}(z)$.
+    % Hence we have
+    % \[
+    %     [<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))]
+    % \]
+    % \[
+    %     [<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))]
+    % \]
+    % and two cases
+    % \begin{itemize}
+    %     \item $[z) \not = \varnothing$ in which case we can use the fact that $f_{V};i_{1,V}$ and $g_{V};i_{2,V}$ are homomorphisms.
+    %           This gives us 
+    %             \[
+    %                 f_{V};i_{1,V}(<_{c,Z}^{\mu}(z)) = <_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))
+    %             \] 
+    %             and
+    %             \[
+    %                 g_{V};i_{2,V}(<_{c,Z}^{\mu}(z)) = <_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))
+    %             \]
+    %             and finally,
+    %             \[
+    %                 [<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))] = [<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))]
+    %             \] 
+    %             as they share the same pre-image.
+    %     \item Another case is when $[z) = \varnothing$. 
+    %           Assume $[f(z)) = \varnothing$, in which case $<_{c,Z}^{\mu}(z)$ and $<_{c,X}^{\mu}(f_{V}(z))$ are undefined.
+    %           This takes us to the situation where the lefthand-side of what we want to prove is undefined while the right-hand side is defined.
+    %           \question{Can I somehow require that in such case I take the right-hand side as a definition of the lefthand side? 
+    %           Otherwise the relation we have is too weak because it tells us only to identify things with the pre-image in $Z$ but eventually we also want to identify things that do not have such a pre-image.
+    %           }
+    %           What I want is to define 
+    %           \[
+    %             \sfrac{<_{c,X+Y}^{\mu}}{\sim}([f_{V};i_{1,V}(z)]) = [<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))] \text{ if } [f_{V};i_{1,V}(z)) = \varnothing
+    %           \]
+    % \end{itemize}
+
+    % \update{Approach 2}
+
+    % We can extend the set of edges in an e-hypergraph with a special edge $\bot$.
+    % And allow that it can be mapped to any other edge under a homomorphisms, i.e. we will not require that $s;\phi^{*}(\bot) = \phi;s;(\bot)$.
+    % \question{but this might break quotienting of sources and targets}
+    % This also means that set of edges now is $E_{\mathcal{G}} + \bot$.
+    % \question{What to do with $\bot$ after a coproduct?}.
+    % This gives us the ability to map this $\bot$ using homomorphisms.
+
+    % The pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
+    % First, a coproduct of $X+Y$ is computed which is 
+    
+    % \[
+    %     X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y} + \bot_{X} + \bot_{Y}, s_{X+Y}, t_{X+Y}, \#_{X+Y}, <_{c,X+Y} \}
+    % \]
+
+    % \[
+    %     R_{E} = \{ (x_i, y_j) \in (E_{X} + E_{Y} + \bot_{X} + \bot_{Y}) \times (E_{X} + E_{Y} + \bot_{X} + \bot_{Y} | \exists z \in E_{Z} + \bot_{Z} \; . \; x_i = f_{E};i_{1,E}(z) \text{ and } y_j = g_{E};i_{2,E}(z))\} 
+    % \]
+
+    % Consider $<_{c,X+Y}^{\mu}$ as a function that returns the immediate predecessor, i.e. it has a type $V_{X} + V_{Y} + E_{X} + E_{Y} \to E_{X} + E_{Y} + \bot_{X} + \bot_{Y}$.
+    % And define its quotient
+    % \[
+    % \sfrac{<_{c,X+Y}^{\mu}}{\sim}([u]) = [<_{c,X+Y}^{\mu}(u)]_{E}
+    % \]
+
+    % We then need to check that whenever $t_1 \sim t_2$ $[<_{c,X+Y}^{\mu}(t_1)] = [<_{c,X+Y}^{\mu}(t_2)]$.
+    % $t_1 \sim t_2$ implies that there exists at least one $z$ such that $t_1 = f_{V};i_{1,V}(z)$ and $t_2 = g_{V};i_{2,V}(z)$.
+    % Hence we have
+    % \[
+    %     [<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))]
+    % \]
+    % \[
+    %     [<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))]
+    % \]
+    % and two cases
+    % We then can use the fact that $f_{V};i_{1,V}$ and $g_{V};i_{2,V}$ are homomorphisms.
+    % This gives us 
+    % \[
+    %     f_{V};i_{1,V}(<_{c,Z}^{\mu}(z)) = <_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))
+    % \] 
+    % and
+    % \[
+    %     g_{V};i_{2,V}(<_{c,Z}^{\mu}(z)) = <_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))
+    % \]
+    % and finally,
+    % \[
+    %     [<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))] = [<_{c,X+Y}^{\mu}(g_{V};i_{2,V}(z))]
+    % \] 
+    % as they share the same pre-image ($<_{c,Z}^{\mu}(z)$).
+    
+    % Now let's check that $\sfrac{s_{X+Y}}{\sim}$ is well-defined.
+    % We will consider a case where $f_{E}(\bot_{Z}) = \bot_{X}$ and $g_{E}(\bot_{Z}) \not = \bot$.
+    % We then need to check that $[s_{X+Y}(f_{E};i_{1,E}(z))]^{*} = [s_{X+Y}(g_{E};i_{2,E}(z))]$
+    % \begin{itemize}
+    %     \item $z = \bot_{Z}$ then $[{}] = \ldots$
+    % \end{itemize}
+
+    % \update{end of Approach 2}
+
+    % \update{We shall probably first define the quotient of the immediate parent because it is essentially a function and it will follow the same argument as the source function}
+    % \question{Below $e$ and $v$ do not necessarily mean edges and nodes, $v$ can be an edge as well.}
+    % \question{I also kind of intuitively inventing the quotient of a relation, is there any accepted notion for this?}
+    % and, whenever $e_{X} <_{c,X}^{\mu} v_{X}$ and $e_{Y} <_{c,Y}^{\mu} v_{Y}$ and $v_{x} R v_{y}$ then $e_{X} R e_{Y}$.
+    % The latter condition means two things
+    % \begin{itemize}
+    %     \label{cond:essential_for_pushout}
+    %     \item if $[z) = \varnothing$ then either $[f(z)) = \varnothing$ or $[g(z)) = \varnothing$.
+    %           \question{This point formally defines what it means to 'inherit' a relation.
+    %                     Let's say $v_1 = f(z)$ and $v_2 = g(z)$ and $e_1 <_{c,X}^{\mu} v_1$ and $[v_2) = \varnothing$,
+    %                     then, having $e_1 <_{c} [v_1,v_2]$ is fine as it does not break the condition of a predecessor being unique.}
+    %           \update{This point also says when we can compute a pushout: either non of X and Y should have a parent for $f(z)$ and $g(z)$ or only one of them should.}
+    %     \item if $[z) \not = \varnothing$ then there exists $z'$ such that $z' <_{c}^{\mu} z$ and $[g(z'), f(z')] <_{c}^{\mu} [g(z), f(z)]$
+    % \end{itemize}
+    % Then,
+    % \[
+    %     \sfrac{\conflict_{X} + \conflict_{Y}}{\sim R} \subseteq \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(E_{X} + E_{Y})}{\sim R} \times \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R} \times \sfrac{(V_{X} + V_{Y} + E_{X} + E_{Y})}{\sim R}
+    % \]
+    % meaning that whenever $e_1 \conflict e_2$ and $e_1' \conflict e_2'$ and $e_1 R e_1'$ then $[e_1, e_1'] \conflict e_2$ and $[e_1, e_1'] \conflict e_2'$.
+    % $\sfrac{i_1}{\sim R}$ then maps $x \to [x]$ and $\sfrac{i_2}{\sim R}$ maps $y \to [y]$.
+    % Before we proceed we need to check that $\sfrac{(X + Y)}{\sim R}$ is indeed an e-hypergraph.
+    % Since $X + Y$ is clearly an e-hypergraph, we need to check whether identification breaks any of the requirements (1-7) above.
+    % \begin{enumerate}
+    %     \item Assume $[x_1,y_1] <_{c} [x_2,y_2]$ and $[x_1, y_1] \conflict [x_3]$ which means that $x_1 \conflict x_3$.
+    %           Hence $x_2 \conflict x_3$ (because $X$ is an e-hypergraph) and $[x_2,y_2] \conflict [x_3]$. Similarly, if $[x_1, y_1] \conflict [y_3]$ and $y_1 \conflict y_3$.
+    %     \item $\sfrac{\conflict}{\sim R}$ and $\sfrac{<_{c}}{\sim R}$ are disjoint because we quotient only inside the relations.
+    %     \item Again, we only quotient $\conflict$ on $x$ and $y$ for which original relation is defined.
+    %     \item This follows from $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ being homomorphisms.
+    %     \item We just perform transitive closure of the complement. \update{Maybe we can get rid of this point and instead later just take transitive closure of the complement when talking about interfaces}
+    %     \item Assume $[x_1, y_1] \conflict [x_2,y_2]$ and $[x_2,y_2] \conflict [x_3,y_3]$ and all of them are distinct.
+    %           Then $[x_1,y_1] \conflict [x_3,y_3]$ because either $x_1 \conflict x_3$ or $y_1 \conflict y_3$ (otherwise they would not have been merged into the same equivalence class).
+    %     \item We never merge $x_1$ and $x_2$ such that $x_1 <_{c} x_2$ into the same equivalence class because morphisms should preserve the order.
+    % \end{enumerate}
+
+    % Then we need to check that $\sfrac{i_1}{\sim R}$ and $\sfrac{i_2}{\sim R}$ are indeed homomorphisms.
+    % For these we need to check that conditions (2-3) in~\ref{def:e-homo} are satisfied.
+    % Let's check for $\sfrac{i_1}{\sim R}$.
+    % We identify elements from $X$ with elements from $Y$ which does not affect (2) and the same reasoning applies to (3).
+    % (1) was proved earlier for $\catname{Hyp_{\Sigma}}$.
+
+    % Finally, by following essentially the same argument as for pushout in $\catname{Hyp_{\Sigma}}$ we can conclude that the structure defined above is indeed a pushout in $\catname{EHyp_{\Sigma}}$ and we know precise conditions under which this concrete pushout exists.
 \end{remark}
 
 \begin{example}
