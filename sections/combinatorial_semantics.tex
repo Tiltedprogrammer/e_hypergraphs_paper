@@ -312,31 +312,33 @@ Now we are ready to define e-hypergraphs which are a combinatorial representatio
 \begin{definition}[E-hypergraph]
 
     An e-hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma$ is a tuple \[(V_{\mathcal{G}},E_{\mathcal{G}},s,t,l,<_c,\#)\] where $(V_{\mathcal{G}},E_{\mathcal{G}},s,t)$ are the same as in~\ref{def:hypergraph}.
-    The labelling $l$ is modified to include an extra value $\bot \;$ $l :E_{\mathcal{G}} \to \Sigma + 1$. With an abuse of notation, we will confuse $\mathcal{G}$ with $V_{\mathcal{G}} \cup E_{\mathcal{G}}$, when treating it as a set.
-    
-    $<_c \subset \mathcal{G} \times \mathcal{G}$ is a child relation imposing a partial order on $\mathcal{G}$.
-    We require that for a given $x \in \mathcal{G}$ a set of all predecessors of $x\;$ $[x) = \{x' \in \mathcal{G} \;||\; x' <_c x\; \}$ is finite and consists of edges $e \in E_{\mathcal{G}}$ such that $l(e) = \bot$ only.
+    The labelling $l$ is modified to include an extra value $\bot \;$ $l :E_{\mathcal{G}} \to \Sigma + 1$. 
+    % With an abuse of notation, we will confuse $\mathcal{G}$ with $V_{\mathcal{G}} \cup E_{\mathcal{G}}$, when treating it as a set.
+    \question{Shall I use $\cup$ instead of $+$?}
+    $<_c \subset (V_\mathcal{G} + E_\mathcal{G}) \times (V_\mathcal{G} + E_\mathcal{G})$ is a child relation imposing a strict partial order on $(V_\mathcal{G} + E_\mathcal{G})$.
+    We require that for a given $x \in (V_\mathcal{G} + E_\mathcal{G})$ a set of all predecessors of $x\;$ $[x) = \{x' \in E_\mathcal{G} \;||\; x' <_c x\; \}$ is finite and consists of edges $e \in E_{\mathcal{G}}$ such that $l(e) = \bot$ only.
     Next, each $x$ has at most one immediate predecessor.
     \update{We will denote the fact that $e$ is an immediate predecessor of $v$ as $e <_c^{\mu} v$.}
     % , which essentially makes $<_{c}$ into a function that for any given $x$ returns its immediate predecessor.
     Such order was called a \textbf{well-founded arborescent} strict partial order in~\cite{orders_and_events}.
-    Similarly, a set of all successors is $(x] = \{x' \in \mathcal{G} \; ||\; x < x'\}$ where $x'$ can be a node or an edge. 
+    Similarly, a set of all successors is $(x] = \{x' \in (V_\mathcal{G} + E_\mathcal{G}) \; ||\; x <_{c} x'\}$ where $x'$ can be a node or an edge. 
     % An edge $e \in E_{\mathcal{G}}$ is unlabelled, i.e. $l(e) = \bot$ iff $(e] \not = \varnothing$.
-    Finally, we require that $<_c$ respects connectivity, i.e. if $v \in s(e)$ then $e' < e$ iff $e' <_c v$.
+    Finally, we require that $<_c^{\mu}$ respects connectivity, i.e. if $v \in s(e)$ then $e' <_c^{\mu} e$ iff $e' <_c^{\mu} v$.
     
-    $\langle \mathcal{G}, <_c, \# \rangle$ is an event-structure where $\# \subset \mathcal{G} \times \mathcal{G}$ is an irreflexive symmetric relation called \textit{conflict} relation which satisfies the following
+    $\langle (V_\mathcal{G} + E_\mathcal{G}), <_c, \# \rangle$ is an event-structure where $\# \subset (V_\mathcal{G} + E_\mathcal{G}) \times (V_\mathcal{G} + E_\mathcal{G})$ is an irreflexive symmetric relation called \textit{conflict} relation which satisfies the following
     \begin{enumerate}
+        \label{def:e-hypergraph-req}
         \item 
         \[
-    \forall x_1, x_2, x_3 \in \mathcal{G} \text{, if } x_1 <_c x_2 \text{ and } x_1 \# x_3 \text{ then } x_2 \# x_3
+    \forall x_1, x_2, x_3 \in (V_\mathcal{G} + E_\mathcal{G}) \text{, if } x_1 <_c x_2 \text{ and } x_1 \# x_3 \text{ then } x_2 \# x_3
     \] 
     if $x_1 <_c x_2$ we say that conflict $x_2 \# x_3$ is inherited from the conflict $x_1 \# x_3$. If the conflict is not inherited we say it is \textit{immediate} and denote it with $\#_{\mu}$
     \item $<_c$ and $\#$ are mutually exclusive
-    \item $\#$ is defined \textit{only} for $x \in \mathcal{G}$ such that $[x) \not \eq \varnothing$
+    \item $\#$ is defined \textit{only} for $x \in (V_\mathcal{G} + E_\mathcal{G})$ such that $[x) \not \eq \varnothing$
     \item $\#$ should respect connectivity
-    \item \update{Complement of $\#$ should be transitive}
-    \item for all distinct $x_1, x_2, x_3 \in V \cup E$ $x_1 \#_{\mu} x_2$ and $x_2 \#_{\mu} x_3$ implies $x_1 \#_{\mu} x_3$
-    \item for all $x, x' \in \mathcal{G}$ $x \#_{\mu} x'$ implies $[x) = [x')$
+    \item \update{Complement of $\conflict_{\mu}$ should be transitive}
+    \item for all distinct $x_1, x_2, x_3 \in (V_\mathcal{G} + E_\mathcal{G})$ $x_1 \#_{\mu} x_2$ and $x_2 \#_{\mu} x_3$ implies $x_1 \#_{\mu} x_3$
+    \item for all $x, x' \in (V_\mathcal{G} + E_\mathcal{G})$ $x \#_{\mu} x'$ implies $[x) = [x')$
         \end{enumerate}
 
 The last two requirements are known as \textit{confusion freeness}~\cite{ConfusionFreeEvents}.
@@ -345,11 +347,13 @@ The last two requirements are known as \textit{confusion freeness}~\cite{Confusi
 \Aleksei{Switch to the complent in the definition of the relation and call it a \textit{consistency} relation}
 
 Intuitively, the child and conflict relation together make it possible to model e-classes in our e-hypergraphs: an unlabelled edge $e$ represents an e-class where the children of $e$ that are in immediate conflict correspond to nodes and edges in different e-class instances.
-Condition (5) states that the following situation is not possible: $x_1 \# x_3$ and $x_1 \bar{\#} x_2$ and $x_2 \bar{\#} x_3$. Transitivity of $\bar{\#}$ requires that in this case $x_1 \bar{\#} x_3$.
+Condition (5) states that the following situation is not possible: $x_1 \# x_3$ and $x_1 \bar{\#} x_2$ and $x_2 \bar{\#} x_3$.
+Transitivity of $\bar{\#}$ requires that in this case $x_1 \bar{\#} x_3$.
 
 \begin{lemma}[Complement of $\#$ is equivalence relation]
 \begin{proof}
-As $\#$ is irreflexive then its complement $\bar{\#}$ is reflexive because $\forall x \; . \; (x,x) \not \in \#$. Because $\#$ is symmetric so is $\bar{\#}$, otherwise if $(x_1, x_2) \in \bar{\#}$ and $(x_2,x_1) \not \in \bar{\#}$ then $(x_2,x_1) \in {\#}$ which is symmetric and hence $(x_1,x_2)$ should be in ${\#}$. Finally, the complement is transitive because of (5).
+As $\#$ is irreflexive then its complement $\bar{\#}$ is reflexive because $\forall x \; . \; (x,x) \not \in \#$. Because $\#$ is symmetric so is $\bar{\#}$, otherwise if $(x_1, x_2) \in \bar{\#}$ and $(x_2,x_1) \not \in \bar{\#}$ then $(x_2,x_1) \in {\#}$ which is symmetric and hence $(x_1,x_2)$ should be in ${\#}$.
+Finally, the complement is transitive because of (5).
 
 \end{proof}
 \end{lemma}
@@ -408,106 +412,121 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
 
     % \item
     % $x_1 \#_{\mathcal{F}} x_2$ iff $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
-    \question{
+  
         \item
-    if $x_1 \#_{\mathcal{F}} x_2$ then $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
-    }
+    if $x_1 \#_{\mathcal{F}} x_2$ then $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$.
+    Or, written functionally, when $x \in E_{\mathcal{F}}$
+    \[
+        \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\conflict_{\mathcal{F}}(i_{E_{\mathcal{F}}}(x)))
+        \subseteq
+        \conflict_{\mathcal{G}}(\phi_{E};i_{E_{\mathcal{G}}}(x))
+    \]
+    , where $\phi_{V};i_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} + E_{\mathcal{G}}$, and similarly for $\phi_{E};i_{E_\mathcal{G}}$ so that $\langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle : V_{\mathcal{F}} + E_{\mathcal{F}} \to  V_{\mathcal{G}} + E_{\mathcal{G}}$.
+    And, when $x \in V_{\mathcal{F}}$
+    \[
+        \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\conflict_{\mathcal{F}}(i_{V_{\mathcal{F}}}(x)))
+        \subseteq
+        \conflict_{\mathcal{G}}(\phi_{V};i_{V_{\mathcal{G}}}(x))
+    \]
+    Or, on per-component basis, if $i_{E_{\mathcal{F}}}(x_1) \in \conflict_{\mathcal{F}}(i_{E_{\mathcal{F}}}(x_2))$ then $i_{E_{\mathcal{G}}}(\phi_{E}(x_1)) \in \conflict_{\mathcal{G}}(i_{E_{\mathcal{G}}}(\phi_{E}(x_2)))$ and similarly for other types of $x_1,x_2$.
 \end{enumerate}
 
-\update{Let's denote the fact of $x_1$ being the immediate predecessor of $x_2$ by $x_1 <_{\mu} x_2$. Also, note that preserving the immediate predecessor implies preserving order. Homomorphism definition seems to be fine: by not requiring the \textit{only if} direction in bullet 2 we basically allow either of two things 
+% \update{Let's denote the fact of $x_1$ being the immediate predecessor of $x_2$ by $x_1 <_{\mu} x_2$.
+%  Also, note that preserving the immediate predecessor implies preserving order.
+% Homomorphism definition seems to be fine: by not requiring the \textit{only if} direction in bullet 2 we basically allow either of two things 
 
-\begin{itemize}
-    \item $\phi(x_1) <_{\mu} \phi(x_2)$ and $x_1 <_{\mu} x_2$
-    \item $\phi(x_1) <_{\mu} \phi(x_2)$ and $x_1$ is unrelated to $x_2$
-\end{itemize}
+% \begin{itemize}
+%     \item $\phi(x_1) <_{\mu} \phi(x_2)$ and $x_1 <_{\mu} x_2$
+%     \item $\phi(x_1) <_{\mu} \phi(x_2)$ and $x_1$ is unrelated to $x_2$
+% \end{itemize}
 
-We can not have $\phi(x_1) <_{\mu} \phi(x_2)$ and $x_1 < x_2$, i.e. the case where $x_1$ is not the immediate predecessor of $x_2$ because then it would mean that there exists at least $x_3$ such that $x_1 <_{\mu} x_3 <_{\mu} x_2$ and because $\phi$ should preserve them it would mean that $\phi(x_1) <_{\mu} \phi(x_3) <_{\mu} \phi(x_2)$ implying that $\phi(x_2)$ has two immediate predecessors: $\phi(x_1)$ and $\phi(x_3)$.
-Of course, if $\phi$ does not identify $x_1$ and $x_3$.
-The first bullet is fine because it means that $\phi$ reflects the immediate predecessor.
-The second bullet leaves us with two options depicted above.
+% We can not have $\phi(x_1) <_{\mu} \phi(x_2)$ and $x_1 < x_2$, i.e. the case where $x_1$ is not the immediate predecessor of $x_2$ because then it would mean that there exists at least $x_3$ such that $x_1 <_{\mu} x_3 <_{\mu} x_2$ and because $\phi$ should preserve them it would mean that $\phi(x_1) <_{\mu} \phi(x_3) <_{\mu} \phi(x_2)$ implying that $\phi(x_2)$ has two immediate predecessors: $\phi(x_1)$ and $\phi(x_3)$.
+% Of course, if $\phi$ does not identify $x_1$ and $x_3$.
+% The first bullet is fine because it means that $\phi$ reflects the immediate predecessor.
+% The second bullet leaves us with two options depicted above.
 
-}
+% }
 
-\begin{figure}
-    \centering
-\begin{subfigure}{0.4\linewidth}
+% \begin{figure}
+%     \centering
+% \begin{subfigure}{0.4\linewidth}
 
-\scalebox{0.5}{
-\begin{tikzpicture}
-	\begin{pgfonlayer}{nodelayer}
-		\node [style=node, label={above:$x_1$}] (19) at (-3.5, -4.5) {};
-		\node [style=node, label={above:$x_2$}] (20) at (-4.5, -6.5) {};
-		\node [style=node, label={above:$x_3$}] (21) at (-2.5, -6.5) {};
-		\node [style=node, label={above:$x_4$}] (22) at (-3.5, -8.5) {};
-		\node [style=node, label={above:$x_5$}] (23) at (-1.5, -8.5) {};
-		\node [style=node, label={right:$x_2$}] (24) at (4.5, -5.5) {};
-		\node [style=node, label={above:$x_1$}] (25) at (4.5, -2.5) {};
-		\node [style=node, label={below:$x_5$}] (26) at (4.5, -11.5) {};
-		\node [style=none] (27) at (4.5, -7.5) {};
-		\node [style=none] (28) at (4.5, -9.5) {};
-		\node [style=none] (29) at (4.5, -8.5) {$\vdots$};
-		\node [style=none] (30) at (0.5, -6.5) {};
-		\node [style=none] (31) at (2.5, -6.5) {};
-		\node [style=none] (32) at (1.5, -5.5) {$\phi$};
-	\end{pgfonlayer}
-	\begin{pgfonlayer}{edgelayer}
-		\draw (19) to (20);
-		\draw (19) to (21);
-		\draw (21) to (22);
-		\draw (21) to (23);
-		\draw (24) to (27.center);
-		\draw (26) to (28.center);
-		\draw (25) to (24);
-		\draw [style=diredge] (30.center) to (31.center);
-	\end{pgfonlayer}
-\end{tikzpicture}
+% \scalebox{0.5}{
+% \begin{tikzpicture}
+% 	\begin{pgfonlayer}{nodelayer}
+% 		\node [style=node, label={above:$x_1$}] (19) at (-3.5, -4.5) {};
+% 		\node [style=node, label={above:$x_2$}] (20) at (-4.5, -6.5) {};
+% 		\node [style=node, label={above:$x_3$}] (21) at (-2.5, -6.5) {};
+% 		\node [style=node, label={above:$x_4$}] (22) at (-3.5, -8.5) {};
+% 		\node [style=node, label={above:$x_5$}] (23) at (-1.5, -8.5) {};
+% 		\node [style=node, label={right:$x_2$}] (24) at (4.5, -5.5) {};
+% 		\node [style=node, label={above:$x_1$}] (25) at (4.5, -2.5) {};
+% 		\node [style=node, label={below:$x_5$}] (26) at (4.5, -11.5) {};
+% 		\node [style=none] (27) at (4.5, -7.5) {};
+% 		\node [style=none] (28) at (4.5, -9.5) {};
+% 		\node [style=none] (29) at (4.5, -8.5) {$\vdots$};
+% 		\node [style=none] (30) at (0.5, -6.5) {};
+% 		\node [style=none] (31) at (2.5, -6.5) {};
+% 		\node [style=none] (32) at (1.5, -5.5) {$\phi$};
+% 	\end{pgfonlayer}
+% 	\begin{pgfonlayer}{edgelayer}
+% 		\draw (19) to (20);
+% 		\draw (19) to (21);
+% 		\draw (21) to (22);
+% 		\draw (21) to (23);
+% 		\draw (24) to (27.center);
+% 		\draw (26) to (28.center);
+% 		\draw (25) to (24);
+% 		\draw [style=diredge] (30.center) to (31.center);
+% 	\end{pgfonlayer}
+% \end{tikzpicture}
 
-}
+% }
 
-\caption{Case 1}
-\end{subfigure}
-\hfill
-\begin{subfigure}{0.4\linewidth}
+% \caption{Case 1}
+% \end{subfigure}
+% \hfill
+% \begin{subfigure}{0.4\linewidth}
 
-\scalebox{0.5}{
-\begin{tikzpicture}
-	\begin{pgfonlayer}{nodelayer}
-		\node [style=node, label={above:$x_1$}] (19) at (-6.5, -4.5) {};
-		\node [style=node, label={above:$x_2$}] (20) at (-7.5, -6.5) {};
-		\node [style=node, label={above:$x_3$}] (21) at (-5.5, -6.5) {};
-		\node [style=node, label={above:$x_4$}] (30) at (-3, -4.5) {};
-		\node [style=node, label={above:$x_1$}] (31) at (2.5, -4.5) {};
-		\node [style=node, label={above:$x_2$}] (32) at (1.5, -6.5) {};
-		\node [style=node, label={above:$x_3$}] (33) at (2.75, -6.5) {};
-		\node [style=node, label={above:$x_4$}] (34) at (4, -6.5) {};
-		\node [style=none] (35) at (-1.5, -5.5) {};
-		\node [style=none] (36) at (-0.5, -5.5) {};
-		\node [style=none] (37) at (-1, -5) {$\phi$};
-	\end{pgfonlayer}
-	\begin{pgfonlayer}{edgelayer}
-		\draw (19) to (20);
-		\draw (19) to (21);
-		\draw (31) to (32);
-		\draw (31) to (33);
-		\draw (31) to (34);
-		\draw [style=diredge] (35.center) to (36.center);
-	\end{pgfonlayer}
-\end{tikzpicture}
+% \scalebox{0.5}{
+% \begin{tikzpicture}
+% 	\begin{pgfonlayer}{nodelayer}
+% 		\node [style=node, label={above:$x_1$}] (19) at (-6.5, -4.5) {};
+% 		\node [style=node, label={above:$x_2$}] (20) at (-7.5, -6.5) {};
+% 		\node [style=node, label={above:$x_3$}] (21) at (-5.5, -6.5) {};
+% 		\node [style=node, label={above:$x_4$}] (30) at (-3, -4.5) {};
+% 		\node [style=node, label={above:$x_1$}] (31) at (2.5, -4.5) {};
+% 		\node [style=node, label={above:$x_2$}] (32) at (1.5, -6.5) {};
+% 		\node [style=node, label={above:$x_3$}] (33) at (2.75, -6.5) {};
+% 		\node [style=node, label={above:$x_4$}] (34) at (4, -6.5) {};
+% 		\node [style=none] (35) at (-1.5, -5.5) {};
+% 		\node [style=none] (36) at (-0.5, -5.5) {};
+% 		\node [style=none] (37) at (-1, -5) {$\phi$};
+% 	\end{pgfonlayer}
+% 	\begin{pgfonlayer}{edgelayer}
+% 		\draw (19) to (20);
+% 		\draw (19) to (21);
+% 		\draw (31) to (32);
+% 		\draw (31) to (33);
+% 		\draw (31) to (34);
+% 		\draw [style=diredge] (35.center) to (36.center);
+% 	\end{pgfonlayer}
+% \end{tikzpicture}
 
-}
+% }
 
-\caption{Case 2}
+% \caption{Case 2}
     
-\end{subfigure}
-\end{figure}
+% \end{subfigure}
+% \end{figure}
 
-\update{Case (a) above is impossible on two occasions: for the image of $x_5$ to be a successor of the image of $x_2$, $x_5$ itself should be hierarchical. Then, because $\phi$ should preserve the immediate predecessor, the image of $x_3$ should be the immediate predecessor of the image of $x_5$ and the image of $x_1$ should be the immediate predecessor of the image of $x_3$ and of the image of $x_2$. Since the image of $x_2$ is a successor of the image of $x_5$ on the right there should be two paths from the image of $x_5$ to the image of $x_1$ one through the image of $x_3$ and another through the image of $x_2$, this effectively means that some node on this path has two immediate predecessors.
+% \update{Case (a) above is impossible on two occasions: for the image of $x_5$ to be a successor of the image of $x_2$, $x_5$ itself should be hierarchical. Then, because $\phi$ should preserve the immediate predecessor, the image of $x_3$ should be the immediate predecessor of the image of $x_5$ and the image of $x_1$ should be the immediate predecessor of the image of $x_3$ and of the image of $x_2$. Since the image of $x_2$ is a successor of the image of $x_5$ on the right there should be two paths from the image of $x_5$ to the image of $x_1$ one through the image of $x_3$ and another through the image of $x_2$, this effectively means that some node on this path has two immediate predecessors.
 
-The case (b) above typechecks (for typed e-hypergraphs) only if $x_4$ is of type $0 \to 0$. This case is fine because we always can append, e.g. an edge, to a hierarchical edge using the semilattice equations (the one for tensoring the box). This also assumes that the image is down-closed.
-}
+% The case (b) above typechecks (for typed e-hypergraphs) only if $x_4$ is of type $0 \to 0$. This case is fine because we always can append, e.g. an edge, to a hierarchical edge using the semilattice equations (the one for tensoring the box). This also assumes that the image is down-closed.
+% }
 
-\question{There is an issue with requiring that $\phi$ should reflect the conflict though. When we consider e-cospans and the maps from the interfaces to the carrier we map some nodes from the interface to conflicted nodes in the carrier. However, these nodes in the interface can not be in conflict as they have no predecessors. We can ask that this is a property of a matching morphism $m$ rather than arbitrary homomorphism. The same was done for down-closed-ness, for example.
-}
+% \question{There is an issue with requiring that $\phi$ should reflect the conflict though. When we consider e-cospans and the maps from the interfaces to the carrier we map some nodes from the interface to conflicted nodes in the carrier. However, these nodes in the interface can not be in conflict as they have no predecessors. We can ask that this is a property of a matching morphism $m$ rather than arbitrary homomorphism. The same was done for down-closed-ness, for example.
+% }
 
 If we further require that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we will call such homomorphism \textit{strict}.
 \end{definition}
@@ -530,7 +549,7 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
 
 \begin{remark}
 
-    We will compute pushouts in $\catname{EHyp_{\Sigma}}$ similarly to $\catname{EHyp_{\Sigma}}$.
+    We will compute pushouts in $\catname{EHyp_{\Sigma}}$ similarly to $\catname{Hyp_{\Sigma}}$ but additionally will make a few assumptions.
     Recall the diagram below.
     \[
     \adjustbox{scale=1}{
@@ -542,7 +561,9 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     }
     \]
 
-    The pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
+    First, we assume that $Z$ is a \textit{discrete} e-hypergraph, i.e. it has no edges.
+
+    Then, the pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
     First, a coproduct of $X+Y$ is computed which is 
     \[
         X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \#_{X+Y}, <_{c,X+Y} \}
@@ -564,75 +585,228 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$ and we will further omit writing the relations explicitly.
     Recall that $<_{c}$ is essentially a transitive clousure of $<_{c}^{\mu}$ and hence we can first define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]_{E})$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]_{V})$.
     For this we will consider several cases where \update{$f$ and $g$ are mono. I require mono just to simplify things, we can get rid of this requirement if everything else is ok.}.
-    Assume that $u$ is an element of $E_{X+Y}$ (the case for a node is similar).
+    Assume that $u$ is an element of $V_{X+Y}$.
     \begin{enumerate}
-        \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) \not = \varnothing$.
-              The last requirement means that there necessarily exist $x = <_{c,X}^{\mu}(f_{E}(z)) = f_{E}(<_{c,Z}^{\mu}(z))$ and $y = <_{c,Y}^{\mu}(g_{E}(z)) = g_{E}(<_{c,Z}^{\mu}(z))$.
-              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$
-        \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) = \varnothing$ and $[f(z)) = \varnothing$ $[g(z)) \not = \varnothing$.
-              The last condition means that there exists $e_y = <_{c,Y}^{\mu}(g(z))$.
-              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [g_{E};<_{c,Y}^{\mu};i_{2,E}(z)] = [i_{2,E}(e_y)]$.
-        \item $u$ has a pre-image $z$ in $E_{Z}$, $[z) = \varnothing$ and $[f(z)) \not = \varnothing$ $[g(z)) = \varnothing$.
-              The one before the last condition means that there exists $e_x = <_{c,X}^{\mu}(f(z))$.
-              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [f_{E};<_{c,X}^{\mu};i_{1,E}(z)] = [i_{1,E}(e_x)]$.
+        % \item $u$ has a pre-image $z$ in $V_{Z}$, $[z) \not = \varnothing$.
+        %       The last requirement means that there necessarily exist $x = <_{c,X}^{\mu}(f_{E}(z)) = f_{E}(<_{c,Z}^{\mu}(z))$ and $y = <_{c,Y}^{\mu}(g_{E}(z)) = g_{E}(<_{c,Z}^{\mu}(z))$.
+        %       We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$
+        \item $u$ has a pre-image $z$ in $V_{Z}$ (by discreteness, $[z) = \varnothing$) and $[f_{V}(z)) = \varnothing$ $[g_{V}(z)) \not = \varnothing$.
+              The last condition means that there exists $e_y = <_{c,Y}^{\mu}(g_{V}(z))$.
+              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [g_{V};<_{c,Y}^{\mu};i_{2,E}(z)] = [i_{2,E}(e_y)]$.
+        \item $u$ has a pre-image $z$ in $V_{Z}$, (by discreteness, $[z) = \varnothing$) and $[f_{V}(z)) \not = \varnothing$ $[g_{V}(z)) = \varnothing$.
+              The one before the last condition means that there exists $e_x = <_{c,X}^{\mu}(f_{V}(z))$.
+              We then define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [f_{V};<_{c,X}^{\mu};i_{1,E}(z)] = [i_{1,E}(e_x)]$.
         \item $u$ has no pre-image in $Z$ and then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$
     \end{enumerate}
+    \question{In the case when images of $f$ and $g$ are top-level the function is undefined. Shall we introduce bottom?}
+    Now, if $u$ is an element of $E_{X+Y}$.
+    \begin{enumerate}
+        \item We have the only case of $u$ having no pre-image in $E_{Z}$ because its empty.
+              Hence, we define $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([u]) = [<_{c,X+Y}^{\mu}(u)]$.
+    \end{enumerate}
+    \question{I decided to keep Z discrete, otherwise the number of cases to consider within the proofs is too large.
+    This also means that we now can identify only nodes.
+    I will make changes to account for this later.
+    }
+    \update{If $f$ and $g$ are not mono, the definitions stay the same as $i_{2,E}$ and $i_{1,E}$ are mono.}
     Clearly, all the cases above are disjoint.
     Let's check that this is a well-defined function.
-    Suppose $t_1 \sim t_2$ then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_1]) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_2])$.
-    $t_1 \sim t_2$ implies there is $z$ such that $t_1 = f_{E};i_{1,E}(z)$ and $t_2 = g_{E};i_{2,E}(z)$.
-    Then we need to consider the first three cases outlined above.
-    \begin{itemize}
-        \item If there exists $z' = <_{c,Z}^{\mu}(z)$ then 
-        \[
-            [<_{c,X+Y}^{\mu}(f_{E};i_{1,E}(z))] = [f_{E};i_{1,E}(<_{c,Z}^{\mu}(z))] = [f_{E};i_{1,E}(z')]
-        \]
-        \[
-            [<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z))] = [g_{E};i_{2,E}(<_{c,Z}^{\mu}(z))] = [g_{E};i_{2,E}(z')]
-        \]
-        and
-        \[ 
-            [f_{E};i_{1,E}(z')] = [g_{E};i_{2,E}(z')]
-        \]
-        by commutativity.
-        \item The other conditions satisfy functionality by definition.
-    \end{itemize}
+    Suppose $t_1, t_2$ are nodes and $t_1 \sim t_2$, then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_1]) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_2])$.
+    $t_1 \sim t_2$ implies there is $z$ such that $t_1 = f_{V};i_{1,V}(z)$ and $t_2 = g_{V};i_{2,V}(z)$ and either $[f_{V}(t_1)) = \varnothing$ or $[g_{V}(z)) = \varnothing$.
+    Assume the latter, then, by definition.
+    \[
+        <_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_1]) = [f_{V};<_{c,X}^{\mu};i_{1,E}(z)]    
+    \]
+    and
+    \[
+        <_{c,\sfrac{X+Y}{\sim}}^{\mu}([t_2]) = [f_{V};<_{c,X}^{\mu};i_{1,E}(z)]    
+    \]
+    so we have well-defined-ness on the nose.
+
+    % \begin{itemize}
+        % \item If there exists $z' = <_{c,Z}^{\mu}(z)$ then 
+        % \[
+        %     [<_{c,X+Y}^{\mu}(f_{E};i_{1,E}(z))] = [f_{E};i_{1,E}(<_{c,Z}^{\mu}(z))] = [f_{E};i_{1,E}(z')]
+        % \]
+        % \[
+        %     [<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z))] = [g_{E};i_{2,E}(<_{c,Z}^{\mu}(z))] = [g_{E};i_{2,E}(z')]
+        % \]
+        % and
+        % \[ 
+        %     [f_{E};i_{1,E}(z')] = [g_{E};i_{2,E}(z')]
+        % \]
+        % by commutativity.
+        % \item The other conditions satisfy functionality by definition.
+
+    % \end{itemize}
 
     We also need to makes sure that $[]_{E} : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and $[]_{V} : V_{X} + V_{Y} \to \sfrac{V_{X} + V_{Y}}{\sim}$ are homomorphisms.
     \begin{enumerate}
         \item $s_{X+Y};[]_{V}^{*}(e) = []_{E};s_{\sfrac{X+Y}{\sim}}(e)$
               This is the same as in $\catname{Hyp_{\Sigma}}$.
         \item $[<_{c,X+Y}^{\mu}(e)]_{E} = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]_{E})$ for $e$ such that $[e) \not = \varnothing$.
-              Let's make case analysis on $[e]_{E}$.
+              This is homomorphic by definition. 
+        \item $[<_{c,X+Y}^{\mu}(v)]_{E} = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([v]_{V})$.
+              Let's make case analysis on $[v]_{V}$.
               \begin{itemize}
-                \item $e$ has a pre-image $z$ in $E_{Z}$.
+                \item $v$ has a pre-image $z$ in $V_{Z}$ such that $v = f_{V};i_{1,V}(z)$.
                     \begin{itemize}
-                        \item If $[z) \not = \varnothing$.
-                              Then, by definition, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]_{E}) = [<_{c,X+Y}^{\mu}(e)]_{E}$ which is what we need.
-                        \item If $[z) = \varnothing$ and $[f_{E}(z)) = \varnothing$ and $[g_{E}(z)) \not = \varnothing$.
-                              Because $i_{2,E}$ is a homomorphism, we have $<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z)) = i_{2,E}(<_{c,Y}^{\mu}(g_{E}(z))) = i_{2,E}(e_{y})$.
-                              We next have either $e = f_{E};i_{1,E}(z)$ in which case $[e) = \varnothing$ because $i_{1,E}$ is a coproduct injection and \update{we do not require homomorphism-ness for such $e$}.
-                              Or, $e = g_{E};i_{2,E}(z)$ and 
-                              \[
-                              <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]) = [g_{E};<_{c,Y}^{\mu};i_{2,E}(z)]_{E} = [i_{2,E}(e_{y})]
-                              \]
-                              and
-                              \begin{align*}
-                                [<_{c,X+Y}^{\mu}(e)] = [<_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z))] &= \\
-                                &\text{because $[g_{E}(z)) \not = \varnothing$ and $i_{2,E}$ is homomorphism}\\
-                                 = [i_{2,E}(<_{c,Y}(g_{E}(z)))] = [i_{2,E}(e_{y})]
-                              \end{align*}
-                              so we get
-                              \[
-                              <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e]) = [<_{c,X+Y}^{\mu}(e)]
-                              \]
-                        \item The remaining case is analogous.
+                        \item If $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$, then, because $i_{1,V}$ is a coproduct injection, it must be the case that $[i_{1,V}(f_{V}(z))) = \varnothing$ and we do not require any equalities for such $v$.
+                        \item If $[f_{V}(z)) \not = \varnothing$ and $[g_{V}(z)) = \varnothing$, then,
+                              by definition, we have $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([v]) = [f_{V};<_{c,X};i_{1,E}(z)] = [i_{1,E}(<_{c,Y}^{\mu}(f_{V}(z)))] = [i_{1,E}(e_y)]$.
+                              Because $i_{1,E}$ is a homomorphism, we also have $[<_{c,X+Y}^{\mu}(f_{V};i_{1,V}(z))] = [i_{1,E}(<_{c,Y}^{\mu}(f_{V}(z)))] = [i_{1,E}(e_y)]$.
                     \end{itemize}
-                \item If $e$ has no pre-image in $E_{Z}$ then homomorphism-ness of $[]_{E}$ is similar to the first case above.
+                \item The case when $v = g_{V};i_{2,V}(z)$ is symmetric.
+                \item If $v$ has no pre-image in $V_{Z}$ then homomorphism-ness of $[]_{V}$ is similar to the case for $[]_{V}$ above.
               \end{itemize}
     \end{enumerate}
-    The proof for when $e$ is a node is analogous.
 
+    Then $<_{c,\sfrac{X+Y}{\sim}} : V_{\sfrac{X+Y}{\sim}} + E_{\sfrac{X+Y}{\sim}} \to (E_{\sfrac{X+Y}{\sim}})^{*}$ is defined as a transitive closure of $<_{c,\sfrac{X+Y}{\sim}}^{\mu}$.
+    \question{I probably should've added injections for $<$ as well as it is defined on a coproduct (like I do below for $\conflict$) }
+    
+    \update{Check that $<_{c,\sfrac{X+Y}{\sim}}^{\mu}$ is irreflexive and assymetric and that it respects connectivity.}
+    \begin{itemize}
+        \item Suppose there exist $[e]$ such that $[e] = <_{c,\sfrac{X+Y}{\sim}^{\mu}}([e]) = [<_{c,X+Y}^{\mu}(e)]$ and $e = <_{c,X+Y}^{\mu}(e)$ because edges are not identified.
+              This is not possible as $<_{c,X+Y}^{\mu}$ is irreflexive. We need not to check this requirement for nodes because a node can not be a predecessor.
+        \item Let $e_1,e_2$ be edges. 
+              Then, if $[e_1] <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e_2])$ it must not be the case that $[e_2] <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e_1])$.
+              We have $[e_1] = [<_{c,X+Y}^{\mu}(e_2)]$ and if it was the case that $[e_2] <_{c,\sfrac{X+Y}{\sim}}([e_1])$ then $[e_2] = <_{c,X+Y}^{\mu}(e_1)$ which would mean that $<_{c,X+Y}$ is not assymetric.
+              Once again, we do not need to check for nodes as a node can not be on the lefthand side of the relation.
+        \item We need to show that if $[v] \in s([e_1])$ and $[e_2] <_{c,\sfrac{X+Y}{\sim}}^{\mu}([e_1])$ then $[e_2] <_{c,\sfrac{X+Y}{\sim}}^{\mu}([v])$.
+              We have $e_2 = <_{c,X+Y}^{\mu}(e_1)$ and $[v] \in [s(e_1)]^{*}$ meaning 
+              that there exists $v' \in s(e_1)$ such that $[v] = [v']$.
+              \begin{itemize}
+                        \item $v' = v$. Then, given $e_2 = <_{c,X+Y}^{\mu}(e_1)$ it must be the case that $e_2 = <_{c,X+Y}^{\mu}(v)$ and $[e_2] = [<_{c,X+Y}^{\mu}(v)] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([v])$.
+                        \item $v' \sim v$ and there exists $z \in V_{Z}$ such that $v = f_{V};i_{1,V}(z)$ and $v' = g_{V};i_{2,V}(z)$ and $v' \in s(e_1)$ and because $e_2 <_{c,X+Y}^{\mu}(e_1)$ it must be the case that $e_2 <_{c,X+Y}^{\mu}(v')$. This also means that necessarily $[g_{V}(z)) \not = \varnothing$ and $[f_{V}(z)) = \varnothing$.
+                              If $[f_{V}(z)) = \varnothing$, then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([v]) = [g_{V};<_{c,Y};i_{2,E}(z)] = [<_{c,Y}^{\mu};i_{2,E}(g_{V}(z))] = [<_{c,X+Y}^{\mu}(i_{2,V}(g_{B}(z)))] = [<_{c,X+Y}^{\mu}(v')] = [e_2]$.
+                        \item Case when $v' = f_{V};i_{1,V}(z)$ is symmetric.
+               \end{itemize}
+            \end{itemize}
+    Let's now define $\conflict_{\sfrac{X+Y}{\sim}}$.
+    We can consider the original conflict relation as a function $\conflict_{X+Y} : (V_{X} + V_{Y}) + (E_{X} + E_{Y}) \to 2^{(V_{X} + V_{Y}) + (E_{X} + E_{Y})}$.
+    Quotienting the range of the function gives us $\conflict_{X+Y}' : V_{X} + V_{Y} + E_{X} + E_{Y} \to 2^{(\sfrac{V_{X} + V_{Y}}{\sim}) + \sfrac{(E_{X} + E_{Y})}{\sim}}$, which is essentially $\langle []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}} \rangle^{*}$ (a copairing extended to sequences that we will further denote it as $\langle []_{V}^{\conflict} []_{E}^{\conflict} \rangle$) applied to the return value of $\conflict_{X+Y}$.
+    We then define the new relation as
+    
+    \[
+        \conflict_{\sfrac{X+Y}{\sim}}(i_{E_{X} + E_{Y}}([x]_{E})) = (\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\bigcup_{x' \in E_{X} + E_{Y} | [x']_{E} = [x]_{E}} i_{E_{X} + E_{Y}}(x')))^{\Rightarrow}
+    \]
+    \[
+        \conflict_{\sfrac{X+Y}{\sim}}(i_{V_{X} + V_{Y}}([x]_{V})) = (\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\bigcup_{x' \in V_{X} + V_{Y} | [x']_{V} = [x]_{V}} i_{V_{X} + V_{Y}}(x')))^{\Rightarrow}
+    \]
+        where $i_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$ and $\Rightarrow$ is a closure by (1) from~\ref{def:e-hypergraph-req}.
+        That is, the relation above is the smallest relation that contains $\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\bigcup_{x' \in E_{X} + E_{Y} | [x']_{E} = [x]_{E}} i_{E_{X} + E_{Y}}(x'))$ and such that if $[x_1] <_{c,\sfrac{X+Y}{\sim}}([x_2])$ and $i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_1] \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_3])$ then $i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_2] \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_3])$.
+        And similarly for nodes.
+
+          
+    Again, we need to check that this is a well-defined function and that our initial $([]_{V},[]_{E})$ respects the conflict.
+
+    \begin{itemize}
+        \item Assume that $t_1, t_2 \in E_{X+Y}$ and $t_1 \sim t_2$ then $\conflict_{\sfrac{X+Y}{\sim}}(i_{E_{X} + E_{Y}}[t_1]) = \conflict_{\sfrac{X+Y}{\sim}}(i_{E_{X} + E_{Y}}[t_2])$.
+              $t_1 \sim t_2$ implies there exists $z \in E_{Z}$ such that $t_1 = f_{E};i_{1,E}(z)$ and $t_2 = g_{E};i_{2,E}(z)$
+              \begin{align*}
+                \conflict_{\sfrac{X+Y}{\sim}}(i_{E_{X} + E_{Y}}([t_1])) = (\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\bigcup_{t_i \in \{t_1, t_2\}} i_{E_{X} + E_{Y}}(t_i)))^{\Rightarrow}
+                %      \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\conflict_{X+Y}(i_{E_{X} + E_{Y}}(t_1))) = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\conflict_{X+Y}(f_{E};i_{1,E};i_{E_{X} + E_{Y}}(z)) = \\
+                %      \text{By homomorphism-ness of $f_{E};i_{1,E}$} \\
+                %      = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\langle f_{V};i_{1,V};i_{V_{X} + V_{Y}} ,f_{E};i_{1,E};i_{E_{X} + E_{Y}} \rangle^{*}(\conflict_{Z}(i_{E_{Z}}(z)))
+              \end{align*}
+              Similarly,
+              \[
+                \conflict_{\sfrac{X+Y}{\sim}}(i_{E_{X} + E_{Y}}([t_2])) = (\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\bigcup_{t_i \in \{t_1, t_2\}} i_{E_{X} + E_{Y}}(t_i)))^{\Rightarrow}
+              \]
+              and we get well-definedness on the nose.
+            %   \begin{align*}
+            %     \conflict_{\sfrac{X+Y}{\sim}}(i_{E_{X} + E_{Y}}[t_2]) = \conflict_{X+Y};\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(i_{E_{X} + E_{Y}}(t_2)) = \\
+            %          \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\conflict_{X+Y}(i_{E_{X} + E_{Y}}(t_2))) = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\conflict_{X+Y}(g_{E};i_{2,E};i_{E_{X} + E_{Y}}(z)) = \\
+            %          \text{By homomorphism-ness of $g_{E};i_{2,E}$} \\
+            %          = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\langle g_{V};i_{2,V};i_{V_{X} + V_{Y}} ,g_{E};i_{2,E};i_{E_{X} + E_{Y}} \rangle^{*}(\conflict_{Z}(i_{E_{Z}(z)))
+            %   \end{align*}
+            %   Then,
+            %   $[f_{E};i_{1,E}(z')]_{E} = [g_{E};i_{2,E}(z')]_{E}$ for all $z' \in \{z'' \in \conflict_{Z}(z) \text{ s.t. } z'' \in E_{Z}\}$
+            %   and
+            %   $[f_{V};i_{1,V}(z')]_{V} = [g_{V};i_{2,V}(z')]_{V}$ for all $z' \in \{z'' \in \conflict_{Z}(z) \text{ s.t. } z'' \in V_{Z}\}$
+            %   hence
+            %   \begin{align*}
+            %     \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\langle g_{V};i_{2,V};i_{V_{X} + V_{Y}} ,g_{E};i_{2,E};i_{E_{X} + E_{Y}} \rangle^{*}(\conflict_{Z}(i_{E_{Z}}(z))) = \\
+            %      = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\langle f_{V};i_{1,V};i_{V_{X} + V_{Y}} ,f_{E};i_{1,E};i_{E_{X} + E_{Y}} \rangle^{*}(\conflict_{Z}(i_{E_{Z}}(z)))
+            %   \end{align*}
+        \item Putting $\phi = ([]_{V},[]_{E})$ into the definition of a homomorphism gives us
+            \[
+             \langle []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}} \rangle^{*}(\conflict_{X+Y}(i_{E_{X+Y}}(x)))
+             \subseteq
+             \conflict_{\mathcal{\sfrac{X+Y}{\sim}}}([]_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}}(x))
+             \]
+            By definition, 
+            \[
+                \conflict_{\mathcal{\sfrac{X+Y}{\sim}}}([]_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}}(x)) = (\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle (\bigcup_{x' \in E_{X} + E_{Y} | [x']_{E} = [x]_{E}} \conflict_{X+Y}(i_{E_{X} + E_{Y}}(x))))^{\Rightarrow}
+            \]
+            and by recalling that $[]_V^{*} = []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}$ and similarly for $[]_{E}^{*}$ we get the inclusion.
+    \end{itemize}
+    All is left is to check that $\sfrac{X + Y}{\sim}$ is indeed an e-hypergraph.
+    For this we need to check conditions (1) - (7) in~\ref{def:e-hypergraph-req}.
+    % \begin{enumerate}
+    %     \item Assume all $x_1, x_2, x_3$ are in $E_{X+Y}$.
+    %      Given $[x_1] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([x_2])$ 
+    %      and 
+    %      $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_1]) \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_3]))$ then it must be the case that
+    %     $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_2]) \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_3]))$.
+        
+    %     \[
+    %         i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_1]) \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_3]))
+    %     \]
+    %     means that there exist $x',x'' \in E_{X} + E_{Y}\; | \;[x'] = [x_3] \text{ and } x'' \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(x')) \text{ and } [x''] = [x_1]$.
+    %     We then begin by considering cases for $<$ and $[x_1], [x_2], [x_3], [x']$.
+    %     \begin{itemize}
+    %         \item $[x_1] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}([x_2]) = [<_{c,X+Y}^{\mu}(x_2)]$.
+    %         We have two options.  
+    %             \begin{itemize}
+    %                 \item $x_2$ has a pre-image $z_{x_2}$ in $E_{Z}$ such that $[z_{x_2}) \not = \varnothing$.
+    %                 \begin{itemize}
+    %                 \item Suppose $x_1 = <_{c,X+Y}^{\mu}(x_2)$, $x' = x_3$, $x'' = x_1$ hence $i_{E_{X} + E_{Y}}(x_1) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(x_3))$.
+    %                       Then, because $X+Y$ is an e-hypergraph it must be the case that $i_{E_{X} + E_{Y}}(x_2) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(x_3))$.
+    %                       And, by homomorphism-ness of $[]$ we get $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_2]_{E}) \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_3]_{E}))$. 
+    %                 \item Suppose $x_1 = <_{c,X+Y}^{\mu}(x_2)$, $x' \sim x_3$, $x'' = x_1$ hence there exists $z \in E_{Z}$ such that $x' = f_{E};i_{1,E}(z)$ and $x_3 = g_{E};i_{2,E}(z)$.
+    %                       Hence $i_{E_{X} + E_{Y}}(x_1) \in \conflict_{X+Y}(f_{E};i_{1,E};i_{E_{X} + E_{Y}}(z))$.
+    %                       Then, because $X+Y$ is an e-hypergraph it must be the case that $i_{E_{X} + E_{Y}}(x_2) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(f_{E};i_{1,E}(z)))$.
+    %                       And, by homomorphism-ness of $[]$ we get $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_2]_{E}) \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([f_{E};i_{1,E}(z)]_{E})) = \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_3]_{E}))$.
+    %                 \item Suppose $x_1 = <_{c,X+Y}^{\mu}(x_2)$, $x' = x_3$, $x'' \sim x_1$ hence there exists $z \in E_{Z}$ such that $x'' = f_{E};i_{1,E}(z)$ and $x_1 = g_{E};i_{2,E}(z)$.
+    %                       Hence $i_{E_{X} + E_{Y}}(f_{E};i_{1,E}(z)) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(x_3))$.
+    %                       By definition $x_2 = g_{E};i_{2,E}(z_{x_2})$ (because $x_1$ and $x_2$ should have pre-image in either $X$ or $Y$, not both).
+    %                       This means there exists $z_2 <_{c,Z}^{\mu}(z_{x_2})$ and $g_{E};i_{2,E}(z_2) <_{c,X+Y}^{\mu}(g_{E};i_{2,E}(z_{x_2})) = <_{c,X+Y}^{\mu}(x_2)$ and because there can be only one imemdiate predecessor we have $x_1 = g_{E};i_{2,E}(z_2)$ and $z = z_2$.
+    %                       \question{What next?}
+    %                       Because $X+Y$ is an e-hypergraph, we have $i_{E_{X} + E_{Y}}(f_{E};i_{1,E}(z')) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(x_3))$.
+    %                       Then, by homomorphism-ness we get $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([f_{E};i_{1,E}(z')]) = i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_2]) \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([x_3]))$.
+    %                 \item Suppose $x_1 = <_{c,X+Y}^{\mu}(x_2)$, $x' \sim x_3$, $x'' \sim x_1$ hence there exist $z_1 \in E_{Z}$ such that $x'' = f_{E};i_{1,E}(z_1)$ and $x_1 = g_{E};i_{2,E}(z_1)$ and $z_2 \in E_{Z}$ such that $x' = f_{E};i_{1,E}(z_2)$ and $x_3 = g_{E};i_{2,E}(z_2)$.
+    %                       Hence, $i_{E_{X} + E_{Y}}(x'') \in \conflict_{X+Y}(i_{E_{X} + E_{Y}})(x')$ and $i_{E_{X} + E_{Y}}(f_{E};i_{1,E}(z_1)) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}})(f_{E};i_{1,E}(z_2))$.
+    %                       There also should exist $z_3$ such that $z_1 <_{c,Z}^{\mu}(z_3)$ and $g_{E};i_{2,E}(z_1) <_{c,Z}^{\mu}(g_{E};i_{2,E}(z_3))$
+    %             \end{itemize}
+    %             $x_2$ has no pre-image in $E_{Z}$.
+    %         \end{itemize}
+    %         \end{itemize}
+    % \end{enumerate}
+
+    \begin{enumerate}
+        \item (1) is given by construction.
+        \item There are separate cases for nodes and edges.
+              \begin{itemize}
+                \item Being not mutually exclusive means it is possible that $[e]_{E} <_{c,\sfrac{X+Y}{\sim}}([v]_{V})$ and $i_{\sfrac{V_{X}+V_{Y}}{\sim}}[v] \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X}+E_{Y}}{\sim}}[e])$.
+                \item Or, $[e_1]_{E} <_{c,\sfrac{X+Y}{\sim}}([e_2]_{E})$ and $i_{\sfrac{E_{X}+E_{Y}}{\sim}}[e_1] \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X}+E_{Y}}{\sim}}[e_2])$.
+               \end{itemize}
+              The first means that either
+              \begin{itemize}
+                \item $[e] = [<_{c,X+Y}(v)]$ if $v$ has no pre-image in $V_{Z}$ and there exist $v'$ and $e'$  such that $[v'] = [v]$, $[e'] = [e]$ and $i_{V_{X} + V_{Y}}(v') \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(e'))$.
+                      As there is no pre-image in $V_{Z}$, $v = v'$. Then we have the following case.
+                    \begin{itemize}
+                        \item $e = <_{c,X+Y}(v)$ and $e' = e$.
+                              As we have $i_{V_{X} + V_{Y}}(v) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(e))$ and this is not possible as $X+Y$ is an e-hypergraph.
+                    \end{itemize}
+                \item $v$ has a pre-image $z \in V_{Z}$, let's say, $f_{V};i_{1,V}(z) = v$, and $[f_{V}(z)) = \varnothing$.
+                      Then, either $v' = v$ and $i_{V_{X} + V_{Y}}(v) \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(e))$, which is not possible as it requires that $v$ has a predecessor in $X$.
+                      Or, $v' \sim v$ (meaning that $v' = g_{V};i_{2,V}(z)$) and $i_{V_{X} + V_{Y}}(v') \in \conflict_{X+Y}(i_{E_{X} + E_{Y}}(e))$.
+                      Then, $<_{c,\sfrac{X+Y}{\sim}}([v]) = [g_{V};<_{c,Y};i_{2,E}(z)] = [e]$. Once again, it means that $e = g_{V};<_{c,Y};i_{2,E}(z)$.
+                      Overall, it means that $g_{V}(z) \in \conflict_{Y}(i_{E_{Y}}(g_{V};<_{c,Y}(z)))$ which is not possible as $Y$ is an e-hypergraph.
+                \item The case when $v = g_{V};i_{2,V}(z)$ is symmetric.
+              \end{itemize}
+    \end{enumerate}
     Let's now prove the universal property.
     $u_{E}([i_{1,E}(x)]) = j_{1,E}(x)$ and $u_{E}([i_{2,E}(y)]) = j_2(y)$.
     We will need to check that this a well-defined function, while homomorphism-ness follows from homomorphism-ness of $j_{1,E}$ and $j_{2,E}$.
