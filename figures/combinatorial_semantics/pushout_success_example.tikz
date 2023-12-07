@@ -1,0 +1,152 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=node, label={above:1}] (0) at (1, 15.5) {};
+		\node [style=node, label={below:2}] (2) at (1, 11.5) {};
+		\node [style=none] (3) at (-1.5, 13.5) {};
+		\node [style=none] (4) at (-4.5, 13.5) {};
+		\node [style=node, label={above:1}] (8) at (-11.5, 18.5) {};
+		\node [style=none] (9) at (-11.5, 10) {};
+		\node [style=none] (10) at (-11.5, 16.5) {};
+		\node [style=none] (12) at (-13.5, 16.5) {};
+		\node [style=none] (13) at (-13.5, 10) {};
+		\node [style=none] (14) at (-12.5, 10) {};
+		\node [style=none] (15) at (-10.5, 10) {};
+		\node [style=none] (16) at (-9.5, 10) {};
+		\node [style=none] (17) at (-9.5, 16.5) {};
+		\node [style=none] (18) at (-12.5, 16.5) {};
+		\node [style=none] (19) at (-10.5, 16.5) {};
+		\node [style=node, label={below:2}] (20) at (-11.5, 8) {};
+		\node [style=node] (5) at (-11.5, 15.5) {};
+		\node [style=hedge] (6) at (-11.5, 13.5) {$f$};
+		\node [style=node] (7) at (-11.5, 11.5) {};
+		\node [style=none] (21) at (1, 5.5) {};
+		\node [style=none] (22) at (1, 2.5) {};
+		\node [style=hedge] (24) at (0, -8) {$f$};
+		\node [style=hedge] (27) at (2, -8) {$g$};
+		\node [style=none] (29) at (-1.25, -4.25) {};
+		\node [style=none] (30) at (0, -4.25) {};
+		\node [style=none] (31) at (1, -4.25) {};
+		\node [style=none] (32) at (2, -4.25) {};
+		\node [style=none] (33) at (3.25, -4.25) {};
+		\node [style=none] (35) at (3.25, -12) {};
+		\node [style=none] (36) at (2, -12) {};
+		\node [style=none] (37) at (1, -12) {};
+		\node [style=none] (38) at (-1.25, -12) {};
+		\node [style=none] (39) at (0, -12) {};
+		\node [style=node, label={above:1}] (23) at (0, -6) {};
+		\node [style=node, label={below:2}] (25) at (0, -10) {};
+		\node [style=node] (26) at (2, -6) {};
+		\node [style=node] (28) at (2, -10) {};
+		\node [style=node] (40) at (1, -2) {};
+		\node [style=node] (42) at (1, -14) {};
+		\node [style=none] (44) at (-11.5, 5.5) {};
+		\node [style=none] (45) at (-11.5, 2.5) {};
+		\node [style=none] (46) at (-2.5, -8) {};
+		\node [style=none] (47) at (-5.5, -8) {};
+		\node [style=none] (49) at (-3, 14.25) {$f$};
+		\node [style=none] (50) at (1.5, 4) {$g$};
+		\node [style=hedge] (52) at (-10, -8) {$g$};
+		\node [style=none] (53) at (-19, -1.75) {};
+		\node [style=none] (54) at (-17.75, -1.75) {};
+		\node [style=none] (55) at (-11.5, -1.75) {};
+		\node [style=none] (56) at (-10.25, -1.75) {};
+		\node [style=none] (57) at (-8.5, -1.75) {};
+		\node [style=none] (58) at (-8.5, -15) {};
+		\node [style=none] (59) at (-10.25, -15) {};
+		\node [style=none] (60) at (-11.5, -15) {};
+		\node [style=none] (61) at (-19, -15) {};
+		\node [style=none] (62) at (-17.75, -15) {};
+		\node [style=node] (65) at (-10, -6) {};
+		\node [style=node] (66) at (-10, -10) {};
+		\node [style=node] (67) at (-11.5, 0.5) {};
+		\node [style=node] (68) at (-11.5, -17) {};
+		\node [style=node, label={above:1}] (69) at (-14.25, -3) {};
+		\node [style=none] (70) at (-14.25, -11.5) {};
+		\node [style=none] (71) at (-14.25, -5) {};
+		\node [style=none] (72) at (-16.25, -5) {};
+		\node [style=none] (73) at (-16.25, -11.5) {};
+		\node [style=none] (74) at (-15.25, -11.5) {};
+		\node [style=none] (75) at (-13.25, -11.5) {};
+		\node [style=none] (76) at (-12.25, -11.5) {};
+		\node [style=none] (77) at (-12.25, -5) {};
+		\node [style=none] (78) at (-15.25, -5) {};
+		\node [style=none] (79) at (-13.25, -5) {};
+		\node [style=node, label={below:2}] (80) at (-14.25, -13.5) {};
+		\node [style=node] (81) at (-14.25, -6) {};
+		\node [style=hedge] (82) at (-14.25, -8) {$f$};
+		\node [style=node] (83) at (-14.25, -10) {};
+		\node [style=hedge] (84) at (-17.75, -8) {$f$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=map edge] (3.center) to (4.center);
+		\draw [style={e_hyperedge}] (16.center)
+			 to (17.center)
+			 to (19.center)
+			 to (10.center)
+			 to (18.center)
+			 to (12.center)
+			 to (13.center)
+			 to (14.center)
+			 to (9.center)
+			 to (15.center)
+			 to cycle;
+		\draw (8) to (10.center);
+		\draw (9.center) to (20);
+		\draw (5) to (6);
+		\draw (6) to (7);
+		\draw [style=map edge] (21.center) to (22.center);
+		\draw [style={e_hyperedge}] (32.center)
+			 to (33.center)
+			 to (35.center)
+			 to (36.center)
+			 to (37.center)
+			 to (39.center)
+			 to (38.center)
+			 to (29.center)
+			 to (30.center)
+			 to (31.center)
+			 to cycle;
+		\draw (23) to (24);
+		\draw (24) to (25);
+		\draw (26) to (27);
+		\draw (27) to (28);
+		\draw [style=map edge] (44.center) to (45.center);
+		\draw [style=map edge] (46.center) to (47.center);
+		\draw [style=dashed edge] (31.center) to (37.center);
+		\draw (31.center) to (40);
+		\draw (37.center) to (42);
+		\draw [style={e_hyperedge}] (56.center)
+			 to (57.center)
+			 to (58.center)
+			 to (59.center)
+			 to (60.center)
+			 to (62.center)
+			 to (61.center)
+			 to (53.center)
+			 to (54.center)
+			 to (55.center)
+			 to cycle;
+		\draw (65) to (52);
+		\draw (52) to (66);
+		\draw [style=dashed edge] (55.center) to (60.center);
+		\draw (55.center) to (67);
+		\draw (60.center) to (68);
+		\draw [style={e_hyperedge}] (76.center)
+			 to (77.center)
+			 to (79.center)
+			 to (71.center)
+			 to (78.center)
+			 to (72.center)
+			 to (73.center)
+			 to (74.center)
+			 to (70.center)
+			 to (75.center)
+			 to cycle;
+		\draw (69) to (71.center);
+		\draw (70.center) to (80);
+		\draw (81) to (82);
+		\draw (82) to (83);
+		\draw [bend right, looseness=1.25] (69) to (84);
+		\draw [bend right] (84) to (80);
+	\end{pgfonlayer}
+\end{tikzpicture}

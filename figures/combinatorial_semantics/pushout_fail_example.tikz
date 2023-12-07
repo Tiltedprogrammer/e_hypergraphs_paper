@@ -1,10 +1,10 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=node] (0) at (-2, 15.5) {};
+		\node [style=node, label={above:1}] (0) at (-2, 15.5) {};
 		\node [style=hedge] (1) at (-2, 13.5) {$f$};
-		\node [style=node] (2) at (-2, 11.5) {};
-		\node [style=none] (3) at (-5.5, 13.5) {};
-		\node [style=none] (4) at (-8.5, 13.5) {};
+		\node [style=node, label={below:2}] (2) at (-2, 11.5) {};
+		\node [style=none] (3) at (-4.5, 13.5) {};
+		\node [style=none] (4) at (-7.5, 13.5) {};
 		\node [style=node] (8) at (-11.5, 18.5) {};
 		\node [style=none] (9) at (-11.5, 10) {};
 		\node [style=none] (10) at (-11.5, 16.5) {};
@@ -17,9 +17,9 @@
 		\node [style=none] (18) at (-12.5, 16.5) {};
 		\node [style=none] (19) at (-10.5, 16.5) {};
 		\node [style=node] (20) at (-11.5, 8) {};
-		\node [style=node] (5) at (-11.5, 15.5) {};
+		\node [style=node, label={above:1}] (5) at (-11.5, 15.5) {};
 		\node [style=hedge] (6) at (-11.5, 13.5) {$f$};
-		\node [style=node] (7) at (-11.5, 11.5) {};
+		\node [style=node, label={below:2}] (7) at (-11.5, 11.5) {};
 		\node [style=none] (21) at (-2, 7) {};
 		\node [style=none] (22) at (-2, 4) {};
 		\node [style=hedge] (24) at (-3, -2.5) {$f$};
@@ -34,8 +34,8 @@
 		\node [style=none] (37) at (-2, -6.5) {};
 		\node [style=none] (38) at (-4.25, -6.5) {};
 		\node [style=none] (39) at (-3, -6.5) {};
-		\node [style=node] (23) at (-3, -0.5) {};
-		\node [style=node] (25) at (-3, -4.5) {};
+		\node [style=node, label={above:1}] (23) at (-3, -0.5) {};
+		\node [style=node, label={below:2}] (25) at (-3, -4.5) {};
 		\node [style=node] (26) at (-1, -0.5) {};
 		\node [style=node] (28) at (-1, -4.5) {};
 		\node [style=node] (40) at (-3, 3.5) {};
@@ -47,6 +47,8 @@
 		\node [style=none] (46) at (-5.5, -2.5) {};
 		\node [style=none] (47) at (-8.5, -2.5) {};
 		\node [style=none] (48) at (-11.5, -2.5) {?};
+		\node [style=none] (49) at (-6, 14.25) {$f$};
+		\node [style=none] (50) at (-1.5, 5.5) {$g$};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw (0) to (1);

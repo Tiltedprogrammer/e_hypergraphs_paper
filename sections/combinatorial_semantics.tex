@@ -326,11 +326,9 @@ Now we are ready to define e-hypergraphs which are a combinatorial representatio
     Then, consider a relation $\consistency^{\mu} \subseteq (V_{\mathcal{G}} + E_{\mathcal{G}}) \times (V_{\mathcal{G}} + E_{\mathcal{G}})$ which we will call a \textit{consistency} relation and which has the following properties.
     \begin{enumerate}
         \label{def:consistency_properties}
-        \item For each $v \in V_{\mathcal{G}}$ $v \consistency^{\mu} v$
-        \item For each $e \in E_{\mathcal{G}}$ $e \consistency^{\mu} e$
+        \item The relation is an equivalence relation
         \item If $v \in s(e)$ then $v \consistency^{\mu} e$
         \item If $v \in t(e)$ then $v \consistency^{\mu} e$
-        \item The relation is symmetric and transitive
         \item The relation is defined only for edges $e$ and nodes $v$ such that $[v) = [e) \not = \varnothing$
     \end{enumerate}
     
@@ -345,7 +343,7 @@ Now we are ready to define e-hypergraphs which are a combinatorial representatio
 %     \item $<_c$ and $\#$ are mutually exclusive
 %     \item $\#$ is defined \textit{only} for $x \in (V_\mathcal{G} + E_\mathcal{G})$ such that $[x) \not \eq \varnothing$
 %     \item $\#$ should respect connectivity
-%     \item \update{Complement of $\conflict_{\mu}$ should be transitive}
+%     \item \update{Complement of $\hashtag_{\mu}$ should be transitive}
 %     \item for all distinct $x_1, x_2, x_3 \in (V_\mathcal{G} + E_\mathcal{G})$ $x_1 \#_{\mu} x_2$ and $x_2 \#_{\mu} x_3$ implies $x_1 \#_{\mu} x_3$
 %     \item for all $x, x' \in (V_\mathcal{G} + E_\mathcal{G})$ $x \#_{\mu} x'$ implies $[x) = [x')$
 %         \end{enumerate}
@@ -510,7 +508,7 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
         \subseteq
         \consistency_{\mathcal{G}}^{\mu}(\phi_{V};i_{V_{\mathcal{G}}}(x))
     \]
-    % Or, on per-component basis, if $i_{E_{\mathcal{F}}}(x_1) \in \conflict_{\mathcal{F}}(i_{E_{\mathcal{F}}}(x_2))$ then $i_{E_{\mathcal{G}}}(\phi_{E}(x_1)) \in \conflict_{\mathcal{G}}(i_{E_{\mathcal{G}}}(\phi_{E}(x_2)))$ and similarly for other types of $x_1,x_2$.
+    % Or, on per-component basis, if $i_{E_{\mathcal{F}}}(x_1) \in \hashtag_{\mathcal{F}}(i_{E_{\mathcal{F}}}(x_2))$ then $i_{E_{\mathcal{G}}}(\phi_{E}(x_1)) \in \hashtag_{\mathcal{G}}(i_{E_{\mathcal{G}}}(\phi_{E}(x_2)))$ and similarly for other types of $x_1,x_2$.
 \end{enumerate}
 
 % \update{Let's denote the fact of $x_1$ being the immediate predecessor of $x_2$ by $x_1 <_{\mu} x_2$.
@@ -643,11 +641,14 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     }
     \]
 
-    \begin{itemize}
-    \item First, we assume that $Z$ is a \textit{discrete} e-hypergraph, i.e. it has no edges.
-    \item Second, we assume that $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_i,v_j \in V_{Z}$. \update{This essentially means that $f,g$ do not map nodes to levels of different hierarchy.}
+    \begin{enumerate}
+    \item $Z$ is a \textit{discrete} e-hypergraph, i.e. it has no edges.
+    \item $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_i,v_j \in V_{Z}$. \update{This essentially means that $f,g$ do not map nodes to levels of different hierarchy.}
+    \item If $[f_{V}(v)) \not = \varnothing$ then $[g_{V}(v)) = \varnothing$ and vice versa.
+    \item $\consistency^{\mu}(f(v_i)) = \consistency^{\mu}(f(v_j))$ and $\consistency^{\mu}(f(g_i)) = \consistency^{\mu}(g(v_j))$.
+    \item $f$ and $g$ are mono.
     \label{pushout:assumptions}
-    \end{itemize}
+    \end{enumerate}
 
     Then, the pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
     First, a coproduct of $X+Y$ is computed which is 
@@ -675,7 +676,7 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     \[
         <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]_{V})
     \] where $i_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
-    For this we will consider several cases where \update{$f$ and $g$ are mono. I require mono just to simplify things, we can get rid of this requirement if everything else is ok.}.
+    We will consider several cases.
     Assume that $u$ is an element of $V_{X+Y}$ and
     \begin{enumerate}
         % \item $u$ has a pre-image $z$ in $V_{Z}$, $[z) \not = \varnothing$.
@@ -720,12 +721,9 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                     \] where $[v]$ is either in $s([u])$ or $t([u])$.
                      The second assumption in~\ref{pushout:assumptions} guarantees that all candidates for $[v]$ share the same predecessor, i.e. the definition does not depend on a particular $[v]$.
               \end{enumerate}
-    \update{We will also build this relation in steps, first we do steps for nodes (1) - (3), then steps (1) - (2) for edges and finally, step (4) for nodes.}
-
-    \begin{remark}
-        Essentially, what we build above is that if the relation is undefined, it is inherited from either incident nodes or edges.
-    \end{remark}
-    \update{If $f$ and $g$ are not mono, the definitions stay the same as $i_{2,E}$ and $i_{1,E}$ are mono.}
+    \update{We will also build this relation in steps, first we do steps for nodes (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for nodes until fixed point.
+            Essentially, this interleaving means that nodes inherit the relation from incident edges and vice versa.
+    }
     Clearly, all the cases above are disjoint.
 
     Let's check that this is a well-defined function.
@@ -788,16 +786,16 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
     Let's now define $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}$.
     We can consider the original consistency relation as a function $\consistency_{X+Y}^{\mu} : (V_{X} + V_{Y}) + (E_{X} + E_{Y}) \to 2^{(V_{X} + V_{Y}) + (E_{X} + E_{Y})}$.
     Quotienting the range of the function gives us $\consistency_{X+Y}'^{\mu} : V_{X} + V_{Y} + E_{X} + E_{Y} \to 2^{(\sfrac{V_{X} + V_{Y}}{\sim}) + \sfrac{(E_{X} + E_{Y})}{\sim}}$, which is essentially $\langle []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}} \rangle^{*}$ (a copairing extended to sequences that we will further denote as $\langle []_{V}^{\consistency^{\mu}} []_{E}^{\consistency^{\mu}} \rangle$) applied to the return value of $\consistency_{X+Y}^{\mu}$.
-    We then define the new relation for edges as
+    We then first define an auxiliary relation $\consistency^{\hashtag}$ for edges as
     \begin{enumerate}
         \item If $\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) \not = \varnothing$, then
                 \begin{align*}
-                    \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{E_{X} + E_{Y}}([e]_{E})) =
-                    (\langle []_{V}^{\consistency}, []_{E}^{\consistency}\rangle^{*}(\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e))))^{c}
+                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) =
+                    \langle []_{V}^{\consistency}, []_{E}^{\consistency}\rangle^{*}(\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)))
                 \end{align*}
-        \item $\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exists $[v]$ in $s([e])$ or $t([e])$ such that $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]) \not = \varnothing$, then
+        \item $\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exists $[v]$ in $s([e])$ or $t([e])$ such that $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]) \not = \varnothing$, then
         \[
-            \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{E_{X} + E_{Y}}([e]_{E})) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v]_{V}))
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{V_{X} + V_{Y}}([v]_{V}))
         \]
     \end{enumerate}
     
@@ -807,42 +805,49 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
 
     \item If there exists $v' \in V_{X+Y}$ such that $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$
     \[
-        \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v]_{V})) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*}(\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))))^{c}
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V})) = \langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*}(\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v')))
     \]
-    \item If for all $v' \in V_{X+Y}$ such that $v' \sim v$, $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v')) = \varnothing$ and there exists $e \in E_{X+Y}$ such that either $[v] \in s([e])$ or $[v] \in t([e])$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) \not = \varnothing$, then
+    \item If for all $v' \in V_{X+Y}$ such that $v' \sim v$, $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v')) = \varnothing$ and there exists $e \in E_{X+Y}$ such that either $[v] \in s([e])$ or $[v] \in t([e])$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) \not = \varnothing$, then
     \[
-        \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v]_{V})) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{E_{X} + E_{Y}}([e]_{E}))
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{E_{X} + E_{Y}}([e]_{E}))
     \]
     \end{enumerate}
-        where $i_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$ and $c$ is a reflexive, symmetric and transitive closure.
-        % That is, the relation above is the smallest relation that contains $\langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\bigcup_{x' \in E_{X} + E_{Y} | [x']_{E} = [x]_{E}} i_{E_{X} + E_{Y}}(x'))$ and such that if $[x_1] <_{c,\sfrac{X+Y}{\sim}}([x_2])$ and $i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_1] \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_3])$ then $i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_2] \in \conflict_{\sfrac{X+Y}{\sim}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[x_3])$.
-        % And similarly for nodes.
+    where $i_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
+    We also build this relation step by step as the relation above: first steps (1) for nodes and edges and then we interleave steps for edges and for nodes. 
 
-          
+    We then define
+    \[
+      \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c}
+    \]
+    \[
+      \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))^{c}  
+    \]
+    where $c$ is a reflexive, symmetric and transitive closure.
+
     Again, we need to check that this is a well-defined function and that our $([]_{V},[]_{E})$ is indeed a homomorphism with respect to $\consistency^{\mu}$.
 
     \begin{itemize}
-        \item 
+        \item Let us show well-definedness.
         \begin{itemize}
 
             \item  Assume that $v_1, v_2 \in V_{X+Y}$ and $v_1 \sim v_2$ then $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{E_{X} + E_{Y}}[v_1]) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{E_{X} + E_{Y}}[v_2])$.
               $v_1 \sim v_2$ implies there exists $z \in V_{Z}$ such that $v_1 = f_{V};i_{1,V}(z)$ and $v_2 = g_{V};i_{2,V}(z)$ and supposing that for any of $v_i$ $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_i)) \not = \varnothing$, then
               \begin{align*}
-                \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v_1])) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_i))))^{c}
-                %      \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\conflict_{X+Y}(i_{E_{X} + E_{Y}}(t_1))) = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\conflict_{X+Y}(f_{E};i_{1,E};i_{E_{X} + E_{Y}}(z)) = \\
+                \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_i))))^{c}
+                %      \langle []_{V}^{\hashtag}, []_{E}^{\hashtag} \rangle^{*}(\hashtag_{X+Y}(i_{E_{X} + E_{Y}}(t_1))) = \langle []_{V}^{\hashtag}, []_{E}^{\hashtag} \rangle^{*}(\hashtag_{X+Y}(f_{E};i_{1,E};i_{E_{X} + E_{Y}}(z)) = \\
                 %      \text{By homomorphism-ness of $f_{E};i_{1,E}$} \\
-                %      = \langle []_{V}^{\conflict}, []_{E}^{\conflict} \rangle^{*}(\langle f_{V};i_{1,V};i_{V_{X} + V_{Y}} ,f_{E};i_{1,E};i_{E_{X} + E_{Y}} \rangle^{*}(\conflict_{Z}(i_{E_{Z}}(z)))
+                %      = \langle []_{V}^{\hashtag}, []_{E}^{\hashtag} \rangle^{*}(\langle f_{V};i_{1,V};i_{V_{X} + V_{Y}} ,f_{E};i_{1,E};i_{E_{X} + E_{Y}} \rangle^{*}(\hashtag_{Z}(i_{E_{Z}}(z)))
               \end{align*}
               Similarly,
               \[
-                \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v_2])) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_i))))^{c}
+                \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_i))))^{c}
               \]
               and we get well-definedness on the nose.
               We do not need to check well-definedness for edges as $e_1 \sim e_2$ implies $e_1 = e_2$.
-            \item Now suppose that both $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_1)) = \varnothing$ and $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_2)) = \varnothing$ and there exists $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) \not = \varnothing$ such that $[v_1] \in s([e])$ (and automatically $[v_2] \in s([e])$).
-                Then,
+            \item Now suppose that both $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_1)) = \varnothing$ and $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_2)) = \varnothing$.
+                  This would mean that for all $v_i \in V_{Z}$ $\consistency^{\mu}(f_{V}(v)) = \varnothing$ and $\consistency^{\mu}(g_{V}(z)) = \varnothing$ and automatically
                   \[
-                    \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
+                    \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
                   \]
             \end{itemize}
         \item Putting $\phi = ([]_{V},[]_{E})$ into the definition of a homomorphism gives us
@@ -853,9 +858,9 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
              \]
             By definition, 
             \[
-                \consistency_{\sfrac{X+Y}{\sim}}^{\mu}([]_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}(x)) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*} (\bigcup_{x' \in V_{X} + V_{Y} | [x']_{V} = [x]_{V}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(x))))^{c}
+                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}([]_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}(x)) = \langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*} (\bigcup_{x' \in V_{X} + V_{Y} | [x']_{V} = [x]_{V}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(x)))
             \]
-            and by recalling that $[]_V^{\consistency} = []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}$ and similarly for $[]_{E}^{\consistency}$ we get the inclusion.
+            and by recalling that $[]_V^{\consistency} = []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}$ and similarly for $[]_{E}^{\consistency}$ we get the inclusion $\subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}([]_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}(x))$ and the latter is the subset of $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}([]_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}}(x))$ because it is a closure.
             If $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(x)) = \varnothing$ then homomorphismness is true because empty set is a subset of any set.
             Similarly for edges.
     \end{itemize}
@@ -870,39 +875,53 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
 \end{definition}
 
 \begin{lemma}
+    \label{lemma:choice_of_nodes_agnostic}
     Suppose $[e) = \varnothing$ and there exists $[v_1] \in s([e])$ and $[v_2] \in s([e])$ such that $[[v_1]) \not = \varnothing$ and $[[v_2]) \not = \varnothing$, then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{V_{X} + V_{Y}}([v_2]))$.
     \begin{proof}
-        Because we build the relation in steps, $[[v_1]) \not = \varnothing$ and $[[v_2]) \not = \varnothing$ mean that was achieved after running steps (1)-(3) for nodes.
+        We will show the statement is true for the base case when $[v_1]$ and $[v_2]$ do not inherit their relations.
+        In other words, $[[v_1]) \not = \varnothing$ and $[[v_2]) \not = \varnothing$ mean that was achieved after running steps (1)-(3) for nodes.
         From $[v_1] \in s([e])$ we get that there exists $v'_1$ such that $v_1 \sim v'_1$ and $v'_1 \in s(e)$ and similarly $v'_2 \sim v_2$.
         \begin{itemize}
-            \item $v_1 = v'_1$ and $v_1 \in s(e)$, and $v_2 = v'_2$ $v_2 \in s(e)$.
+            \item $v_1 = v'_1$, $v_1 \in s(e)$, and $v_2 = v'_2$, $v_2 \in s(e)$.
             \begin{itemize}
                 \item $v_1$ has a pre-image $f_{V};i_{1,V}(z)$ and hence $[f_{V}(z)) = \varnothing$ (because $[e) = \varnothing$) and $v_2$ has a pre-image $f_{V};i_{1,V}(z')$.
                       Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [i_{2,E}(e_{y})]$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [i_{2,E}(e'_{y})]$.
                       Because $e_{y} = <_{c,Y}^{\mu}(i_{V_{Y}}(g_{V}(z)))$ and $e'_{y} = <_{c,Y}^{\mu}(i_{V_{Y}}(g_{V}(z')))$ we have $e_{y} = e'_{y}$ because under our assumptions nodes in the image of $g_{V}$ should share the same predecessor.
                       Hence, $[i_{2,E}(e_{y})] = [i_{2,E}(e'_{y})]$.
                 \item Case for $v_1 = g_{V};i_{2,V}(z)$ is symmetric.
-
-                It can not be the case that the node has no pre-image as $[[v_i]) \not = \varnothing$ and $[e) = \varnothing$ implies that step (4) is needed but we only completed steps (1)-(3).
+                \item Case when $v_1$ has no pre-image in $V_Z$ is not possible, because it would mean that $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_1))]$ (according to step (3)) which is not possible as it would mean that $[e) \not = \varnothing$ (because $[v_1) \not = \varnothing$).
             \end{itemize}
-            \item $v_1 \not = v'_1$ and $v'_2 \not = v_2$ and hence $v'_1 \in s([e])$ and $v'_2 \in s(e)$.
+            \item $v_1 \not = v'_1$ and $v'_2 \not = v_2$ and hence $v'_1 \in s(e)$ and $v'_2 \in s(e)$.
             \begin{itemize}
                 \item $v'_1$ has a pre-image $f_{V};i_{1,V}(z)$ and hence $[f_{V}(z)) = \varnothing$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'_1])) = [i_{2,E}(e_{y})]$.
                       $v'_2$ has a pre-image $f_{V};i_{1,V}(z')$ and for the same reason 
-                      \[
-                        <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'_1])) = [i_{2,E}(e_{y})] = [i_{2,E}(e'_{y})] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'_2])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
-                      \]
+                      \begin{align*}
+                        &<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'_1])) =\\ 
+                        &[i_{2,E}(e_{y})] = [i_{2,E}(e'_{y})] =\\
+                        &<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'_2])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
+                    \end{align*}
+                \item Case when $v'_1 = g_{V};i_{2,V}(z)$ is similar.
             \end{itemize}
-            \item The remaining cases are similar.
+            \item $v_1 = v'_1$, $v'_2 \sim v_2$ and $v_1 \in s(e)$, $v'_2 \in s(e)$.
+            \begin{itemize}
+                \item $v_1 = f_{V};i_{1,V}(z)$ and hence $v'_2 = f_{V};i_{1,V}(z')$ and $[f_{V}(z)) = \varnothing$ as well as $[f_{V}(z')) = \varnothing$.
+                      Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [i_{2,E}(e_{y})]$ and similarly $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [i_{2,E}(e'_{y})]$.
+                      And by the following the same reasoning as above we get the equality.
+                \item Case when $v_1 = g_{V};i_{2,V}(z)$ is similar.
+            \end{itemize}
+            \item The remaining case is similar.
         \end{itemize}
+        The proofs for the cases when $[v_1] \in t([e])$ and $[v_2] \in t([e])$ and for the combinations of $t,s$ are similar.
     \end{proof}
 \end{lemma}
 
 \begin{lemma}
+    \label{lemma:choice_of_edges_agnostic}
     Suppose $[v) = \varnothing$ and there exist $e_1$ and $e_2$ such that $[[e_1]) \not = \varnothing$ and $[[e_2]) \not = \varnothing$ and $[v] \in s([e_1])$, $[v] \in s([e_2])$.
     Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))$
     \begin{proof}
-        Once again, $[[e_1]) \not = \varnothing$ and $[[e_2]) \not = \varnothing$ mean that this was achieved after performing steps (1) - (2) for edges.
+        We will again show the base case when $[e_1]$ and $[e_2]$ inherit the relation atmost at 1 step.
+        That is, $[[e_1]) \not = \varnothing$ and $[[e_2]) \not = \varnothing$ mean that this was achieved after performing steps (1) - (2) for edges.
         We then have the following cases.
         \begin{itemize}
             \item $v \in s(e_1)$ and $v \in s(e_2)$.
@@ -922,12 +941,11 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                           Then, $e'_{x} = e_{x}$ because the nodes in the image of $f$ should have the same predecessor.
                     \item $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [i_{1,E}(e_{x})]$ and 
                           $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [i_{2,E}(e_{y})]$
-                          $e_1$ and $e_2$ should both have pre-image in either $E_{Y}$ or $E_{X}$. The only possible case then is that $v_2 \in s(e_2)$ and $v'_1 \in s(e_1)$ and $v_1 \sim v'_1$.
-                          Then $[v_1') = \varnothing$ and $[v_2) = \varnothing$. Show it is not possible.
+                          $e_1$ and $e_2$ should both have pre-image in either $E_{Y}$ or $E_{X}$ (because they are from the same connected component).
                           \begin{itemize}
                             \item $v_1 = f_{V};i_{1,V}(z)$ and $[f_{V}(z)) \not = \varnothing$.
-                                  Then, necessarily, $v'_1 \in s(e_1)$ and $v_1 \sim v'_1$ and $v'_1 = g_{V};i_{2,V}$ and hence $e_1$, $e_2$ have pre-image in $E_{Y}$.
-                                  If $v_2 \in s(e_2)$ then it should have a pre-image in $V_{Y}$ and it cant be the case that $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}([v_2])}) = [i_{2,E}(e_y)]$.
+                                  Then, necessarily, $v'_1 \in s(e_1)$ and $v_1 \sim v'_1$ and $v'_1 = g_{V};i_{2,V}(z)$ and hence $e_1$, $e_2$ have pre-image in $E_{Y}$.
+                                  If $v_2 \in s(e_2)$ then it should have a pre-image in $V_{Y}$ and it can not be the case that $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [i_{2,E}(e_y)]$.
                                   If $v'_2 \in s(e_2)$ and $v_2 \sim v'_2$ then $v'_2$ has a pre-image in $V_{Y}$ and $v_2$ has a pre-image in $V_{X}$, i.e. $v_2 = f_{V};i_{1,V}(z_2)$. 
                                   The equation above implies that $[g_{V}(z_2)) \not = \varnothing$ which is not the case as $[v'_2) = \varnothing$.
                             \item $v_1 = g_{V};i_{2,V}(z_1)$ and $[g_{V}(z_1)) = \varnothing$. 
@@ -936,7 +954,7 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                                   If $v'_2 \in s(e_2)$ then it should have a pre-image in $V_{Y}$, i.e. $v'_2 = g_{V};i_{2,V}(z_2)$ and then it should be $[g_{V}(z_2)) \not = \varnothing$ which is not the case.
                           \end{itemize}
                     \item Other cases are not possible, for example, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X}+V_{Y}}{\sim}}([v_1])) = [i_{1,E}(e_{x})]$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X}+V_{Y}}{\sim}}([v_2])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}})(v_2)]$
-                          would mean that $e_2$ has a predecessor because $v_2$ does.
+                          would mean that $e_2$ has a predecessor because $v_2$ does and $v_2 \in s(e_2)$ because $v_2$ has no pre-image in $V_{Z}$. $[v_2]$ can not inherit the relation because we consider inheritance only upto 1 step: inheritance for $v_2$ would mean that $v$ inherits the relation in more than 1 step.
                   \end{itemize}
             \item $v' \in s(e_1)$ and $v \in s(e_2)$ and $v' \sim v$
                   Suppose $[e_1) \not = \varnothing$. Then,
@@ -952,39 +970,62 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                           If $v_2 = f_{V};i_{1,V}(z_2)$, then $[f_{V}(z_2)) \not = \varnothing$ and hence $v'_2 \in s(e_2)$ and $v'_2 \sim v_2$.
                           It should be the case that $v = g_{V};i_{2,V}(z)$ (if it had a pre-image in $V_{X}$ it would share the predecessor with the pre-image of $v_2$, but $[v) = \varnothing$) and $v' = f_{V};i_{1,V}(z)$, then $e_1$ has a pre-image in $E_{X}$ and $e_2$ has a pre-image in $E_{Y}$.
                           Then $v'$ and $v_2$ both have pre-image in $V_{X}$ and because of the assumption $[f_{V}(z)) = [f_{V}(z_2))$ and $[<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))] = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] = [i_{1,E}(e_x)] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))$.
-                    \item \update{TODO}
-                  \end{itemize}
+                          The case when $v_2 = g_{V};i_{2,V}(z_2)$ is symmetric.
+                    \item $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}})(v_2)]$ is not possible as it would mean that $v_2 \in s(e_2)$, but $[e_2) = \varnothing$.
+                    \item $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e']))$ is also not possible as it would mean that $e_2$ inherits the relation in more than 1 step.
+                \end{itemize}
+                Cases $[e_1) = \varnothing$ and $[e_2) = \varnothing$ and $[e_1) = \varnothing$, $[e_2) \not = \varnothing$ are not possible.
             \item $v \in s(e_1)$ and $v' \in s(e_2)$ and $v' \sim v$
+                  This is symmetric to the above.
             \item $v' \in s(e_1)$ and $v'' \in s(e_2)$ and $v' \sim v$, $v'' \sim v$. 
-                  The last bit also means that $v'' \sim v'$, but because $f$ and $g$ are mono we have at most 2 elements in each equivalence class.
+                  The last bit also means that $v'' \sim v'$, but because $f$ and $g$ are mono we have at most 2 elements in each equivalence class so it reduces to the cases above.
         \end{itemize}
+        The proofs for the cases when $[v] \in t([e_1])$ and $[v] \in t([e_2])$ and for the combinations of $t,s$ are similar.
     \end{proof}
 \end{lemma}
+
+\begin{remark}
+    To get the result for arbitrary number of steps we take the above lemmas as base case and procceed by induction on the number of steps.
+\end{remark}
+
+\begin{corollary}
+    \label{corollary:nodes}
+    If $[v) = \varnothing$ and $[[v]) \not = \varnothing$ then there exist $v''$ such that there exists an undirected path from $v$ to $v''$ and there exists $v' \sim v''$ such that
+    \begin{align*}
+         [v') \not = \varnothing,\\
+         <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))
+    \end{align*}
+    In other words, there exists the node which initiates the inheritance for nodes that had no predecessor.
+\end{corollary}
+\begin{corollary}
+    \label{corollary:edges}
+    If $[e) = \varnothing$ and $[[e]) \not = \varnothing$ then there exist $[v]$ such that there is an undirected path from $e$ to $v$ and such that there exists $v' \sim v$
+    \begin{align*}
+        [v') \not = \varnothing,\\
+        <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))
+    \end{align*}  
+    In other words, there exists the node which initiates the inheritance for edges that had no predecessor.
+\end{corollary}
 
 \begin{lemma}
     $<_{c,\sfrac{X+Y}{\sim}}^{\mu}$ is irreflexive, assymetric and respects connectivity.
     \begin{proof}
         We will separately consider each property.
         \begin{itemize}
-            \item Suppose there exist $[e]$ such that $[e] = <_{c,\sfrac{X+Y}{\sim}^{\mu}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))$.
+            \item Suppose there exist $[e]$ such that $[e] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))$.
                   Then we have two cases.
                   \begin{itemize}
-                    \item Assume $<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = e_1$, then  $<_{c,\sfrac{X+Y}{\sim}^{\mu}}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = [e_1]$. 
-                          This would mean that $e_1 = e$ which would mean that the relation $<_{c,X+Y}^{\mu}$ is not irreflexive.
-                    \item Assume $[e) = \varnothing$ and for all $v_{i} \in s(e)$ and $v_{j} \in t(e)$ $[[v_i]) \not = \varnothing$ $[[v_j]) \not = \varnothing$.
-                          Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
+                    \item Assume $<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = e_1$, then  $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = [e_1]$. 
+                          This would mean that $e_1 = e$ which would mean that the relation $<_{c,X+Y}^{\mu}$ is not irreflexive because $e_1$ is the predecessor of $e$.
+                    \item Assume $[e) = \varnothing$, then, by Corollary~\ref{corollary:edges} there exists $v$ such there is a path from $e$ to $v$ and there exists $v' \sim v$ and $[v') \not = \varnothing$ and therefore $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([v]))$.
                           \begin{itemize}
-                            \item If $v$ has no pre-image in $V_{Z}$, then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))] = [e]$.
-                                  This would mean that $e$ is a predecessor of $v$ in $X+Y$, but $v$ is either in the sources or targets of $e$ which violates respectful connectivity condition.
-                            \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ in $V_{Z}$ such that $[f_{V}(z)) \not = \varnothing$ and $[g_{V}(z)) = \varnothing$.
-                                  Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{1,E}(e_x)] = [e]$.
-                                  This means that $e$ has a pre-image in $E_{X}$, but because $v$ also has a pre-image in $V_{X}$ and its set of predecessors is not empty it would mean that $e$ has a predecessor which it does not.
-                            \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ in $V_{Z}$ such that $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$.
-                                  Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{2,E}(e_y)] = [e]$.
-                                  It means that $e$ has a pre-image in $E_{Y}$, but $v$ is its source or target and has a pre-image in $V_{Y}$ which is not possible.
-                            \item The remaining two cases for $v = g_{V};i_{2,V}(z)$ are symmetric.
+                            \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ in $V_{Z}$ and since there is a path from $e$ to $v$ $[f_{V}(z)) = \varnothing$ and $v' = g_{V};i_{2,V}(z)$, $[g_{V}(z)) \not = \varnothing$.
+                                  Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [g_{V};i_{V_{Y}};<_{c,Y}^{\mu};i_{2,E}(z)] = [e]$.
+                                  This means that $e$ has a pre-image in $E_{Y}$, but because there is a path from $e$ to $v$, $e$ should have a pre-image in $E_{X}$ (because $v$ has one in $V_{X}$). 
+                                  Contradiction.
+                            \item Case when $v = g_{V};i_{2,V}(z)$ is symmetric.
                           \end{itemize}
-                  \end{itemize}$[<_{c,X+Y}^{\mu}(e)]$ and $e = <_{c,X+Y}^{\mu}(e)$ because edges are not identified.
+                  \end{itemize}                  
                     We do not need to check this requirement for nodes because a node can not be a predecessor.
             \item Let $e_1,e_2$ be edges. 
                   Then, if $[e_1] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))$ it must not be the case that $[e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
@@ -995,65 +1036,75 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                     \begin{itemize}
                         \item $<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1)) = e_4$ then $[e_2] = [e_4]$ and $e_2 = e_4$.
                          This would mean that $e_1$ is a predecessor of $e_2$ and vice versa which violates the e-hypergraphness of $X+Y$.
-                        \item $[e_1) = \varnothing$ and for all $v_i \in s(e_1)$ and $v_j \in t(e_1)$ $[[v_i]) \not = \varnothing$ and $[[v_j]) \not = \varnothing$.
+                        \item $[e_1) = \varnothing$ and then by Corollary~\ref{corollary:edges} there exists $v$ such that there is a path from $e_1$ to $v$ and there exists $v' \sim v$ such that $[v') \not = \varnothing$.
                               Then, $[e_2] = [<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])]$.
                               \begin{itemize}
-                                \item If $v$ has no pre-image in $V_{Z}$, then 
-                                \[
-                                    [<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])] = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))] = [e_2]
-                                \]
-                                      It would mean that $e_2$ is a predecessor of $v$ and, by connectivity, a predecessor of $e_1$.
-                                      However, $[e_1) = \varnothing$ and we get a contradiction.
-                                \item If $v$ has a pre-image $f_{V};i_{1,V}(z)$ in $V_{Z}$ then necessarily $[f_{V}(z)) = \varnothing$ (because $[e_1) = \varnothing$) and hence $[g_{V}(z)) \not = \varnothing$.
+                                % \item If $v$ has no pre-image in $V_{Z}$, then 
+                                % \[
+                                %     [<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])] = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))] = [e_2]
+                                % \]
+                                %       It would mean that $e_2$ is a predecessor of $v$ and, by connectivity, a predecessor of $e_1$.
+                                %       However, $[e_1) = \varnothing$ and we get a contradiction.
+                                \item If $v$ has a pre-image $f_{V};i_{1,V}(z)$ in $V_{Z}$ (and hence $e_1$ has a pre-image in $E_{X}$) then necessarily $[f_{V}(z)) = \varnothing$ (because $[e_1) = \varnothing$) and hence $[g_{V}(z)) \not = \varnothing$.
                                       Then,
                                       \[
                                         [<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])] = [i_{2,E}(e_y)] = [e_2]
                                       \]
-                                      This means that $e_2$ has a pre-image in $E_{Y}$, but because $e_1$ is a predecessor of $e_2$ they both should have pre-image in either $E_{X}$ or $E_{Y}$.
+                                      This means that $e_2$ has a pre-image in $E_{Y}$, but because $e_1$ is the predecessor of $e_2$ they both should have pre-image in either $E_{X}$ or $E_{Y}$.
                                 \item Case when $v$ has a pre-image $g_{V};i_{2,V}(z)$ is symmetric to the above.
                               \end{itemize}
                         \end{itemize}
-                        \item $[e_2) = \varnothing$ and for all $v_i \in s(e_2)$ and $v_j \in t(e_2)$ $[[v_i]) \not = \varnothing$ $[[v_j]) \not = \varnothing$.
+                        \item $[e_2) = \varnothing$ and by Corollary~\ref{corollary:edges} there exits $v_2$ such that there is a path from $e_2$ to $v_2$ and there exists $v'_2 \sim v_2$ such that $[v'_2) \not = \varnothing$. 
                               Then, 
                               \[
-                                <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e_2])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [e_1]
+                                <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e_2])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [e_1]
                               \]
-                              The cases when $[e_1) \not = \varnothing$ are similar to the above, so we will just jump to the interesting case when 
+                              The case when $[e_1) \not = \varnothing$ are similar to the above, so we will just jump to the interesting case when 
                               $[e_1) = \varnothing$ and
                               \[
-                                <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [e_2]
+                                <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [e_2]
                               \]
                               The cases we have are the following.
                               \begin{itemize}
-                                \item $v$ has no pre-image in $V_{Z}$. 
-                                      Then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))] = [e_1]$
-                                      This implies that $e_1$ is the predecessor of $e_2$ because it is the predecessor of $v$ and $v$ is $e_2$'s sources of targets.
-                                      \begin{itemize}
-                                        \item $v'$ has no pre-image in $V_{Z}$.
-                                        Then $<_{c,\sfrac{X+Y}{\sim}}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] = [e_2]$.
-                                        This implies that $e_2$ is the predecessor of $v'$ and hence of $e_1$. 
-                                        This contradicts the assymetry of $<_{c,X+Y}^{\mu}$.
-                                        \item $v'$ has a pre-image $f_{V};i_{1,E}(z) = v'$ in $V_{Z}$ (and so should $e_1$ do) and therefore $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$ because $[e_1) = \varnothing$.
-                                              Then, $<_{c,\sfrac{X+Y}{\sim}}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [i_{2,E}(e_y)] = [e_2]$.
-                                              This means that $e_2$ has a pre-image in $E_{Y}$ but $e_1$ is the predecessor of $e_2$ and hence they should both have pre-image in $E_{X}$ (as $e_1$ does so).
-                                        \item Case when $v' = g_{V};i_{2,V}(z)$ is symmetric.
-                                        \end{itemize}
-                                \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ (and so should $e_2$ do) in $Z_{V}$ and therefore $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$.
-                                      Then, $<_{c,\sfrac{X+Y}{\sim}}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [g_{V};i_{V_{Y}};<_{c,Y}^{\mu};i_{2,E}(z)] = [i_{2,E}(e_{y})] = [e_1]$.
-                                      This implies that $e_1$ has a pre-image in $E_{Y}$.
-                                      \begin{itemize}
-                                        \item $v'$ has no pre-image in $V_{Z}$.
-                                              Then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] = [e_2]$.
-                                              This implies that $e_2$ is the predecessor of $v'$ and hence of $e_1$.
-                                              But $[e_1) = \varnothing$ and hence we have a contradiction.
-                                        \item $v'$ has a pre-image $f_{V};i_{1,V}(z') = v'$ in $V_{Z}$ (and so should $e_1$ do) and therefore $[f_{V}(z')) = \varnothing$ and $[g_{V}(z')) \not = \varnothing$.
-                                              This also means that $[g_{V}(z)) = [g_{V}(z'))$.
-                                              By definition we have that $e_1$ is the image of the predecessor of $g_{V}(z')$ and $e_2$ is the image of the predecessor of $g_{V}(z)$ and because their predecessors are equal it implies $e_1 = e_2$ but the relation is irreflexive.
-                                        \item $v'$ has a pre-image $g_{V};i_{2,V}(z') = v'$ in $V_{Z}$ and therefore $[f_{V}(z')) \not = \varnothing$ and $[g_{V}(z')) = \varnothing$.
-                                              This is impossible as it violates the requirement that $[f_{V}(z)) = [f_{V}(z'))$ for all $z,z' \in V_{Z}$.
-                                    \end{itemize}
-                                \item The case when $v$ has a pre-image $g_{V};i_{2,V}(z)$ is symmetric.
+                                \item $v_2 = f_{V};i_{1,V}(z_2)$ and necessarily $[f_{V}(z_2)) = \varnothing$ and $v'_2 = g_{V};i_{2,V}(z_2)$.
+                                Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [g_{V};i_{V_{Y}};<_{c,Y}^{\mu};i_{2,E}(z_2)] = [e_1]$ which also implies that $e_1$ has a pre-image in $E_{Y}$.
+                                \begin{itemize}
+                                    \item $v_1 = g_{V};i_{2,V}(z_1)$ (because there is a path from $e_1$ to $v_1$) and necessarily $[g_{V}(z_1)) = \varnothing$ (because $[e_1) = \varnothing$) and $v'_1 = f_{V};i_{1,V}(z_1)$.
+                                    Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [f_{V};i_{V_{X}};<_{c,X}^{\mu};i_{1,E}(z_1)] = [e_2]$  
+                                    However, it means that $[f_{V}(z_2)) = \varnothing$ and $[f_{V}(z_1)) \not = \varnothing$ which violates our assumptions.
                                 \end{itemize}
+                                \item Case when $v_2 = g_{V};i_{2,V}(z_2)$ is symmetric.
+                              \end{itemize}
+                            %   \begin{itemize}
+                            %     \item $v$ has no pre-image in $V_{Z}$. 
+                            %           Then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))] = [e_1]$
+                            %           This implies that $e_1$ is the predecessor of $e_2$ because it is the predecessor of $v$ and $v$ is $e_2$'s sources of targets.
+                            %           \begin{itemize}
+                            %             \item $v'$ has no pre-image in $V_{Z}$.
+                            %             Then $<_{c,\sfrac{X+Y}{\sim}}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] = [e_2]$.
+                            %             This implies that $e_2$ is the predecessor of $v'$ and hence of $e_1$. 
+                            %             This contradicts the assymetry of $<_{c,X+Y}^{\mu}$.
+                            %             \item $v'$ has a pre-image $f_{V};i_{1,E}(z) = v'$ in $V_{Z}$ (and so should $e_1$ do) and therefore $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$ because $[e_1) = \varnothing$.
+                            %                   Then, $<_{c,\sfrac{X+Y}{\sim}}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [i_{2,E}(e_y)] = [e_2]$.
+                            %                   This means that $e_2$ has a pre-image in $E_{Y}$ but $e_1$ is the predecessor of $e_2$ and hence they should both have pre-image in $E_{X}$ (as $e_1$ does so).
+                            %             \item Case when $v' = g_{V};i_{2,V}(z)$ is symmetric.
+                            %             \end{itemize}
+                            %     \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ (and so should $e_2$ do) in $Z_{V}$ and therefore $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$.
+                            %           Then, $<_{c,\sfrac{X+Y}{\sim}}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [g_{V};i_{V_{Y}};<_{c,Y}^{\mu};i_{2,E}(z)] = [i_{2,E}(e_{y})] = [e_1]$.
+                            %           This implies that $e_1$ has a pre-image in $E_{Y}$.
+                            %           \begin{itemize}
+                            %             \item $v'$ has no pre-image in $V_{Z}$.
+                            %                   Then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] = [e_2]$.
+                            %                   This implies that $e_2$ is the predecessor of $v'$ and hence of $e_1$.
+                            %                   But $[e_1) = \varnothing$ and hence we have a contradiction.
+                            %             \item $v'$ has a pre-image $f_{V};i_{1,V}(z') = v'$ in $V_{Z}$ (and so should $e_1$ do) and therefore $[f_{V}(z')) = \varnothing$ and $[g_{V}(z')) \not = \varnothing$.
+                            %                   This also means that $[g_{V}(z)) = [g_{V}(z'))$.
+                            %                   By definition we have that $e_1$ is the image of the predecessor of $g_{V}(z')$ and $e_2$ is the image of the predecessor of $g_{V}(z)$ and because their predecessors are equal it implies $e_1 = e_2$ but the relation is irreflexive.
+                            %             \item $v'$ has a pre-image $g_{V};i_{2,V}(z') = v'$ in $V_{Z}$ and therefore $[f_{V}(z')) \not = \varnothing$ and $[g_{V}(z')) = \varnothing$.
+                            %                   This is impossible as it violates the requirement that $[f_{V}(z)) = [f_{V}(z'))$ for all $z,z' \in V_{Z}$.
+                            %         \end{itemize}
+                            %     \item The case when $v$ has a pre-image $g_{V};i_{2,V}(z)$ is symmetric.
+                            %     \end{itemize}
                   \end{itemize} 
                   Once again, we do not need to check for nodes as a node can not be on the lefthand side of the relation.
             \item We need to show that if $[v] \in s([e_1])$ and $[e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$ then $[e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])$.
@@ -1070,49 +1121,36 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                                     [e_2] = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
                                   \]
                             \end{itemize}
-                    \item $[e_1) = \varnothing$ and for some $[v_i] \in s([e_1]), [v_j] \in t([e_1])$ $[[v_i]) \not = \varnothing,\; [[v_j]) \not = \varnothing$. 
-                    Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [e_2]$.
-                    We now need to check that $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
-                    \begin{itemize}
-                        \item If $v$ has no pre-image in $V_{Z}$ and $<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v)) = \varnothing$, then, by definition
-                              \[
-                                <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
-                              \]
-                    \end{itemize}
-                    We have that $[v] \in s([e_1])$ and $[v'] \in s([e_1])$ (or $[v'] \in t([e_1])$). 
-                    This means there exists $v_1$ such that $[v] = [v_1]$ and $v_1 \in s(e_1)$ and there exists $v_2$ such that $[v_2] = v'$ and $v_2 \in s(e_1)$.
-                    \begin{itemize}
-                        \item $v = v_1$ and $v \in s(e_1)$ and $v' = v_2$ and $v' \in s(e_1)$. 
-                              Because $[e_1) = \varnothing$, then $[v) = \varnothing$ and $[v') = \varnothing$ because the relation respects connectivity.
-                              \begin{itemize}
-                                \item If $v = f_{V};i_{1,V}(z)$ then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{2,E}(e_y)]$.
-                                      If $v' = f_{V};i_{1,V}(z')$ then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{2,E}(e'_y)]$.
-                                      We then have $e'_y = e_y$ because by assumption all nodes from $V_{Z}$ have the same immediate predecessor under $g$.
-                                \item If $v = f_{V};i_{1,V}(z)$ then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{2,E}(e_y)]$ and $v'$ has no pre-image in $V_{Z}$ then there necessarily exists an incident edge $[e']$ such that ...
-                                \item                                        
-                              \end{itemize} 
-                    \end{itemize}
+                    \item $[e_1) = \varnothing$ and by Corollary~\ref{corollary:edges} there exists $v_1$ such that there is a path from $e_1$ to $v_1$ and there exists $v'_1 \sim v_1$ such that $[v'_1) \not = \varnothing$.
+                          Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))$.
+                          Suppose $v_1 = f_{V};i_{1,V}(z)$ and then $v'_1 = g_{V};i_{2,V}(z)$ and $[g_{V}(z)) \not = \varnothing$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [g_{V};i_{V_{Y}};<_{c,Y}^{\mu};i_{2,E}(z)] = [e_2]$ and hence $e_2$ has a pre-image in $E_{Y}$.
+                          \begin{itemize}
+                            \item $v = v'$ and then $v \in s(e_1)$ and $[v) = \varnothing$.
+                                  Because there is a path from $e_1$ to $v_1$ there is also a path from $v$ to $v_1$ and hence $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [e_2]$
+                            \item $v \sim v'$ and $v' \in s(e_1)$ and $[v') = \varnothing$.
+                                  By the same argument, 
+                                  \[
+                                    <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [e_2]
+                                  \]
+                          \end{itemize}                    
                   \end{itemize}
             \item Finally, we need to check that if $[v] \in s([e_1])$ and $[e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then $[e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
-            Once again, $[v] \in s([e_1])$ means that there exists $v' \in s(e_1)$ such that $[v'] = [v]$.
+            Once again, $[v] \in s([e_1])$ means that there exists $v' \in s(e_1)$ such that $v' \sim v$.
             \begin{itemize}
                 \item $v' = v$ and hence $v \in s(e_1)$.
                 \begin{itemize}
                     \item If $v$ has no pre-image in $V_{Z}$, then $[e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))]$.
                           This essentially means that $e_2$ is the predecessor of $v$ and, by e-hypergraphness of $X+Y$, $e_2 = <_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))$ and $[e_2] = [<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$ which is what we want.
+                    \item $v$ has no pre-image in $V$ and $[v) = \varnothing$.
+                          By Corollary~\ref{corollary:nodes} there exists $v'$ such that there is a path from $v$ to $v'$ and $v'' \sim v'$ such that $[v'') \not = \varnothing$.
+                          Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [e_2]$.
+                          Because $v \in s(e_1)$ there should also be a path from $e_1$ to $v'$ and $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = [e_2]$
                     \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ and $[f_{V}(z)) \not = \varnothing$ and $[g_{V}(z)) = \varnothing$, then
                     \[ 
-                        [e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{1,E}(e_x)]
+                        [e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [f_{V};i_{V_{X}};<_{c,X}^{\mu};i_{1,E}(z)]
                     \]
-                    Because $e_{x}$ is the predecessor of $f_{V}(z)$ it should also be the predecessor of the pre-image of $e_1$ in $E_{X}$ as $v \in s(e_1)$.
-                    Denote the pre-image of $e_1$ in $E_{X}$ as $e_{1}^{x}$. 
-                    Then, $e_{x} = <_{c,X}^{\mu}(i_{E_{X}}(e_{1}^{x}))$ and 
-                    
-                    \begin{align*}
-                        [i_{1,E}(e_{x})] &= [i_{1,E}(<_{c,X}^{\mu}(i_{E_{X}}(e_{1}^{x})))] = \\
-                        &= [<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(i_{1,E}(e_{1}^{x})))] = [<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))] = \\
-                        &= <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = [e_2]
-                    \end{align*}
+                    This means that the pre-image of $e_2$ is the predecessor of $f_{V};(z)$ and hence $e_2$ should be the predecessor of $f_{V};i_{1,V}(z)$ and hence of $e_1$ since $v_1 \in s(e_1)$ and $X+Y$ is an e-hypergraph.
+                    That is, $e_2 = <_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))$ and $[e_2] = [<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
                     \item $v$ has a pre-image $f_{V};i_{1,V}(z)$ and $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$, then
                     \[ 
                         [e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [i_{2,E}(e_y)]
@@ -1121,93 +1159,114 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                     Then, by definition, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}([e_1]) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]) = [i_{2,E}(e_y)] = [e_2]$.
                     \item Cases when $v$ has a pre-image $g_{V};i_{2,V}(z)$ are symmetric.
                 \end{itemize}
-                \item $v \sim v'$ and hence there exists $z \in V_{Z}$ such that $v = f_{V};i_{1,V}(z)$ and $v' = g_{V};i_{2,V}(z)$ and $v' \in s(e_1)$.
-                      This implies that $e_1$ has a pre-image in $E_{Y}$ and
-                      \[
-                        [e_2] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))
-                      \]
-                      \begin{itemize}
-                        \item $[f_{V}(z)) = \varnothing$ and $[g_{V}(z)) \not = \varnothing$ which implies $[g_{V};i_{2,V}(z)) = [v') \not = \varnothing$.
-                        That is, there exists $e_3 = <_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))$ and by e-hypergraphness of $X+Y$ $e_3 = <_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))$.
-                        Then, 
-                        \begin{align*}
-                        [e_3] = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))] &= <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = \\
-                        &= [<_{c,X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e_1))] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = \\
-                        &= <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V{Y}}{\sim}}([v]))
-                    \end{align*}
-                    \item $[f_{V}(z)) \not = \varnothing$ and $[g_{V}(z)) = \varnothing$ which implies $[g_{V};i_{2,V}(z)) = [v') = \varnothing$ and hence $[e_1) = \varnothing$.
-                          By definition,
-                          \begin{align*}
-                            <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([v'])) = \\
-                            &= <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([v])) = [e_2]
-                        \end{align*}
-                    \end{itemize}
-            \item Cases when $v = g_{V};i_{2,V}(z)$ are symmetric.
+                \item $v \sim v'$.
+                    Follows by the same argument as above by recalling that $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
             \end{itemize}    
         \end{itemize}
     \end{proof}
 \end{lemma}
 
 \begin{lemma}
+    If for all $v' \in V_{X+Y}$ such that $v' \sim v$, $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v')) = \varnothing$ and there exist $e_1 \in E_{X+Y}$ such that either $[v] \in s([e_1])$ or $[v] \in t([e_1])$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) \not = \varnothing$ and $e_2 \in E_{X+Y}$ such that either $[v] \in s([e_2])$ or $[v] \in t([e_2])$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2])) \not = \varnothing$ then
+    \[
+      \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))
+    \]
+    \begin{proof}
+        The proof is analogous to the proof of an analogous lemma for $<_{c,\sfrac{X+Y}{\sim}}^{\mu}$.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    If $\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exist $v_1$ such that either $[v_1] \in s([e])$ or $[v_1] \in t([e])$ and $v_2$ such that either $[v_2] \in s([e])$ or $[v_2] \in t([e])$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) \not = \varnothing$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) \not = \varnothing$ then
+    \[
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))
+    \]
+    \begin{proof}
+        The proof is analogous to the proof of the analogous lemma for $<_{c,\sfrac{X+Y}{\sim}}^{\mu}$.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    \label{corollary:consistency_nodes}
+    If $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v)) = \varnothing$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \not = \varnothing$ then there exists $v'$ such that there is a path from $v$ to $v'$ and there exists $v'' \sim v'$ such that
+    \[
+        \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'')) \not = \varnothing
+    \]
+    \[
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))
+    \]
+\end{corollary}
+
+\begin{corollary}
+    \label{corollary:consistency_edges}
+    If $\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = \varnothing$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) \not = \varnothing$ then there exists $v$ such that there is a path from $e$ to $v$ and there exists $v' \sim v$ such that
+    \[
+        \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v')) \not = \varnothing
+    \]
+    \[
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))
+    \]
+\end{corollary}
+
+\begin{lemma}
     $\consistency_{\sfrac{X+Y}{\sim}}^{\mu}$ satisfies properties~\ref{def:consistency_properties}.
-    The properties (1),(2),(5) are satisfied by construction.
-    Hence we need to check wether properties (3),(4) and (6) are satisfied.
+    The property (1) is satisfied by construction because we explicitly perform a closure.
+    Hence we need to check whether properties (2),(3) and (4) are satisfied.
     \begin{proof}
         \begin{itemize}
-            \item Suppose $[v] \in s([e])$, then it must be the case that $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
-                  $[v] \in s([e])$ means there exists $v' \in s(e)$ such that $[v] = [v']$.
+            \item Suppose $[v] \in s([e])$ and $[[v]) = [[e]) \not = \varnothing$, then it must be the case that $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
+                  $[v] \in s([e])$ means there exists $v' \in s(e)$ such that $v \sim v'$.
                   We then have two cases.
                   \begin{itemize}
-                    \item $v = v'$ and then $v \in s(e)$. 
-                    This also means that $i_{E_{X} + E_{Y}}(e) \in \consistency_{X+Y}(i_{V_{X} + V_{Y}}(v))$.
-                    By applying $([]_{V},[]_{E})$ we get 
-                    \[
-                       i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e]) \in \langle []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}}) \rangle^{*}(\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))) \subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
-                    \]
-                        \item $v' \sim v'$ and $v' \in s(e)$ and hence $i_{E_{X} + E_{Y}}(e) \in \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))$.
-                        By applying $([]_{V},[]_{E})$ we get 
-                        \[
-                        i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e]) \in \langle []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}}) \rangle^{*}(\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))) \subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v'])
-                        \]      
-                        By functionality, 
+                    \item $v = v'$ and then $v \in s(e)$.
+                    \begin{itemize}
+                        \item $[v) \not = \varnothing$ and then $[e) \not = \varnothing$ and necessarily $i_{E_{X} + E_{Y}}(e) \in \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))$.
+                                By applying $([]_{V},[]_{E})$ we get 
+                                \[
+                                i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e]) \in \langle []_{V};i_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};i_{\sfrac{E_{X} + E_{Y}}{\sim}}) \rangle^{*}(\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v))) \subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]) \subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+                                \]
+                        \item $[v) = \varnothing$ and then $[e) = \varnothing$ then there exists $v'$ such that there is a path from $e$ to $v'$ and $v'' \sim v'$ such that $[v'') \not = \varnothing$.
+                              It is then also the case that $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v)) = \varnothing$ and $\consistency_{X+Y}^{\mu}(i_{E_{X} + E_{Y}}(e)) = \varnothing$ and $\consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'')) \not = \varnothing$.
+                              Then, by definition, $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))$ and by reflexivity $i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$    
+                    \end{itemize}
+                    \item $v \sim v'$ follows by the same argument by using functionality, 
                         \[
                             \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v']) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
                         \]
-                        and hence
-                        \[
-                            i_{\sfrac{E_{X}+E_{Y}}{\sim}}([e]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
-                        \]
-                  \end{itemize}
+                   \end{itemize}
                   \item The case when $[v] \in t([e])$ is symmetric.
-                  \item If $i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))$ then $[[v_1]) = [[v_2])$.
-                        The latter means that either $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X}+V_{Y}}{\sim}}([v_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X}+V_{Y}}{\sim}}([v_2]))$ or both functions are undefined.
-                        By definition,
+                  \item If $i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))$ then
+                        $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X}+V_{Y}}{\sim}}([v_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X}+V_{Y}}{\sim}}([v_2]))$.
+                        By definition, either
                         \[
                             \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = (\langle []_{V}^{\consistency}, []_{E}^{\consistency} \rangle^{*} (\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v_2]_{V}} \consistency_{X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v'))))^{c}
                         \]
-                        which means that either $v_1 \consistency_{X+Y}^{\mu} v_2$ or $v'_1 \consistency_{X+Y}^{\mu} v_2$ and $v'_1 \sim v_1$.
-                        \begin{itemize}
-                            \item $v_1 \consistency_{X+Y}^{\mu} v_2$ implies $[v_1) = [v_2)$.
-                            \begin{itemize}
-                                \item If $v_1$ does not have a pre-image in $V_{Z}$, then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_1))]$
-                                \begin{itemize}
-                                    \item If $v_2$ does not have a pre-image in $V_{Z}$, then $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_2))]$ and by assumption $<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_1)) = <_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_2))$ and hence their images are also equal.
-                                    \item If $v_2$ has an image $f_{V};i_{1,V}(z)$ and $[f_{V}(z)) = \varnothing$ and hence $[v_2) = \varnothing$ and $[v_1) = \varnothing$.
-                                          Then, $<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [i_{2,E}(e_{y})]$.
-                                \end{itemize}
-                            \end{itemize}
-                        \end{itemize}
+                        which means that either $v_1 \consistency_{X+Y}^{\mu} v_2$ or $v'_1 \consistency_{X+Y}^{\mu} v_2$ and $v'_1 \sim v_1$, or $v_1 \consistency_{X+Y}^{\mu} v_2'$ and $v_2' \sim v_2$, or $v_1' \consistency_{X+Y}^{\mu}(v_2')$ and $v_1' \sim v_1$, $v_2' \sim v_2$.
+                        Suppose, $v_1' \consistency_{X+Y}^{\mu} v_2$ and $v_1' \sim v_1$.
+                        It implies that $[v_1') = [v_2)$ and that 
+                        \[
+                            <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'])) = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_1'))] = [<_{c,X+Y}^{\mu}(i_{V_{X} + V_{Y}}(v_2))] = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
+                        \]
+                        The rest cases are analogous.
+                        Or there exists $v_3$ such that there is a path from $v_2$ to $v_3$ and there is $v_3' \sim v_3$ such that $\consistency_{X+Y}^{\mu}(v_3') \not = \varnothing$ and
+                        \[
+                            \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = \consistency_{\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_3]))
+                        \]
+                        Then the argument is the same but with using $v_3$ in place of $v_2$.
+                    \item Case for edges is analogous.
         \end{itemize}
     \end{proof}
 \end{lemma}
 
 \begin{proposition}[$\sfrac{X+Y}{\sim}$ is an e-hypergraph]
 For this we need to check that the defined relations satisfy all the needed properties.
-
+\begin{proof}
+    This proposition then follows by taking two lemmas above.
+\end{proof}
 \end{proposition}
 
 \begin{example}
-    Consider an example span below in Figure~\ref{fig:pushout_fail}.
+    Consider an example span in Figure~\ref{fig:pushout_fail}.
 \begin{figure}[h!]
     \centering
     \[    
@@ -1218,10 +1277,28 @@ For this we need to check that the defined relations satisfy all the needed prop
     \label{fig:pushout_fail}
 \end{figure}
 
-    The pushout defined above does not exist for this span because neither of the set of predecessors of the images of $f$ are $\varnothing$ which violates~\ref{cond:essential_for_pushout}.
-    Luckily, we do not need arbitrary pushouts and pushouts that we actually need do exist.
+    The pushout defined above does not exist for this span because it does not satisfy the assumptions on two occasions.
+    First, the carrier e-hypergraph $Z$ is not descrete.
+    Second, it is not true that if $[f_V(z)) = \varnothing$ then $[g_{V}(z)) = \varnothing$.
 \end{example}
 
+\begin{example}
+    Consider an example span in Figure~\ref{fig:pushout_success_example}.
+    The span satisfies the assumptions since $Z$ is discrete, $[f_{V}(1)) = [f_{V}(2)) = \varnothing$ and $\consistency^{\mu}(g_{V}(1)) = \consistency^{\mu}(g_{V}(2))$.
+    The pushout can be seen in the lower left corner.
+    Note how $\consistency^{\mu}$ and $<_{c}^{\mu}$ get inherited from the right foot of the span.
+\end{example}
+
+\begin{figure}[h!]
+    \centering
+    \[
+    \scalebox{0.5}{
+        \tikzfig{combinatorial_semantics/pushout_success_example}
+    }
+    \]
+    \caption{Pushout example}
+    \label{fig:pushout_success_example}
+\end{figure}
 
 To build a proper correspondence between terms in an enriched category and e-hypergraphs we introduce e-hypergraphs with interfaces.
 
@@ -1401,8 +1478,8 @@ By abusing the notation we will also refer to the images of $f_{ext}$, $g_{ext}$
     Similarly for the output interface.
     In particular, $\{0,1,2,3\} \uplus (\{6,7,8,9,10\} \setminus \{6\}) = \{0,1,2,3,7,8,9,10\}$.
     % The conflict and child relations in the pushout are a disjoint union of the corresponding relations from pushout components.
-    \update{Note that pushout for such composition always exists as the interface in the middle is descrete (meaning nodes in it have no predecessors) and nodes in the images of the middle interface are at the outermost level as well.
-    Thus the span satisfies~\ref{cond:essential_for_pushout}.
+    \update{Note that pushout for such composition always exists as the interface in the middle is descrete and nodes in the images of the middle interface are at the outermost level as well.
+    Thus the span satisfies our assumptions.
     }
 \end{remark}
 
