@@ -81,7 +81,7 @@ Symmetry is inherited from $\mathcal{C}$ as the coproduct is commutative and is 
 n + m \xrightarrow{\sigma_{n,m}} m + n \xleftarrow{id + id} m + n
 \]
 
-Naturality is implied by $+$ being a coproduct~\cite{Frobenius}.
+\update{Naturality and SMC laws are implied by $+$ being a coproduct[reference?]}.
 
 \end{definition}
 
@@ -99,6 +99,7 @@ Following~\cite{Frobenius2} morphisms in an SMC with a signature $\Sigma$ can be
 \begin{definition}[Category $\;\catname{Csp_{D}(Hyp_{\Sigma})}$]
 \label{def:cspd}
 Category $\catname{Csp_{D}(Hyp_{\Sigma})}$ is a \textit{full} sub-category of $\catname{Csp(Hyp_{\Sigma})}$ which has discrete hypergraphs as objects.
+\update{Assuming that $D$ is a functor from PROP to $\catname{Hyp_{\Sigma}}$, $\catname{Csp_{D}(Hyp_{\Sigma})}$ is also a PROP and hence an SMC (Theorem 3.6~\cite{Frobenius}).}
 \end{definition}
 
 In particular, this means that any morphism in $\catname{Csp_{D}(Hyp_{\Sigma})}$ is of the form $n \xrightarrow{} \mathcal{G} \xleftarrow{} m$,
@@ -1373,12 +1374,18 @@ First, $A +_{f_{ext};f, g_{ext};g} B$ is computed which is a pushout below
 Then, new feet for $A +_{f_{ext};f,g_{ext};g} B$ are computed as below
 
 \[
-X_{ext} \xrightarrow{f_{ext};i_1} X \uplus (Y' \setminus Y_{ext}) \xrightarrow{h} A +_{f_{ext};f,g_{ext};g} B \xleftarrow{k} Z \uplus (Y \setminus Y_{ext}) \xleftarrow{g_{ext};i_1} Z_{ext}
+X_{ext} \xrightarrow{a_{ext};i_1} X \uplus (Y' \setminus Y_{ext}) \xrightarrow{h} A +_{f_{ext};f,g_{ext};g} B \xleftarrow{k} Z \uplus (Y \setminus Y_{ext}) \xleftarrow{g_{ext};i_1} Z_{ext}
 \]
 where $i_1$ is a coproduct injection.
 Since $X,Y,Z,Y', Y_{ext}$ are all discrete, $\uplus$ and $\setminus$ are standard set operations.
-$h = a;p_1 + g|_{Y' \setminus Y_{ext}};p_2$, $k = b;p_2 + f|_{Y \setminus Y_{ext}};p_1$.
-
+\[
+    h = \langle a;p_1, g|_{Y' \setminus Y_{ext}};p_2 \rangle
+\]
+ 
+\[
+    k = \langle b;p_2, f|_{Y \setminus Y_{ext}};p_1 \rangle
+\]
+\update{I've put copairings above}
 % \[
 % \begin{tikzcd}
 % Y_{ext} \arrow[d] & 0 \arrow[l] \arrow[d]    \\
@@ -1389,7 +1396,7 @@ $h = a;p_1 + g|_{Y' \setminus Y_{ext}};p_2$, $k = b;p_2 + f|_{Y \setminus Y_{ext
 % and then the disjoint union is just a coproduct. 
 Defining cospans up to isomorphism, associativity of coproducts and pushouts, and the presence of an id-cospan turns this construction into a proper category.
 
-Similarly to~\ref{def:cspd} this category has a symmetric monoidal product given by a coproduct in $\catname{EHyp_{\Sigma}}$ which makes it into an SMC.
+\update{Similarly to~\ref{def:cspd} this category has a symmetric monoidal product given by a coproduct in $\catname{EHyp_{\Sigma}}$ which makes it into an SMC if $D$ is a functor from PROP to $\catname{EHyp_{\Sigma}}$.}
 More precisely, below are cospans for tensor product and symmetry.
 Tensor unit is given by the initial object in $\catname{EHyp_{\Sigma}}$.
 
@@ -1431,6 +1438,7 @@ Tensor unit is given by the initial object in $\catname{EHyp_{\Sigma}}$.
 }
 \]\label{morphism:symmetry}
 
+\question{Or shall we say that symmetry is inherited from $\catname{EHyp_{\Sigma}}$ because coproduct is commutative and associative?}
 \end{definition}
 
 \begin{remark}
@@ -1479,7 +1487,7 @@ By abusing the notation we will also refer to the images of $f_{ext}$, $g_{ext}$
     In particular, $\{0,1,2,3\} \uplus (\{6,7,8,9,10\} \setminus \{6\}) = \{0,1,2,3,7,8,9,10\}$.
     % The conflict and child relations in the pushout are a disjoint union of the corresponding relations from pushout components.
     \update{Note that pushout for such composition always exists as the interface in the middle is descrete and nodes in the images of the middle interface are at the outermost level as well.
-    Thus the span satisfies our assumptions.
+    Furthermore, $f_{ext};f$ and $g_{ext};g$ are monos and hence the span satisfies our assumptions.
     }
 \end{remark}
 
@@ -1553,7 +1561,8 @@ Next, we will define $+$ operation on morphisms of $\Ecospans$. This will help u
     \label{morphism:composition_ecospans}
 
     $A$ and $B$ are generic e-hypergraphs that represent the carriers of the morphisms.
-    $C$ is a coproduct of e-hypergraphs $A$ and $B$ with the extra requirement that all nodes and edges of $A$ are now in conflict with all nodes and edges of $B$ and with a new hierarchical edge that has $|X_{ext}|$ sources and $|Y_{ext}|$ targets and is the immediate predecessor of the edges $e$ and nodes $v$ in $A$ and $B$ such that $[e) = \varnothing$ and $[v) = \varnothing$.
+    $C$ is a coproduct of e-hypergraphs $A$ and $B$ with the extra requirement that all nodes and edges of $A$ are now consistent with each other and similarly for edges and nodes from $B$.
+    There is also a new hierarchical edge in $E_{C}$ that has $|X_{ext}|$ sources and $|Y_{ext}|$ targets and is the immediate predecessor of the edges $e$ and nodes $v$ from $A$ and $B$ such that $[e) = \varnothing$ and $[v) = \varnothing$.
     And such that its sources and targets are top-level nodes.
     $h$ and $k$ are morphisms that map $X_{ext}$ and $Y_{ext}$ to these sources and targets respectively. In particular, in Figure~\ref{fig:A+B}, $h = \{c_1 \mapsto c_1, \ldots, c_n \mapsto c_n\}$ and $k = \{d_1 \mapsto d_1, \ldots, d_l \mapsto d_l\}$.
     Since both $A$ and $B$ have the same outermost input and output interfaces they are added as the outermost interfaces of their $C$.
@@ -1671,18 +1680,14 @@ In particular we need to show that the cospans that correspond to particular mor
     \item Composition~\ref{morphism:composition_ecospans} of two mda-cospans yields an mda-cospan.
     Pushout glues out-degree 0 nodes on the left and in-degree 0 nodes on the right which does not introduce any cycles.
     This also does not increase their degrees to more than 1.
-    $f_{ext}$ (respectively, $g_{ext}$) is mono because its image $X$ (respectively, $Z$) is unchanged.
-    The morphism $B \xrightarrow{i_2} A + B$ is mono, $g$ is mono and their composition is hence mono.
-    Also note that $p_2$ narrowed to $B \setminus Y_{ext}$ is exactly $i_2$ and similarly for $p_1$ and $i_1$.
-    Pushout is then obtained by identifying the nodes in $A + B$ that share their pre-image in $Y_{ext}$.
-    These nodes are removed in $Y' \setminus Y_{ext}$ and hence $g';i_2$ is mono where $g'$ is $g$ narrowed to $Y' \setminus Y_{ext}$.
-    $g';i_2$ is equal to $g';p_2$ because the image of $g'$ does not contain any nodes with pre-image in $Y_{ext}$.
-    Next, $a$ is mono and $a;p_1$ is mono, because $p_1$ only identifies nodes with pre-image in $Y_{ext}$.
-    $h = a;p_1 + g';p_2$ and hence $h$ is mono.
+    $a_{axt};i_{1}$ is mono because $a_{ext}$ is mono and $i_{1}$ is a coproduct injection.
+    $p_1$ is mono because it only identifies $v_{1}, v_{2}$ in $V_{A}$ if there exist $y_1, y_2 \in V_{Y_{ext}}$ such that $v_{1} = f_{ext};f(y_1)$, $v_{2} = f_{ext};f(y_2)$ and there exists $v_3 \in V_{B}$ such that $v_3 = g_{ext};g(y_1)$ and $v_3 = g_{ext};g(y_2)$, but $g_{ext};g$ is mono.
+    Therefore, $a;p_1$ is mono.
+    $g|Y'\setminus Y_{ext}$ is mono because $g$ is and hence $g|Y'\setminus Y_{ext};p_2$ is mono and eventually $h$ is mono.
     Likewise, $k$ is mono.
     \item Tensor product~\ref{morphism:tensoring} of two mda-cospans is an mda-cospan.
           Tensoring does not introduce any new edges or nodes apart from those already in $A$ and $B$.
-          Hence, everything is preserved component-wise by copairing and coproduct.
+          Hence, everything is preserved component-wise by coproduct.
     \item Symmetry~\ref{morphism:symmetry} is an mda-cospan.
           $X$ and $Y$ are both discrete as well as their coproduct and $\sigma_{X,Y}$ is obviously mono.
           Furthermore, all nodes of $X + Y$ are in the image of $\sigma_{X,Y}$ and $id_{X} + id_{Y}$.
@@ -1734,28 +1739,20 @@ The bullets above makes $\MdaEcospans$ into a proper SMC.
 
 \begin{definition}[Input and output nodes of a hierarchical edge]
 
-Consider an mda-cospan~\ref{mda-cospan} and an edge $e$ in $E_{A}$ such that $l(e) = \bot$. Then we take all nodes that are immediate successors of $e$. We call the nodes that have a pre-image in $X$ input nodes of $e$ and those that have a pre-image in $Y$ output nodes.
+Consider an mda-cospan
+\[
+    X_{ext} \xrightarrow{f_{ext}} X \xrightarrow{f} C \xleftarrow{g} Y \xleftarrow{g_{ext}} Y_{ext}
+\]
+and an edge $e$ in $E_{C}$ such that $l(e) = \bot$.
+Then we take all nodes that are immediate successors of $e$.
+We call the nodes that have a pre-image in $X$ input nodes of $e$ and those that have a pre-image in $Y$ output nodes.
 \end{definition}
-
-% \begin{definition}[Set of inner subgraphs of an edge $e \in E_\mathcal{G}$]
-
-% Consider an edge $e \in \mathcal{G}$ such that $l(e) = \bot$. We denote with $\mathcal{H}_{e}$ a set of inner subgraphs of the edge $e$, that is $\mathcal{H}_e \triangleq \{e' \in E_\mathcal{G} \text{ and } v' \in V_{\mathcal{G}} \; | \; \exists n,m > 0 \; . \; p^n(e') = e \text{ and } p^m(v') = e\}$. \update{And such that $\mathcal{H}_{e}$ inherits all the relations from $\mathcal{H}$ for the corresponding nodes and edges. What happens to the parent of e.g. $v$ for which $p_{V}(v) = e$?}
-% \end{definition}
-
-
-% add sketch of a proof for saying that a complement is an equivalence, define partition
-% \begin{definition}[Instance subgraph of an edge $e \in E_\mathcal{G}$]
-
-% Consider a partition of $\mathcal{H}_e$ according to a complement of the relation $[\#_V,\#_E]$ denoted as $[\bar{\#}_{V},\bar{\#}_{E}]$.
-% Note that these relations are equivalence relations as the original relation is irreflexive. We call each $i^{th}$ subset of this partition as $i^{th}$ instance subgraph of $e$, that is, every $\mathcal{H}^i_e \subseteq \mathcal{H}_{e,\bar{\#}}$ is an instance subgraph of $e$.
-    
-% \end{definition}
 
 \begin{definition}[Well-typed cospan]
 
-    Consider a hierarchical edge $e$ in $E_{A}$ and the sets $V_{e, in}$ and $V_{e,out}$ of its input and output nodes respectively.
-    Then consider partitions $V_{e, in}^{\bar{\#}}$ and $V_{e,out}^{\bar{\#}}$  of the nodes according to $\bar{\#}$.
-    We call $e$ well-typed if for all $v \in V_{e,in}^{\bar{\#}}$ $|v| = |s(e)|$ and for all $v \in V_{e,out}^{\bar{\#}}$ $|v| = |t(e)|$.
+    Consider a hierarchical edge $e$ in $E_{C}$ and the sets $V_{e, in}$ and $V_{e,out}$ of its input and output nodes respectively.
+    Then consider partitions $V_{e, in}^{\consistency}$ and $V_{e,out}^{\consistency}$  of the nodes according to $\consistency^{\mu}$ relation.
+    We call $e$ well-typed if for all $v \in V_{e,in}^{\consistency}$ $|v| = |s(e)|$ and for all $v \in V_{e,out}^{\consistency}$ $|v| = |t(e)|$.
     We will call an mda-cospan in $\MdaEcospans$ well-typed if all hierarchical edges in its carrier are well-typed.
 \end{definition}
 
@@ -1815,113 +1812,48 @@ There is an obvious inclusion
 \xrightarrow{} \WellTypedMdaEcospans
 \]\label{functor:I} 
 
-For any mda-cospan $X \xrightarrow{} A \xleftarrow{} Y$ in $\MdaCospans$ there is a corresponding well-typed mda-cospan in $\WellTypedMdaEcospans$: $X \xrightarrow{} X \xrightarrow{} B \xleftarrow{} Y \xleftarrow{} Y$, where $B$ is an e-hypergraph lifting of $A$ where  $\# = \varnothing$, and $<_{c} = \varnothing$.
+For any mda-cospan $X \xrightarrow{} A \xleftarrow{} Y$ in $\MdaCospans$ there is a corresponding well-typed mda-cospan in $\WellTypedMdaEcospans$: $X \xrightarrow{} X \xrightarrow{} B \xleftarrow{} Y \xleftarrow{} Y$, where $B$ is an e-hypergraph lifting of $A$ where  $\consistency^{\mu} = \varnothing$, and $<_{c} = \varnothing$.
 It is well-typed on the nose as it has no hierarchical edges.
 
-
-% \update{Two cospans $m \xrightarrow{} \mathcal{G} \xleftarrow{} n$, $p \xrightarrow{} \mathcal{G} \xleftarrow{} q$ in $\MdaCospans$ are composable when $out^{-1}_{out}(\mathcal{G})$ and $in^{-1}_{out}(\mathcal{H})$ are isomorphic.
-% The result of such composition is depicted below
-% }
-% \[
-% \adjustbox{scale=0.75,center}{
-% \begin{tikzcd}
-%             &                         &                                   & k \arrow[ld] \arrow[rd] \arrow[lld] \arrow[rrd] &                                  &                         &             \\
-% n \arrow[r] & \mathcal{G} \arrow[rrd] & m \arrow[l]                       &                                                 & p \arrow[r]                      & \mathcal{H} \arrow[lld] & q \arrow[l] \\
-%             &                         & n \cup (p \setminus k)  \arrow[r] & \mathcal{G};\mathcal{H}                         & q \cup (m \setminus k) \arrow[l] &                         &            
-% \end{tikzcd}
-% }
-% \]
-
-% where $k = out^{-1}_{out}(\mathcal{G})$ and $\mathcal{G;H}$ is a pushout of $\mathcal{G} \xleftarrow{} k \xrightarrow{} \mathcal{H}$. New input interface for the composition is obtained by adding the input interface of $\mathcal{H}$ to $n$ and removing $p$ (and likewise for the output interface). $p \setminus k$ can be defined as a following pushout complement (and likewise for $m \setminus k$):
-
-% \[
-% \adjustbox{scale=0.75,center}{
-% \begin{tikzcd}
-% k \arrow[d] & 0 \arrow[l] \arrow[d]   \\
-% p           & p \setminus k \arrow[l]
-% \end{tikzcd}
-% }
-% \]
-
-% then $n \cup (p \setminus k)$ is just a coproduct, since $n$ and $(p \setminus k)$ are disjoint.
-
-
-
-% We will also use the notion of a boundary complement to preserve monogomousness when rewriting.
-
-% \begin{definition}[Boundary complement]
-%     For monogamous cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} G \xleftarrow{b_2} m$
-% and mono $f : L \to G$, a pushout complement as depicted below
-
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=0.3\linewidth]{figures/combinatorial_semantics/boundary_complement.png}
-%     \label{fig:boundary_complement}
-% \end{figure}
-
-% is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to L^{\bot}$ and $d_2 : m \to L^{\bot}$ making the above triangle commute and such that
-% \[
-%     n + j \xrightarrow{[d_1,c_2]} L^{\bot} \xleftarrow{[d_2,c_1]} m + i
-% \]
-% is a monogamous cospan
-% \end{definition}
-
-\subsection{Syntactic rewriting of PROPs}
+\subsection{DPO rewriting}
 
 \Aleksei{Should this be a separate section rather than a subsection?}
 
-\begin{definition}[\cite{Frobenius}]
-A rewriting system $\mathcal{R}$ in a PROP $\mathbb{A}$ consists of a set of rewriting rules, i.e. pairs $\langle l , r \rangle$ of morphisms $l , r : i \to j$ in $\mathbb{A}$ with the same arities and co-arities.
-Given $a, b : m \to n$ in $\mathbb{A}$, $a$ rewrites into $b$ via $\mathcal{R}$, written $a\Rightarrow_{\mathcal{R}} b$ ,if they are decomposable as in Figure~\ref{fig:prop_rewriting}, for some rule $\langle l,r \rangle \in \mathcal{R}$    
-\end{definition}
-
-\begin{figure}[h!]
-    
-    \[
-    \scalebox{0.75}{\tikzfig{combinatorial_semantics/prop_rewriting}}
-    \]
-    \caption{Rewriting in $\textsf{PROP}(\Sigma)$}
-    \label{fig:prop_rewriting}
-\end{figure}
-
-\begin{definition}
-Given a rewriting system $\mathcal{R}$ for a $\textsf{PROP}(\Sigma)$ we define 
- a rewriting system $\mathcal{R}^{+}$ in a $\textsf{PROP}^{+}(\Sigma)$  as a set of pairs $\langle l , r \rangle$ for each pair $\langle l, r \rangle$ in $\mathcal{R}$.
-However, the rewriting happens modulo semilattice enriched laws rather than SMC laws.
-We define what $a \Rightarrow_{\mathcal{R}^+} b$ means for some rule $\langle l , r\rangle $ based on the structure of $a$ and $b$.
-
-If they are decomposable as in Figure~\ref{fig:prop_rewriting} then we say that $a$ rewrites to $b$ under rule $\langle l, r \rangle$ in $\mathcal{R}^{+}$.
-Another case is when some $a'$ rewrites to some $b'$ under rule $\langle l, r \rangle$ in the sense above ($\Rightarrow_{\mathcal{R}})$)) and then we say that $a$ rewrites to $b$ under the same rule if they are decomposable as in Figure~\ref{fig:enriched_prop_rewriting}.
-
-\begin{figure}
-
-    \[
-    \scalebox{0.6}{
-    \tikzfig{combinatorial_semantics/prop_plus_rewriting}
-    }
-    \]
-    \caption{Rewriting in $\textsf{PROP}^{+}(\Sigma)$}
-    \label{fig:enriched_prop_rewriting}
-\end{figure}
-
-\end{definition}
-
-
-
-% \update{
-
-% \begin{definition}
-%     Functor $\llbracket \cdot \rrbracket : \text{PROP}^{+} \to \catname{MACsp_{D}(EHyp_{\Sigma})}$.
-
-%     We will build this functor inductively. As noted above, $\MdaCospans$ is a full subcategory of $\catname{MACsp_{D}(EHyp_{\Sigma})}$ and the acting of this functor on generators can be found in~\cite{Frobenius}. We need to define what $+$ from $\text{PROP}^{+}$ in $\catname{MACsp_{D}(EHyp_{\Sigma})}$ is. The definition could be found in Figure~\ref{fig:f+g} where well-typed mda-cospans for images of arbitrary morphisms $f, g : m \to n$ are depicted on the left and the image of $f + g$ is depicted on the right. A new edge is introduced which is the immediate predecessor of arbitrary e-hypergraphs $f$ and all edges and nodes of $f$ and $g$ are in conflict. The nodes are added to the interfaces and to the new edge to preserve well-typedness.
-
+% \begin{definition}[\cite{Frobenius}]
+% A rewriting system $\mathcal{R}$ in a PROP $\mathbb{A}$ consists of a set of rewriting rules, i.e. pairs $\langle l , r \rangle$ of morphisms $l , r : i \to j$ in $\mathbb{A}$ with the same arities and co-arities.
+% Given $a, b : m \to n$ in $\mathbb{A}$, $a$ rewrites into $b$ via $\mathcal{R}$, written $a\Rightarrow_{\mathcal{R}} b$ ,if they are decomposable as in Figure~\ref{fig:prop_rewriting}, for some rule $\langle l,r \rangle \in \mathcal{R}$    
 % \end{definition}
 
-% }
+% \begin{figure}[h!]
+    
+%     \[
+%     \scalebox{0.75}{\tikzfig{combinatorial_semantics/prop_rewriting}}
+%     \]
+%     \caption{Rewriting in $\textsf{PROP}(\Sigma)$}
+%     \label{fig:prop_rewriting}
+% \end{figure}
 
+% \begin{definition}
+% Given a rewriting system $\mathcal{R}$ for a $\textsf{PROP}(\Sigma)$ we define 
+%  a rewriting system $\mathcal{R}^{+}$ in a $\textsf{PROP}^{+}(\Sigma)$  as a set of pairs $\langle l , r \rangle$ for each pair $\langle l, r \rangle$ in $\mathcal{R}$.
+% However, the rewriting happens modulo semilattice enriched laws rather than SMC laws.
+% We define what $a \Rightarrow_{\mathcal{R}^+} b$ means for some rule $\langle l , r\rangle $ based on the structure of $a$ and $b$.
 
+% If they are decomposable as in Figure~\ref{fig:prop_rewriting} then we say that $a$ rewrites to $b$ under rule $\langle l, r \rangle$ in $\mathcal{R}^{+}$.
+% Another case is when some $a'$ rewrites to some $b'$ under rule $\langle l, r \rangle$ in the sense above ($\Rightarrow_{\mathcal{R}})$)) and then we say that $a$ rewrites to $b$ under the same rule if they are decomposable as in Figure~\ref{fig:enriched_prop_rewriting}.
 
+% \begin{figure}
 
+%     \[
+%     \scalebox{0.6}{
+%     \tikzfig{combinatorial_semantics/prop_plus_rewriting}
+%     }
+%     \]
+%     \caption{Rewriting in $\textsf{PROP}^{+}(\Sigma)$}
+%     \label{fig:enriched_prop_rewriting}
+% \end{figure}
+
+% \end{definition}
 
 We will later mimic rewrites in $\textsf{PROP}^{+}(\Sigma)$ at the level of $\WellTypedMdaEcospans$ by utilising a generalisation of double-pushout with interfaces (DPOI) approach defined in~\cite{Frobenius}.
 First, we will recall standard double-pushout (DPO) rewriting.
@@ -2010,7 +1942,7 @@ Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma
     }
 \end{theorem}
 
-\begin{definition}[$\ulcorner \cdot \urcorner$]
+\begin{definition}[\;$\ulcorner \cdot \urcorner$]
 
     This is a syntactic operation which is defined for terms in $\textsf{PROP}(\Sigma) + Frob$ and is given below
     \[
@@ -2027,12 +1959,11 @@ Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma
 
 \end{remark}
 
-\begin{proposition}
+% \begin{proposition}
+%     $m \xrightarrow{} \mathcal{G} \xleftarrow{} n$ is mda-cospan in $\MdaCospans$ iff $0 \xrightarrow{} \mathcal{G} \xleftarrow{} n + m$ is an mda-cospan.
+% \end{proposition}
 
-    $m \xrightarrow{} \mathcal{G} \xleftarrow{} n$ is mda-cospan in $\MdaCospans$ iff $0 \xrightarrow{} \mathcal{G} \xleftarrow{} n + m$ is an mda-cospan.
-\end{proposition}
-
-In particular, the above proposition means that by fullness of $\llbracket \cdot \rrbracket$ there exists a corresponding SMC morphism for some $0 \xrightarrow{} \mathcal{G}\xleftarrow{} n + m$.
+% In particular, the above proposition means that by fullness of $\llbracket \cdot \rrbracket$ there exists a corresponding SMC morphism for some $0 \xrightarrow{} \mathcal{G}\xleftarrow{} n + m$.
 Theorem above essentially makes two routes below. In forward direction:
 
 \[
@@ -2092,14 +2023,6 @@ Note that the outermost interfaces are preserved.
 Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
 Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
 
-\begin{figure}
-    \centering
-    \[
-    \scalebox{0.5}{\tikzfig{combinatorial_semantics/interfaces_change_example}}\]
-    \caption{Hypothetical DPO square for $\catname{MACsp_{D}(EHyp_{\Sigma})}$}
-    \label{fig:interface_change_example}
-\end{figure}
-
 The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
 Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
 The entry in the middle of the span depicts the outermost interfaces which are preserved.
@@ -2155,29 +2078,13 @@ Consider a DPOI diagram with extra constraints below which encodes
 
 
 % https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
-\[\begin{tikzcd}
-	{l_i+l_o} && L && {x_{ext} + y_{ext}} && R && {r_i+r_o} \\
-	\\
-	{g_i+g_o} && {G^{\urcorner}} && C && {^{\ulcorner}H} && {h_i+h_o} \\
-	\\
-	&&&& {n_{ext}+m_{ext}}
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-5, to=1-3]
-	\arrow["m", color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=3-3]
-	\arrow["{[i_c,j_c]}", color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=3-5]
-	\arrow["{[n_c,m_c]}"', color={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-5]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=3-5, to=3-3]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-3]
-	\arrow[from=1-1, to=1-3]
-	\arrow[from=3-1, to=3-3]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-7]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=3-5, to=3-7]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-7, to=3-7]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-5, to=1-7]
-	\arrow[from=1-9, to=1-7]
-	\arrow[from=3-9, to=3-7]
-\end{tikzcd}\]
+\[
+ \scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_square_coloured}
+ }
+\]
 
-The original DPOI square is shown in red.
+The parts of the original DPOI square is shown in blue.
 The extra bits simply account for more complicated interfaces.
 For example, the left-hand side $L$ of a rewrite rule
  $\langle L, R \rangle$ which originally was some cospan
@@ -2187,8 +2094,8 @@ For example, the left-hand side $L$ of a rewrite rule
 from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
 The top half of this diagram says that the outermost interfaces
  should coincide for $L$ and $R$.
-The bottom half puts the same restrictions on $G$ and $H$. 
-% The extra squares on both sides say that there should exist a matching of the interfaces together with a matching of e-hypergraphs. This requirement was implicit in the case of $\catname{MACsp_{D}(Hyp_{\Sigma}}$ because the whole interfaces and the outermost interfaces coincided. Because now the interfaces can change, we need to keep track of which parts of the interfaces are subjected to changes.
+The bottom half puts the same restrictions on $G$ and $H$.
+For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
 
 
 We also adjust the definition of a boundary complement a bit.
@@ -2197,21 +2104,11 @@ We also adjust the definition of a boundary complement a bit.
 \label{def:boundary_new}
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
-\[\begin{tikzcd}
-	{l_i+l_o} && L && {x_{ext} + y_{ext}} \\
-	\\
-	{g_i+g_o} && {G^{\urcorner}} && C \\
-	\\
-	&&&& {n_{ext}+m_{ext}}
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-5, to=1-3]
-	\arrow["m", color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=3-3]
-	\arrow["{[i_c,j_c]}", color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=3-5]
-	\arrow["{[n_c,m_c]}"', color={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-5]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=3-5, to=3-3]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-3]
-	\arrow[from=1-1, to=1-3]
-	\arrow[from=3-1, to=3-3]
-\end{tikzcd}\]
+\[
+\scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_pushout_complement}
+}
+\]
 
 Consider the diagram above where the marked square is a pushout
  and $x_{ext} + y_{ext}$ and $n_{ext} + m_{ext}$ are 
@@ -2232,17 +2129,13 @@ where $c_i$ and $c_o$ are computed as
  $c_o = g_o \setminus (l_o \setminus y_{ext})$.
 \end{definition}
 
-% Intuitively, these pushout squares mean that when we delete the occurrence of $L$ from $G$ we also remove the occurrence of $L$'s interface within $G$'s interface preserving the outermost interfaces $i + j$. The highlighted arrows form the pushout square for the original boundary complement.
-
-% We call morphisms $i + j \to C \to G$ a boundary complement if
-
-% \begin{enumerate}
-%     \item The square above commutes and $L \xrightarrow{} G \xleftarrow{} C$ is a pushout
-%     \item There exists an mda cospan $g_i \setminus (l_i \setminus i) + j \xrightarrow{} C \xleftarrow{} g_o \setminus (l_o \setminus j) + i$. \question{I am unsure about categorical notation for this set difference. Maybe it can be paraphrased in the following way?}
-%     \item There exists an mda cospan $c_i + j \xrightarrow{} C \xleftarrow{} c_o + i$ where $c_i$ and $c_o$ are the following pushout complements in the category of discrete hypergraphs:
-% \end{enumerate}
-
-
+\begin{figure}
+    \centering
+    \[
+    \scalebox{0.5}{\tikzfig{combinatorial_semantics/interfaces_change_example}}\]
+    \caption{Hypothetical DPO square for $\catname{MACsp_{D}(EHyp_{\Sigma})}$}
+    \label{fig:interface_change_example}
+\end{figure}
 
 % The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
 
@@ -2252,7 +2145,7 @@ The cospan's input interface contains nodes that previously were a part of the o
 \end{remark}
 
 First, let's check that this notion generalises the ordinary boundary complement from~\ref{def:boundary_original}.
-For this, we assume that child and conflict relations are empty in which case $x_{ext} + y_{ext}$ and $l_i + l_o$ coincide as well as $g_i + g_o$ and $n_{ext} + m_{ext}$.
+For this, we assume that $<_{c}$ and $\consistency^{\mu}$ relations are empty in which case $x_{ext} + y_{ext}$ and $l_i + l_o$ coincide as well as $g_i + g_o$ and $n_{ext} + m_{ext}$.
 Hence, $g_i \setminus (l_i \setminus x_{ext}) + y_{ext} = g_i + y_{ext} = n_{ext} + y_{ext}$ and the same for the output interfaces.
 Thus we have $n_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} m_{ext} + x_{ext}$, which corresponds to the definition from~\ref{def:boundary_original}.
 
@@ -2283,19 +2176,129 @@ Thus we have $n_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} m_{ext} + x_{ext}
 \begin{proposition}
     The boundary complement in~\ref{def:boundary_new} when exists is unique
     \begin{proof}
-        \update{TODO}
+        \update{I will try to reinvent a similar proof from~\cite{Frobenius2} as the cited proof does not make sense to me}
+        The pushout in $EHyp_{\Sigma}$ should also be a pushout on the underlying sets of nodes and hyperedges.
+        Hence, pushout complement should yield pushout complements for the sets of nodes and hyperedges.
+        In particular,
+          % https://q.uiver.app/#q=WzAsNSxbMCwwLCJWX3tMfSJdLFsyLDAsImxfe2l9ICsgbF97b30iXSxbNCwwLCJpK2oiXSxbMCwyLCJWX3tHfSJdLFs0LDIsIlZfe0N9Il0sWzIsMSwiYl97Vn0iXSxbMSwwLCJhX3tWfSJdLFswLDMsImZfe1Z9Il0sWzQsMywiZ197Vn0iLDJdLFsyLDQsImMiLDJdXQ==
+    \begin{figure}[h!]
+        \begin{subfigure}{0.45\textwidth}
+            \[\begin{tikzcd}
+                {V_{L}} && {l_{i} + l_{o}} && {i+j} \\
+                \\
+                {V_{G}^{\urcorner}} &&&& {V_{C}}
+                \arrow["{b_{V}}", from=1-5, to=1-3]
+                \arrow["{a_{V}}", from=1-3, to=1-1]
+                \arrow["{f_{V}}", from=1-1, to=3-1]
+                \arrow["{g_{V}}"', from=3-5, to=3-1]
+                \arrow["c"', from=1-5, to=3-5]
+            \end{tikzcd}\]
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.45\textwidth}
+           % https://q.uiver.app/#q=WzAsNSxbMCwwLCJFX3tMfSJdLFsyLDAsIjAiXSxbNCwwLCIwIl0sWzAsMiwiRV97R31ee1xcdXJjb3JuZXJ9Il0sWzQsMiwiRV97Q30iXSxbMiwxLCJiX3tFfSJdLFsxLDAsImFfe0V9Il0sWzAsMywiZl97RX0iXSxbNCwzLCJnX3tFfSIsMl0sWzIsNCwiYyIsMl1d
+        \[
+        \begin{tikzcd}
+            {E_{L}} && 0 && 0 \\
+            \\
+            {E_{G}^{\urcorner}} &&&& {E_{C}}
+            \arrow["{b_{E}}", from=1-5, to=1-3]
+            \arrow["{a_{E}}", from=1-3, to=1-1]
+            \arrow["{f_{E}}", from=1-1, to=3-1]
+            \arrow["{g_{E}}"', from=3-5, to=3-1]
+            \arrow["c"', from=1-5, to=3-5]
+        \end{tikzcd}
+        \]
+        \end{subfigure}
+    \end{figure}
+    $V$s and $E$s are sets of nodes and hyperedges respectively, marked squares are pushouts and $C$s are pushout complements.
+    Because $i+j$ is discrete, $E_{G}^{\urcorner}$ is the disjoint union of $E_{L}$ and $E_{C}$ and hence $E_{C} = E_{G}^{\urcorner} \setminus E_{L}$.
+    Then, since all the arrows are monos, the left square can be rewritten as follows.
+    \[
+      % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3IFxcY29uZyBpICsgaiArIHoiXSxbMiwxLCJiX3tWfSJdLFsxLDAsImFfe1Z9Il0sWzAsMywiZl97Vn0iXSxbNCwzLCJnX3tFfSIsMl0sWzIsNCwiYyIsMl1d
+    \begin{tikzcd}
+        {i + j + x + y} && {i+j + x} && {i+j} \\
+        \\
+        {i + j + x + y + z} &&&& {i + j + w \cong i + j + z}
+        \arrow["{b_{V}}", from=1-5, to=1-3]
+        \arrow["{a_{V}}", from=1-3, to=1-1]
+        \arrow["{f_{V}}", from=1-1, to=3-1]
+        \arrow["{g_{E}}"', from=3-5, to=3-1]
+        \arrow["c"', from=1-5, to=3-5]
+    \end{tikzcd}
+    \]
+    Because $i + j + x + y + w$ also yields a pushout it must be the case that $i+j+x+y+w \cong i + j + x + y + z$ and therefore $w \cong z$ and pushout complement for nodes is $i + j + z$ up to isomorphism.
+    To show that pushout complement is unique we next need to show that source and target maps are unique.
+    Suppose that there exist
+    \[
+        C_{1} = (V_{C}, V_{E}, s_{1},t)
+    \]
+    and
+    \[
+        C_{2} = (V_{C},V_{E},s_{2},t)
+    \]
+    Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{1}(h)) = s_{G}^{*}(g_{E}(h)) = g_{V}^{*}(s_{2}(h))$.
+    Because $g$ is mono, $g_{V}^{*}(s_{1}(h)) = g_{V}^{*}(s_{2}(h))$ implies $s_{1}(h) = s_{2}(h)$.
+    Similarly for targets.
+    We also need to show that $<_{c}$ and $\consistency^{\mu}$ are unique.
+    Suppose that there exist
+    \[
+        C_{1} = (V_{C}, V_{E}, s,t, <_{1})
+    \]
+    and
+    \[
+        C_{2} = (V_{C},V_{E},s,t, <_{2})
+    \]
+    Because $g$ is homomorphism, it must be the case that $g_{E}(<_{1}(i_{V_{C}}(v))) = <_{G}(i_{V_{G}}(g_{V}(v))) = g_{E}(<_{2}(i_{V_{C}}(v)))$ which implies $<_{2}(i_{V_{C}}(v)) = <_{1}(i_{V_{C}}(v))$ for all $v$ such that $[v) \not = \varnothing$.
+    Similarly for edges.
+    Now suppose that $<_{1}(i_{V_{C}}(v)) = e$ and $<_{2}(i_{V_{C}}(v))$ is undefined.
+    Then, $g_{E}(e) = <_{G}(i_{V_{G}}(g_{V}(v)))$ and there exists $v' \in V_{L}$ and $v'' \in V_{C_{2}}$ such that $[v') \not = \varnothing$ and there is a path from $v$ to $v''$ and $v''$ and $v'$ share a pre-image in $i+j$.
+    However, because there is a path from $v$ to $v''$ it must be the case that $[v'') \not = \varnothing$ in $C_{1}$, but then it violates our assumptions as there exists some node $u$ in $i+j$ such that $v'' = c_{V}(u)$ and $[v'') \not = \varnothing$ and $v' = b_{V};a_{V}(u)$ and $[v') \not = \varnothing$.
+    Therefore we get a contradiction. 
+    Similarly for edges.
+    Finally, let's suppose there exist
+    \[
+        C_{1} = (V_{C}, V_{E}, s,t, <, \consistency_{1}^{\mu})
+    \]
+    and
+    \[
+        C_{2} = (V_{C},V_{E},s,t,<, \consistency_{2}^{\mu})
+    \]
+    Because $g$ is a homomorphism, we have
+    \[
+        \langle g_{V};i_{V_{G}}, g_{E};i_{E_{G}} \rangle^{*}(\consistency_{C_1}^{\mu}(i_{V_{C}}(v))) \subseteq \consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v))
+    \]
+    \[
+        \langle g_{V};i_{V_{G}}, g_{E};i_{E_{G}} \rangle^{*}(\consistency_{C_2}^{\mu}(i_{V_{C}}(v))) \subseteq \consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v))  
+    \]
+    \begin{itemize}
+        \item If $\consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v)) = \varnothing$ then both lefthand sides should be $\varnothing$ and the relations are equal.
+        \item Suppose that $\consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v)) \not = \varnothing$ which further means that $[g_{V};i_{V_{G}}(v)) \not = \varnothing$.
+        \begin{itemize}
+            \item $\consistency_{C_1}^{\mu}(i_{V_{C}}(v)) \subseteq \consistency_{C_2}^{\mu}(i_{V_{C}}(v))$.
+                  This means that there exists $v'$ such that $v' \consistency_{C_{2}}^{\mu} v$ and $v' \not \consistency_{C_{1}}^{\mu} v$.
+                  Because $g_{V}(v) \consistency^{\mu} v'$ it means that there exists $u,u'$ such that there is a path from $v$ to $u$ and from $v'$ to $u'$ and there exist $w,w' \in V_{L}$ such that $w \consistency_{L}^{\mu} w'$ and $w,u$ share pre-image in $i+j$ as well as $w',u'$.
+                  This again contradicts our assumptions as $u \consistency_{C_{2}}^{\mu} u'$ and $w \consistency_{L}^{\mu} w'$.
+            \item $\consistency_{C_1}^{\mu}(i_{V_{C}}(v)) \cap \consistency_{C_2}^{\mu}(i_{V_{C}}(v)) = \varnothing$
+                  Similar to the above.
+            \item $\consistency_{C_1}^{\mu}(i_{V_{C}}(v)) \cap \consistency_{C_2}^{\mu}(i_{V_{C}}(v)) \not = \varnothing$
+                  Similar to the above.
+        \end{itemize}
+    \end{itemize}
     \end{proof}
+    \update{Can we check the proof? I haven't used all the conditions from monogamous-ness above.
+    Although, if the morphism $i+j \to L$ is mono, the complement is unique for not-monogamous hypergraphs as well.}
 \end{proposition}
 
 
 \question{
-\begin{definition}[Convex down-closed conflict reflecting match] 
-    We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed conflict reflecting match if
+\begin{definition}[Convex down-closed match] 
+    We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed match if
     
     \begin{enumerate}
         \item $m$ is monomorphism
         \item $m(L)$ is a convex down-closed subgraph of $G$
-        \item if $m(x_1) \# m(x_2)$ then $x_1 \# x_2$
+        \item \update{I've removed the requirement that consistency should be reflected because well typedness prohibits otherwise formed matches.}
     \end{enumerate}
 \end{definition}
 }
@@ -2303,34 +2306,17 @@ Thus we have $n_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} m_{ext} + x_{ext}
 
 \begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
     Given $G \xleftarrow{} g_i + g_o \xleftarrow{} n_{ext} + m_{ext}$ 
-    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\WellTypedMdaEcospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $l_i + l_o \xrightarrow{} L \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} R \xleftarrow{} r_i + r_o$ with the outermost interfaces $x_{ext} + y_{ext}$ in $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ such that the diagram below commutes and its marked squares are pushouts
+    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $l_i + l_o \xrightarrow{} L \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} R \xleftarrow{} r_i + r_o$ with the outermost interfaces $x_{ext} + y_{ext}$ in $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ such that the diagram below commutes and its marked squares are pushouts
 
 % https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
-\[\begin{tikzcd}
-	{l_i+l_o} && L && {x_{ext} + y_{ext}} && R && {r_i+r_o} \\
-	\\
-	{g_i+g_o} && {G^{\urcorner}} && C && {^{\ulcorner}H} && {h_i+h_o} \\
-	\\
-	&&&& {n_{ext}+m_{ext}}
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-5, to=1-3]
-	\arrow["m", color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=3-3]
-	\arrow["{[i_c,j_c]}", color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=3-5]
-	\arrow["{[n_c,m_c]}"', color={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-5]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=3-5, to=3-3]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-3]
-	\arrow[from=1-1, to=1-3]
-	\arrow[from=3-1, to=3-3]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=5-5, to=3-7]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=3-5, to=3-7]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-7, to=3-7]
-	\arrow[draw={rgb,255:red,214;green,92;blue,92}, from=1-5, to=1-7]
-	\arrow[from=1-9, to=1-7]
-	\arrow[from=3-9, to=3-7]
-\end{tikzcd}\]
+\[\scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_square}
+    }
+\]
     and the following conditions hold
 
     \begin{enumerate}
-        \item $m : L \to G$ is a convex down-closed conflict reflecting match;
+        \item $m : L \to G$ is a convex down-closed match;
         \item $x_{ext} + y_{ext} \to C \to G$ is a boundary complement in the leftmost pushout.
     \end{enumerate}
 \end{definition}
@@ -2351,15 +2337,32 @@ The whole interfaces of the resulting e-hypergraph $H$ from the cospan
 Since both $f_1$ and $f_2$ are mono, their copairing is also a mono. 
 Similarly for $h_o$.
 
-% using the two pushout squares below.
-% Intuitively, these squares combine the interfaces of $R$ and $C$ and identify those bits that share the same pre-image in the outermost interface $i + j$.
+We then say that an mda-cospan 
+\[
+    n_{ext} \xrightarrow{a_1} g_{i} \xrightarrow{a_2} G \xleftarrow{b_2} g_{o} \xleftarrow{b_1} m_{ext}
+\]
+rewrites convexly into another mda-cospan
 
-% \[\begin{tikzcd}
-% i \arrow[r] \arrow[d] & r_i \arrow[d] & j \arrow[r] \arrow[d] & r_o \arrow[d] \\
-% c_i \arrow[r]         & h_i           & c_o \arrow[r]         & h_o          
-% \end{tikzcd}\]
+\[
+    n_{ext} \xrightarrow{a_1} h_{i} \xrightarrow{a_2} H \xleftarrow{b_2} h_{o} \xleftarrow{b_1} m_{ext}
+\]
 
-% Going back to the example from the figure~\ref{fig:dpoir}, $h_i = \{0'',0,0',2',2\}$, $r_i = \{0,0',2'\}$, $r_o = \{1',3',1\}$, $h_o = \{1',3',3,1,1''\}$, $c_i = \{0'',2,0\}$, $c_o = \{1'',1,3\}$, $i = \{0\}$, $j = \{1\}$, where $h_i$ is exactly $c_i \coprod_{\equiv_{i}} r_i = \{0'',2,0\} \coprod_{\equiv_{i}} \{0,0',2'\} = \{0'',0,0',2',2\}$ and the same for $h_o$. 
+under a rewrite rule 
+\[
+    \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
+    x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
+\]
+
+if 
+\[
+    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \Rrightarrow H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
+\]
+under a rewrite rule
+\[
+    \langle l_{i} + l_{o} \xrightarrow{\langle a_2, b_2 \rangle} L \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext},
+    r_{i} + r_{o} \xrightarrow{\langle a_2, b_2 \rangle} R \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext} 
+    \rangle
+\]
 
 \begin{proposition}
 
@@ -2370,19 +2373,12 @@ $f$ and $g$ are monos by construction.
 $n_{ext} + m_{ext} \to h_i + h_o$ is a mono by commutativity because $n_{ext} + m_{ext} \to H$ is a mono (also by commutativity). 
 The only in-degree 0 nodes have a pre-image in $c_i$ and $r_i \setminus x_{ext}$  and end up being in the image of $h_i$ (the nodes with the pre-image in $y_{ext}$ get glued together).
 Well-typedness is restored once the right-hand side of the rewrite rule is glued into $C$.
-\question{Uniqueness of this pushout complement? Is it a presheaf? As a presheaf category is adhesive, $\catname{Csp_{D}(EHyp)}$ can not be a presheaf as it is not adhesive.}
 \end{proof}
 \end{proposition}
 
 \Aleksei{Check the proof}
 
-\begin{lemma}(Decomposition). Let $m \xrightarrow{} G \xleftarrow{} n$ be a monogamous acyclic cospan and $L$ a convex and down-closed sub-hypergraph of $G$. Then there exists $k \in \mathcal{N}$ and a unique cospan $i \xrightarrow{} L \xleftarrow{} j$ such that G factors as $\ldots$
-
-\update{TODO: this lemma is needed to prove soundness of rewriting}
-\end{lemma}
-
 \Aleksei{Can we reuse anything from~\cite{Frobenius}?}
-
 
 Consider an example below that illustrates the introduced constraints.
 
