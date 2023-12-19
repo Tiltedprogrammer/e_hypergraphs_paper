@@ -4,17 +4,8 @@
 		\node [style=semilarge horizontal box] (1) at (-11.5, -4.5) {$a$};
 		\node [style=none, label={below:$n$}] (2) at (-11.5, -6.5) {};
 		\node [style=none] (3) at (-8.5, -4.5) {=};
-		\node [style=none, label={above:$m$}] (4) at (-1.5, 1.5) {};
-		\node [style=very large horizontal box] (5) at (-1.5, -0.5) {$a_1$};
-		\node [style=none] (8) at (1.5, -0.5) {};
-		\node [style=none] (9) at (-3, -0.5) {};
-		\node [style=none] (11) at (-3, -9.5) {};
-		\node [style=none, label={right:$i$}] (12) at (-3, -1.75) {};
-		\node [style=none, label={right:$j$}] (13) at (-3, -7.75) {};
-		\node [style=none] (14) at (1.5, -9.5) {};
-		\node [style=none, label={below:$n$}] (15) at (-1.5, -11.5) {};
-		\node [style=none, label={right:$k$}] (16) at (1.5, -5) {};
-		\node [style=very large horizontal box] (17) at (-1.5, -9.5) {$a_2$};
+		\node [style=none, label={above:$m$}] (12) at (-3, -1.75) {};
+		\node [style=none, label={below:$n$}] (13) at (-3, -7.75) {};
 		\node [style=none] (34) at (-6, -3) {};
 		\node [style=e-box-interface] (35) at (-3, -3) {};
 		\node [style=none] (36) at (0, -3) {};
@@ -34,17 +25,8 @@
 		\node [style=semilarge horizontal box] (50) at (7.5, -4.5) {$b$};
 		\node [style=none, label={below:$n$}] (51) at (7.5, -6.5) {};
 		\node [style=none] (52) at (10.5, -4.5) {=};
-		\node [style=none, label={above:$m$}] (53) at (17.5, 1.5) {};
-		\node [style=very large horizontal box] (54) at (17.5, -0.5) {$a_1$};
-		\node [style=none] (55) at (20.5, -0.5) {};
-		\node [style=none] (56) at (16, -0.5) {};
-		\node [style=none] (57) at (16, -9.5) {};
-		\node [style=none, label={right:$i$}] (58) at (16, -1.75) {};
-		\node [style=none, label={right:$j$}] (59) at (16, -7.75) {};
-		\node [style=none] (60) at (20.5, -9.5) {};
-		\node [style=none, label={below:$n$}] (61) at (17.5, -11.5) {};
-		\node [style=none, label={right:$k$}] (62) at (20.5, -5) {};
-		\node [style=very large horizontal box] (63) at (17.5, -9.5) {$a_2$};
+		\node [style=none, label={above:$m$}] (58) at (16, -1.75) {};
+		\node [style=none, label={below:$n$}] (59) at (16, -7.75) {};
 		\node [style=none] (64) at (13, -3) {};
 		\node [style=e-box-interface] (65) at (16, -3) {};
 		\node [style=none] (66) at (19, -3) {};
@@ -64,11 +46,6 @@
 	\begin{pgfonlayer}{edgelayer}
 		\draw (0.center) to (1);
 		\draw (1) to (2.center);
-		\draw (4.center) to (5);
-		\draw (8.center) to (14.center);
-		\draw (15.center) to (17);
-		\draw (9.center) to (12.center);
-		\draw (11.center) to (13.center);
 		\draw [style=dashed edge] (37.center)
 			 to (38.center)
 			 to (34.center)
@@ -82,11 +59,6 @@
 		\draw (42.center) to (13.center);
 		\draw (49.center) to (50);
 		\draw (50) to (51.center);
-		\draw (53.center) to (54);
-		\draw (55.center) to (60.center);
-		\draw (61.center) to (63);
-		\draw (56.center) to (58.center);
-		\draw (57.center) to (59.center);
 		\draw [style=dashed edge] (67.center)
 			 to (68.center)
 			 to (64.center)

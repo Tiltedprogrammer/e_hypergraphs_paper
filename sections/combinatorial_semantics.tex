@@ -2408,8 +2408,10 @@ Pushout complement is then computed by removing the image of $m$ from the target
 
 \Aleksei{This figure yeilds "Dimension too large". Need to fix it.}
 
-Unlike SMC equations the equations for semilattice enriched categories are not absorbed by e-hypergraph representation and hence to further build a correspondence between $\textsf{PROP}^{+}(\Sigma)$ and $\WellTypedMdaEcospans$ we add them as structural rewrite rules.
-Recall that the category $\catname{EHyp_{\Sigma}}$ does not have all pushouts and hence we need to explicitly show that the pushouts that we need exist.
+Unlike SMC equations the equations for semilattice enriched categories are not absorbed by e-hypergraph representation and hence to further build a correspondence between $\textsf{PROP}^{+}(\Sigma)$ and $\WellTypedMdaEcospans$ we will need to turn the latter into a semilattice-enriced category.
+We already have a $+$ in $\WellTypedMdaEcospans$ so we need to require that it satisfies a particular set of equations, for example, that $h \otimes (f + g) = h \otimes f + h \otimes g$.
+\update{How to formally state this? Because $h \otimes (f+g)$ is an SMC term from $\WellTypedMdaEcospans$ which is just an SMC so far.}
+We will add such equations as DPOI rewrite rules and show that for each such rule the corresponding pushout complement and the pushout exist.
 
 
 \begin{proposition}
@@ -2427,7 +2429,10 @@ Pushouts for all semilattice enrichment equations exist.
 \end{proof}
 \end{proposition}
 
-\update{I think I haven't paid any attention to this fact previously, but it seems that in~\cite{Frobenius} the functor $\llbracket - \rrbracket$ is between $PROP_{\Sigma_{Frob}}$ and $Csp_{D}(Hyp_{\Sigma})$, i.e. PROP is quotiented by Frobenius equations, but they are absorbed in hypergraphs domain. We will have a similar thing: $\llbracket - \rrbracket: PROP^{+}_{\Sigma^{+}} \to \WellTypedMdaEcospans_{R^+}$, i.e. we will quotient PROP$^{+}$ by semilattice equations and quotient e-hypergraphs by the interpretation of these equations as they are not absorbed. The quotienting on the left is always implicit?}
+\update{How do we state the correspondence between term equations and their e-hypergraph counterpart without a functor?}
+
+\update{I think I haven't paid any attention to this fact previously, but it seems that in~\cite{Frobenius} the functor $\llbracket - \rrbracket$ is between $PROP_{\Sigma_{Frob}}$ and $Csp_{D}(Hyp_{\Sigma})$, i.e. PROP is quotiented by Frobenius equations, but they are absorbed in hypergraphs domain. We will have a similar thing: $\llbracket - \rrbracket: PROP^{+}_{\Sigma^{+}} \to \WellTypedMdaEcospans_{R^+}$, i.e. we will quotient PROP$^{+}$ by semilattice equations and quotient e-hypergraphs by the interpretation of these equations as they are not absorbed. 
+The quotienting on the left is always implicit?}
 
 \begin{figure}
     \centering

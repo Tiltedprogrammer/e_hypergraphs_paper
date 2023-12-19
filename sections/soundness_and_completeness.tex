@@ -9,20 +9,21 @@ As SMC equations are absorbed by e-hypergraph representation we only quotient by
 We are now ready to build a semilattice-enriched SMC functor 
 
 \[
-[\cdot] : \textsf{PROP}^{+}(\Sigma) \to \WellTypedMdaEcospans
+[\cdot] : \textsf{PROP}^{+}(\Sigma) \to \sfrac{\WellTypedMdaEcospans}{\mathcal{S}}
 \]
-
-by freeness, it suffices to define how the functor acts on generators.
-As $\textsf{PROP}(\Sigma)$ and $\textsf{PROP}^{+}(\Sigma)$ essentially have the same set of generators we can reuse the functor $\llbracket \cdot \rrbracket: \textsf{PROP}(\Sigma) \to \MdaCospans$ from~\cite{Frobenius2} and then follow the inclusion $\mathcal{I}$ defined in~\ref{functor:I}.
+where $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is $\WellTypedMdaEcospans$ quotiented by structural rewrite rules which makes this category into a semilattice-enrhiched one.
+By freeness, it suffices to define how the functor acts on generators \update{Identities and generators from the signature?}.
+% As $\textsf{PROP}(\Sigma)$ and $\textsf{PROP}^{+}(\Sigma)$ essentially have the same set of generators we can reuse the functor $\llbracket \cdot \rrbracket: \textsf{PROP}(\Sigma) \to \MdaCospans$ from~\cite{Frobenius2} and then follow the inclusion $\mathcal{I}$ defined in~\ref{functor:I}.
 Everything else follows by defining
 
 \begin{enumerate}
     \item $[ f;g ] = [ f ] ; [ g ]$  for $f,g \in \Sigma$;
     \item $[ f \otimes g ] = [ f ] \otimes [ g ]$  for $f,g \in \Sigma$;
     \item $[ f + g ] = [ f ] + [ g ]$  for $f,g \in \Sigma$;
+    \item \update{Symmetry?}
 \end{enumerate}
 
-this also makes the functor into a semilattice-enriched SMC one on the nose.
+this also makes the functor into a symmetric monoidal semilattice-enriched SMC one on the nose.
 % \update{This essentially means that $[\cdot] = \llbracket \cdot \rrbracket ; \mathcal{I}$ plus three equations above.}
 
 \update{Anything about soundness? I.e. if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$? Because $f = g$ is modulo semilattice-enriched SMC equations we have to show that $\llbracket f \rrbracket \Rrightarrow \llbracket g \rrbracket$. Doesn't it require the soundness of rewriting?
@@ -51,7 +52,7 @@ this also makes the functor into a semilattice-enriched SMC one on the nose.
 \begin{proposition}
     Functor $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful.
     \begin{proof}
-        Consider the commutative diagram below.
+        Consider the commutative diagram below \update{Is it obvious that the diagram commutes?}.
 
         % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXHRleHR7UFJPUH0oXFxTaWdtYSkiXSxbMiwwLCJcXHRleHR7UFJPUH1eeyt9KFxcU2lnbWEpIl0sWzAsMiwiXFxNZGFDb3NwYW5zIl0sWzIsMiwiXFxzZnJhY3tcXFdlbGxUeXBlZE1kYUVjb3NwYW5zfXtcXG1hdGhjYWx7U319Il0sWzAsMSwiXFxtYXRoY2Fse0p9Il0sWzAsMiwiXFxsbGJyYWNrZXQgXFxjZG90IFxccnJicmFja2V0IiwyXSxbMSwzLCJbXFxjZG90XSJdLFsyLDMsIlxcbWF0aGNhbHtJfSIsMl1d
         \[
@@ -76,7 +77,7 @@ this also makes the functor into a semilattice-enriched SMC one on the nose.
 \begin{theorem}[$\llbracket - \rrbracket$ is faithful]
 \begin{proof}
 Essentially we need to show that if $\llbracket f \rrbracket = \llbracket g \rrbracket$ then $f = g$ which is equivalent to if $f \not = g$ then $\llbracket f \rrbracket \not = \llbracket g \rrbracket$.
-First, we note that we have a \question{weak (modulo commutativity)} normal form for any term in $PROP^{+}(\Sigma)$ which is achieved by applying distributivity for tensor and composition as well as unpacking equations, that is, every term is representable as in Figure~\ref{fig:normal_form_string} where $\phi_1,\;\ldots\;,\phi_n$ are pure SMC terms.
+First, we note that we have a \question{weak (modulo commutativity)} normal form for any term \update{string diagram?} in $PROP^{+}(\Sigma)$ which is achieved by applying distributivity for tensor and composition as well as unpacking equations, that is, every term is representable as in Figure~\ref{fig:normal_form_string} where $\phi_1,\;\ldots\;,\phi_n$ are pure SMC terms.
 \update{It is not actaully a `normal' form because we can still apply SMC equations, so it should be normal modulo SMC and commutativity}.
 
 \begin{figure}
@@ -104,20 +105,14 @@ Then we get a corresponding cospan for such weak normal form in $\sfrac{\WellTyp
 
 where all $A_1\; \ldots \;A_n$ do not contain any hierarchical edges.
 We will write such forms as $\phi_1 + \ldots \phi_n$ and $A_1 + \ldots A_n$ respectively.
-Then, $\llbracket f \rrbracket \not = \llbracket g \rrbracket$ leads to two options
-
-% \begin{itemize}
-%     \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_m$ where $n \not = m$. By functoriality and weak normal form in $\textsf{PROP}^{+}(\Sigma)$, $f = a_1 + \ldots + a_n$, $g = b_1 + \ldots b_m$ and $\llbracket f \rrbracket = \llbracket a_1 \rrbracket + \ldots + \llbracket a_n \rrbracket$, $\llbracket g \rrbracket = \llbracket b_1 \rrbracket + \ldots \llbracket b_m \rrbracket$. This essentially means that $f \not = g$ as it has different number of summands. 
-%     \item $\llbracket f \rrbracket$ = $A_1 + \ldots A_n$ and $\llbracket g \rrbracket = B_1 + \ldots B_n$. Then there exists a permutation $\sigma$ and an index $i$ such that $ A_i  \not =  B_{\sigma(i)}$. By functoriality there exists $a_i$ such that $\llbracket a_i \rrbracket = A_i$ and $b_j$ such that $\llbracket b_j \rrbracket = B_{\sigma(i)}$. As $A_i$ does not have any hierarchical edges it effectively lives in $\mathcal{I}(\catname{MACsp_{D}(Hyp_{\Sigma})})$. By faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ it follows that $a_i \not = b_j$ and $f \not = g$. \update{Prove that $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful?}
-% \end{itemize}
-
 Now, assume that $f = \phi_1 + \ldots + \phi_n$ and $g = \psi_1 + \ldots + \psi_m$.
-Then, by functoriality, $[f] = [A_1] + \ldots + [A_n]$ and $g = [B_1] + \ldots + [B_m]$. 
-$f \not g$ gives us two options.
+Then, by functoriality, $[f] = [\phi_1] + \ldots + [\phi_n] = A_1 + \ldots + A_n$ and $g = [\psi_1] + \ldots + [\psi_m] = B_{1} + \ldots + B_{m}$. 
+$f \not = g$ gives us two options.
 
 \begin{itemize}
     \item $n \not = m$. Then $[f] \not = [g]$ as they are simply not isomorphic cospans of e-hypegraphs as they have different number of summands.
-    \item $n = m$. Then there exists a permutation $\sigma$ and index $i$ such that $\phi_i \not = \psi_{\sigma(i)}$. Remember that these are just SMC terms and by faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ we get $A_i \not = B_{\sigma(i)}$ and $[f] \not = [g]$.
+    \item $n = m$. Then there exists a permutation $\sigma$ and index $i$ such that $\phi_i \not = \psi_{\sigma(i)}$. 
+    Remember that these are just SMC terms and by faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ we get $A_i \not = B_{\sigma(i)}$ and $[f] \not = [g]$.
 \end{itemize}
 
 \end{proof}
@@ -125,65 +120,106 @@ $f \not g$ gives us two options.
 
 \question{Is proof ok?}
 
-\begin{theorem}
+% \begin{theorem}
 
-    Let $\mathcal{R}$ be a rewriting system on $\textsf{PROP}(\Sigma)$ and $\langle l, r \rangle \in \mathcal{R}$.
-    $a \Rightarrow{}^{+}_{\langle l, r \rangle} b$ iff $[a] \Rrightarrow{}^{+}_{\langle [l], [r] \rangle} [b]$.
-    \begin{proof}
-        $a \Rrightarrow^{+}_{\langle l, r \rangle} b$ means that either
-        \begin{itemize}
-            \item $a$ and $b$ are decomposable as
-                  \[
-                    \scalebox{0.75}{
-                        \tikzfig{combinatorial_semantics/prop_rewriting}
-                    }
-                  \]
-                  \question{Here we can probably just reuse the proof going to $\ulcorner a \urcorner$ and then the result follows by functoriality of $[\cdot]$ (or $\llangle \cdot \rrangle$)}
-            \item or
-                 \[
-                    \scalebox{0.75}{
-                        \tikzfig{combinatorial_semantics/prop_plus_rewriting}
-                    }   
-                 \]
-                 and $a' \Rightarrow_{\langle l,r \rangle} b'$. This gives us the following decomposition in cospans
-                 % https://q.uiver.app/#q=WzAsMjcsWzAsNCwibSJdLFsxLDQsIkFfMSJdLFsyLDQsImkgKyBrIl0sWzMsNCwiOyJdLFs0LDAsImkiXSxbNSwwLCJYXzEiXSxbNiwwLCJqIl0sWzUsMiwiXFx2ZG90cyJdLFs1LDQsIkEnIl0sWzQsNCwiaSJdLFs2LDQsImoiXSxbNSwxLCIrIl0sWzUsMywiKyJdLFs1LDUsIisiXSxbNSw2LCJcXHZkb3RzIl0sWzUsNywiKyJdLFs0LDgsImkiXSxbNSw4LCJYX3ciXSxbNiw4LCJqIl0sWzcsNCwiXFxvdGltZXMiXSxbOCw0LCJrIl0sWzksNCwiayJdLFsxMCw0LCJrIl0sWzExLDQsIjsiXSxbMTIsNCwiaiArIGsiXSxbMTMsNCwiQV8yIl0sWzE0LDQsIm4iXSxbMCwxXSxbMiwxXSxbNCw1XSxbNiw1XSxbOSw4XSxbMTAsOF0sWzE4LDE3XSxbMTYsMTddLFsyMCwyMV0sWzIyLDIxXSxbMjYsMjVdLFsyNCwyNV1d
-                \[
-                    \adjustbox{scale=0.5, center}{
-                % \scalebox{0.75}{
-                    \begin{tikzcd}
-                    &&&& i & {X_1} & j \\
-                    &&&&& {+} \\
-                    &&&&& \vdots \\
-                    &&&&& {+} \\
-                    m & {A_1} & {i + k} & {;} & i & {A'} & j & \otimes & k & k & k & {;} & {j + k} & {A_2} & n \\
-                    &&&&& {+} \\
-                    &&&&& \vdots \\
-                    &&&&& {+} \\
-                    &&&& i & {X_w} & j
-                    \arrow[from=5-1, to=5-2]
-                    \arrow[from=5-3, to=5-2]
-                    \arrow[from=1-5, to=1-6]
-                    \arrow[from=1-7, to=1-6]
-                    \arrow[from=5-5, to=5-6]
-                    \arrow[from=5-7, to=5-6]
-                    \arrow[from=9-7, to=9-6]
-                    \arrow[from=9-5, to=9-6]
-                    \arrow[from=5-9, to=5-10]
-                    \arrow[from=5-11, to=5-10]
-                    \arrow[from=5-15, to=5-14]
-                    \arrow[from=5-13, to=5-14]
-                \end{tikzcd}}
-                \]
-                and there is a convex match of $L$ in $A'$.
-                It is then also down-closed and conflict reflecting as $A'$ is not hierarchical.
-                Need to show that arising pushout complement is a boundary complement.
-                \question{A problem is that the above terms does not decompose into a form of $A';C$ where $C$ is a pushout complement.
-                This happens because we take composition along the external interfaces and this $A'$ is within a box, so it is not a part of an external interface.
-                }
-                \Aleksei{discuss this. We can simplify PROP+ rewriting to just a box, but still have a problem with context C}
-        \end{itemize}
-        \update{It is tempting to reuse a similar result for $\llbracket \cdot \rrbracket$ because according to our definition $f \Rrightarrow_{\mathcal{R}^{+}}$ means that there is an SMC piece $f'$ inside some box that rewrites to $g'$.
-            But we only have this result for $\llangle \cdot \rrangle$ for terms with bent wires which is a functor to $PROP + Frob$.
-        }
-    \end{proof}
+%     Let $\mathcal{R}$ be a rewriting system on $\textsf{PROP}(\Sigma)$ and $\langle l, r \rangle \in \mathcal{R}$.
+%     $a \Rightarrow{}^{+}_{\langle l, r \rangle} b$ iff $[a] \Rrightarrow{}^{+}_{\langle [l], [r] \rangle} [b]$.
+%     \begin{proof}
+%         $a \Rrightarrow^{+}_{\langle l, r \rangle} b$ means that either
+%         \begin{itemize}
+%             \item $a$ and $b$ are decomposable as
+%                   \[
+%                     \scalebox{0.75}{
+%                         \tikzfig{combinatorial_semantics/prop_rewriting}
+%                     }
+%                   \]
+%                   \question{Here we can probably just reuse the proof going to $\ulcorner a \urcorner$ and then the result follows by functoriality of $[\cdot]$ (or $\llangle \cdot \rrangle$)}
+%             \item or
+%                  \[
+%                     \scalebox{0.75}{
+%                         \tikzfig{combinatorial_semantics/prop_plus_rewriting}
+%                     }   
+%                  \]
+%                  and $a' \Rightarrow_{\langle l,r \rangle} b'$. This gives us the following decomposition in cospans
+%                  % https://q.uiver.app/#q=WzAsMjcsWzAsNCwibSJdLFsxLDQsIkFfMSJdLFsyLDQsImkgKyBrIl0sWzMsNCwiOyJdLFs0LDAsImkiXSxbNSwwLCJYXzEiXSxbNiwwLCJqIl0sWzUsMiwiXFx2ZG90cyJdLFs1LDQsIkEnIl0sWzQsNCwiaSJdLFs2LDQsImoiXSxbNSwxLCIrIl0sWzUsMywiKyJdLFs1LDUsIisiXSxbNSw2LCJcXHZkb3RzIl0sWzUsNywiKyJdLFs0LDgsImkiXSxbNSw4LCJYX3ciXSxbNiw4LCJqIl0sWzcsNCwiXFxvdGltZXMiXSxbOCw0LCJrIl0sWzksNCwiayJdLFsxMCw0LCJrIl0sWzExLDQsIjsiXSxbMTIsNCwiaiArIGsiXSxbMTMsNCwiQV8yIl0sWzE0LDQsIm4iXSxbMCwxXSxbMiwxXSxbNCw1XSxbNiw1XSxbOSw4XSxbMTAsOF0sWzE4LDE3XSxbMTYsMTddLFsyMCwyMV0sWzIyLDIxXSxbMjYsMjVdLFsyNCwyNV1d
+%                 \[
+%                     \adjustbox{scale=0.5, center}{
+%                 % \scalebox{0.75}{
+%                     \begin{tikzcd}
+%                     &&&& i & {X_1} & j \\
+%                     &&&&& {+} \\
+%                     &&&&& \vdots \\
+%                     &&&&& {+} \\
+%                     m & {A_1} & {i + k} & {;} & i & {A'} & j & \otimes & k & k & k & {;} & {j + k} & {A_2} & n \\
+%                     &&&&& {+} \\
+%                     &&&&& \vdots \\
+%                     &&&&& {+} \\
+%                     &&&& i & {X_w} & j
+%                     \arrow[from=5-1, to=5-2]
+%                     \arrow[from=5-3, to=5-2]
+%                     \arrow[from=1-5, to=1-6]
+%                     \arrow[from=1-7, to=1-6]
+%                     \arrow[from=5-5, to=5-6]
+%                     \arrow[from=5-7, to=5-6]
+%                     \arrow[from=9-7, to=9-6]
+%                     \arrow[from=9-5, to=9-6]
+%                     \arrow[from=5-9, to=5-10]
+%                     \arrow[from=5-11, to=5-10]
+%                     \arrow[from=5-15, to=5-14]
+%                     \arrow[from=5-13, to=5-14]
+%                 \end{tikzcd}}
+%                 \]
+%                 and there is a convex match of $L$ in $A'$.
+%                 It is then also down-closed and conflict reflecting as $A'$ is not hierarchical.
+%                 Need to show that arising pushout complement is a boundary complement.
+%                 \question{A problem is that the above terms does not decompose into a form of $A';C$ where $C$ is a pushout complement.
+%                 This happens because we take composition along the external interfaces and this $A'$ is within a box, so it is not a part of an external interface.
+%                 }
+%                 \Aleksei{discuss this. We can simplify PROP+ rewriting to just a box, but still have a problem with context C}
+%         \end{itemize}
+%         \update{It is tempting to reuse a similar result for $\llbracket \cdot \rrbracket$ because according to our definition $f \Rrightarrow_{\mathcal{R}^{+}}$ means that there is an SMC piece $f'$ inside some box that rewrites to $g'$.
+%             But we only have this result for $\llangle \cdot \rrangle$ for terms with bent wires which is a functor to $PROP + Frob$.
+%         }
+%     \end{proof}
+% \end{theorem}
+
+We will next consider functors
+\[
+    \textsf{PROP}(\Sigma, \mathcal{E}) \xrightarrow{\mathcal{J}} \textsf{PROP}^{+}(\Sigma, \mathcal{E}) \xrightarrow{\llangle - \rrangle} \sfrac{\WellTypedMdaEcospans}{\mathcal{S},\mathcal{E}}
+\]
+where $\mathcal{E}$ is a set of equations of the corresponding SMT.
+\begin{theorem}[$\llangle - \rrangle$ is a functor]
+\end{theorem}
+
+\begin{theorem}[$\llangle - \rrangle$ is faithful]
+\end{theorem}
+
+\update{Or we can define rewriting for string diagrams in $\textsf{PROP}^{+}(\Sigma)$ based on rewriting in $\textsf{PROP}(\Sigma)$ and then say that $f \xrightarrow{}_{\mathcal{R}} g$ iff $[f] [g]$}
+
+\begin{definition}[Rewriting in $\textsf{PROP}^{+}(\Sigma)$]
+
+Recall the definition of rewriting in some $\textsf{PROP}(\Sigma) = \mathbb{A}$.
+We say that $a \in \mathbb{A}$ rewrites into $b \in \mathbb{A}$ under a rewrite rule $\langle l, r \rangle$ where $l,r \in \mathbb{A}$ if $a$ and $b$ are decomposable as below.
+\[
+\scalebox{0.75}{
+\tikzfig{combinatorial_semantics/prop_rewriting}
+}
+\]
+and we will use notation $a \Rightarrow_{\langle l, r \rangle} b$.
+
+Now consider an enriched prop $\mathbb{A}^{+}$ over the signature $\Sigma$ such that there is a functor $\mathcal{J} : \mathbb{A} \to \mathbb{A}^{+}$.
+We than say that $a \in \mathbb{A}^{+}$ rewrites into $b \in \mathbb{A}^{+}$ under a rewrite rule $\langle l, r \rangle$ where $l,r \in \mathcal{J}(\mathbb{A})$ if $a$ and $b$ are decomposable as below.
+
+\[
+\scalebox{0.75}{
+\tikzfig{combinatorial_semantics/prop_plus_rewriting}
+}
+\]
+
+and $a' \Rightarrow_{\langle l, r \rangle} b'$.
+We will use notation $a \Rightarrow_{\langle l, r \rangle}^{+} b$.
+\end{definition}
+
+\begin{theorem}
+    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$.
 \end{theorem}
