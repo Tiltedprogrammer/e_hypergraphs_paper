@@ -81,7 +81,7 @@ Symmetry is inherited from $\mathcal{C}$ as the coproduct is commutative and is 
 n + m \xrightarrow{\sigma_{n,m}} m + n \xleftarrow{id + id} m + n
 \]
 
-\update{Naturality and SMC laws are implied by $+$ being a coproduct[reference?]}.
+This construction turns this data into a symmetric monoidal category~\cite{MonoidalCoproduct}.
 
 \end{definition}
 
@@ -99,7 +99,7 @@ Following~\cite{Frobenius2} morphisms in an SMC with a signature $\Sigma$ can be
 \begin{definition}[Category $\;\catname{Csp_{D}(Hyp_{\Sigma})}$]
 \label{def:cspd}
 Category $\catname{Csp_{D}(Hyp_{\Sigma})}$ is a \textit{full} sub-category of $\catname{Csp(Hyp_{\Sigma})}$ which has discrete hypergraphs as objects.
-\update{Assuming that $D$ is a functor from PROP to $\catname{Hyp_{\Sigma}}$, $\catname{Csp_{D}(Hyp_{\Sigma})}$ is also a PROP and hence an SMC (Theorem 3.6~\cite{Frobenius}).}
+% \update{Assuming that $D$ is a functor from PROP to $\catname{Hyp_{\Sigma}}$, $\catname{Csp_{D}(Hyp_{\Sigma})}$ is also a PROP and hence an SMC (Theorem 3.6~\cite{Frobenius}).}
 \end{definition}
 
 In particular, this means that any morphism in $\catname{Csp_{D}(Hyp_{\Sigma})}$ is of the form $n \xrightarrow{} \mathcal{G} \xleftarrow{} m$,
@@ -261,7 +261,6 @@ We will prove the last point (all the others are analogous).
               This follows by exactly the same argument as the base case as $a_{n+1}$ is necessarily in $E_{X}$.
               And we finally have $[s_{X+Y}(e_{x})]^{*} = [s_{X+Y}(a_{n+1})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
     \end{itemize}
-    \update{Looks fine?}
 \end{proof}
 
 Next 
@@ -298,9 +297,9 @@ There are three options analogoues to the proof above, so we will show the base 
 $t_1 \sim t_2$ implies that there exists at least one $z$ in $E_{Z}$ such that $i_{1,E}(e_{x}) = f_{E};i_{1,E}(z)$ (or $e_{x} = f_{E}(z)$) and $[i_{1,E}(e_{x})] = \sfrac{i_{1,V}}{\sim}(e_x)$, and $e_y = g_{E}(z)$ $[in_{2,E}(e_{y})] = \sfrac{i_{2,V}}{\sim}(e_y)$.
 By applying $j_{1,E}$ to the first we get $j_{1,E}(f_{E}(z)) = j_{1,E}(e_x)$ and similarly for $j_{2,E}$: $j_{2,E}(g_{E}(z)) = j_{2,E}(e_y)$ and $j_{1,E}(e_{x}) = j_{2,E}(e_{y})$ by commutativity.
 Hence, $u_{E}([in_{1,E}(e_x)]) = u_{E}([in_{2,E}(e_y)])$.
-\update{Above $e_x$ and $e_y$ are different from $e_x$ and $e_y$ from the first proof, i.e. they are in $E_{X}$ and $E_{Y}$. This is probablty not good.}
+% \update{Above $e_x$ and $e_y$ are different from $e_x$ and $e_y$ from the first proof, i.e. they are in $E_{X}$ and $E_{Y}$. This is probablty not good.}
 
-\question{Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.}
+Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.
 Finally, $u$ is unique.
 Assume, that there exists $w : \sfrac{X+Y}{\sim R} \to Q$ for the same $j_1$ and $j_2$.
 In order for them to commute $w_{E}([i_{1,E}(x)]) = j_1(x)$ and $w([in_{2,E}(y)]) = j_2(y)$ (similarly for $w_{V}$) which is the same as $u_{E}$.
@@ -314,12 +313,11 @@ Now we are ready to define e-hypergraphs which are a combinatorial representatio
 
     An e-hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma$ is a tuple \[(V_{\mathcal{G}},E_{\mathcal{G}},s,t,l,<_c,\#)\] where $(V_{\mathcal{G}},E_{\mathcal{G}},s,t)$ are the same as in~\ref{def:hypergraph}.
     The labelling $l$ is modified to include an extra value $\bot \;$ $l :E_{\mathcal{G}} \to \Sigma + 1$. 
-    % With an abuse of notation, we will confuse $\mathcal{G}$ with $V_{\mathcal{G}} \cup E_{\mathcal{G}}$, when treating it as a set.
-    \question{Shall I use $\cup$ instead of $+$?}
+    % With an abuse of notation, we will confuse $\mathcal{G}$ with $V_{\mathcal{G}} \cup E_{\mathcal{G}}$, when treating it as a set.    
     $<_c \subset (V_\mathcal{G} + E_\mathcal{G}) \times (V_\mathcal{G} + E_\mathcal{G})$ is a child relation imposing a strict partial order on $(V_\mathcal{G} + E_\mathcal{G})$.
     We require that for a given $x \in (V_\mathcal{G} + E_\mathcal{G})$ a set of all predecessors of $x\;$ $[x) = \{x' \in E_\mathcal{G} \;||\; x' <_c x\; \}$ is finite and consists of edges $e \in E_{\mathcal{G}}$ such that $l(e) = \bot$ only.
     Next, each $x$ has at most one immediate predecessor.
-    \update{We will denote the fact that $e$ is an immediate predecessor of $v$ as $e <_c^{\mu} v$.}
+    We will denote the fact that $e$ is an immediate predecessor of $v$ as $e <_c^{\mu} v$.
     Similarly, a set of all successors is $(x] = \{x' \in (V_\mathcal{G} + E_\mathcal{G}) \; ||\; x <_{c} x'\}$ where $x'$ can be a node or an edge. 
     % An edge $e \in E_{\mathcal{G}}$ is unlabelled, i.e. $l(e) = \bot$ iff $(e] \not = \varnothing$.
     Finally, we require that $<_c^{\mu}$ respects connectivity, i.e. if $v \in s(e)$ then $e' <_c^{\mu} e$ iff $e' <_c^{\mu} v$.
@@ -489,7 +487,7 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
         \[
         \phi_{E}(<_{c,\mathcal{F}}^{\mu}(i_{E_{\mathcal{F}}}(x))) = <_{c,\mathcal{G}}^{\mu}(\phi_{E};i_{E_{\mathcal{G}}}(x))  
         \] when $x$ is an edge.
-          \update{We do not require such an equation when $[x) = \varnothing$}.
+        We do not require such an equation when $[x) = \varnothing$.
 
     % \item
     % $x_1 \#_{\mathcal{F}} x_2$ iff $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
@@ -644,7 +642,8 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
 
     \begin{enumerate}
     \item $Z$ is a \textit{discrete} e-hypergraph, i.e. it has no edges.
-    \item $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_i,v_j \in V_{Z}$. \update{This essentially means that $f,g$ do not map nodes to levels of different hierarchy.}
+    \item $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_i,v_j \in V_{Z}$.
+    This essentially means that $f,g$ do not map nodes to levels of different hierarchy.
     \item If $[f_{V}(v)) \not = \varnothing$ then $[g_{V}(v)) = \varnothing$ and vice versa.
     \item $\consistency^{\mu}(f(v_i)) = \consistency^{\mu}(f(v_j))$ and $\consistency^{\mu}(f(g_i)) = \consistency^{\mu}(g(v_j))$.
     \item $f$ and $g$ are mono.
@@ -703,9 +702,9 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
               \[ 
                 <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]) = <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[e])
               \]
-              \update{Assumptions above guarantee that the predecessor of such node does not depend on the choice of $e$ if there are several of them.}
+              Assumptions above guarantee that the predecessor of such node does not depend on the choice of $e$ if there are several of them.
     \end{enumerate}
-    \question{In the case when images of $f$ and $g$ are top-level the function is undefined. Shall we introduce bottom?}
+    % \question{In the case when images of $f$ and $g$ are top-level the function is undefined. Shall we introduce bottom?}
     Now, if $u$ is an element of $E_{X+Y}$.
     We have the only case of $u$ having no pre-image in $E_{Z}$ because it is empty.
               Consider two cases.
@@ -722,9 +721,8 @@ In particular, it has a coproduct which is a disjoint union of e-hypergraphs and
                     \] where $[v]$ is either in $s([u])$ or $t([u])$.
                      The second assumption in~\ref{pushout:assumptions} guarantees that all candidates for $[v]$ share the same predecessor, i.e. the definition does not depend on a particular $[v]$.
               \end{enumerate}
-    \update{We will also build this relation in steps, first we do steps for nodes (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for nodes until fixed point.
-            Essentially, this interleaving means that nodes inherit the relation from incident edges and vice versa.
-    }
+    We will also build this relation in steps, first we do steps for nodes (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for nodes until fixed point.
+    Essentially, this interleaving means that nodes inherit the relation from incident edges and vice versa.
     Clearly, all the cases above are disjoint.
 
     Let's check that this is a well-defined function.
@@ -1316,7 +1314,7 @@ To build a proper correspondence between terms in an enriched category and e-hyp
     \begin{enumerate}
         \item $A \in \text{obj}(\catname{EHyp_{\Sigma}})$
         \item $W, X, Y, Z$ are discrete and $f,g,h,k$ are monos
-        \item \update{The image of $f;g$ (respectively, $k;h$) constitutes of nodes $v$ such that $[v) = \varnothing$}
+        \item The image of $f;g$ (respectively, $k;h$) consists of nodes $v$ such that $[v) = \varnothing$
     \end{enumerate}
     Since $f$ and $k$ are monos, $W$ and $Z$ are essentially subgraphs of $X$ and $Y$ and hence we will introduce the following notation which better depicts that such cospans are effectively e-hypergraphs with \textit{external} interfaces
  
@@ -1385,7 +1383,6 @@ Since $X,Y,Z,Y', Y_{ext}$ are all discrete, $\uplus$ and $\setminus$ are standar
 \[
     k = \langle b;p_2, f|_{Y \setminus Y_{ext}};p_1 \rangle
 \]
-\update{I've put copairings above}
 % \[
 % \begin{tikzcd}
 % Y_{ext} \arrow[d] & 0 \arrow[l] \arrow[d]    \\
@@ -1396,7 +1393,7 @@ Since $X,Y,Z,Y', Y_{ext}$ are all discrete, $\uplus$ and $\setminus$ are standar
 % and then the disjoint union is just a coproduct. 
 Defining cospans up to isomorphism, associativity of coproducts and pushouts, and the presence of an id-cospan turns this construction into a proper category.
 
-\update{Similarly to~\ref{def:cspd} this category has a symmetric monoidal product given by a coproduct in $\catname{EHyp_{\Sigma}}$ which makes it into an SMC if $D$ is a functor from PROP to $\catname{EHyp_{\Sigma}}$.}
+Similarly to~\ref{def:cspd} this category has a symmetric monoidal product given by a coproduct in $\catname{EHyp_{\Sigma}}$ which makes it into an SMC.
 More precisely, below are cospans for tensor product and symmetry.
 Tensor unit is given by the initial object in $\catname{EHyp_{\Sigma}}$.
 
@@ -1437,8 +1434,6 @@ Tensor unit is given by the initial object in $\catname{EHyp_{\Sigma}}$.
 \end{tikzcd}
 }
 \]\label{morphism:symmetry}
-
-\question{Or shall we say that symmetry is inherited from $\catname{EHyp_{\Sigma}}$ because coproduct is commutative and associative?}
 \end{definition}
 
 \begin{remark}
@@ -1486,9 +1481,8 @@ By abusing the notation we will also refer to the images of $f_{ext}$, $g_{ext}$
     Similarly for the output interface.
     In particular, $\{0,1,2,3\} \uplus (\{6,7,8,9,10\} \setminus \{6\}) = \{0,1,2,3,7,8,9,10\}$.
     % The conflict and child relations in the pushout are a disjoint union of the corresponding relations from pushout components.
-    \update{Note that pushout for such composition always exists as the interface in the middle is descrete and nodes in the images of the middle interface are at the outermost level as well.
+    Note that pushout for such composition always exists as the interface in the middle is descrete and nodes in the images of the middle interface are at the outermost level as well.
     Furthermore, $f_{ext};f$ and $g_{ext};g$ are monos and hence the span satisfies our assumptions.
-    }
 \end{remark}
 
 \begin{figure}
@@ -1540,9 +1534,10 @@ By abusing the notation we will also refer to the images of $f_{ext}$, $g_{ext}$
 \label{fig:e-hyp_composition_example}
 \end{figure}
 
-Next, we will define $+$ operation on morphisms of $\Ecospans$. This will help us make this category into a semilattice-enriched SMC but for now, we will not require that $+$ should satisfy any equations.
+Next, we will define $+$ operation on morphisms of $\Ecospans$.
+This will help us make this category into a semilattice-enriched SMC but for now, we will not require that $+$ should satisfy any equations.
 
-\update{below definition depends on whether we require the homomorphism to reflect the conflicts}
+% \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
 
 \begin{definition}
     $+$ of two morphisms 
@@ -1574,7 +1569,7 @@ Next, we will define $+$ operation on morphisms of $\Ecospans$. This will help u
 
 \begin{figure}
     \[
-    \scalebox{0.75}{
+    \scalebox{0.6}{
     \tikzfig{combinatorial_semantics/f_plus_g_new}
     }
     \]
@@ -1608,7 +1603,7 @@ We will call such cospan \textit{monogamous directed acyclic} (mda-) if
 
 The cospan in Figure~\ref{fig:e-cospan} is also an mda-cospan.
 
-\update{We can probably omit the proofs below because they are obvious. But keeping them here serves as a sanity check.}
+% \update{We can probably omit the proofs below because they are obvious. But keeping them here serves as a sanity check.}
 
 % \begin{lemma}
 %     \begin{enumerate}
@@ -1663,7 +1658,7 @@ The cospan in Figure~\ref{fig:e-cospan} is also an mda-cospan.
     Narrowing the morphisms of $\Ecospans$ to mda-cospans gives us a subcategory $\MdaEcospans$.
 
 
-    This category is also symmetric monoidal and has $+$ by the lemma above.
+    This category is also symmetric monoidal and has $+$.
 \end{definition}
 
 \begin{proposition}
@@ -1756,9 +1751,6 @@ We call the nodes that have a pre-image in $X$ input nodes of $e$ and those that
     We will call an mda-cospan in $\MdaEcospans$ well-typed if all hierarchical edges in its carrier are well-typed.
 \end{definition}
 
-
-
-\update{I have run out of possible names for a category}
 
 \begin{definition}[Category $\WellTypedMdaEcospans$]
 
@@ -2176,7 +2168,6 @@ Thus we have $n_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} m_{ext} + x_{ext}
 \begin{proposition}
     The boundary complement in~\ref{def:boundary_new} when exists is unique
     \begin{proof}
-        \update{I will try to reinvent a similar proof from~\cite{Frobenius2} as the cited proof does not make sense to me}
         The pushout in $EHyp_{\Sigma}$ should also be a pushout on the underlying sets of nodes and hyperedges.
         Hence, pushout complement should yield pushout complements for the sets of nodes and hyperedges.
         In particular,
@@ -2286,22 +2277,20 @@ Thus we have $n_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} m_{ext} + x_{ext}
         \end{itemize}
     \end{itemize}
     \end{proof}
-    \update{Can we check the proof? I haven't used all the conditions from monogamous-ness above.
-    Although, if the morphism $i+j \to L$ is mono, the complement is unique for not-monogamous hypergraphs as well.}
+    % \update{Can we check the proof? I haven't used all the conditions from monogamous-ness above.
+    % Although, if the morphism $i+j \to L$ is mono, the complement is unique for not-monogamous hypergraphs as well.}
 \end{proposition}
 
 
-\question{
 \begin{definition}[Convex down-closed match] 
     We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed match if
     
     \begin{enumerate}
         \item $m$ is monomorphism
         \item $m(L)$ is a convex down-closed subgraph of $G$
-        \item \update{I've removed the requirement that consistency should be reflected because well typedness prohibits otherwise formed matches.}
+        % \item \update{I've removed the requirement that consistency should be reflected because well typedness prohibits otherwise formed matches.}
     \end{enumerate}
 \end{definition}
-}
 
 
 \begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
@@ -2322,7 +2311,7 @@ Thus we have $n_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} m_{ext} + x_{ext}
 \end{definition}
 
 
-\Aleksei{Do we need to introduce substitution? This is needed if our rewrite rules are going to have variables as labels.}
+% \Aleksei{Do we need to introduce substitution? This is needed if our rewrite rules are going to have variables as labels.}
 
 
 The whole interfaces of the resulting e-hypergraph $H$ from the cospan
@@ -2376,23 +2365,21 @@ Well-typedness is restored once the right-hand side of the rewrite rule is glued
 \end{proof}
 \end{proposition}
 
-\Aleksei{Check the proof}
 
-\Aleksei{Can we reuse anything from~\cite{Frobenius}?}
+% Pushout example
 
-Consider an example below that illustrates the introduced constraints.
+% Consider an example below that illustrates the introduced constraints.
 
-\update{I've switched to $[ \cdot ]$ for our functor to be able to differenciate between $\llbracket \cdot \rrbracket$, $\llangle \cdot \rrangle$}
-\begin{remark}
-    For now, we will informally denote a combinatorial interpretation of a morphism $f$ in $\textsf{PROP}^{+}(\Sigma)$ as $[ f ]$.
-\end{remark}
+% \begin{remark}
+%     For now, we will informally denote a combinatorial interpretation of a morphism $f$ in $\textsf{PROP}^{+}(\Sigma)$ as $[ f ]$.
+% \end{remark}
 
-\begin{example}
+% \begin{example}
 
-A DPOI square for rewriting in $\WellTypedMdaEcospans$ is depicted in Figure~\ref{fig:refined_dpoi}.
-A projection rule of $\llbracket f + g \rrbracket \to \llbracket f \rrbracket$ is shown in the top half of the diagram.
-The image of the matching $m$ is shown in red and its image is a convex down-closed e-hypergraph.
-Pushout complement is then computed by removing the image of $m$ from the target e-hypergraph by keeping intact the nodes that have a pre-image in the carrier of the rewriting span. The corresponding mda-cospan is depicted at the bottom: $c_i = g_i \setminus (l_i \setminus i) = \{18, 19, 1, 2, 13, 14, 5, 6, 7, 8\} \setminus (\{1,2,5,6,7,8\} \setminus \{1,2\}) = \{18, 19, 1, 2, 13, 14, 5, 6, 7, 8\} \setminus \{5,6,7,8\} = \{18,19,1,2,13,14\}$ and $c_i + j = \{18,19, 1, 2, 13, 14, 3, 4\}$ which is the input interface for $C$. Similar computations are performed for $c_o$. Then pushout glues $R$ and $C$ together along $i + j$ and the resulting interface $h_i = c_i + (r_i \setminus i) = \{18,19, 1, 2, 13, 14\} + \varnothing = \{18,19, 1, 2, 13, 14\}$ and likewise for $h_o$.
+% A DPOI square for rewriting in $\WellTypedMdaEcospans$ is depicted in Figure~\ref{fig:refined_dpoi}.
+% A projection rule of $\llbracket f + g \rrbracket \to \llbracket f \rrbracket$ is shown in the top half of the diagram.
+% The image of the matching $m$ is shown in red and its image is a convex down-closed e-hypergraph.
+% Pushout complement is then computed by removing the image of $m$ from the target e-hypergraph by keeping intact the nodes that have a pre-image in the carrier of the rewriting span. The corresponding mda-cospan is depicted at the bottom: $c_i = g_i \setminus (l_i \setminus i) = \{18, 19, 1, 2, 13, 14, 5, 6, 7, 8\} \setminus (\{1,2,5,6,7,8\} \setminus \{1,2\}) = \{18, 19, 1, 2, 13, 14, 5, 6, 7, 8\} \setminus \{5,6,7,8\} = \{18,19,1,2,13,14\}$ and $c_i + j = \{18,19, 1, 2, 13, 14, 3, 4\}$ which is the input interface for $C$. Similar computations are performed for $c_o$. Then pushout glues $R$ and $C$ together along $i + j$ and the resulting interface $h_i = c_i + (r_i \setminus i) = \{18,19, 1, 2, 13, 14\} + \varnothing = \{18,19, 1, 2, 13, 14\}$ and likewise for $h_o$.
 
 %     \begin{figure}
 %         \centering
@@ -2404,54 +2391,60 @@ Pushout complement is then computed by removing the image of $m$ from the target
 %     \label{fig:refined_dpoi}
 %     \end{figure}
     
-\end{example}
+% \end{example}
 
-\Aleksei{This figure yeilds "Dimension too large". Need to fix it.}
-
-Unlike SMC equations the equations for semilattice enriched categories are not absorbed by e-hypergraph representation and hence to further build a correspondence between $\textsf{PROP}^{+}(\Sigma)$ and $\WellTypedMdaEcospans$ we will need to turn the latter into a semilattice-enriced category.
-We already have a $+$ in $\WellTypedMdaEcospans$ so we need to require that it satisfies a particular set of equations, for example, that $h \otimes (f + g) = h \otimes f + h \otimes g$.
-\update{How to formally state this? Because $h \otimes (f+g)$ is an SMC term from $\WellTypedMdaEcospans$ which is just an SMC so far.}
-We will add such equations as DPOI rewrite rules and show that for each such rule the corresponding pushout complement and the pushout exist.
+% \Aleksei{This figure yeilds "Dimension too large". Need to fix it.}
 
 
-\begin{proposition}
-Pushouts for all semilattice enrichment equations exist.
+% This is now in soundness and completeness section
 
-\begin{proof}
-    Let us give a combinatorial interpretation for an instance of the first equation (distributivity) in~\ref{fig:string-equations}.
-    It can be found in Figure~\ref{fig:distributivity_interpretation}.
-    After we identify a convex down-closed image of the left-hand side of this rule within a graph $G$ we remove the image by keeping only the outermost nodes.
-    Note that because the image of all $a$'s and $b$'s are outermost nodes, we are allowed to pick any monomorphism for our pushout complement.
-    And for the same reason the pushout for the right square exists.
-    Then we simply glue the right-hand side of the rule into the hole.
-    Such equations are not absorbed by e-hypergraph representation unlike SMC equations because the right-hand side contains more edges, i.e. graphs $G$ and $H$ are not isomorphic.
-    Similar argument applies to other rules as well.
-\end{proof}
-\end{proposition}
+% Unlike SMC equations the equations for semilattice enriched categories are not absorbed by e-hypergraph representation and hence to further build a correspondence between $\textsf{PROP}^{+}(\Sigma)$ and $\WellTypedMdaEcospans$ we will need to turn the latter into a semilattice-enriced category.
+% We already have a $+$ in $\WellTypedMdaEcospans$ so we need to require that it satisfies a particular set of equations, for example, that $h \otimes (f + g) = h \otimes f + h \otimes g$.
+% \update{How to formally state this? Because $h \otimes (f+g)$ is an SMC term from $\WellTypedMdaEcospans$ which is just an SMC so far.}
+% We will add such equations as DPOI rewrite rules and show that for each such rule the corresponding pushout complement and the pushout exist.
 
-\update{How do we state the correspondence between term equations and their e-hypergraph counterpart without a functor?}
 
-\update{I think I haven't paid any attention to this fact previously, but it seems that in~\cite{Frobenius} the functor $\llbracket - \rrbracket$ is between $PROP_{\Sigma_{Frob}}$ and $Csp_{D}(Hyp_{\Sigma})$, i.e. PROP is quotiented by Frobenius equations, but they are absorbed in hypergraphs domain. We will have a similar thing: $\llbracket - \rrbracket: PROP^{+}_{\Sigma^{+}} \to \WellTypedMdaEcospans_{R^+}$, i.e. we will quotient PROP$^{+}$ by semilattice equations and quotient e-hypergraphs by the interpretation of these equations as they are not absorbed. 
-The quotienting on the left is always implicit?}
+% \begin{proposition}
+% Pushouts for all semilattice enrichment equations exist.
 
-\begin{figure}
-    \centering
-    \[
-    \scalebox{0.45}{
-    \tikzfig{combinatorial_semantics/structural_rule_pushout}}\]  
-    \caption{Distributivity rewrite rule interpretation}
-    \label{fig:distributivity_interpretation}
-\end{figure}
+% \begin{proof}
+%     Let us give a combinatorial interpretation for an instance of the first equation (distributivity) in~\ref{fig:string-equations}.
+%     It can be found in Figure~\ref{fig:distributivity_interpretation}.
+%     After we identify a convex down-closed image of the left-hand side of this rule within a graph $G$ we remove the image by keeping only the outermost nodes.
+%     Note that because the image of all $a$'s and $b$'s are outermost nodes, we are allowed to pick any monomorphism for our pushout complement.
+%     And for the same reason the pushout for the right square exists.
+%     Then we simply glue the right-hand side of the rule into the hole.
+%     Such equations are not absorbed by e-hypergraph representation unlike SMC equations because the right-hand side contains more edges, i.e. graphs $G$ and $H$ are not isomorphic.
+%     Similar argument applies to other rules as well.
+% \end{proof}
+% \end{proposition}
 
-\begin{definition}
-    We will denote with $\mathcal{S}$ the interpretation of the equations in~\ref{fig:string-equations} as rewrite rules in $\WellTypedMdaEcospans$.
-    In particular, for all $l = r$ in~\ref{fig:string-equations}, $\mathcal{S}$ will contain $\langle [l], [r]\rangle$ and $\langle [r], [l] \rangle$.
-    \update{Technically we add those for all possible instances of $l$ and $r$ in~\ref{fig:string-equations}.}
-\end{definition}
+% \update{How do we state the correspondence between term equations and their e-hypergraph counterpart without a functor?}
+
+% \update{I think I haven't paid any attention to this fact previously, but it seems that in~\cite{Frobenius} the functor $\llbracket - \rrbracket$ is between $PROP_{\Sigma_{Frob}}$ and $Csp_{D}(Hyp_{\Sigma})$, i.e. PROP is quotiented by Frobenius equations, but they are absorbed in hypergraphs domain. We will have a similar thing: $\llbracket - \rrbracket: PROP^{+}_{\Sigma^{+}} \to \WellTypedMdaEcospans_{R^+}$, i.e. we will quotient PROP$^{+}$ by semilattice equations and quotient e-hypergraphs by the interpretation of these equations as they are not absorbed. 
+% The quotienting on the left is always implicit?}
+
+% \begin{figure}
+%     \centering
+%     \[
+%     \scalebox{0.45}{
+%     \tikzfig{combinatorial_semantics/structural_rule_pushout}}\]  
+%     \caption{Distributivity rewrite rule interpretation}
+%     \label{fig:distributivity_interpretation}
+% \end{figure}
+
+% \begin{definition}
+%     We will denote with $\mathcal{S}$ the interpretation of the equations in~\ref{fig:string-equations} as rewrite rules in $\WellTypedMdaEcospans$.
+%     In particular, for all $l = r$ in~\ref{fig:string-equations}, $\mathcal{S}$ will contain $\langle [l], [r]\rangle$ and $\langle [r], [l] \rangle$.
+%     \update{Technically we add those for all possible instances of $l$ and $r$ in~\ref{fig:string-equations}.}
+% \end{definition}
 
 
 \begin{remark}
-    There is a minor limitation for DPOI rewriting above. It is unable to express rewriting for rules that contain an edge with no inputs and outputs on their right-hand side. This is because there is no way to impose both conflict and child relation of such an edge as it has no incident nodes in its context. An example of this could be seen in Figure~\ref{fig:non_expressible}. After an image of a match is removed there is no way of plugging $k$ into the hierarchical edge as it has no connection with this edge via the shared interface. However, we think that this is only a minor limitation because in practice such edges with no incident nodes correspond to `scalars' if we consider for example a category of vector spaces where a rewrite rule with a scalar could be
+    There is a minor limitation for DPOI rewriting above.
+    It is unable to express rewriting for rules that contain an edge with no inputs and outputs on their right-hand side.
+    This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
+    An example of this could be seen in Figure~\ref{fig:non_expressible}. After an image of a match is removed there is no way of plugging $k$ into the hierarchical edge as it has no connection with this edge via the shared interface. However, we think that this is only a minor limitation because in practice such edges with no incident nodes correspond to `scalars' if we consider for example a category of vector spaces where a rewrite rule with a scalar could be
 
 \begin{alignat*}{3}
 \begin{pmatrix}

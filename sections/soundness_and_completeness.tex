@@ -2,57 +2,57 @@
 
 \section{Soundness and Completeness}
 
-\update{Below I kind of use $\llbracket - \rrbracket$ to define itself when using $\llbracket \mathcal{E} \rrbracket$.}
 In this section, we will build a correspondence between terms in a semilattice enriched $\textsf{PROP}^{+}(\Sigma)$ and morphisms in $\WellTypedMdaEcospans$.
-Similarly to $\textsf{PROP}^{+}(\Sigma)$ where terms are defined up to semilattice enrichment and SMC equations we will say that two morphisms $G$ and $F$ in $\WellTypedMdaEcospans$ are equal when $G \Rrightarrow{}_{\mathcal{S}} F$. 
-As SMC equations are absorbed by e-hypergraph representation we only quotient by $\mathcal{S}$. 
-We are now ready to build a semilattice-enriched SMC functor 
+% Similarly to $\textsf{PROP}^{+}(\Sigma)$ where terms are defined up to semilattice enrichment and SMC equations we will say that two morphisms $G$ and $F$ in $\WellTypedMdaEcospans$ are equal when $G \Rrightarrow{}_{\mathcal{S}} F$. 
+% As SMC equations are absorbed by e-hypergraph representation we only quotient by $\mathcal{S}$. 
+We will build a semilattice-enriched SMC functor 
 
 \[
-[\cdot] : \textsf{PROP}^{+}(\Sigma) \to \sfrac{\WellTypedMdaEcospans}{\mathcal{S}}
+[-] : \textsf{PROP}^{+}(\Sigma) \to \sfrac{\WellTypedMdaEcospans}{\mathcal{S}}
 \]
-where $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is $\WellTypedMdaEcospans$ quotiented by structural rewrite rules which makes this category into a semilattice-enrhiched one.
-By freeness, it suffices to define how the functor acts on generators \update{Identities and generators from the signature?}.
-% As $\textsf{PROP}(\Sigma)$ and $\textsf{PROP}^{+}(\Sigma)$ essentially have the same set of generators we can reuse the functor $\llbracket \cdot \rrbracket: \textsf{PROP}(\Sigma) \to \MdaCospans$ from~\cite{Frobenius2} and then follow the inclusion $\mathcal{I}$ defined in~\ref{functor:I}.
-Everything else follows by defining
+where $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is $\WellTypedMdaEcospans$ quotiented by structural rewrite rules $\mathcal{S} = \{\langle [l], [r] \rangle, \langle [r],[l] \rangle\}$ for all $l = r$ in~\ref{fig:string-equations}.
+By freeness, it suffices to define how the functor acts on generators.
+For every $f : n \to m \in \Sigma$, $[f]$ is defined as below.
 
-\begin{enumerate}
-    \item $[ f;g ] = [ f ] ; [ g ]$  for $f,g \in \Sigma$;
-    \item $[ f \otimes g ] = [ f ] \otimes [ g ]$  for $f,g \in \Sigma$;
-    \item $[ f + g ] = [ f ] + [ g ]$  for $f,g \in \Sigma$;
-    \item \update{Symmetry?}
-\end{enumerate}
-
-this also makes the functor into a symmetric monoidal semilattice-enriched SMC one on the nose.
-% \update{This essentially means that $[\cdot] = \llbracket \cdot \rrbracket ; \mathcal{I}$ plus three equations above.}
-
-\update{Anything about soundness? I.e. if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$? Because $f = g$ is modulo semilattice-enriched SMC equations we have to show that $\llbracket f \rrbracket \Rrightarrow \llbracket g \rrbracket$. Doesn't it require the soundness of rewriting?
+\[
+\scalebox{0.75}{
+\tikzfig{soundness_and_completeness/generator_translation}
 }
+\]
+
 
 \begin{theorem}
     If $f = g$ in $PROP^{+}(\Sigma)$ then $[f] \Rrightarrow_{\mathcal{S}} [g]$ in $\WellTypedMdaEcospans$.
     \begin{proof}
-        \update{
-            By induction on the number of applied equations to turn $f$ into $g$?
-            E.g. $f = g$ in one step essentially means that $f = l$ for some $l$ in~\ref{fig:string-equations} and $g = r$ (or the other way around).
-            Then we need to show that $[f] \Rrightarrow_{\langle l, r \rangle \in \mathcal{S}} [g']$ and $[g'] = [g]$.
+        $f = g$ means that $f$ as a term can be turned into $g$ by applying SMC equations and the equations from~\ref{fig:string-equations}.
+        Since $f_1 =_{\text{SMC}} f_2$ means that $[f_1] = [f_2]$ we will only consider the transformations induced by the equations from~\ref{fig:string-equations}.
+        We will also note that every subterm of $f$ corresponds to a convex down-closed sub e-hypergraph of $[f]$.
+        Then, proving the above statement boils down to showing that for every rewrite rule in $\mathcal{S}$ the corresponding pushout complement and pushout exist.
+        Suppose, $f =_{r} g$ where $r$ is the top left equation from~\ref{fig:string-equations}.
+        $[r]$ is then given below.
+        \[
+            \scalebox{0.45}{
+                \tikzfig{combinatorial_semantics/structural_rule_pushout}
             }
-        \question{Can we use normal form here as well? $f = g$ means there exists $h$ such that $f =_{SMC^{+}} h$ and $h =_{SMC^{+}}$ and $h$ is of the form $\phi_1 + \ldots + \phi_n$?
-                  Then we need to show that $[f] \Rrightarrow_{\mathcal{S}} [h]$ and $[h] \Rrightarrow_{\mathcal{S}} [g]$.
-        }
+        \]
+        After we identify a convex down-closed image of the left-hand side of this rule within a graph $[f]$ we remove the image by keeping only the outermost nodes.
+        Note that because the image of all $a$'s and $b$'s are outermost nodes, we are allowed to pick any monomorphism for our pushout complement.
+        And for the same reason the pushout for the right square exists.
+        Then we simply glue the right-hand side of the rule into the hole.
+        Similar argument applies to other rules as well.
+        The result for any number of applied equations follows by induction.
     \end{proof}
 \end{theorem}
 
 \begin{corollary}
-    $[\cdot] : PROP^{+}(\Sigma) \to \sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is sound in a sense that
-    if $f = g$ in $PROP^{+}(\Sigma)$ then $[f] = [g]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$
+    $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is a semilattice-enriched SMC category and $[-]$ is a semilattice-enriched SMC functor.
 \end{corollary}
 
 
 \begin{proposition}
     Functor $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful.
     \begin{proof}
-        Consider the commutative diagram below \update{Is it obvious that the diagram commutes?}.
+        Consider the commutative diagram below.
 
         % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXHRleHR7UFJPUH0oXFxTaWdtYSkiXSxbMiwwLCJcXHRleHR7UFJPUH1eeyt9KFxcU2lnbWEpIl0sWzAsMiwiXFxNZGFDb3NwYW5zIl0sWzIsMiwiXFxzZnJhY3tcXFdlbGxUeXBlZE1kYUVjb3NwYW5zfXtcXG1hdGhjYWx7U319Il0sWzAsMSwiXFxtYXRoY2Fse0p9Il0sWzAsMiwiXFxsbGJyYWNrZXQgXFxjZG90IFxccnJicmFja2V0IiwyXSxbMSwzLCJbXFxjZG90XSJdLFsyLDMsIlxcbWF0aGNhbHtJfSIsMl1d
         \[
@@ -62,7 +62,7 @@ this also makes the functor into a symmetric monoidal semilattice-enriched SMC o
             \MdaCospans && {\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}}
             \arrow["{\mathcal{J}}", from=1-1, to=1-3]
             \arrow["{\llbracket \cdot \rrbracket}"', from=1-1, to=3-1]
-            \arrow["{[\cdot]}", from=1-3, to=3-3]
+            \arrow["{[-]}", from=1-3, to=3-3]
             \arrow["{\mathcal{I}}"', from=3-1, to=3-3]
         \end{tikzcd}
         \]
@@ -74,11 +74,11 @@ this also makes the functor into a symmetric monoidal semilattice-enriched SMC o
     Then, by composition, $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful. 
 \end{proposition}
 
-\begin{theorem}[$\llbracket - \rrbracket$ is faithful]
+\begin{theorem}
+$[-]$ is faithful.
 \begin{proof}
-Essentially we need to show that if $\llbracket f \rrbracket = \llbracket g \rrbracket$ then $f = g$ which is equivalent to if $f \not = g$ then $\llbracket f \rrbracket \not = \llbracket g \rrbracket$.
+Essentially we need to show that if $[f] = [g]$ then $f = g$ which is equivalent to if $f \not = g$ then $[f] \not = [g]$.
 First, we note that we have a \question{weak (modulo commutativity)} normal form for any term \update{string diagram?} in $PROP^{+}(\Sigma)$ which is achieved by applying distributivity for tensor and composition as well as unpacking equations, that is, every term is representable as in Figure~\ref{fig:normal_form_string} where $\phi_1,\;\ldots\;,\phi_n$ are pure SMC terms.
-\update{It is not actaully a `normal' form because we can still apply SMC equations, so it should be normal modulo SMC and commutativity}.
 
 \begin{figure}
     \[
@@ -115,6 +115,15 @@ $f \not = g$ gives us two options.
     Remember that these are just SMC terms and by faithfulness of $\llbracket \cdot \rrbracket;\mathcal{I}$ we get $A_i \not = B_{\sigma(i)}$ and $[f] \not = [g]$.
 \end{itemize}
 
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+$[-]$ is full.
+\begin{proof}
+As we quotient by $\mathcal{S}$ instead of arbitrary cospans we can only consider their normal forms $A_1 + \ldots A_n$ where all of $A_i$ do not contain any hierarchical edges.
+Because each of $A_i$ is a plain hypergraph, they have a pre-image in $\textsf{PROP}(\Sigma)$, i.e. $A_i = \llbracket \cdot \rrbracket;\mathcal{I}(a_i)$.
+And then $[\mathcal{J}(a_1) + \ldots + \mathcal{J}(a_n)] = [\mathcal{J}(a_1)] + \ldots + [\mathcal{J}(a_n)] = A_1 + \ldots + A_n$ and hence $\mathcal{J}(a_1) + \ldots + \mathcal{J}(a_n)$ is the pre-image of $A_1 + \ldots + A_n$.
 \end{proof}
 \end{theorem}
 
@@ -183,18 +192,18 @@ $f \not = g$ gives us two options.
 %     \end{proof}
 % \end{theorem}
 
-We will next consider functors
-\[
-    \textsf{PROP}(\Sigma, \mathcal{E}) \xrightarrow{\mathcal{J}} \textsf{PROP}^{+}(\Sigma, \mathcal{E}) \xrightarrow{\llangle - \rrangle} \sfrac{\WellTypedMdaEcospans}{\mathcal{S},\mathcal{E}}
-\]
-where $\mathcal{E}$ is a set of equations of the corresponding SMT.
-\begin{theorem}[$\llangle - \rrangle$ is a functor]
-\end{theorem}
+% We will next consider functors
+% \[
+%     \textsf{PROP}(\Sigma, \mathcal{E}) \xrightarrow{\mathcal{J}} \textsf{PROP}^{+}(\Sigma, \mathcal{E}) \xrightarrow{\llangle - \rrangle} \sfrac{\WellTypedMdaEcospans}{\mathcal{S},\mathcal{E}}
+% \]
+% where $\mathcal{E}$ is a set of equations of the corresponding SMT.
+% \begin{theorem}[$\llangle - \rrangle$ is a functor]
+% \end{theorem}
 
-\begin{theorem}[$\llangle - \rrangle$ is faithful]
-\end{theorem}
+% \begin{theorem}[$\llangle - \rrangle$ is faithful]
+% \end{theorem}
 
-\update{Or we can define rewriting for string diagrams in $\textsf{PROP}^{+}(\Sigma)$ based on rewriting in $\textsf{PROP}(\Sigma)$ and then say that $f \xrightarrow{}_{\mathcal{R}} g$ iff $[f] [g]$}
+% \update{Or we can define rewriting for string diagrams in $\textsf{PROP}^{+}(\Sigma)$ based on rewriting in $\textsf{PROP}(\Sigma)$ and then say that $f \xrightarrow{}_{\mathcal{R}} g$ iff $[f] [g]$}
 
 \begin{definition}[Rewriting in $\textsf{PROP}^{+}(\Sigma)$]
 
@@ -221,5 +230,5 @@ We will use notation $a \Rightarrow_{\langle l, r \rangle}^{+} b$.
 \end{definition}
 
 \begin{theorem}
-    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$.
+    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
 \end{theorem}
