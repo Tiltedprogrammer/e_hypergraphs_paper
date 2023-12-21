@@ -48,6 +48,13 @@ For every $f : n \to m \in \Sigma$, $[f]$ is defined as below.
     $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ is a semilattice-enriched SMC category and $[-]$ is a semilattice-enriched SMC functor.
 \end{corollary}
 
+\begin{proposition}
+    For each cospan $A$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ there is a week normal form such that $A =_{\mathcal{S}} A_1 + \ldots A_m$ where each of $A_i$ does not contain any hierarchical edges.
+    \begin{proof}
+    By applying the rules 1-6 in $\mathcal{S}$ (the ones from Figure~\ref{fig:string-equations}) we either remove 1 hierarchical edge (rules 5-6) or do not change the number of them, but expand the edge onto other edges.
+    We will have a redex for such a rule until there is only one hierarchical edge at the outermost level (and only one outermost edge) with no other hierarchical edges within it.
+    \end{proof}
+\end{proposition}
 
 \begin{proposition}
     Functor $\llbracket \cdot \rrbracket; \mathcal{I}$ is faithful.
@@ -121,13 +128,11 @@ $f \not = g$ gives us two options.
 \begin{theorem}
 $[-]$ is full.
 \begin{proof}
-As we quotient by $\mathcal{S}$ instead of arbitrary cospans we can only consider their normal forms $A_1 + \ldots A_n$ where all of $A_i$ do not contain any hierarchical edges.
-Because each of $A_i$ is a plain hypergraph, they have a pre-image in $\textsf{PROP}(\Sigma)$, i.e. $A_i = \llbracket \cdot \rrbracket;\mathcal{I}(a_i)$.
+As we quotient by $\mathcal{S}$ instead of arbitrary cospans we can only consider their normal forms $A_1 + \ldots A_n$ where all of $A_i$ do not contain any hierarchical edges as per the proposition above.
+Because each of $A_i$ is a plain hypergraph, they have a pre-image in $\textsf{PROP}(\Sigma)$, i.e. for all $i$ there exists $a_i$ in $\textsf{PROP}(\Sigma)$ such that $A_i = \llbracket a_i \rrbracket;\mathcal{I}$.
 And then $[\mathcal{J}(a_1) + \ldots + \mathcal{J}(a_n)] = [\mathcal{J}(a_1)] + \ldots + [\mathcal{J}(a_n)] = A_1 + \ldots + A_n$ and hence $\mathcal{J}(a_1) + \ldots + \mathcal{J}(a_n)$ is the pre-image of $A_1 + \ldots + A_n$.
 \end{proof}
 \end{theorem}
-
-\question{Is proof ok?}
 
 % \begin{theorem}
 
@@ -229,6 +234,50 @@ and $a' \Rightarrow_{\langle l, r \rangle} b'$.
 We will use notation $a \Rightarrow_{\langle l, r \rangle}^{+} b$.
 \end{definition}
 
+\begin{theorem}[Theorem 35~\cite{Frobenius2}]
+
+    $a \Rightarrow_{R} b$ iff $\llangle {}^{\ulcorner} a {}^{\urcorner} \rrangle \Rrightarrow_{\llangle {}^\ulcorner R {}^\urcorner \rrangle} \llangle {}^{\ulcorner}b {}^{\urcorner} \rrangle$.
+    Where $\llangle \cdot \rrangle : \textsf{PROP}(\Sigma) + \textsf{Frob} \to \catname{Csp_{D}(Hyp_{\Sigma})}$ and $\Rrightarrow$ is a convex rewriting relation for morphisms in $\catname{Hyp_{\Sigma}}$.
+\end{theorem}
+
+\begin{remark}
+    If $\llbracket a \rrbracket = n \xrightarrow{} A \xleftarrow{} m$ then $\llangle ^{\ulcorner} A ^{\urcorner} \rrangle$ is isomorphic to $0 \xrightarrow{} A \xleftarrow{} n + m$.
+\end{remark}
+
+\begin{proposition}
+    $\llangle {}^{\ulcorner} a {}^{\urcorner} \rrangle \Rrightarrow_{\llangle {}^\ulcorner R {}^\urcorner \rrangle} \llangle {}^{\ulcorner}b {}^{\urcorner} \rrangle$ iff $[\mathcal{J}(a)] \Rrightarrow_{[R]}^{+} [\mathcal{J}(b)]$.
+     Note that $a$ and $b$ are from $\textsf{PROP}(\Sigma)$.
+    \begin{proof}
+        The forward direction follows by the remark above and by recalling that $\Rrightarrow$ implies there exists a pushout square below
+        \[
+        \scalebox{1}{
+            \tikzfig{soundness_and_completeness/pushout_in_Hyp}
+        }    
+        \]
+        where the matching $m$ is convex, $i+j \to C \to G$ is a boundary complement~\cite{Frobenius2} and marked squares are pushouts
+        and by using the injection $\mathcal{K} : \catname{Hyp_{\Sigma}} \to \catname{EHyp_{\Sigma}}$ there exists the following pushout square
+        \[
+          \scalebox{0.75}{
+            \tikzfig{soundness_and_completeness/pushout_in_EHyp}
+          }  
+        \]
+        where $m$ is convex and down-closed (as there are no hierarchical edges) and $\mathcal{K}(i+j) \to C \to G$ is a boundary complement.
+        This by definition means that $\mathcal{K}(n) \xrightarrow{} \mathcal{K}(n) \xrightarrow{} G \xleftarrow{} \mathcal{K}(m) \xleftarrow{} \mathcal{K}(m) = [\mathcal{J}(a)] \Rrightarrow_{[R]}^{+} = [\mathcal{J}(b)] = \mathcal{K}(n) \xrightarrow{} \mathcal{K}(n) \xrightarrow{} G \xleftarrow{} \mathcal{K}(m) \xleftarrow{} \mathcal{K}(m)$.
+        The other direction follows by applying the same argument backwards.
+    \end{proof}
+\end{proposition}
+
+
 \begin{theorem}
     $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
+    \begin{proof}
+        $a \Rightarrow_{\langle l, r \rangle}^{+} b$ implies that $a$ is decomposable as $a_1 + \ldots + a' + \ldots + a_k$ and $b$ is decomposable as $a_1 + \ldots + b' + \ldots + a_k$ and $a' \Rightarrow_{\langle l, r \rangle} b'$.
+        The latter implies by the Theorem 35~\cite{Frobenius2} that $\llangle \ulcorner a' \urcorner \rrangle \Rrightarrow_{\langle \llangle ^\ulcorner l ^\urcorner \rrangle, \llangle ^\ulcorner r ^\urcorner \rrangle \rangle} \llangle \ulcorner b' \urcorner \rrangle$ which means that $[a'] \Rrightarrow_{\langle [l], [r] \rangle}^{+} [b']$.
+        This means that there exists a convex matching of $[l]$ within $[a']$ and hence there is a convex match of $[l]$ in $[a_1] + \ldots + [a'] + \ldots + [a_k]$ and that the pushout complement is $[a_1] + \ldots + C + \ldots + [a_k]$ where $C$ is the pushout complement for $[a'] \Rrightarrow_{\langle [l], [r] \rangle} [b']$.
+        Similarly, the pushout is $[a_1] + \ldots [b'] + \ldots + [a_k] = [b]$.
+
+        For the converse direction, $[a] \Rrightarrow_{\langle [l],[r] \rangle}^{+} [b]$ implies that $[a] = A_{1} + \ldots A' + \ldots + A_{n}$ and $[b] = A_{1} + \ldots B' + \ldots + A_{n}$ and $A' \Rrightarrow_{\langle [l],[r] \rangle}^{+} B'$ because $[l]$ and $[r]$ have a pre-image in $\textsf{PROP}(\Sigma)$ and because we quotient by $\mathcal{S}$.
+        The latter means by the proposition above that $a' \Rightarrow_{\langle l, r \rangle} b'$ such that $A' = \llbracket a' \rrbracket; \mathcal{I}$ and $B' = \llbracket b' \rrbracket; \mathcal{I}$ and hence $a = a_1 + \ldots + \mathcal{I}(a') + \ldots + a_n \Rightarrow_{\langle l, r \rangle}^{+} a_1 + \ldots \mathcal{I}(b') + \ldots a_n = b$
+    \end{proof}
+    \update{It's again somewhat handwaving, do we need any supporing proofs for the above?}
 \end{theorem}
