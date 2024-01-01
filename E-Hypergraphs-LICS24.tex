@@ -1,0 +1,1155 @@
+%%
+%% This is file `sample-sigconf.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% samples.dtx  (with options: `sigconf')
+%%
+%% IMPORTANT NOTICE:
+%%
+%% For the copyright see the source file.
+%%
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from sample-sigconf.tex.
+%%
+%% For distribution of the original source see the terms
+%% for copying and modification in the file samples.dtx.
+%%
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%%
+%% Commands for TeXCount
+%TC:macro \cite [option:text,text]
+%TC:macro \citep [option:text,text]
+%TC:macro \citet [option:text,text]
+%TC:envir table 0 1
+%TC:envir table* 0 1
+%TC:envir tabular [ignore] word
+%TC:envir displaymath 0 word
+%TC:envir math 0 word
+%TC:envir comment 0 0
+%%
+%%
+%% The first command in your LaTeX source must be the \documentclass
+%% command.
+%%
+%% For submission and review of your manuscript please change the
+%% command to \documentclass[manuscript, screen, review]{acmart}.
+%%
+%% When submitting camera ready or to TAPS, please change the command
+%% to \documentclass[sigconf]{acmart} or whichever template is required
+%% for your publication.
+%%
+
+\documentclass[sigconf]{acmart}
+
+
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage[
+  colorinlistoftodos,
+  prependcaption,
+  % disable,
+]{todonotes}
+\usepackage{fontenc}
+
+%\usepackage{minted}
+
+\usepackage{subcaption}
+
+\usepackage{hyperref}
+
+
+\input{preamble}
+\input{macros}
+\input{sample.tikzstyles}
+\input{hypergraph.tikzstyles}
+\input{hypergraph.tikzdefs}
+
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+% These are for comments
+\newcommand\question[1]{{\color{azure}#1}}
+\newcommand\update[1]{{\color{americanrose}#1}}
+
+% \usepackage{mathtools,mathrsfs}
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+
+% for quotienting
+% \usepackage{faktor}
+\usepackage{xfrac} 
+
+\usepackage{import}
+
+% category names
+%\newcommand{\MdaCospans}{{\catname{MACsp_{D}(Hyp_{\Sigma})}}}
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{WMEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+% There is already a remark in the preamble, but it does
+% not work for some reason
+\newtheorem{remark}{Remark}
+
+\makeatletter
+\newsavebox{\@brx}
+\newcommand{\llangle}[1][]{\savebox{\@brx}{\(\m@th{#1\langle}\)}%
+  \mathopen{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\newcommand{\rrangle}[1][]{\savebox{\@brx}{\(\m@th{#1\rangle}\)}%
+  \mathclose{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\makeatother
+
+
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+\setcopyright{acmlicensed}
+\copyrightyear{2024}
+\acmYear{2024}
+\acmDOI{XXXXXXX.XXXXXXX}
+
+%% These commands are for a PROCEEDINGS abstract or paper.
+\acmConference[LICS '24]{Logic in Computer Science}{July 8--12,
+  2024}{Tallinn, Estonia}
+%%
+%%  Uncomment \acmBooktitle if the title of the proceedings is different
+%%  from ``Proceedings of ...''!
+%%
+%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%%  June 03--05, 2018, Woodstock, NY}
+\acmISBN{978-1-4503-XXXX-X/18/06}
+
+
+%%
+%% Submission ID.
+%% Use this when submitting an article to a sponsored event. You'll
+%% receive a unique submission ID from the organizers
+%% of the event, and this ID should be used as the parameter to this command.
+%%\acmSubmissionID{123-A56-BU3}
+
+%%
+%% For managing citations, it is recommended to use bibliography
+%% files in BibTeX format.
+%%
+%% You can then either use BibTeX with the ACM-Reference-Format style,
+%% or BibLaTeX with the acmnumeric or acmauthoryear sytles, that include
+%% support for advanced citation of software artefact from the
+%% biblatex-software package, also separately available on CTAN.
+%%
+%% Look at the sample-*-biblatex.tex files for templates showcasing
+%% the biblatex styles.
+%%
+
+%%
+%% The majority of ACM publications use numbered citations and
+%% references.  The command \citestyle{authoryear} switches to the
+%% "author year" style.
+%%
+%% If you are preparing content for an event
+%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
+%% citations and references.
+%% Uncommenting
+%% the next command will enable that style.
+%%\citestyle{acmauthoryear}
+
+\begin{document}
+
+\title{Equivalence Hypergraphs: E-Graphs for Monoidal Theories}
+
+\author{Anonymous}
+%\email{}
+%\orcid{}
+%\affiliation{
+%  \institution{}
+%  \streetaddress{}
+%  \city{}
+%  \state{}
+%  \country{
+%  \postcode{}
+%}
+
+%\renewcommand{\shortauthors}{}
+
+\begin{abstract}
+The technique of equipping graphs with an equivalence relation, called equality saturation, has recently proved both powerful and practical in program optimisation, particularly for SMT solvers. 
+We give a categorical semantics for \emph{e-graphs} over algebraic theories, a generalisation of the structures which are the subject of this technique, and to their rewriting. 
+The proposed framework consists of Cartesian categories enriched over a semilattice,  further generalised to symmetric monoidal categories, to account for monoidal theories.
+The aim is to permit the optimisation of a larger class of programs, based on string diagrams.  
+Furthermore, we present a sound and complete combinatorial representation of morphisms in such a category, based on a generalisation of hypergraphs,  which we call \emph{e-hypergraphs}, which have the usual advantage that many structural equations are absorbed into a general notion of isomorphism. 
+\end{abstract}
+
+%%
+%% The code below is generated by the tool at http://dl.acm.org/ccs.cfm.
+%% Please copy and paste the code instead of the example below.
+%%
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10003752.10010124.10010131.10010137</concept_id>
+       <concept_desc>Theory of computation~Categorical semantics</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10003752.10003809.10010031</concept_id>
+       <concept_desc>Theory of computation~Data structures design and analysis</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10002950.10003624.10003633.10003637</concept_id>
+       <concept_desc>Mathematics of computing~Hypergraphs</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10003752.10003790.10003798</concept_id>
+       <concept_desc>Theory of computation~Equational logic and rewriting</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[300]{Theory of computation~Categorical semantics}
+\ccsdesc[300]{Theory of computation~Data structures design and analysis}
+\ccsdesc[300]{Mathematics of computing~Hypergraphs}
+\ccsdesc[300]{Theory of computation~Equational logic and rewriting}
+
+\keywords{e-graphs, categorical semantics, enriched category theory,  hypergraph rewriting,  DPO rewriting.}
+
+%\received{20 February 2007}
+%\received[revised]{12 March 2009}
+%\received[accepted]{5 June 2009}
+
+\newcommand\id{\textsf{id}}
+\newcommand\sym{\textsf{sym}}
+
+\maketitle
+
+%-------------------- INTRODUCTION
+
+\section{Introduction}
+
+
+Rewrite-driven program optimisation consists of the application of a sequence of semantics-preserving rewrites which may improve the cost of execution, such as time or space (memory). 
+Because the application of some rewrites can either enable or block the subsequent application of others, the choice of application order significantly impacts the quality of the resulting optimisation.  This long-standing issue is known as the \textit{phase-ordering problem}, with a \textit{phase} referring to a particular set of rewrites. Typical approaches to this problem use heuristics to determine an ordering. 
+
+A recently proposed,  alternative solution is \textit{equality saturation} 
+\cite{10.1145/1594834.1480915}: instead of maintaining a \textit{single},  putatively optimised program which is rewritten \textit{destructively} at each step, a \textit{set} of equivalent programs is maintained instead, whereas each rewrite step \textit{non-destructively} grows the set.  Upon reaching a fixed point (\textit{saturation}),  a \textit{globally} optimal program can then be extracted from this set.
+A naive approach is clearly unfeasible, since the size of this set grows exponentially with the number of rewrites. 
+However, \textit{equality graphs (e-graphs)} \cite{EggPaper} are a data structure that can represent this set compactly, thus making the set tractable in practical applications. 
+
+Although equality saturation is already a state-of-the-art algorithmic optimisation technique, there is an opportunity to better understand its mathematical foundations. 
+We propose to address this issue via a categorical axiomatisation for e-graphs and their rewriting. 
+Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple \textit{semilattice-enriched} Cartesian categories. 
+The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, as encountered in a large body of research. 
+The starting innovation of our approach is the semilattice-enrichment. 
+The \textit{join} operator lifts the formalism so that it can now operate with \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial represetation. 
+
+Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques. 
+This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
+\cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica_hierarchical_2023}, or computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  
+However, in this work we offer little to the e-graph practitioner, as we focus exclusively on foundational aspects, introducing no new applications or improved e-graph algorithmics. 
+
+A final contribution of this work is giving a concrete combinatorial representation of enriched string diagrams in terms of (hierarchical)  hypergraphs, which we call \textit{e-hypergraphs}.  We also give a specification of e-hypergraph rewriting via a suitable extension of the double pushout (DPO) rewriting framework 
+\cite{dpo, bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022},  proving the representation \textit{sound and complete} with respect to our categorical semantics.  As a corollary, this also provides a formalisation of the rewriting theory of e-graphs as encountered in the literature. 
+
+\subsection{E-graphs}
+
+
+\begin{figure*}\label{fig:e-graph-example}
+\[
+    \scalebox{0.65}{
+    \tikzfig{categorical-semantics/egraph-translation}
+    }
+\]
+\caption{Example translation of e-graphs into string diagrams for semilattice enriched (traced) Cartesian categories. DAN: (a) SHOULD USE MATH FONT.}
+\end{figure*}
+
+E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.  They generalise the typical DAG representation of terms to include equivalence classes. 
+The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Figure~\ref{fig:e-graph-example}.
+This example is a `Hello world!' of e-graphs, presented first in~\cite{EggPaper}.
+
+Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent e-string diagram representation, an e-hypergraph. 
+The initial term, $(a*2)/2$, is already represented efficiently in the e-graph by sharing the node 2.
+The string diagram version is slightly different than conventional e-graphs by representing the sharing of the node 2 explicitly, using a sharing (contraction) node. 
+
+Nodes are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs. 
+Initially each equivalence class has a single node. 
+The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$. 
+This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself. 
+Explicit discarding (weakening) nodes indicate which of the class-level edges are connected to which nodes inside the class. 
+
+The other steps, (c) to (e), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules. 
+Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
+From the saturated graph the optimal term consisting of only the node $a$ can be then extracted, discarding everything else. 
+
+\subsection{Semantics via Semilattice Enriched Categories}
+
+\begin{figure}\label{fig:egraph-strings}
+\[
+	\scalebox{0.65}{
+	\tikzfig{categorical-semantics/egraph-strings}
+	}
+\]
+\caption{String diagrams for semilattice enriched symmetric monoidal categories.}
+\end{figure}
+
+Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
+makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{noauthor_09083347_nodate,joyal_geometry_1991, mellies_functorial_2006}. In Figure~\ref{fig:egraph-strings} we extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
+\[
+\infer{\phi_1 + \ldots + \phi_n: A \to B}{\{\phi_i: A \to B\}_{i \in \{1,\ldots,n\}}}
+\]
+The ability to take formal sums, which in concrete categories will usually be set union, is used to model the equivalence class structure of e-graphs.  
+
+DAN: TOP TO BOTTOM OR BOTTOM TO TOP? UNCLEAR.\\
+String diagrams are read from top-to-bottom; we consider additional generators for the duplication and deletion transformations of a Cartesian category.  Note, further, that in the Cartesian case we can restrict to generators $c$ with a single output.\\
+DAN: WHY? WITH OR WITHOUT LOSS OF GENERALITY? WHAT DOES THIS MEAN? 
+
+The translation from e-graphs to enriched string diagrams is illustrated informally below,
+noting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
+\[
+    \tikzfig{categorical-semantics/egraph-translation-1}
+\]
+DAN: IT WOULD BE CLEARER IMHO IF THE ARGUMENTS OF C1 AND C2 REMAIN CENTERED AND THE DISCARDED NODES ARE OFF CENTER. 
+
+Examples of this translation are given in the second row of Figure \ref{fig:e-graph-example}. In particular, note that the translation of the \textit{cyclic} e-graph (e)
+requires the use of a categorical \textit{trace}, generating a cycle. In this paper, we focus on \textit{acyclic} e-graphs and their corresponding catgeories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
+
+Note how the natural level of generality for our string diagrams is not Cartesian, but monoidal: the generators of a Cartesian category are required in order to embed e-graphs, but are orthogonal to the addition of formal sums. \\
+DAN: SUMS OR JOINS? CONSISTENT?\\
+Thus we generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we outline in the conclusion of this paper.   
+\\ DAN: THIS IS A BIT UNCLEAR. WHY IS THIS THE NATURAL LEVEL THE GENERALITY? IT'S NOT QUITE OBVIOUS. 
+
+\subsection{Combinatorial Representation of Enriched String Diagrams}
+
+In order to \textit{implement} generalised e-graphs, rewriting must be performed on concrete representations of the corresponding string diagrams.  String diagrams can be considered equivalently as either topological objects (\textit{i.e.}, taken modulo ``connectivity'') or as a 2-dimensional syntax quotiented by the equations of an SMC. For example, we have the following equivalences between diagrams. 
+%\[(f_1 \otimes f_2) ; (g_1 \otimes g_2) = (f_1 ; g_1) \otimes (f_2 ; g_2)\] 
+\[
+	\scalebox{0.6}{
+	\tikzfig{categorical-semantics/interchange}
+	}
+\]
+This representation makes string diagrams unamenable to efficient implementation due to the difficulty of calculating the quotient. 
+A large body of research work shows how this issue can be solved by taking a different approach, representing string diagrams as hypergraphs~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022}.  Here, the generators $c_i$ become vertices, connected via hyper-edges.  Thus the expected quotient becomes simply hypergraph isomorphism. With appropriate restrictions on the form these hypergraphs can take, this approach can be used to \textit{characterise} the free symmetric monoidal category generated by some $c_i$. 
+
+We are interested not only in the free SMC over a set of generators, but also in \textit{(symmetric) monoidal theories} with extra equations such as, for instance, the rewrite rules (b)--(e) of Figure \ref{fig:e-graph-example}. These can be seen as equations between string diagrams, and thus rewrites of their hypergraph representations.  Because the generating equations can be applied in any context, we are lead to the notion of \textit{(hyper)graph rewriting}: given an equation $l=r$, we require some way to identify (a sub-hypergraph corresponding to) $l$ in any hypergraph $G$ and replace it with (a sub-hypergraph corresponding to) $r$.
+The standard methodology to giving specifications of such graph rewriting, known as \textit{double pushout (DPO) rewriting} \cite{???} is still applicable.
+However, these concepts must be now generalised from hypergraphs to \textit{e-hypergraphs}, hypergraphs with two additional relations denoting the hierarchical structure introduced by so-called \textit{e-boxes}: the generator for semilattice enrichment, and the separation of the components of each e-box.
+Giving the appropriate definitions turns out to be a technical matter of some complexity, and constitutes the main body of the paper. 
+
+\subsection{Soundness and Completeness}
+The main technical result of the paper is a proof soundness and completeness of the combinatorial representation for semilattice enriched SMCs, extending the results of \cite{bonchi_string_2022-2} for plain SMCs. While the structural equalities of SMCs are factored out in the representation,  important structural equalities arising from the enrichment (see the equations of Figure \ref{fig:string-equations}) are not, and should not be. They represent the un/sharing of subdiagrams with respect to the e-box structure,  which is precisely what allows for the compact representation of equivalence classes.  Instead, we consider DPO-rewrites implementing both the structural equalities for enrichment (which involve the e-box structure) and the equalities arising from the generating monoidal theory (which do not).  
+
+Quotienting e-hypergraphs by the induced equivalence gives rise to a sound and complete model of semilattice enriched SMCs.  That is, we exhibit a translation functor $\llbracket-\rrbracket$ from the free semilattice enriched SMC over a symmetric monoidal theory to our (quotiented) category of e-hypergraphs such that 
+morphisms $f = g$ if and only if there exists a sequence of DPO-rewrites (each induced by a structural equality or the monoidal theory) between their translations: $\llbracket f \rrbracket \rightsquigarrow_{DPO} \llbracket g \rrbracket$. 
+
+DAN: THIS NEEDS EXPANDING. EXPLAINING IN PLAIN WORDS SOME OF THE THEORETICAL PROPERTIES OF E-GRAPHS AND THE CATEGORICAL STATEMENT. 
+
+%\subsection{E-matching and E-rewriting}
+%
+%Having defined e-hypergraphs and shown them to correctly model the rewriting of string diagrams for semilattice enriched SMCs, we note that the naive implementation of DPO-rewriting is inefficient: to find a redex within an e-hypergraph involves finding a structurally equivalent e-hypergraph which contains the redex as a subgraph. In general, this involves unsharing the e-box structure before a redex becomes available.  Thus, we define a notion of \textit{e-matching} for e-hypergraphs: that is, to find redexes working modulo the e-box structure. In particular, we wish to locate the smallest subgraph $G' \subseteq G$ "containing" (in an appropriate sense) the redex $L$. Given this,  \textit{e-rewriting} $L \to R$, intended to achieve equality saturation, is simple to define due to its non-destructive nature: we rewrite $G' \to G' + R$ in $G$.  
+%\begin{figure}
+%\[
+%	\tikzfig{combinatorial_semantics/example-rewriting}
+%\]
+%\caption{Example application of e-rewriting for rewrite $(x*y)/z \to x*(y/z)$: find an appropriate minimal sub-e-hypergraph containing the redex $(x*y)/z$ and non-destructively add the reduct $x*(y/z)$.  REDO THIS}
+%\end{figure}
+
+\subsection{Related Work}
+
+Although e-graphs were first developed in the 80's \cite{nelson1980techniques}, there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.  This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.  We are hopeful that our novel perspective on e-graphs can be extended to give uniform foundations to these investigations.  Some further avenues for investigation, including potential applications, are given in the conclusion of this paper. 
+
+Our use of string diagrams is also central to the intuition behind our work.  The string diagrams we work with are left essentially as informal reasoning devices, however there exists a breadth of work on similar diagrammatic formalisms for similar classes of categories.  We mention here work on hierarchical string diagrams \cite{ghica_hierarchical_2023},  functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
+
+DAN: THIS NEEDS TO BE CAREFULLY EXPANDED TO NOT OFFEND POTENTIAL REVIEWERS. 
+
+\section{Categorical Semantics of E-Graphs}
+CHRIS: INTRO TO SECTION: CLARIFY THAT WE GIVE E-GRAPHS AS CARTESIAN CASE,  BUT ALSO GENERALIZE TO MONOIDAL CASE. 
+
+First, we fix the following notation.  Given a catgeory $\mathbb{C}$ and object $A,B \in \mathbb{C}$ ,  we denote $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $1$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.  
+
+
+\subsection{Symmetric Monoidal Theories and PROPs. }
+
+A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations} -- formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalizations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalize the notion of a signature. 
+\begin{definition}[Monoidal signature]
+A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $f: n \to m$,  with \textit{arity} $n$ and \textit{coarity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
+\end{definition}
+
+A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
+\begin{definition}[Products and permutations category]
+A \textit{permutations and products category (PROP)} is a symmetric monoidal category where every object is the n-fold tensor product of some distinguished object $A$. In this case, we will enote the n-fold tensor product of the distinguished object by simply $n$, so that $n \otimes m = n+m$. A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
+We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ is $\textsf{PROP}(\Sigma)$.  
+\end{definition}
+The free category $\textsf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
+
+We can now specify an equation associated with a monoidal signature as a pair of parallel morphisms of the form above, leading to the following definition of a symmetric monoidal theory. 
+\begin{definition}[Symmetric Monoidal Theory]
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $\phi,\psi: n \to m$ of $\textsf{PROP}(\Sigma)$ 
+A \textit{symmetric monoidal theory} $\textsf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by $\textsf{PROP}(\Sigma)$ quotiented by the least congruence including $\mathcal{E}$.
+\end{definition}
+
+It will often be convenient to give presentations of SMTs in terms of string diagrams.
+\begin{example}
+The SMT of \textit{commutative comonoids} is given by the following generators, ${\Delta, !}$, depicted in string diagrammatic form:
+\[
+	\scalebox{0.6}{
+  	 \tikzfig{categorical-semantics/Cartesian-equipment}
+	}
+\]
+together with the following associativity, commutativity and unitality equations, again given in terms of string diagrams. 
+\[
+	\scalebox{0.6}{
+	\tikzfig{categorical-semantics/Cartesian-theory}	
+	}
+\]
+The Cartesian SMT is given by a set of generators $\Sigma_C$, together with the generators and equations of the SMT of commutative monoids, and the following additional naturality equations, for every $c \in \Sigma_C$
+\[
+	\scalebox{0.6}{
+	\tikzfig{categorical-semantics/Cartesian-naturality}
+	}
+\]
+By Fox's Theoem [cite],  $\textsf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
+\end{example}
+
+\subsection{Free Semilattice Enrichment: Formal Joins}
+
+We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. \footnote{Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must also be a categorical coproduct -- a degeneracy we wish to avoid.} More precisely our hom-sets will be given the structure of a semilattice.  
+Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalized to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
+\[
+	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
+\]
+is defined as a $M$-morphism.  In other words,  composition must respect the additional structure on hom-sets.  
+In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
+We omit further details of the general case of enrichment here, and instead work with the following more concrete defintion, where $M = \textbf{SLatt}$.  
+
+\begin{definition}[Semilattice-enriched PROP]
+A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
+\begin{align*}
+f ; (g+h) &= f;g + f;h &
+(f+g) ; h &= f;h + g;h \\
+f \otimes (g+h) &= f \otimes g + f \otimes h & 
+(f+g) \otimes h &= f \otimes h + g \otimes h,
+%\item A set $ob(\mathbb{C})$ of objects;
+%\item For every pair $A,B \in ob(\mathbb{C})$, a hom-semigroup $Hom(A,B)$;
+%\item An element $\textsf{id}_{A,B} \in Hom(A,B)$; 
+\end{align*}
+Note,  we take $(;\!)$ and $\otimes$ to bind more tightly than $+$.
+A \textit{semilattice enriched strict SMC (PROP) functor} $F: (\mathbb{C}, \otimes, 1,+) \to (\mathbb{D}, \otimes, 1,+)$ is given by a strict SMC (PROP) functor on the underlying SMCs (PROPs) which additionally satisfies $F(f+g) = F(f)+F(g)$.  We denote the \textit{freely enriched PROP (SMT)} over a monoidal signature $\Sigma$ as $\textsf{PROP}^+(\Sigma)$ ($\textsf{SMT}^+(\Sigma, \mathcal{E})$,  respectively). 
+\end{definition}
+
+The free category $\textsf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, as well as $f+g$, quotiented by the axioms of an enriched symmetric monoidal category.  
+
+To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
+
+Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
+We use string diagrams informally in this paper, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. Indeed, the diagrammatic language itself is not truly novel and is similar to \textit{e.g.}, \cite{duncan_generalised_2009}. 
+
+\begin{figure*}
+\[  
+    \scalebox{0.75}{
+	\tikzfig{categorical-semantics/egraph-strings-equations}
+    }
+\]
+\caption{Equations for a  semilattice enriched symmetric monoidal category}
+\label{fig:string-equations}
+\end{figure*}
+
+\section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
+
+In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the equivalence between hypergraphs of a particular form and terms in $\textsf{PROP}(\Sigma)$ established in~\cite{Frobenius, Frobenius2},  and how one can implement string diagram rewriting using DPO rewriting on hypergraphs.   
+CHRIS: INTRO HYPERGRAPHS WITH INTERFACES,  RESTRICTIONS TO SMCS.  Q: INTRO DPO REWRITING HERE TOO? NOTE,   REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ morphisms!
+
+First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
+We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $\psi$ to a relation on ordered sequences. 
+We elide associativity and unit isomorphisms associated with coproducts $(+)$,  and denote by $\iota_j: X_{j} \rightarrow X_{1} + \ldots X_{j} + \ldots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]: A_1 + A_2 \to B$ the co-pairing of two morphisms $f: A_1 \to B$ and $g:A_2 \to B$. 
+We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightarrow{g} B$.
+
+\subsection{Hypergraphs}
+
+Hypergraphs generalize graphs by allowing edges to have multiple sources and targets. 
+\begin{definition}[Category of hypergraphs]\label{def:hypergraph}
+A \emph{hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l)$,  where $V$ is a finite set of nodes, $E$ is a finite set of edges, $s : E \to V^{*}$ is a source function, $t : E \to V^{*}$ is a target function,  and $l : E \to \Sigma$ is a labelling function that assigns each edge a generator from monoidal signature $\Sigma$.  The labelling function must respect the typing of the generator: for all edges $e$,  $|s(e)| = m$ and $|t(e)| = n$,  where $l(e) : m \to n$. 
+A \emph{hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ is given by a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that the following hold. 
+\begin{enumerate}
+    \item $(s_{\mathcal{F}}\, ;\phi_V^*)(e) = (\phi_E\, ;s_{\mathcal{G}})(e)$
+    \item $(t_{\mathcal{F}}\, ;\phi_V^*)(e) = (\phi_E\, ;t_{\mathcal{G}})(e)$
+    \item $l_{\mathcal{F}}(e) = \phi_E;l_{\mathcal{G}}(e)$
+\end{enumerate}
+We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$.
+\end{definition}
+Note that $\catname{Hyp(\Sigma)}$ has all finite colimits and, in particular,  the coproduct is given by the disjoint union of hypergraphs.
+The initial object is given by the empty hypergraph.  
+CHRIS: DESCRIPTION OF PUSHOUT HERE? 
+
+When we interpret string diagrams as hypergraphs,  we will interpret morphisms as edges,  and wires by vertices.  However,  we will additionally need a way to specify which vertices are to be considered as \textit{input} and \textit{output}. 
+For this purpose,  will use the following construction to equip our hypergraphs with \textit{interfaces}. 
+\begin{definition}[Symmetric monoidal category of cospans]
+Let $\mathbb{C}$ be a category with all finite colimits.  A cospan from $X$ to $Y$ is a pair of arrows $X \xrightarrow{} A \xleftarrow{} Y$  in $\mathbb{C}$.  This \textit{category of cospans of $\mathbb{C}$},  denoted $\catname{Csp(\mathbb{C})}$,  has as objects those of $\mathbb{C}$ and as arrows isomorphism classes of cospans.
+%Two cospans $X \xrightarrow{} A \xleftarrow{} Y$ and $X \xrightarrow{} B \xleftarrow{} Y$ are isomorphic if the following diagram commutes and $\alpha$ is iso.
+%\[
+%\begin{tikzcd}
+%                                               & A \arrow[dd, "\alpha"] &                                                \\
+%X \arrow[ru, bend left] \arrow[rd, bend right] &                        & Y \arrow[ld, bend left] \arrow[lu, bend right] \\
+%                                               & B                      &                                               
+%\end{tikzcd}
+%\]
+%For $X \in \mathbb{C}$ an $id$-cospan is $X \xrightarrow{id_X} X \xleftarrow{id_X} X$.
+Composition of cospans $X \xrightarrow{f} A \xleftarrow{g} Y$ and $Y \xrightarrow{h} B \xleftarrow{i} Z$ is given by pushout: $X \xrightarrow{f} A +_{g,h} B \xleftarrow{i} Z$,  with identity given by the cospan of identities.  Its monoidal product is given by the coproduct of $\mathbb{C}$ as follows: 
+\begin{align*}
+    (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) &\otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq\\ A + A' \xrightarrow{f+f'} \mathcal{G} &+ \mathcal{G'} \xleftarrow{g+g'} B + B' ~ , 
+\end{align*}
+and its unit by the initial object of $\mathbb{C}$.
+Symmetry is inherited from $\mathbb{C}$ as the coproduct~\cite{MonoidalCoproduct}.
+\end{definition}
+
+Following~\cite{Frobenius2} morphisms of $\textsf{PROP}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces. 
+\begin{definition}[Hypergraphs with interfaces]
+\label{def:cspd}
+Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)}$ as the full sub-category of $\catname{Csp(Hyp(\Sigma))}$ with discrete hypergraphs as objects.
+\end{definition}
+
+In particular, this means that any morphism in $\catname{HypI(\Sigma)}$ is of the form $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$,
+where $n,\;m$ are discrete hypergraphs and $\mathcal{G}$ is an arbitrary hypergraph.  The morphisms $f$ and $g$ into $\mathcal{G}$ will specify which vertices are to be considered as inputs and outputs,  respectively.   
+CHRIS: NOTE THIS IS OK FOR FROBENIUS,  NOT FOR SMC. 
+
+\begin{definition}[Degree,  path,  acyclic] 
+The \emph{in-degree} of a node $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in s(e)$.  Similarly, the out-degree of $v$ is the number of edges $e \in E_\mathcal{G}$ such that $v \in t(e)$.
+A \emph{path} from $e_0$ to $e_{n-1}$ of length $n$ in a hypergraph $\mathcal{G}$ is an ordered sequence of edges $[e_0, e_1, \ldots, e_{n-1}] \in E_\mathcal{G}^*$ such that for all $i < n - 1$ some node $v \in t(e_i)$ is also in $s(e_{i+1})$.
+A hypergraph is \emph{directed acyclic} if it contains no paths of length $n > 0$ that start and end in the same edge.
+\end{definition}
+
+
+In order to represent morphisms of $\textsf{PROP}(\Sigma)$,  it suffices to restrict our attention to MDA-cospans,  as defined below.
+\begin{definition}[Category of MDA Hypergraphs with Interfaces \cite{Frobenius2}]
+\label{def:monogamy_hyp}
+We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sigma}$ \emph{monogamous directed acyclic (MDA)} if:
+\begin{enumerate}
+    \item $\mathcal{G}$ is a directed acyclic hypergraph;
+    \item $f$ and $g$ are monomorphisms;
+    \item the in-degree and out-degree of every vertex is at most $1$;
+    \item vertices with in-degree $0$ are precisely the image of $f$; and
+    \item vertices with out-degree $0$ are precisely the image of $g$.
+\end{enumerate}
+We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of MDA-cospans. 
+\end{definition}
+Note that $\MdaCospans$ remains a symmetric monoidal category with the same equipment as before.  In fact,  due to 
+\cite{Frobenius2},  we have the following theorem which says the category $\MdaCospans$ in fact \textit{characterizes} $\textsf{PROP}(\Sigma)$. 
+\begin{theorem}[Corollary 26~\cite{Frobenius2}]
+    $\textsf{PROP}(\Sigma) \cong \MdaCospans$
+\end{theorem}
+We continue to show a similar theorem relating our \textit{enriched} category $\textsf{PROP}^+(\Sigma)$ to a combinatorial category of e-hypergraphs with interfaces,  introduced in the next section. 
+
+CHRIS: EXPLAIN ABOUT MONOIDAL THEORIES AND EQUATIONS. 
+
+
+\subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
+CHRIS: PUT BELOW WITH OTHER PRELIMINARIES??? 
+
+In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs. 
+DPO rewriting is a standard technique for formalising graph rewriting categorically. 
+
+The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $L \rightsquigarrow R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $L$ within $\mathcal{G}$,  remove it,  and then plug $R$ into the hole.  In DPO rewriting,  such a rewrite rule is formalized as a span $L \xleftarrow{} K \xrightarrow{} R$ in some category $\mathcal{C}$ with pushouts,  where $K$ is some invariant that should be maintained during rewriting.
+CHRIS: "WITHIN G",  BUT WE ARE IN AN ARBITRARY CATEGORY: NOT NECESSARILY GRAPHS?
+
+A typical DPO square looks as follows,  where the two marked squares are pushouts. 
+\[
+\begin{tikzcd}
+L \arrow[d, "m"'] & K \arrow[d] \arrow[l, "f"'] \arrow[r, "g"] & R \arrow[d]   \\
+G^{\urcorner}     & C \arrow[l] \arrow[r]                      & ^{\ulcorner}H
+\end{tikzcd}
+\]
+Morphisms $K \to C \to G$ are called a \textit{pushout complement} and morphism $m$ is called a \textit{match},  defined when the corresponding pushout complement exists. When $f,g$ are expected to be monomorphisms.   Constructing $C$ can be intuitively understood as finding an occurrence of $L$ in $G$ and removing from this occurrence everything that has no pre-image in $K$ and then inserting in there everything from $R$ that has no pre-image in $K$ -- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $G$ is rewritten into $H$ via the rewrite rule $L \xleftarrow{} K \xrightarrow{} R$. 
+
+However, this notion of DPO does not account for hypergraphs with interfaces, i.e. those from $\MdaCospans$ where $l,r$ from $\langle l, r \rangle$ are cospans. To support this we first assume that we only need to maintain the interfaces of $i \xrightarrow{} L \xleftarrow{} j$ and $i \xrightarrow{} R \xleftarrow{} j$ during rewriting, then we can take $K \cong i + j$, i.e. take $K$ to be the coproduct of $i,j$ (remark 3.14~\cite{Frobenius}). What remains is to account for the interfaces in $G$, $C$, and $H$, which brings us to the following modified DPOI square. $J \cong n + m$ where $n$ and $m$ are the input and output interfaces of $G$, $C$, and $H$ respectively. The only difference from DPO square above is that we now explicitly require that the initial object $G$, intermediate object $C$ and final object $H$ all share the same interfaces.
+
+CHRIS: DEFINE DPOI FORMALLY,  IN DEFINITION ENVIRONMENT? PERHAPS COMBINE WITH BOUNDARY COMPLEMENT BELOW,  TWO FIGURES ON ONE LINE? 
+\[
+\begin{tikzcd}
+L \arrow[d, "m"'] & K \arrow[d] \arrow[l, "f"'] \arrow[r, "g"] & R \arrow[d]   \\
+G^{\urcorner}     & C \arrow[l] \arrow[r]                      & ^{\ulcorner}H \\
+                  & J \arrow[lu] \arrow[u] \arrow[ru]          &              
+\end{tikzcd}
+\]
+
+To mimic rewrites in $\textsf{PROP}(\Sigma)$ we need to put some restrictions on pushout complements as not all of them lead to mda-cospans. CHRIS: "LEAD TO"? BE PRECISE! :) 
+
+\begin{definition}[Boundary complement for $\catname{MACsp_{D}(Hyp_{\Sigma}))}$]
+\label{def:boundary_original}
+For monogamous cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} G \xleftarrow{b_2} m$
+and mono $f : L \to G$, a pushout complement as depicted below
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figures/combinatorial_semantics/boundary_complement.png}
+\end{figure}
+
+is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to L^{\bot}$ and $d_2 : m \to L^{\bot}$ making the above triangle commute and such that
+\[
+    n + j \xrightarrow{[d_1,c_2]} L^{\bot} \xleftarrow{[d_2,c_1]} m + i
+\]
+is a monogamous cospan. 
+\end{definition}
+
+Intuitively, such a pushout complement requires that inputs get only glued to outputs and vice-verse in the two pushout squares.
+
+
+
+\begin{definition}[Convex subgraphs]
+We call a subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ \emph{convex} if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
+\end{definition}
+\begin{definition}[Convex match]
+
+We call a match $m : L \to G$ convex if it is mono and its image is a convex subgraph of $G$. 
+    
+\end{definition}
+
+\begin{definition}[DPOI Rewriting]
+Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma}}$, $G$ rewrites convexly into $H$ with interface $n + m$ --- notation $(G \xleftarrow{} n + m ) \Rrightarrow_{\mathcal{R}}  (H \xleftarrow{} n + m )$ in $\catname{HypI(\Sigma)}$ --- if there exist rule $L \xleftarrow{} i + j \xrightarrow{} R$ in $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} C \xleftarrow{} n+m$ in $\catname{Hyp_{\Sigma}}$ such that the DPOI diagram above commutes and its marked squares are pushouts and the following conditions hold
+
+\begin{itemize}
+    \item $m : L \to G$ is a convex match;
+    \item $i + j \to C \to G$ is a boundary complement in the leftmost pushout.
+\end{itemize}
+    
+\end{definition}
+
+
+\section{E-Hypergraphs}
+
+CHRIS: EXPLAIN THE CONDITIONS,  HOW WE WILL INTERPRET THE STRING DIAGRAMS.  WHAT DOES (4) FOR CONSISTENCY MEAN? 
+
+We follow analogous steps to those used to achieve a combinatorial representation of $\textsf{PROP}(\Sigma)$ as a particular subset of plain hypergraphs with interfaces.  First we define an e-hypergraph,  which supports a hierarchical notion of "e-box" with distinct components.  Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying a certain directed acyclic \textit{monogamy} condition.  
+
+In the following,  we elide the obvious inclusions of $V$ and $E$ into $V+E$. 
+In other words, homomorphism should preserve immediate predecessors and the conflict relation.  CHRIS: CHECK I DIDNT INTRODUCE MISTAKES ABOVE.  SHOULD WE USE $< ; \phi$ NOTATION TO MATCH OTHER HYPERGRAPH DEFINITION? 
+
+\begin{definition}[Category of E-hypergraphs]
+\label{def:e-homo}    
+An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}; and an equivalence relation $\consistency$ on $V + E$ called the \textit{consistency relation}.  We define the following additional notation.  For $x \in V + E$,  the set of \emph{predecessors} and \emph{successors} of $x$,  respectively: 
+\[
+	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
+\]
+We will denote the unique immediate predecessor $e$ of $x$ by writing $e <_c^{\mu} x$.
+We call edges $e$ such that $l(e) = \bot$ \textit{hierarchical},  and edges $e$ and nodes $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \emph{top-level}.
+We require that the child relation satisfies the following conditions
+\begin{enumerate}
+	\item $[x)$ contains exclusively edges such that $l(e) = \bot$.
+	\item Each $x$ has at most one immediate predecessor.
+	\item if $v \in s(e)$ then $e' <_c^{\mu} e$ iff $e' <_c^{\mu} v$.
+\end{enumerate}
+The consistency relation must satisfy the following properties. 
+    \begin{enumerate}
+        \label{def:consistency_properties}
+        \item The relation is an equivalence relation
+        \item If $v \in s(e)$ then $v \consistency^{\mu} e$
+        \item If $v \in t(e)$ then $v \consistency^{\mu} e$
+        \item The relation is defined only for edges $e$ and nodes $v$ such that $[v) = [e) \not = \varnothing$
+    \end{enumerate}
+
+A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
+\begin{enumerate}
+    \item $\phi$ is a hypergraph homomorphism
+    \item for $v \in V_{\mathcal{F}}$,  if $[v)$ is not empty then 
+	\[
+        \phi_{E}(<_{\mathcal{F}}^{\mu}(v)) = <_{\mathcal{G}}^{\mu}(\phi_{V}(v))
+        \] 
+        and for $e \in E_{\mathcal{F}}$,  if $[e)$ is not empty then 
+        \[
+        \phi_{E}(<_{\mathcal{F}}^{\mu}(e)) = <_{\mathcal{G}}^{\mu}(\phi_{E}(e))  
+        \] 
+    % \item
+    % $x_1 \#_{\mathcal{F}} x_2$ iff $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
+        \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 \consistency_{\mathcal{F}}^{\mu} x_2$ implies $\phi(x_1) \consistency_{\mathcal{G}}^{\mu} \phi(x_2)$. 
+%    Or, written functionally, when $x \in E_{\mathcal{F}}$
+%    \[
+%        \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\consistency_{\mathcal{F}}^{\mu}(i_{E_{\mathcal{F}}}(x)))
+%        \subseteq
+%        \consistency_{\mathcal{G}}^{\mu}(\phi_{E};i_{E_{\mathcal{G}}}(x))
+%    \]
+%    , where $\phi_{V};i_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} + E_{\mathcal{G}}$%, and similarly for $\phi_{E};i_{E_\mathcal{G}}$ so that $\langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle : V_{\mathcal{F}} + E_{\mathcal{F}} \to  V_{\mathcal{G}} + E_{\mathcal{G}}$.
+%    And, when $x \in V_{\mathcal{F}}$
+%    \[
+%        \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\consistency_{\mathcal{F}}^{\mu}(i_{V_{\mathcal{F}}}(x)))
+%        \subseteq
+%        \consistency_{\mathcal{G}}^{\mu}(\phi_{V};i_{V_{\mathcal{G}}}(x))
+%    \]
+    % Or, on per-component basis, if $i_{E_{\mathcal{F}}}(x_1) \in \hashtag_{\mathcal{F}}(i_{E_{\mathcal{F}}}(x_2))$ then $i_{E_{\mathcal{G}}}(\phi_{E}(x_1)) \in \hashtag_{\mathcal{G}}(i_{E_{\mathcal{G}}}(\phi_{E}(x_2)))$ and similarly for other types of $x_1,x_2$.
+\end{enumerate}
+If we further have that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we call the homomorphism \textit{strict}.
+The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e-hypergraphs as objects and e-hypergraph homomorphisms as arrows.  
+\end{definition}
+Condition $(3)$ on the child relations says that $<_c^{\mu}$ respects connectivity.
+
+The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  A concrete description of the pushout of two morphisms in this category is given in the appendix.  Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied,  including that the two morphisms involved are monos and their shared domain is a discrete hypergraph.  
+
+\begin{remark}
+When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we assign $\bot$ to be the immediate predecessor of all $x$ whose immediate predecessor is in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
+\end{remark}
+
+When modelling our enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extened cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
+\begin{definition}[Category of e-hypergraphs with interfaces]
+    We will build the category of \textit{e-hypergraphs with interfaces},  denoted $\Ecospans$ as follows.  Its objects are discrete e-hypergraphs,  and the set of morphisms $\Ecospans(n,m)$ are isomorphism classes of \textit{extended cospans},  which are defined as follows:  
+    \[
+    n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
+    \]
+    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete e-hypergraphs,  $f_{ext},f_{int},g_{ext},g_{int}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices.  
+
+This justifies calling $n$  \textit{external input interfaces} and $n'$ \textit{internal input (output) interfaces}.  We call $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.  We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
+We will sometimes confuse $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and we will sometimes confuse $n, n', m$ and $m'$ with their images in $\mathcal{G}$. 
+Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}. 
+    
+    Two cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute.
+    \[
+    \scalebox{0.75}{
+        \tikzfig{combinatorial_semantics/isomorphic_e_cospans}
+    }
+    \]
+Composition of two morphisms $f : X_{ext} \to Y_{ext}$ and $g : Y_{ext} \to Z_{ext}$ is computed in two stages
+First, $\mathcal{F} +_{f_{ext}, g_{ext}} \mathcal{G}$ is computed,  as shown below. 
+
+% https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
+
+\[
+\scalebox{0.9}
+{\tikzfig{combinatorial_semantics/pushout_e_cospans}}
+\]
+Then, new feet for $\mathcal{H} = A +_{f_{ext};f,g_{ext};g} B$ are computed as below
+\[
+X_{ext} \xrightarrow{a_{ext};\iota_1} X \uplus (Y' \setminus Y_{ext}) \xrightarrow{h} \mathcal{H} \xleftarrow{k} Z \uplus (Y \setminus Y_{ext}) \xleftarrow{g_{ext};\iota_1} Z_{ext}
+\]
+where
+\[
+    h = \langle a;p_1, g|_{Y' \setminus Y_{ext}};p_2 \rangle
+\]
+ 
+\[
+    k = \langle b;p_2, f|_{Y \setminus Y_{ext}};p_1 \rangle
+\]
+% \[
+% \begin{tikzcd}
+% Y_{ext} \arrow[d] & 0 \arrow[l] \arrow[d]    \\
+% Y'          & Y' \setminus Y_{ext} \arrow[l]
+% \end{tikzcd}
+% \]
+% and then the disjoint union is just a coproduct. 
+The identity of composition is given by the obvious extended cospan of identities. 
+$\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp_{\Sigma}}$,  analogously to Definition~\ref{def:cspd}.  
+\end{definition}
+CHRIS: UPDATE DIAGRAMS TO USE MY NEW NOTATION,  TAKE LESS VERTICAL SPACE.  FIND CLEANER WAY TO WRITE NEW FEET.  USE $\iota$ FOR INJECTIONS,  WHAT IS $\langle \rangle$? Include example e-hypergraph-with-interfaces vs strings here? 
+
+As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism). 
+% https://q.uiver.app/#q=WzAsNSxbMCwwLCJYICsgWSJdLFsyLDAsIlggKyBZIl0sWzQsMCwiWSArIFgiXSxbNiwwLCJZICsgWCJdLFs4LDAsIlkgKyBYIl0sWzAsMSwiaWRfWCArIGlkX1kiXSxbMSwyLCJcXHNpZ21hX3tYLFl9Il0sWzQsMywiaWRfWSArIGlkX1giLDJdLFszLDIsImlkX1kgKyBpZF9YIiwyXV0=
+
+
+
+\begin{definition}[Category of MDA e-hypergraphs with interfaces]
+We call an extended cospan in $\Ecospans$,  as below,   \textit{monogamous directed acyclic (MDA)} if
+\[
+n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
+\]
+\begin{enumerate}
+        \item underlying hypergraph of $\mathcal{G}$ is directed acyclic; 
+        \item $f_{ext}$, $f_{int}$, $g_{ext}$ and $g_{int}$ are monomorphisms; 
+        \item The in-degree and out-degree of every vertex is at most 1; 
+        \item Vertices with in-degree $0$ are precisely the image of $f_{int}$; 
+        \item Vertices with out-degree $0$ are precisely the image of $g_{int}$; 
+        \item Vertices in the strictly internal interface are not top-level. 
+        % the item below is not assumed by the definition of a cospan of e-hypergraphs
+        % \item $[v) = \varnothing$ for all $v$ in the image of $f_{ext};f$, and for all $v$ in the image of $g_{ext};g$. 
+\end{enumerate}
+\label{def:monogamy_ehyp} 
+We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of MDA-extended-cospans. 
+\end{definition}
+CHRIS: COULD PUT CONDITION (5) IN THE PLAIN DEFINITION OF EXTENDED COSPANS? WE ALREADY ASK FOR EXTERNAL INTERFACES TO BE TOP-LEVEL.  ALSO,  (2) IS ALREADY COVERED IN THAT DEFINITION. 
+
+\begin{definition}[Well-typedness]
+Consider the sets of input and output vertices,  $I$ and $O$ respectively,  of a hierarchical edge $e$ of an e-hypergraph $\mathcal{G}$. 
+The consistency relation of $\mathcal{G}$ partitions $I$ and $O$.  
+We call $e$ \emph{well-typed} if the size of each partition of $I$ is $|s(e)|$ and the size of each partition of $O$ is $|t(e)|$.
+We will call an MDA-extended-cospan in $\MdaEcospans$ \emph{well-typed} if all hierarchical edges in its apex are well-typed.
+We 
+\end{definition}
+CHRIS: CATEGORY OF SUCH COSPANS? COMBINE WITH DEFINITION ABOVE? $\WellTypedMdaEcospans$
+
+
+\section{DPOI-Rewriting for E-Hypergraphs}
+
+
+We have a more general notion of interface and hence we need to adjust DPOI rewriting a little bit.
+
+We have a more general notion of interface and hence we need to adjust DPOI rewriting a little bit.
+The first issue is that whole interfaces are not preserved during rewriting, consider an example in Figure~\ref{fig:example_rewrite_ecospans} which corresponds to a rewrite rule of $\langle f, f+g \rangle$.
+
+%\begin{figure}[t]
+%    \centering
+%    \[
+%    \scalebox{0.6}{\tikzfig{combinatorial_semantics/f_to_f_plus_g_example}}
+%    \]
+%    \caption{Example rewrite rule in $\WellTypedMdaEcospans$}
+%    \label{fig:example_rewrite_ecospans}
+%\end{figure}
+
+The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
+Note that the outermost interfaces are preserved.
+
+Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
+Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
+
+The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
+Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
+The entry in the middle of the span depicts the outermost interfaces which are preserved.
+The second row depicts the e-hypergraph to be rewritten on the left and the result of the rewrite on the right.
+The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
+Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
+Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
+
+
+\update{$i,j$ are replaced}
+
+To account for such changes in the interfaces we put some additional constraints on DPOI rewriting.
+Consider a DPOI diagram with extra constraints below which encodes
+ the notion that cospan 
+ $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$
+ rewrites into a cospan 
+ $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$ via a rewrite rule $\langle l, r \rangle$,
+ where
+ $l := x_{ext} \xrightarrow{} l_i \xrightarrow{} L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
+ and
+ $r := x_{ext} \xrightarrow{} r_i \xrightarrow{} L \xleftarrow{} r_o \xleftarrow{} y_{ext}$.
+ Note there are arrows from $x_{ext} + y_{ext} \to l_i + l_o$ (respectively, $r_i + r_o$) from the corresponding cospans which are not shown in the diagram.
+ Similarly for the arrows from $n_{ext} + m_{ext}$.
+
+% \[\begin{tikzcd}
+% 	&&&& {i + j} \\
+% 	{l_i+l_o} && L &&&& R && {r_i+r_o} \\
+% 	\\
+% 	{g_i+g_o} && {G^{\urcorner}} && C && {^{\ulcorner}H} && {h_i+h_o} \\
+% 	\\
+% 	&&&& {n+m}
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=2-3]
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=2-7]
+% 	\arrow["m", color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=4-3]
+% 	\arrow["{[i_c,j_c]}", color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=4-5]
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=2-7, to=4-7]
+% 	\arrow["{[n_c,m_c]}"', color={rgb,255:red,214;green,92;blue,92}, from=6-5, to=4-5]
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=4-5, to=4-7]
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=4-5, to=4-3]
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=6-5, to=4-3]
+% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=6-5, to=4-7]
+% 	\arrow[from=2-1, to=2-3]
+% 	\arrow["{[f_i,f_o]}", from=2-1, to=4-1]
+% 	\arrow[from=4-1, to=4-3]
+% 	\arrow[from=2-9, to=2-7]
+% 	\arrow[from=4-9, to=4-7]
+% 	\arrow["{[h_i,h_o]}"{description}, from=2-9, to=4-9]
+% 	\arrow[from=6-5, to=4-9]
+% 	\arrow[from=6-5, to=4-1]
+% 	\arrow["{[i_l,j_l]}"{description}, from=1-5, to=2-1]
+% 	\arrow["{[i_r,j_r]}"{description}, from=1-5, to=2-9]
+% \end{tikzcd}\]
+
+
+% https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
+\[
+ \scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_square_coloured}
+ }
+\]
+
+The parts of the original DPOI square is shown in blue.
+The extra bits simply account for more complicated interfaces.
+For example, the left-hand side $L$ of a rewrite rule
+ $\langle L, R \rangle$ which originally was some cospan
+ $i \xrightarrow{} L \xleftarrow{} j$ in $\MdaCospans$ 
+ now is a cospan
+ $x_{ext} \xrightarrow{} l_i \to L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
+from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
+The top half of this diagram says that the outermost interfaces
+ should coincide for $L$ and $R$.
+The bottom half puts the same restrictions on $G$ and $H$.
+For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
+
+
+We also adjust the definition of a boundary complement.
+\begin{definition}[Down-closed subgraph]
+We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   every element of $(e]$ is also in $\mathcal{H}$.
+\end{definition}
+
+\begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
+\label{def:boundary_new}
+
+% https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
+\[
+\scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_pushout_complement}
+}
+\]
+
+Consider the diagram above where the marked square is a pushout
+ and $x_{ext} + y_{ext}$ and $n_{ext} + m_{ext}$ are 
+ the \textit{outermost} interfaces for the corresponding 
+ cospans.
+We say that $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ is 
+ a \textit{boundary} complement if $[i_c, i_j]$ is mono 
+ and there exist $n_c : n_{ext} \to C$ and $m_c : m_{ext} \to C$ 
+ making the above triangle commute and such that
+there exists a \textit{not necessarily well-typed} mda-cospan
+
+\[
+n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}
+\]
+
+where $c_i$ and $c_o$ are computed as
+ $c_i = g_i \setminus (l_i \setminus x_{ext})$ and
+ $c_o = g_o \setminus (l_o \setminus y_{ext})$.
+\end{definition}
+%
+%\begin{figure}
+%    \centering
+%    \[
+%    \scalebox{0.5}{\tikzfig{combinatorial_semantics/interfaces_change_example}}\]
+%    \caption{Hypothetical DPO square for $\catname{MACsp_{D}(EHyp_{\Sigma})}$}
+%    \label{fig:interface_change_example}
+%\end{figure}
+
+% The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
+
+\begin{remark}
+Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not well-typed.
+The cospan's input interface contains nodes that previously were a part of the output interface.
+\end{remark}
+
+
+\begin{proposition}
+    The boundary complement in~\ref{def:boundary_new} when exists is unique
+\end{proposition}
+
+
+\begin{definition}[Convex down-closed match] 
+    We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed match if
+    
+    \begin{enumerate}
+        \item $m$ is monomorphism
+        \item $m(L)$ is a convex down-closed subgraph of $G$
+        % \item \update{I've removed the requirement that consistency should be reflected because well typedness prohibits otherwise formed matches.}
+    \end{enumerate}
+\end{definition}
+\
+
+\begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
+    Given $G \xleftarrow{} g_i + g_o \xleftarrow{} n_{ext} + m_{ext}$ 
+    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}}^{+} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $L \xleftarrow{} l_i + l_o \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} r_i + r_o \xrightarrow{} R$ with the outermost interfaces $x_{ext} + y_{ext}$ in $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ such that the diagram below commutes and its marked squares are pushouts
+
+% https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
+\[\scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_square}
+    }
+\]
+    and the following conditions hold
+
+    \begin{enumerate}
+        \label{dpoi:assumptions}
+        \item $m : L \to G$ is a convex down-closed match;
+        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $x_{ext} + y_{ext}$
+        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $x_{ext} + y_{ext}$
+        \item $x_{ext} + y_{ext} \to C \to G$ is a boundary complement in the leftmost pushout.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+The conditions 2 and 3 are needed to guarantee the existence of the pushout complement.
+\end{remark}
+
+
+The whole interfaces of the resulting e-hypergraph $H$ from the cospan
+ $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$
+ are constructed as $h_i = (r_i \setminus x_{ext}) + c_i$ 
+ and
+ $h_o = (r_o \setminus y_{ext}) + c_o$.
+ $h_i \to H$ is defined as a copairing of 
+ $f_1 : r_i \setminus x_{ext} \to R \to H$ 
+ and 
+ $f_2 : c_i \to C \to H$. 
+Since both $f_1$ and $f_2$ are mono, their copairing is also a mono. 
+Similarly for $h_o$.
+
+We then say that an mda-cospan 
+\[
+    n_{ext} \xrightarrow{a_1} g_{i} \xrightarrow{a_2} G \xleftarrow{b_2} g_{o} \xleftarrow{b_1} m_{ext}
+\]
+rewrites convexly into another mda-cospan
+
+\[
+    n_{ext} \xrightarrow{a_1} h_{i} \xrightarrow{a_2} H \xleftarrow{b_2} h_{o} \xleftarrow{b_1} m_{ext}
+\]
+
+under a rewrite rule 
+\[
+    \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
+    x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
+\]
+
+if 
+\[
+    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \Rrightarrow H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
+\]
+under a rewrite rule
+\[
+    \langle l_{i} + l_{o} \xrightarrow{\langle a_2, b_2 \rangle} L \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext},
+    r_{i} + r_{o} \xrightarrow{\langle a_2, b_2 \rangle} R \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext} 
+    \rangle
+\]
+
+\begin{proposition}
+$n_{ext} \xrightarrow{n_h} h_i \xrightarrow{f} H \xleftarrow{g} h_o \xleftarrow{m_h} m_{ext}$ is a well-typed mda-cospan.
+\end{proposition}
+
+\section{Soundness and Completeness}\label{sec:soundness-and-completeness}
+
+% \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
+
+
+
+\begin{figure}
+    \[
+    \scalebox{0.6}{
+    \tikzfig{combinatorial_semantics/f_plus_g_new}
+    }
+    \]
+    \caption{$+$ of two morphisms in $\Ecospans$}
+    \label{fig:A+B}
+\end{figure}
+
+
+
+Note that the necessary pushouts for $\mathcal{S}$ exist. 
+\begin{definition}
+We denote by $\WellTypedMdaEcospans/\mathcal{S}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
+\[
+	\phi \sim \psi \quad \text{if} \quad \phi \Rightarrow^*_{[\mathcal{S}]} \psi
+\]
+where $\mathcal{S}$ denotes set of semi-lattice equations the free functor $\llbracket- \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans$ induced by the interpretation functor sending $\Sigma$ to itself.  CHRIS: NEEDS WORK. 
+\end{definition}
+
+
+\begin{proposition}
+The category $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ a semilattice-enriched PROP. 
+\end{proposition}
+\begin{proof}
+The symmetric monoidal structure is inherited from coproduct in $\textbf{EHyp}(\Sigma)$.  It suffices to check that the symmetry and the tensor product of two well-typed e-hypergraphs is again a well-typed e-hypergraph. 
+The formal join $+$ of two morphisms of $\WellTypedMdaEcospans$ is defined in the Figure~\ref{fig:A+B}. 
+Etc.
+\end{proof}
+Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by rewrites,  for which we've checked the pushout exists. 
+
+\begin{proposition}
+    For each cospan $A$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ there is a weak normal form such that 
+\[
+	A =_{\mathcal{S}} A_1 + \ldots + A_n
+\]
+ such that each $A_i$ contains no hierarchical edges.
+    \begin{proof}
+    By applying the rules 1-6 in $\mathcal{S}$ (the ones from Figure~\ref{fig:string-equations}) we either remove 1 hierarchical edge (rules 5-6) or do not change the number of them, but expand the edge onto other edges.
+    We will have a redex for such a rule until there is only one hierarchical edge at the outermost level (and only one outermost edge) with no other hierarchical edges within it.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}
+We have the following equivalence of categories
+\[
+	PROP^{+}(\Sigma) \cong \WellTypedMdaEcospans~.
+\]
+\end{theorem}
+\begin{proof}
+Given by the free functor induced by the interpretation of $\Sigma$ as itself. 
+Normal form argument. 
+\end{proof}
+
+Unfolding the definitions,  we can spell out the previous theorem in terms of DPO-rewriting. 
+\begin{corollary}
+For any $\phi, \psi \in \textbf{PROP}^{+}(\Sigma, \mathcal{E})$,  we have
+\[
+	\phi = \psi \quad \iff \quad \llbracket\phi \rrbracket \Rrightarrow_{\mathcal{S}, \mathcal{E}} \llbracket\psi\rrbracket~ . 
+\]
+ \end{corollary}
+CHRIS: INCORPORATING EXTRA EQUATIONS OUGHT TO BE IMMEDIATE? 
+%
+%\begin{theorem}[Theorem 35~\cite{Frobenius2}]
+%
+%    $a \Rightarrow_{R} b$ iff $\llangle {}^{\ulcorner} a {}^{\urcorner} \rrangle \Rrightarrow_{\llangle {}^\ulcorner R {}^\urcorner \rrangle} \llangle {}^{\ulcorner}b {}^{\urcorner} \rrangle$.
+%    Where $\llangle \cdot \rrangle : \textsf{PROP}(\Sigma) + \textsf{Frob} \to \catname{Csp_{D}(Hyp_{\Sigma})}$ and $\Rrightarrow$ is a convex rewriting relation for morphisms in $\catname{Hyp_{\Sigma}}$.
+%\end{theorem}
+%
+%\begin{proposition}
+%    $\llangle {}^{\ulcorner} a {}^{\urcorner} \rrangle \Rrightarrow_{\llangle {}^\ulcorner R {}^\urcorner \rrangle} \llangle {}^{\ulcorner}b {}^{\urcorner} \rrangle$ iff $[\mathcal{J}(a)] \Rrightarrow_{[R]}^{+} [\mathcal{J}(b)]$.
+%     Note that $a$ and $b$ are from $\textsf{PROP}(\Sigma)$.
+%\end{proposition}
+%
+%\begin{theorem}
+%    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
+%\end{theorem}
+
+\section{Conclusion}
+
+We have described a categorical semantics for e-graphs over algebraic theories in terms of Cartesian categories enriched over a semilattice, and defined a natural generalization to account for monoidal theories in terms of SMCs,  similarly enriched.  Having described a translation of e-graphs into our formalism, we developed a combinatorial representation of morphisms in our free category which factor out the structural SMC equations, but remain sensitive to the complexity-relevant equations induced by the enrichment.  The design of such a representation and its corresponding  rewrite theory proved delicate, and -- together with its proof of completeness -- constitute the main technical contributions of the paper.  Finally, we considered an analogue of e-rewriting in our setting, pushing towards the practical considerations necessary for an implementation of our ideas.  Although we believe our work forms a solid basis for a formal mathematical theory of (acyclic) e-graphs,  there are a number of extensions which we intend to investigate in the future.
+
+\subsection{Future Work and Applications}
+
+We have already alluded to the fact we deal with only \textit{acyclic} e-graphs in this paper.  Nevertheless,  within this setting we present a generalization from Cartesian to (symmetric) monoidal theories,  giving rise to a host of potential new domains of application.  Further,  the string diagrammatic and graph rewriting framework we set up is ameenable to extension, including lifting the acyclicity restriction. 
+
+\begin{figure}\label{fig:applications}
+\[
+	\scalebox{0.75}{
+	\tikzfig{conclusion/example-e-graphs}
+	}
+\]
+\caption{Example applications of e-hypergraphs.  Left, the ZX-calculus.  Right, the $\lambda$-calculus as represented by string diagrams for Cartesian closed categories.  }
+\end{figure}
+
+Symmetric monoidal theories have received significant attention over recent years: the ZX-calculus can be used to characterize quantum processes, with applications to optimization of quantum circuits \cite{coecke_interacting_2011,ZX} ; similar theories also characterize signal flow diagrams 
+\cite{baldan_categorical_2014}, digital circuits 
+\cite{ghica_operational_2021}, as well as having application to computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  In future work, we hope to apply our generalization of e-graphs to optimization problems in these domains (e.g. Figure \ref{fig:applications})
+
+The theories described above often have more structure than simply being symmetric monoidal: for example, they may contain comonoids, Frobenius algebras or traced structure (as in the case of e-graphs with cycles),  and this structure can be exploited to give more natural (in the sense of factoring out more equations) combinatorial representations.  In the above cases, such representations and their DPO-rewriting theory is well-studied 
+\cite{ghica_rewriting_2023} % traced comonoid
+[cite, cite, cite].  We consider that our development of hierarchical "e-box" structure within string diagrams and their associated (e-)hypergraphs ( categorically,  semilattice enrichment) is essentially orthogonal to these developments, and so ought to be easily combined to give notions of e-hypergraphs specifically suited to the optimization of these particular monoidal theories. 
+
+A particularly interesting extension that we intend to consider is the combination of our "e-structure" with (Cartesian) \textit{closed} categories, allowing the natural combination of e-graph optimization techniques with the $\lambda$-calculus.  The corresponding combinatorial representation would build on the recent work \cite{ghica_hierarchical_2023, alvarez-picallo_rewriting_2022, alvarez-picallo_functorial_2021}. % hierarchical  
+
+
+\bibliographystyle{acm}
+\bibliography{bibliography}
+
+\appendix
+
+\section{Proofs for Section \ref{sec:combinatorial-semantics}: Combinatorial Semantics}
+
+\subsection{Proof of the existence of pushouts} 
+
+\section{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+
+\end{document}
