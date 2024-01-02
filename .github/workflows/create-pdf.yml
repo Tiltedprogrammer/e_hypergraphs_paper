@@ -24,6 +24,7 @@ jobs:
         with:
           release_name: ${{ steps.name.outputs.name }}
           tag_name: ${{ steps.name.outputs.name }}
+# Compile full paper 
       - name: pdflatex main
         uses: dante-ev/latex-action@latest
         with:
@@ -51,6 +52,35 @@ jobs:
           root_file: main.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
+# Compile submission
+      - name: pdflatex E-Hypergraphs-LICS24 
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: E-Hypergraphs-LICS24.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape 
+      - name: bibtex E-Hypergraphs-LICS24
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: E-Hypergraphs-LICS24.aux
+          compiler: bibtex
+          args:
+      - name: pdflatex E-Hypergraphs-LICS24
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: E-Hypergraphs-LICS24.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
+      - name: pdflatex E-Hypergraphs-LICS24
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: E-Hypergraphs-LICS24.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
+# Upload both pdfs
       - name: Upload the PDF to the release
         if: always()
         uses: actions/upload-release-asset@v1
@@ -60,6 +90,16 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: main.pdf
           asset_name: paper.pdf
+          asset_content_type: pdf
+      - name: Upload the PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: E-Hypergraphs-LICS24.pdf
+          asset_name: LICS24-submission.pdf
           asset_content_type: pdf
       - name: Delete older releases
         if: always()
