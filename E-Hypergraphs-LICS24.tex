@@ -281,11 +281,12 @@ A final contribution of this work is giving a concrete combinatorial representat
 
 \begin{figure*}\label{fig:e-graph-example}
 \[
+	\hspace{2cm}
     \scalebox{0.65}{
     \tikzfig{categorical-semantics/egraph-translation}
     }
 \]
-\caption{Example translation of e-graphs into string diagrams for semilattice enriched (traced) Cartesian categories. DAN: (a) SHOULD USE MATH FONT.}
+\caption{Example translation of acyclic e-graphs into string diagrams for semilattice enriched Cartesian categories. }
 \end{figure*}
 
 E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.  They generalise the typical DAG representation of terms to include equivalence classes. 
@@ -322,24 +323,19 @@ makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of
 \[
 \infer{\phi_1 + \ldots + \phi_n: A \to B}{\{\phi_i: A \to B\}_{i \in \{1,\ldots,n\}}}
 \]
-The ability to take formal sums, which in concrete categories will usually be set union, is used to model the equivalence class structure of e-graphs.  
+The ability to take formal (non-empty) joins of morphisms is used to model the equivalence class structure of e-graphs.  
 
-DAN: TOP TO BOTTOM OR BOTTOM TO TOP? UNCLEAR.\\
-String diagrams are read from top-to-bottom; we consider additional generators for the duplication and deletion transformations of a Cartesian category.  Note, further, that in the Cartesian case we can restrict to generators $c$ with a single output.\\
-DAN: WHY? WITH OR WITHOUT LOSS OF GENERALITY? WHAT DOES THIS MEAN? 
+String diagrams are read from bottom-to-top; we consider additional generators for the duplication and deletion transformations of a Cartesian category.  Note, further, that in the Cartesian case we can restrict to generating morphisms $c$ to have a single output,  without loss of generality,  by applying the universal properties of the Cartesian product.  This means the (informal) translation given below is fully general for acyclic e-graphs. 
 
 The translation from e-graphs to enriched string diagrams is illustrated informally below,
 noting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
 \[
     \tikzfig{categorical-semantics/egraph-translation-1}
 \]
-DAN: IT WOULD BE CLEARER IMHO IF THE ARGUMENTS OF C1 AND C2 REMAIN CENTERED AND THE DISCARDED NODES ARE OFF CENTER. 
-
 Examples of this translation are given in the second row of Figure \ref{fig:e-graph-example}. In particular, note that the translation of the \textit{cyclic} e-graph (e)
 requires the use of a categorical \textit{trace}, generating a cycle. In this paper, we focus on \textit{acyclic} e-graphs and their corresponding catgeories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
 
-Note how the natural level of generality for our string diagrams is not Cartesian, but monoidal: the generators of a Cartesian category are required in order to embed e-graphs, but are orthogonal to the addition of formal sums. \\
-DAN: SUMS OR JOINS? CONSISTENT?\\
+Note how the natural level of generality for our string diagrams is not Cartesian, but monoidal: the generators of a Cartesian category are required in order to embed e-graphs, but are orthogonal to the addition of formal joins. 
 Thus we generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we outline in the conclusion of this paper.   
 \\ DAN: THIS IS A BIT UNCLEAR. WHY IS THIS THE NATURAL LEVEL THE GENERALITY? IT'S NOT QUITE OBVIOUS. 
 
@@ -388,6 +384,7 @@ DAN: THIS NEEDS TO BE CAREFULLY EXPANDED TO NOT OFFEND POTENTIAL REVIEWERS.
 
 \section{Categorical Semantics of E-Graphs}
 CHRIS: INTRO TO SECTION: CLARIFY THAT WE GIVE E-GRAPHS AS CARTESIAN CASE,  BUT ALSO GENERALIZE TO MONOIDAL CASE. 
+CHRIS: CITE HASEGAWA - TRACE MONOIDAL CATEGORIES, AND PERDIX. 
 
 First, we fix the following notation.  Given a catgeory $\mathbb{C}$ and object $A,B \in \mathbb{C}$ ,  we denote $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $1$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.  
 
@@ -640,12 +637,12 @@ Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma
 
 \section{E-Hypergraphs}
 
-CHRIS: EXPLAIN THE CONDITIONS,  HOW WE WILL INTERPRET THE STRING DIAGRAMS.  WHAT DOES (4) FOR CONSISTENCY MEAN? 
+CHRIS: EXPLAIN THE CONDITIONS,  HOW WE WILL INTERPRET THE STRING DIAGRAMS.  
 
 We follow analogous steps to those used to achieve a combinatorial representation of $\textsf{PROP}(\Sigma)$ as a particular subset of plain hypergraphs with interfaces.  First we define an e-hypergraph,  which supports a hierarchical notion of "e-box" with distinct components.  Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying a certain directed acyclic \textit{monogamy} condition.  
 
 In the following,  we elide the obvious inclusions of $V$ and $E$ into $V+E$. 
-In other words, homomorphism should preserve immediate predecessors and the conflict relation.  CHRIS: CHECK I DIDNT INTRODUCE MISTAKES ABOVE.  SHOULD WE USE $< ; \phi$ NOTATION TO MATCH OTHER HYPERGRAPH DEFINITION? 
+In other words, homomorphism should preserve immediate predecessors and the conflict relation.  CHRIS: CHECK I DIDNT INTRODUCE MISTAKES ABOVE.  SHOULD WE USE $< ; \phi$ NOTATION TO MATCH OTHER HYPERGRAPH DEFINITION? WHAT DOES (4) FOR CONSISTENCY MEAN? 
 
 \begin{definition}[Category of E-hypergraphs]
 \label{def:e-homo}    
@@ -1121,14 +1118,19 @@ We have described a categorical semantics for e-graphs over algebraic theories i
 
 We have already alluded to the fact we deal with only \textit{acyclic} e-graphs in this paper.  Nevertheless,  within this setting we present a generalization from Cartesian to (symmetric) monoidal theories,  giving rise to a host of potential new domains of application.  Further,  the string diagrammatic and graph rewriting framework we set up is ameenable to extension, including lifting the acyclicity restriction. 
 
-\begin{figure}\label{fig:applications}
+\begin{figure}
 \[
 	\scalebox{0.75}{
 	\tikzfig{conclusion/example-e-graphs}
 	}
 \]
-\caption{Example applications of e-hypergraphs.  Left, the ZX-calculus.  Right, the $\lambda$-calculus as represented by string diagrams for Cartesian closed categories.  }
-\end{figure}
+\[
+	\scalebox{0.75}{
+	\tikzfig{conclusion/example-traced}
+	}
+\]
+\caption{Example applications of e-hypergraphs.  Top left, the ZX-calculus.  Top right, the $\lambda$-calculus as represented by string diagrams for Cartesian closed categories.  Below,  an extension of Figure \ref{fig:} by another rewrite step, $1 * x \to x$,  introducing a cycle modelled by traced structure. }
+\end{figure}\label{fig:applications}
 
 Symmetric monoidal theories have received significant attention over recent years: the ZX-calculus can be used to characterize quantum processes, with applications to optimization of quantum circuits \cite{coecke_interacting_2011,ZX} ; similar theories also characterize signal flow diagrams 
 \cite{baldan_categorical_2014}, digital circuits 
@@ -1136,9 +1138,7 @@ Symmetric monoidal theories have received significant attention over recent year
 
 The theories described above often have more structure than simply being symmetric monoidal: for example, they may contain comonoids, Frobenius algebras or traced structure (as in the case of e-graphs with cycles),  and this structure can be exploited to give more natural (in the sense of factoring out more equations) combinatorial representations.  In the above cases, such representations and their DPO-rewriting theory is well-studied 
 \cite{ghica_rewriting_2023} % traced comonoid
-[cite, cite, cite].  We consider that our development of hierarchical "e-box" structure within string diagrams and their associated (e-)hypergraphs ( categorically,  semilattice enrichment) is essentially orthogonal to these developments, and so ought to be easily combined to give notions of e-hypergraphs specifically suited to the optimization of these particular monoidal theories. 
-
-A particularly interesting extension that we intend to consider is the combination of our "e-structure" with (Cartesian) \textit{closed} categories, allowing the natural combination of e-graph optimization techniques with the $\lambda$-calculus.  The corresponding combinatorial representation would build on the recent work \cite{ghica_hierarchical_2023, alvarez-picallo_rewriting_2022, alvarez-picallo_functorial_2021}. % hierarchical  
+[cite, cite, cite].  We consider that our development of hierarchical "e-box" structure within string diagrams and their associated (e-)hypergraphs ( categorically,  semilattice enrichment) is essentially orthogonal to these developments, and so ought to be easily combined to give notions of e-hypergraphs specifically suited to the optimization of these particular monoidal theories.  A particularly interesting extension that we intend to consider is the combination of our "e-structure" with (Cartesian) \textit{closed} categories, allowing the natural combination of e-graph optimization techniques with the $\lambda$-calculus.  The corresponding combinatorial representation would build on the recent work \cite{ghica_hierarchical_2023, alvarez-picallo_rewriting_2022, alvarez-picallo_functorial_2021}.  String diagrams for these various examples are included in Figure \ref{fig:applications}% hierarchical  
 
 
 \bibliographystyle{acm}
