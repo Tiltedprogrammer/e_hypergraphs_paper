@@ -1,1 +1,2 @@
-Compiled pdf can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/paper.pdf)
+- Main pdf can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/paper.pdf)
+- LICS-24 pdf can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/download/2024-01-02-1221/LICS24-submission.pdf)
