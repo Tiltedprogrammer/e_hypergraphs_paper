@@ -196,10 +196,10 @@
 
 \begin{abstract}
 The technique of equipping graphs with an equivalence relation, called equality saturation, has recently proved both powerful and practical in program optimisation, particularly for SMT solvers. 
-We give a categorical semantics for \emph{e-graphs} over algebraic theories, a generalisation of the structures which are the subject of this technique, and to their rewriting. 
-The proposed framework consists of Cartesian categories enriched over a semilattice,  further generalised to symmetric monoidal categories, to account for monoidal theories.
-The aim is to permit the optimisation of a larger class of programs, based on string diagrams.  
-Furthermore, we present a sound and complete combinatorial representation of morphisms in such a category, based on a generalisation of hypergraphs,  which we call \emph{e-hypergraphs}, which have the usual advantage that many structural equations are absorbed into a general notion of isomorphism. 
+We give a categorical semantics to these structures, called \emph{e-graphs}, in terms of Cartesian categories enriched over a semilattice. 
+We show how this semantics can be generalised to monoidal categories, which opens the door to new applications of e-graph techniques, from algebraic to monoidal theories.
+Finally, we present a sound and complete combinatorial representation of morphisms in such a category, based on a generalisation of hypergraphs (\emph{e-hypergraphs}).
+They have the usual advantage that many of their structural equations are absorbed into a general notion of isomorphism. 
 \end{abstract}
 
 %%
@@ -307,7 +307,7 @@ The other steps, (c) to (e), represent further elaborations of the e-graph, or e
 Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
 From the saturated graph the optimal term consisting of only the node $a$ can be then extracted, discarding everything else. 
 
-\subsection{Semantics via Semilattice Enriched Categories}
+\subsection{Semilattice Enriched Categories}
 
 \begin{figure}\label{fig:egraph-strings}
 \[
@@ -319,7 +319,7 @@ From the saturated graph the optimal term consisting of only the node $a$ can be
 \end{figure}
 
 Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
-makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{noauthor_09083347_nodate,joyal_geometry_1991, mellies_functorial_2006}. In Figure~\ref{fig:egraph-strings} we extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
+makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{noauthor_09083347_nodate,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
 \[
 \infer{\phi_1 + \ldots + \phi_n: A \to B}{\{\phi_i: A \to B\}_{i \in \{1,\ldots,n\}}}
 \]
@@ -335,9 +335,9 @@ noting how the typing constraints of the $+$ constructor are satisfied in the im
 Examples of this translation are given in the second row of Figure \ref{fig:e-graph-example}. In particular, note that the translation of the \textit{cyclic} e-graph (e)
 requires the use of a categorical \textit{trace}, generating a cycle. In this paper, we focus on \textit{acyclic} e-graphs and their corresponding catgeories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
 
-Note how the natural level of generality for our string diagrams is not Cartesian, but monoidal: the generators of a Cartesian category are required in order to embed e-graphs, but are orthogonal to the addition of formal joins. 
-Thus we generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we outline in the conclusion of this paper.   
-\\ DAN: THIS IS A BIT UNCLEAR. WHY IS THIS THE NATURAL LEVEL THE GENERALITY? IT'S NOT QUITE OBVIOUS. 
+Note that the motivating example of our work, e-graphs, requires the Cartesian structure. 
+However, we will see how all the core of the theory of e-hypergraph rewriting only requires the monoidal structure. 
+Thus we can readily generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we briefly outline in the conclusion of this paper.   
 
 \subsection{Combinatorial Representation of Enriched String Diagrams}
 
@@ -349,7 +349,7 @@ In order to \textit{implement} generalised e-graphs, rewriting must be performed
 	}
 \]
 This representation makes string diagrams unamenable to efficient implementation due to the difficulty of calculating the quotient. 
-A large body of research work shows how this issue can be solved by taking a different approach, representing string diagrams as hypergraphs~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022}.  Here, the generators $c_i$ become vertices, connected via hyper-edges.  Thus the expected quotient becomes simply hypergraph isomorphism. With appropriate restrictions on the form these hypergraphs can take, this approach can be used to \textit{characterise} the free symmetric monoidal category generated by some $c_i$. 
+A large body of research work shows how this issue can be solved by taking a different approach, representing string diagrams as hypergraphs~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022}.  Here, the generators $c_i$ become vertices, connected via hyper-edges.  Thus the expected quotient becomes simply hypergraph isomorphism. With appropriate restrictions on the form these hypergraphs can take, this approach can be used to \textit{characterise} the free symmetric monoidal category generated by some~$c_i$. 
 
 We are interested not only in the free SMC over a set of generators, but also in \textit{(symmetric) monoidal theories} with extra equations such as, for instance, the rewrite rules (b)--(e) of Figure \ref{fig:e-graph-example}. These can be seen as equations between string diagrams, and thus rewrites of their hypergraph representations.  Because the generating equations can be applied in any context, we are lead to the notion of \textit{(hyper)graph rewriting}: given an equation $l=r$, we require some way to identify (a sub-hypergraph corresponding to) $l$ in any hypergraph $G$ and replace it with (a sub-hypergraph corresponding to) $r$.
 The standard methodology to giving specifications of such graph rewriting, known as \textit{double pushout (DPO) rewriting} \cite{???} is still applicable.
@@ -357,7 +357,7 @@ However, these concepts must be now generalised from hypergraphs to \textit{e-hy
 Giving the appropriate definitions turns out to be a technical matter of some complexity, and constitutes the main body of the paper. 
 
 \subsection{Soundness and Completeness}
-The main technical result of the paper is a proof soundness and completeness of the combinatorial representation for semilattice enriched SMCs, extending the results of \cite{bonchi_string_2022-2} for plain SMCs. While the structural equalities of SMCs are factored out in the representation,  important structural equalities arising from the enrichment (see the equations of Figure \ref{fig:string-equations}) are not, and should not be. They represent the un/sharing of subdiagrams with respect to the e-box structure,  which is precisely what allows for the compact representation of equivalence classes.  Instead, we consider DPO-rewrites implementing both the structural equalities for enrichment (which involve the e-box structure) and the equalities arising from the generating monoidal theory (which do not).  
+The main technical result of the paper is a proof of soundness and completeness of the combinatorial representation for semilattice enriched SMCs, extending the results of \cite{bonchi_string_2022-2} for plain SMCs. While the structural equalities of SMCs are factored out in the representation,  important structural equalities arising from the enrichment (see the equations of Figure \ref{fig:string-equations}) are not, and should not be. They represent the un/sharing of subdiagrams with respect to the e-box structure,  which is precisely what allows for the compact representation of equivalence classes.  Instead, we consider DPO-rewrites implementing both the structural equalities for enrichment (which involve the e-box structure) and the equalities arising from the generating monoidal theory (which do not).  
 
 Quotienting e-hypergraphs by the induced equivalence gives rise to a sound and complete model of semilattice enriched SMCs.  That is, we exhibit a translation functor $\llbracket-\rrbracket$ from the free semilattice enriched SMC over a symmetric monoidal theory to our (quotiented) category of e-hypergraphs such that 
 morphisms $f = g$ if and only if there exists a sequence of DPO-rewrites (each induced by a structural equality or the monoidal theory) between their translations: $\llbracket f \rrbracket \rightsquigarrow_{DPO} \llbracket g \rrbracket$. 
@@ -378,13 +378,16 @@ DAN: THIS NEEDS EXPANDING. EXPLAINING IN PLAIN WORDS SOME OF THE THEORETICAL PRO
 
 Although e-graphs were first developed in the 80's \cite{nelson1980techniques}, there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.  This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.  We are hopeful that our novel perspective on e-graphs can be extended to give uniform foundations to these investigations.  Some further avenues for investigation, including potential applications, are given in the conclusion of this paper. 
 
-Our use of string diagrams is also central to the intuition behind our work.  The string diagrams we work with are left essentially as informal reasoning devices, however there exists a breadth of work on similar diagrammatic formalisms for similar classes of categories.  We mention here work on hierarchical string diagrams \cite{ghica_hierarchical_2023},  functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
+Our use of string diagrams is also central to the intuition behind our work.  
+DAN: INFORMAL REASONING DEVICES DOESN'T SOUND GOOD. WHAT DO YOU MEAN? 
+The string diagrams we work with are left essentially as informal reasoning devices, however there exists a breadth of work on similar diagrammatic formalisms for similar classes of categories.  We mention here work on hierarchical string diagrams \cite{ghica_hierarchical_2023},  functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
 
 DAN: THIS NEEDS TO BE CAREFULLY EXPANDED TO NOT OFFEND POTENTIAL REVIEWERS. 
 
 \section{Categorical Semantics of E-Graphs}
 CHRIS: INTRO TO SECTION: CLARIFY THAT WE GIVE E-GRAPHS AS CARTESIAN CASE,  BUT ALSO GENERALIZE TO MONOIDAL CASE. 
 CHRIS: CITE HASEGAWA - TRACE MONOIDAL CATEGORIES, AND PERDIX. 
+DAN: I SUGGEST TO CITE HASEGAWA IN FURTHER WORK, FOR GENERALISING THE THEORY TO TRACED MC.
 
 First, we fix the following notation.  Given a catgeory $\mathbb{C}$ and object $A,B \in \mathbb{C}$ ,  we denote $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $1$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.  
 
