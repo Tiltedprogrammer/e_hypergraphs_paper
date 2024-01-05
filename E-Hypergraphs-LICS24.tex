@@ -399,7 +399,7 @@ A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators
 
 A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
 \begin{definition}[Products and permutations category]
-A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category where every object is the n-fold tensor product of some distinguished object $A$. In this case, we will denote the n-fold tensor product of the distinguished object by simply $n$, so that $n \otimes m = n+m$. A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
+A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category with natural numbers as objects,  and such that $n \otimes m = n+m$.  A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
 We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\textbf{PROP}(\Sigma)$.  
 \end{definition}
 The free category $\textbf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
@@ -493,7 +493,7 @@ Hypergraphs generalize graphs by allowing edges to have multiple sources and tar
 When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
 However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
 This gives rise to the definition of a hypergraph with interfaces.  
-Subsequent work \cite{Frobenius2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous directed acyclic}),  leading to a correspondence between symmetric monoidal string diagrams and the category of such hypergraphs.
+Subsequent work \cite{Frobenius2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams and the category of such hypergraphs.
 
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
@@ -563,51 +563,38 @@ Note that $\MdaCospans$ remains a symmetric monoidal category with the same equi
 \end{theorem}
 
 \subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
-
-The correspondence of the previous section further extends to include the equations of a monoidal theory: the equations of a theory are considered as rewrite rules on string diagrams,  which are then modelled as DPO-rewrites on hypergraphs with interfaces. 
+The correspondence of the previous section means that the symmetric monoidal equations of $\textbf{SMT}(\Sigma, \mathcal{E})$ are absorbed in the hypergraph representation.  The equations $\mathcal{E}$ are then to be considered as rewrite rules on string diagrams,  which are then modelled as DPO-rewrites on hypergraphs with interfaces. 
 DPO rewriting is a standard technique for formalising graph rewriting categorically. 
 In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting. 
 
-
-The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $L \rightsquigarrow R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $L$ within $\mathcal{G}$,  remove it,  and then plug $R$ into the hole.  In DPO rewriting,  such a rewrite rule is formalized as a span $L \xleftarrow{} K \xrightarrow{} R$ in some category $\mathcal{C}$ with pushouts,  where $K$ is some invariant that should be maintained during rewriting.
-CHRIS: "WITHIN G",  BUT WE ARE IN AN ARBITRARY CATEGORY: NOT NECESSARILY GRAPHS?
-
+The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalized as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
 A typical DPO square looks as follows,  where the two marked squares are pushouts. 
 \[
 \begin{tikzcd}
-L \arrow[d, "m"'] & K \arrow[d] \arrow[l, "f"'] \arrow[r, "g"] & R \arrow[d]   \\
-G^{\urcorner}     & C \arrow[l] \arrow[r]                      & ^{\ulcorner}H
+\mathcal L \arrow[d, "m"'] & \mathcal K \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
+\mathcal G^{\urcorner}     & \mathcal C \arrow[l] \arrow[r]                      & ^{\ulcorner} \mathcal H
 \end{tikzcd}
 \]
-Morphisms $K \to C \to G$ are called a \textit{pushout complement} and morphism $m$ is called a \textit{match},  defined when the corresponding pushout complement exists. When $f,g$ are expected to be monomorphisms, constructing $C$ can be intuitively understood as finding an occurrence of $L$ in $G$ and removing from this occurrence everything that has no pre-image in $K$ and then inserting in there everything from $R$ that has no pre-image in $K$ -- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $G$ is rewritten into $H$ via the rewrite rule $L \xleftarrow{} K \xrightarrow{} R$.
 
-To express the rewriting of (hyper-)graphs with interfaces, e.g. the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout with \textit{interfaces} rewriting (DPOI).
+The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement} -- the pair of morphisms $\mathcal K \to \mathcal C \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal C$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is the recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$ -- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
 
-\begin{definition}[DPOI rewriting]
-Fix a category $\mathbb{C}$ with pushouts.
-Given morphisms $G \xleftarrow{} J$ and $H \xleftarrow{} J$ in $\mathbb{C}$, $G$ rewrites into $H$ with interface $J$ if there exists a rewrite rule $L \xleftarrow{} K \xrightarrow{} R$ and object $C$ with suitable morphisms in $\mathbb{C}$ such that the diagram below commutes and two marked squares are pushouts.
+To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI).
+In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{Frobenius}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  Thus we reach the following variant of DPO rewriting. 
+\begin{definition}[DPOI rewriting]\label{def:dpoi}
+Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
 \[
 \begin{tikzcd}
-L \arrow[d, "m"'] & K \arrow[d] \arrow[l, "f"'] \arrow[r, "g"] & R \arrow[d]   \\
-G^{\urcorner}     & C \arrow[l] \arrow[r]                      & ^{\ulcorner}H \\
-                  & J \arrow[lu] \arrow[u] \arrow[ru]          &              
+\mathcal L \arrow[d, "m"'] & i+j \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
+\mathcal{G}^{\urcorner}     & \mathcal C \arrow[l] \arrow[r]                      & ^{\ulcorner}\mathcal H \\
+                  & n+m \arrow[lu] \arrow[u] \arrow[ru]          &              
 \end{tikzcd}
 \]
-
 \end{definition}
-When $\mathbb{C} = \catname{Hyp_{\Sigma}}$, the rewrite rules become cospans of hypergraphs with matching interfaces: $i \xrightarrow{} L \xleftarrow{} j$, $i \xrightarrow{} R \xleftarrow{} j$.
-By noting that a cospan $0 \xrightarrow{} L \xleftarrow{[f_{i},f_{j}]} i + j$ encodes the same data as a cospan $i \xrightarrow{f_{i}} L \xleftarrow{f_{j}} j$ (Remark 3.14~\cite{Frobenius}) we can formulate a rewrite rule as a single span $L \xleftarrow{} K \xrightarrow{} R$ where $K \cong i + j$.
-Likewise, for the target cospan $n \xrightarrow{} G \xleftarrow{} m$  $J \cong n + m$.
-% However, this notion of DPO does not account for hypergraphs with interfaces, i.e. those from $\MdaCospans$ where $l,r$ from $\langle l, r \rangle$ are cospans. To support this we first assume that we only need to maintain the interfaces of $i \xrightarrow{} L \xleftarrow{} j$ and $i \xrightarrow{} R \xleftarrow{} j$ during rewriting, then we can take $K \cong i + j$, i.e. take $K$ to be the coproduct of $i,j$ (remark 3.14~\cite{Frobenius}). What remains is to account for the interfaces in $G$, $C$, and $H$, which brings us to the following modified DPOI square. $J \cong n + m$ where $n$ and $m$ are the input and output interfaces of $G$, $C$, and $H$ respectively. The only difference from DPO square above is that we now explicitly require that the initial object $G$, intermediate object $C$ and final object $H$ all share the same interfaces.
-
-CHRIS: DEFINE DPOI FORMALLY,  IN DEFINITION ENVIRONMENT? PERHAPS COMBINE WITH BOUNDARY COMPLEMENT BELOW,  TWO FIGURES ON ONE LINE? 
-
-To mimic rewrites in $\textbf{PROP}(\Sigma)$ with the help of DPOI rewriting in $\catname{Hyp_{\Sigma}}$, we need to put some restrictions both on pushout complement and on matching as not all of them correspond to valid rewrites in $\textbf{PROP}(\Sigma)$. CHRIS: "LEAD TO"? BE PRECISE! :) 
-
+We need to restrict the notions of pushout complement and of match in order to preserve monogamy and directed acylcicity.  
 \begin{definition}[Boundary complement]
 \label{def:boundary_original}
-For monogamous cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} G \xleftarrow{b_2} m$
-and mono $f : L \to G$, a pushout complement as depicted below
+For monogamous cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} \mathcal G \xleftarrow{b_2} m$
+and mono $f : \mathcal L \to \mathcal G$, a pushout complement as depicted in the square below
 
 % \begin{figure}[h!]
 %     \centering
@@ -616,52 +603,53 @@ and mono $f : L \to G$, a pushout complement as depicted below
 
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJMIl0sWzIsMCwiaStqIl0sWzAsMiwiR157XFx1cmNvcm5lcn0iXSxbMiw0LCJuK20iXSxbMiwyLCJMXntcXGJvdH0iXSxbMyw0LCJbZF8xLGRfMl0iLDJdLFszLDIsIltiXzEsYl8yXSJdLFswLDIsImYiLDJdLFsxLDAsImEgPSBbYV8xLGFfMl0iLDJdLFsxLDQsImMgPSBbY18xLGNfMl0iXSxbNCwyLCJnIl1d
 \[\begin{tikzcd}
-	L && {i+j} \\
+	\mathcal L && {i+j} \\
 	\\
-	{G^{\urcorner}} && {L^{\bot}} \\
+	{\mathcal G^{\urcorner}} && {\mathcal{L}^{\bot}} \\
 	\\
 	&& {n+m}
 	\arrow["{[d_1,d_2]}"', from=5-3, to=3-3]
 	\arrow["{[b_1,b_2]}", from=5-3, to=3-1]
 	\arrow["f"', from=1-1, to=3-1]
-	\arrow["{a = [a_1,a_2]}"', from=1-3, to=1-1]
-	\arrow["{c = [c_1,c_2]}", from=1-3, to=3-3]
+	\arrow["{[a_1,a_2]}"', from=1-3, to=1-1]
+	\arrow["{[c_1,c_2]}", from=1-3, to=3-3]
 	\arrow["g", from=3-3, to=3-1]
 \end{tikzcd}\]
-
-is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to L^{\bot}$ and $d_2 : m \to L^{\bot}$ making the above triangle commute and such that
+is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to \mathcal{L}^{\bot}$ and $d_2 : m \to \mathcal{L}^{\bot}$ making the above triangle commute and such that
 \[
-    n + j \xrightarrow{[d_1,c_2]} L^{\bot} \xleftarrow{[d_2,c_1]} m + i
+    n + j \xrightarrow{[d_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[d_2,c_1]} m + i
 \]
 is a monogamous cospan. 
 \end{definition}
+%\begin{remark}
+%    Note how the requirement for $i \xrightarrow{} L \xleftarrow{} j$ and $n \xrightarrow{} G \xleftarrow{} m$ being monogamous, i.e. morphisms in $\MdaCospans$, is a part of the above definition.
+%\end{remark}
+Intuitively,  requiring boundary complements ensures that inputs are glued exclusively to outputs and vice-versa in the two pushout squares.
 
-\begin{remark}
-    Note how the requirement for $i \xrightarrow{} L \xleftarrow{} j$ and $n \xrightarrow{} G \xleftarrow{} m$ being monogamous, i.e. morphisms in $\MdaCospans{\Sigma}$, is a part of the above definition.
-\end{remark}
-
-Intuitively, such a pushout complement requires that inputs get only glued to outputs and vice-verse in the two pushout squares.
-
-\begin{definition}[Convex subgraphs]
-We call a subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ \emph{convex} if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
-\end{definition}
 \begin{definition}[Convex match]
-
-We call a match $m : L \to G$ convex if it is mono and its image is a convex subgraph of $G$. 
-    
+We call a subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ a \emph{convex subgraph} if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
+We call a match $m : \mathcal L \to \mathcal G$ a \emph{convex match} if it is mono and its image is a convex subgraph of $\mathcal G$. 
+   
 \end{definition}
 
-\begin{definition}
-Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma}}$, $G$ rewrites convexly into $H$ with interface $n + m$ --- notation $(G \xleftarrow{} n + m ) \Rrightarrow_{\mathcal{R}}  (H \xleftarrow{} n + m )$ --- if there exist rule $L \xleftarrow{} i + j \xrightarrow{} R$ in $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} C \xleftarrow{} n+m$ such that the DPOI diagram above commutes and its marked squares are pushouts and the following conditions hold
-
+\begin{definition}[Convex DPOI rewriting]
+Let $\mathfrak{R}$ be a set of DPOI rewrite rules. 
+Then, given $\mathcal G \xleftarrow{} n+m$ and $\mathcal H \xleftarrow{} n + m$ in $\catname{Hyp(\Sigma)}$, $\mathcal G$ rewrites convexly into $\mathcal H$ with interface $n + m$ --- notation $(\mathcal G \xleftarrow{} n + m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n + m )$ --- if there exist rule $\mathcal L \xleftarrow{} i + j \xrightarrow{} \mathcal R$ in $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} \mathcal C \xleftarrow{} n+m$ such that the DPOI diagram of Definition \ref{def:dpoi} commutes and its marked squares are pushouts 
+and the following conditions hold
 \begin{itemize}
-    \item $m : L \to G$ is a convex match;
-    \item $i + j \to C \to G$ is a boundary complement in the leftmost pushout.
+    \item $m : L \to \mathcal G$ is a convex match;
+    \item $i + j \to \mathcal C \to \mathcal G$ is a boundary complement in the leftmost pushout.
 \end{itemize}
-    
 \end{definition}
 
-ALEKSEI: THE WORD `CONVEXLY' ABOVE MEANS THAT THE REWRITING IS FORMULATED FOR MOMOGAMOUS MORPHISMS. SHALL WE STICK TO THIS FORMULATION? 
+CHRIS: WANT TO STATE THE CORRESPONDENCE THEOREM WITH SMTS HERE? NEED TO DEFINE $\lceil-\rceil$ AND INTERPRETATION? Hmm
+\begin{theorem}[Theorem 35~\cite{Frobenius2}]
+For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
+\[
+	f = g \iff \llangle \lceil f \rceil \rrangle \Rrightarrow_{\mathfrak{R}} \llangle \lceil g \rceil \rrangle~, 
+\]
+where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ . 
+\end{theorem}
 
 \section{E-Hypergraphs}
 
@@ -672,7 +660,7 @@ REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ morphisms!
 We follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ as a particular subset of plain hypergraphs with interfaces.  First we define an e-hypergraph,  which supports a hierarchical notion of "e-box" with distinct components.  Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying a certain directed acyclic \textit{monogamy} condition.  
 
 In the following,  we elide the obvious inclusions of $V$ and $E$ into $V+E$. 
-In other words, homomorphism should preserve immediate predecessors and the conflict relation.  CHRIS: CHECK I DIDNT INTRODUCE MISTAKES ABOVE.  SHOULD WE USE $< ; \phi$ NOTATION TO MATCH OTHER HYPERGRAPH DEFINITION? WHAT DOES (4) FOR CONSISTENCY MEAN? 
+In other words, homomorphism should preserve immediate predecessors and the conflict relation.  SHOULD WE USE $< ; \phi$ NOTATION TO MATCH OTHER HYPERGRAPH DEFINITION? WHAT DOES (4) FOR CONSISTENCY MEAN? 
 
 \begin{definition}[Category of E-hypergraphs]
 \label{def:e-homo}    
