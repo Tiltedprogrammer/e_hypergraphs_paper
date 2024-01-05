@@ -812,8 +812,16 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 
 CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
 As extended cospans have a more general notion of interface we need to make some adjustments to DPOI rewriting.
-The main issue is that internal interfaces may not be preserved during rewriting, for example, if the right-hand side of the rewrite rule has more hierarchy than the left-hand side: it affects both the eventual e-hypergraph and the possible pushout complement.
-
+The first thing is that we need to account for internal interfaces after all.
+The main issue is then that internal interfaces may not be preserved during rewriting.
+To illustrate this, consider the following rewrite rule
+\[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
+such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
+\[
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} m' \xleftarrow{} m
+\] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$.
+When removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, e.g. by computing the pushout complement, the internal interface of $\mathcal{G}$ should be modified as the verticies of $\mathcal{L}$ corresponding to strict internal interface of $\mathcal{L}$ (and hence to strict internal interface of $\mathcal{G}$) should be removed from $\mathcal{G}$ and therefore from $\mathcal{G}$'s internal interface.
+Then, when gluing $\mathcal{R}$ into the created context, we also introduce strict internal interfaces of $\mathcal{R}$ into this context.
 % The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
 % Note that the outermost interfaces are preserved.
 
@@ -828,10 +836,10 @@ The main issue is that internal interfaces may not be preserved during rewriting
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-To account for such changes in the interfaces we put some additional constraints on DPOI rewriting for the case of $\catname{EHyp_{\Sigma}}$.
+To account for such changes in the interfaces we put some additional structure on DPOI rewriting for the case of $\catname{EHyp({\Sigma})}$.
 Consider a DPOI diagram with extra constraints below which encodes
 the notion that e-hypergraph $G$ rewrites into $H$ with external interfaces $n_{ext}+m_{ext}$.
-Note the new interfaces and how we use the same trick to go from cospan $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$ to $G \xleftarrow{} g_{i} + g_{o} \xleftarrow{} n_{ext} + m_{ext}$.
+Note the addition of internal interfaces and how we use the same trick to go from cospan $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$ to $G \xleftarrow{} g_{i} + g_{o} \xleftarrow{} n_{ext} + m_{ext}$.
 The original DPO square is depicted in blue.
 % \[\begin{tikzcd}
 % 	&&&& {i + j} \\
@@ -870,27 +878,14 @@ The original DPO square is depicted in blue.
  }
 \]
 
-% The parts of the original DPOI square is shown in blue.
-% For example, the left-hand side $L$ of a rewrite rule
-%  $\langle L, R \rangle$ which originally was some cospan
-%  $i \xrightarrow{} L \xleftarrow{} j$ in $\MdaCospans$ 
-%  now is a cospan
-%  $x_{ext} \xrightarrow{} l_i \to L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
-% from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
-% The top half of this diagram says that the outermost interfaces
-%  should coincide for $L$ and $R$.
-% The bottom half puts the same restrictions on $G$ and $H$.
-% For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
-
-
-We then also adjust the definition of a boundary complement.
+Then, we explicitly show how the internal interfaces of the pushout complement are constructed.
 
 \begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
 \label{def:boundary_new}
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
 
-For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted below
+For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} \xrightarrow{} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted below
 \[
 \scalebox{0.75}{
 
@@ -944,14 +939,15 @@ The cospan's input internal interface may contain nodes that previously were a p
 \end{definition}    
 
 \begin{definition}[Convex down-closed match] 
-    We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed match if
+    We call $m : L \to G$ in $\catname{EHyp(\Sigma)}$ a convex down-closed match if
     
     \begin{enumerate}
         \item $m$ is monomorphism
         \item $m(L)$ is a convex down-closed subgraph of $G$
     \end{enumerate}
 \end{definition}
-\
+
+The whole process of rewriting including the construction of the internal interfaces of the resulting e-hypergraph is summarised in the following definition.
 
 \begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
     Given $G \xleftarrow{} g_i + g_o \xleftarrow{} n_{ext} + m_{ext}$ 
@@ -1002,13 +998,13 @@ under a rewrite rule
 
 if 
 \begin{align*}    
-    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o}& \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \\ &\Rrightarrow^{+}\\ H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o}& \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
+    G \xleftarrow{[ a_2,b_2 ]} g_i + g_{o}& \xleftarrow{[a_1, b_1]} n_{ext} + m_{ext} \\ &\Rrightarrow^{+}\\ H \xleftarrow{[a_2,b_2]} h_i + h_{o}& \xleftarrow{[a_1, b_1]} n_{ext} + m_{ext}
 \end{align*}
 
 under a rewrite rule
 \[
-    \langle l_{i} + l_{o} \xrightarrow{\langle a_2, b_2 \rangle} L \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext},
-    r_{i} + r_{o} \xrightarrow{\langle a_2, b_2 \rangle} R \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext} 
+    \langle l_{i} + l_{o} \xrightarrow{[a_2, b_2]} L \xleftarrow{[a_1, b_1]} x_{ext} + y_{ext},
+    r_{i} + r_{o} \xrightarrow{[a_2, b_2]} R \xleftarrow{[a_1, b_1]} x_{ext} + y_{ext} 
     \rangle
 \]
 
@@ -1254,13 +1250,13 @@ There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will 
 We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
 Likewise, $t_{\sfrac{X+Y}{\sim}}([e]) = [t_{X+Y}(e)]^{*}$.
 
-So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{Frobenius} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined an $[-]$ is a homomorphism with respect to sources and targets.
+So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{Frobenius} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[-]$ is a homomorphism with respect to sources and targets.
 
-Recall that $<_{c}$ is essentially a transitive clousure of $<_{c}^{\mu}$ and hence we can first define 
-    \[<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[u]_{E})
+Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we can first define 
+    \[<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[u]_{E})
     \] and 
     \[
-        <_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]_{V})
+        <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]_{V})
     \] where $i_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
     We will consider several cases.
     Assume that $u$ is an element of $V_{X+Y}$ and
