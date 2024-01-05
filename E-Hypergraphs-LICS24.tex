@@ -389,26 +389,26 @@ CHRIS: INTRO TO SECTION: CLARIFY THAT WE GIVE E-GRAPHS AS CARTESIAN CASE,  BUT A
 CHRIS: CITE HASEGAWA - TRACE MONOIDAL CATEGORIES, AND PERDIX. 
 DAN: I SUGGEST TO CITE HASEGAWA IN FURTHER WORK, FOR GENERALISING THE THEORY TO TRACED MC.
 
-First, we fix the following notation.  Given a catgeory $\mathbb{C}$ and object $A,B \in \mathbb{C}$ ,  we denote $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $1$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.  
+Given a $\mathbb{C}$  with objects $A,B \in \mathbb{C}$ we denote by $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $1$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.  
 
 
 \subsection{Symmetric Monoidal Theories and PROPs. }
 
-A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations} -- formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalizations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalize the notion of a signature. 
+A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalizations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalize the notion of a signature. 
 \begin{definition}[Monoidal signature]
 A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $f: n \to m$,  with \textit{arity} $n$ and \textit{coarity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
 \end{definition}
 
 A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
 \begin{definition}[Products and permutations category]
-A \textit{permutations and products category (PROP)} is a symmetric monoidal category where every object is the n-fold tensor product of some distinguished object $A$. In this case, we will enote the n-fold tensor product of the distinguished object by simply $n$, so that $n \otimes m = n+m$. A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
-We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ is $\textsf{PROP}(\Sigma)$.  
+A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category where every object is the n-fold tensor product of some distinguished object $A$. In this case, we will denote the n-fold tensor product of the distinguished object by simply $n$, so that $n \otimes m = n+m$. A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
+We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\textsf{PROP}(\Sigma)$.  
 \end{definition}
 The free category $\textsf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
 
-We can now specify an equation associated with a monoidal signature as a pair of parallel morphisms of the form above, leading to the following definition of a symmetric monoidal theory. 
+An equation associated with a monoidal signature is a pair of parallel morphisms of the form above, leading to the following definition of a symmetric monoidal theory. 
 \begin{definition}[Symmetric Monoidal Theory]
-A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $\phi,\psi: n \to m$ of $\textsf{PROP}(\Sigma)$ 
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $\phi,\psi: n \to m$ of $\textsf{PROP}(\Sigma)$.
 A \textit{symmetric monoidal theory} $\textsf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by $\textsf{PROP}(\Sigma)$ quotiented by the least congruence including $\mathcal{E}$.
 \end{definition}
 
@@ -432,12 +432,12 @@ The Cartesian SMT is given by a set of generators $\Sigma_C$, together with the 
 	\tikzfig{categorical-semantics/Cartesian-naturality}
 	}
 \]
-By Fox's Theoem [cite],  $\textsf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
+By Fox's Theorem~cite{cite},  $\textsf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
 \end{example}
 
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
-We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. \footnote{Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must also be a categorical coproduct -- a degeneracy we wish to avoid.} More precisely our hom-sets will be given the structure of a semilattice.  
+We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$.\footnote{Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must also be a categorical coproduct---a degeneracy we wish to avoid. DAN: REFERENCE OR PROOF?} More precisely our hom-sets will be given the structure of a semilattice.  
 Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalized to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
 \[
 	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
@@ -466,7 +466,7 @@ The free category $\textsf{PROP}^+(\Sigma)$ can be syntactically constructed fro
 To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
 
 Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
-We use string diagrams informally in this paper, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. Indeed, the diagrammatic language itself is not truly novel and is similar to \textit{e.g.}, \cite{duncan_generalised_2009}. 
+We use string diagrams informally in this paper, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. Indeed, similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
 
 \begin{figure*}
 \[  
