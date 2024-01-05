@@ -597,7 +597,7 @@ G^{\urcorner}     & C \arrow[l] \arrow[r]                      & ^{\ulcorner}H \
 \end{definition}
 When $\mathbb{C} = \catname{Hyp_{\Sigma}}$, the rewrite rules become cospans of hypergraphs with matching interfaces: $i \xrightarrow{} L \xleftarrow{} j$, $i \xrightarrow{} R \xleftarrow{} j$.
 By noting that a cospan $0 \xrightarrow{} L \xleftarrow{[f_{i},f_{j}]} i + j$ encodes the same data as a cospan $i \xrightarrow{f_{i}} L \xleftarrow{f_{j}} j$ (Remark 3.14~\cite{Frobenius}) we can formulate a rewrite rule as a single span $L \xleftarrow{} K \xrightarrow{} R$ where $K \cong i + j$.
-Likewise, for the target cospan $n \xrightarrow{} G \xleftarrow{} m$  $J \cong n + m$.
+Likewise, for the target cospan $n \xrightarrow{} G \xleftarrow{} m$,  $J \cong n + m$.
 % However, this notion of DPO does not account for hypergraphs with interfaces, i.e. those from $\MdaCospans$ where $l,r$ from $\langle l, r \rangle$ are cospans. To support this we first assume that we only need to maintain the interfaces of $i \xrightarrow{} L \xleftarrow{} j$ and $i \xrightarrow{} R \xleftarrow{} j$ during rewriting, then we can take $K \cong i + j$, i.e. take $K$ to be the coproduct of $i,j$ (remark 3.14~\cite{Frobenius}). What remains is to account for the interfaces in $G$, $C$, and $H$, which brings us to the following modified DPOI square. $J \cong n + m$ where $n$ and $m$ are the input and output interfaces of $G$, $C$, and $H$ respectively. The only difference from DPO square above is that we now explicitly require that the initial object $G$, intermediate object $C$ and final object $H$ all share the same interfaces.
 
 CHRIS: DEFINE DPOI FORMALLY,  IN DEFINITION ENVIRONMENT? PERHAPS COMBINE WITH BOUNDARY COMPLEMENT BELOW,  TWO FIGURES ON ONE LINE? 
@@ -652,7 +652,7 @@ We call a match $m : L \to G$ convex if it is mono and its image is a convex sub
 \end{definition}
 
 \begin{definition}
-Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma}}$, $G$ rewrites convexly into $H$ with interface $n + m$ --- notation $(G \xleftarrow{} n + m ) \Rrightarrow_{\mathcal{R}}  (H \xleftarrow{} n + m )$ --- if there exist rule $L \xleftarrow{} i + j \xrightarrow{} R$ in $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} C \xleftarrow{} n+m$ such that the DPOI diagram above commutes and its marked squares are pushouts and the following conditions hold
+Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma}}$, $G$ rewrites convexly into $H$ with interface $n + m$ --- notation $(G \xleftarrow{} n + m ) \Rrightarrow_{\mathcal{R}}  (H \xleftarrow{} n + m )$ --- if there exist rule $L \xleftarrow{} i + j \xrightarrow{} R$ in the set of rewrite rules $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} C \xleftarrow{} n+m$ such that the DPOI diagram above commutes and its marked squares are pushouts and the following conditions hold
 
 \begin{itemize}
     \item $m : L \to G$ is a convex match;
@@ -660,6 +660,8 @@ Given $G \xleftarrow{} n+m$ and $H \xleftarrow{} n + m$ in $\catname{Hyp_{\Sigma
 \end{itemize}
     
 \end{definition}
+
+By resorting to convex matching and boundary complement we virtually require that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
 
 ALEKSEI: THE WORD `CONVEXLY' ABOVE MEANS THAT THE REWRITING IS FORMULATED FOR MOMOGAMOUS MORPHISMS. SHALL WE STICK TO THIS FORMULATION? 
 
@@ -829,51 +831,28 @@ CHRIS: CATEGORY OF SUCH COSPANS? COMBINE WITH DEFINITION ABOVE? $\WellTypedMdaEc
 
 \section{DPOI-Rewriting for E-Hypergraphs}
 
+As extended cospans have a more general notion of interface we need to make some adjustments to DPOI rewriting.
+The main issue is that internal interfaces may not be preserved during rewriting, for example, if the right-hand side of the rewrite rule has more hierarchy than the left-hand side: it affects both the eventual e-hypergraph and the possible pushout complement.
 
-We have a more general notion of interface and hence we need to adjust DPOI rewriting a little bit.
+% The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
+% Note that the outermost interfaces are preserved.
 
-We have a more general notion of interface and hence we need to adjust DPOI rewriting a little bit.
-The first issue is that whole interfaces are not preserved during rewriting, consider an example in Figure~\ref{fig:example_rewrite_ecospans} which corresponds to a rewrite rule of $\langle f, f+g \rangle$.
+% Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
+% Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
 
-%\begin{figure}[t]
-%    \centering
-%    \[
-%    \scalebox{0.6}{\tikzfig{combinatorial_semantics/f_to_f_plus_g_example}}
-%    \]
-%    \caption{Example rewrite rule in $\WellTypedMdaEcospans$}
-%    \label{fig:example_rewrite_ecospans}
-%\end{figure}
+% The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
+% Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
+% The entry in the middle of the span depicts the outermost interfaces which are preserved.
+% The second row depicts the e-hypergraph to be rewritten on the left and the result of the rewrite on the right.
+% The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
+% Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
+% Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
-Note that the outermost interfaces are preserved.
-
-Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
-Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
-
-The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
-Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
-The entry in the middle of the span depicts the outermost interfaces which are preserved.
-The second row depicts the e-hypergraph to be rewritten on the left and the result of the rewrite on the right.
-The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
-Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
-Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
-
-
-\update{$i,j$ are replaced}
-
-To account for such changes in the interfaces we put some additional constraints on DPOI rewriting.
+To account for such changes in the interfaces we put some additional constraints on DPOI rewriting for the case of $\catname{EHyp_{\Sigma}}$.
 Consider a DPOI diagram with extra constraints below which encodes
- the notion that cospan 
- $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$
- rewrites into a cospan 
- $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$ via a rewrite rule $\langle l, r \rangle$,
- where
- $l := x_{ext} \xrightarrow{} l_i \xrightarrow{} L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
- and
- $r := x_{ext} \xrightarrow{} r_i \xrightarrow{} L \xleftarrow{} r_o \xleftarrow{} y_{ext}$.
- Note there are arrows from $x_{ext} + y_{ext} \to l_i + l_o$ (respectively, $r_i + r_o$) from the corresponding cospans which are not shown in the diagram.
- Similarly for the arrows from $n_{ext} + m_{ext}$.
-
+the notion that e-hypergraph $G$ rewrites into $H$ with external interfaces $n_{ext}+m_{ext}$.
+Note the new interfaces and how we use the same trick to go from cospan $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$ to $G \xleftarrow{} g_{i} + g_{o} \xleftarrow{} n_{ext} + m_{ext}$.
+The original DPO square is depicted in blue.
 % \[\begin{tikzcd}
 % 	&&&& {i + j} \\
 % 	{l_i+l_o} && L &&&& R && {r_i+r_o} \\
@@ -911,41 +890,36 @@ Consider a DPOI diagram with extra constraints below which encodes
  }
 \]
 
-The parts of the original DPOI square is shown in blue.
-The extra bits simply account for more complicated interfaces.
-For example, the left-hand side $L$ of a rewrite rule
- $\langle L, R \rangle$ which originally was some cospan
- $i \xrightarrow{} L \xleftarrow{} j$ in $\MdaCospans$ 
- now is a cospan
- $x_{ext} \xrightarrow{} l_i \to L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
-from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
-The top half of this diagram says that the outermost interfaces
- should coincide for $L$ and $R$.
-The bottom half puts the same restrictions on $G$ and $H$.
-For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
+% The parts of the original DPOI square is shown in blue.
+% For example, the left-hand side $L$ of a rewrite rule
+%  $\langle L, R \rangle$ which originally was some cospan
+%  $i \xrightarrow{} L \xleftarrow{} j$ in $\MdaCospans$ 
+%  now is a cospan
+%  $x_{ext} \xrightarrow{} l_i \to L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
+% from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
+% The top half of this diagram says that the outermost interfaces
+%  should coincide for $L$ and $R$.
+% The bottom half puts the same restrictions on $G$ and $H$.
+% For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
 
 
-We also adjust the definition of a boundary complement.
-\begin{definition}[Down-closed subgraph]
-We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   every element of $(e]$ is also in $\mathcal{H}$.
-\end{definition}
+We then also adjust the definition of a boundary complement.
 
 \begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
 \label{def:boundary_new}
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
+
+For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted below
 \[
 \scalebox{0.75}{
+
     \tikzfig{combinatorial_semantics/DPOI_pushout_complement}
 }
 \]
 
-Consider the diagram above where the marked square is a pushout
- and $x_{ext} + y_{ext}$ and $n_{ext} + m_{ext}$ are 
- the \textit{outermost} interfaces for the corresponding 
- cospans.
-We say that $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ is 
- a \textit{boundary} complement if $[i_c, i_j]$ is mono 
+
+is a \textit{boundary} complement if $[i_c, i_j]$ is mono 
  and there exist $n_c : n_{ext} \to C$ and $m_c : m_{ext} \to C$ 
  making the above triangle commute and such that
 there exists a \textit{not necessarily well-typed} mda-cospan
@@ -957,6 +931,8 @@ n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext
 where $c_i$ and $c_o$ are computed as
  $c_i = g_i \setminus (l_i \setminus x_{ext})$ and
  $c_o = g_o \setminus (l_o \setminus y_{ext})$.
+
+ ALEKSEI: ARE MORPHISMS $c_i + y_{ext} \to C$ AND THE SYMMETRIC ONE OBVIOUS?
 \end{definition}
 %
 %\begin{figure}
@@ -970,15 +946,22 @@ where $c_i$ and $c_o$ are computed as
 % The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
 
 \begin{remark}
-Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not well-typed.
-The cospan's input interface contains nodes that previously were a part of the output interface.
+Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not necessarily well-typed.
+The cospan's input internal interface may contain nodes that previously were a part of the output internal interface and similarly for output internal interface.
+\end{remark}
+
+\begin{remark}
+    The uniqueness and existence properties of such pushout complement are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
 \end{remark}
 
 
-\begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
-    The boundary complement in~\ref{def:boundary_new} when exists is unique.
-\end{proposition}
+% \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
+%     The boundary complement in~\ref{def:boundary_new} when exists is unique.
+% \end{proposition}
 
+\begin{definition}[Down-closed subgraph]
+    We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   every element of $(e]$ is also in $\mathcal{H}$.
+\end{definition}    
 
 \begin{definition}[Convex down-closed match] 
     We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed match if
@@ -986,14 +969,13 @@ The cospan's input interface contains nodes that previously were a part of the o
     \begin{enumerate}
         \item $m$ is monomorphism
         \item $m(L)$ is a convex down-closed subgraph of $G$
-        % \item \update{I've removed the requirement that consistency should be reflected because well typedness prohibits otherwise formed matches.}
     \end{enumerate}
 \end{definition}
 \
 
 \begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
     Given $G \xleftarrow{} g_i + g_o \xleftarrow{} n_{ext} + m_{ext}$ 
-    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}}^{+} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $L \xleftarrow{} l_i + l_o \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} r_i + r_o \xrightarrow{} R$ with the outermost interfaces $x_{ext} + y_{ext}$ in $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ such that the diagram below commutes and its marked squares are pushouts
+    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}}^{+} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $L \xleftarrow{} l_i + l_o \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} r_i + r_o \xrightarrow{} R$ with the outermost interfaces $x_{ext} + y_{ext}$ in the set of rewrite rules $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ such that the diagram below commutes and its marked squares are pushouts
 
 % https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
 \[\scalebox{0.75}{
@@ -1005,18 +987,12 @@ The cospan's input interface contains nodes that previously were a part of the o
     \begin{enumerate}
         \label{dpoi:assumptions}
         \item $m : L \to G$ is a convex down-closed match;
-        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $x_{ext} + y_{ext}$
-        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $x_{ext} + y_{ext}$
         \item $x_{ext} + y_{ext} \to C \to G$ is a boundary complement in the leftmost pushout.
     \end{enumerate}
 \end{definition}
 
-\begin{remark}
-The conditions 2 and 3 are needed to guarantee the existence of the pushout complement.
-\end{remark}
 
-
-The whole interfaces of the resulting e-hypergraph $H$ from the cospan
+The internal interfaces of the resulting e-hypergraph $H$ from the cospan
  $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$
  are constructed as $h_i = (r_i \setminus x_{ext}) + c_i$ 
  and
@@ -1045,9 +1021,10 @@ under a rewrite rule
 \]
 
 if 
-\[
-    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \Rrightarrow H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
-\]
+\begin{align*}    
+    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o}& \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \\ &\Rrightarrow^{+}\\ H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o}& \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
+\end{align*}
+
 under a rewrite rule
 \[
     \langle l_{i} + l_{o} \xrightarrow{\langle a_2, b_2 \rangle} L \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext},
@@ -1371,6 +1348,7 @@ Consider the following span in $\catname{EHyp_{\Sigma}}$
 \end{tikzcd}\]
 such that
 \begin{enumerate}
+\label{pushout:assumptions}
     \item $Z$ is a \textit{descrete} e-hypergraph.
     \item $f,g$ are monos.
     \item $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_{i},v_{j}$ in $V_{Z}$.
@@ -1959,6 +1937,39 @@ For this we need to check that the defined relations satisfy all the needed prop
 \end{proof}
 \end{proposition}
 
+\begin{definition}[Definition 3.16~\cite{Frobenius}]
+Morphisms $K \xrightarrow{i} L \xrightarrow{m} G$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every node of its source and target is either (i) not in the image of $m$ or (ii) in the image of $i ; m$.
+They satisfy the no-identification condition if any two nodes merged by $m$ are in the image of $i$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:complement_existence}
+    Consider a pushout square in $\catname{EHyp_{\Sigma}}$ below
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJYIl0sWzIsMCwiWiJdLFsyLDIsIkMiXSxbMCwyLCJQXntcXHVyY29ybmVyfSJdLFsyLDUsIlxcYnVsbGV0Il0sWzEsMCwiaSIsMl0sWzEsMl0sWzIsM10sWzAsMywibSIsMl1d
+\[\begin{tikzcd}
+	X && Z \\
+	\\
+	{P^{\urcorner}} && C \\
+	\\
+	\\
+	&& \bullet
+	\arrow["i"', from=1-3, to=1-1]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow["m"', from=1-1, to=3-1]
+\end{tikzcd}\]
+    Such that $m,i$ are monos and $Z$ is discrete. Then, pushout complement $Z \to C \to G$ exists if
+    \begin{enumerate}
+        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
+        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
+        \item The no-dangling condition holds.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    By requiring that $m$ is mono makes the no-identification condition satisfied on the nose.
+    Then, no-dangling and no-identification conditions are necessary for pushout complement to exists~\cite{dpo}.
+    Points (1)-(2) above guarantee that after removing from $G$ everything in $L$ that has no pre-image in $Z$ the arrow $Z \to C$ will satisfy the assumptions~\ref{pushout:assumptions}.
+\end{proof}
 
 \begin{proposition}
 \label{prop:boundary_complement}
