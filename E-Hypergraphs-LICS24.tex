@@ -500,9 +500,9 @@ Subsequent work \cite{Frobenius2} builds on this correspondence to give a restri
 A \emph{hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l)$,  where $V$ is a finite set of nodes, $E$ is a finite set of edges, $s : E \to V^{*}$ is a source function, $t : E \to V^{*}$ is a target function,  and $l : E \to \Sigma$ is a labelling function that assigns each edge a generator from monoidal signature $\Sigma$.  The labelling function must respect the typing of the generator: for all edges $e$,  $|s(e)| = m$ and $|t(e)| = n$,  where $l(e) : m \to n$. 
 A \emph{hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ is given by a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that the following hold. 
 \begin{enumerate}
-    \item $(s_{\mathcal{F}}\, ;\phi_V^*)(e) = (\phi_E\, ;s_{\mathcal{G}})(e)$
-    \item $(t_{\mathcal{F}}\, ;\phi_V^*)(e) = (\phi_E\, ;t_{\mathcal{G}})(e)$
-    \item $l_{\mathcal{F}}(e) = \phi_E;l_{\mathcal{G}}(e)$
+    \item $\phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e))$
+    \item $\phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))$
+    \item $l_{\mathcal{F}}(e) = l_{\mathcal{G}}(\phi_E(e))$
 \end{enumerate}
 We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$.
 \end{definition}
@@ -544,7 +544,7 @@ A hypergraph is \emph{directed acyclic} if it contains no paths of length $n > 0
 \end{definition}
 
 In order to represent only morphisms of $\textbf{PROP}(\Sigma)$,  it is necessary to restrict our attention to the following subset of hypergraphs with interfaces. 
-\begin{definition}[Category of MDA Hypergraphs with Interfaces \cite{Frobenius2}]
+\begin{definition}[Category of MDA Hypergraphs with Interfaces]
 \label{def:monogamy_hyp}
 We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sigma}$ \emph{monogamous directed acyclic (MDA)} if:
 \begin{enumerate}
@@ -654,36 +654,31 @@ where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ and $ \Rright
 \end{theorem}
 \section{E-Hypergraphs}
 
-CHRIS: EXPLAIN THE CONDITIONS,  HOW WE WILL INTERPRET THE STRING DIAGRAMS.  
-REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ morphisms!
+WHAT DOES (3) FOR CONSISTENCY MEAN? 
+In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in our semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of "e-box" with distinct components. Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing our e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
 
+Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$ containing only morphisms $f: n \to m$ where either $n$ or $m$ are non-zero.  This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there. 
 
-We follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ as a particular subset of plain hypergraphs with interfaces.  First we define an e-hypergraph,  which supports a hierarchical notion of "e-box" with distinct components.  Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying a certain directed acyclic \textit{monogamy} condition.  
-
-In the following,  we elide the obvious inclusions of $V$ and $E$ into $V+E$. 
-In other words, homomorphism should preserve immediate predecessors and the conflict relation.  SHOULD WE USE $< ; \phi$ NOTATION TO MATCH OTHER HYPERGRAPH DEFINITION? WHAT DOES (4) FOR CONSISTENCY MEAN? 
-
+In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$. 
 \begin{definition}[Category of E-hypergraphs]
 \label{def:e-homo}    
-An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}; and an equivalence relation $\consistency$ on $V + E$ called the \textit{consistency relation}.  We define the following additional notation.  For $x \in V + E$,  the set of \emph{predecessors} and \emph{successors} of $x$,  respectively: 
+An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}; and an equivalence relation $\consistency$ on $V + E$ called the \textit{consistency relation}.  We define the following additional notation.  For $x \in V + E$,  the set of \emph{parents} and \emph{children} of $x$,  respectively: 
 \[
 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
 \]
-We will denote the unique immediate predecessor $e$ of $x$ by writing $e <^{\mu} x$.
+We will denote the unique immediate parent $e$ of $x$ by writing $e <^{\mu} x$.
 We call edges $e$ such that $l(e) = \bot$ \textit{hierarchical},  and edges $e$ and nodes $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \emph{top-level}.
-We require that the child relation satisfies the following conditions
+We require that the child relation satisfies the following conditions:
 \begin{enumerate}
-	\item $[x)$ contains exclusively edges such that $l(e) = \bot$.
-	\item Each $x$ has at most one immediate predecessor.
+	\item each parent set contains exclusively hierarchical edges;
+	\item Each $x$ has at most one immediate parent;
 	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$.
 \end{enumerate}
-The consistency relation must satisfy the following properties. 
+The consistency equivalence relation must satisfy the following conditions:
     \begin{enumerate}
         \label{def:consistency_properties}
-        \item The relation is an equivalence relation
-        \item If $v \in s(e)$ then $v \consistency e$
-        \item If $v \in t(e)$ then $v \consistency e$
-        \item The relation is defined only for edges $e$ and nodes $v$ such that $[v) = [e) \not = \varnothing$
+        \item If $v \in s(e)$ or $v \in t(e)$ then $v \consistency e$;
+        \item The relation is defined only for edges $x$ which are not top-level.
     \end{enumerate}
 
 A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
@@ -718,16 +713,15 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
 If we further have that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we call the homomorphism \textit{strict}.
 The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e-hypergraphs as objects and e-hypergraph homomorphisms as arrows.  
 \end{definition}
-Condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity.
+Intuitively,  the child relation equips the hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of our string diagrams.  
+These edges can be designated as "parents" to sub-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the sub-hypergraph below the hierarchical edge.  
+Technically,  condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for conditions $(1)$ of the consistency relation. 
+The conditions on homomorphisms require to preserve immediate parents and the conflict relation.  
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  A concrete description of the pushout of two morphisms in this category is given in the appendix.  Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied,  including that the two morphisms involved are monos and their shared domain is a discrete hypergraph.  
 
-\begin{theorem}[Theorem~\ref{th:existence_of_pushouts} restatement]
-Under certain conditions pushouts in $\catname{EHyp_{\Sigma}}$ exist.   
-\end{theorem}
-
 \begin{remark}
-When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we assign $\bot$ to be the immediate predecessor of all $x$ whose immediate predecessor is in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
+When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we assign $\bot$ to be the immediate parent of all $x$ whose immediate parent is in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
 \end{remark}
 
 When modelling our enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extened cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
@@ -786,7 +780,7 @@ As in the standard cospan construction,  it is necessary to consider isomorphism
 
 
 
-\begin{definition}[Category of MDA e-hypergraphs with interfaces]
+\begin{definition}[Category of well-typed MDA e-hypergraphs with interfaces]
 We call an extended cospan in $\Ecospans$,  as below,   \textit{monogamous directed acyclic (MDA)} if
 \[
 n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
@@ -802,22 +796,21 @@ n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}
         % \item $[v) = \varnothing$ for all $v$ in the image of $f_{ext};f$, and for all $v$ in the image of $g_{ext};g$. 
 \end{enumerate}
 \label{def:monogamy_ehyp} 
-We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of MDA-extended-cospans. 
-\end{definition}
-CHRIS: COULD PUT CONDITION (5) IN THE PLAIN DEFINITION OF EXTENDED COSPANS? WE ALREADY ASK FOR EXTERNAL INTERFACES TO BE TOP-LEVEL.  ALSO,  (2) IS ALREADY COVERED IN THAT DEFINITION. 
 
-\begin{definition}[Well-typedness]
-Consider the sets of input and output vertices,  $I$ and $O$ respectively,  of a hierarchical edge $e$ of an e-hypergraph $\mathcal{G}$. 
+Further,  consider the sets of input and output vertices,  $I$ and $O$ respectively,  of a hierarchical edge $e$ of an e-hypergraph $\mathcal{G}$. 
 The consistency relation of $\mathcal{G}$ partitions $I$ and $O$.  
 We call $e$ \emph{well-typed} if the size of each partition of $I$ is $|s(e)|$ and the size of each partition of $O$ is $|t(e)|$.
 We will call an MDA-extended-cospan in $\MdaEcospans$ \emph{well-typed} if all hierarchical edges in its apex are well-typed.
-We 
-\end{definition}
-CHRIS: CATEGORY OF SUCH COSPANS? COMBINE WITH DEFINITION ABOVE? $\WellTypedMdaEcospans$
 
+We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of well-typed MDA-extended-cospans. 
+\end{definition}
+CHRIS: COULD PUT CONDITION (5) IN THE PLAIN DEFINITION OF EXTENDED COSPANS? WE ALREADY ASK FOR EXTERNAL INTERFACES TO BE TOP-LEVEL.  ALSO,  (2) IS ALREADY COVERED IN THAT DEFINITION. 
+
+Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  This is beacuse the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation.  Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve (un)sharing,  and so we wish to maintain distinct e-hypergraphs expressing more or less shared representations of morphisms. 
 
 \section{DPOI-Rewriting for E-Hypergraphs}
 
+CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
 As extended cospans have a more general notion of interface we need to make some adjustments to DPOI rewriting.
 The main issue is that internal interfaces may not be preserved during rewriting, for example, if the right-hand side of the rewrite rule has more hierarchy than the left-hand side: it affects both the eventual e-hypergraph and the possible pushout complement.
 
