@@ -591,6 +591,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
 \]
 \end{definition}
 We need to restrict the notions of pushout complement and of match in order to preserve monogamy and directed acylcicity.  
+
 \begin{definition}[Boundary complement]
 \label{def:boundary_original}
 For monogamous cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} \mathcal G \xleftarrow{b_2} m$
@@ -641,6 +642,7 @@ and the following conditions hold
     \item $i + j \to \mathcal C \to \mathcal G$ is a boundary complement in the leftmost pushout.
 \end{itemize}
 \end{definition}
+%By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
 
 CHRIS: WANT TO STATE THE CORRESPONDENCE THEOREM WITH SMTS HERE? NEED TO DEFINE $\lceil-\rceil$ AND INTERPRETATION? Hmm
 \begin{theorem}[Theorem 35~\cite{Frobenius2}]
@@ -650,7 +652,6 @@ For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that
 \]
 where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ and $ \Rrightarrow^*_{\mathfrak{R}}$ denotes the existence of a sequence of convex rewrites. 
 \end{theorem}
-
 \section{E-Hypergraphs}
 
 CHRIS: EXPLAIN THE CONDITIONS,  HOW WE WILL INTERPRET THE STRING DIAGRAMS.  
@@ -668,20 +669,20 @@ An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,
 \[
 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
 \]
-We will denote the unique immediate predecessor $e$ of $x$ by writing $e <_c^{\mu} x$.
+We will denote the unique immediate predecessor $e$ of $x$ by writing $e <^{\mu} x$.
 We call edges $e$ such that $l(e) = \bot$ \textit{hierarchical},  and edges $e$ and nodes $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \emph{top-level}.
 We require that the child relation satisfies the following conditions
 \begin{enumerate}
 	\item $[x)$ contains exclusively edges such that $l(e) = \bot$.
 	\item Each $x$ has at most one immediate predecessor.
-	\item if $v \in s(e)$ then $e' <_c^{\mu} e$ iff $e' <_c^{\mu} v$.
+	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$.
 \end{enumerate}
 The consistency relation must satisfy the following properties. 
     \begin{enumerate}
         \label{def:consistency_properties}
         \item The relation is an equivalence relation
-        \item If $v \in s(e)$ then $v \consistency^{\mu} e$
-        \item If $v \in t(e)$ then $v \consistency^{\mu} e$
+        \item If $v \in s(e)$ then $v \consistency e$
+        \item If $v \in t(e)$ then $v \consistency e$
         \item The relation is defined only for edges $e$ and nodes $v$ such that $[v) = [e) \not = \varnothing$
     \end{enumerate}
 
@@ -698,7 +699,7 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
         \] 
     % \item
     % $x_1 \#_{\mathcal{F}} x_2$ iff $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
-        \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 \consistency_{\mathcal{F}}^{\mu} x_2$ implies $\phi(x_1) \consistency_{\mathcal{G}}^{\mu} \phi(x_2)$. 
+        \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 \consistency_{\mathcal{F}} x_2$ implies $\phi(x_1) \consistency_{\mathcal{G}} \phi(x_2)$. 
 %    Or, written functionally, when $x \in E_{\mathcal{F}}$
 %    \[
 %        \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\consistency_{\mathcal{F}}^{\mu}(i_{E_{\mathcal{F}}}(x)))
@@ -717,7 +718,7 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
 If we further have that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we call the homomorphism \textit{strict}.
 The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e-hypergraphs as objects and e-hypergraph homomorphisms as arrows.  
 \end{definition}
-Condition $(3)$ on the child relations says that $<_c^{\mu}$ respects connectivity.
+Condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity.
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  A concrete description of the pushout of two morphisms in this category is given in the appendix.  Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied,  including that the two morphisms involved are monos and their shared domain is a discrete hypergraph.  
 
@@ -817,51 +818,28 @@ CHRIS: CATEGORY OF SUCH COSPANS? COMBINE WITH DEFINITION ABOVE? $\WellTypedMdaEc
 
 \section{DPOI-Rewriting for E-Hypergraphs}
 
+As extended cospans have a more general notion of interface we need to make some adjustments to DPOI rewriting.
+The main issue is that internal interfaces may not be preserved during rewriting, for example, if the right-hand side of the rewrite rule has more hierarchy than the left-hand side: it affects both the eventual e-hypergraph and the possible pushout complement.
 
-We have a more general notion of interface and hence we need to adjust DPOI rewriting a little bit.
+% The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
+% Note that the outermost interfaces are preserved.
 
-We have a more general notion of interface and hence we need to adjust DPOI rewriting a little bit.
-The first issue is that whole interfaces are not preserved during rewriting, consider an example in Figure~\ref{fig:example_rewrite_ecospans} which corresponds to a rewrite rule of $\langle f, f+g \rangle$.
+% Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
+% Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
 
-%\begin{figure}[t]
-%    \centering
-%    \[
-%    \scalebox{0.6}{\tikzfig{combinatorial_semantics/f_to_f_plus_g_example}}
-%    \]
-%    \caption{Example rewrite rule in $\WellTypedMdaEcospans$}
-%    \label{fig:example_rewrite_ecospans}
-%\end{figure}
+% The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
+% Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
+% The entry in the middle of the span depicts the outermost interfaces which are preserved.
+% The second row depicts the e-hypergraph to be rewritten on the left and the result of the rewrite on the right.
+% The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
+% Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
+% Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
-Note that the outermost interfaces are preserved.
-
-Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
-Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
-
-The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
-Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
-The entry in the middle of the span depicts the outermost interfaces which are preserved.
-The second row depicts the e-hypergraph to be rewritten on the left and the result of the rewrite on the right.
-The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
-Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
-Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
-
-
-\update{$i,j$ are replaced}
-
-To account for such changes in the interfaces we put some additional constraints on DPOI rewriting.
+To account for such changes in the interfaces we put some additional constraints on DPOI rewriting for the case of $\catname{EHyp_{\Sigma}}$.
 Consider a DPOI diagram with extra constraints below which encodes
- the notion that cospan 
- $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$
- rewrites into a cospan 
- $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$ via a rewrite rule $\langle l, r \rangle$,
- where
- $l := x_{ext} \xrightarrow{} l_i \xrightarrow{} L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
- and
- $r := x_{ext} \xrightarrow{} r_i \xrightarrow{} L \xleftarrow{} r_o \xleftarrow{} y_{ext}$.
- Note there are arrows from $x_{ext} + y_{ext} \to l_i + l_o$ (respectively, $r_i + r_o$) from the corresponding cospans which are not shown in the diagram.
- Similarly for the arrows from $n_{ext} + m_{ext}$.
-
+the notion that e-hypergraph $G$ rewrites into $H$ with external interfaces $n_{ext}+m_{ext}$.
+Note the new interfaces and how we use the same trick to go from cospan $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$ to $G \xleftarrow{} g_{i} + g_{o} \xleftarrow{} n_{ext} + m_{ext}$.
+The original DPO square is depicted in blue.
 % \[\begin{tikzcd}
 % 	&&&& {i + j} \\
 % 	{l_i+l_o} && L &&&& R && {r_i+r_o} \\
@@ -899,41 +877,36 @@ Consider a DPOI diagram with extra constraints below which encodes
  }
 \]
 
-The parts of the original DPOI square is shown in blue.
-The extra bits simply account for more complicated interfaces.
-For example, the left-hand side $L$ of a rewrite rule
- $\langle L, R \rangle$ which originally was some cospan
- $i \xrightarrow{} L \xleftarrow{} j$ in $\MdaCospans$ 
- now is a cospan
- $x_{ext} \xrightarrow{} l_i \to L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
-from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
-The top half of this diagram says that the outermost interfaces
- should coincide for $L$ and $R$.
-The bottom half puts the same restrictions on $G$ and $H$.
-For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
+% The parts of the original DPOI square is shown in blue.
+% For example, the left-hand side $L$ of a rewrite rule
+%  $\langle L, R \rangle$ which originally was some cospan
+%  $i \xrightarrow{} L \xleftarrow{} j$ in $\MdaCospans$ 
+%  now is a cospan
+%  $x_{ext} \xrightarrow{} l_i \to L \xleftarrow{} l_o \xleftarrow{} y_{ext}$
+% from $\WellTypedMdaEcospans$ where $l_i, l_o$ are whole input and output interfaces respectively.
+% The top half of this diagram says that the outermost interfaces
+%  should coincide for $L$ and $R$.
+% The bottom half puts the same restrictions on $G$ and $H$.
+% For the pushout to exist we impose our assumptions~\ref{pushout:assumptions} on the correspoding arrow.
 
 
-We also adjust the definition of a boundary complement.
-\begin{definition}[Down-closed subgraph]
-We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   every element of $(e]$ is also in $\mathcal{H}$.
-\end{definition}
+We then also adjust the definition of a boundary complement.
 
 \begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
 \label{def:boundary_new}
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
+
+For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted below
 \[
 \scalebox{0.75}{
+
     \tikzfig{combinatorial_semantics/DPOI_pushout_complement}
 }
 \]
 
-Consider the diagram above where the marked square is a pushout
- and $x_{ext} + y_{ext}$ and $n_{ext} + m_{ext}$ are 
- the \textit{outermost} interfaces for the corresponding 
- cospans.
-We say that $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ is 
- a \textit{boundary} complement if $[i_c, i_j]$ is mono 
+
+is a \textit{boundary} complement if $[i_c, i_j]$ is mono 
  and there exist $n_c : n_{ext} \to C$ and $m_c : m_{ext} \to C$ 
  making the above triangle commute and such that
 there exists a \textit{not necessarily well-typed} mda-cospan
@@ -945,6 +918,8 @@ n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext
 where $c_i$ and $c_o$ are computed as
  $c_i = g_i \setminus (l_i \setminus x_{ext})$ and
  $c_o = g_o \setminus (l_o \setminus y_{ext})$.
+
+ ALEKSEI: ARE MORPHISMS $c_i + y_{ext} \to C$ AND THE SYMMETRIC ONE OBVIOUS?
 \end{definition}
 %
 %\begin{figure}
@@ -958,15 +933,22 @@ where $c_i$ and $c_o$ are computed as
 % The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
 
 \begin{remark}
-Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not well-typed.
-The cospan's input interface contains nodes that previously were a part of the output interface.
+Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not necessarily well-typed.
+The cospan's input internal interface may contain nodes that previously were a part of the output internal interface and similarly for output internal interface.
+\end{remark}
+
+\begin{remark}
+    The uniqueness and existence properties of such pushout complement are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
 \end{remark}
 
 
-\begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
-    The boundary complement in~\ref{def:boundary_new} when exists is unique.
-\end{proposition}
+% \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
+%     The boundary complement in~\ref{def:boundary_new} when exists is unique.
+% \end{proposition}
 
+\begin{definition}[Down-closed subgraph]
+    We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   every element of $(e]$ is also in $\mathcal{H}$.
+\end{definition}    
 
 \begin{definition}[Convex down-closed match] 
     We call $m : L \to G$ in $\catname{EHyp_{\Sigma}}$ a convex down-closed match if
@@ -974,14 +956,13 @@ The cospan's input interface contains nodes that previously were a part of the o
     \begin{enumerate}
         \item $m$ is monomorphism
         \item $m(L)$ is a convex down-closed subgraph of $G$
-        % \item \update{I've removed the requirement that consistency should be reflected because well typedness prohibits otherwise formed matches.}
     \end{enumerate}
 \end{definition}
 \
 
 \begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
     Given $G \xleftarrow{} g_i + g_o \xleftarrow{} n_{ext} + m_{ext}$ 
-    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}}^{+} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $L \xleftarrow{} l_i + l_o \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} r_i + r_o \xrightarrow{} R$ with the outermost interfaces $x_{ext} + y_{ext}$ in $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ such that the diagram below commutes and its marked squares are pushouts
+    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}}^{+} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $L \xleftarrow{} l_i + l_o \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} r_i + r_o \xrightarrow{} R$ with the outermost interfaces $x_{ext} + y_{ext}$ in the set of rewrite rules $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ such that the diagram below commutes and its marked squares are pushouts
 
 % https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
 \[\scalebox{0.75}{
@@ -993,18 +974,12 @@ The cospan's input interface contains nodes that previously were a part of the o
     \begin{enumerate}
         \label{dpoi:assumptions}
         \item $m : L \to G$ is a convex down-closed match;
-        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $x_{ext} + y_{ext}$
-        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $x_{ext} + y_{ext}$
         \item $x_{ext} + y_{ext} \to C \to G$ is a boundary complement in the leftmost pushout.
     \end{enumerate}
 \end{definition}
 
-\begin{remark}
-The conditions 2 and 3 are needed to guarantee the existence of the pushout complement.
-\end{remark}
 
-
-The whole interfaces of the resulting e-hypergraph $H$ from the cospan
+The internal interfaces of the resulting e-hypergraph $H$ from the cospan
  $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$
  are constructed as $h_i = (r_i \setminus x_{ext}) + c_i$ 
  and
@@ -1033,9 +1008,10 @@ under a rewrite rule
 \]
 
 if 
-\[
-    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \Rrightarrow H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o} \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
-\]
+\begin{align*}    
+    G \xleftarrow{\langle a_2,b_2 \rangle} g_i + g_{o}& \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext} \\ &\Rrightarrow^{+}\\ H \xleftarrow{\langle a_2,b_2 \rangle} h_i + h_{o}& \xleftarrow{\langle a_1, b_1 \rangle} n_{ext} + m_{ext}
+\end{align*}
+
 under a rewrite rule
 \[
     \langle l_{i} + l_{o} \xrightarrow{\langle a_2, b_2 \rangle} L \xleftarrow{\langle a_1, b_1 \rangle} x_{ext} + y_{ext},
@@ -1172,139 +1148,10 @@ The theories described above often have more structure than simply being symmetr
 
 \subsection{Proof of the existence of pushouts}
 
-\begin{theorem}[Existence of pushouts in $\catname{Hyp_{\Sigma}}$]
-
-    Pushouts in $\catname{Hyp_{\Sigma}}$ always exist.
-\end{theorem}
-
-\begin{proof}
-    Consider a diagram below
-    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAC0QBfU9TXfIRQBGclVqMWbABrdeIDNjwEiZYePrNWiEAE05fJYKKj11TVJ0AdK3ABmAJzoBjYNIDUursBvYAtgAEAEpcBgr8ykLIAEyk0RqS2iAAitziMFAA5vBEoI4QfkhkIDgQSKISWmx2YfmFiMWlSLGVliCZINQMdABGMAwAChHGOg5YmQAWOLUOBeXUTYgAzOaJbL6OLsBYAPrC3r5YgSEzc4gtiyutSRtOrrvRB7ZHwaE8ebP1F2WIACzUfTAUCQAFolsULEkAFY7aKdEDdPqDYYqUbjKaneoVRb-ECA4HLCFrHQw4SYpBXHGrKo6JhpLhAA
-
-\[
-        \begin{tikzcd}
-        Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{i_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
-        Y \arrow[r, "\sfrac{i_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
-                                                                        &                                                                  & Q
-        \end{tikzcd}
-\]
-
-Pushout of two hypergraphs $X = \{V_{X}, E_{X}, s_{X}, t_{X}\}$ and $Y = \{V_{Y}, E_{Y}, s_{Y}, t_{Y}\}$ (we will omit labelling functions here since they are irrelevant) along $Z$ is computed in two steps.
-First, a coproduct of $X$ and $Y$ is taken which is 
-\[
-    X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X + Y}, t_{X+Y}\}
-\]
-where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $\langle s'_{X}, s'_{Y} \rangle : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};i_{1,V}^{*}$ and $s'_{Y} = s_{Y};i_{2,V}^{*}$ where $i_1,i_2$ are corresponding coproduct injections, similarly for $t_{X+Y}$.
-Recall that each arrow in $\catname{Hyp_{\Sigma}}$ is a pair of arrows for edges and nodes and we will further use subscripts $V$ and $E$ when referring to these functions.
-Then, consider relations 
-\[
-    S_{V} = \{(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \; \exists z \in V_{Z} \; . \; x_i = f_{V};i_{1,V}(z) \text{ and } y_j = g_{V};i_{2,V}(z) \text{where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\}
-\]
-\[
-    S_{E} = \{(x_i,y_j) \in (E_{X} + E_{Y}) \times (E_{X} + E_{Y})\; | \; \exists z \in E_{Z} \; . \; x_i = f_{E};i_{1,E}(z) \text{ and } y_j = g_{E};i_{2,E}(z) \text{where $x_i \in E_{X}$ and $y_j \in E_{Y}$ }\}
-\]
-and let relations $R_{V}$ and $R_{E}$ be their reflexive symmetric and transitive closures respectively.
-
-\begin{lemma}
-    $x R y$ if and only if either $x = y$ or there exists a sequence $(a_1,\ldots,a_{n-1},{a_n})$ such that $x = a_1$ and $y = a_{n}$ such that $a_k S a_{k+1}$ or $a_{k + 1} S a_{k}$ for $k < n$.
-\end{lemma}
-
-A quotient of $X+Y$ by these relation is 
-\[
-    \sfrac{X+Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X+Y}}{\sim (R_{V},R_{E})}\}
-\]
-We will then refer to $\sim (R_{V},R_{E})$ just as $\sim$, i.e. writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and the exact relation will be clear from the context.
-We have 
-\[
-    \sfrac{s_{X+Y}}{\sim} : \sfrac{E_{X} + E_{Y}}{\sim} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*}
-\]
-In particular, there is an obvious surjective function $[-]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[-]_{V}^{*}$ is its extension to sequences. 
-Let $s_2 : E_{X} + E_{Y} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*} = s_{X+Y};[-]^{*}$ and then $\sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[-]^{*}(e) = [s_{X+Y}(e)]^{*}$.
-There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
-We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has in image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
-We need to check that if $t_1 \sim t_2$ then $\sfrac{s_{X+Y}}{\sim}([t_1]) = \sfrac{s_{X+Y}}{\sim}([t_2])$. 
-There are three options
-\begin{enumerate}
-    \item $t_1 = e_{y}^{1}$ and $t_2 = e_{y}^{2}$
-    \item $t_1 = e_{x}^{1}$ and $t_2 = e_{x}^{2}$
-    \item $t_1 = e_{x}$ and $t_2 = e_{y}$ 
-\end{enumerate}
-We will prove the last point (all the others are analogous).
-
-According to the lemma above $e_{x} \sim e_{y}$ gives us two options.
-\begin{enumerate}
-    \item Either $e_{x} = e_{y}$
-    \item or there is a sequence $w = (a_1, \ldots, a_{n})$ such that $a_1 = e_{x}$ and $a_{n} = e_{y}$.
-\end{enumerate}
-In the first case the equality holds on the nose.
-We then prove the second case by induction on the length of $w$.
-\begin{itemize}
-    \item In the case $|w| = 2$, $e_{x} S e_{y}$ (or $e_{y} S e_{x}$) which means that there exists $z$ in $E_{Z}$ such that $f_{E};i_{1,E}(z) = e_{x}$ and $g_{E};i_{2,E}(z) = e_{y}$.
-            Recall that because $f$ and $g$ are homomorphisms, the following equalities hold
-            \[
-            s_{Z};f_{V}^{*};i_{1,V}^{*}(z) = f_{E};i_{1,E};s_{X+Y}(z) = s_{X+Y}(e_{x})
-            \]
-            \[
-            s_{Z};g_{V}^{*};i_{2,V}^{*}(z) = g_{E};i_{2,E};s_{X+Y}(z) = s_{X+Y}(e_{y})
-            \]
-            Then,
-            \[
-            \sfrac{s_{X+Y}}{\sim}([e_{x}]) = [s_{X+Y}(e_{x})]^{*} = [s_{Z};f_{V}^{*};i_{1,V}^{*}(z)]^{*}
-            \]
-            and
-            \[
-            \sfrac{s_{X+Y}}{\sim}([e_{y}]) = [s_{X+Y}(e_{y})]^{*} = [s_{Z};g_{V}^{*};i_{2,V}^{*}(z)]^{*}
-            \]
-            Then, by noting that $f_{V};i_{1,V}(z) = g_{V};i_{2,V}(z)$ for all $z$ in $V_{Z}$ (because $\sfrac{V_{X} + V_{Y}}{\sim}$ is so defined) we have $[s_{X+Y};(e_{x})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
-    \item Suppose if $e_{x} S e_{y}$ by a chain of length $n$ or less then $[s_{X+Y}(e_{x})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
-    \item Now suppose $e_{x} S e_{y}$ by a chain $w = (a_1, \ldots, a_{n+1})$ and a subchain $(a_1, \ldots, a_{n})$ satisfies the inductive hypothesis and hence $s_{X+Y};s_{1}^{*}(e_{x}) = s_{X+Y};s_{1}^{*}(a_{n})$.
-            Note that $S_{E}, S_{V}$ relate only elements with the pre-image in $E_{X}$ (respectively, $V_{X}$) with elements with the pre-image in $E_{Y}$ (respectively, $V_{Y}$). 
-            Elements with the pre-image in the same set are not related.
-            Then we have $a_n S a_{n+1} = e_{y}$ and need to show that $[s_{X+Y}(a_{n+1})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
-            This follows by exactly the same argument as the base case as $a_{n+1}$ is necessarily in $E_{X}$.
-            And we finally have $[s_{X+Y}(e_{x})]^{*} = [s_{X+Y}(a_{n+1})]^{*} = [s_{X+Y}(e_{y})]^{*}$.
-\end{itemize}
-
-Next 
-\[
-    \sfrac{i_{1,V}}{\sim} : V_{X} \to \sfrac{V_{X} + V_{Y}}{\sim} = [i_{1,V}]
-\]
-and
-\[
-\sfrac{i_{1,E}}{\sim} : E_{X} \to \sfrac{E_{X} + E_{Y}}{\sim} = [i_{1,E}]
-\]
-similarly for $\sfrac{i_{2,E}}{\sim}$ and $\sfrac{i_{2,V}}{\sim}$
-We need to show
-\begin{enumerate}
-    \item $s_{X};(\sfrac{i_{1,V}}{\sim})^{*}(e) = \sfrac{i_{1,E}}{\sim};\sfrac{s_{X+Y}}{\sim}(e)$
-    \item $t_{X};(\sfrac{i_{1,V}}{\sim})^{*}(e) = \sfrac{i_{1,E}}{\sim};\sfrac{t_{X+Y}}{\sim}(e)$
-\end{enumerate}
-and likewise for $i_{2}$.
-Let's check the first one for which we first need to check that $([-]_{E},[-]_{V})$ is a homomorphisms, i.e.
-\[
-[s_{X+Y}(e)]^{*} = \sfrac{s_{X+Y}}{\sim}([e]) = [s_{X+Y}(e)]^{*}
-\]
-hence, $(\sfrac{i_{1,V}}{\sim}, \sfrac{i_{1,E}}{\sim})$ is a homomorphism because $(i_{1,V},i_{1,E})$ and $([-]_{E},[-]_{V})$ are.
-
-Now, the square obviously commutes.
-To show that $\sfrac{X + Y}{\sim}$ is a pushout we need to argue that for each $Q$ and morphisms $j_1 = (j_{1,V}, j_{1,E})$ and $j_2 = (j_{2,V}, j_{2,E})$ such that the above square commutes there is a unique $u = (u_{V}, u_{E})$ such that $j_1 = \sfrac{i_{1}}{\sim} ; u$ and $j_2 = \sfrac{i_2}{\sim} ; u$.
-We will define such $u$ as $u_{E}([i_{1,E}(e_{x})]) = j_{1,E}(e_{x})$ and $u_{E}([i_{2,E}(e_{y})]) = j_{2,E}(e_y)$ (similarly for $u_{V}$) and claim that it is a well-defined function by showing that if $t_1 \sim t_2$ then $u_{E}(t_1) = u_{E}(t_2)$.
-There are three options analogoues to the proof above, so we will show the base case for $t_1 = i_{1,E}(e_{x})$ and $t_2 = i_{2,E}(e_{y})$.
-$t_1 \sim t_2$ implies that there exists at least one $z$ in $E_{Z}$ such that $i_{1,E}(e_{x}) = f_{E};i_{1,E}(z)$ (or $e_{x} = f_{E}(z)$) and $[i_{1,E}(e_{x})] = \sfrac{i_{1,V}}{\sim}(e_x)$, and $e_y = g_{E}(z)$ $[in_{2,E}(e_{y})] = \sfrac{i_{2,V}}{\sim}(e_y)$.
-By applying $j_{1,E}$ to the first we get $j_{1,E}(f_{E}(z)) = j_{1,E}(e_x)$ and similarly for $j_{2,E}$: $j_{2,E}(g_{E}(z)) = j_{2,E}(e_y)$ and $j_{1,E}(e_{x}) = j_{2,E}(e_{y})$ by commutativity.
-Hence, $u_{E}([in_{1,E}(e_x)]) = u_{E}([in_{2,E}(e_y)])$.
-
-Next, $u$ is a homomorphism because $j_1$ and $j_2$ are.
-Finally, $u$ is unique.
-Assume, that there exists $w : \sfrac{X+Y}{\sim R} \to Q$ for the same $j_1$ and $j_2$.
-In order for them to commute $w_{E}([i_{1,E}(x)]) = j_1(x)$ and $w([in_{2,E}(y)]) = j_2(y)$ (similarly for $w_{V}$) which is the same as $u_{E}$.
-That is, $j_1$ and $j_2$ determine $u$ uniquely.
-\end{proof}
-
 \begin{remark}
-    Both relations can be considered as functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, i.e. on the coproduct of nodes and edges.
-    To make things well-typed, we will use corresponding coproduct injections $i_{V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $i_{E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either node or edge into these functions.
-    For example, an immediate successor of a node $x$ can be written functionally as $<_{c,\mathcal{F}}^{\mu}(i_{V_{\mathcal{F}}}(x))$.
+    Both $<$ and $\consistency$ can be considered as functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, i.e. on the coproduct of nodes and edges.
+    To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either node or edge into these functions.
+    For example, an immediate successor of a node $x$ can be written functionally as $<_{\mathcal{F}}^{\mu}(\iota_{V_{\mathcal{F}}}(x))$.
 \end{remark}
 
 \begin{remark}
@@ -1316,31 +1163,26 @@ That is, $j_1$ and $j_2$ determine $u$ uniquely.
         \begin{enumerate}
             \item $\phi$ is hypergraph homomorphism
             
-            \item \[
-                \phi_{E}(<_{c,\mathcal{F}}^{\mu}(i_{V_{\mathcal{F}}}(x))) = <_{c,\mathcal{G}}^{\mu}(\phi_{V};i_{V_{\mathcal{G}}}(x))
+            \item When $[x) \not = \varnothing$, \[
+                \phi_{E}(<_{\mathcal{F}}^{\mu}(\iota_{V_{\mathcal{F}}}(x))) = <_{\mathcal{G}}^{\mu}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
                 \] when $x$ is a node,
                 and
                 \[
-                \phi_{E}(<_{c,\mathcal{F}}^{\mu}(i_{E_{\mathcal{F}}}(x))) = <_{c,\mathcal{G}}^{\mu}(\phi_{E};i_{E_{\mathcal{G}}}(x))  
-                \] when $x$ is an edge.
-                We do not require such an equation when $[x) = \varnothing$.
-        
-            % \item
-            % $x_1 \#_{\mathcal{F}} x_2$ iff $\phi(x_1) \#_{\mathcal{G}} \phi(x_2)$, where $x_1, x_2 \in \mathcal{F}$
-          
+                \phi_{E}(<_{\mathcal{F}}^{\mu}(\iota_{E_{\mathcal{F}}}(x))) = <_{\mathcal{G}}^{\mu}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))  
+                \] when $x$ is an edge.          
                 \item
             When $x \in E_{\mathcal{F}}$
             \[
-                \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\consistency_{\mathcal{F}}^{\mu}(i_{E_{\mathcal{F}}}(x)))
+                [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}} ]^{*}(\consistency_{\mathcal{F}}(\iota_{E_{\mathcal{F}}}(x)))
                 \subseteq
-                \consistency_{\mathcal{G}}^{\mu}(\phi_{E};i_{E_{\mathcal{G}}}(x))
+                \consistency_{\mathcal{G}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))
             \]
-            , where $\phi_{V};i_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} + E_{\mathcal{G}}$, and similarly for $\phi_{E};i_{E_\mathcal{G}}$ so that $\langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle : V_{\mathcal{F}} + E_{\mathcal{F}} \to  V_{\mathcal{G}} + E_{\mathcal{G}}$.
+            , where $\phi_{V};\iota_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} + E_{\mathcal{G}}$, and similarly for $\phi_{E};\iota_{E_\mathcal{G}}$ so that $[\phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}}] : V_{\mathcal{F}} + E_{\mathcal{F}} \to  V_{\mathcal{G}} + E_{\mathcal{G}}$.
             And, when $x \in V_{\mathcal{F}}$
             \[
-                \langle \phi_{V};i_{V_{\mathcal{G}}}, \phi_{E};i_{E_{\mathcal{G}}} \rangle^{*}(\consistency_{\mathcal{F}}^{\mu}(i_{V_{\mathcal{F}}}(x)))
+                [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{F}}(\iota_{V_{\mathcal{F}}}(x)))
                 \subseteq
-                \consistency_{\mathcal{G}}^{\mu}(\phi_{V};i_{V_{\mathcal{G}}}(x))
+                \consistency_{\mathcal{G}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
             \]
             \end{enumerate}
     \end{definition}
@@ -1359,6 +1201,7 @@ Consider the following span in $\catname{EHyp_{\Sigma}}$
 \end{tikzcd}\]
 such that
 \begin{enumerate}
+\label{pushout:assumptions}
     \item $Z$ is a \textit{descrete} e-hypergraph.
     \item $f,g$ are monos.
     \item $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_{i},v_{j}$ in $V_{Z}$.
@@ -1368,11 +1211,11 @@ such that
 then the pushout $X +_{f,g} Y$ exists.
 \end{theorem}
 \begin{proof}
-    Recall the diagram below.
+    Consider the diagram below.
     \[
         \begin{tikzcd}
-        Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{i_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
-        Y \arrow[r, "\sfrac{i_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
+        Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{\iota_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
+        Y \arrow[r, "\sfrac{\iota_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
                                                                         &                                                                  & Q
         \end{tikzcd}
     \]
@@ -1381,16 +1224,46 @@ then the pushout $X +_{f,g} Y$ exists.
     \[
         X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \consistency_{X+Y}, <_{c,X+Y} \}
     \]
-    
-    once again omitting the labelling function and where source and target functions are as before.
-    And consider the same relations $S_{V},S_{E}$ and $R_{V}, R_{E}$.
+    where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X+Y}, <_{c,X+Y}, \consistency_{X+Y}$.
+    We will omit labels as they are irrelevant to pushout construction.
+    Consider relations
+    \begin{align*}    
+    S_{V} &= \{\\
+          &(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          &\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z) \text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
+          &\}
+    \end{align*}
+    \begin{align*}
+    S_{E} &= \{\\
+    &(x_i,y_j) \in (E_{X} + E_{Y}) \times (E_{X} + E_{Y})\; |\\
+    &\exists z \in E_{Z} \; . \; x_i = f_{E};\iota_{1,E}(z) \text{ and } y_j = g_{E};\iota_{2,E}(z) \text{ where $x_i \in E_{X}$ and $y_j \in E_{Y}$ }
+    &\}
+    \end{align*}
+and let relations $R_{V}$ and $R_{E}$ be their reflexive symmetric and transitive closures respectively.
+
+
 
     We then quotient the sets of edges and nodes in $X + Y$ by $R_{V},R_{E}$
-    \[
-        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})}, \sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \#_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{c,\sfrac{X + Y}{\sim (R_{V},R_{E})}} \}    
-    \]
-    where quotienting on source and target functions is taken as in $Hyp_{\Sigma}$ and we will further omit writing the relations explicitly.
-    Recall that $<_{c}$ is essentially a transitive clousure of $<_{c}^{\mu}$ and hence we can first define 
+    \begin{align*}
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{&\\
+            &\sfrac{V_{X} + V_{Y}}{\sim R_{V}}, \sfrac{E_{X} + E_{Y}}{\sim R_{E}}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \#_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{c,\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
+        & \}    
+    \end{align*}
+    We will then refer to $\sim (R_{V},R_{E})$ just as $\sim$, i.e. writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and the exact relation will be clear from the context.
+We have 
+\[
+    \sfrac{s_{X+Y}}{\sim} : \sfrac{E_{X} + E_{Y}}{\sim} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*}
+\]
+and there is an obvious surjective function $[-]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[-]_{V}^{*}$ is its extension to sequences. 
+We then define $s_2 : E_{X} + E_{Y} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*} = s_{X+Y};[-]^{*}$ and then $\sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[-]^{*}(e) = [s_{X+Y}(e)]^{*}$.
+There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
+We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
+Likewise, $t_{\sfrac{X+Y}{\sim}}([e]) = [t_{X+Y}(e)]^{*}$.
+
+So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{Frobenius} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined an $[-]$ is a homomorphism with respect to sources and targets.
+
+Recall that $<_{c}$ is essentially a transitive clousure of $<_{c}^{\mu}$ and hence we can first define 
     \[<_{c,\sfrac{X+Y}{\sim}}^{\mu}(i_{\sfrac{E_{X} + E_{Y}}{\sim}}[u]_{E})
     \] and 
     \[
@@ -1947,6 +1820,39 @@ For this we need to check that the defined relations satisfy all the needed prop
 \end{proof}
 \end{proposition}
 
+\begin{definition}[Definition 3.16~\cite{Frobenius}]
+Morphisms $K \xrightarrow{i} L \xrightarrow{m} G$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every node of its source and target is either (i) not in the image of $m$ or (ii) in the image of $i ; m$.
+They satisfy the no-identification condition if any two nodes merged by $m$ are in the image of $i$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:complement_existence}
+    Consider a pushout square in $\catname{EHyp_{\Sigma}}$ below
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJYIl0sWzIsMCwiWiJdLFsyLDIsIkMiXSxbMCwyLCJQXntcXHVyY29ybmVyfSJdLFsyLDUsIlxcYnVsbGV0Il0sWzEsMCwiaSIsMl0sWzEsMl0sWzIsM10sWzAsMywibSIsMl1d
+\[\begin{tikzcd}
+	X && Z \\
+	\\
+	{P^{\urcorner}} && C \\
+	\\
+	\\
+	&& \bullet
+	\arrow["i"', from=1-3, to=1-1]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow["m"', from=1-1, to=3-1]
+\end{tikzcd}\]
+    Such that $m,i$ are monos and $Z$ is discrete. Then, pushout complement $Z \to C \to G$ exists if
+    \begin{enumerate}
+        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
+        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
+        \item The no-dangling condition holds.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    By requiring that $m$ is mono makes the no-identification condition satisfied on the nose.
+    Then, no-dangling and no-identification conditions are necessary for pushout complement to exists~\cite{dpo}.
+    Points (1)-(2) above guarantee that after removing from $G$ everything in $L$ that has no pre-image in $Z$ the arrow $Z \to C$ will satisfy the assumptions~\ref{pushout:assumptions}.
+\end{proof}
 
 \begin{proposition}
 \label{prop:boundary_complement}
