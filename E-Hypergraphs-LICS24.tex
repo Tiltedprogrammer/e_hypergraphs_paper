@@ -319,7 +319,7 @@ From the saturated graph the optimal term consisting of only the node $a$ can be
 \end{figure}\label{fig:egraph-strings}
 
 Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
-makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{noauthor_09083347_nodate,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
+makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
 \[
 \infer{\phi_1 + \ldots + \phi_n: A \to B}{\{\phi_i: A \to B\}_{i \in \{1,\ldots,n\}}}
 \]
@@ -479,7 +479,7 @@ Indeed, similar diagrammatic languages using boxes to express choice have been u
 
 \section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
 
-In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{Frobenius, Frobenius2}.  
+In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $\psi$ to a relation on ordered sequences. 
@@ -488,12 +488,12 @@ We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightar
 
 \subsection{Hypergraphs}
 
-In ~\cite{Frobenius},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for SMTs including a Frobenius algebra. 
+In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for SMTs including a Frobenius algebra. 
 Hypergraphs generalize graphs by allowing edges to have multiple sources and targets. 
 When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
 However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
 This gives rise to the definition of a hypergraph with interfaces.  
-Subsequent work \cite{Frobenius2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams and the category of such hypergraphs.
+Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams and the category of such hypergraphs.
 
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
@@ -528,7 +528,7 @@ and its unit by the initial object of $\mathbb{C}$.
 Symmetry is inherited from $\mathbb{C}$ as the coproduct~\cite{MonoidalCoproduct}.
 \end{definition}
 
-Following~\cite{Frobenius2} morphisms of $\textbf{PROP}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces. 
+Following~\cite{bonchi_string_2022-2} morphisms of $\textbf{PROP}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces. 
 \begin{definition}[Hypergraphs with interfaces]
 \label{def:cspd}
 Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)}$ as the full sub-category of $\catname{Csp(Hyp(\Sigma))}$ with discrete hypergraphs as objects.
@@ -557,8 +557,8 @@ We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sig
 We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of MDA-cospans. 
 \end{definition}
 Note that $\MdaCospans$ remains a symmetric monoidal category with the same equipment as before.  In fact,  due to 
-\cite{Frobenius2},  we have the following theorem which says the category $\MdaCospans$ is in fact \textit{equivalent} to $\textbf{PROP}(\Sigma)$. 
-\begin{theorem}[Corollary 26~\cite{Frobenius2}]
+\cite{bonchi_string_2022-2},  we have the following theorem which says the category $\MdaCospans$ is in fact \textit{equivalent} to $\textbf{PROP}(\Sigma)$. 
+\begin{theorem}[Corollary 26~\cite{bonchi_string_2022-2}]
     $\textbf{PROP}(\Sigma) \cong \MdaCospans$
 \end{theorem}
 
@@ -579,7 +579,7 @@ A typical DPO square looks as follows,  where the two marked squares are pushout
 The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement} -- the pair of morphisms $\mathcal K \to \mathcal C \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal C$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is the recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$ -- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
 
 To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI).
-In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{Frobenius}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  Thus we reach the following variant of DPO rewriting. 
+In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  Thus we reach the following variant of DPO rewriting. 
 \begin{definition}[DPOI rewriting]\label{def:dpoi}
 Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
 \[
@@ -645,7 +645,7 @@ and the following conditions hold
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
 
 CHRIS: WANT TO STATE THE CORRESPONDENCE THEOREM WITH SMTS HERE? NEED TO DEFINE $\lceil-\rceil$ AND INTERPRETATION? Hmm
-\begin{theorem}[Theorem 35~\cite{Frobenius2}]
+\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
 \[
 	f = g \iff \llangle \lceil f \rceil \rrangle \Rrightarrow^*_{\mathfrak{R}} \llangle \lceil g \rceil \rrangle~, 
@@ -1082,7 +1082,7 @@ For any $\phi, \psi \in \textbf{PROP}^{+}(\Sigma, \mathcal{E})$,  we have
  \end{corollary}
 CHRIS: INCORPORATING EXTRA EQUATIONS OUGHT TO BE IMMEDIATE? 
 %
-%\begin{theorem}[Theorem 35~\cite{Frobenius2}]
+%\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %
 %    $a \Rightarrow_{R} b$ iff $\llangle {}^{\ulcorner} a {}^{\urcorner} \rrangle \Rrightarrow_{\llangle {}^\ulcorner R {}^\urcorner \rrangle} \llangle {}^{\ulcorner}b {}^{\urcorner} \rrangle$.
 %    Where $\llangle \cdot \rrangle : \textsf{PROP}(\Sigma) + \textsf{Frob} \to \catname{Csp_{D}(Hyp_{\Sigma})}$ and $\Rrightarrow$ is a convex rewriting relation for morphisms in $\catname{Hyp_{\Sigma}}$.
@@ -1144,10 +1144,10 @@ The theories described above often have more structure than simply being symmetr
 \end{remark}
 
 \begin{remark}
-    Using functional notation we can reformulate the notion of homomorphism of two e-hypergraphs in the following way.
-    \begin{definition}{E-hypergraphs homomorphism}
+    Using functional notation we can reformulate the notion of a homomorphism between two e-hypergraphs in the following way.
+    \begin{definition}
         \label{def:e-homo-2}    
-        A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
+        A \emph{homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
         
         \begin{enumerate}
             \item $\phi$ is hypergraph homomorphism
@@ -1219,13 +1219,15 @@ then the pushout $X +_{f,g} Y$ exists.
     \begin{align*}    
     S_{V} &= \{\\
           &(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
-          &\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z) \text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
+          &\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
+          &\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
           &\}
     \end{align*}
     \begin{align*}
     S_{E} &= \{\\
     &(x_i,y_j) \in (E_{X} + E_{Y}) \times (E_{X} + E_{Y})\; |\\
-    &\exists z \in E_{Z} \; . \; x_i = f_{E};\iota_{1,E}(z) \text{ and } y_j = g_{E};\iota_{2,E}(z) \text{ where $x_i \in E_{X}$ and $y_j \in E_{Y}$ }
+    &\exists z \in E_{Z} \; . \; x_i = f_{E};\iota_{1,E}(z) \text{ and } y_j = g_{E};\iota_{2,E}(z)\\
+    &\text{ where $x_i \in E_{X}$ and $y_j \in E_{Y}$}\\
     &\}
     \end{align*}
 and let relations $R_{V}$ and $R_{E}$ be their reflexive symmetric and transitive closures respectively.
@@ -1250,7 +1252,7 @@ There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will 
 We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
 Likewise, $t_{\sfrac{X+Y}{\sim}}([e]) = [t_{X+Y}(e)]^{*}$.
 
-So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{Frobenius} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[-]$ is a homomorphism with respect to sources and targets.
+So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[-]$ is a homomorphism with respect to sources and targets.
 
 Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we can first define 
     \[<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[u]_{E})
@@ -1809,7 +1811,7 @@ For this we need to check that the defined relations satisfy all the needed prop
 \end{proof}
 \end{proposition}
 
-\begin{definition}[Definition 3.16~\cite{Frobenius}]
+\begin{definition}[Definition 3.16~\cite{bonchi_string_2022-1}]
 Morphisms $K \xrightarrow{i} L \xrightarrow{m} G$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every node of its source and target is either (i) not in the image of $m$ or (ii) in the image of $i ; m$.
 They satisfy the no-identification condition if any two nodes merged by $m$ are in the image of $i$.
 \end{definition}
