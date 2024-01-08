@@ -813,16 +813,15 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 \section{DPOI-Rewriting for E-Hypergraphs}
 
 CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
-As extended cospans have a more general notion of interface we need to make some adjustments to DPOI rewriting.
-The first thing is that we need to account for internal interfaces after all.
-The main issue is then that internal interfaces may not be preserved during rewriting.
+Because extended cospans have a more general notion of interface,  we need to make some adjustments to DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics}.
+The first thing is that we need to account for is the existence of \textit{internal} interfaces,  and in particular that internal interfaces are not necessarily preserved during rewriting.
 To illustrate this, consider the following rewrite rule
 \[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
 such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
 \[
     n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} m' \xleftarrow{} m
 \] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$.
-When removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, e.g. by computing the pushout complement, the internal interface of $\mathcal{G}$ should be modified as the verticies of $\mathcal{L}$ corresponding to strict internal interface of $\mathcal{L}$ (and hence to strict internal interface of $\mathcal{G}$) should be removed from $\mathcal{G}$ and therefore from $\mathcal{G}$'s internal interface.
+When removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, e.g. by computing the pushout complement, the internal interface of $\mathcal{G}$ should be modified.  This is because the verticies of $\mathcal{L}$ corresponding to strict internal interface of $\mathcal{L}$ (and hence to strict internal interface of $\mathcal{G}$) should be removed from $\mathcal{G}$ and therefore from $\mathcal{G}$'s internal interface.
 Then, when gluing $\mathcal{R}$ into the created context, we also introduce strict internal interfaces of $\mathcal{R}$ into this context.
 % The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
 % Note that the outermost interfaces are preserved.
@@ -838,7 +837,7 @@ Then, when gluing $\mathcal{R}$ into the created context, we also introduce stri
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-To account for such changes in the interfaces we put some additional structure on DPOI rewriting for the case of $\catname{EHyp({\Sigma})}$.
+To account for such changes in the interfaces we require additional structure on DPOI rewriting for $\catname{EHyp({\Sigma})}$.
 Consider a DPOI diagram with extra constraints below which encodes
 the notion that e-hypergraph $G$ rewrites into $H$ with external interfaces $n_{ext}+m_{ext}$.
 Note the addition of internal interfaces and how we use the same trick to go from cospan $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$ to $G \xleftarrow{} g_{i} + g_{o} \xleftarrow{} n_{ext} + m_{ext}$.
@@ -887,7 +886,7 @@ Then, we explicitly show how the internal interfaces of the pushout complement a
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
 
-For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} \xrightarrow{} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted below
+For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} \xrightarrow{} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted in the square below
 \[
 \scalebox{0.75}{
 
