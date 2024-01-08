@@ -381,7 +381,6 @@ Although e-graphs were first developed in the 80's \cite{nelson1980techniques}, 
 Our use of string diagrams is also central to the intuition behind our work.  There is a breadth of work on similar string diagrammatic formalisms,  including hierarchical string diagrams \cite{ghica_hierarchical_2023} and functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
 
 CHRIS: CITE HASEGAWA - TRACE MONOIDAL CATEGORIES, AND PERDIX. 
-DAN: I SUGGEST TO CITE HASEGAWA IN FURTHER WORK, FOR GENERALISING THE THEORY TO TRACED MC.
 DAN: THIS NEEDS TO BE CAREFULLY EXPANDED TO NOT OFFEND POTENTIAL REVIEWERS. 
 
 \section{Categorical Semantics of E-Graphs}
@@ -435,7 +434,7 @@ By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equival
 
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
-We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$.\footnote{Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane} ---a degeneracy we wish to avoid.} More precisely our hom-sets will be given the structure of a semilattice.  
+We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane} ---a degeneracy we wish to avoid. More precisely our hom-sets will be given the structure of a semilattice.  
 Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalized to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
 \[
 	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
