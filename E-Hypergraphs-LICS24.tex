@@ -99,7 +99,7 @@
 \newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
 \newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
 \newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
-\newcommand{\WellTypedMdaEcospans}{{\catname{WMEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
 % conflict
 \newcommand{\hashtag}{{\#}}
 \newcommand{\consistency}{{\smile}}
@@ -318,6 +318,7 @@ From the saturated graph the optimal term consisting of only the node $a$ can be
 \]
 \caption{String diagrams for semilattice enriched symmetric monoidal categories.}
 \end{figure}\label{fig:egraph-strings}
+CHRIS: DONT USE PHI/PSI FOR DIAGRAMS, USE F,G 
 
 Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
 makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
@@ -382,6 +383,7 @@ Although e-graphs were first developed in the 80's \cite{nelson1980techniques}, 
 Our use of string diagrams is also central to the intuition behind our work.  There is a breadth of work on similar string diagrammatic formalisms,  including hierarchical string diagrams \cite{ghica_hierarchical_2023} and functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
 
 CHRIS: CITE HASEGAWA - TRACE MONOIDAL CATEGORIES, AND PERDIX. 
+Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}. 
 DAN: THIS NEEDS TO BE CAREFULLY EXPANDED TO NOT OFFEND POTENTIAL REVIEWERS. 
 
 \section{Categorical Semantics of E-Graphs}
@@ -394,7 +396,7 @@ Given a $\mathbb{C}$  with objects $A,B \in \mathbb{C}$ we denote by $\mathbb{C}
 
 A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalizations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalize the notion of a signature. 
 \begin{definition}[Monoidal signature]
-A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $f: n \to m$,  with \textit{arity} $n$ and \textit{coarity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
+A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $c: n \to m$,  with \textit{arity} $n$ and \textit{coarity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
 \end{definition}
 
 A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
@@ -402,11 +404,11 @@ A categorical presentation of a monoidal signature is given by a freely generate
 A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category with natural numbers as objects,  and such that $n \otimes m = n+m$.  A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
 We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\textbf{PROP}(\Sigma)$.  
 \end{definition}
-The free category $\textbf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
+The free category $\textbf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
 
 An equation associated with a monoidal signature is a pair of parallel morphisms of the form above, leading to the following definition of a symmetric monoidal theory. 
 \begin{definition}[Symmetric Monoidal Theory]
-A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $\phi,\psi: n \to m$ of $\textbf{PROP}(\Sigma)$.
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $f,g: n \to m$ of $\textbf{PROP}(\Sigma)$.
 A \textit{symmetric monoidal theory} $\textbf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by $\textbf{PROP}(\Sigma)$ quotiented by the least congruence including $\mathcal{E}$.
 \end{definition}
 
@@ -459,7 +461,7 @@ Note,  we take $(;\!)$ and $\otimes$ to bind more tightly than $+$.
 A \textit{semilattice enriched strict SMC (PROP) functor} $F: (\mathbb{C}, \otimes, 1,+) \to (\mathbb{D}, \otimes, 1,+)$ is given by a strict SMC (PROP) functor on the underlying SMCs (PROPs) which additionally satisfies $F(f+g) = F(f)+F(g)$.  We denote the \textit{freely enriched PROP (SMT)} over a monoidal signature $\Sigma$ as $\textbf{PROP}^+(\Sigma)$ ($\textbf{SMT}^+(\Sigma, \mathcal{E})$,  respectively). 
 \end{definition}
 
-The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $f \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$, as well as $f+g$, quotiented by the axioms of an enriched symmetric monoidal category.  
+The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category.  
 
 To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
 
@@ -655,7 +657,7 @@ For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that
 \]
 where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ and $ \Rrightarrow^*_{\mathfrak{R}}$ denotes the existence of a sequence of convex rewrites. 
 \end{theorem}
-\section{E-Hypergraphs}
+\section{E-Hypergraphs}\label{sec:e-hypergraphs}
 
 Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
 
@@ -774,7 +776,7 @@ where
 % and then the disjoint union is just a coproduct. 
 where $g'$ is the restriction of $g$ to ${Y' \setminus Y_{ext}}$ and $f'$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
 The identity of composition is given by the obvious extended cospan of identities. 
-$\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp_{\Sigma}}$,  analogously to Definition~\ref{def:cspd}.  
+$\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp({\Sigma}})$,  analogously to Definition~\ref{def:cspd}.  
 \end{definition}
 CHRIS: UPDATE DIAGRAMS TO USE MY NEW NOTATION,  TAKE LESS VERTICAL SPACE.  FIND CLEANER WAY TO WRITE NEW FEET.  USE $\iota$ FOR INJECTIONS
 
@@ -808,6 +810,8 @@ We will call an MDA-extended-cospan in $\MdaEcospans$ \emph{well-typed} if all h
 
 We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of well-typed MDA-extended-cospans. 
 \end{definition}
+Note,  $\MdaEcospans$ is indeed a category,  and in fact inherits the symmetric monoidal structure of $\Ecospans$:  it is easy to check that identities,  the monoidal unit,  symmetry,  and the composition and tensor product of any two well-typed cospans are all (again) well-typed.  
+
 Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  This is beacuse the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation.  Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve sharing and copying, operations on string diagrams which are not usually quotiented away, cf. string diagrams for Cartesian categories. 
 
 \section{DPOI-Rewriting for E-Hypergraphs}
@@ -921,14 +925,11 @@ where $c_i$ and $c_o$ are computed as
 
 % The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
 
-\begin{remark}
 Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not necessarily well-typed.
 The cospan's input internal interface may contain nodes that previously were a part of the output internal interface and similarly for output internal interface.
-\end{remark}
 
-\begin{remark}
-    The uniqueness and existence properties of such pushout complement are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
-\end{remark}
+    The uniqueness and existence properties of boundary complements as defined above are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
+
 
 
 % \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
@@ -1015,10 +1016,6 @@ $n_{ext} \xrightarrow{n_h} h_i \xrightarrow{f} H \xleftarrow{g} h_o \xleftarrow{
 
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
-% \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
-
-
-
 \begin{figure}
     \[
     \scalebox{0.6}{
@@ -1030,58 +1027,71 @@ $n_{ext} \xrightarrow{n_h} h_i \xrightarrow{f} H \xleftarrow{g} h_o \xleftarrow{
 \end{figure}
 
 
-
-Note that the necessary pushouts for $\mathcal{S}$ exist. 
-\begin{definition}
-We denote by $\WellTypedMdaEcospans/\mathcal{S}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
-\[
-	\phi \sim \psi \quad \text{if} \quad \phi \Rightarrow^*_{[\mathcal{S}]} \psi
-\]
-where $\mathcal{S}$ denotes set of semi-lattice equations the free functor $\llbracket- \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans$ induced by the interpretation functor sending $\Sigma$ to itself.  CHRIS: NEEDS WORK. 
+Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
+Recall further that (typed) $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$, respectively.  Write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  We wish to specify a set of rewrite rules corresponding to those in Figure \ref{fig:string-equations}.  In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the action of the free functor from $\textbf{PROP}(\Sigma)$ into $\WellTypedMdaEcospans$ induced by the interpretation of $\Sigma$ as itself (detailed in \cite{bonchi_string_2022-2}). 
+\begin{definition}[Interpretation function] 
+%Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
+Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by (mutual) induction on $\Sigma$-terms by 
+\begin{align*}
+	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket \phi ; \psi \rrbracket_{n,m} &= \llbracket \phi \rrbracket^+_{n,m} ; \llbracket \psi \rrbracket_{n,m} \\
+	\llbracket 1 \rrbracket_{n,m} &= 1 & \llbracket f \otimes g \rrbracket_{n,m} &= \llbracket f \rrbracket^+_{n,m} \otimes \llbracket g \rrbracket_{n,m} \\
+	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
+	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket^+_{n,m}
+\end{align*}
+where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
 \end{definition}
 
-
-\begin{proposition}
-The category $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ a semilattice-enriched PROP. 
-\end{proposition}
-\begin{proof}
-The symmetric monoidal structure is inherited from coproduct in $\textbf{EHyp}(\Sigma)$.  It suffices to check that the symmetry and the tensor product of two well-typed e-hypergraphs is again a well-typed e-hypergraph. 
-The formal join $+$ of two morphisms of $\WellTypedMdaEcospans$ is defined in the Figure~\ref{fig:A+B}. 
-Etc.
-\end{proof}
-Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by rewrites,  for which we've checked the pushout exists. 
-
-\begin{proposition}
-    For each cospan $A$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$ there is a weak normal form such that 
+Let the function $\llbracket - \rrbracket^+$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms). 
+% \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
+\begin{definition}[Quotient by rewrites]  
+Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
 \[
-	A =_{\mathcal{S}} A_1 + \ldots + A_n
+	f \sim g \quad \text{if} \quad f \Rightarrow^*_{\llbracket \mathcal E \rrbracket^+} g ~ . 
 \]
- such that each $A_i$ contains no hierarchical edges.
-    \begin{proof}
-    By applying the rules 1-6 in $\mathcal{S}$ (the ones from Figure~\ref{fig:string-equations}) we either remove 1 hierarchical edge (rules 5-6) or do not change the number of them, but expand the edge onto other edges.
-    We will have a redex for such a rule until there is only one hierarchical edge at the outermost level (and only one outermost edge) with no other hierarchical edges within it.
-    \end{proof}
+\end{definition}
+In particular,  let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations to be applied to $\Sigma^+$-terms to recover $\textbf{PROP}^+(\Sigma)$. 
+This quotient in fact turns the interpretation function into a proper functor $\llbracket - \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which can further be quotiented to account for extra equations arising in symmetric monoidal theories. 
+Note that not all pushouts in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist.  
+%Let $\mathcal E$ be an arbitrary set of $\Sigma$-equations. 
+Thus we have the following result. 
+\begin{proposition}[Soundness]
+The category $\WellTypedMdaEcospans/{\mathcal{S}}$ a semilattice-enriched PROP. 
 \end{proposition}
+Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
 
-\begin{theorem}
+
+The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system which results in a cospan satisfying the statement below. 
+\begin{proposition}[Weak normal form]
+For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
+\[
+	f = f_1 + \ldots + f_n
+\]
+ such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+\end{proposition}    
+
+This normal form can be used to prove the following completeness theorem. 
+\begin{theorem}[Completeness]
 We have the following equivalence of categories
 \[
-	PROP^{+}(\Sigma) \cong \WellTypedMdaEcospans~.
+	\textbf{SMT}^{+}(\Sigma, \mathcal {E} ) \cong \WellTypedMdaEcospans / \mathcal{S,E}~.
 \]
 \end{theorem}
 \begin{proof}
-Given by the free functor induced by the interpretation of $\Sigma$ as itself. 
-Normal form argument. 
+The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma, \mathcal E) \cong \textbf{MHypI}(\Sigma)/\mathcal{E}$ of symmetric monoidal theories and (appropriately quotiented) plain MDA hypergraphs which is given by the restriction of $\llbracket - \rrbracket$ to $$\textbf{SMT}(\Sigma, \mathcal E)$ which is a subcategory of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
+
+To see that the functor is faithful,  consider $f$ and $g$ of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$ such that $\llbracket f \rrbracket = \llrbracket g \rrbracket$.  We aim to show that $f = g$.  First,  find weak normal forms of $\llbracket f \rrbracket$ and $\llrbracket g \rrbracket$,  namely $\phi_1 + \ldots + \phi_ni$ and $\psi_1 + \ldots + \psi_n$.  We now need a further observation that if $\llbracket f \rrbracket \Rrightarrow_{{\llbracket \mathcal{S,E} \rrbracket}^+} \llrbracket g \rrbracket$,  then there exist rewrites $\phi_i \Rrightarrow_{\mathcal E} \psi_i$.  Thus,  by $(*)$ we have that $\llbracket \phi_i \rrbracket^{-1} = \llbracket \psi_i \rrbracket^{-1}$.  Noting that $f = \llbracket \phi_1 \rrbracket^{-1} + \ldots + \llbracket \phi_n \rrbracket^{-1}$ and $g = \llbracket \psi_1 \rrbracket^{-1} + \ldots + \llrbacket \psi_n \rrbracket^{-1}. 
+CHRIS: THIS NEEDS FIXING. 
+
+To see that the functor is full,  consider a cospan $f$ in $\WellTypedMdaEcospans$.  We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ is a plain MDA hypergraph.  Thus,  by $(*)$ we can find morphisms $g_i$ such that $\llbracket g_i \rrbracket = f_i$.  Thus,  we have a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
 \end{proof}
 
 Unfolding the definitions,  we can spell out the previous theorem in terms of DPO-rewriting. 
-\begin{corollary}
-For any $\phi, \psi \in \textbf{PROP}^{+}(\Sigma, \mathcal{E})$,  we have
+\begin{corollary}[Completeness of rewriting]
+For any $\phi, \psi \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 \[
-	\phi = \psi \quad \iff \quad \llbracket\phi \rrbracket \Rrightarrow_{\mathcal{S}, \mathcal{E}} \llbracket\psi\rrbracket~ . 
+	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^*_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
 \]
  \end{corollary}
-CHRIS: INCORPORATING EXTRA EQUATIONS OUGHT TO BE IMMEDIATE? 
 %
 %\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %
