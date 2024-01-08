@@ -266,7 +266,7 @@ We propose to address this issue via a categorical axiomatisation for e-graphs a
 Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple \textit{semilattice-enriched} Cartesian categories. 
 The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, as encountered in a large body of research. 
 The starting innovation of our approach is the semilattice-enrichment. 
-The \textit{join} operator lifts the formalism so that it can now operate with \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial represetation. 
+The \textit{join} operator lifts the formalism so that it can now operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial represetation. 
 
 Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}. 
 This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
@@ -279,7 +279,7 @@ A final contribution of this work is giving a concrete combinatorial representat
 \subsection{E-graphs}
 
 
-\begin{figure*}\label{fig:e-graph-example}
+\begin{figure*}
 \[
 	\hspace{1.3cm}
     \scalebox{0.65}{
@@ -287,6 +287,7 @@ A final contribution of this work is giving a concrete combinatorial representat
     }
 \]
 \caption{Example translation of acyclic e-graphs into string diagrams for semilattice enriched Cartesian categories. }
+\label{fig:e-graph-example}
 \end{figure*}
 
 E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.  They generalise the typical DAG representation of terms to include equivalence classes. 
@@ -434,7 +435,7 @@ By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equival
 
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
-We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane}---a degeneracy we wish to avoid. More precisely our hom-sets will be given the structure of a semilattice.  
+We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane}---a degeneracy we wish to avoid.  More precisely our hom-sets will be given the structure of a semilattice.  
 Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalized to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
 \[
 	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
@@ -443,8 +444,8 @@ is defined as a $M$-morphism.  In other words,  composition must respect the add
 In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
 We omit further details of the general case of enrichment here, and instead work with the following more concrete defintion, where $M = \textbf{SLatt}$.  
 
-\begin{definition}[Semilattice-enriched PROP]
-A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
+\begin{definition}[Semilattice-enriched PROP]\label{def:enriched-prop}
+A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
 \begin{align*}
 f ; (g+h) &= f;g + f;h &
 (f+g) ; h &= f;h + g;h \\
@@ -463,9 +464,9 @@ The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed fro
 To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
 
 Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
+The first four equations are those displayed in Definition \ref{def:def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
 We use string diagrams informally in this paper, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. 
 Indeed, similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
-DAN: I THINK THE STRING DIAGRAMS EQUATIONS SHOULD BE ACCOMPANIED BY THE TERM EQUATIONS. THE NUMBER OF EQUATIONS IN THE DEFINITIONS AND IN THE FIGURE IS NOT THE SAME, WHICH IS A BIT CONCERNING. 
 
 \begin{figure*}
 \[  
@@ -497,14 +498,14 @@ Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to giv
 
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
-A \emph{hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l)$,  where $V$ is a finite set of nodes, $E$ is a finite set of edges, $s : E \to V^{*}$ is a source function, $t : E \to V^{*}$ is a target function,  and $l : E \to \Sigma$ is a labelling function that assigns each edge a generator from monoidal signature $\Sigma$.  The labelling function must respect the typing of the generator: for all edges $e$,  $|s(e)| = m$ and $|t(e)| = n$,  where $l(e) : m \to n$. 
+A \emph{hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l)$,  where $V$ is a finite set of nodes, $E$ is a finite set of edges, $s : E \to V^{*}$ is a source function, $t : E \to V^{*}$ is a target function,  and $l : E \to \Sigma$ is a labelling function that assigns each edge a generator from monoidal signature $\Sigma$.  The labelling function must respect the typing of the generator: for all edges $e$,  $|s(e)| = m$ and $|t(e)| = n$,  where $l(e) : m \to n$.  We call a hypergraph \textit{discrete} if its set of edges is empty.   
 A \emph{hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ is given by a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that the following hold. 
 \begin{enumerate}
     \item $\phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e))$
     \item $\phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))$
     \item $l_{\mathcal{F}}(e) = l_{\mathcal{G}}(\phi_E(e))$
 \end{enumerate}
-We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$. DAN: WHAT ARE THE MORPHISMS?
+We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$ and hypergraph homomorphisms. 
 \end{definition}
 Note that $\catname{Hyp(\Sigma)}$ has all finite colimits and, in particular,  the coproduct is given by the disjoint union of hypergraphs.
 The initial object is given by the empty hypergraph.  
@@ -528,7 +529,7 @@ and its unit by the initial object of $\mathbb{C}$.
 Symmetry is inherited from $\mathbb{C}$ as the coproduct~\cite{MonoidalCoproduct}.
 \end{definition}
 
-DAN: I AM NOT SURE 'DISCRETE HYPERGRAPHS' ARE DEFINED?
+
 Then, morphisms of $\textbf{PROP}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces~\cite{bonchi_string_2022-2}.
 \begin{definition}[Hypergraphs with interfaces]
 \label{def:cspd}
@@ -656,17 +657,15 @@ where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ and $ \Rright
 \end{theorem}
 \section{E-Hypergraphs}
 
-WHAT DOES (3) FOR CONSISTENCY MEAN? 
-DAN: THERE IS LITERATURE ON HIERARCHICAL HYPERGRAPHS (DETLEF PLUMP AND UGO MONTANARI I THINK HAVE PAPERS) SOME OF IT IS REFERENCED FROM MY PREVIOUS PAPERS ON HIERARCHICAL HYPERGRAPHS. MAKE SURE YOU CITE THEM, THESE PEOPLE MAY GET ANNOYED. WE DID NOT INVENT HIERARCHICAL HYPERGRAPHS. ALSO MY PAPER WITH KOKO WHICH INTRODUCES THEM ONLY COMBINATORIALLY. 
-In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
+Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
 
 Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$ containing only morphisms $f: n \to m$ where either $n$ or $m$ are non-zero.  This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there. 
 
 In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$. 
-DAND: THIS IS VERY LONG... SHOULD IT BE BROKEN DOWN INTO SEVERAL DEFINITIONS? 
-\begin{definition}[Category of E-hypergraphs]
+
+\begin{definition}[E-hypergraphs]
 \label{def:e-homo}    
-An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}; and an equivalence relation $\consistency$ on $V + E$ called the \textit{consistency relation}.  We define the following additional notation.  For $x \in V + E$,  the set of \emph{parents} and \emph{children} of $x$,  respectively: 
+An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}.  We define the following additional notation.  For $x \in V + E$,  the set of \emph{parents} and \emph{children} of $x$,  respectively: 
 \[
 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
 \]
@@ -678,21 +677,23 @@ We require that the child relation satisfies the following conditions:
 	\item Each $x$ has at most one immediate parent;
 	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$.
 \end{enumerate}
-The consistency equivalence relation must satisfy the following conditions:
-    \begin{enumerate}
-        \label{def:consistency_properties}
-        \item If $v \in s(e)$ or $v \in t(e)$ then $v \consistency e$;
-        \item The relation is defined only for edges $x$ which are not top-level.
-    \end{enumerate}
-
-A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
+We additionally define an equivalence relation $\consistency_p$,  called the \textit{consistency relation},  on each set $\{x \in V + E ~|~ p <^\mu c\}$ of elements which share the same parent.  
+We collect the union of all these equivalence relations into on relation $\consistency = \bigcup_{p} \consistency_p$,  which is defined on a subset of $V+E$. 
+The consistency equivalence relation must additionally satisfy that if $v \in s(e)$ or $v \in t(e)$ then $v \consistency e$. 
+\label{def:consistency_properties}
+\end{definition}
+Intuitively,  the child relation equips the hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of  string diagrams.  
+These edges can be designated as "parents" to sub-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the sub-hypergraph below the hierarchical edge.  
+Technically,  condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for conditions $(1)$ of the consistency relation. 
+\begin{definition}[E-hypergraph homomorphism]
+An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
 \begin{enumerate}
     \item $\phi$ is a hypergraph homomorphism
-    \item for $v \in V_{\mathcal{F}}$,  if $[v)$ is not empty then 
+    \item for $v \in V_{\mathcal{F}}$,  if $v$ is not top-level then 
 	\[
         \phi_{E}(<_{\mathcal{F}}^{\mu}(v)) = <_{\mathcal{G}}^{\mu}(\phi_{V}(v))
         \] 
-        and for $e \in E_{\mathcal{F}}$,  if $[e)$ is not empty then 
+        and for $e \in E_{\mathcal{F}}$,  if $e$ is not top-level then 
         \[
         \phi_{E}(<_{\mathcal{F}}^{\mu}(e)) = <_{\mathcal{G}}^{\mu}(\phi_{E}(e))  
         \] 
@@ -715,12 +716,11 @@ A homomorphism $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F}
     % Or, on per-component basis, if $i_{E_{\mathcal{F}}}(x_1) \in \hashtag_{\mathcal{F}}(i_{E_{\mathcal{F}}}(x_2))$ then $i_{E_{\mathcal{G}}}(\phi_{E}(x_1)) \in \hashtag_{\mathcal{G}}(i_{E_{\mathcal{G}}}(\phi_{E}(x_2)))$ and similarly for other types of $x_1,x_2$.
 \end{enumerate}
 If we further have that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we call the homomorphism \textit{strict}.
-The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e-hypergraphs as objects and e-hypergraph homomorphisms as arrows.  
 \end{definition}
-Intuitively,  the child relation equips the hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of  string diagrams.  
-These edges can be designated as "parents" to sub-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the sub-hypergraph below the hierarchical edge.  
-Technically,  condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for conditions $(1)$ of the consistency relation. 
-The conditions on homomorphisms require to preserve immediate parents and the conflict relation.  
+The conditions on e-hypergraph homomorphisms require to preserve immediate parents and the conflict relation.  
+\begin{definition}[Category of e-hypergraphs]
+The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e-hypergraphs as objects and e-hypergraph homomorphisms as morphisms.  
+\end{definition}
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  A concrete description of the pushout of two morphisms in this category is given in the appendix.  Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied,  including that the two morphisms involved are monos and their shared domain is a discrete hypergraph.  
 
@@ -734,11 +734,11 @@ When modelling enriched string diagrams using e-hypergraphs,  we require to keep
     \[
     n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
     \]
-    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete e-hypergraphs,  $f_{ext},f_{int},g_{ext},g_{int}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices.  
+    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete e-hypergraphs,  $f_{ext},f_{int},g_{ext},g_{int}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and that that vertices in the strictly internal interface (defined below) are not top-level. 
 
 This justifies calling $n$  \textit{external input interfaces} and $n'$ \textit{internal input (output) interfaces}.  We call $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.  We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
 We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n, n', m$ and $m'$ with their images in $\mathcal{G}$. 
-Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}. 
+Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.  
     
     Two cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute.
     \[
@@ -761,11 +761,9 @@ X_{ext} \xrightarrow{a_{ext};\iota_1} X \uplus (Y' \setminus Y_{ext}) \xrightarr
 \]
 where
 \[
-    h = \langle a;p_1, g|_{Y' \setminus Y_{ext}};p_2 \rangle
-\]
- 
-\[
-    k = \langle b;p_2, f|_{Y \setminus Y_{ext}};p_1 \rangle
+    h = [ a;p_1, ~g';p_2 ]
+\qquad
+    k = [ b;p_2, ~f';p_1 ]
 \]
 % \[
 % \begin{tikzcd}
@@ -774,12 +772,15 @@ where
 % \end{tikzcd}
 % \]
 % and then the disjoint union is just a coproduct. 
+where $g'$ is the restriction of $g$ to ${Y' \setminus Y_{ext}}$ and $f'$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
 The identity of composition is given by the obvious extended cospan of identities. 
 $\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp_{\Sigma}}$,  analogously to Definition~\ref{def:cspd}.  
 \end{definition}
-CHRIS: UPDATE DIAGRAMS TO USE MY NEW NOTATION,  TAKE LESS VERTICAL SPACE.  FIND CLEANER WAY TO WRITE NEW FEET.  USE $\iota$ FOR INJECTIONS,  WHAT IS $\langle \rangle$? Include example e-hypergraph-with-interfaces vs strings here? 
+CHRIS: UPDATE DIAGRAMS TO USE MY NEW NOTATION,  TAKE LESS VERTICAL SPACE.  FIND CLEANER WAY TO WRITE NEW FEET.  USE $\iota$ FOR INJECTIONS
 
 As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism). 
+Unlike in the previous section,  we require (extended) cospans to consist of monomorphisms.  This is to ensure the existence of the pushouts needed for composition,  since pushouts do not necessarily exist in $\textbf{EHyp}(\Sigma)$.  This also means that we omit the monomorphism condition from the following definition.  We additionally introduce a notion of \textit{well-typing} of e-hypergraphs,  which ensures each component of an e-box has the same number of inputs (outputs) as every other component. 
+
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJYICsgWSJdLFsyLDAsIlggKyBZIl0sWzQsMCwiWSArIFgiXSxbNiwwLCJZICsgWCJdLFs4LDAsIlkgKyBYIl0sWzAsMSwiaWRfWCArIGlkX1kiXSxbMSwyLCJcXHNpZ21hX3tYLFl9Il0sWzQsMywiaWRfWSArIGlkX1giLDJdLFszLDIsImlkX1kgKyBpZF9YIiwyXV0=
 
 
@@ -791,11 +792,10 @@ n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}
 \]
 \begin{enumerate}
         \item underlying hypergraph of $\mathcal{G}$ is directed acyclic; 
-        \item $f_{ext}$, $f_{int}$, $g_{ext}$ and $g_{int}$ are monomorphisms; 
+       % \item $f_{ext}$, $f_{int}$, $g_{ext}$ and $g_{int}$ are monomorphisms; 
         \item The in-degree and out-degree of every vertex is at most 1; 
         \item Vertices with in-degree $0$ are precisely the image of $f_{int}$; 
         \item Vertices with out-degree $0$ are precisely the image of $g_{int}$; 
-        \item Vertices in the strictly internal interface are not top-level. 
         % the item below is not assumed by the definition of a cospan of e-hypergraphs
         % \item $[v) = \varnothing$ for all $v$ in the image of $f_{ext};f$, and for all $v$ in the image of $g_{ext};g$. 
 \end{enumerate}
@@ -808,8 +808,6 @@ We will call an MDA-extended-cospan in $\MdaEcospans$ \emph{well-typed} if all h
 
 We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of well-typed MDA-extended-cospans. 
 \end{definition}
-CHRIS: COULD PUT CONDITION (5) IN THE PLAIN DEFINITION OF EXTENDED COSPANS? WE ALREADY ASK FOR EXTERNAL INTERFACES TO BE TOP-LEVEL.  ALSO,  (2) IS ALREADY COVERED IN THAT DEFINITION. 
-
 Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  This is beacuse the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation.  Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve sharing and copying, operations on string diagrams which are not usually quotiented away, cf. string diagrams for Cartesian categories. 
 
 \section{DPOI-Rewriting for E-Hypergraphs}
@@ -1129,7 +1127,7 @@ Symmetric monoidal theories have received significant attention over recent year
 
 The theories described above often have more structure than simply being symmetric monoidal: for example, they may contain comonoids, Frobenius algebras or traced structure (as in the case of e-graphs with cycles),  and this structure can be exploited to give more natural (in the sense of factoring out more equations) combinatorial representations.  In the above cases, such representations and their DPO-rewriting theory is well-studied 
 \cite{ghica_rewriting_2023} % traced comonoid
-[cite, cite, cite].  We consider that our development of hierarchical "e-box" structure within string diagrams and their associated (e-)hypergraphs ( categorically,  semilattice enrichment) is essentially orthogonal to these developments, and so ought to be easily combined to give notions of e-hypergraphs specifically suited to the optimization of these particular monoidal theories.  A particularly interesting extension that we intend to consider is the combination of our "e-structure" with (Cartesian) \textit{closed} categories, allowing the natural combination of e-graph optimization techniques with the $\lambda$-calculus.  The corresponding combinatorial representation would build on the recent work \cite{ghica_hierarchical_2023, alvarez-picallo_rewriting_2022, alvarez-picallo_functorial_2021}.  String diagrams for these various examples are included in Figure \ref{fig:applications}% hierarchical  
+[cite, cite, cite].  We consider that our development of hierarchical "e-box" structure within string diagrams and their associated (e-)hypergraphs ( categorically,  semilattice enrichment) is essentially orthogonal to these developments, and so ought to be easily combined to give notions of e-hypergraphs specifically suited to the optimization of these particular monoidal theories.  A particularly interesting extension that we intend to consider is the combination of our "e-structure" with (Cartesian) \textit{closed} categories, allowing the natural combination of e-graph optimization techniques with the $\lambda$-calculus.  The corresponding combinatorial representation would build on the recent work \cite{ghica_hierarchical_2023, alvarez-picallo_rewriting_2022, alvarez-picallo_functorial_2021}.  String diagrams for these various examples are included in Figure \ref{fig:applications}.  There is also the question of developing a corresponding term calculus \cite{Heijltjes:FMCII}. % hierarchical  
 
 
 \bibliographystyle{acm}
