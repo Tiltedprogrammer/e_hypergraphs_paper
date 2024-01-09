@@ -1069,7 +1069,7 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
 It immediately follows that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is a semilattice-enriched PROP,  and $\llbracket - \rrbracket_{\mathcal E}$ is the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself. 
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
 
-
+CHRIS: NOTE ALSO WEAK NORMAL FORM FOR $\Sigma^+$-TERMS?
 The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
 For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
@@ -1087,11 +1087,15 @@ We have the following equivalence of categories
 \]
 \end{theorem}
 \begin{proof}
-The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma, \mathcal E) \cong \textbf{MHypI}(\Sigma)/\mathcal{E}$ of symmetric monoidal theories and (appropriately quotiented) plain MDA cospans which is given by the restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma, \mathcal E)$ as a subcategory of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$ (note that cospans embed in extended cospans when the internal interface is isomorphic to the external interface). 
+The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma, \mathcal E) \cong \textbf{MHypI}(\Sigma)/\mathcal{E}$ of symmetric monoidal theories and (appropriately quotiented) plain MDA cospans which is given by the restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma, \mathcal E)$ as a subcategory of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$ (note that cospans embed in extended cospans when the internal interface is isomorphic to the external interface); see Theorem 35 of ~\cite{bonchi_string_2022-2}.  
 
-%To see that the functor is faithful,  consider $f$ and $g$ of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$ such that $\llbracket f \rrbracket = \llbracket g \rrbracket$.  We aim to show that $f = g$.  First,  find weak normal forms of $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$,  namely $\phi_1 + \ldots + \phi_ni$ and $\psi_1 + \ldots + \psi_n$.  We now need a further observation that if $\llbracket f \rrbracket \Rrightarrow_{{\llbracket \mathcal{S,E} \rrbracket}^+} \llbracket g \rrbracket$,  then there exist rewrites $\phi_i \Rrightarrow_{\mathcal E} \psi_i$.  Thus,  by $(*)$ we have that $\llbracket \phi_i \rrbracket^{-1} = \llbracket \psi_i \rrbracket^{-1}$.  Noting that $f = \llbracket \phi_1 \rrbracket^{-1} + \ldots + \llbracket \phi_n \rrbracket^{-1}$ and $g = \llbracket \psi_1 \rrbracket^{-1} + \ldots + \llrbacket \psi_n \rrbracket^{-1}. 
-CHRIS: FAITHFULNESS. 
-%
+To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma, \mathcal E)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we see that 
+\begin{align*}
+	\llbracket f \rrbracket &= \llbracket f_1 + \ldots + f_n \rrbracket &= \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \\
+	\llbracket g \rrbracket &= \llbracket g_1 + \ldots + g_m \rrbracket &= \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
+\end{align*}
+In particular,  note that $\llbracket - \rrbracket$ preserves weak normal forms.  Therefore $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  Thus if $n \neq m$ we have that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $.  Otherwise,  if $n = m$,  we have that there for every permutation $\sigma$ there exists an index $i$ such that $f_i \neq g_{\sigma(i)}$,  and thus by $(*)$ that $\llbracket f_i \rrbracket \neq \llbracket g_{\sigma(i)} \rrbracket $.  This implies that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $. 
+
 To see that the functor is full,  consider a cospan $f$ in $\WellTypedMdaEcospans$.  We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ is a plain MDA cospan.  Thus,  by $(*)$ we can find morphisms $g_i$ such that $\llbracket g_i \rrbracket = f_i$.  Thus,  we have a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
 \end{proof}
 
@@ -1117,7 +1121,7 @@ For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 %\begin{theorem}
 %    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
 %\end{theorem}
-CHRIS: CONCLUDING STATEMENT. 
+CHRIS: CONCLUDING STATEMENT.  COMMENT ABOUT GENERALIZATION TO DIRECTED REWRITES. 
 
 \section{Conclusion}
 
