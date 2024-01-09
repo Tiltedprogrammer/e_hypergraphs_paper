@@ -1016,6 +1016,8 @@ $n_{ext} \xrightarrow{n_h} h_i \xrightarrow{f} H \xleftarrow{g} h_o \xleftarrow{
 
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
+CHRIS: INTRO. 
+
 \begin{figure}
     \[
     \scalebox{0.6}{
@@ -1028,12 +1030,14 @@ $n_{ext} \xrightarrow{n_h} h_i \xrightarrow{f} H \xleftarrow{g} h_o \xleftarrow{
 
 
 Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
-Recall further that (typed) $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$, respectively.  Write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  We wish to specify a set of rewrite rules corresponding to those in Figure \ref{fig:string-equations}.  In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the action of the free functor from $\textbf{PROP}(\Sigma)$ into $\WellTypedMdaEcospans$ induced by the interpretation of $\Sigma$ as itself (detailed in \cite{bonchi_string_2022-2}). 
+Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  We will write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  
+
+We wish to specify a set of DPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.  In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of terms in $\WellTypedMdaEcospans$ (as given by the free functor from $\textbf{PROP}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
 \begin{definition}[Interpretation function] 
 %Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
-Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by (mutual) induction on $\Sigma$-terms by 
+Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by induction on the type derivation of $\Sigma$-terms by 
 \begin{align*}
-	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket \phi ; \psi \rrbracket_{n,m} &= \llbracket \phi \rrbracket^+_{n,m} ; \llbracket \psi \rrbracket_{n,m} \\
+	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket \phi ; \psi \rrbracket_{n,m} &= \llbracket \phi \rrbracket_{n,m} ; \llbracket \psi \rrbracket_{n,m} \\
 	\llbracket 1 \rrbracket_{n,m} &= 1 & \llbracket f \otimes g \rrbracket_{n,m} &= \llbracket f \rrbracket^+_{n,m} \otimes \llbracket g \rrbracket_{n,m} \\
 	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
 	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket^+_{n,m}
@@ -1041,26 +1045,32 @@ Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)
 where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
 \end{definition}
 
-Let the function $\llbracket - \rrbracket^+$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms). 
+Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms). 
 % \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
+CHRIS: COMMENT THAT WE QUOTIENT TO PHRASE CATEGORICALLY OUR RESULTS. 
 \begin{definition}[Quotient by rewrites]  
 Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
 \[
-	f \sim g \quad \text{if} \quad f \Rightarrow^*_{\llbracket \mathcal E \rrbracket^+} g ~ . 
+	f \sim g \quad \text{if} \quad f \Rightarrow^*_{\llbracket \mathcal E \rrbracket} g ~ . 
 \]
 \end{definition}
-In particular,  let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations to be applied to $\Sigma^+$-terms to recover $\textbf{PROP}^+(\Sigma)$. 
-This quotient in fact turns the interpretation function into a proper functor $\llbracket - \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which can further be quotiented to account for extra equations arising in symmetric monoidal theories. 
-Note that not all pushouts in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist.  
+In particular,  let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
+This quotient in fact turns the interpretation function into a proper functor $\llbracket - \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which can further be quotiented to account for extra equations $\mathcal E$ arising in symmetric monoidal theories,  as below. 
+\[
+	\llbracket - \rrbracket_{\mathcal E}: \textbf{SMT}^+(\Sigma, \mathcal E) \to \WellTypedMdaEcospans/{\mathcal{S,E}}
+\]
+
+Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts (and pushout complements) for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist.  
 %Let $\mathcal E$ be an arbitrary set of $\Sigma$-equations. 
 Thus we have the following result. 
 \begin{proposition}[Soundness]
-The category $\WellTypedMdaEcospans/{\mathcal{S}}$ a semilattice-enriched PROP. 
+The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
+It immediately follows that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is a semilattice-enriched PROP,  and $\llbracket - \rrbracket_{\mathcal E}$ is the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself. 
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
 
 
-The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system which results in a cospan satisfying the statement below. 
+The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
 For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
 \[
@@ -1069,7 +1079,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
  such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
 \end{proposition}    
 
-This normal form can be used to prove the following completeness theorem. 
+This normal form can be used to prove the main theorem of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
 \begin{theorem}[Completeness]
 We have the following equivalence of categories
 \[
@@ -1077,17 +1087,17 @@ We have the following equivalence of categories
 \]
 \end{theorem}
 \begin{proof}
-The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  In each case,  the result follows by a normal form argument in combination with relying on the equivalence $\textbf{SMT}(\Sigma, \mathcal E) \cong \textbf{MHypI}(\Sigma)/\mathcal{E}$ of symmetric monoidal theories and (appropriately quotiented) plain MDA hypergraphs which is given by the restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma, \mathcal E)$ which is a subcategory of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
+The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma, \mathcal E) \cong \textbf{MHypI}(\Sigma)/\mathcal{E}$ of symmetric monoidal theories and (appropriately quotiented) plain MDA cospans which is given by the restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma, \mathcal E)$ as a subcategory of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$ (note that cospans embed in extended cospans when the internal interface is isomorphic to the external interface). 
 
 %To see that the functor is faithful,  consider $f$ and $g$ of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$ such that $\llbracket f \rrbracket = \llbracket g \rrbracket$.  We aim to show that $f = g$.  First,  find weak normal forms of $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$,  namely $\phi_1 + \ldots + \phi_ni$ and $\psi_1 + \ldots + \psi_n$.  We now need a further observation that if $\llbracket f \rrbracket \Rrightarrow_{{\llbracket \mathcal{S,E} \rrbracket}^+} \llbracket g \rrbracket$,  then there exist rewrites $\phi_i \Rrightarrow_{\mathcal E} \psi_i$.  Thus,  by $(*)$ we have that $\llbracket \phi_i \rrbracket^{-1} = \llbracket \psi_i \rrbracket^{-1}$.  Noting that $f = \llbracket \phi_1 \rrbracket^{-1} + \ldots + \llbracket \phi_n \rrbracket^{-1}$ and $g = \llbracket \psi_1 \rrbracket^{-1} + \ldots + \llrbacket \psi_n \rrbracket^{-1}. 
-%CHRIS: THIS NEEDS FIXING. 
+CHRIS: FAITHFULNESS. 
 %
-To see that the functor is full,  consider a cospan $f$ in $\WellTypedMdaEcospans$.  We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ is a plain MDA hypergraph.  Thus,  by $(*)$ we can find morphisms $g_i$ such that $\llbracket g_i \rrbracket = f_i$.  Thus,  we have a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
+To see that the functor is full,  consider a cospan $f$ in $\WellTypedMdaEcospans$.  We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ is a plain MDA cospan.  Thus,  by $(*)$ we can find morphisms $g_i$ such that $\llbracket g_i \rrbracket = f_i$.  Thus,  we have a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
 \end{proof}
 
 Unfolding the definitions,  we can spell out the previous theorem in terms of DPO-rewriting. 
 \begin{corollary}[Completeness of rewriting]
-For any $\phi, \psi \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
+For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 \[
 	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^*_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
 \]
@@ -1107,6 +1117,7 @@ For any $\phi, \psi \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 %\begin{theorem}
 %    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
 %\end{theorem}
+CHRIS: CONCLUDING STATEMENT. 
 
 \section{Conclusion}
 
