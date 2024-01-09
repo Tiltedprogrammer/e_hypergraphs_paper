@@ -638,6 +638,7 @@ We call a match $m : \mathcal L \to \mathcal G$ a \emph{convex match} if it is m
 \end{definition}
 
 \begin{definition}[Convex DPOI rewriting]
+\label{def:convex_dpo}
 Let $\mathfrak{R}$ be a set of DPOI rewrite rules. 
 Then, given $\mathcal G \xleftarrow{} n+m$ and $\mathcal H \xleftarrow{} n + m$ in $\catname{Hyp(\Sigma)}$, $\mathcal G$ rewrites convexly into $\mathcal H$ with interface $n + m$ --- notation $(\mathcal G \xleftarrow{} n + m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n + m )$ --- if there exist rule $\mathcal L \xleftarrow{} i + j \xrightarrow{} \mathcal R$ in $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} \mathcal C \xleftarrow{} n+m$ such that the DPOI diagram of Definition \ref{def:dpoi} commutes and its marked squares are pushouts 
 and the following conditions hold
@@ -819,14 +820,32 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
 Because extended cospans have a more general notion of interface,  we need to make some adjustments to DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics}.
 The first thing is that we need to account for is the existence of \textit{internal} interfaces,  and in particular that internal interfaces are not necessarily preserved during rewriting.
-To illustrate this, consider the following rewrite rule
-\[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
-such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
+The former means that rewrite rules become of the form
 \[
-    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} m' \xleftarrow{} m
-\] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$.
-When removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, e.g. by computing the pushout complement, the internal interface of $\mathcal{G}$ should be modified.  This is because the verticies of $\mathcal{L}$ corresponding to strict internal interface of $\mathcal{L}$ (and hence to strict internal interface of $\mathcal{G}$) should be removed from $\mathcal{G}$ and therefore from $\mathcal{G}$'s internal interface.
-Then, when gluing $\mathcal{R}$ into the created context, we also introduce strict internal interfaces of $\mathcal{R}$ into this context.
+\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+\] where we use the fact that cospans 
+\[
+    i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
+\]
+and
+\[
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j
+\]
+encode the same data and we will further omit the arrows $0 \to 0 \to \mathcal{L}$.
+That is, a rewrite rule is a pair of cospans of e-hypergraphs with matching \textit{external} interfaces and arbitrary \textit{internal} interfaces.
+To illustrate the non-preservation of internal interfaces, consider the rewrite rule above and the following e-hypergraph with interfaces to perform the rewrite on
+% \[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
+% such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
+\[
+    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
+\] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$  and assume $i' \not \cong i''$ and $j' \not \cong j''$.
+When removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of $\mathcal{G}$ should be modified to exclude the vertices that were a part of (the image of) $\mathcal{L}$'s strict internal interfaces.
+Then, when gluing $\mathcal{R}$ into the created context, we need to introduce strict internal interfaces of $\mathcal{R}$ into this context.
+In particular, it means that the internal interfaces of the resulting cospan of e-hypergraphs
+\[
+    \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k 
+\]
+not necessarily coincide with the internal interfaces of the initial cospan.
 % The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
 % Note that the outermost interfaces are preserved.
 
@@ -841,11 +860,18 @@ Then, when gluing $\mathcal{R}$ into the created context, we also introduce stri
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-To account for such changes in the interfaces we require additional structure on DPOI rewriting for $\catname{EHyp({\Sigma})}$.
-Consider a DPOI diagram with extra constraints below which encodes
-the notion that e-hypergraph $G$ rewrites into $H$ with external interfaces $n_{ext}+m_{ext}$.
-Note the addition of internal interfaces and how we use the same trick to go from cospan $n_{ext} \xrightarrow{} g_i \xrightarrow{} G \xleftarrow{} g_o \xleftarrow{} m_{ext}$ to $G \xleftarrow{} g_{i} + g_{o} \xleftarrow{} n_{ext} + m_{ext}$.
-The original DPO square is depicted in blue.
+To account for such changes in the interfaces we require additional structure on DPOI rewriting for $\catname{EHyp({\Sigma})}$ which is summarised in the definition below.
+\begin{definition}[Extended DPOI (EDPOI) rewriting]
+\label{def:dpoi-e}
+Given a span of morphisms 
+\[
+    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
+\]
+in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites to} $\mathcal{H}$ \textit{with external interface} $n + k$ \textit{via a rewrite rule} 
+\[
+    \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+\]
+if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
 % \[\begin{tikzcd}
 % 	&&&& {i + j} \\
 % 	{l_i+l_o} && L &&&& R && {r_i+r_o} \\
@@ -879,18 +905,29 @@ The original DPO square is depicted in blue.
 % https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
 \[
  \scalebox{0.75}{
-    \tikzfig{combinatorial_semantics/DPOI_square_coloured}
+    \tikzfig{combinatorial_semantics/DPOI_square}
  }
 \]
-
-Then, we explicitly show how the internal interfaces of the pushout complement are constructed.
+\end{definition}
+To guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph we also need to introduce a revised version of a boundary complement.
 
 \begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
 \label{def:boundary_new}
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
 
-For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} \xrightarrow{} L \xleftarrow{} l_{o} \xleftarrow{} y_{ext}$ and $n_{ext} \xrightarrow{} g_{i} \xrightarrow{} G \xleftarrow{} g_{o} \xleftarrow{} m_{ext}$ and mono $f : L \to G$, a pushout complement $x_{ext} + y_{ext} \to C \to G^{\urcorner}$ as depicted in the square below
+For monogamous extended cospans 
+\[
+    i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
+\] 
+and 
+\[
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
+\] and mono $f : \mathcal{L} \to \mathcal{G}$, a pushout complement 
+\[
+    i + j \to \mathcal{L}^{\bot} \to G^{\urcorner}
+\] 
+as depicted in the square below
 \[
 \scalebox{0.75}{
 
@@ -898,22 +935,34 @@ For monogamous extended cospans $x_{ext} \xrightarrow{} l_{i} \xrightarrow{} L \
 }
 \]
 
-
-is a \textit{boundary} complement if $[i_c, i_j]$ is mono 
- and there exist $n_c : n_{ext} \to C$ and $m_c : m_{ext} \to C$ 
+is a \textit{boundary} complement if $[c_1,c_2]$ is mono 
+ and there exist $d_1 : n \to C$ and $d_2 : k \to C$ 
  making the above triangle commute and such that
 there exists a \textit{not necessarily well-typed} mda-cospan
 
 \[
-n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}
+n \xrightarrow{} l + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} r + i \xleftarrow{} k
 \]
 
-where $c_i$ and $c_o$ are computed as
- $c_i = g_i \setminus (l_i \setminus x_{ext})$ and
- $c_o = g_o \setminus (l_o \setminus y_{ext})$.
-
- ALEKSEI: ARE MORPHISMS $c_i + y_{ext} \to C$ AND THE SYMMETRIC ONE OBVIOUS?
+where $l$ and $r$ are
+\[
+    l = n' \setminus (i' \setminus i)
+\]
+and
+\[
+    r = k' \setminus (j' \setminus j)
+\]
+Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed apart from the part that has a pre-image in $i + j$ there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
+\[
+    D = \{ v \in n' \text{ such that } \not \exists u \in (i' \setminus i) ~ . ~ g_{int}(v) = f'_{int};f(u) \}
+\]
+Similarly for $r \to \mathcal{L}^{\bot}$ which we denote as $g_2$.
+Then there is a morphism $n \to l$ because there is a morphism $n \to n'$ and the external interfaces of $n'$ and $l$ are the same.
+Similarly for $k \to r$.
 \end{definition}
+
+The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
+The only difference is that we account for internal interfaces to require monogamous-ness and these interfaces must be computed explicitly to define the monogamous cospan.
 %
 %\begin{figure}
 %    \centering
@@ -925,7 +974,11 @@ where $c_i$ and $c_o$ are computed as
 
 % The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
 
-Note that cospan $n_{ext} \xrightarrow{} c_i + y_{ext} \xrightarrow{} C \xleftarrow{} c_o + x_{ext} \xleftarrow{} m_{ext}$ is not necessarily well-typed.
+\begin{remark}
+Note that cospan 
+\[
+    n \xrightarrow{} l + j \xrightarrow{} C \xleftarrow{} r + i \xleftarrow{} k
+\] is not necessarily well-typed.
 The cospan's input internal interface may contain nodes that previously were a part of the output internal interface and similarly for output internal interface.
 
     The uniqueness and existence properties of boundary complements as defined above are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
@@ -936,83 +989,120 @@ The cospan's input internal interface may contain nodes that previously were a p
 %     The boundary complement in~\ref{def:boundary_new} when exists is unique.
 % \end{proposition}
 
+\begin{definition}[Subgraph]
+
+A \textit{subgraph} of an e-hypergraph 
+\[
+    \mathcal{G} = \{V_{\mathcal{G}}, E_{\mathcal{G}}, s_{\mathcal{G}}, t_{\mathcal{G}}, l, <_{G},\consistency_{\mathcal{G}}\}
+\]
+is an e-hypergraph 
+\[
+    \mathcal{H} = \{V_{\mathcal{H}}, E_{\mathcal{H}}, s_{\mathcal{H}}, t_{\mathcal{H}}, l, <_{H},\consistency_{\mathcal{H}}\}
+\] such that $V_{\mathcal{H}} \subseteq V_{\mathcal{G}}$, $E_{\mathcal{H}} \subseteq E_{\mathcal{G}}$ and such that $<_{\mathcal{H}}$ and $\consistency_{\mathcal{H}}$ both satisfy the properties from~\ref{def:e-homo}.
+\end{definition}
+
 \begin{definition}[Down-closed subgraph]
-    We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   every element of $(e]$ is also in $\mathcal{H}$.
+    We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   all children of $r$ are also in $\mathcal{H}$.
 \end{definition}    
 
 \begin{definition}[Convex down-closed match] 
-    We call $m : L \to G$ in $\catname{EHyp(\Sigma)}$ a convex down-closed match if
+    We call $m : L \to G$ in $\catname{EHyp(\Sigma)}$ a \textit{convex down-closed match} if
     
     \begin{enumerate}
-        \item $m$ is monomorphism
+        \item $m$ is a monomorphism
         \item $m(L)$ is a convex down-closed subgraph of $G$
+        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
+        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
     \end{enumerate}
 \end{definition}
 
-The whole process of rewriting including the construction of the internal interfaces of the resulting e-hypergraph is summarised in the following definition.
+The conditions (3)-(4), in particular, prohibit a match $\{f \mapsto f, g \mapsto g\}$ in $\mathcal{L} = f \otimes g$ and $\mathcal{G} = f + g$.
 
-\begin{definition}[Rewriting in $\WellTypedMdaEcospans$]
-    Given $G \xleftarrow{} g_i + g_o \xleftarrow{} n_{ext} + m_{ext}$ 
-    and $H \xleftarrow{} h_i + h_o \xleftarrow{} n_{ext} + m_{ext}$ in $\Ecospans$ with the outermost interfaces $n_{ext} + m_{ext}$, $G$ rewrites convexly into $H$ with the outermost interface $n_{ext} + m_{ext}$ --- notation $( G \xleftarrow{} n_{ext} + m_{ext} ) \Rrightarrow_{\mathcal{R}}^{+} (E \xleftarrow{} n_{ext} + m_{ext} )$ --- if there exists a rule $L \xleftarrow{} l_i + l_o \xleftarrow{} x_{ext} + y_{ext} \xrightarrow{} r_i + r_o \xrightarrow{} R$ with the outermost interfaces $x_{ext} + y_{ext}$ in the set of rewrite rules $\mathcal{R}$ and object $C$ and cospan arrows $x_{ext} + y_{ext} \xrightarrow{} C \xleftarrow{} n_{ext} + m_{ext}$ such that the diagram below commutes and its marked squares are pushouts
+We are now ready to define the \textit{convex} rewriting for e-hypergraphs with interfaces which we will later use to show the equivalence between $\textsf{PROP}(\Sigma)$ and $\WellTypedMdaEcospans$.
+It will be analogous to the one from Definition~\ref{def:convex_dpo} but again, to make sure the resulting cospan of e-hypergraph is monogamous we will have to construct internal interfaces separately.
+We will also limit matches to convex down-closed ones both to guarantee an mda result and so that the result is a well-defined e-hypergraph.
 
-% https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
-\[\scalebox{0.75}{
-    \tikzfig{combinatorial_semantics/DPOI_square}
-    }
-\]
-    and the following conditions hold
+\begin{definition}[Convex EDPOI rewriting]
+    Let $\mathfrak{R}$ be a set of EDPOI rewrite rules.
+    Then, given 
+    \[
+        \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
+    \] 
+    and 
+    \[
+        \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
+    \] in $\catname{EHyp(\Sigma)}$ with the external interfaces $n + k$, $\mathcal{G}$ \textit{rewrites convexly into} $\mathcal{H}$ \textit{with the outermost interface} $n + k$ --- notation $( \mathcal{G} \xleftarrow{} n + k) \Rrightarrow_{\mathfrak{R}}^{+} (\mathcal{H} \xleftarrow{} n + k)$ --- if there exists a rule 
+    \[
+        \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+    \] 
+    with the external interfaces $i + j$ in $\mathfrak{R}$ and object $\mathcal{C}$ and cospan arrows $i + j \xrightarrow{} \mathcal{C} \xleftarrow{} n + k$ 
+    such that the diagram of Definition~\ref{def:dpoi-e} commutes and its marked squares are pushouts, and the following conditions hold
 
     \begin{enumerate}
-        \label{dpoi:assumptions}
-        \item $m : L \to G$ is a convex down-closed match;
-        \item $x_{ext} + y_{ext} \to C \to G$ is a boundary complement in the leftmost pushout.
+        \label{dpoi-e:assumptions}
+        \item $m : \mathcal{L} \to \mathcal{G}$ is a convex down-closed match;
+        \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement in the leftmost pushout.
     \end{enumerate}
 \end{definition}
 
+and
 
-The internal interfaces of the resulting e-hypergraph $H$ from the cospan
- $n_{ext} \xrightarrow{} h_i \xrightarrow{} H \xleftarrow{} h_o \xleftarrow{} m_{ext}$
- are constructed as $h_i = (r_i \setminus x_{ext}) + c_i$ 
- and
- $h_o = (r_o \setminus y_{ext}) + c_o$.
- $h_i \to H$ is defined as a copairing of 
- $f_1 : r_i \setminus x_{ext} \to R \to H$ 
- and 
- $f_2 : c_i \to C \to H$. 
-Since both $f_1$ and $f_2$ are mono, their copairing is also a mono. 
-Similarly for $h_o$.
+% The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
+%  \[
+%     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
+% \]
+\begin{align*}
+&n'' = (i'' \setminus i) + l\\
+&k'' = (j'' \setminus j) + r\\
+&n'' \to \mathcal{H} = [f_1,f_2] \text{ where }\\
+&f_1 : i'' \setminus i \to \mathcal{R} \to \mathcal{H}\\ 
+&f_2 : l \to \mathcal{C} \to \mathcal{H} 
+\end{align*}
+Since both $f_1$ and $f_2$ are monos, their copairing is also a mono. 
+Similarly for $k'' \to \mathcal{H}$.
 
-We then say that an mda-cospan 
+\begin{proposition}
+    $n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k$ is a well-typed mda-cospan.
+\end{proposition}
+    
+
+Above we defined rewriting for cospans with empty input interfaces, when we will further build a correspondence between $\textsf{PROP}(\Sigma)^{+}$ and $\WellTypedMdaEcospans$ we will operate with cospans with non-empty input interfaces as well, so below we formulate what it means to rewrite cospans with non-empty input interfaces.
+
+\begin{definition}[Convex EDPOI in $\WellTypedMdaEcospans$]
+    
+We say that an \textit{mda-cospan}
 \[
-    n_{ext} \xrightarrow{a_1} g_{i} \xrightarrow{a_2} G \xleftarrow{b_2} g_{o} \xleftarrow{b_1} m_{ext}
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
 \]
-rewrites convexly into another mda-cospan
+\textit{rewrites convexly into another mda-cospan}
 
 \[
-    n_{ext} \xrightarrow{a_1} h_{i} \xrightarrow{a_2} H \xleftarrow{b_2} h_{o} \xleftarrow{b_1} m_{ext}
+    n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k
 \]
 
 under a rewrite rule 
-\[
-    \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
-    x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
-\]
+% \[
+%     \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
+%     x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
+% \]
+
+\[\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}\]
 
 if 
 \begin{align*}    
-    G \xleftarrow{[ a_2,b_2 ]} g_i + g_{o}& \xleftarrow{[a_1, b_1]} n_{ext} + m_{ext} \\ &\Rrightarrow^{+}\\ H \xleftarrow{[a_2,b_2]} h_i + h_{o}& \xleftarrow{[a_1, b_1]} n_{ext} + m_{ext}
+    \mathcal{G} \xleftarrow{} n + k \Rrightarrow^{+} \mathcal{H} \xleftarrow{} n + k
 \end{align*}
+under the same rewrite rule.
 
-under a rewrite rule
-\[
-    \langle l_{i} + l_{o} \xrightarrow{[a_2, b_2]} L \xleftarrow{[a_1, b_1]} x_{ext} + y_{ext},
-    r_{i} + r_{o} \xrightarrow{[a_2, b_2]} R \xleftarrow{[a_1, b_1]} x_{ext} + y_{ext} 
-    \rangle
-\]
+\end{definition}
 
-\begin{proposition}
-$n_{ext} \xrightarrow{n_h} h_i \xrightarrow{f} H \xleftarrow{g} h_o \xleftarrow{m_h} m_{ext}$ is a well-typed mda-cospan.
-\end{proposition}
+\begin{remark}
+There is a minor limitation for EDPOI rewriting above in that it is unable to express rewriting
+for rules that contain an edge with no inputs and outputs on their right-hand side (such edges correspond to morphisms of type $0 \to 0$).
+This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
+We claim that this is only a minor limitation because in practice such edges (morphisms) with no
+incident nodes correspond to ‘scalars’, if we consider for example a category of vector spaces, and scalars are usually removed by being absorbed by vectors rather than introduced during rewrites.
+\end{remark}
 
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
