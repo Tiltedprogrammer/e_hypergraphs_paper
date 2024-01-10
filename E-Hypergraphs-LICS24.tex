@@ -1184,8 +1184,8 @@ The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note 
 
 To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma, \mathcal E)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we see that 
 \begin{align*}
-	\llbracket f \rrbracket &= \llbracket f_1 + \ldots + f_n \rrbracket &= \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \\
-	\llbracket g \rrbracket &= \llbracket g_1 + \ldots + g_m \rrbracket &= \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
+	\llbracket f \rrbracket &= \llbracket f_1 + \ldots + f_n \rrbracket &&= \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \\
+	\llbracket g \rrbracket &= \llbracket g_1 + \ldots + g_m \rrbracket &&= \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
 \end{align*}
 In particular,  note that $\llbracket - \rrbracket$ preserves weak normal forms.  Therefore $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  Thus if $n \neq m$ we have that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $.  Otherwise,  if $n = m$,  we have that there for every permutation $\sigma$ there exists an index $i$ such that $f_i \neq g_{\sigma(i)}$,  and thus by $(*)$ that $\llbracket f_i \rrbracket \neq \llbracket g_{\sigma(i)} \rrbracket $.  This implies that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $. 
 
