@@ -818,8 +818,8 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 \section{DPOI-Rewriting for E-Hypergraphs}
 
 CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
-Because extended cospans have a more general notion of interface,  we need to make some adjustments to DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics}.
-The first thing is that we need to account for is the existence of \textit{internal} interfaces,  and in particular that internal interfaces are not necessarily preserved during rewriting.
+Because extended cospans have a more general notion of interface, DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments.
+First, the existence of \textit{internal} interfaces needs to be accounted for,  and in particular that internal interfaces are not necessarily preserved during rewriting.
 The former means that rewrite rules become of the form
 \[
 \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
@@ -845,7 +845,7 @@ In particular, it means that the internal interfaces of the resulting cospan of 
 \[
     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k 
 \]
-not necessarily coincide with the internal interfaces of the initial cospan.
+not necessarily coincides with the internal interfaces of the initial cospan.
 % The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
 % Note that the outermost interfaces are preserved.
 
@@ -860,7 +860,7 @@ not necessarily coincide with the internal interfaces of the initial cospan.
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-To account for such changes in the interfaces we require additional structure on DPOI rewriting for $\catname{EHyp({\Sigma})}$ which is summarised in the definition below.
+To account for such changes in the interfaces, consider additional structure on DPOI rewriting for $\catname{EHyp({\Sigma})}$, summarised in the definition below.
 \begin{definition}[Extended DPOI (EDPOI) rewriting]
 \label{def:dpoi-e}
 Given a span of morphisms 
@@ -909,7 +909,7 @@ if there exists an object $\mathcal{C}$ and morphisms which complete the followi
  }
 \]
 \end{definition}
-To guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph we also need to introduce a revised version of a boundary complement.
+To guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph boundary complement also requires a revised definition.
 
 \begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
 \label{def:boundary_new}
@@ -919,9 +919,7 @@ To guarantee that the rewriting yields a monogamous directed acyclic e-hypergrap
 For monogamous extended cospans 
 \[
     i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
-\] 
-and 
-\[
+\quad\text{ and }\quad
     n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
 \] and mono $f : \mathcal{L} \to \mathcal{G}$, a pushout complement 
 \[
@@ -938,6 +936,7 @@ as depicted in the square below
 is a \textit{boundary} complement if $[c_1,c_2]$ is mono 
  and there exist $d_1 : n \to C$ and $d_2 : k \to C$ 
  making the above triangle commute and such that
+ DAN: THIS (AND SUCH THAT) IS EXTREMELY UNCLEAR, PLEASE REWORD
 there exists a \textit{not necessarily well-typed} mda-cospan
 
 \[
@@ -947,17 +946,15 @@ n \xrightarrow{} l + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g
 where $l$ and $r$ are
 \[
     l = n' \setminus (i' \setminus i)
+\quad\text{ and }\quad
+    r = k' \setminus (j' \setminus j).
 \]
-and
-\[
-    r = k' \setminus (j' \setminus j)
-\]
-Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed apart from the part that has a pre-image in $i + j$ there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
+Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed, apart from the part that has a pre-image in $i + j$, there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
 \[
     D = \{ v \in n' \text{ such that } \not \exists u \in (i' \setminus i) ~ . ~ g_{int}(v) = f'_{int};f(u) \}
 \]
-Similarly for $r \to \mathcal{L}^{\bot}$ which we denote as $g_2$.
-Then there is a morphism $n \to l$ because there is a morphism $n \to n'$ and the external interfaces of $n'$ and $l$ are the same.
+Similarly for $r \to \mathcal{L}^{\bot}$, which we denote as $g_2$.
+Then there exists a morphism $n \to l$, because there is a morphism $n \to n'$ and the external interfaces of $n'$ and $l$ are the same.
 Similarly for $k \to r$.
 \end{definition}
 
@@ -1021,7 +1018,7 @@ is an e-hypergraph
 The conditions (3)-(4), in particular, prohibit a match $\{f \mapsto f, g \mapsto g\}$ in $\mathcal{L} = f \otimes g$ and $\mathcal{G} = f + g$.
 
 We are now ready to define the \textit{convex} rewriting for e-hypergraphs with interfaces which we will later use to show the equivalence between $\textsf{PROP}(\Sigma)$ and $\WellTypedMdaEcospans$.
-It will be analogous to the one from Definition~\ref{def:convex_dpo} but again, to make sure the resulting cospan of e-hypergraph is monogamous we will have to construct internal interfaces separately.
+It will be analogous to the one from Definition~\ref{def:convex_dpo} but again, to make sure the resulting cospan of e-hypergraphs is monogamous we will have to construct internal interfaces separately.
 We will also limit matches to convex down-closed ones both to guarantee an mda result and so that the result is a well-defined e-hypergraph.
 
 \begin{definition}[Convex EDPOI rewriting]
@@ -1029,9 +1026,9 @@ We will also limit matches to convex down-closed ones both to guarantee an mda r
     Then, given 
     \[
         \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
-    \] 
-    and 
-    \[
+    \quad 
+    \text{and} 
+    \quad
         \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
     \] in $\catname{EHyp(\Sigma)}$ with the external interfaces $n + k$, $\mathcal{G}$ \textit{rewrites convexly into} $\mathcal{H}$ \textit{with the outermost interface} $n + k$ --- notation $( \mathcal{G} \xleftarrow{} n + k) \Rrightarrow_{\mathfrak{R}}^{+} (\mathcal{H} \xleftarrow{} n + k)$ --- if there exists a rule 
     \[
@@ -1046,9 +1043,7 @@ We will also limit matches to convex down-closed ones both to guarantee an mda r
         \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement in the leftmost pushout.
     \end{enumerate}
 \end{definition}
-
 and
-
 % The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
 %  \[
 %     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
@@ -1163,7 +1158,7 @@ It immediately follows that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is a semilat
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
 
 
-The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
+The equations of Figure~\ref{fig:string-equations}---excepting the commutativity equation---can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
 For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
 \[
