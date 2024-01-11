@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=node] (0) at (1.5, 2.5) {};
+		\node [style=hedge] (1) at (1.5, 0.5) {$f$};
+		\node [style=node] (2) at (1.5, -1.5) {};
+		\node [style=node] (3) at (3.5, 2.5) {};
+		\node [style=hedge] (4) at (3.5, 0.5) {$g$};
+		\node [style=node] (5) at (3.5, -1.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (0) to (1);
+		\draw (1) to (2);
+		\draw (3) to (4);
+		\draw (4) to (5);
+	\end{pgfonlayer}
+\end{tikzpicture}

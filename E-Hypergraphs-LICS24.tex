@@ -85,6 +85,8 @@
 % \usepackage{mathtools,mathrsfs}
 \usepackage{tikz-cd}
 \usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
 
 % for quotienting
 % \usepackage{faktor}
@@ -573,11 +575,16 @@ In this section we recall standard results of double-pushout (DPO) rewriting of 
 
 The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalized as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
 A typical DPO square looks as follows,  where the two marked squares are pushouts. 
+% \[
+% \begin{tikzcd}
+% \mathcal L \arrow[d, "m"'] & \mathcal K \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
+% \mathcal G^{\urcorner}     & \mathcal C \arrow[l] \arrow[r] & ^{\ulcorner} \mathcal H
+% \end{tikzcd}
+% \]
 \[
-\begin{tikzcd}
-\mathcal L \arrow[d, "m"'] & \mathcal K \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
-\mathcal G^{\urcorner}     & \mathcal C \arrow[l] \arrow[r]                      & ^{\ulcorner} \mathcal H
-\end{tikzcd}
+    \scalebox{0.8}{
+        \tikzfig{combinatorial_semantics/DPO_square}
+    }
 \]
 
 The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement}---the pair of morphisms $\mathcal K \to \mathcal C \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal C$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is the recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$--hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
@@ -586,12 +593,17 @@ To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the
 In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  Thus we reach the following variant of DPO rewriting. 
 \begin{definition}[DPOI rewriting]\label{def:dpoi}
 Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
+% \[
+% \begin{tikzcd}
+% \mathcal L \arrow[d, "m"'] & i+j \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
+% \mathcal{G}^{\urcorner}     & \mathcal C \arrow[l] \arrow[r]                      & ^{\ulcorner}\mathcal H \\
+%                   & n+m \arrow[lu] \arrow[u] \arrow[ru]          &              
+% \end{tikzcd}
+% \]
 \[
-\begin{tikzcd}
-\mathcal L \arrow[d, "m"'] & i+j \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
-\mathcal{G}^{\urcorner}     & \mathcal C \arrow[l] \arrow[r]                      & ^{\ulcorner}\mathcal H \\
-                  & n+m \arrow[lu] \arrow[u] \arrow[ru]          &              
-\end{tikzcd}
+    \scalebox{0.8}{
+        \tikzfig{combinatorial_semantics/DPOI_square_Hyp}
+    }
 \]
 \end{definition}
 We need to restrict the notions of pushout complement and of match in order to preserve monogamy and directed acylcicity.  
@@ -607,19 +619,26 @@ and mono $f : \mathcal L \to \mathcal G$, a pushout complement as depicted in th
 % \end{figure}
 
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJMIl0sWzIsMCwiaStqIl0sWzAsMiwiR157XFx1cmNvcm5lcn0iXSxbMiw0LCJuK20iXSxbMiwyLCJMXntcXGJvdH0iXSxbMyw0LCJbZF8xLGRfMl0iLDJdLFszLDIsIltiXzEsYl8yXSJdLFswLDIsImYiLDJdLFsxLDAsImEgPSBbYV8xLGFfMl0iLDJdLFsxLDQsImMgPSBbY18xLGNfMl0iXSxbNCwyLCJnIl1d
-\[\begin{tikzcd}
-	\mathcal L && {i+j} \\
-	\\
-	{\mathcal G^{\urcorner}} && {\mathcal{L}^{\bot}} \\
-	\\
-	&& {n+m}
-	\arrow["{[d_1,d_2]}"', from=5-3, to=3-3]
-	\arrow["{[b_1,b_2]}", from=5-3, to=3-1]
-	\arrow["f"', from=1-1, to=3-1]
-	\arrow["{[a_1,a_2]}"', from=1-3, to=1-1]
-	\arrow["{[c_1,c_2]}", from=1-3, to=3-3]
-	\arrow["g", from=3-3, to=3-1]
-\end{tikzcd}\]
+% \[\begin{tikzcd}
+% 	\mathcal L && {i+j} \\
+% 	\\
+% 	{\mathcal G^{\urcorner}} && {\mathcal{L}^{\bot}} \\
+% 	\\
+% 	&& {n+m}
+% 	\arrow["{[d_1,d_2]}"', from=5-3, to=3-3]
+% 	\arrow["{[b_1,b_2]}", from=5-3, to=3-1]
+% 	\arrow["f"', from=1-1, to=3-1]
+% 	\arrow["{[a_1,a_2]}"', from=1-3, to=1-1]
+% 	\arrow["{[c_1,c_2]}", from=1-3, to=3-3]
+% 	\arrow[from=3-3, to=3-1]
+% \end{tikzcd}\]
+
+\[
+    \scalebox{0.8}{
+        \tikzfig{combinatorial_semantics/DPOI_boundary_complement}
+    }
+\]
+
 is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to \mathcal{L}^{\bot}$ and $d_2 : m \to \mathcal{L}^{\bot}$ making the above triangle commute and such that
 \[
     n + j \xrightarrow{[d_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[d_2,c_1]} m + i
@@ -749,24 +768,26 @@ Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \texti
         \tikzfig{combinatorial_semantics/isomorphic_e_cospans}
     }
     \]
-Composition of two morphisms $f : X_{ext} \to Y_{ext}$ and $g : Y_{ext} \to Z_{ext}$ is computed in two stages
-First, $\mathcal{F} +_{f_{ext}, g_{ext}} \mathcal{G}$ is computed,  as shown below. 
+Composition of two morphisms $h_1 : n \to m$ and $h_2 : m \to k$ is computed in two stages.
+First, $\mathcal{H} = \mathcal{F} +_{f_{ext}, g_{ext}} \mathcal{G}$ is computed,  as shown below. 
 
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
 
 \[
-\scalebox{0.9}
+\trimbox{0cm 0cm 0cm 1cm}{
+\adjustbox{scale=0.9,center}
 {\tikzfig{combinatorial_semantics/pushout_e_cospans}}
+}
 \]
-Then, new feet for $\mathcal{H} = A +_{f_{ext};f,g_{ext};g} B$ are computed as below
+Then, new feet for $\mathcal{H}$ are computed as below
 \[
-X_{ext} \xrightarrow{a_{ext};\iota_1} X \uplus (Y' \setminus Y_{ext}) \xrightarrow{h} \mathcal{H} \xleftarrow{k} Z \uplus (Y \setminus Y_{ext}) \xleftarrow{g_{ext};\iota_1} Z_{ext}
+n \xrightarrow{f_{ext};\iota_1} n' \uplus (m'' \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k' \uplus (m' \setminus m) \xleftarrow{g'_{ext};\iota_1} k
 \]
 where
 \[
-    h = [ a;p_1, ~g';p_2 ]
+    h_1 = [ f_{int};p_1, ~g_{int}|_{m'' \setminus m};p_2 ]
 \qquad
-    k = [ b;p_2, ~f';p_1 ]
+    h_2 = [ g'_{int};p_2, ~f'_{int}|_{m' \setminus m};p_1 ]
 \]
 % \[
 % \begin{tikzcd}
@@ -775,7 +796,7 @@ where
 % \end{tikzcd}
 % \]
 % and then the disjoint union is just a coproduct. 
-where $g'$ is the restriction of $g$ to ${Y' \setminus Y_{ext}}$ and $f'$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
+% where $g'$ is the restriction of $g$ to ${Y' \setminus Y_{ext}}$ and $f'$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
 The identity of composition is given by the obvious extended cospan of identities. 
 $\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp({\Sigma}})$,  analogously to Definition~\ref{def:cspd}.  
 \end{definition}
@@ -820,10 +841,17 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
 Because extended cospans have a more general notion of interface, DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments.
 First, the existence of \textit{internal} interfaces needs to be accounted for,  and in particular that internal interfaces are not necessarily preserved during rewriting.
-The former means that rewrite rules become of the form
+The former means that we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching external interfaces.
+
 \[
-\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-\] where we use the fact that cospans 
+    i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
+\]
+and
+\[
+    i \xrightarrow{} i'' \xrightarrow{} \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j
+\]
+
+We will next use the fact that cospans
 \[
     i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
 \]
@@ -831,8 +859,12 @@ and
 \[
     0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j
 \]
-encode the same data and we will further omit the arrows $0 \to 0 \to \mathcal{L}$.
-That is, a rewrite rule is a pair of cospans of e-hypergraphs with matching \textit{external} interfaces and arbitrary \textit{internal} interfaces.
+endcode the same data and only consider cospans of the form
+
+\[
+\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+\] to fit the DPO formalism.
+We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
 To illustrate the non-preservation of internal interfaces, consider the rewrite rule above and the following e-hypergraph with interfaces to perform the rewrite on
 % \[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
 % such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
@@ -923,7 +955,7 @@ For monogamous extended cospans
     n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
 \] and mono $f : \mathcal{L} \to \mathcal{G}$, a pushout complement 
 \[
-    i + j \to \mathcal{L}^{\bot} \to G^{\urcorner}
+    i + j \to \mathcal{L}^{\bot} \to \mathcal{G}
 \] 
 as depicted in the square below
 \[
@@ -933,15 +965,15 @@ as depicted in the square below
 }
 \]
 
-is a \textit{boundary} complement if $[c_1,c_2]$ is mono 
- and there exist $d_1 : n \to C$ and $d_2 : k \to C$ 
- making the above triangle commute and such that
- DAN: THIS (AND SUCH THAT) IS EXTREMELY UNCLEAR, PLEASE REWORD
-there exists a \textit{not necessarily well-typed} mda-cospan
-
-\[
-n \xrightarrow{} l + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} r + i \xleftarrow{} k
-\]
+is a \textit{boundary} complement if the following holds
+\begin{enumerate}
+    \item $[c_1,c_2]$ is mono 
+    \item there exist $d_1 : n \to \mathcal{C}$ and $d_2 : k \to \mathcal{C}$ making the above triangle commute
+    \item there exists a \textit{not necessarily well-typed} mda-cospan
+    \[
+    n \xrightarrow{} l + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} r + i \xleftarrow{} k
+    \]
+\end{enumerate}
 
 where $l$ and $r$ are
 \[
@@ -955,6 +987,7 @@ Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ rem
 \]
 Similarly for $r \to \mathcal{L}^{\bot}$, which we denote as $g_2$.
 Then there exists a morphism $n \to l$, because there is a morphism $n \to n'$ and the external interfaces of $n'$ and $l$ are the same.
+That is, it is a morphism $f: n \to l$ such that $d_1 = f;g_1$.
 Similarly for $k \to r$.
 \end{definition}
 
@@ -1015,7 +1048,7 @@ is an e-hypergraph
     \end{enumerate}
 \end{definition}
 
-The conditions (3)-(4), in particular, prohibit a match $\{f \mapsto f, g \mapsto g\}$ in $\mathcal{L} = f \otimes g$ and $\mathcal{G} = f + g$.
+The conditions (3)-(4), in particular, prohibit a match $\{f \mapsto f, g \mapsto g\}$ in $\mathcal{L} =$ $\scalebox{0.4}{\tikzfig{combinatorial_semantics/f_times_g}}$ and $\mathcal{G} =$ $\scalebox{0.4}{\tikzfig{combinatorial_semantics/f_plus_g_inline}}$.
 
 We are now ready to define the \textit{convex} rewriting for e-hypergraphs with interfaces which we will later use to show the equivalence between $\textsf{PROP}(\Sigma)$ and $\WellTypedMdaEcospans$.
 It will be analogous to the one from Definition~\ref{def:convex_dpo} but again, to make sure the resulting cospan of e-hypergraphs is monogamous we will have to construct internal interfaces separately.
