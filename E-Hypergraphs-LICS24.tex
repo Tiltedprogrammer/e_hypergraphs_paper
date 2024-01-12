@@ -842,25 +842,18 @@ CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AN
 Because extended cospans have a more general notion of interface, DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments.
 First, the existence of \textit{internal} interfaces needs to be accounted for,  and in particular that internal interfaces are not necessarily preserved during rewriting.
 The former means that we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching external interfaces.
-
 \[
     i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
-\]
-and
-\[
+\qquad \text{and} \qquad
     i \xrightarrow{} i'' \xrightarrow{} \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j
 \]
-
 We will next use the fact that cospans
 \[
     i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
-\]
-and
-\[
+\qquad \text{and} \qquad
     0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j
 \]
 endcode the same data and only consider cospans of the form
-
 \[
 \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
 \] to fit the DPO formalism.
@@ -1141,7 +1134,7 @@ CHRIS: INTRO.
 
 \begin{figure}
     \[
-    \scalebox{0.6}{
+    \scalebox{0.55}{
     \tikzfig{combinatorial_semantics/f_plus_g_new}
     }
     \]
@@ -1172,7 +1165,7 @@ CHRIS: COMMENT THAT WE QUOTIENT TO PHRASE CATEGORICALLY OUR RESULTS.
 \begin{definition}[Quotient by rewrites]  
 Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
 \[
-	f \sim g \quad \text{if} \quad f \Rightarrow^*_{\llbracket \mathcal E \rrbracket} g ~ . 
+	f \sim g \quad \text{if} \quad f \Rrightarrow^{+,*}_{\llbracket \mathcal E \rrbracket} g ~ . 
 \]
 \end{definition}
 In particular,  let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
@@ -1185,6 +1178,7 @@ Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$
 %Let $\mathcal E$ be an arbitrary set of $\Sigma$-equations. 
 Thus we have the following result. 
 \begin{proposition}[Soundness]
+\label{prop:soundness}
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
 It immediately follows that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is a semilattice-enriched PROP,  and $\llbracket - \rrbracket_{\mathcal E}$ is the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself. 
@@ -1193,6 +1187,7 @@ Note that the symmetric monoidal equations are absorbed in the hypergraph repres
 CHRIS: NOTE ALSO WEAK NORMAL FORM FOR $\Sigma^+$-TERMS?
 The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
+\label{prop:wnormal_form}
 For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
 \[
 	f = f_1 + \ldots + f_n
@@ -1224,7 +1219,7 @@ Unfolding the definitions,  we can spell out the previous theorem in terms of DP
 \begin{corollary}[Completeness of rewriting]
 For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 \[
-	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^*_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
+	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^{+,*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
 \]
  \end{corollary}
 %
@@ -1341,7 +1336,7 @@ Consider the following span in $\catname{EHyp_{\Sigma}}$
 such that
 \begin{enumerate}
 \label{pushout:assumptions}
-    \item $Z$ is a \textit{descrete} e-hypergraph.
+    \item $Z$ is a \textit{discrete} e-hypergraph.
     \item $f,g$ are monos.
     \item $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_{i},v_{j}$ in $V_{Z}$.
     \item If $[f_{V}(v)) \not = \varnothing$ then $[g_{V}(v)) = \varnothing$ and if $[g_{V}(v)) \not = \varnothing$ then $[f_{V}(v)) = \varnothing$.
@@ -2114,5 +2109,20 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
 
 
 \section{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+
+\begin{proposition}[Proposition~\ref{prop:soundness} restatement]
+The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
+\end{proposition}
+
+\begin{proposition}[Proposition~\ref{prop:wnormal_form} restatement]
+
+For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
+\[
+    f = f_1 + \ldots + f_n
+\]
+such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+\end{proposition}    
+    
+
 
 \end{document}
