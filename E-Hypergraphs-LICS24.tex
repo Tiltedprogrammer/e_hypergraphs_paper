@@ -1246,7 +1246,7 @@ In fact, e-graphs are an instance of a more general construction that can accoun
 Having described a translation of e-graphs into this categorical framework, a combinatorial representation of morphisms in the free category is also provided. 
 As expected, this representation factors out the structural SMC equations, while remaining sensitive to the complexity-relevant equations induced by the enrichment.  The design of such a representation and its corresponding rewrite theory proved to be delicate, and, together with its proof of completeness, constitute the main technical contributions of the paper.  Finally, we considered an analogue of e-rewriting in this setting, required in the developing potential implementations.  In addition to the current mathematical treatment of (acyclic) e-graphs,  there are a number of extensions which we intend to investigate in the future.
 
-Some of the extensions that can be considered are: support for `functorial boxes'~\cite{mellies} (in addition to e-boxes), which have a variety of applications, including the Cartesian-closure required for the implementation of functional programming languages~\cite{GhicaZanasiTutorial}, as sketched in Fig. \ref{fig:app1}(a); the `spiders' used by the ZX-calculus to model quantum circuits~\cite{coecke_interacting_2011,ZX}, as sketched in Fig. \ref{fig:app1}(b); or trace~\cite{Joyal, Hasegawa} which can be used to express feedback in categorical models of digital circuits~\cite{GhicaJung, GhicaKaye} and, indeed in conventional e-graphs to encode infinite equivalence classes, as sketched in Fig.~\ref{fig:app2}. All these application domains stand to benefit from the use of optimisation techniques, which in turn can take advantage of the appropriate e-graph technique. 
+Some of the extensions that can be considered are: support for `functorial boxes'~\cite{mellies_functorial_2006} (in addition to e-boxes), which have a variety of applications, including the Cartesian-closure required for the implementation of functional programming languages~\cite{ghica_hierarchical_2023}, as sketched in Fig. \ref{fig:app1}(a); the `spiders' used by the ZX-calculus to model quantum circuits~\cite{coecke_interacting_2011,ZX}, as sketched in Fig. \ref{fig:app1}(b); or trace~\cite{joyal_geometry_1991, Hasegawa-traced} which can be used to express feedback in categorical models of digital circuits~\cite{ghica_jung_2017,ghica_compositional_2023} and, indeed in conventional e-graphs to encode infinite equivalence classes, as sketched in Fig.~\ref{fig:app2}. All these application domains stand to benefit from the use of optimisation techniques, which in turn can take advantage of the appropriate e-graph technique. 
 
 \begin{figure}
 \[
@@ -1264,8 +1264,8 @@ DAN: THE LINE BETWEEN THE APPLICATION NODE AND THE BOX IS TOO LONG}
 	\tikzfig{conclusion/example-traced}
 	}
 \]
-\label{fig:app2}
 \caption{E-graphs with cycles and e-hypergraphs with trace}
+\label{fig:app2}
 \end{figure}
 
 The theories described above often have more structure than simply being symmetric monoidal: for example, they may contain comonoids, Frobenius algebras or traced structure (as in the case of e-graphs with cycles),  and this structure can be exploited to give more natural (in the sense of factoring out more equations) combinatorial representations.  In the above cases, such representations and their DPO-rewriting theory is well-studied 
@@ -1273,7 +1273,7 @@ The theories described above often have more structure than simply being symmetr
  
 
 The hierarchical ``e-box'' structure within string diagrams and their associated (e-)hypergraphs (categorically, the semilattice enrichment) is essentially orthogonal to these developments. Combining the two, to give notions of e-hypergraphs specifically suited to these particular monoidal theories should be conceptually straightforward. However, as we have seen in this paper, the technical details can be delicate. 
-Finally, a term calculus (e-terms) can be reverse engineered from the string-diagram notation~\cite{https://doi.org/10.4204/EPTCS.266.4}. Although term calculi are less important in the algorithmics of optimisation, they still play a role in specification and in aiding readability.  
+Finally, a term calculus (e-terms) can be reverse engineered from the string-diagram notation~\cite{ghica_structural_nominal}. Although term calculi are less important in the algorithmics of optimisation, they still play a role in specification and in aiding readability.  
 
 \bibliographystyle{acm}
 \bibliography{bibliography}
@@ -2115,6 +2115,42 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
 \begin{proposition}[Proposition~\ref{prop:soundness} restatement]
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
+\begin{proof}
+    To prove this statement we essentially need to show that the functor $\llbracket - \rrbracket$ is well-defined, \textit{i.e.}, if $f = g$ in $\textsf{PROP}^{+}(\Sigma)$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$ or $\llbracket f \rrbracket \Rrightarrow_{\mathcal{S}}^{+,*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans$.
+    $f = g$ implies that there is a sequence of SMC and enrichment equations such that when applied to $f$ it is turned into $g$.
+    As $\textsf{PROP}^{+}(\Sigma)$ is quotiented by SMC equations we have the following contexts $\mathcal{C}$ for any term $f$ such that $f = \mathcal{C}[l]$ for some other term $l$.
+    \[
+        \mathcal{C} := [] ~|~ c_1 + \ldots + \mathcal{C} + \ldots + c_n ~|~ c_1 ; (id \otimes \mathcal{C}); c_2
+    \]
+    we will proceed by induction on the number of equation applied to make $f$ into $g$.
+    \begin{itemize}
+        \item Base case. $f = g$ implies that for some equation $l = r$ in Figure~\ref{fig:string-equations}, $f = \mathcal{C}[l]$ and $g = \mathcal{C}[r]$.
+              We then note that every subterm of $f$ corresponds to a convex down-closed subgraph of $\llbracket f \rrbracket$ and hence so does $l$.
+              By computing pushout complement we remove the image of $\llbracket l \rrbracket$ from $\llbracket f \rrbracket$ and replace it with $\llbracket r \rrbracket$ which yields $\llbracket g \rrbracket = \llbracket \mathcal{C} \rrbracket [\llbracket r \rrbracket] = \llbracket \mathcal{C}[r] \rrbracket$ and $\llbracket f \rrbracket \Rrightarrow^{+}_{l = r} \llbracket g \rrbracket$.
+        \item Suppose $f = g$ by applying less than $n$ equations implies $\llbracket f \rrbracket \Rrightarrow^{+,*}_{\mathcal{S}} \llbracket g \rrbracket$
+        \item Let $f = g$ by applying exactly $n$ equations and then $f = g'$ by applying first $n-1$ equations and $\llbracket f \rrbracket \Rrightarrow^{+,*}_{\mathcal{S}} \llbracket g' \rrbracket$ and $g' = g$ by applying one equation.
+              By reusing the base case we have that $\llbracket g' \rrbracket \Rrightarrow^{+}_{l = r} \llbracket g \rrbracket$ and hence $\llbracket f \rrbracket \Rrightarrow^{+,*}_{\mathcal{S}} \llbracket g \rrbracket$.
+    \end{itemize}
+    The only thing that is left to show that pushout complement and pushout exist for every equation in $\mathcal{S}$.
+    Suppose, $f = g$ by applying $l = r$ which is the top left equation from~\ref{fig:string-equations}.
+    $\llbracket r \rrbracket$ is then given in Figure~\ref{fig:structural_rule_pushout}.
+    \begin{figure*}
+        \centering
+        \[
+            \scalebox{0.45}{
+                \tikzfig{combinatorial_semantics/structural_rule_pushout}
+            }
+        \]
+        \caption{The image of the top left equation from Figure~\ref{fig:string-equations} under $\llbracket - \rrbracket$}
+        \label{fig:structural_rule_pushout}
+    \end{figure*}
+
+    After we identify a convex down-closed image of the left-hand side of this rule within a graph $\llbracket f \rrbracket$ we remove the image by keeping only the top-level verticies.
+    Note that because the image of all $a$'s and $b$'s are top-level verticies, we are allowed to pick any monomorphism for our pushout complement.
+    And for the same reason the pushout for the right square exists.
+    Then we simply glue the right-hand side of the rule into the hole.
+    Similar argument applies to other rules as well.
+\end{proof}
 
 \begin{proposition}[Proposition~\ref{prop:wnormal_form} restatement]
 
@@ -2124,7 +2160,15 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 \]
 such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
 \end{proposition}    
-    
+\begin{proof}
+    First, we apply the interpretation of the rules (1)-(4) from Figure~\ref{fig:string-equations} which reduces the number of edges and vertices until there is only one top-level edge which is hierarchical.
+    There will be a redex for these rules as long as there are at least two connected edges at least one of which is hierarchical.
+    The above steps therefore produce a form like \[f_1 + \ldots + f_n\] where each $f_i$ is also of the form $g_1 + \ldots + g_m$ and so on.
+    Then we apply the interpretation of rules (5)-(6) and (8) which reduces the number of hierarchical edges at each step.
+    Once again, there is a redex for such a rule as long as there are at least two hierarchical edges.
+    This will yield a form $f_1 + \ldots + f_n$ such that each of $f_i$ does not contain any hierarchical edges and for $i \not = j$, $f_i \not = f_j$.
+    The latter is guaranteed by rule (8).
+\end{proof}   
 
 
 \end{document}
