@@ -1957,148 +1957,168 @@ For this we need to check that the defined relations satisfy all the needed prop
 \end{proposition}
 
 \begin{definition}[Definition 3.16~\cite{bonchi_string_2022-1}]
-Morphisms $K \xrightarrow{i} L \xrightarrow{m} G$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every node of its source and target is either (i) not in the image of $m$ or (ii) in the image of $i ; m$.
-They satisfy the no-identification condition if any two nodes merged by $m$ are in the image of $i$.
+Morphisms $\mathcal{K} \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every node of its source and target is either (i) not in the image of $m$ or (ii) in the image of $f ; m$.
+They satisfy the no-identification condition if any two nodes merged by $m$ are in the image of $f$.
 \end{definition}
 
 \begin{proposition}
 \label{prop:complement_existence}
     Consider a pushout square in $\catname{EHyp_{\Sigma}}$ below
     % https://q.uiver.app/#q=WzAsNSxbMCwwLCJYIl0sWzIsMCwiWiJdLFsyLDIsIkMiXSxbMCwyLCJQXntcXHVyY29ybmVyfSJdLFsyLDUsIlxcYnVsbGV0Il0sWzEsMCwiaSIsMl0sWzEsMl0sWzIsM10sWzAsMywibSIsMl1d
-\[\begin{tikzcd}
-	X && Z \\
-	\\
-	{P^{\urcorner}} && C \\
-	\\
-	\\
-	&& \bullet
-	\arrow["i"', from=1-3, to=1-1]
-	\arrow[from=1-3, to=3-3]
-	\arrow[from=3-3, to=3-1]
-	\arrow["m"', from=1-1, to=3-1]
-\end{tikzcd}\]
-    Such that $m,i$ are monos and $Z$ is discrete. Then, pushout complement $Z \to C \to G$ exists if
+% \[\begin{tikzcd}
+% 	X && Z \\
+% 	\\
+% 	{P^{\urcorner}} && C \\
+% 	\\
+% 	\\
+% 	&& \bullet
+% 	\arrow["i"', from=1-3, to=1-1]
+% 	\arrow[from=1-3, to=3-3]
+% 	\arrow[from=3-3, to=3-1]
+% 	\arrow["m"', from=1-1, to=3-1]
+% \end{tikzcd}\]
+\[
+    \tikzfig{appendix/pushout_square}
+\]
+    Such that $m,f$ are monos and $\mathcal{K}$ is discrete.
+    Then, pushout complement $\mathcal{K} \to \mathcal{L}^{\bot} \to \mathcal{G}$ exists if
     \begin{enumerate}
-        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
-        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
+        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{\mathcal{K}}$.
+        \item $\consistency(m(v_i)) = \consistency(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{\mathcal{K}}$.
         \item The no-dangling condition holds.
     \end{enumerate}
 \end{proposition}
 \begin{proof}
     By requiring that $m$ is mono makes the no-identification condition satisfied on the nose.
     Then, no-dangling and no-identification conditions are necessary for pushout complement to exists~\cite{dpo}.
-    Points (1)-(2) above guarantee that after removing from $G$ everything in $L$ that has no pre-image in $Z$ the arrow $Z \to C$ will satisfy the assumptions~\ref{pushout:assumptions}.
+    Points (1)-(2) above guarantee that after removing from $\mathcal{G}$ everything in $\mathcal{L}$ that has no pre-image in $\mathcal{K}$ the arrow $\mathcal{K} \to \mathcal{L}^{\bot}$ will satisfy the assumptions~\ref{pushout:assumptions}.
 \end{proof}
 
 \begin{proposition}
 \label{prop:boundary_complement}
     The boundary complement in~\ref{def:boundary_new} when exists is unique
     \begin{proof}
-        The pushout in $EHyp_{\Sigma}$ should also be a pushout on the underlying sets of nodes and hyperedges.
-        Hence, pushout complement should yield pushout complements for the sets of nodes and hyperedges.
+        The pushout in $EHyp_{\Sigma}$ should also be a pushout on the underlying sets of verticies and hyperedges.
+        Hence, pushout complement should yield pushout complements for the corresponding sets.
         In particular,
           % https://q.uiver.app/#q=WzAsNSxbMCwwLCJWX3tMfSJdLFsyLDAsImxfe2l9ICsgbF97b30iXSxbNCwwLCJpK2oiXSxbMCwyLCJWX3tHfSJdLFs0LDIsIlZfe0N9Il0sWzIsMSwiYl97Vn0iXSxbMSwwLCJhX3tWfSJdLFswLDMsImZfe1Z9Il0sWzQsMywiZ197Vn0iLDJdLFsyLDQsImMiLDJdXQ==
     \begin{figure}[h!]
         \begin{subfigure}{0.45\textwidth}
-            \[\begin{tikzcd}
-                {V_{L}} && {l_{i} + l_{o}} && {i+j} \\
-                \\
-                {V_{G}^{\urcorner}} &&&& {V_{C}}
-                \arrow["{b_{V}}", from=1-5, to=1-3]
-                \arrow["{a_{V}}", from=1-3, to=1-1]
-                \arrow["{f_{V}}", from=1-1, to=3-1]
-                \arrow["{g_{V}}"', from=3-5, to=3-1]
-                \arrow["c"', from=1-5, to=3-5]
-            \end{tikzcd}\]
+            % \[\begin{tikzcd}
+            %     {V_{L}} && {l_{i} + l_{o}} && {i+j} \\
+            %     \\
+            %     {V_{G}^{\urcorner}} &&&& {V_{C}}
+            %     \arrow["{b_{V}}", from=1-5, to=1-3]
+            %     \arrow["{a_{V}}", from=1-3, to=1-1]
+            %     \arrow["{f_{V}}", from=1-1, to=3-1]
+            %     \arrow["{g_{V}}"', from=3-5, to=3-1]
+            %     \arrow["c"', from=1-5, to=3-5]
+            % \end{tikzcd}\]
+            \[
+                \tikzfig{appendix/pushout_verticies}
+            \]
         \end{subfigure}
         \hfill
         \begin{subfigure}{0.45\textwidth}
            % https://q.uiver.app/#q=WzAsNSxbMCwwLCJFX3tMfSJdLFsyLDAsIjAiXSxbNCwwLCIwIl0sWzAsMiwiRV97R31ee1xcdXJjb3JuZXJ9Il0sWzQsMiwiRV97Q30iXSxbMiwxLCJiX3tFfSJdLFsxLDAsImFfe0V9Il0sWzAsMywiZl97RX0iXSxbNCwzLCJnX3tFfSIsMl0sWzIsNCwiYyIsMl1d
         \[
-        \begin{tikzcd}
-            {E_{L}} && 0 && 0 \\
-            \\
-            {E_{G}^{\urcorner}} &&&& {E_{C}}
-            \arrow["{b_{E}}", from=1-5, to=1-3]
-            \arrow["{a_{E}}", from=1-3, to=1-1]
-            \arrow["{f_{E}}", from=1-1, to=3-1]
-            \arrow["{g_{E}}"', from=3-5, to=3-1]
-            \arrow["c"', from=1-5, to=3-5]
-        \end{tikzcd}
+        % \begin{tikzcd}
+        %     {E_{L}} && 0 && 0 \\
+        %     \\
+        %     {E_{G}^{\urcorner}} &&&& {E_{C}}
+        %     \arrow["{b_{E}}", from=1-5, to=1-3]
+        %     \arrow["{a_{E}}", from=1-3, to=1-1]
+        %     \arrow["{f_{E}}", from=1-1, to=3-1]
+        %     \arrow["{g_{E}}"', from=3-5, to=3-1]
+        %     \arrow["c"', from=1-5, to=3-5]
+        % \end{tikzcd}
+        \tikzfig{appendix/pushout_edges}
         \]
         \end{subfigure}
     \end{figure}
-    $V$s and $E$s are sets of nodes and hyperedges respectively, marked squares are pushouts and $C$s are pushout complements.
-    Because $i+j$ is discrete, $E_{G}^{\urcorner}$ is the disjoint union of $E_{L}$ and $E_{C}$ and hence $E_{C} = E_{G}^{\urcorner} \setminus E_{L}$.
-    Then, since all the arrows are monos, the left square can be rewritten as follows.
+    $V$s and $E$s are sets of verticies and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
+    Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
+    Then, since all the arrows are monos, the first square can be rewritten as follows.
     \[
-      % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3IFxcY29uZyBpICsgaiArIHoiXSxbMiwxLCJiX3tWfSJdLFsxLDAsImFfe1Z9Il0sWzAsMywiZl97Vn0iXSxbNCwzLCJnX3tFfSIsMl0sWzIsNCwiYyIsMl1d
+      % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3IFxcY29uZyBpICsgaiArIHoiXSxbMiwxLCJoX3tWLGV4dH0iLDJdLFsxLDAsImhfe1YsaW50fSIsMl0sWzAsMywibV97Vn0iLDJdLFs0LDMsImdfe1Z9Il0sWzIsNCwiYyIsMl1d
     \begin{tikzcd}
-        {i + j + x + y} && {i+j + x} && {i+j} \\
-        \\
-        {i + j + x + y + z} &&&& {i + j + w \cong i + j + z}
-        \arrow["{b_{V}}", from=1-5, to=1-3]
-        \arrow["{a_{V}}", from=1-3, to=1-1]
-        \arrow["{f_{V}}", from=1-1, to=3-1]
-        \arrow["{g_{E}}"', from=3-5, to=3-1]
-        \arrow["c"', from=1-5, to=3-5]
-    \end{tikzcd}
+	{i + j + x + y} && {i+j + x} && {i+j} \\
+	\\
+	{i + j + x + y + z} &&&& {i + j + w \cong i + j + z}
+	\arrow["{h_{V,ext}}"', from=1-5, to=1-3]
+	\arrow["{h_{V,int}}"', from=1-3, to=1-1]
+	\arrow["{m_{V}}"', from=1-1, to=3-1]
+	\arrow["{g_{V}}", from=3-5, to=3-1]
+	\arrow["c_{V}"', from=1-5, to=3-5]
+\end{tikzcd}
     \]
     Because $i + j + x + y + w$ also yields a pushout it must be the case that $i+j+x+y+w \cong i + j + x + y + z$ and therefore $w \cong z$ and pushout complement for nodes is $i + j + z$ up to isomorphism.
     To show that pushout complement is unique we next need to show that source and target maps are unique.
     Suppose that there exist
     \[
-        C_{1} = (V_{C}, V_{E}, s_{1},t)
+        \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s_{1},t)
+    \qquad
+    \text{and}
+    \qquad
+        \mathcal{L}^{\bot}_{2} = (V_{\mathcal{L}^{\bot}},E_{\mathcal{L}^{\bot}},s_{2},t)
     \]
-    and
-    \[
-        C_{2} = (V_{C},V_{E},s_{2},t)
-    \]
-    Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{1}(h)) = s_{G}^{*}(g_{E}(h)) = g_{V}^{*}(s_{2}(h))$.
-    Because $g$ is mono, $g_{V}^{*}(s_{1}(h)) = g_{V}^{*}(s_{2}(h))$ implies $s_{1}(h) = s_{2}(h)$.
+    Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{1}(e)) = s_{\mathcal{G}}^{*}(g_{E}(e)) = g_{V}^{*}(s_{2}(e))$.
+    Because $g$ is mono, $g_{V}^{*}(s_{1}(e)) = g_{V}^{*}(s_{2}(e))$ implies $s_{1}(e) = s_{2}(e)$.
     Similarly for targets.
-    We also need to show that $<_{c}$ and $\consistency^{\mu}$ are unique.
+    We also need to show that $<$ and $\consistency$ are unique.
     Suppose that there exist
     \[
-        C_{1} = (V_{C}, V_{E}, s,t, <_{1})
+        \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s,t, <_{1})
+    \qquad
+    \text{and}
+    \qquad
+        \mathcal{L}^{\bot}_{2} = (V_{\mathcal{L}^{\bot}},E_{\mathcal{L}^{\bot}},s,t, <_{2})
     \]
-    and
+    Because $g$ is homomorphism, it must be the case that 
     \[
-        C_{2} = (V_{C},V_{E},s,t, <_{2})
+        g_{E}(<_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) = <_{\mathcal{G}}(\iota_{V_{\mathcal{G}}}(g_{V}(v))) = g_{E}(<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)))
     \]
-    Because $g$ is homomorphism, it must be the case that $g_{E}(<_{1}(i_{V_{C}}(v))) = <_{G}(i_{V_{G}}(g_{V}(v))) = g_{E}(<_{2}(i_{V_{C}}(v)))$ which implies $<_{2}(i_{V_{C}}(v)) = <_{1}(i_{V_{C}}(v))$ for all $v$ such that $[v) \not = \varnothing$.
+    which implies $<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) = <_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))$ for all $v$ such that $[v) \not = \varnothing$.
     Similarly for edges.
-    Now suppose that $<_{1}(i_{V_{C}}(v)) = e$ and $<_{2}(i_{V_{C}}(v))$ is undefined.
-    Then, $g_{E}(e) = <_{G}(i_{V_{G}}(g_{V}(v)))$ and there exists $v' \in V_{L}$ and $v'' \in V_{C_{2}}$ such that $[v') \not = \varnothing$ and there is a path from $v$ to $v''$ and $v''$ and $v'$ share a pre-image in $i+j$.
-    However, because there is a path from $v$ to $v''$ it must be the case that $[v'') \not = \varnothing$ in $C_{1}$, but then it violates our assumptions as there exists some node $u$ in $i+j$ such that $v'' = c_{V}(u)$ and $[v'') \not = \varnothing$ and $v' = b_{V};a_{V}(u)$ and $[v') \not = \varnothing$.
+    Now suppose that $<_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) = e$ and $<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v))$ is undefined.
+    Then, $g_{E}(e) = <_{\mathcal{G}}(\iota_{V_{\mathcal{G}}}(g_{V}(v)))$ and there exists $v' \in V_{\mathcal{L}}$ and $v'' \in V_{\mathcal{L}^{\bot}_{2}}$ such that $[v') \not = \varnothing$ and there is a path from $v$ to $v''$ and $v''$ and $v'$ share a pre-image in $i+j$.
+    However, because there is a path from $v$ to $v''$ it must be the case that $[v'') \not = \varnothing$ in $\mathcal{L}^{\bot}_{1}$, but then it violates our assumptions as there exists some vertex $u$ in $i+j$ such that $v'' = c_{V}(u)$ and $[v'') \not = \varnothing$ and $v' = h_{V,ext};h_{V,int}(u)$ and $[v') \not = \varnothing$.
     Therefore we get a contradiction. 
     Similarly for edges.
     Finally, let's suppose there exist
     \[
-        C_{1} = (V_{C}, V_{E}, s,t, <, \consistency_{1}^{\mu})
-    \]
-    and
-    \[
-        C_{2} = (V_{C},V_{E},s,t,<, \consistency_{2}^{\mu})
+        \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s,t, <, \consistency_{1})
+    \quad
+    \text{and}
+    \quad
+        \mathcal{L}^{\bot}_{2} = (V_{\mathcal{L}^{\bot}},V_{\mathcal{L}^{\bot}},s,t,<, \consistency_{2})
     \]
     Because $g$ is a homomorphism, we have
     \[
-        \langle g_{V};i_{V_{G}}, g_{E};i_{E_{G}} \rangle^{*}(\consistency_{C_1}^{\mu}(i_{V_{C}}(v))) \subseteq \consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v))
+        [~g_{V};\iota_{V_{\mathcal{G}}}, g_{E};\iota_{E_{\mathcal{G}}}~]^{*}(\consistency_{\mathcal{L}^{\bot}_{1}}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) \subseteq \consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v))
     \]
     \[
-        \langle g_{V};i_{V_{G}}, g_{E};i_{E_{G}} \rangle^{*}(\consistency_{C_2}^{\mu}(i_{V_{C}}(v))) \subseteq \consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v))  
+        [~g_{V};\iota_{V_{G}}, g_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{L}^{\bot}_{2}}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) \subseteq \consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v))
     \]
     \begin{itemize}
-        \item If $\consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v)) = \varnothing$ then both lefthand sides should be $\varnothing$ and the relations are equal.
-        \item Suppose that $\consistency_{G}^{\mu}(g_{V};i_{V_{G}}(v)) \not = \varnothing$ which further means that $[g_{V};i_{V_{G}}(v)) \not = \varnothing$.
+        \item If $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) = \varnothing$ then both lefthand sides should be $\varnothing$ and therefore the relations are equal.
+        \item Suppose that $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) \not = \varnothing$ which further means that $[g_{V};\iota_{V_{\mathcal{G}}}(v)) \not = \varnothing$.
+              Consider the following cases.
         \begin{itemize}
-            \item $\consistency_{C_1}^{\mu}(i_{V_{C}}(v)) \subseteq \consistency_{C_2}^{\mu}(i_{V_{C}}(v))$.
-                  This means that there exists $v'$ such that $v' \consistency_{C_{2}}^{\mu} v$ and $v' \not \consistency_{C_{1}}^{\mu} v$.
-                  Because $g_{V}(v) \consistency^{\mu} v'$ it means that there exists $u,u'$ such that there is a path from $v$ to $u$ and from $v'$ to $u'$ and there exist $w,w' \in V_{L}$ such that $w \consistency_{L}^{\mu} w'$ and $w,u$ share pre-image in $i+j$ as well as $w',u'$.
-                  This again contradicts our assumptions as $u \consistency_{C_{2}}^{\mu} u'$ and $w \consistency_{L}^{\mu} w'$.
-            \item $\consistency_{C_1}^{\mu}(i_{V_{C}}(v)) \cap \consistency_{C_2}^{\mu}(i_{V_{C}}(v)) = \varnothing$
+            \item $\consistency_{\mathcal{L}^{\bot}_{1}}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) \subseteq \consistency_{\mathcal{L}^{\bot}_{2}}(\iota_{V_{\mathcal{L}^{\bot}}}(v))$.
+                  This means that there exists $v'$ such that 
+                  \[
+                    v' \consistency_{\mathcal{L}^{\bot}_{2}} v
+                    \quad
+                    \text{and}
+                    \quad
+                    v' \not \consistency_{\mathcal{L}^{\bot}_{1}} v
+                \]
+                  Because $g_{V}(v) \consistency_{\mathcal{G}} g_{V}(v')$ it means that there exist $u,u'$ such that there is a path from $v$ to $u$ and from $v'$ to $u'$ and there exist $w,w' \in V_{\mathcal{L}}$ such that $w \consistency_{\mathcal{L}} w'$ and $w,u$ share pre-image in $i+j$ as well as $w',u'$.
+                  This again contradicts our assumptions as $u \consistency_{\mathcal{L}^{\bot}_{2}} u'$ and $w \consistency_{\mathcal{L}} w'$.
+            \item $\consistency_{\mathcal{L}^{\bot}_{1}}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) \cap \consistency_{\mathcal{L}^{\bot}_{2}}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) = \varnothing$
                   Similar to the above.
-            \item $\consistency_{C_1}^{\mu}(i_{V_{C}}(v)) \cap \consistency_{C_2}^{\mu}(i_{V_{C}}(v)) \not = \varnothing$
+            \item $\consistency_{\mathcal{L}^{\bot}_{1}}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) \cap \consistency_{\mathcal{L}^{\bot}_{2}}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) \not = \varnothing$
                   Similar to the above.
         \end{itemize}
     \end{itemize}
