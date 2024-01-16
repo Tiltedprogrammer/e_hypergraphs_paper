@@ -361,12 +361,10 @@ However, these concepts must be now generalised from hypergraphs to \textit{e-hy
 Giving the appropriate definitions turns out to be a technical matter of some complexity, and constitutes the main body of the paper. 
 
 \subsection{Soundness and Completeness}
-The main technical result of the paper is a proof of soundness and completeness of the combinatorial representation for semilattice enriched SMCs, extending the results of \cite{bonchi_string_2022-2} for plain SMCs. While the structural equalities of SMCs are factored out in the representation,  important structural equalities arising from the enrichment (see the equations of Figure \ref{fig:string-equations}) are not, and should not be. They represent the un/sharing of subdiagrams with respect to the e-box structure,  which is precisely what allows for the compact representation of equivalence classes.  Instead, we consider DPO-rewrites implementing both the structural equalities for enrichment (which involve the e-box structure) and the equalities arising from the generating monoidal theory (which do not).  
+While the design of an appropriate combinatorial representation of semilattice enriched SMCs is delicate,  the main technical result of the paper is a proof of soundness and completeness of this representation.  This extends the results of \cite{bonchi_string_2022-2} for plain SMCs. While the structural equalities of SMCs are factored out in the representation,  those arising from the enrichment (see the equations of Figure \ref{fig:string-equations}) are not, and should not be. They represent the un/sharing of subdiagrams with respect to the e-box structure,  which is precisely what allows for the compact representation of equivalence classes.  Instead, we consider DPO-rewrites implementing both the structural equalities for enrichment (which involve the e-box structure) and the equalities arising from the generating monoidal theory (which do not).  
 
-Quotienting e-hypergraphs by the induced equivalence gives rise to a sound and complete model of semilattice enriched SMCs.  That is, we exhibit a translation functor $\llbracket-\rrbracket$ from the free semilattice enriched SMC over a symmetric monoidal theory to our (quotiented) category of e-hypergraphs such that 
-morphisms $f = g$ if and only if there exists a sequence of DPO-rewrites (each induced by a structural equality or the monoidal theory) between their translations: $\llbracket f \rrbracket \rightsquigarrow_{DPO} \llbracket g \rrbracket$. 
-
-DAN: THIS NEEDS EXPANDING. EXPLAINING IN PLAIN WORDS SOME OF THE THEORETICAL PROPERTIES OF E-GRAPHS AND THE CATEGORICAL STATEMENT. 
+Precisely,  our soundness and completeness result is the statement that,  for any morphisms $f$ and $g$ in an appropriate free semilattice-enriched SMC,  $f = g$  if and only if there exists a sequence of DPO-rewrites --- each induced by a structural equality or the monoidal theory --- between their combinatorial representations. 
+In the particular case of a monoidal signature including natural copy and delete maps,  we thus recover a sound and complete representation of semilattice-enriched Cartesian categories,  with the translation described earlier in the introduction justifying our claim of developing a mathematical theory of e-graphs. 
 
 %\subsection{E-matching and E-rewriting}
 %
@@ -380,11 +378,9 @@ DAN: THIS NEEDS EXPANDING. EXPLAINING IN PLAIN WORDS SOME OF THE THEORETICAL PRO
 
 \subsection{Related Work}
 
-Although e-graphs were first developed in the 80's \cite{nelson1980techniques}, there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.  This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.  We are hopeful that our novel perspective on e-graphs can be extended to give uniform foundations to these investigations.  Some further avenues for investigation, including potential applications, are given in the conclusion of this paper. 
+Although e-graphs were first developed in the 80's \cite{nelson1980techniques}, there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesizers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.  This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.  We are hopeful that our novel perspective on e-graphs can be extended to give uniform foundations to these investigations.  Some further avenues for investigation, including potential applications, are given in the conclusion of this paper. 
 
 Our use of string diagrams is also central to the intuition behind our work.  There is a breadth of work on similar string diagrammatic formalisms,  including hierarchical string diagrams \cite{ghica_hierarchical_2023} and functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
-
-CHRIS: CITE HASEGAWA - TRACE MONOIDAL CATEGORIES, AND PERDIX. 
 Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}. 
 DAN: THIS NEEDS TO BE CAREFULLY EXPANDED TO NOT OFFEND POTENTIAL REVIEWERS. 
 
@@ -564,7 +560,7 @@ We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of MDA-cospans.
 \end{definition}
 Note that $\MdaCospans$ remains a symmetric monoidal category with the same equipment as before.  In fact,  due to 
 \cite{bonchi_string_2022-2},  we have the following theorem which says the category $\MdaCospans$ is in fact \textit{equivalent} to $\textbf{PROP}(\Sigma)$. 
-\begin{theorem}[Corollary 26~\cite{bonchi_string_2022-2}]
+\begin{theorem}[Corollary 26~\cite{bonchi_string_2022-2}]\label{thm:prop-equiv}
     $\textbf{PROP}(\Sigma) \cong \MdaCospans$
 \end{theorem}
 
@@ -667,16 +663,14 @@ and the following conditions hold
 \end{itemize}
 \end{definition}
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
-
-CHRIS: WANT TO STATE THE CORRESPONDENCE THEOREM WITH SMTS HERE? NEED TO DEFINE $\lceil-\rceil$ AND INTERPRETATION? Hmm
-DAN: I THINK THIS PRELIMINARY SECTION IS VERY LONG. UNLESS WE USE THIS THEOREM IN THE PAPER LATER CAN WE JUST STATE IT INFORMALLY, WITHOUT INTRODUCING THIS NOTATION? IF THE NOTATION IS USED, IT MUST BE DEFINED. 
-\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
-For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
-\[
-	f = g \iff \llangle \lceil f \rceil \rrangle \Rrightarrow^*_{\mathfrak{R}} \llangle \lceil g \rceil \rrangle~, 
-\]
-where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ and $ \Rrightarrow^*_{\mathfrak{R}}$ denotes the existence of a sequence of convex rewrites. 
-\end{theorem}
+We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  but the work proves that for any morphisms $f$ and $g$ in $\mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that $f = g$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as hypergraphs.  In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
+%\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
+%For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
+%\[
+%	f = g \iff \llangle \lceil f \rceil \rrangle \Rrightarrow^*_{\mathfrak{R}} \llangle \lceil g \rceil \rrangle~, 
+%\]
+%where $\mathfrak{R} = \llangle \lceil \mathcal{E} \rceil \rrangle$ and $ \Rrightarrow^*_{\mathfrak{R}}$ denotes the existence of a sequence of convex rewrites. 
+%\end{theorem}
 \section{E-Hypergraphs}\label{sec:e-hypergraphs}
 
 Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
