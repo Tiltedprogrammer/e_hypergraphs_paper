@@ -484,6 +484,7 @@ In this section,  we recall the fundamental definitions and results of string di
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $\psi$ to a relation on ordered sequences. 
+We will sometimes use functional notation for relations,  so that given $R \subseteq V \times W$ and $v \in V$,  $R(v) \subseteq W$. 
 We elide associativity and unit isomorphisms associated with coproducts $(+)$,  and denote by $\iota_j: X_{j} \rightarrow X_{1} + \ldots X_{j} + \ldots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]: A_1 + A_2 \to B$ the co-pairing of two morphisms $f: A_1 \to B$ and $g:A_2 \to B$. 
 We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightarrow{g} B$.
 
@@ -570,13 +571,14 @@ DPO rewriting is a standard technique for formalising graph rewriting categorica
 In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting. 
 
 The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalized as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
-A typical DPO square looks as follows,  where the two marked squares are pushouts. 
+
 % \[
 % \begin{tikzcd}
 % \mathcal L \arrow[d, "m"'] & \mathcal K \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
 % \mathcal G^{\urcorner}     & \mathcal C \arrow[l] \arrow[r] & ^{\ulcorner} \mathcal H
 % \end{tikzcd}
 % \]
+CHRIS: WHY IS J DISPLAYING AND NOT R? 
 \[
     \scalebox{0.8}{
         \tikzfig{combinatorial_semantics/DPO_square}
@@ -586,7 +588,7 @@ A typical DPO square looks as follows,  where the two marked squares are pushout
 The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement}---the pair of morphisms $\mathcal K \to \mathcal C \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal C$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is the recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$--hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
 
 To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI).
-In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  Thus we reach the following variant of DPO rewriting. 
+In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  We now make this identification throughout without further mention.  Thus we reach the following variant of DPO rewriting. 
 \begin{definition}[DPOI rewriting]\label{def:dpoi}
 Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
 % \[
@@ -607,7 +609,7 @@ We need to restrict the notions of pushout complement and of match in order to p
 \begin{definition}[Boundary complement]
 \label{def:boundary_original}
 For monogamous cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} \mathcal G \xleftarrow{b_2} m$
-and mono $f : \mathcal L \to \mathcal G$, a pushout complement as depicted in the square below
+and mono $f : \mathcal L \to \mathcal G$, a pushout complement $i + j \to \mathcal{L}^\bot \to \mathcal G$ as depicted in the square below
 
 % \begin{figure}[h!]
 %     \centering
@@ -655,7 +657,7 @@ We call a match $m : \mathcal L \to \mathcal G$ a \emph{convex match} if it is m
 \begin{definition}[Convex DPOI rewriting]
 \label{def:convex_dpo}
 Let $\mathfrak{R}$ be a set of DPOI rewrite rules. 
-Then, given $\mathcal G \xleftarrow{} n+m$ and $\mathcal H \xleftarrow{} n + m$ in $\catname{Hyp(\Sigma)}$, $\mathcal G$ rewrites convexly into $\mathcal H$ with interface $n + m$ --- notation $(\mathcal G \xleftarrow{} n + m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n + m )$ --- if there exist rule $\mathcal L \xleftarrow{} i + j \xrightarrow{} \mathcal R$ in $\mathcal{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} \mathcal C \xleftarrow{} n+m$ such that the DPOI diagram of Definition \ref{def:dpoi} commutes and its marked squares are pushouts 
+Then, given $\mathcal G \xleftarrow{} n+m$ and $\mathcal H \xleftarrow{} n + m$ in $\catname{Hyp(\Sigma)}$, $\mathcal G$ rewrites convexly into $\mathcal H$ with interface $n + m$ --- notation $(\mathcal G \xleftarrow{} n + m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n + m )$ --- if there exist rule $\mathcal L \xleftarrow{} i + j \xrightarrow{} \mathcal R$ in $\mathfrak{R}$ and object $C$ and cospan arrows $i+j \xrightarrow{} \mathcal C \xleftarrow{} n+m$ such that the DPOI diagram of Definition \ref{def:dpoi} commutes and its marked squares are pushouts 
 and the following conditions hold
 \begin{itemize}
     \item $m : L \to \mathcal G$ is a convex match;
@@ -677,7 +679,7 @@ Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hier
 
 Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$ containing only morphisms $f: n \to m$ where either $n$ or $m$ are non-zero.  This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there. 
 
-In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$. 
+In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.  
 
 \begin{definition}[E-hypergraphs]
 \label{def:e-homo}    
@@ -699,7 +701,7 @@ The consistency equivalence relation must additionally satisfy that if $v \in s(
 \label{def:consistency_properties}
 \end{definition}
 Intuitively,  the child relation equips the hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of  string diagrams.  
-These edges can be designated as "parents" to sub-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the sub-hypergraph below the hierarchical edge.  
+These edges can be designated as "parents" to sub-e-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the maximal sub-e-hypergraph below the hierarchical edge.  
 Technically,  condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for conditions $(1)$ of the consistency relation. 
 \begin{definition}[E-hypergraph homomorphism]
 An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
@@ -745,6 +747,8 @@ When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hyper
 \end{remark}
 
 When modelling enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extened cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
+
+We use the notation $n \setminus m$ to denote the discrete hypergraph with $n - m$ nodes,  in particular with removal of the nodes of $m$ removed from $n$ when nodes of $m$ are identified within $n$.
 \begin{definition}[Category of e-hypergraphs with interfaces]
     The category of \textit{e-hypergraphs with interfaces} $\Ecospans$ has discrete e-hypergraphs as objects,  with homsets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
     \[
@@ -756,32 +760,34 @@ This justifies calling $n$  \textit{external input interfaces} and $n'$ \textit{
 We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n, n', m$ and $m'$ with their images in $\mathcal{G}$. 
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.  
     
-    Two cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute.
+    Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute.
     \[
     \scalebox{0.75}{
         \tikzfig{combinatorial_semantics/isomorphic_e_cospans}
     }
     \]
-Composition of two morphisms $h_1 : n \to m$ and $h_2 : m \to k$ is computed in two stages.
-First, $\mathcal{H} = \mathcal{F} +_{f_{ext}, g_{ext}} \mathcal{G}$ is computed,  as shown below. 
-
+Composition of two morphisms 
+\begin{align*}
+	n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} &\mathcal{F} \xleftarrow{f'_{int}} m' \xleftarrow{f'_{ext}} m\\
+	m \xrightarrow{g_{ext}} m'\!' \xrightarrow{g_{int}} &\mathcal{G} \xleftarrow{g'_{int}} k' \xleftarrow{g'_{ext}} k
+\end{align*} is computed in two stages.
+First, $\mathcal{H}$ is computed as the result of the pushout square shown below; 
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
-
 \[
 \trimbox{0cm 0cm 0cm 1cm}{
 \adjustbox{scale=0.9,center}
 {\tikzfig{combinatorial_semantics/pushout_e_cospans}}
 }
 \]
-Then, new feet for $\mathcal{H}$ are computed as below
+then,  the result of composition is defined as follows:
 \[
-n \xrightarrow{f_{ext};\iota_1} n' \uplus (m'' \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k' \uplus (m' \setminus m) \xleftarrow{g'_{ext};\iota_1} k
+n \xrightarrow{f_{ext};\iota_1} n' + (m'' \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k' + (m' \setminus m) \xleftarrow{g'_{ext};\iota_1} k
 \]
-where
+where $h_i$ are defined as follows,  using $|$ to denote the restriction of a function on a discrete e-hypergraph. 
 \[
-    h_1 = [ f_{int};p_1, ~g_{int}|_{m'' \setminus m};p_2 ]
+    h_1 = [ f_{int};p_1, ~(g_{int};p_2)|_{m'' \setminus m} ]
 \qquad
-    h_2 = [ g'_{int};p_2, ~f'_{int}|_{m' \setminus m};p_1 ]
+    h_2 = [ g'_{int};p_2, ~(f'_{int};p_1)|_{m' \setminus m} ]
 \]
 % \[
 % \begin{tikzcd}
@@ -794,7 +800,6 @@ where
 The identity of composition is given by the obvious extended cospan of identities. 
 $\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp({\Sigma}})$,  analogously to Definition~\ref{def:cspd}.  
 \end{definition}
-CHRIS: UPDATE DIAGRAMS TO USE MY NEW NOTATION,  TAKE LESS VERTICAL SPACE.  FIND CLEANER WAY TO WRITE NEW FEET.  USE $\iota$ FOR INJECTIONS
 
 As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism). 
 Unlike in the previous section,  we require (extended) cospans to consist of monomorphisms.  This is to ensure the existence of the pushouts needed for composition,  since pushouts do not necessarily exist in $\textbf{EHyp}(\Sigma)$.  This also means that we omit the monomorphism condition from the following definition.  We additionally introduce a notion of \textit{well-typing} of e-hypergraphs,  which ensures each component of an e-box has the same number of inputs (outputs) as every other component. 
@@ -832,39 +837,37 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 
 \section{DPOI-Rewriting for E-Hypergraphs}
 
-CHRIS: REMARK THAT WE CANNOT DEAL WITH SIGNATURES WITH $f:0 \to 0$ MORPHISMS, AND WHY!
-Because extended cospans have a more general notion of interface, DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments.
-First, the existence of \textit{internal} interfaces needs to be accounted for,  and in particular that internal interfaces are not necessarily preserved during rewriting.
-The former means that we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching external interfaces.
+Because extended cospans have a more general notion of interface,  including \textit{internal} nodes,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments. This is the purpose of this section of the paper. 
+
+We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
+Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessaril internal) interfaces,  as follows. 
 \[
-    i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
-\qquad \text{and} \qquad
-    i \xrightarrow{} i'' \xrightarrow{} \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j
-\]
-We will next use the fact that cospans
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{L} \xleftarrow{} m' \xleftarrow{} m
+\qquad
+    n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m
+\] 
+Analogous to Section \ref{sec:combinatorial-semantics},  we observing that the following extended cospans express the same data
 \[
-    i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
-\qquad \text{and} \qquad
-    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j
-\]
-endcode the same data and only consider cospans of the form
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m
+\qquad
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
+\] allows us to encode rewrite rules as extended cospans of the following form
 \[
-\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-\] to fit the DPO formalism.
-We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
-To illustrate the non-preservation of internal interfaces, consider the rewrite rule above and the following e-hypergraph with interfaces to perform the rewrite on
-% \[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
-% such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
-\[
-    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
-\] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$  and assume $i' \not \cong i''$ and $j' \not \cong j''$.
-When removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of $\mathcal{G}$ should be modified to exclude the vertices that were a part of (the image of) $\mathcal{L}$'s strict internal interfaces.
-Then, when gluing $\mathcal{R}$ into the created context, we need to introduce strict internal interfaces of $\mathcal{R}$ into this context.
-In particular, it means that the internal interfaces of the resulting cospan of e-hypergraphs
-\[
-    \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k 
-\]
-not necessarily coincides with the internal interfaces of the initial cospan.
+\mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R}
+\] which will fit into the DPO formalism. We make this identification throughout,  without further mention . 
+%We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
+
+\begin{remark}
+There is a limitation of EDPOI rewriting as defined in this section: it is unable to express rewriting
+for rules whose target contains an edge with no incident vertices.  
+While this limitation can be overcome,  we find the technical development (relating to the child and consistency relations) to be significantly simpler if we simply avoid consideration of such edges.  
+For this reason,  in the remainder of the paper we consider signatures which do not contain $c: 0 \to 0$,  thus restricting possible e-hypergraphs to those without such problematic edges. 
+%This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
+%We claim that this is only a minor limitation because in practice such edges (morphisms) with no
+%incident nodes correspond to ‘scalars’, if we consider for example a category of vector spaces, and scalars are usually removed by being absorbed by vectors rather than introduced during rewrites.
+\end{remark}
+
+
 % The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
 % Note that the outermost interfaces are preserved.
 
@@ -879,58 +882,9 @@ not necessarily coincides with the internal interfaces of the initial cospan.
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
-To account for such changes in the interfaces, consider additional structure on DPOI rewriting for $\catname{EHyp({\Sigma})}$, summarised in the definition below.
-\begin{definition}[Extended DPOI (EDPOI) rewriting]
-\label{def:dpoi-e}
-Given a span of morphisms 
-\[
-    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
-\]
-in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites to} $\mathcal{H}$ \textit{with external interface} $n + k$ \textit{via a rewrite rule} 
-\[
-    \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-\]
-if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
-% \[\begin{tikzcd}
-% 	&&&& {i + j} \\
-% 	{l_i+l_o} && L &&&& R && {r_i+r_o} \\
-% 	\\
-% 	{g_i+g_o} && {G^{\urcorner}} && C && {^{\ulcorner}H} && {h_i+h_o} \\
-% 	\\
-% 	&&&& {n+m}
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=2-3]
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=2-7]
-% 	\arrow["m", color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=4-3]
-% 	\arrow["{[i_c,j_c]}", color={rgb,255:red,214;green,92;blue,92}, from=1-5, to=4-5]
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=2-7, to=4-7]
-% 	\arrow["{[n_c,m_c]}"', color={rgb,255:red,214;green,92;blue,92}, from=6-5, to=4-5]
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=4-5, to=4-7]
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=4-5, to=4-3]
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=6-5, to=4-3]
-% 	\arrow[color={rgb,255:red,214;green,92;blue,92}, from=6-5, to=4-7]
-% 	\arrow[from=2-1, to=2-3]
-% 	\arrow["{[f_i,f_o]}", from=2-1, to=4-1]
-% 	\arrow[from=4-1, to=4-3]
-% 	\arrow[from=2-9, to=2-7]
-% 	\arrow[from=4-9, to=4-7]
-% 	\arrow["{[h_i,h_o]}"{description}, from=2-9, to=4-9]
-% 	\arrow[from=6-5, to=4-9]
-% 	\arrow[from=6-5, to=4-1]
-% 	\arrow["{[i_l,j_l]}"{description}, from=1-5, to=2-1]
-% 	\arrow["{[i_r,j_r]}"{description}, from=1-5, to=2-9]
-% \end{tikzcd}\]
+To guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph we must revise the definition of boundary complement.
 
-
-% https://q.uiver.app/#q=WzAsMTEsWzIsMCwiTCJdLFs0LDAsInhfe2V4dH0gKyB5X3tleHR9Il0sWzIsMiwiR157XFx1cmNvcm5lcn0iXSxbNCwyLCJDIl0sWzQsNCwibl97ZXh0fSttX3tleHR9Il0sWzAsMCwibF9pK2xfbyJdLFswLDIsImdfaStnX28iXSxbNiwwLCJSIl0sWzYsMiwiXntcXHVsY29ybmVyfUgiXSxbOCwyLCJoX2kraF9vIl0sWzgsMCwicl9pK3JfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXSxbNCw4LCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFszLDgsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzcsOCwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbMSw3LCIiLDIseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxMCw3XSxbOSw4XV0=
-\[
- \scalebox{0.75}{
-    \tikzfig{combinatorial_semantics/DPOI_square}
- }
-\]
-\end{definition}
-To guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph boundary complement also requires a revised definition.
-
-\begin{definition}[Boundary complement in $\WellTypedMdaEcospans$]
+\begin{definition}[Extended boundary complement]
 \label{def:boundary_new}
 
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
@@ -940,10 +894,7 @@ For monogamous extended cospans
     i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
 \quad\text{ and }\quad
     n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
-\] and mono $f : \mathcal{L} \to \mathcal{G}$, a pushout complement 
-\[
-    i + j \to \mathcal{L}^{\bot} \to \mathcal{G}
-\] 
+\] and mono $f : \mathcal{L} \to \mathcal{G}$ in $\catname{EHyp(\Sigma)}$, a pushout complement $i + j \to \mathcal{L}^{\bot} \to \mathcal{G}$
 as depicted in the square below
 \[
 \scalebox{0.75}{
@@ -951,23 +902,13 @@ as depicted in the square below
     \tikzfig{combinatorial_semantics/DPOI_pushout_complement}
 }
 \]
-
-is a \textit{boundary} complement if the following holds
-\begin{enumerate}
-    \item $[c_1,c_2]$ is mono 
-    \item there exist $d_1 : n \to \mathcal{C}$ and $d_2 : k \to \mathcal{C}$ making the above triangle commute
-    \item there exists a \textit{not necessarily well-typed} mda-cospan
+is a \textit{boundary} complement if $[c_1,c_2]$ is mono and there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute,  such that
     \[
-    n \xrightarrow{} l + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} r + i \xleftarrow{} k
+    n \xrightarrow{} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{} k
     \]
-\end{enumerate}
+is a \textit{not necessarily well-typed} extended mda-cospan.
 
-where $l$ and $r$ are
-\[
-    l = n' \setminus (i' \setminus i)
-\quad\text{ and }\quad
-    r = k' \setminus (j' \setminus j).
-\]
+CHRIS: TRY TO DEFINE G1, G2 AS SIMPLY AS POSSIBLE, AND POSSIBLY ADD AN INFORMAL EXPLANATION BELOW THE DEFINITION. 
 Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed, apart from the part that has a pre-image in $i + j$, there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
 \[
     D = \{ v \in n' \text{ such that } \not \exists u \in (i' \setminus i) ~ . ~ g_{int}(v) = f'_{int};f(u) \}
@@ -978,8 +919,9 @@ That is, it is a morphism $f: n \to l$ such that $d_1 = f;g_1$.
 Similarly for $k \to r$.
 \end{definition}
 
-The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
-The only difference is that we account for internal interfaces to require monogamous-ness and these interfaces must be computed explicitly to define the monogamous cospan.
+%The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
+%CHRIS: THE FOLLOWING SENTENCE IS UNCLEAR. 
+%The only difference is that we account for internal interfaces to require monogamous-ness and these interfaces must be computed explicitly to define the monogamous cospan.
 %
 %\begin{figure}
 %    \centering
@@ -991,57 +933,60 @@ The only difference is that we account for internal interfaces to require monoga
 
 % The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
 
-\begin{remark}
-Note that cospan 
-\[
-    n \xrightarrow{} l + j \xrightarrow{} C \xleftarrow{} r + i \xleftarrow{} k
-\] is not necessarily well-typed.
-The cospan's input internal interface may contain nodes that previously were a part of the output internal interface and similarly for output internal interface.
-\end{remark}
-
-\begin{remark}
-The uniqueness and existence properties of boundary complements as defined above are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
-\end{remark}
+Note that,  in the above definition,  the extended cospan 
+    \[
+    n \xrightarrow{} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{} k
+    \]
+ is not necessarily well-typed.
+This is because its input internal interface may contain nodes that previously were a part of the output internal interface and vice versa. 
+%The uniqueness and existence properties of boundary complements as defined above are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
 
 
 % \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
 %     The boundary complement in~\ref{def:boundary_new} when exists is unique.
 % \end{proposition}
 
-\begin{definition}[Subgraph]
-
-A \textit{subgraph} of an e-hypergraph 
-\[
-    \mathcal{G} = \{V_{\mathcal{G}}, E_{\mathcal{G}}, s_{\mathcal{G}}, t_{\mathcal{G}}, l, <_{G},\consistency_{\mathcal{G}}\}
-\]
-is an e-hypergraph 
-\[
-    \mathcal{H} = \{V_{\mathcal{H}}, E_{\mathcal{H}}, s_{\mathcal{H}}, t_{\mathcal{H}}, l, <_{H},\consistency_{\mathcal{H}}\}
-\] such that $V_{\mathcal{H}} \subseteq V_{\mathcal{G}}$, $E_{\mathcal{H}} \subseteq E_{\mathcal{G}}$ and such that $<_{\mathcal{H}}$ and $\consistency_{\mathcal{H}}$ both satisfy the properties from~\ref{def:e-homo}.
-\end{definition}
+The appropriate notion of \textit{match} for our hierarchical setting additionally requires that its image is a \textit{down-closed} graph,  as defined below. 
+This ensures the result of a rewrite is a well-typed MDA e-hypergraph. 
 
 \begin{definition}[Down-closed subgraph]
-    We call a subgraph $\mathcal{H}$ of an e-hypergraph $\mathcal{G}$ \emph{down-closed} if for all $e \in E_{\mathcal{H}}$,   all children of $r$ are also in $\mathcal{H}$.
+%A \textit{subgraph} of $\mathcal G $ an e-hypergraph $\mathcal H$ 
+%is an e-hypergraph whose edge and vertex sets are subsets of those of $\mathcal H$, 
+%and whose remaining equipment is a restriction of that of $\mathcal H$ to those sets. 
+    We call  a sub-e-hypergraph $\mathcal G $ of $\mathcal H$ \emph{down-closed} if for all $e \in E_{\mathcal{G}}$,   all children of $e$ are also in $\mathcal{G}$.
 \end{definition}    
 
-\begin{definition}[Convex down-closed match] 
-    We call $m : L \to G$ in $\catname{EHyp(\Sigma)}$ a \textit{convex down-closed match} if
-    
-    \begin{enumerate}
-        \item $m$ is a monomorphism
-        \item $m(L)$ is a convex down-closed subgraph of $G$
-        \item $[m(v_i)) = [m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
-        \item $\consistency^{\mu}(m(v_i)) = \consistency^{\mu}(m(v_j))$ for all $v_i,v_j$ that have a pre-image in $V_{Z}$.
-    \end{enumerate}
-\end{definition}
+We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  for e-hypergraphs with interfaces,  which we will later use to show the equivalence between $\textsf{PROP}^+(\Sigma)$ and $\WellTypedMdaEcospans$.
+It is analogous to Definition~\ref{def:convex_dpo},  except we must construct internal interfaces explicitly.
+%To illustrate the non-preservation of internal interfaces, consider the rewrite rule above and the following e-hypergraph with interfaces to perform the rewrite on
+% \[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
+% such that $x' \not \cong x''$ and $y' \not \cong y''$ and consider the following e-hypergraph to perform the rewrite on
+%\[
+%    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
+%\] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$  and assume $i' \not \cong i''$ and $j' \not \cong j''$.
 
-The conditions (3)-(4), in particular, prohibit a match $\{f \mapsto f, g \mapsto g\}$ in $\mathcal{L} =$ $\scalebox{0.4}{\tikzfig{combinatorial_semantics/f_times_g}}$ and $\mathcal{G} =$ $\scalebox{0.4}{\tikzfig{combinatorial_semantics/f_plus_g_inline}}$.
+More precisely, when removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
+Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
 
-We are now ready to define the \textit{convex} rewriting for e-hypergraphs with interfaces which we will later use to show the equivalence between $\textsf{PROP}(\Sigma)$ and $\WellTypedMdaEcospans$.
-It will be analogous to the one from Definition~\ref{def:convex_dpo} but again, to make sure the resulting cospan of e-hypergraphs is monogamous we will have to construct internal interfaces separately.
-We will also limit matches to convex down-closed ones both to guarantee an mda result and so that the result is a well-defined e-hypergraph.
-
+CHRIS: TODO: COMBINE TWO EDPOI DEFINITIONS
 \begin{definition}[Convex EDPOI rewriting]
+	
+\label{def:dpoi-e}
+Given a span of morphisms 
+\[
+    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
+\]
+in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites to} $\mathcal{H}$ \textit{with external interface} $n + k$ \textit{via a rewrite rule} 
+\[
+    \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+\]
+if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
+\[
+ \scalebox{0.75}{
+    \tikzfig{combinatorial_semantics/DPOI_square}
+ }
+\]
+
     Let $\mathfrak{R}$ be a set of EDPOI rewrite rules.
     Then, given 
     \[
@@ -1059,10 +1004,12 @@ We will also limit matches to convex down-closed ones both to guarantee an mda r
 
     \begin{enumerate}
         \label{dpoi-e:assumptions}
-        \item $m : \mathcal{L} \to \mathcal{G}$ is a convex down-closed match;
+        \item $m : \mathcal{L} \to \mathcal{G}$ is a convex match;
+        \item $m(L)$ is a down-closed e-hypergraph;
+        \item all $v,w$ that have a pre-image in $i+j$ share the same set of parents;
+        \item $m(v)  \consistency m(w)$ for all $v,w$ that have a pre-image in $i+j$.
         \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement in the leftmost pushout.
     \end{enumerate}
-\end{definition}
 and
 % The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
 %  \[
@@ -1077,50 +1024,48 @@ and
 \end{align*}
 Since both $f_1$ and $f_2$ are monos, their copairing is also a mono. 
 Similarly for $k'' \to \mathcal{H}$.
-
-\begin{proposition}
-    $n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k$ is a well-typed mda-cospan.
-\end{proposition}
-    
-
-Above we defined rewriting for cospans with empty input interfaces, when we will further build a correspondence between $\textsf{PROP}(\Sigma)^{+}$ and $\WellTypedMdaEcospans$ we will operate with cospans with non-empty input interfaces as well, so below we formulate what it means to rewrite cospans with non-empty input interfaces.
-
-\begin{definition}[Convex EDPOI in $\WellTypedMdaEcospans$]
-    
-We say that an \textit{mda-cospan}
-\[
-    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
-\]
-\textit{rewrites convexly into another mda-cospan}
-
-\[
-    n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k
-\]
-
-under a rewrite rule 
-% \[
-%     \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
-%     x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
-% \]
-
-\[\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}\]
-
-if 
-\begin{align*}    
-    \mathcal{G} \xleftarrow{} n + k \Rrightarrow^{+} \mathcal{H} \xleftarrow{} n + k
-\end{align*}
-under the same rewrite rule.
-We will use the same $\Rrightarrow^{+}$ and the concrete definition will be clear from the context.
-
 \end{definition}
+The conditions (3) and (4) on a match, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
+\[
+	\mathcal{L} = \scalebox{0.8}{\tikzfig{combinatorial_semantics/f_times_g}} \qquad \mathcal{G} = \scalebox{0.6}{\tikzfig{combinatorial_semantics/f_plus_g_inline}}
+\]
 
-\begin{remark}
-There is a minor limitation for EDPOI rewriting above in that it is unable to express rewriting
-for rules that contain an edge with no inputs and outputs on their right-hand side (such edges correspond to morphisms of type $0 \to 0$).
-This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
-We claim that this is only a minor limitation because in practice such edges (morphisms) with no
-incident nodes correspond to ‘scalars’, if we consider for example a category of vector spaces, and scalars are usually removed by being absorbed by vectors rather than introduced during rewrites.
-\end{remark}
+With our modified definition of extended DPOI rewriting in hand,  we proceed to prove that our combinatorial representation of semilattice-enriched SMCs is sound and complete in an appropriate sense. 
+%\begin{proposition}
+%    $n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k$ is a well-typed mda-cospan.
+%\end{proposition}
+   
+%Above we defined rewriting for cospans with empty input interfaces, when we will further build a correspondence between $\textsf{PROP}(\Sigma)^{+}$ and $\WellTypedMdaEcospans$.  %we will operate with cospans with non-empty input interfaces as well, so below we formulate what it means to rewrite cospans with non-empty input interfaces.
+%
+%\begin{definition}[Convex EDPOI in $\WellTypedMdaEcospans$]
+%    
+%We say that an \textit{mda-cospan}
+%\[
+%    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
+%\]
+%\textit{rewrites convexly into another mda-cospan}
+%
+%\[
+%    n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k
+%\]
+%
+%under a rewrite rule 
+%% \[
+%%     \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
+%%     x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
+%% \]
+%
+%\[\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}\]
+%
+%if 
+%\begin{align*}    
+%    \mathcal{G} \xleftarrow{} n + k \Rrightarrow^{+} \mathcal{H} \xleftarrow{} n + k
+%\end{align*}
+%under the same rewrite rule.
+%We will use the same $\Rrightarrow^{+}$ and the concrete definition will be clear from the context.
+%
+%\end{definition}
+%
 
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
@@ -1178,7 +1123,6 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
 It immediately follows that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is a semilattice-enriched PROP,  and $\llbracket - \rrbracket_{\mathcal E}$ is the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself. 
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
 
-CHRIS: NOTE ALSO WEAK NORMAL FORM FOR $\Sigma^+$-TERMS?
 The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
 \label{prop:wnormal_form}
@@ -1188,6 +1132,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 \]
  such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
 \end{proposition}    
+Note that at similar argument can be used to rewrite $\Sigma^+$-terms into a similar form by using only the semilattice-enrichment equations.  
 
 This normal form can be used to prove the main theorem of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
 \begin{theorem}[Completeness]
@@ -1201,8 +1146,8 @@ The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note 
 
 To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma, \mathcal E)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we see that 
 \begin{align*}
-	\llbracket f \rrbracket &= \llbracket f_1 + \ldots + f_n \rrbracket &&= \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \\
-	\llbracket g \rrbracket &= \llbracket g_1 + \ldots + g_m \rrbracket &&= \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
+	\llbracket f \rrbracket = \llbracket f_1 + \ldots + f_n \rrbracket = \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \\
+	\llbracket g \rrbracket = \llbracket g_1 + \ldots + g_m \rrbracket = \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
 \end{align*}
 In particular,  note that $\llbracket - \rrbracket$ preserves weak normal forms.  Therefore $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  Thus if $n \neq m$ we have that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $.  Otherwise,  if $n = m$,  we have that there for every permutation $\sigma$ there exists an index $i$ such that $f_i \neq g_{\sigma(i)}$,  and thus by $(*)$ that $\llbracket f_i \rrbracket \neq \llbracket g_{\sigma(i)} \rrbracket $.  This implies that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $. 
 
@@ -1249,8 +1194,7 @@ Some of these are: support for `functorial boxes'~\cite{mellies} (in addition to
 	\tikzfig{conclusion/example-e-graphs}
 	}
 \]
-\caption{E-graphs for functorial boxes and the ZX-calculus
-DAN: THE LINE BETWEEN THE APPLICATION NODE AND THE BOX IS TOO LONG}
+\caption{E-graphs for functorial boxes and the ZX-calculus}
 \label{fig:app1} 
 \end{figure}
 \begin{figure}
@@ -1265,7 +1209,7 @@ DAN: THE LINE BETWEEN THE APPLICATION NODE AND THE BOX IS TOO LONG}
 
 In each case above,  we aim to combine our combinatorial representation with existing combinatorial representations of the relevant structure.  Indeed,  the hypergraph representation and DPO-rewriting theory of each case is already well-studied independently of any e-graph structure \cite{ghica_rewriting_2023,cite,cite,cite}. % traced comonoid
 %The hierarchical ``e-box'' structure within string diagrams and their associated e-hypergraphs (categorically modelled by semilattice enrichment) is essentially orthogonal to these developments. Combining the two, to give notions of e-hypergraphs specifically suited to these particular monoidal theories should be conceptually straightforward.  However, as we have seen in this paper, the technical details can be delicate. 
-Finally,  a term calculus (e-terms) can be reverse engineered from the string-diagram notation~\cite{ghica_structural_nominal}. Although term calculi are less important in the algorithmics of optimisation, they still play a role in specification and in aiding readability.  
+Finally,  a term calculus (e-terms) can be reverse engineered from the string-diagram notation~\cite{ghica_structural_nominal, Heijltjes:FMCII}. Although term calculi are less important in the algorithmics of optimisation, they still play a role in specification and in aiding readability.  
 
 \bibliographystyle{acm}
 \bibliography{bibliography}
