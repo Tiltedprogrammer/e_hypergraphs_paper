@@ -748,7 +748,7 @@ When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hyper
 
 When modelling enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extened cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
 
-We use the notation $n \setminus m$ to denote the discrete hypergraph with $n - m$ nodes,  in particular with removal of the nodes of $m$ removed from $n$ when nodes of $m$ are identified within $n$.
+We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n - m$ nodes,  in particular with the nodes of $m$ removed from $n$ when nodes of $m$ is a sub-e-hypergraph of $n$.
 \begin{definition}[Category of e-hypergraphs with interfaces]
     The category of \textit{e-hypergraphs with interfaces} $\Ecospans$ has discrete e-hypergraphs as objects,  with homsets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
     \[
@@ -757,7 +757,7 @@ We use the notation $n \setminus m$ to denote the discrete hypergraph with $n - 
     where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete e-hypergraphs,  $f_{ext},f_{int},g_{ext},g_{int}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and that that vertices in the strictly internal interface (defined below) are not top-level. 
 
 This justifies calling $n$  \textit{external input interfaces} and $n'$ \textit{internal input (output) interfaces}.  We call $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.  We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
-We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n, n', m$ and $m'$ with their images in $\mathcal{G}$. 
+We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n'$ and $m'$,  and likewise $m, m, n', m'$ with their images in $\mathcal{G}$. 
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.  
     
     Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute.
@@ -1069,7 +1069,10 @@ With our modified definition of extended DPOI rewriting in hand,  we proceed to 
 
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
-CHRIS: INTRO. 
+This section contains the main technical results of the paper,  building on those of \cite{bonchi_string_2022-2}. 
+We first construct an interpretation of terms generating $\textbf{PROP}^+(\Sigma)$ in $\WellTypedMdaEcospans$.  
+As expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
+Instead,  we implement the semilattice equations via EDPOI rewrites,  leading to the following soundness and completeness result: for any morphisms $f$ and $g$ in $\textbf{SMT}(\Sigma, \mathcal E)$,  $f = g$  if and only if there exists a sequence of EDPOI-rewrites --- each induced by either a structural semilattice equation or $\mathcal E$ --- between their combinatorial representations. 
 
 \begin{figure}
     \[
@@ -1085,7 +1088,7 @@ CHRIS: INTRO.
 Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
 Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sigma_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  We will write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  
 
-We wish to specify a set of DPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.  In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of terms in $\WellTypedMdaEcospans$ (as given by the free functor from $\textbf{PROP}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
+We wish to specify a set of EDPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.  In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of $\Sigma$-terms in $\WellTypedMdaEcospans$ (as given by the free functor from $\textbf{PROP}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
 \begin{definition}[Interpretation function] 
 %Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
 Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by induction on the type derivation of $\Sigma$-terms by 
@@ -1098,30 +1101,36 @@ Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)
 where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
 \end{definition}
 
-Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms). 
+In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$,  and completeness is expressed as the faithfulness of this functor.  In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
+
+We define the appropriate notion of quotient by EDPOI rewrites below.  Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms). 
 % \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
-CHRIS: COMMENT THAT WE QUOTIENT TO PHRASE CATEGORICALLY OUR RESULTS. 
 \begin{definition}[Quotient by rewrites]  
 Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
 \[
-	f \sim g \quad \text{if} \quad f \Rrightarrow^{+,*}_{\llbracket \mathcal E \rrbracket} g ~ . 
+	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\llbracket \mathcal E \rrbracket} g ~ . 
 \]
 \end{definition}
-In particular,  let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
-This quotient in fact turns the interpretation function into a proper functor $\llbracket - \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which can further be quotiented to account for extra equations $\mathcal E$ arising in symmetric monoidal theories,  as below. 
-\[
-	\llbracket - \rrbracket_{\mathcal E}: \textbf{SMT}^+(\Sigma, \mathcal E) \to \WellTypedMdaEcospans/{\mathcal{S,E}}
-\]
 
 Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts (and pushout complements) for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist.  
+Let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
 %Let $\mathcal E$ be an arbitrary set of $\Sigma$-equations. 
-Thus we have the following result. 
+Then we have the following result. 
 \begin{proposition}[Soundness]
 \label{prop:soundness}
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
-It immediately follows that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is a semilattice-enriched PROP,  and $\llbracket - \rrbracket_{\mathcal E}$ is the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself. 
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
+
+The reason for calling the previous result \textit{soundness} is that the interpretation function on $\Sigma^+$-terms induces a semilattice-enriched SMC functor $\llbracket - \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which further induces the following semilattice-enriched SMC functor,  for a set of equations $\mathcal E$:
+\[
+	\llbracket - \rrbracket_{\mathcal E}: \textbf{SMT}^+(\Sigma, \mathcal E) \to \WellTypedMdaEcospans/{\mathcal{S,E}}
+\]
+which by uniqueness must be the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself.  Unfolding definitions,  it follows that
+\[
+	f = g \quad \Rightarrow \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
+\]
+Note that it is immediate from the previous result that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is indeed a semilattice-enriched PROP.  
 
 The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed in an obvious way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
@@ -1132,10 +1141,10 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 \]
  such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
 \end{proposition}    
-Note that at similar argument can be used to rewrite $\Sigma^+$-terms into a similar form by using only the semilattice-enrichment equations.  
+The proof follows the familar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
 
 This normal form can be used to prove the main theorem of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
-\begin{theorem}[Completeness]
+\begin{theorem}[Full completeness]
 We have the following equivalence of categories
 \[
 	\textbf{SMT}^{+}(\Sigma, \mathcal {E} ) \cong \WellTypedMdaEcospans / \mathcal{S,E}~.
@@ -1154,11 +1163,11 @@ In particular,  note that $\llbracket - \rrbracket$ preserves weak normal forms.
 To see that the functor is full,  consider a cospan $f$ in $\WellTypedMdaEcospans$.  We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ is a plain MDA cospan.  Thus,  by $(*)$ we can find morphisms $g_i$ such that $\llbracket g_i \rrbracket = f_i$.  Thus,  we have a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
 \end{proof}
 
-Unfolding the definitions,  we can spell out the previous theorem in terms of DPO-rewriting. 
+Unfolding the definitions,  we can spell out the previous theorem in terms of EDPOI-rewriting. 
 \begin{corollary}[Completeness of rewriting]
 For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 \[
-	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^{+,*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
+	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
 \]
  \end{corollary}
 %
@@ -1176,7 +1185,7 @@ For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 %\begin{theorem}
 %    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
 %\end{theorem}
-CHRIS: CONCLUDING STATEMENT.  COMMENT ABOUT GENERALIZATION TO DIRECTED REWRITES. 
+Note that in string diagram rewrite theory as developed in \cite{bonchi_string_2022-2},  some extra steps are taken to prove the claim that $f \rightsquigarrow g$ if and only if $\llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket$,  for an appropriate definition of $\Sigma$-term rewriting $\rightsquigarrow$.  We omit this extra detail for brevity and clarity,  dealing with equational theories rather than rewrite theories,  but it is straightforward to extend our results to prove an analogous claim.  
 
 \section{Conclusion}
 
