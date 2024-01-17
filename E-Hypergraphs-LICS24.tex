@@ -320,12 +320,11 @@ From the saturated graph the optimal term consisting of only the node $a$ can be
 \]
 \caption{String diagrams for semilattice enriched symmetric monoidal categories.}
 \end{figure}\label{fig:egraph-strings}
-CHRIS: DONT USE PHI/PSI FOR DIAGRAMS, USE F,G 
 
 Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
 makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
 \[
-\infer{\phi_1 + \ldots + \phi_n: A \to B}{\{\phi_i: A \to B\}_{i \in \{1,\ldots,n\}}}
+\infer{f_1 + \ldots + f_n: A \to B}{\{f_i: A \to B\}_{i \in \{1,\ldots,n\}}}
 \]
 The ability to take formal (non-empty) joins of morphisms is used to model the equivalence class structure of e-graphs.  
 
@@ -750,11 +749,11 @@ When modelling enriched string diagrams using e-hypergraphs,  we require to keep
 
 We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n - m$ nodes,  in particular with the nodes of $m$ removed from $n$ when nodes of $m$ is a sub-e-hypergraph of $n$.
 \begin{definition}[Category of e-hypergraphs with interfaces]
-    The category of \textit{e-hypergraphs with interfaces} $\Ecospans$ has discrete e-hypergraphs as objects,  with homsets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
+    The category of \textit{e-hypergraphs with extended interfaces} $\Ecospans$ has discrete e-hypergraphs as objects,  with homsets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
     \[
     n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
     \]
-    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete e-hypergraphs,  $f_{ext},f_{int},g_{ext},g_{int}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and that that vertices in the strictly internal interface (defined below) are not top-level. 
+    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete e-hypergraphs,  $f_{ext},f_{int},g_{ext},g_{int}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and that that vertices in the strictly internal interface (defined below) are not top-level.  We will sometimes write $\mathcal G$ to denote the extended cospan,  where it is clear from context $\mathcal G$ is equipped with extended interfaces. 
 
 This justifies calling $n$  \textit{external input interfaces} and $n'$ \textit{internal input (output) interfaces}.  We call $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.  We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
 We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n'$ and $m'$,  and likewise $m, m, n', m'$ with their images in $\mathcal{G}$. 
@@ -840,7 +839,7 @@ Unlike in the previous section,  in order to give an equivalence with $\textbf{P
 Because extended cospans have a more general notion of interface,  including \textit{internal} nodes,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments. This is the purpose of this section of the paper. 
 
 We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
-Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessaril internal) interfaces,  as follows. 
+Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows. 
 \[
     n \xrightarrow{} n' \xrightarrow{} \mathcal{L} \xleftarrow{} m' \xleftarrow{} m
 \qquad
@@ -857,10 +856,12 @@ Analogous to Section \ref{sec:combinatorial-semantics},  we observing that the f
 \] which will fit into the DPO formalism. We make this identification throughout,  without further mention . 
 %We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
 
+Before introducing our definition of \textit{extended} DPOI rewriting,  we must modify the definition of boundary complement to guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph. 
+
 \begin{remark}
-There is a limitation of EDPOI rewriting as defined in this section: it is unable to express rewriting
+There is a limitation of extended DPOI rewriting as defined in this section: it is unable to express rewriting
 for rules whose target contains an edge with no incident vertices.  
-While this limitation can be overcome,  we find the technical development (relating to the child and consistency relations) to be significantly simpler if we simply avoid consideration of such edges.  
+While this limitation can be overcome,  we find the technical development to be significantly simpler if we simply avoid consideration of such edges.  
 For this reason,  in the remainder of the paper we consider signatures which do not contain $c: 0 \to 0$,  thus restricting possible e-hypergraphs to those without such problematic edges. 
 %This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
 %We claim that this is only a minor limitation because in practice such edges (morphisms) with no
@@ -881,8 +882,6 @@ For this reason,  in the remainder of the paper we consider signatures which do 
 % The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
-
-To guarantee that the rewriting yields a monogamous directed acyclic e-hypergraph we must revise the definition of boundary complement.
 
 \begin{definition}[Extended boundary complement]
 \label{def:boundary_new}
@@ -956,7 +955,7 @@ This ensures the result of a rewrite is a well-typed MDA e-hypergraph.
     We call  a sub-e-hypergraph $\mathcal G $ of $\mathcal H$ \emph{down-closed} if for all $e \in E_{\mathcal{G}}$,   all children of $e$ are also in $\mathcal{G}$.
 \end{definition}    
 
-We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  for e-hypergraphs with interfaces,  which we will later use to show the equivalence between $\textsf{PROP}^+(\Sigma)$ and $\WellTypedMdaEcospans$.
+We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  
 It is analogous to Definition~\ref{def:convex_dpo},  except we must construct internal interfaces explicitly.
 %To illustrate the non-preservation of internal interfaces, consider the rewrite rule above and the following e-hypergraph with interfaces to perform the rewrite on
 % \[\langle x \xrightarrow{} x' \xrightarrow{} \mathcal{L} \xleftarrow{} y' \xleftarrow{} y, x \xrightarrow{} x'' \xrightarrow{} \mathcal{R} \xleftarrow{} y'' \xleftarrow{} y \rangle \]
@@ -968,62 +967,48 @@ It is analogous to Definition~\ref{def:convex_dpo},  except we must construct in
 More precisely, when removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
 Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
 
-CHRIS: TODO: COMBINE TWO EDPOI DEFINITIONS
+CHRIS: FIX BELOW DEFINITION. 
 \begin{definition}[Convex EDPOI rewriting]
-	
 \label{def:dpoi-e}
-Given a span of morphisms 
+Given an extended span of morphisms 
 \[
     \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
 \]
-in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites to} $\mathcal{H}$ \textit{with external interface} $n + k$ \textit{via a rewrite rule} 
+in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites (convexly) to} $\mathcal{H}$ (\textit{with external interface} $n + k$ and \textit{taking internal interface} $n'+k'$ \textit{to} $n'' + k''$) --- denoted by $\mathcal{G} \Rrightarrow \mathcal H$  --- \textit{via a rewrite rule} 
 \[
     \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-\]
+\] 
 if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram such that the two marked squares are pushouts.
 \[
  \scalebox{0.75}{
     \tikzfig{combinatorial_semantics/DPOI_square}
  }
 \]
-
-    Let $\mathfrak{R}$ be a set of EDPOI rewrite rules.
-    Then, given 
-    \[
-        \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
-    \quad 
-    \text{and} 
-    \quad
-        \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
-    \] in $\catname{EHyp(\Sigma)}$ with the external interfaces $n + k$, $\mathcal{G}$ \textit{rewrites convexly into} $\mathcal{H}$ \textit{with the outermost interface} $n + k$ --- notation $( \mathcal{G} \xleftarrow{} n + k) \Rrightarrow_{\mathfrak{R}}^{+} (\mathcal{H} \xleftarrow{} n + k)$ --- if there exists a rule 
-    \[
-        \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-    \] 
-    with the external interfaces $i + j$ in $\mathfrak{R}$ and object $\mathcal{C}$ and cospan arrows $i + j \xrightarrow{} \mathcal{C} \xleftarrow{} n + k$ 
-    such that the diagram of Definition~\ref{def:dpoi-e} commutes and its marked squares are pushouts, and the following conditions hold
-
+ and the following conditions hold:
     \begin{enumerate}
         \label{dpoi-e:assumptions}
         \item $m : \mathcal{L} \to \mathcal{G}$ is a convex match;
         \item $m(L)$ is a down-closed e-hypergraph;
-        \item all $v,w$ that have a pre-image in $i+j$ share the same set of parents;
-        \item $m(v)  \consistency m(w)$ for all $v,w$ that have a pre-image in $i+j$.
-        \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement in the leftmost pushout.
+        \item all elements in the image of $i+j$ share the same set of parents;
+        \item $m(v)  \consistency m(w)$ for all $v,w$ in the image of $i+j$.
+        \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement;
+	\item the internal interfaces are given by the following:
+		\begin{align*}
+		&n'' = (i'' \setminus i) + l\\
+		&k'' = (j'' \setminus j) + r\\
+		&n'' \to \mathcal{H} = [f_1,f_2] \text{ where }\\
+		&f_1 : i'' \setminus i \to \mathcal{R} \to \mathcal{H}\\ 
+		&f_2 : l \to \mathcal{C} \to \mathcal{H} 
+		\end{align*}
     \end{enumerate}
-and
 % The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
 %  \[
 %     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
 % \]
-\begin{align*}
-&n'' = (i'' \setminus i) + l\\
-&k'' = (j'' \setminus j) + r\\
-&n'' \to \mathcal{H} = [f_1,f_2] \text{ where }\\
-&f_1 : i'' \setminus i \to \mathcal{R} \to \mathcal{H}\\ 
-&f_2 : l \to \mathcal{C} \to \mathcal{H} 
-\end{align*}
 Since both $f_1$ and $f_2$ are monos, their copairing is also a mono. 
 Similarly for $k'' \to \mathcal{H}$.
+
+    Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ if there exists a sequence of such rewrites. 
 \end{definition}
 The conditions (3) and (4) on a match, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
 \[
@@ -1031,6 +1016,8 @@ The conditions (3) and (4) on a match, in particular, prohibit finding a match f
 \]
 
 With our modified definition of extended DPOI rewriting in hand,  we proceed to prove that our combinatorial representation of semilattice-enriched SMCs is sound and complete in an appropriate sense. 
+
+
 %\begin{proposition}
 %    $n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k$ is a well-typed mda-cospan.
 %\end{proposition}
@@ -1093,7 +1080,7 @@ We wish to specify a set of EDPOI rewrite rules corresponding to those in Figure
 %Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
 Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by induction on the type derivation of $\Sigma$-terms by 
 \begin{align*}
-	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket \phi ; \psi \rrbracket_{n,m} &= \llbracket \phi \rrbracket_{n,m} ; \llbracket \psi \rrbracket_{n,m} \\
+	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket f ; g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} ; \llbracket g \rrbracket_{n,m} \\
 	\llbracket 1 \rrbracket_{n,m} &= 1 & \llbracket f \otimes g \rrbracket_{n,m} &= \llbracket f \rrbracket^+_{n,m} \otimes \llbracket g \rrbracket_{n,m} \\
 	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
 	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket^+_{n,m}
