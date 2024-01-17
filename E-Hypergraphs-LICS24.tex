@@ -967,7 +967,6 @@ It is analogous to Definition~\ref{def:convex_dpo},  except we must construct in
 More precisely, when removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
 Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
 
-CHRIS: FIX BELOW DEFINITION. 
 \begin{definition}[Convex EDPOI rewriting]
 \label{def:dpoi-e}
 Given an extended span of morphisms 
@@ -989,8 +988,6 @@ such that the two marked squares are pushouts and the following conditions hold:
         \label{dpoi-e:assumptions}
         \item $m : \mathcal{L} \to \mathcal{G}$ is a convex match;
         \item $m(L)$ is a down-closed e-hypergraph;
-        \item all elements in the image of $i+j$ share the same set of parents;
-        \item $m(v)  \consistency m(w)$ for all $v,w$ in the image of $i+j$.
         \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement;
 	\item the internal interfaces are given by the following:
 		\begin{align*}
@@ -1005,16 +1002,17 @@ such that the two marked squares are pushouts and the following conditions hold:
 %  \[
 %     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
 % \]
-Since both $f_1$ and $f_2$ are monos, their copairing is also a mono. 
+Since both $f_1$ and $f_2$ are monos with disjoint image (?), their copairing is also a mono. 
 Similarly for $k'' \to \mathcal{H}$.
+CHRIS: FIX (4) ABOVE:  
 
     Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ if there exists a sequence of such rewrites. 
 \end{definition}
-The conditions (3) and (4) on a match, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
-\[
-	\mathcal{L} = \scalebox{0.8}{\tikzfig{combinatorial_semantics/f_times_g}} \qquad \mathcal{G} = \scalebox{0.6}{\tikzfig{combinatorial_semantics/f_plus_g_inline}}
-\]
-
+%The conditions above, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
+%\[
+%	\mathcal{L} = \scalebox{0.8}{\tikzfig{combinatorial_semantics/f_times_g}} \qquad \mathcal{G} = \scalebox{0.6}{\tikzfig{combinatorial_semantics/f_plus_g_inline}}
+%\]
+%We use 
 With our modified definition of extended DPOI rewriting in hand,  we proceed to prove that our combinatorial representation of semilattice-enriched SMCs is sound and complete in an appropriate sense. 
 
 
@@ -1085,7 +1083,7 @@ Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)
 	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
 	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket^+_{n,m}
 \end{align*}
-where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
+where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  It uses the notation of dashed blue boxes for hierarchical edges, with its children drawn inside,  and maximally consistent components seperated by another dashed line.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
 \end{definition}
 
 In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$,  and completeness is expressed as the faithfulness of this functor.  In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
