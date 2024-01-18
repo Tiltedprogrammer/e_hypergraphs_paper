@@ -901,13 +901,12 @@ as depicted in the square below
     \tikzfig{combinatorial_semantics/DPOI_pushout_complement}
 }
 \]
-is a \textit{boundary} complement if
+is a \textit{boundary complement} if
 \begin{enumerate} 
-    \item the image of $m$ is a convex down-closed e-hypergraph
-    \item $[c_1,c_2]$ is mono
-    \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute
-    \item all $v,w$ in $\mathcal{G}$ with the pre-image in $i + j$ share the same set of parents
-    \item either for all $v,w$ in $\mathcal{G}$ with the pre-image in $i+j$, $v \consistency w$, or for all $v,w$ in $\mathcal{G}$ with the pre-image in $i+j$ $\consistency$ is undefined
+    \item $m(\mathcal L)$ is a convex down-closed e-hypergraph;
+    \item $[c_1,c_2]$ is mono;
+    \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same set of parents, and either $v,w$ are top-level or else $v \consistency w$;
+    \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended mda-cospan
     \[
     n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
@@ -917,17 +916,20 @@ is a \textit{boundary} complement if
     n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
     \]
 \end{enumerate}
-
-We first note that because the image of $m$ is a convex down-closed e-hypergraph, $i' \setminus i$, which is a strict internal interface of $\mathcal{L}$, is necessarily mapped to vertices in the strict internal interface of $\mathcal{G}$ which are also in the image of $n'$ and therefore we can construct a morphism $f' : i' \setminus i \to n'$ by first following $m$ and then composing with the partial inverse of $g_{int}$ which exists because it is mono. 
-Then we define $n' \setminus (i' \setminus i)$ as the pushout complement in the diagram below
-
-\[
-    \tikzfig{combinatorial_semantics/pushout_difference}
-\]
-and $g_1$ is obtained by composition $g';g_{int}$ and then composing with the inverse of $l$.
-Similarly for $g_2$.
-$f_1$ is given by $g_{ext}$ with its codomain restricted to $n' \setminus (i' \setminus i)$ --- noting the image of $g_{ext}$ lies within $n' \setminus (i' \setminus i)$.
-Similarly for $f_2$.
+where $f_1$ is given by $g_{ext}$ with its codomain restricted to $n' \setminus (i' \setminus i)$ --- noting the image of $g_{ext}$ indeed lies within $n' \setminus (i' \setminus i)$ --- and 
+similarly for $f_2$. The map $g_1$ is derived from $g_{int}$ as follows. 
+ %because the image of $m$ is a convex down-closed e-hypergraph, 
+Note that the internal interface $i'$ of $\mathcal L$ is mapped to the internal interface $n'$ of $\mathcal G$,  since $\mathcal L$ is a down-closed subgraph of $\mathcal G$.  This induces an identification of $i'$ in  $n'$ which restricts to an identification of $i'\setminus i$ in $n'$. 
+This gives rise to a restriction of $g_{int}$ of type $n' \setminus (i' \setminus i) \to \mathcal G$.  Since $\mathcal L^\bot$ can be identified within $\mathcal G$ --- and in particular has the internal interface of $\mathcal G$ minus $i' \setminus i$ --- this observation induces the map $g_1:  n' \setminus (i' \setminus i) \to \mathcal{L}^\bot$ from $g_{int}$.  A similar argument defines $g_2$. 
+%$i' \setminus i$, which is a strict internal interface of $\mathcal{L}$, is necessarily mapped to vertices in the strict internal interface of $\mathcal{G}$ which are also in the image of $n'$ and therefore we can construct a 
+%morphism $f' : i' \setminus i \to n'$ by first following $m$ and then composing with the partial inverse of $g_{int}$ which exists because it is mono. 
+%Then we define $n' \setminus (i' \setminus i)$ as the pushout complement in the diagram below
+%
+%\[
+%    \tikzfig{combinatorial_semantics/pushout_difference}
+%\]
+%and $g_1$ is obtained by composition $g';g_{int}$ and then composing with the inverse of $l$.
+%Similarly for $g_2$.
 % CHRIS: TRY TO DEFINE G1, G2 AS SIMPLY AS POSSIBLE, AND POSSIBLY ADD AN INFORMAL EXPLANATION BELOW THE DEFINITION. 
 % Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed, apart from the part that has a pre-image in $i + j$, there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
 % \[
@@ -1009,27 +1011,19 @@ if there exists an object $\mathcal{C}$ and morphisms which complete the followi
 such that the two marked squares are pushouts and the following conditions hold:
     \begin{enumerate}
         \label{dpoi-e:assumptions}
-        \item $m : \mathcal{L} \to \mathcal{G}$ is a convex match;
-        \item $m(L)$ is a down-closed e-hypergraph;
+       % \item $m : \mathcal{L} \to \mathcal{G}$ is a convex match;
+        %\item $m(L)$ is a down-closed e-hypergraph;
         \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement;
 	\item the internal interfaces of $\mathcal H$ are such that:
 	\[
 		n'' = n' \setminus (i' \setminus i) + (i'' \setminus i) \qquad k'' = k' \setminus (j' \setminus j) +  (j'' \setminus j)\\
 	\]
-		\begin{align*}
-		&f_1 : i'' \setminus i \to \mathcal{R} \to \mathcal{H} & \\ 
-		&f_2 : n' \setminus (i' \setminus i) \to \mathcal{C} \to \mathcal{H} & \\
-		\end{align*}
+	\item the map $f = [f_1,f_2]: n'' \to \mathcal H$ in the diagram above is defined as in Definition \ref{def:boundary_new} of boundary complement,  and $f_2$ as the restiction of the composite $i'' \to \mathcal R \to \mathcal H$ and,  and similarly for the map $g: k'' \to \mathcal H$.  
     \end{enumerate}
 % The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
 %  \[
 %     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
 % \]
-
-$[f_1,f_2]: n'' \to \mathcal{H} $
-Since both $f_1$ and $f_2$ are monos with disjoint image (?), their copairing is also a mono.  Note $f_1$ is the obvious restriction,  $f_2$ is defined as $g_2$ in boundary complement. 
-CHRIS: FIX (4) ABOVE:  
-
     Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that via it $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ if there exists a sequence of such rewrites. 
 \end{definition}
 The boundary complement conditions, in particular, prohibits finding a match for $\mathcal L$ in $\mathcal G$,  below.  
