@@ -883,6 +883,15 @@ For this reason,  in the remainder of the paper we consider signatures which do 
 % Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
 % Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
 
+
+The appropriate notion of \textit{match} for our hierarchical setting additionally requires that its image is a \textit{down-closed} graph,  as defined below. 
+\begin{definition}[Down-closed subgraph]
+%A \textit{subgraph} of $\mathcal G $ an e-hypergraph $\mathcal H$ 
+%is an e-hypergraph whose edge and vertex sets are subsets of those of $\mathcal H$, 
+%and whose remaining equipment is a restriction of that of $\mathcal H$ to those sets. 
+    We call  a sub-e-hypergraph $\mathcal G $ of $\mathcal H$ \emph{down-closed} if for all $e \in E_{\mathcal{G}}$,   all children of $e$ are also in $\mathcal{G}$.
+\end{definition}    
+
 \begin{definition}[Extended boundary complement]
 \label{def:boundary_new}
 
@@ -970,14 +979,6 @@ This is because its input internal interface may contain nodes that previously w
 % \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
 %     The boundary complement in~\ref{def:boundary_new} when exists is unique.
 % \end{proposition}
-
-The appropriate notion of \textit{match} for our hierarchical setting additionally requires that its image is a \textit{down-closed} graph,  as defined below. 
-\begin{definition}[Down-closed subgraph]
-%A \textit{subgraph} of $\mathcal G $ an e-hypergraph $\mathcal H$ 
-%is an e-hypergraph whose edge and vertex sets are subsets of those of $\mathcal H$, 
-%and whose remaining equipment is a restriction of that of $\mathcal H$ to those sets. 
-    We call  a sub-e-hypergraph $\mathcal G $ of $\mathcal H$ \emph{down-closed} if for all $e \in E_{\mathcal{G}}$,   all children of $e$ are also in $\mathcal{G}$.
-\end{definition}    
 
 We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  
 It is analogous to Definition~\ref{def:convex_dpo},  except we must construct internal interfaces explicitly.
