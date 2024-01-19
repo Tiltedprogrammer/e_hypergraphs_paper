@@ -62,6 +62,7 @@
 %\usepackage{minted}
 
 \usepackage{subcaption}
+\usepackage{caption}
 
 \usepackage{hyperref}
 
@@ -318,15 +319,17 @@ From the saturated graph the optimal term consisting of only the node $a$ can be
 	\tikzfig{categorical-semantics/egraph-strings}
 	}
 \]
+\captionsetup{belowskip=-5ex}
 \caption{String diagrams for semilattice enriched symmetric monoidal categories.}
-\end{figure}\label{fig:egraph-strings}
+\label{fig:egraph-strings}
+\end{figure}
 
 Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
-makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator  
+makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator
 \[
 \infer{f_1 + \ldots + f_n: A \to B}{\{f_i: A \to B\}_{i \in \{1,\ldots,n\}}}
 \]
-The ability to take formal (non-empty) joins of morphisms is used to model the equivalence class structure of e-graphs.  
+The ability to take formal (non-empty) joins of morphisms is used to model the equivalence class structure of e-graphs.
 
 String diagrams are read from bottom-to-top; we consider additional generators for the duplication and deletion transformations of a Cartesian category.  Note, further, that in the Cartesian case we can restrict to generating morphisms $c$ to have a single output,  without loss of generality,  by applying the universal properties of the Cartesian product.  This means the (informal) translation given below is fully general for acyclic e-graphs. 
 
@@ -1233,7 +1236,7 @@ Finally,  a term calculus (e-terms) can be reverse engineered from the string-di
 \subsection{Proof of the existence of pushouts}
 
 \begin{remark}
-    Both $<$ and $\consistency$ can be considered as functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of verticies and edges.
+    Both $<$ and $\consistency$ can be considered as functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
     To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either a vertex or an edge into these functions.
     For example, an immediate successor of a vertex $x$ can be written functionally as $<_{\mathcal{F}}^{\mu}(\iota_{V_{\mathcal{F}}}(x))$.
 \end{remark}
@@ -1333,7 +1336,7 @@ then the pushout $X +_{f,g} Y$ exists.
 and let relations $R_{V},R_{E}$ be their reflexive symmetric and transitive closures respectively.
 
 
-We then quotient the set verticies and edges in $X + Y$ by $R_{V}$ and $R_{E}$ respectively.
+We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ respectively.
     \begin{align*}
         \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{&\\
             &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})}, \sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
@@ -1409,7 +1412,7 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
         \] 
     \end{enumerate}
     % We will also build this relation in steps, first we do steps for vertices (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for vertices until fixed point.
-    % Essentially, this interleaving means that verticies inherit the relation from incident edges and vice versa.
+    % Essentially, this interleaving means that vertices inherit the relation from incident edges and vice versa.
     Clearly, all the cases above are disjoint.
 
     Let's show that the definition does not depend on a particular choice of $[v]$ in (4).
@@ -1448,7 +1451,7 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
     \end{itemize}
 
     Let's check that this is a well-defined function.
-    Suppose $t_1, t_2$ are verticies and $t_1 \sim t_2$, then $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[t_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[t_2])$.
+    Suppose $t_1, t_2$ are vertices and $t_1 \sim t_2$, then $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[t_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[t_2])$.
     $t_1 \sim t_2$ implies there is $z$ such that $t_1 = f_{V};\iota_{1,V}(z)$ and $t_2 = g_{V};\iota_{2,V}(z)$ and two cases
     \begin{itemize}
         \item $[f_{V}(z)) \not = \varnothing$ and $[g_{V}(z)) = \varnothing$
@@ -1534,7 +1537,7 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
     \end{enumerate}
     
 
-    and for verticies
+    and for vertices
     \begin{enumerate}
 
     \item If there exists $v' \in V_{X+Y}$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$
@@ -1897,7 +1900,7 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
 \label{prop:boundary_complement}
     The boundary complement in~\ref{def:boundary_new} when exists is unique
     \begin{proof}
-        The pushout in $EHyp_{\Sigma}$ should also be a pushout on the underlying sets of verticies and hyperedges.
+        The pushout in $EHyp_{\Sigma}$ should also be a pushout on the underlying sets of vertices and hyperedges.
         Hence, pushout complement should yield pushout complements for the corresponding sets.
         In particular,
           % https://q.uiver.app/#q=WzAsNSxbMCwwLCJWX3tMfSJdLFsyLDAsImxfe2l9ICsgbF97b30iXSxbNCwwLCJpK2oiXSxbMCwyLCJWX3tHfSJdLFs0LDIsIlZfe0N9Il0sWzIsMSwiYl97Vn0iXSxbMSwwLCJhX3tWfSJdLFswLDMsImZfe1Z9Il0sWzQsMywiZ197Vn0iLDJdLFsyLDQsImMiLDJdXQ==
@@ -1935,7 +1938,7 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
         \]
         \end{subfigure}
     \end{figure}
-    $V$s and $E$s are sets of verticies and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
+    $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
     Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
     Then, since all the arrows are monos, the first square can be rewritten as follows.
     \[
@@ -2045,7 +2048,7 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
 \begin{proof}
     To prove this statement we essentially need to show that the functor $\llbracket - \rrbracket$ is well-defined, \textit{i.e.}, if $g = h$ in $\textsf{PROP}^{+}(\Sigma)$ then $\llbracket g \rrbracket = \llbracket h \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$ or $\llbracket g \rrbracket \Rrightarrow_{\mathcal{S}}^{*} \llbracket h \rrbracket$ in $\WellTypedMdaEcospans$.
     $g = h$ implies that there is a sequence of SMC and enrichment equations such that when applied to $g$ it is turned into $h$.
-    As SMC laws are subsumed by e-hypergraph representation we need to show that for each enrichment equation $l = r$ that turns $g$ into $h$ there is a pushout complement $\mathcal{C}$ such that $\llbracket g \rrbracket = \mathcal{C}[\llbracket l \rrbracket]$ and such that $\llbracket h \llbracket = \mathcal{C}[\llbracket r \rrbracket]$, where $\mathcal{C}[-]$ is defined by computing the pushout along the common interfaces.
+    As SMC laws are subsumed by e-hypergraph representation we need to show that for each enrichment equation $l = r$ that turns $g$ into $h$ there is a pushout complement $\mathcal{C}$ such that $\llbracket g \rrbracket = \mathcal{C}[\llbracket l \rrbracket]$ and such that $\llbracket h \rrbracket = \mathcal{C}[\llbracket r \rrbracket]$, where $\mathcal{C}[-]$ is defined by computing the pushout along the common interfaces.
     We first note that any subterm of $g$ correspond to a convex down-closed subgraph of $\llbracket f \rrbracket$ and hence there is always a convex down-closed match of $\llbracket l \rrbracket$ within $\llbracket g \rrbracket$.
     We then need to show that for all $\llbracket l \rrbracket = \llbracket r \rrbracket$ in $\mathcal{S}$ the match satisfies the conditions in Proposition~\ref{prop:complement_existence} which will complete the first square of EDPOI and then check that the arrows in the second square satisfy the condition from Theorem~\ref{th:existence_of_pushouts}.
 
@@ -2056,11 +2059,11 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
         \tikzfig{combinatorial_semantics/DPOI_square}
         }
     \]
-    We then further note that if $l$ is a subterm of $g$ then the nodes in the image of input and output external interfaces of $\llbracket l \rrbracket$ in $\llbracket g \rrbracket$ all share the same set of parents and are pairwise consistent.
+    We then further note that if $l$ is a subterm of $g$ then the nodes in the image of input and output external interfaces of $\llbracket l \rrbracket$ in $\llbracket g \rrbracket$ all share the same set of parents and are pairwise consistent if the set of parents is non-empty.
     This satisfies conditions (1)-(2) in Proposition~\ref{prop:complement_existence}.
     The no-dangling condition is satisfied because we consider only mda-cospans.
     Therefore, there exists a pushout complement $\mathcal{C}$ which is $\llbracket g \rrbracket$ with $\llbracket l \rrbracket$ removed.
-    Then necessarily verticies in $\mathcal{C}$ in the image of $i+j$ share the same set of parents and are pairwise consistent as they do in $\mathcal{G}$ so.
+    Then necessarily vertices in $\mathcal{C}$ in the image of $i+j$ share the same set of parents and are pairwise consistent as they do so in $\mathcal{G}$.
     The same is true for the image of $i + j$ in $\mathcal{R}$ and therefore the necessary pushout exists which is $\mathcal{C}$ with $\mathcal{R} = \llbracket r \rrbracket$ glued in and it is equal to $\llbracket h \rrbracket$.
     Hence $\llbracket g \rrbracket \Rrightarrow{} \llbracket h \rrbracket$.
     The rest follows by induction on the number of applied equations.
