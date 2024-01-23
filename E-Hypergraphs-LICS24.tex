@@ -269,7 +269,7 @@ We propose to address this issue via a categorical axiomatisation for e-graphs a
 Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple \textit{semilattice-enriched} Cartesian categories. 
 The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, as encountered in a large body of research. 
 The starting innovation of our approach is the semilattice-enrichment. 
-The \textit{join} operator lifts the formalism so that it can now operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial represetation. 
+The \textit{join} operator lifts the formalism so that it can now operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation. 
 
 Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}. 
 This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
@@ -339,7 +339,7 @@ noting how the typing constraints of the $+$ constructor are satisfied in the im
     \tikzfig{categorical-semantics/egraph-translation-1}
 \]
 Examples of this translation are given in the second row of Figure \ref{fig:e-graph-example}. In particular, note that the translation of the \textit{cyclic} e-graph (e)
-requires the use of a categorical \textit{trace}, generating a cycle. In this paper, we focus on \textit{acyclic} e-graphs and their corresponding catgeories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
+requires the use of a categorical \textit{trace}, generating a cycle. In this paper, we focus on \textit{acyclic} e-graphs and their corresponding categories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
 
 Note that the motivating example of our work, e-graphs, requires the Cartesian structure. 
 However, we will see how all the core of the theory of e-hypergraph rewriting only requires the monoidal structure. 
@@ -396,11 +396,11 @@ In this section,  we introduce the required preliminaries on semilattice enriche
 Given a category $\mathbb{C}$  with objects $A,B \in \mathbb{C}$ we denote by $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $1$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.  
 
 
-\subsection{Symmetric Monoidal Theories and PROPs. }
+\subsection{Symmetric Monoidal Theories and PROPs.}
 
-A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalizations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalize the notion of a signature. 
+A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalisations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalise the notion of a signature. 
 \begin{definition}[Monoidal signature]
-A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $c: n \to m$,  with \textit{arity} $n$ and \textit{coarity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
+A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $c: n \to m$,  with \textit{arity} $n$ and \textit{co-arity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
 \end{definition}
 
 A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
@@ -442,13 +442,13 @@ By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equival
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
 We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane}---a degeneracy we wish to avoid.  More precisely our hom-sets will be given the structure of a semilattice.  
-Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalized to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
+Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalised to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
 \[
 	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
 \]
-is defined as a $M$-morphism.  In other words,  composition must respect the additional structure on hom-sets.  
+is defined as an $M$-morphism.  In other words,  composition must respect the additional structure on hom-sets.  
 In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
-We omit further details of the general case of enrichment here, and instead work with the following more concrete defintion, where $M = \textbf{SLatt}$.  
+We omit further details of the general case of enrichment here, and instead work with the following more concrete definition, where $M = \textbf{SLatt}$.  
 
 \begin{definition}[Semilattice-enriched PROP]\label{def:enriched-prop}
 A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
@@ -497,7 +497,7 @@ We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightar
 \subsection{Hypergraphs}
 
 In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for SMTs including a Frobenius algebra. 
-Hypergraphs generalize graphs by allowing edges to have multiple sources and targets. 
+Hypergraphs generalise graphs by allowing edges to have multiple sources and targets. 
 When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
 However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
 This gives rise to the definition of a hypergraph with interfaces.  
@@ -576,7 +576,7 @@ The correspondence of the previous section means that the symmetric monoidal equ
 DPO rewriting is a standard technique for formalising graph rewriting categorically. 
 In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting. 
 
-The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalized as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
+The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalised as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
 A typical DPO square is depicted in Figure~\ref{fig:dpo_dpoi}~(left).
 
 % \[
@@ -609,7 +609,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
 % \end{tikzcd}
 % \]
 \begin{figure}[t!]
-    \begin{subfigure}{0.45\linewidth}
+    \begin{subfigure}{0.4\linewidth}
     \[
             \scalebox{0.8}{
                 \tikzfig{combinatorial_semantics/DPO_square}
@@ -619,7 +619,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
     % \label{fig:dpo}
     \end{subfigure}
     \hfill
-    \begin{subfigure}{0.45\linewidth}
+    \begin{subfigure}{0.4\linewidth}
         \[
     \scalebox{0.8}{
         \tikzfig{combinatorial_semantics/DPOI_square_Hyp}
@@ -634,7 +634,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
 \end{figure}
 
 \end{definition}
-We need to restrict the notions of pushout complement and of match in order to preserve monogamy and directed acylcicity.  
+We need to restrict the notions of pushout complement and of match in order to preserve monogamy and directed acyclicity.  
 
 \begin{definition}[Boundary complement]
 \label{def:boundary_original}
@@ -701,7 +701,7 @@ We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  
 %\end{theorem}
 \section{E-Hypergraphs}\label{sec:e-hypergraphs}
 
-Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalization of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
+Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalisation of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
 
 Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$ containing only morphisms $f: n \to m$ where either $n$ or $m$ are non-zero.  This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there. 
 
@@ -756,11 +756,11 @@ The category of e-hypergraphs has coproducts,  given by the disjoint union of e-
 When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we assign $\bot$ to be the immediate parent of all $x$ whose immediate parent is in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
 \end{remark}
 
-When modelling enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extened cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
+When modelling enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extended cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
 
 We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n - m$ vertices,  in particular with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub-e-hypergraph of $n$.
 \begin{definition}[Category of e-hypergraphs with interfaces]
-    The category of \textit{e-hypergraphs with extended interfaces} $\Ecospans$ has discrete e-hypergraphs as objects,  with homsets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
+    The category of \textit{e-hypergraphs with extended interfaces} $\Ecospans$ has discrete e-hypergraphs as objects,  with hom-sets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
     \[
     n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
     \]
@@ -845,7 +845,7 @@ Note,  $\MdaEcospans$ is indeed a category,  and in fact inherits the symmetric 
 
 
 
-Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  This is beacuse the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation.  Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve sharing and copying, operations on string diagrams which are not usually quotiented away, cf. string diagrams for Cartesian categories.  An ideal combinatorial representation would factor out the three semilattice equations which \textit{do not} involve sharing and copying (namely,  associativity, commutativity, and idempotence) --- however, a limitation of the current work is that we do not achieve this.  Presently,  we will treat these equations via rewriting as well. 
+Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  This is because the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation.  Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve sharing and copying, operations on string diagrams which are not usually quotiented away, cf. string diagrams for Cartesian categories.  An ideal combinatorial representation would factor out the three semilattice equations which \textit{do not} involve sharing and copying (namely,  associativity, commutativity, and idempotence) --- however, a limitation of the current work is that we do not achieve this.  Presently,  we will treat these equations via rewriting as well. 
 
 \section{DPOI-Rewriting for E-Hypergraphs}
 
@@ -866,7 +866,7 @@ Analogous to Section \ref{sec:combinatorial-semantics}, observing that the follo
 \] allows us to encode rewrite rules as extended cospans of the following form
 \[
 \mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R}
-\] which will fit into the DPO formalism. We make this identification throughout,  without further mention . 
+\] which will fit into the DPO formalism. We make this identification throughout,  without further mention. 
 %We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
 \begin{remark}
 There is a limitation of extended DPOI rewriting as defined in this section: it is unable to express rewriting
@@ -960,8 +960,8 @@ Then map $f_1$ is given by $g_{ext}$ with its codomain restricted to $n' \setmin
 % Similarly for $k \to r$.
 \end{definition}
 
-Intuitively the above definition means that when the occurence of $\mathcal{L}$ within $\mathcal{G}$ is top-level then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces and when the occurence is nested, those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces.
-In both cases when removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding mda-cospans above.
+Intuitively the above definition means that when the occurrence of $\mathcal{L}$ within $\mathcal{G}$ is top-level then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces and when the occurrence is nested, those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces.
+In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding mda-cospans above.
 The morphisms are then constructed correspondingly to require that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
 
 %The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
@@ -1000,7 +1000,7 @@ It is analogous to Definition~\ref{def:convex_dpo},  except we must construct in
 %    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k
 %\] such that there is a matching $m : \mathcal{L} \to \mathcal{G}$  and assume $i' \not \cong i''$ and $j' \not \cong j''$.
 
-More precisely, when removing the occurence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
+More precisely, when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
 Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
 
 \begin{definition}[Convex EDPOI rewriting]
@@ -1029,7 +1029,7 @@ such that the two marked squares are pushouts and the following conditions hold:
 	\[
 		n'' = n' \setminus (i' \setminus i) + (i'' \setminus i) \qquad k'' = k' \setminus (j' \setminus j) +  (j'' \setminus j)\\
 	\]
-	\item the map $f_1 = [g_1,h_1]: n'' \to \mathcal H$ in the diagram above consists of $g_1$ as defined in Definition \ref{def:boundary_new} of boundary complement,  and $h_1$ which is the restiction of the composite $i'' \to \mathcal R \to \mathcal H$ to $i'' \setminus i$,  and similarly for the map $f_2: k'' \to \mathcal H$.  
+	\item the map $f_1 = [g_1,h_1]: n'' \to \mathcal H$ in the diagram above consists of $g_1$ as defined in Definition \ref{def:boundary_new} of boundary complement,  and $h_1$ which is the restriction of the composite $i'' \to \mathcal R \to \mathcal H$ to $i'' \setminus i$,  and similarly for the map $f_2: k'' \to \mathcal H$.  
     \end{enumerate}
 % The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
 %  \[
@@ -1113,7 +1113,7 @@ Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)
 	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
 	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket^+_{n,m}
 \end{align*}
-where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  It uses the notation of dashed blue boxes for hierarchical edges, with its children drawn inside,  and maximally consistent components seperated by another dashed line.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
+where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  It uses the notation of dashed boxes for hierarchical edges, with its children drawn inside,  and maximally consistent components separated by another dashed line.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context. 
 \end{definition}
 
 In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$,  and completeness is expressed as the faithfulness of this functor.  In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
@@ -1156,7 +1156,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 \]
  such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
 \end{proposition}    
-The proof follows the familar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
+The proof follows the familiar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
 
 This normal form can be used to prove the main theorem of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
 \begin{theorem}[Full completeness]
@@ -1242,8 +1242,13 @@ Finally,  a term calculus (e-terms) can be reverse engineered from the string-di
 
 \section{Proofs for Section \ref{sec:combinatorial-semantics}: Combinatorial Semantics}
 
+In this section we will define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists and we will explicitly construct such a pushout.
+We will do the same for the corresponding pushout complement and show its uniqueness.
+These condition will play a crucial role in showing that for each equation in $\textsf{PROP}^{+}(\Sigma)$ there is a sequence of rewrites in $\WellTypedMdaEcospans$.
+
 \subsection{Proof of the existence of pushouts}
 
+In constructing the pushout the functional versions of e-hypergraph relations will be useful.
 \begin{remark}
     Both $<$ and $\consistency$ can be considered as functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
     To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either a vertex or an edge into these functions.
@@ -1371,7 +1376,7 @@ Likewise,
 
 So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[-]$ is a homomorphism with respect to sources and targets and therefore $\sfrac{\iota_1}{\sim}$ and $\sfrac{\iota_{2}}{\sim}$ are.
 
-Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we can first define 
+Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we can first define 
     \[<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[u]_{E})
     \] and 
     \[
@@ -1427,7 +1432,7 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
     Let's show that the definition does not depend on a particular choice of $[v]$ in (4).
     Suppose, $[u) = \varnothing$ and there exist $[v_1]$ and $[v_2]$ such that $<_{\sfrac{X+Y}{\sim}}^{\mu}([v_1]) = [e_1]$ and $<_{\sfrac{X+Y}{\sim}}^{\mu}([v_2]) = [e_2]$ and $[e_1] \not = [e_2]$ and such that there is a path from $[u]$ to $[v_1]$ and from $[u]$ to $[v_2]$.
     First, both $v_1$ and $v_2$ should have a pre-image in $V_{Z}$, otherwise it would mean that there is a path from, \textit{e.g.},  $u$ to $v_1$ and that $[v_1) \not = \varnothing$ which would imply that $[u) \not = \varnothing$ and we get contradiction.
-    Then consider sevaral cases.
+    Then consider several cases.
     \begin{itemize}
         \item $v_1 = f_{V};\iota_{1,V}(z_1)$ and $v_2 = f_{V};\iota_{1,V}(z_2)$.
         \begin{itemize}
@@ -1477,7 +1482,7 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
     so we have well-defined-ness on the nose. 
     We do not need to check well-defined-ness for edges as $e_1 \sim e_2$ just implies $e_1 = e_2$ for edges.
 
-    We also need to makes sure that $[]_{E} : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and $[]_{V} : V_{X} + V_{Y} \to \sfrac{V_{X} + V_{Y}}{\sim}$ are homomorphisms with respect to $<^{\mu}$.
+    We also need to make sure that $[]_{E} : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and $[]_{V} : V_{X} + V_{Y} \to \sfrac{V_{X} + V_{Y}}{\sim}$ are homomorphisms with respect to $<^{\mu}$.
     \begin{enumerate}
          \item $[<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e))]_{E} = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([e]_{E}))$ for $e$ such that $[e) \not = \varnothing$.
               Note that by requiring $[e) \not = \varnothing$ we use the first definition for edges.
@@ -1523,7 +1528,11 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
                     \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) =
                     [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)))
                 \end{align*}
-        \item $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exists $[v]$ such that there is an undirected path from $[e]$ to $[v]$ and such that $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \not = \varnothing$, then
+        \item $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exists $[v]$ such that there is an undirected path from $[e]$ to $[v]$ and such that 
+        \[
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \not = \varnothing
+        \]
+        then
         \[
             \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{V_{X} + V_{Y}}([v]_{V}))
         \]
@@ -1533,10 +1542,11 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
     and for vertices
     \begin{enumerate}
 
-    \item If there exists $v' \in V_{X+Y}$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$
-    \[
-        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V})) = [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')))
-    \]
+    \item If there exists $v' \in V_{X+Y}$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$, then
+    \begin{align*}
+        &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V}))\\
+        &= [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')))
+    \end{align*}
     \item If for all $v' \in V_{X+Y}$ such that $v' \sim v$, $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) = \varnothing$ and there exists $[u]$ such that there is an undirected path from $[v]$ to $[u]$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([u])) \not = \varnothing$, then
     \[
         \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{E_{X} + E_{Y}}([u]_{V}))
@@ -1566,12 +1576,14 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
             \]
               $v_1 \sim v_2$ implies there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z)$ and $v_2 = g_{V};\iota_{2,V}(z)$ and supposing that for any of $v_i$ $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i)) \not = \varnothing$, then
               \begin{align*}
-                \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
+                &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
+                & = ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
               \end{align*}
               Similarly,
-              \[
-                \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
-              \]
+              \begin{align*}
+                &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))\\
+                &= ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
+            \end{align*}
               and we get well-definedness on the nose.
               We do not need to check well-definedness for edges as $e_1 \sim e_2$ implies $e_1 = e_2$.
             \item Now suppose that both 
@@ -1625,7 +1637,7 @@ Recall that $<$ is essentially a transitive clousure of $<^{\mu}$ and hence we c
 So far we have shown that the constructed $\sfrac{X+Y}{\sim}$ is a pushout but we are yet to show that it is an e-hypergraph.
 The proof of the latter will follow below and the following corollaries will come in handy.
 
-By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$.
+% By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$.
 
 \begin{corollary}
     \label{corollary:nodes}
@@ -1688,12 +1700,14 @@ By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ an
               \item Case when $v = g_{V};\iota_{2,V}(z)$ is symmetric.
             \end{itemize}
     \end{itemize}                  
-      We do not need to check this requirement for nodes because a node can not be a predecessor.
+      We do not need to check this requirement for vertices because a vertex can not be a predecessor.
 \end{proof}
+
+We will then proceed by showing that both relations satisfy the properties as defined in Definition~\ref{def:e-homo}.
 
 \begin{lemma}
 \label{lemma:child_assymetric}
-    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ is assymetric.
+    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ is asymmetric.
 \end{lemma}
 \begin{proof}
     Let $e_1,e_2$ be edges. 
@@ -1717,7 +1731,7 @@ By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ an
                   \item Case when $v = g_{V};\iota_{2,V}(z)$ is symmetric to the above.
                 \end{itemize}
           \end{itemize}
-          \item $[e_2) = \varnothing$ and by Corollary~\ref{corollary:edges} there exits $v_2$ such that there is a path from $e_2$ to $v_2$ and there exists $v'_2 \sim v_2$ such that $[v'_2) \not = \varnothing$. 
+          \item $[e_2) = \varnothing$ and by Corollary~\ref{corollary:edges} there exists $v_2$ such that there is a path from $e_2$ to $v_2$ and there exists $v'_2 \sim v_2$ such that $[v'_2) \not = \varnothing$. 
                 Then, 
                 \[
                   <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}+E_{Y}}{\sim}}([e_2])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [e_1]
@@ -1745,7 +1759,7 @@ By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ an
                   \item Case when $v_2 = g_{V};\iota_{2,V}(z_2)$ is symmetric.
                 \end{itemize}
     \end{itemize} 
-    Once again, we do not need to check for nodes as a node can not be on the lefthand side of the relation.
+    Once again, we do not need to check for vertices as a vertex can not be on the left-hand side of the relation.
 \end{proof}
 
 
@@ -1891,7 +1905,7 @@ The case when $[v] \in t([e])$ is symmetric.
 
 \begin{lemma}
 \label{lemma:consistency_child}
-    $\consistency_{\sfrac{X+Y}{\sim}}$ is defined only for nodes and edges that share the same non-empty set of parents.
+    $\consistency_{\sfrac{X+Y}{\sim}}$ is defined only for vertices and edges that share the same non-empty set of parents.
 \end{lemma}
 \begin{proof}
   If $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]) \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))$ then
@@ -1931,34 +1945,23 @@ The case when $[v] \in t([e])$ is symmetric.
 
 
 \begin{proposition}[$\sfrac{X+Y}{\sim}$ is an e-hypergraph]
-For this we need to check that the defined relations --- $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ --- satisfy all the needed properties.
+For this we need to check that the defined relations --- $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ --- satisfy all the needed properties as per Definition~\ref{def:e-homo}.
 \end{proposition}
 \begin{proof}
     This proposition then follows by applying the lemmas above.
     % Lemmas~\ref{lemma:child_assymetric}~\ref{lemma:child_irreflexive}~\ref{lemma:child_respect}~\ref{lemma:consistency_child}~\ref{lemma:consistency_respect}.
 \end{proof}
 
+We will then discuss the existence and uniqueness of the corresponding pushout complement by first recalling the result for plain hypergraphs.
+
 \begin{definition}[Definition 3.16~\cite{bonchi_string_2022-1}]
-Morphisms $\mathcal{K} \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every node of its source and target is either (i) not in the image of $m$ or (ii) in the image of $f ; m$.
-They satisfy the no-identification condition if any two nodes merged by $m$ are in the image of $f$.
+Morphisms $\mathcal{K} \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every vertex of its source and target is either (i) not in the image of $m$ or (ii) in the image of $f ; m$.
+They satisfy the no-identification condition if any two vertices merged by $m$ are in the image of $f$.
 \end{definition}
 
 \begin{proposition}
 \label{prop:complement_existence}
     Consider a pushout square in $\catname{EHyp_{\Sigma}}$ below
-    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJYIl0sWzIsMCwiWiJdLFsyLDIsIkMiXSxbMCwyLCJQXntcXHVyY29ybmVyfSJdLFsyLDUsIlxcYnVsbGV0Il0sWzEsMCwiaSIsMl0sWzEsMl0sWzIsM10sWzAsMywibSIsMl1d
-% \[\begin{tikzcd}
-% 	X && Z \\
-% 	\\
-% 	{P^{\urcorner}} && C \\
-% 	\\
-% 	\\
-% 	&& \bullet
-% 	\arrow["i"', from=1-3, to=1-1]
-% 	\arrow[from=1-3, to=3-3]
-% 	\arrow[from=3-3, to=3-1]
-% 	\arrow["m"', from=1-1, to=3-1]
-% \end{tikzcd}\]
 \[
     \tikzfig{appendix/pushout_square}
 \]
@@ -1972,15 +1975,36 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
 \end{proposition}
 \begin{proof}
     By requiring that $m$ is mono makes the no-identification condition satisfied on the nose.
-    Then, no-dangling and no-identification conditions are necessary for pushout complement to exists~\cite{dpo}.
+    Then, no-dangling and no-identification conditions are necessary for pushout complement to exist~\cite{dpo}.
     Points (1)-(2) above guarantee that after removing from $\mathcal{G}$ everything in $\mathcal{L}$ that has no pre-image in $\mathcal{K}$ the arrow $\mathcal{K} \to \mathcal{L}^{\bot}$ will satisfy the assumptions~\ref{pushout:assumptions}.
     In particular, they mean that after removing the image of $\mathcal{L}$ from $\mathcal{K}$ we have the following
     \begin{itemize}
         \item $[c_{V}(v_{i})) = [c_{V}(v_{j}))$ for all $v_{i},v_{j}$ in $V_{\mathcal{K}}$.
         \item $\consistency(c_{V}(v_i)) = \consistency(c_{V}(v_j))$ for all $v_i,v_j$ in $V_{\mathcal{K}}$.
     \end{itemize}
-    This means that $\mathcal{G}$ is isomorphic to the pushout constructed accroding to Theorem~\ref{th:existence_of_pushouts}.
+    This means that $\mathcal{G}$ is isomorphic to the pushout constructed according to Theorem~\ref{th:existence_of_pushouts}.
 \end{proof}
+
+\begin{figure*}[t!]
+    \begin{minipage}{0.1\textwidth}
+        $\;$
+    \end{minipage}
+    \hfill
+\begin{minipage}{0.7\textwidth}
+    \[
+        \scalebox{0.45}{
+            \tikzfig{combinatorial_semantics/structural_rule_pushout}
+        }
+    \]
+    \caption{The image of the top left equation from Figure~\ref{fig:string-equations} under $\llbracket - \rrbracket$}
+    \label{fig:structural_rule_pushout}
+\end{minipage}
+\hfill
+\begin{minipage}{0.1\textwidth}
+        $\;$
+\end{minipage}
+\end{figure*}
+
 
 \begin{proposition}
 \label{prop:boundary_complement}
@@ -1990,41 +2014,47 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
         Hence, pushout complement should yield pushout complements for the corresponding sets.
         In particular,
           % https://q.uiver.app/#q=WzAsNSxbMCwwLCJWX3tMfSJdLFsyLDAsImxfe2l9ICsgbF97b30iXSxbNCwwLCJpK2oiXSxbMCwyLCJWX3tHfSJdLFs0LDIsIlZfe0N9Il0sWzIsMSwiYl97Vn0iXSxbMSwwLCJhX3tWfSJdLFswLDMsImZfe1Z9Il0sWzQsMywiZ197Vn0iLDJdLFsyLDQsImMiLDJdXQ==
-    \begin{figure}[h!]
-        \begin{subfigure}{0.45\textwidth}
-            % \[\begin{tikzcd}
-            %     {V_{L}} && {l_{i} + l_{o}} && {i+j} \\
-            %     \\
-            %     {V_{G}^{\urcorner}} &&&& {V_{C}}
-            %     \arrow["{b_{V}}", from=1-5, to=1-3]
-            %     \arrow["{a_{V}}", from=1-3, to=1-1]
-            %     \arrow["{f_{V}}", from=1-1, to=3-1]
-            %     \arrow["{g_{V}}"', from=3-5, to=3-1]
-            %     \arrow["c"', from=1-5, to=3-5]
-            % \end{tikzcd}\]
-            \[
-                \tikzfig{appendix/pushout_verticies}
-            \]
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.45\textwidth}
-           % https://q.uiver.app/#q=WzAsNSxbMCwwLCJFX3tMfSJdLFsyLDAsIjAiXSxbNCwwLCIwIl0sWzAsMiwiRV97R31ee1xcdXJjb3JuZXJ9Il0sWzQsMiwiRV97Q30iXSxbMiwxLCJiX3tFfSJdLFsxLDAsImFfe0V9Il0sWzAsMywiZl97RX0iXSxbNCwzLCJnX3tFfSIsMl0sWzIsNCwiYyIsMl1d
-        \[
-        % \begin{tikzcd}
-        %     {E_{L}} && 0 && 0 \\
-        %     \\
-        %     {E_{G}^{\urcorner}} &&&& {E_{C}}
-        %     \arrow["{b_{E}}", from=1-5, to=1-3]
-        %     \arrow["{a_{E}}", from=1-3, to=1-1]
-        %     \arrow["{f_{E}}", from=1-1, to=3-1]
-        %     \arrow["{g_{E}}"', from=3-5, to=3-1]
-        %     \arrow["c"', from=1-5, to=3-5]
-        % \end{tikzcd}
+    % \begin{figure}[h!]
+    %     \begin{subfigure}{0.45\textwidth}
+    %         % \[\begin{tikzcd}
+    %         %     {V_{L}} && {l_{i} + l_{o}} && {i+j} \\
+    %         %     \\
+    %         %     {V_{G}^{\urcorner}} &&&& {V_{C}}
+    %         %     \arrow["{b_{V}}", from=1-5, to=1-3]
+    %         %     \arrow["{a_{V}}", from=1-3, to=1-1]
+    %         %     \arrow["{f_{V}}", from=1-1, to=3-1]
+    %         %     \arrow["{g_{V}}"', from=3-5, to=3-1]
+    %         %     \arrow["c"', from=1-5, to=3-5]
+    %         % \end{tikzcd}\]
+    %         \[
+    %             \tikzfig{appendix/pushout_verticies}
+    %         \]
+    %     \end{subfigure}
+    %     \hfill
+    %     \begin{subfigure}{0.45\textwidth}
+    %        % https://q.uiver.app/#q=WzAsNSxbMCwwLCJFX3tMfSJdLFsyLDAsIjAiXSxbNCwwLCIwIl0sWzAsMiwiRV97R31ee1xcdXJjb3JuZXJ9Il0sWzQsMiwiRV97Q30iXSxbMiwxLCJiX3tFfSJdLFsxLDAsImFfe0V9Il0sWzAsMywiZl97RX0iXSxbNCwzLCJnX3tFfSIsMl0sWzIsNCwiYyIsMl1d
+    %     \[
+    %     % \begin{tikzcd}
+    %     %     {E_{L}} && 0 && 0 \\
+    %     %     \\
+    %     %     {E_{G}^{\urcorner}} &&&& {E_{C}}
+    %     %     \arrow["{b_{E}}", from=1-5, to=1-3]
+    %     %     \arrow["{a_{E}}", from=1-3, to=1-1]
+    %     %     \arrow["{f_{E}}", from=1-1, to=3-1]
+    %     %     \arrow["{g_{E}}"', from=3-5, to=3-1]
+    %     %     \arrow["c"', from=1-5, to=3-5]
+    %     % \end{tikzcd}
+    %     \tikzfig{appendix/pushout_edges}
+    %     \]
+    %     \end{subfigure}
+    % \end{figure}
+    \[
+        \tikzfig{appendix/pushout_verticies}
+    \]
+    \[
         \tikzfig{appendix/pushout_edges}
-        \]
-        \end{subfigure}
-    \end{figure}
-    $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
+    \]
+    where $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
     Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
     Then, since all the arrows are monos, the first square can be rewritten as follows.
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3XFxcXFxcY29uZ1xcXFwgaSArIGogKyB6Il0sWzIsMSwiaF97VixleHR9IiwyXSxbMSwwLCJoX3tWLGludH0iLDJdLFswLDMsIm1fe1Z9IiwyXSxbNCwzLCJnX3tWfSJdLFsyLDQsImMiLDJdXQ==
@@ -2038,7 +2068,7 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
 	\arrow["{g_{V}}", from=3-5, to=3-1]
 	\arrow["c"', from=1-5, to=3-5]
 \end{tikzcd}\]
-    Because $i + j + x + y + w$ also yields a pushout it must be the case that $i+j+x+y+w \cong i + j + x + y + z$ and therefore $w \cong z$ and pushout complement for nodes is $i + j + z$ up to isomorphism.
+    Because $i + j + x + y + w$ also yields a pushout it must be the case that $i+j+x+y+w \cong i + j + x + y + z$ and therefore $w \cong z$ and pushout complement for vertices is $i + j + z$ up to isomorphism.
     To show that pushout complement is unique we next need to show that source and target maps are unique.
     Suppose that there exist
     \[
@@ -2087,7 +2117,7 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
         [~g_{V};\iota_{V_{G}}, g_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{L}^{\bot}_{2}}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) \subseteq \consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v))
     \]
     \begin{itemize}
-        \item If $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) = \varnothing$ then both lefthand sides should be $\varnothing$ and therefore the relations are equal.
+        \item If $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) = \varnothing$ then both left-hand sides should be $\varnothing$ and therefore the relations are equal.
         \item Suppose that $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) \not = \varnothing$ which further means that $[g_{V};\iota_{V_{\mathcal{G}}}(v)) \not = \varnothing$.
               Consider the following cases.
         \begin{itemize}
@@ -2113,27 +2143,29 @@ They satisfy the no-identification condition if any two nodes merged by $m$ are 
     % Although, if the morphism $i+j \to L$ is mono, the complement is unique for not-monogamous hypergraphs as well.}
 \end{proposition}
 
-\begin{figure*}[t!]
-    \begin{minipage}{0.1\textwidth}
-        $\;$
-    \end{minipage}
-    \hfill
-\begin{minipage}{0.7\textwidth}
-    \[
-        \scalebox{0.45}{
-            \tikzfig{combinatorial_semantics/structural_rule_pushout}
-        }
-    \]
-    \caption{The image of the top left equation from Figure~\ref{fig:string-equations} under $\llbracket - \rrbracket$}
-    \label{fig:structural_rule_pushout}
-\end{minipage}
-\hfill
-\begin{minipage}{0.1\textwidth}
-        $\;$
-\end{minipage}
-\end{figure*}
+% \begin{figure*}[t!]
+%     \begin{minipage}{0.1\textwidth}
+%         $\;$
+%     \end{minipage}
+%     \hfill
+% \begin{minipage}{0.7\textwidth}
+%     \[
+%         \scalebox{0.45}{
+%             \tikzfig{combinatorial_semantics/structural_rule_pushout}
+%         }
+%     \]
+%     \caption{The image of the top left equation from Figure~\ref{fig:string-equations} under $\llbracket - \rrbracket$}
+%     \label{fig:structural_rule_pushout}
+% \end{minipage}
+% \hfill
+% \begin{minipage}{0.1\textwidth}
+%         $\;$
+% \end{minipage}
+% \end{figure*}
 
 \section{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+
+In this section we will elaborate on soundness of our translation $\llbracket - \rrbracket : \textsf{PROP}^{+}(\Sigma) \to \WellTypedMdaEcospans$.
 
 \begin{proposition}[Proposition~\ref{prop:soundness} restatement]
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
@@ -2152,10 +2184,10 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
         \tikzfig{combinatorial_semantics/DPOI_square}
         }
     \]
-    We then further note that if $l$ is a subterm of $g$ then the nodes in the image of input and output external interfaces of $\llbracket l \rrbracket$ in $\llbracket g \rrbracket$ all share the same set of parents and are pairwise consistent if the set of parents is non-empty.
+    We then further note that if $l$ is a subterm of $g$ then the vertices in the image of input and output external interfaces of $\llbracket l \rrbracket$ in $\llbracket g \rrbracket$ all share the same set of parents and are pairwise consistent if the set of parents is non-empty.
     This satisfies conditions (1)-(2) in Proposition~\ref{prop:complement_existence}.
     The no-dangling condition is satisfied because we consider only mda-cospans.
-    Therefore, there exists a pushout complement $\mathcal{C}$ which is $\llbracket g \rrbracket$ with $\llbracket l \rrbracket$ removed.
+    Therefore, there exists a unique pushout complement $\mathcal{C}$ which is $\llbracket g \rrbracket$ with $\llbracket l \rrbracket$ removed.
     Then necessarily vertices in $\mathcal{C}$ in the image of $i+j$ share the same set of parents and are pairwise consistent as they do so in $\mathcal{G}$.
     The same is true for the image of $i + j$ in $\mathcal{R}$ and therefore the necessary pushout exists which is $\mathcal{C}$ with $\mathcal{R} = \llbracket r \rrbracket$ glued in and it is equal to $\llbracket h \rrbracket$.
     Hence $\llbracket g \rrbracket \Rrightarrow{} \llbracket h \rrbracket$.
