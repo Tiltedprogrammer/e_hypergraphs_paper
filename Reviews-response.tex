@@ -1,0 +1,90 @@
+%!LW recipe=pdflatex
+\documentclass{article}
+
+\usepackage{tikz-cd}
+\usepackage{xargs}
+\usepackage{amsmath}
+
+\input{preamble}
+\input{macros}
+\input{sample.tikzstyles}
+\input{hypergraph.tikzstyles}
+\input{hypergraph.tikzdefs}
+
+\newcommand\id{\textsf{id}}
+\newcommand\sym{\textsf{sym}}
+
+\begin{document}
+
+\title{LICS24 Reviews Response}
+\author{}
+
+\maketitle
+
+\section*{Review 1}
+\paragraph{About theorem 6.5 (the central result of the paper: full completeness)}
+\textit{I am doubtful about the statement because it seems to me that $[sym] = [id]$,
+hence the functor $[-]$ is not faithful.
+Here is a sketch of the argument: $[\sym]$ is a e-hypergraph with two vertices
+where the inputs and the outputs are inverted. Now we embed it into a
+hierarchical edge by applying the bottom left equality of Figure 3.
+We get a cospan with 2 external inputs, 2 external ouputs, 2 strict internal
+inputs, 2 strict internal outputs (the sets of strict internal inputs and
+outputs are the same, but they are labelled differently by $f_{int}$ and $g_{int}$). We
+do the same thing with $[\id]$ and notice that the two resulting cospans are
+isomorphic. Thus they are equal in the category where cospans are quotiented by
+isos.}
+
+We assume that in $[\sym] = [\id]$ it was meant that $[\sym] = [\id \otimes \id]$, otherwise the equality does not typecheck.
+
+By the definition $[\sym]$ is 
+\[
+    n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
+\]
+represented as
+\begin{figure}[h!]
+    \[
+    \scalebox{0.5}{
+        \tikzfig{reviews/sym}
+    }
+    \]
+\end{figure}
+
+And $[\id \otimes \id]$ is \[
+    n \xrightarrow{f'_{ext}} n'' \xrightarrow{f'_{int}} \mathcal{G} \xleftarrow{g'_{int}} m'' \xleftarrow{g'_{ext}} m
+\]
+represented as 
+\begin{figure}[h!]
+    \[
+    \scalebox{0.5}{
+        \tikzfig{reviews/id}
+    }
+    \]
+\end{figure}
+
+Clearly, it should be the case that $\{u_1 \mapsto u_1, \ldots u_4 \mapsto u_4\}$ and similarly for $w_i$. I think this does not follow from our definition of isomorphic cospans, so perhaps we should've required that $\alpha$ and $\gamma$ are identities (below).
+\[
+    \scalebox{0.75}{
+        \tikzfig{combinatorial_semantics/isomorphic_e_cospans}
+    }
+\]
+Then, the cospans above are not isomorphic. Consider the cases.
+\begin{enumerate}
+    \item ${v_1 \mapsto v_1}$ and ${v_2 \mapsto v_2}$ under $\beta$. Then $g_{int};\beta(w_4) \not = g'_{int}(w_4)$
+    \item ${v_1 \mapsto v_2}$ and ${v_2 \mapsto v_1}$ under $\beta$. Then $f_{int};\beta(w_4) \not = f'_{int}(w_4)$
+\end{enumerate}
+This means that the corresponding diagram does not commute and therefore the cospans are not isomorphic.
+
+\paragraph{In the proof}
+In the first case, it is immediate that $[f] \not = [g]$, since equal terms
+have weak normal forms with the same number of components.
+\textit{This argument does not seem to be valid in presence of equations.
+Consider an equation $a = a + b$ for example, where a and b are constants of the
+signature. Then}
+\[
+    [a] = [a + b] = [a] + [b]
+\]
+
+We only consider equations of SMC terms, \textit{i.e.}, with no $+$ on either side of $=$.
+
+\end{document}

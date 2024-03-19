@@ -80,6 +80,13 @@ jobs:
           root_file: E-Hypergraphs-LICS24.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
+# Compile review response
+      - name: pdflatex Reviews-response.tex
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: Reviews-response.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
 # Upload both pdfs
       - name: Upload the PDF to the release
         if: always()
@@ -100,6 +107,16 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: E-Hypergraphs-LICS24.pdf
           asset_name: LICS24-submission.pdf
+          asset_content_type: pdf
+      - name: Upload the PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Reviews-response.pdf
+          asset_name: Reviews-response.pdf
           asset_content_type: pdf
       - name: Delete older releases
         if: always()
