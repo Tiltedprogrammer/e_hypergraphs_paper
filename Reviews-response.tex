@@ -4,6 +4,8 @@
 \usepackage{tikz-cd}
 \usepackage{xargs}
 \usepackage{amsmath}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
 
 \input{preamble}
 \input{macros}
@@ -13,6 +15,8 @@
 
 \newcommand\id{\textsf{id}}
 \newcommand\sym{\textsf{sym}}
+\newcommand{\consistency}{{\smile}}
+
 
 \begin{document}
 
@@ -87,4 +91,151 @@ signature. Then}
 
 We only consider equations of SMC terms, \textit{i.e.}, with no $+$ on either side of $=$.
 
+\paragraph{About Proposition A.14 (existence of the pushout complement)}
+\textit{Why doesn't the pushout complement trivially exist since you already assume
+given a pushout square?}
+
+It is indeed the case.
+The formulation should've been consider a morhisms $\mathcal{K} \to \mathcal{L} \to \mathcal{G}$.
+
+\paragraph{In the proof:}
+Then, no-dangling and no-identification
+conditions are necessary for pushout complement to exist [26].
+\textit{Are those conditions sufficient? Can you give a more precise reference? It seems
+to me that [26] (in particular Proposition 9 about the existence of pushout
+complements) focuses on the category of graphs only, so I don't see how it
+applies to the category of e-hypergraphs.}
+
+I do not know if those conditions are sufficient. 
+I am only sure the three conditions of A.14 are sufficient.
+We only proved that the pushout exists for a certain class of morphisms hence the additional conditions.
+We did not, however, prove that the pushout does not exist for other classes of morphisms.
+The no-dangling condition ensures that the sources or targets of the edge which is not a part of a match do not get deleted.
+If it was the case then there would be no way to obtain the original graph by computing a pushout as there would be not enough vertices.
+Similarly with no-identification condition, if $m$ was to identify two vertices of $\mathcal{L}$ while these were not identified by $f$ then there would be no way of getting $\mathcal{G}$ by only knowing $\mathcal{L}$, $\mathcal{L^{\bot}}$ and $\mathcal{K}$ as computing the union of $\mathcal{L}$ and $\mathcal{L^{\bot}}$ would produce more vertices than there was in $\mathcal{G}$.
+The proposition ensures that after we remove the image of $\mathcal{L}$ from $\mathcal{G}$ (excluding the image of $f;m$), all the morphisms in the pushout square are suitable for our computation of the pushout.
+There is a claim about the necessity and sufficiency of no-identification and no-dangling conditions for the pushout to exist in $\mathbf{Hyp}(\Sigma)$ in Proposition 3.17 of [3].
+
+\paragraph{About Proposition A.15 (uniqueness of the boundary complement)}
+The pushout in $\mathbf{EHyp}(\Sigma)$ should also be a pushout on the
+underlying sets of vertices and hyperedges.
+\textit{Why is that? Is it always the case for any pushout in $\mathbf{EHyp}(\Sigma)$?}
+
+This is by construction as we compute the disjoint union of vertices and edges and identify them along the corresponding morphisms.
+This construction yields the pushouts on the sets of vertices and edges.
+The construction of the corresponding consistency and child relations are orthogonal as these do not change the sets of edges and vertices.
+This is at least the case for a particular set of morphisms that we consider.
+
+\textit{Then, since all the arrows are monos}
+\textit{What if some vertex is both input and output in $\mathcal{L}$? Then $i' + j' \to L$ is not a
+monomorphism, is it?}
+
+Yes, then $i' + j' \to L$ is not a monomorphism.
+
+\paragraph{About remark 2 (restriction to signatures without any symbol of arity $0 \to 0$)}
+\textit{By incident vertices, do you mean input and output vertices? I think there is
+still a problem if you consider an hypergraph $L$ composing an edge of arity $0 \to
+1$ with an edge of arity $1 \to 0$: the boundary conditions prevent finding a match
+of $L$ in any $G$.}
+
+Yes, this is correct.
+
+\paragraph{About Def 4.1 (e-hypergraphs)}
+\textit{Why don't you require the condition (3) for t(e) as well?}
+
+That's a typo. It should've been similar to consistency relation.
+
+\textit{The consistency equivalence relation must additionally satisfy that if $v \in s(e)$ or $v \in t(e)$ then $e \consistency v$}
+\textit{What if 'e' is a top-level edge?}
+
+Should've been if $e$ is not a top-level edge.
+
+\paragraph{About def 4.2 (e-hypergraph homomorphism)}
+
+\textit{Condition (2): what if the image of 'v' or 'e' is top-level?}
+
+Then we do not require such an equality, \textit{i.e.}, it might hold or might not meaning that a top-level vertex of edge might end up either top-level or nested under a homomorphism but nested edges and vertices should preserve their predecessors.
+
+\paragraph{About def 4.5 (well-typed MDA hypergraphs)}
+\textit{Why aren't non top-level hierarchical edges required to be well-typed?}
+
+All hierarchical edges must be well-typed. The `apex' refers to the apex of a cospan, \textit{aka}, the carrier.
+
+\paragraph{About def 5.2 (extended boundary complement)}
+\textit{Isn't requiring that $i+j \to L^\bot$ is a mono too strong? For example if you
+want to account for an equality relating some term involving the identity
+morphism (for which all nodes are both inputs and outputs).}
+
+Yes, it is strong and was needed to make the proofs easier. 
+Dropping this condition is a future work.
+
+\textit{Are monomorphisms in the category of hypergraphs the morphisms that are
+injective on edges and vertices?}
+
+Yes.
+
+\paragraph{Minor remarks / typos}
+
+\textit{In the figure above, shouldn't there be $n$ (rather than just 1) pairs of black
+dots in each dashed subbox? (p2)}
+
+There is a dot for each unused input of the corresponding instance within a box.
+For example, $*$ requires $a$ and $2$ and therefore the wires from another copy of $2$ and from $1$ are terminated with dots.
+
+\textit{removing from this occurrence everything that has no pre-image in $\mathcal{K}$ (p6)}
+\textit{Isn't $C$ rather constructed by removing from $G$ everything from $L$ except for what
+comes from $K$?}
+
+Yes, this formulation is equivalent. We are removing $m(L)$ from $G$ with the exception of nodes and edges that have a pre-image in $K$, \textit{i.e.}, those that come from $K$.
+\textit{What is a monogamous cospan? p(7)}
+
+Apparently the definition of a monogamous cospan was overlooked.
+
+\textit{This is confusing: you are not defining any equivalence relation here. Rather, 
+this family of equivalence relations is provided by each hypergraph (if I
+understand correctly). Def 4.1 (p7)}
+
+Yes, it is indeed a family of relations.
+
+\textit{Shouldn't a homomorphism preserves labelling?}
+
+It preserves labelling as per the condition (1) on such a morphism: it should be a hypergraph-homomorphism, which, by definition, preserves labelling.
+
+\textit{Unfolding definitions, it follows that}
+$f = g \implies \llbracket f \rrbracket \Rrightarrow^{*} \llbracket g \rrbracket$.
+
+\textit{The literal meaning makes this statement trivial: if $f = g$, then $[f]$ rewrites to
+$[g]$ in 0 steps.
+If we replace $f = g$ with $p_i(f) = p_i(g)$, where $f$ and $g$ are unquotiented terms and
+$p_i$ is the canonical projection, this is wrong, because it would entail that the
+rewriting relation is symmetric, which is not the case, unless we consider} $\Rrightarrow^{*}$
+\textit{that each equation generates two rewrite rules, one for each direction of the
+equality (if is the case, this should be said explicitly). Corollary 6.6 suffers
+from the same defect, and the proof of Theorem 6.5 as well.}
+
+$\llbracket \mathcal{E} \rrbracket$ consists of $\langle l, r \rangle$ and $\langle l, r \rangle$ for each $l = r$ in $\mathcal{E}$.
+
+\textit{Aren't they partial functions, defined on any non-top level elements only?}
+Yes
+
+\textit{Condition (5) implicitly assumes that f(v) is not top-level, because the
+consistency relation is only defined for such elements.}
+
+It should be read as either all $f(v_i)$ are pair-wise consistent, or consistency for them is undefined, \textit{i.e.}, all of them are top-level.
+
+\textit{In which category is this pushout proven to exist? Clearly not in the category
+$\mathbf{EHyp}(\Sigma)$ of hypergraphs, since just after the proof you write that it was not
+proven to be a hypergraph.}
+
+It becomes a pushout in $\mathbf{EHyp}(\Sigma)$ right after it is proved that it is a valid e-hypergraph (Proposition A.12).
+Probably the proof should've been ordered the other way around.
+
+\textit{In the proof, you consider the identity relation on edges, then its
+reflexive-transitive-symmetric closure. Doesn't it coincide with the identity
+relation? Furthermore, doesn't quotienting a set X by the identity relation
+yields the same set X?
+Do you really need to take the transitive closure of the relation on vertices,
+since f and g are monomorphisms?}
+
+This was just to make the presentation uniform.
 \end{document}
