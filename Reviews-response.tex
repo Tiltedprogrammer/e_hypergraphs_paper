@@ -238,4 +238,52 @@ Do you really need to take the transitive closure of the relation on vertices,
 since f and g are monomorphisms?}
 
 This was just to make the presentation uniform.
+
+\section*{Review 2}
+\textit{The discussion about Figure 1 in Section (1.1) does not provide enough details to understand what the graph describes. In particular, in the e-hypergraph formalism, I am not sure I understand what the black nodes inside the equivalence classes mean. For instance, why are these nodes only connected to the bottom of the boxes and never to the top?}
+
+Black dots correspond to delete morphisms of the Cartesian category, \textit{i.e.}, they discard the unused input and hence are only conected to the bottom as inputs flow from bottom to top.
+
+\textit{Is the free monoid monad the list monad?}
+
+Yes
+
+\textit{Without further assumptions (e.g., some form of adhesivity), pushout complements may not be unique, assuming it exists. Is there any guarantee in the DPOI framework for hypergraphs with interfaces? How does the construction of boundary complement (Definition 3.8) relate to initial pushouts (see, for instance, Chapter 6 of Fundamentals of Algebraic Graph Transformation Ehrig et a. 2006, page 125)?}
+
+The category of plain hypergraphs ($\mathbf{Hyp}$), as used in [3], is adhesive.
+We do not know if the category of e-hypergraphs ($\mathbf{EHyp}$) has any adhesive properties, however, in this work we are only interested in pushouts along monos and monomorphic matches and for such morphisms the pushout complement is unique as shown in A.15.
+The boundary complement definition is a generalisation of a similar concept from [4] which is needed to make sure we remain within needed class of morphisms when computing the complement and the pushout.
+We can not immediately relate initial pushouts to the boundary complement.
+
+\textit{One could argue that since the consistency relation is built from the child relation, it should not be part of the tuple defining the e-hypergraph.}
+
+?
+
+\textit{In Figure 5, why do $a_1$, ... $a_n$, and $a'_1$, ..., $a'_k$ appear as internal interfaces on the rightmost hypergraph?}
+
+Internal interface is external interface plus strict internal interface. Since both $a_i$'s and $a'_j$'s are external interfaces they should be present in internal interface as well.
+
+
+\section*{Review 3}
+\textit{However, I think the authors could improve the discussion of the 0-ary case and be more convincing about the fact that this could be handled without much difficulty. Otherwise, this would dramatically restrict the domain of application of those results.}
+
+One workaround is to add more context to the left-hand side of a rewrite rule. 
+Assume we have a rewrite rule $f \Rrightarrow g \otimes a$ where $a$ is a scalar.
+If the occurrence of $f$ within $\mathcal{G}$ is top-level, then we can proceed as usual.
+If, on the other hand, the occurrence is nested, then there is no way to specify that $a$ should have the same parent as $f$ had.
+The workaround can be seen in the following example.
+
+\[
+    \scalebox{0.5}{
+        \tikzfig{reviews/handling_scalars}
+    }
+\]
+
+$\mathcal{F}, \mathcal{G}_i$ are variable-labelled e-hypergraphs that can be unified with concrete e-hypergraphs.
+For example, $\mathcal{F}$ corresponds to $h$ and $\mathcal{G}_1$ corresponds to $k$.
+
+\section*{Review 4}
+
+Review 4 had no questions.
+
 \end{document}
