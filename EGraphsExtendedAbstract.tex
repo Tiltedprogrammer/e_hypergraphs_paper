@@ -1,0 +1,358 @@
+\documentclass[sigconf, 9pt, nonacm]{acmart}
+
+\settopmatter{printacmref=false}
+
+\usepackage{amsmath}
+\usepackage{stmaryrd}
+% \usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage[
+  colorinlistoftodos,
+  prependcaption,
+  % disable,
+]{todonotes}
+\usepackage{fontenc}
+
+%\usepackage{minted}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{hyperref}
+
+
+\usepackage{docmute}
+\usepackage{hyperref}
+\usepackage{proof}
+
+\ifthenelse{\isundefined{\ismain}}{
+    \newcommand{\ismain}{0}
+    \usepackage{xifthen}
+}{}
+
+\usepackage{enumitem}
+\usepackage{amsthm}
+
+
+
+\usepackage{aliascnt}
+% \newaliascnt{definition}{thm}
+% \newaliascnt{remark}{thm}
+% \newaliascnt{example}{thm}
+\newtheorem{thm}{Theorem}
+\newtheorem{remark}[thm]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+
+\newtheorem{example}[thm]{Example}
+\newtheorem{proposition}[thm]{Proposition}
+
+
+
+
+
+
+\input{macros}
+\input{sample.tikzstyles}
+\input{hypergraph.tikzstyles}
+\input{hypergraph.tikzdefs}
+
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+% These are for comments
+\newcommand\question[1]{{\color{azure}#1}}
+\newcommand\update[1]{{\color{americanrose}#1}}
+
+% \usepackage{mathtools,mathrsfs}
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+% \usepackage{faktor}
+\usepackage{xfrac} 
+
+\usepackage{import}
+
+% category names
+%\newcommand{\MdaCospans}{{\catname{MACsp_{D}(Hyp_{\Sigma})}}}
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+% There is already a remark in the preamble, but it does
+% not work for some reason
+
+\newcommand\id{\textsf{id}}
+\newcommand\sym{\textsf{sym}}
+
+
+\usepackage{cleveref} % after hyperref!
+
+\begin{document}
+
+\title{Equivalence Hypergraphs: E-Graphs for Monoidal Theories}
+
+\author{Anonymous}
+
+\maketitle
+
+\section{Introduction}
+
+E-graphs have been around for a while since being introduced in the 80s~\cite{nelson1980techniques} and yet there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.
+This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.
+However, there is a fundamental limitation to the area of equational theories that e-graphs (as presented, \textit{e.g.}, in~\cite{EggPaper}) can be applied to.
+Specifically, e-graphs support equality saturation for so-called \textit{algebraic} theories --- theories that consist of operators (or generators) that can have an arbitrary number of inputs but only a single output, and equations between them.
+There are certain applications~\cite{zx, ghica_compositional_2023, probabilistic} where the operators in the corresponding theory can have multiple inputs and multiple outputs. 
+Such theories are called \textit{symmetric monoidal theories} (SMTs), they consist of terms which are built from the operators by combining them with parallel and sequential composition, and they would certainly benefit from the equality saturation machinery offered by the e-graphs.
+Even if we allowed terms in an e-graph to have multiple outputs, the rewriting for such terms using the current data structure that e-graphs are based on would be infeasible because rewriting in an SMT is performed modulo SMT axioms --- including such axioms into the set of rewrite rules would quickly explode the size of the hypothetical e-graph.
+This motivates the need for generalised e-graphs and suggests that such generalisation should be developed with SMT axioms in mind.
+
+This work in progress aims to propose a generalisation of e-graphs for arbitrary SMTs which is build by enriching the underlying categorical structure of a given SMT.
+Then, it can be seen that original e-graphs is the case of our construction applied to Cartesian SMTs.
+Apart from building the foundation for the application of e-graphs to a richer class of theories, this work also provides a new perspective on solving the notorious issues of alpha-equivalence and binding that arise when, for example, one wants to build e-graphs for functional languages~\cite{koehler2022sketchguided}.
+
+\section{Categorical semantics of e-graphs}
+
+In this section,  we introduce the required preliminaries on semilattice enriched symmetric monoidal categories generated by monoidal theories,  and the string diagrammatic formalism we will use to represent them.  
+
+Given a category $\mathbb{C}$  with objects $A,B \in \mathbb{C}$ we denote by $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  We denote the tensor product of a \textit{symmetric monoidal category (SMC)} $\mathbb{C}$ by $\otimes$,  its unit by $I$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\textsf{SLatt}$ the category of semilattices.
+We will also use string diagrams as a well-established two-dimensional syntax for the (equivalence classes of) terms in an SMC which shall be read from bottom-to-top.
+
+
+\subsection{Symmetric Monoidal Theories and PROPs.}
+
+A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalisations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalise the notion of a signature. 
+\begin{definition}[Monoidal signature]
+A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $c: n \to m$,  with \textit{arity} $n$ and \textit{co-arity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
+\end{definition}
+
+A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
+\begin{definition}[Products and permutations category]
+A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category with natural numbers as objects,  and such that $n \otimes m = n+m$.
+% A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
+We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\textbf{PROP}(\Sigma)$.  
+\end{definition}
+The free category $\textbf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.
+
+An equation associated with a monoidal signature is a pair of parallel morphisms of the form above, leading to the following definition of a symmetric monoidal theory. 
+\begin{definition}[Symmetric Monoidal Theory]
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $f,g: n \to m$ of $\textbf{PROP}(\Sigma)$.
+A \textit{symmetric monoidal theory} $\textbf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by $\textbf{PROP}(\Sigma)$ quotiented by the least congruence including $\mathcal{E}$.
+\end{definition}
+
+It will often be convenient to give presentations of SMTs in terms of string diagrams.
+\begin{example}
+\label{example:csmt}
+The SMT of \textit{commutative comonoids} is given by the following generators, ${\Delta, !}$, depicted in string diagrammatic form:
+\[
+	\scalebox{0.8}{
+  	 \tikzfig{categorical-semantics/Cartesian-equipment}
+	}
+\]
+together with the following associativity, commutativity and unitality equations, again given in terms of string diagrams. 
+\[
+	\scalebox{0.6}{
+	\tikzfig{categorical-semantics/Cartesian-theory}	
+	}
+\]
+The Cartesian SMT is given by a set of generators $\Sigma_C$, together with the generators and equations of the SMT of commutative monoids, and the following additional naturality equations, for every $c \in \Sigma_C$
+\[
+	\scalebox{0.6}{
+	\tikzfig{categorical-semantics/Cartesian-naturality}
+	}
+\]
+By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
+\end{example}
+
+\subsection{Free Semilattice Enrichment: Formal Joins}
+
+To express the notion of e-classes of SMT terms we consider an SMT enriched over a category of semilattices as defined below.
+
+\begin{definition}[Semilattice-enriched PROP]\label{def:enriched-prop}
+A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
+\begin{align*}
+f ; (g+h) &= f;g + f;h &
+(f+g) ; h &= f;h + g;h \\
+f \otimes (g+h) &= f \otimes g + f \otimes h & 
+(f+g) \otimes h &= f \otimes h + g \otimes h,
+%\item A set $ob(\mathbb{C})$ of objects;
+%\item For every pair $A,B \in ob(\mathbb{C})$, a hom-semigroup $Hom(A,B)$;
+%\item An element $\textsf{id}_{A,B} \in Hom(A,B)$; 
+\end{align*}
+Note,  we take $(;\!)$ and $\otimes$ to bind more tightly than $+$.
+% A \textit{semilattice enriched strict SMC (PROP) functor} $F: (\mathbb{C}, \otimes, 1,+) \to (\mathbb{D}, \otimes, 1,+)$ is given by a strict SMC (PROP) functor on the underlying SMCs (PROPs) which additionally satisfies $F(f+g) = F(f)+F(g)$.  
+We denote the \textit{freely enriched PROP (SMT)} over a monoidal signature $\Sigma$ as $\textbf{PROP}^+(\Sigma)$ ($\textbf{SMT}^+(\Sigma, \mathcal{E})$,  respectively).
+\end{definition}
+
+The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category.
+Note that when we consider enriched SMTs ($\textbf{SMT}^{+}(\Sigma,\mathcal{E})$), $\mathcal{E}$ consists exclusively of $\Sigma$-terms, not $\Sigma^{+}$ terms.
+Intuitively, the $+$ generator provides us with an opportunity to form equivalent classes of terms and the axioms above state the congruence over $+$.
+For example, the first equation can be read as: if $g$ is equivalent to $h$ then $f;g$ is equivalent to $f;h$ for any $f$.
+
+\begin{figure}
+    \[
+        \scalebox{0.65}{
+        \tikzfig{categorical-semantics/egraph-strings}
+        }
+    \]
+    \captionsetup{belowskip=-5ex}
+    \caption{String diagrams for semilattice enriched symmetric monoidal categories.}
+    \label{fig:egraph-strings}
+    \end{figure}
+    
+
+To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms (and to denote the e-classes).
+We denote this particular syntax as \textit{e-string diagrams}.
+Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
+The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
+We use string diagrams informally in this work, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. 
+Indeed, similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
+
+\begin{figure*}
+\[  
+    \scalebox{0.75}{
+	\tikzfig{categorical-semantics/egraph-strings-equations}
+    }
+\]
+\caption{Equations for a  semilattice enriched symmetric monoidal category}
+\label{fig:string-equations}
+\end{figure*}
+
+\section{E-graphs as terms of a Cartesian SMT}
+We are now ready to present how (asyclic) e-graphs can be considered as terms of a Cartesian SMT.
+Let $\Sigma$ be a monoidal signature in which every generator $c$ has a single output and $\mathcal{E}$ be the set of equations on $\Sigma$-terms. 
+Then let $\textbf{CSMT}(\Sigma_{C},\mathcal{E}_{C})$ be the Cartesian SMT as introduced in Example~\ref{example:csmt}.
+\begin{proposition}
+    Acyclic e-graphs over a set of generators $\Sigma$ and equivalence classes of terms on $\textbf{CSMT}^{+}(\Sigma_{C},\mathcal{E}_{C})$ are in one-to-one correspondence.
+\end{proposition}
+
+
+\begin{figure}
+    \[
+        \scalebox{0.5}{
+        \tikzfig{categorical-semantics/egraph-translation-2}
+        }
+    \]
+    \caption{Example translation of acyclic e-graphs into string diagrams for semilattice enriched Cartesian categories. }
+    \label{fig:e-graph-example}
+\end{figure}
+
+We will illustrate this proposition by an example.
+\begin{example}
+    Recall an excerpt of a simple e-graph example from~\cite{EggPaper} that we depict in Figure~\ref{fig:e-graph-example}.
+    Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent e-string diagram representation. 
+The initial term, $(a*2)/2$, is already represented efficiently in the e-graph by sharing the node 2.
+The string diagram version is slightly different than conventional e-graphs by representing the sharing of the node 2 explicitly, using a sharing ($\Delta$-generator) node. 
+
+Nodes are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs. 
+Initially each equivalence class has a single node. 
+The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$. 
+This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-string diagrams, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges (wires) connect to the equivalence class itself. 
+Explicit discarding ($!$-generator) nodes indicate which of the class-level edges are connected to which nodes inside the class. 
+Generally, the application of rewrite rules to e-graphs correspond to a sequence of equations applied to e-string diagrams.
+A step-by-step application of such equations for the rewrite rule from $(a)$ to $(b)$ and $(b)$ to $(c)$ can be seen in Figure~\ref{fig:e-graph-example-a-b} and Figure~\ref{fig:e-graph-example-a-b} respectively.
+The equations applied are the ones from Figure~\ref{fig:string-equations} and naturality of delete and copy.
+One can note that the size of the eventual e-string diagram is comparable to the size of the corresponding e-graph.
+\end{example}
+
+We can also translate an arbitrary e-graph into an e-string diagram as shown belownoting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
+\[
+    \tikzfig{categorical-semantics/egraph-translation-1}
+\]
+Note, further, that in the Cartesian case we can restrict to generating morphisms $c$ to have a single output,  without loss of generality,  by applying the universal properties of the Cartesian product.  This means the (informal) translation given above is fully general for acyclic e-graphs.
+We believe that e-graphs with cycles can be represented as terms in Traced Cartesian SMTs and accounting for a trace above seems to be routine.
+
+
+While we did not explicitly define how exactly equations are applied to e-string diagrams resorting rather to intuition, e-string diagrams can be formalised as concrete combinatorial structures by following an established approach of converting string diagrams for non-enriched SMCs to hypergraphs~\cite{bonchi_string_2022,bonchi_string_2022-1,bonchi_string_2022-2}.
+We denote the corresponding combinatorial structure an e-hypergraph and claim that applying equations to e-string diagrams can be mimicked by performing a \textit{double pushout} rewriting on e-hypergraphs.
+This allows us to express a complex e-graph rewriting, that includes creation of e-classes, merging, and computing congruence closure as a sequence of e-hypergraph rewriting steps which as we believe could facilitate reasoning about e-graphs.
+The difference between e-string diagrams and e-hypergraphs is that the former are implicitly quotiented by the equations in Figure~\ref{fig:string-equations} while for the latter these equations become structural rewrite rules.
+One can notice that we unfolded e-string diagrams in Figure~\ref{fig:e-graph-example-b-c} to identify a redex and then to factor out the nodes to achieve a better sharing.
+This would also be the case when applying rewrite rule for e-hypergraph representation in a na\"ive way.
+The work towards finding redexes and achieving maximal sharing without excessive unfolding is in progress.
+
+\begin{figure*}
+    \[
+        % \hspace{1.3cm}
+        \scalebox{0.5}{
+        \tikzfig{categorical-semantics/egraph-translation-step-by-step-a-b}
+        }
+    \]
+    \caption{Example translation from $(a)$ to $(b)$.}
+    \label{fig:e-graph-example-a-b}
+\end{figure*}
+
+\begin{figure*}
+    \[
+        % \hspace{1.3cm}
+        \scalebox{0.55}{
+        \tikzfig{categorical-semantics/e-graph-substitution}
+        }
+    \]
+    \caption{E-graph explicit substitution example.}
+    \label{fig:e-graph-substitution}
+\end{figure*}
+
+\begin{figure*}
+    \[
+        % \hspace{1.3cm}
+        \scalebox{0.5}{
+        \tikzfig{categorical-semantics/e-string-substitution}
+        }
+    \]
+    \caption{E-string diagrammatic substitution example.}
+    \label{fig:e-string-substitution}
+\end{figure*}
+
+\section{E-string diagrams for lambda calculus}
+In this section we will show how a particular kind of SMTs can provide a new perspective on solving the long-standing issues of $\alpha$-equivalence and binding when using e-graphs for languages like lambda calculus.
+The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
+If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{De Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
+The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a subsittution of eqivalence classes that represent a lot of terms at once.
+An example of a substitution can be seen in Figure~\ref{fig:e-graph-substitution}.
+Notably, the terms that correspond to explicit substitution can be discarded at the end.
+
+By recalling the correspondence between Cartesian Closed SMCs and lambda-calculus we can consider the corresponding semilattice enriched Cartesian Closed SMTs.
+Apart from the generators in $\Sigma_{C}$ such theories also contain \textit{application} and $\textit{abstraction}$ maps that correspond to $app$ and $\lambda$ respectively.
+A complete description of these maps and the corresponding equations that they obey can be found in~\cite{ghica-zanassi2023string}.
+The corresponding e-string diagram can be seen in Figure~\ref{fig:e-string-substitution}.
+The half-circle nodes correspond to application maps and the rounded rectangle with a wire attached to its left side is the abstraction map where the attached wire corresponds to the argument of the abstraction.
+A distinguishable feature of these string diagrams is that they are automatically quotiented by $\alpha$-equivalence and that a substitution is merely a rewrite step that glues an argument of the application to the attached wire of the abstraction.
+
+\begin{figure*}
+    \[
+        % \hspace{1.3cm}
+        \scalebox{0.5}{
+        \tikzfig{categorical-semantics/egraph-translation-step-by-step-b-c}
+        }
+    \]
+    \caption{Example translation from $(b)$ to $(c)$.}
+    \label{fig:e-graph-example-b-c}
+\end{figure*}
+
+\section{Conclusion}
+
+In this work, we proposed a generalisation of e-graphs for SMTs which as a bonus provides a framework for reasoning about acyclic e-graphs.
+One promising application of such a generalisation is performing equality saturation for lambda calculus as e-string diagrams ease the burden of dealing with $\alpha$-equivalent terms and binding.
+Some other potential applications also include e-graphs for digital circuits~\cite{ghica_compositional_2023} and quantum computing~\cite{coecke_interacting_2011} where each domain arises from a certain kind of SMT.
+We hope this work will foster discussion within e-graphs community, especially in designing a suitable data structure that would bring this theoretical generalisation into practice.
+
+\bibliographystyle{acm}
+\bibliography{bibliography}
+
+\end{document}

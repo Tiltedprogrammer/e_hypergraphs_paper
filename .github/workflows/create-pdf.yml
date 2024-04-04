@@ -87,6 +87,34 @@ jobs:
           root_file: Reviews-response.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
+# Compile Extended Abstract
+      - name: pdflatex EGraphsExtendedAbstract.tex
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: EGraphsExtendedAbstract.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
+      - name: bibtex EGraphsExtendedAbstract
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+            root_file: EGraphsExtendedAbstract.aux
+            compiler: bibtex
+            args:
+      - name: pdflatex EGraphsExtendedAbstract
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+            root_file: EGraphsExtendedAbstract.tex
+            compiler: pdflatex
+            args: -interaction=nonstopmode -shell-escape
+      - name: pdflatex EGraphsExtendedAbstract
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+            root_file: EGraphsExtendedAbstract.tex
+            compiler: pdflatex
+            args: -interaction=nonstopmode -shell-escape
 # Upload both pdfs
       - name: Upload the PDF to the release
         if: always()
@@ -118,6 +146,16 @@ jobs:
           asset_path: Reviews-response.pdf
           asset_name: Reviews-response.pdf
           asset_content_type: pdf
+      - name: Upload the PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: EGraphsExtendedAbstract.pdf
+            asset_name: EGraphsExtendedAbstract.pdf
+            asset_content_type: pdf
       - name: Delete older releases
         if: always()
         uses: dev-drprasad/delete-older-releases@v0.2.0
