@@ -273,10 +273,10 @@
 		\node [style=none] (2291) at (16.5, -22.75) {};
 		\node [style=none] (2292) at (12.5, -25) {};
 		\node [style=none] (2293) at (12.5, -24.5) {};
-		\node [style=vertex] (2294) at (9.5, -22) {};
-		\node [style=vertex] (2295) at (10, -22) {};
-		\node [style=none] (2296) at (9.5, -22.75) {};
-		\node [style=none] (2297) at (10, -22.75) {};
+		\node [style=vertex] (2294) at (10, -22) {};
+		\node [style=vertex] (2295) at (10.5, -22) {};
+		\node [style=none] (2296) at (10, -22.75) {};
+		\node [style=none] (2297) at (10.5, -22.75) {};
 		\node [style=none] (2298) at (17.25, -20.75) {};
 		\node [style=none] (2299) at (17.75, -20.75) {};
 		\node [style=none] (2300) at (17.25, -22.75) {};
@@ -334,9 +334,9 @@
 		\node [style=vertex set] (2355) at (9.5, -21.25) {};
 		\node [style=vertex set] (2356) at (10, -21.25) {};
 		\node [style=vertex set] (2357) at (10.5, -21.25) {};
-		\node [style=none] (2358) at (8.25, -22.75) {};
-		\node [style=none] (2359) at (8.75, -22.75) {};
-		\node [style=none] (2360) at (10.5, -22.75) {};
+		\node [style=none] (2358) at (8.75, -22.75) {};
+		\node [style=none] (2359) at (9.25, -22.75) {};
+		\node [style=none] (2360) at (11, -22.75) {};
 		\node [style=round box] (2361) at (26.75, -20.25) {$*$};
 		\node [style=none] (2362) at (21, -14.75) {};
 		\node [style=none] (2363) at (30.25, -14.75) {};
@@ -1707,6 +1707,9 @@
 		\node [style=none] (5169) at (27.25, -61.25) {$10$};
 		\node [style=none] (5170) at (-13.75, -76.5) {$(11)$};
 		\node [style=none] (5171) at (27.5, -76.5) {$(12)$};
+		\node [style=none] (5172) at (8.75, -22) {};
+		\node [style=none] (5173) at (9.25, -22) {};
+		\node [style=none] (5174) at (11, -22) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=black dash] (2018.center) to (2019);
@@ -1944,9 +1947,6 @@
 		\draw [style=black dash] (2349.center) to (2348.center);
 		\draw [style=black dash] (2352) to (2353.center);
 		\draw (2352) to (2354.center);
-		\draw [in=90, out=-150, looseness=0.75] (2355) to (2358.center);
-		\draw [in=75, out=-150] (2356) to (2359.center);
-		\draw [in=90, out=-90] (2357) to (2360.center);
 		\draw [style=black dash] (2362.center) to (2363.center);
 		\draw [style=black dash] (2363.center) to (2364.center);
 		\draw [style=black dash] (2364.center) to (2365.center);
@@ -2944,5 +2944,11 @@
 		\draw (5155) to (5161.center);
 		\draw (5116) to (5030.center);
 		\draw (5115) to (5022.center);
+		\draw [in=75, out=-90, looseness=0.75] (2356) to (5173.center);
+		\draw [in=75, out=-105, looseness=0.75] (2355) to (5172.center);
+		\draw (2358.center) to (5172.center);
+		\draw (2359.center) to (5173.center);
+		\draw [in=90, out=-90, looseness=0.75] (2357) to (5174.center);
+		\draw (5174.center) to (2360.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

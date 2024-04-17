@@ -107,7 +107,23 @@
 
 \title{Equivalence Hypergraphs: E-Graphs for Monoidal Theories}
 
-\author{Anonymous}
+\author{Chris Barrett}
+\affiliation{
+  \institution{University of Oxford}
+  \country{United Kingdom}
+}
+
+\author{Aleksei Tiurin}
+\affiliation{
+  \institution{University of Birmingham}
+  \country{United Kingdom}
+}
+
+\author{Dan Ghica}
+\affiliation{
+  \institution{University of Birmingham}
+  \country{United Kingdom}
+}
 
 \maketitle
 
@@ -122,7 +138,7 @@ Such theories are called \textit{symmetric monoidal theories} (SMTs), they consi
 Even if we allowed terms in an e-graph to have multiple outputs, the rewriting for such terms using the current data structure that e-graphs are based on would be infeasible because rewriting in an SMT is performed modulo SMT axioms --- including such axioms into the set of rewrite rules would quickly explode the size of the hypothetical e-graph.
 This motivates the need for generalised e-graphs and suggests that such generalisation should be developed with SMT axioms in mind.
 
-This work in progress aims to propose a generalisation of e-graphs for arbitrary SMTs which is build by enriching the underlying categorical structure of a given SMT.
+Our work in progress aims to propose a generalisation of e-graphs for arbitrary SMTs which is build by enriching the underlying categorical structure of a given SMT.
 Then, it can be seen that original e-graphs is the case of our construction applied to Cartesian SMTs.
 Apart from building the foundation for the application of e-graphs to a richer class of theories, this work also provides a new perspective on solving the notorious issues of alpha-equivalence and binding that arise when, for example, one wants to build e-graphs for functional languages~\cite{koehler2022sketchguided}.
 
@@ -181,7 +197,7 @@ By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equival
 
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
-To express the notion of e-classes of SMT terms we consider an SMT enriched over a category of semilattices as defined below.
+To express the notion of e-classes of SMT terms we consider an SMT which is represented by an SMC enriched over a category of semilattices as defined below.
 
 \begin{definition}[Semilattice-enriched PROP]\label{def:enriched-prop}
 A \textit{semilattice enriched strict SMC (PROP)}  $\mathbb{C}$ is given by an SMC (PROP) $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms. 
@@ -234,11 +250,12 @@ Indeed, similar diagrammatic languages using boxes to express choice have been u
 \end{figure*}
 
 \section{E-graphs as terms of a Cartesian SMT}
-We are now ready to present how (asyclic) e-graphs can be considered as terms of a Cartesian SMT.
+We are now ready to present how (acyclic) e-graphs can be considered as terms of a Cartesian SMT.
 Let $\Sigma$ be a monoidal signature in which every generator $c$ has a single output and $\mathcal{E}$ be the set of equations on $\Sigma$-terms. 
 Then let $\textbf{CSMT}(\Sigma_{C},\mathcal{E}_{C})$ be the Cartesian SMT as introduced in Example~\ref{example:csmt}.
 \begin{proposition}
-    Acyclic e-graphs over a set of generators $\Sigma$ and equivalence classes of terms on $\textbf{CSMT}^{+}(\Sigma_{C},\mathcal{E}_{C})$ are in one-to-one correspondence.
+    For each acyclic e-graph over a set of generators $\Sigma$ and a set of equations $\mathcal{E}$ that have at most one root e-class, there is a corresponding equivalence class of terms in $\textbf{CSMT}^{+}(\Sigma_{C},\mathcal{E}_{C})$.
+    Moreover, if $e_1$ and $e_2$ are e-graphs such that $e_2$ is obtained from $e_1$ after applying some rewrite rule (\textit{i.e.}, $e_2$ is obtained after adding new terms into $e_1$ and performing the necessary merges and repairs), then $s_2$ can be obtained from $s_1$ by applying the equations from Figure~\ref{fig:string-equations} and $\mathcal{E}_{C}$ where $s_1$ and $s_2$ are the corresponding e-string diagrams for $e_1$ and $e_2$ respectively.
 \end{proposition}
 
 
@@ -266,11 +283,11 @@ This second e-graph illustrates the other difference, besides sharing, between c
 Explicit discarding ($!$-generator) nodes indicate which of the class-level edges are connected to which nodes inside the class. 
 Generally, the application of rewrite rules to e-graphs correspond to a sequence of equations applied to e-string diagrams.
 A step-by-step application of such equations for the rewrite rule from $(a)$ to $(b)$ and $(b)$ to $(c)$ can be seen in Figure~\ref{fig:e-graph-example-a-b} and Figure~\ref{fig:e-graph-example-a-b} respectively.
-The equations applied are the ones from Figure~\ref{fig:string-equations} and naturality of delete and copy.
+The equations applied are the ones from Figure~\ref{fig:string-equations} and naturality of delete ($!$) and copy ($\Delta$).
 One can note that the size of the eventual e-string diagram is comparable to the size of the corresponding e-graph.
 \end{example}
 
-We can also translate an arbitrary e-graph into an e-string diagram as shown belownoting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
+We can then translate an arbitrary e-graph into an e-string diagram as shown below, noting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
 \[
     \tikzfig{categorical-semantics/egraph-translation-1}
 \]
@@ -279,11 +296,11 @@ We believe that e-graphs with cycles can be represented as terms in Traced Carte
 
 
 While we did not explicitly define how exactly equations are applied to e-string diagrams resorting rather to intuition, e-string diagrams can be formalised as concrete combinatorial structures by following an established approach of converting string diagrams for non-enriched SMCs to hypergraphs~\cite{bonchi_string_2022,bonchi_string_2022-1,bonchi_string_2022-2}.
-We denote the corresponding combinatorial structure an e-hypergraph and claim that applying equations to e-string diagrams can be mimicked by performing a \textit{double pushout} rewriting on e-hypergraphs.
+We denote the corresponding combinatorial structure an e-hypergraph and claim that applying equations to e-string diagrams can be mimicked by performing a \textit{double pushout} rewriting of e-hypergraphs.
 This allows us to express a complex e-graph rewriting, that includes creation of e-classes, merging, and computing congruence closure as a sequence of e-hypergraph rewriting steps which as we believe could facilitate reasoning about e-graphs.
 The difference between e-string diagrams and e-hypergraphs is that the former are implicitly quotiented by the equations in Figure~\ref{fig:string-equations} while for the latter these equations become structural rewrite rules.
 One can notice that we unfolded e-string diagrams in Figure~\ref{fig:e-graph-example-b-c} to identify a redex and then to factor out the nodes to achieve a better sharing.
-This would also be the case when applying rewrite rule for e-hypergraph representation in a na\"ive way.
+This would also be the case when applying rewrite rules for e-hypergraph representation in a na\"ive way.
 The work towards finding redexes and achieving maximal sharing without excessive unfolding is in progress.
 
 \begin{figure*}
@@ -312,38 +329,44 @@ The work towards finding redexes and achieving maximal sharing without excessive
     \[
         % \hspace{1.3cm}
         \scalebox{0.5}{
-        \tikzfig{categorical-semantics/e-string-substitution}
+        \tikzfig{categorical-semantics/e-string-substitution-2}
         }
     \]
     \caption{E-string diagrammatic substitution example.}
     \label{fig:e-string-substitution}
 \end{figure*}
 
-\section{E-string diagrams for lambda calculus}
-In this section we will show how a particular kind of SMTs can provide a new perspective on solving the long-standing issues of $\alpha$-equivalence and binding when using e-graphs for languages like lambda calculus.
-The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
-If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{De Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
-The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a subsittution of eqivalence classes that represent a lot of terms at once.
-An example of a substitution can be seen in Figure~\ref{fig:e-graph-substitution}.
-Notably, the terms that correspond to explicit substitution can be discarded at the end.
-
-By recalling the correspondence between Cartesian Closed SMCs and lambda-calculus we can consider the corresponding semilattice enriched Cartesian Closed SMTs.
-Apart from the generators in $\Sigma_{C}$ such theories also contain \textit{application} and $\textit{abstraction}$ maps that correspond to $app$ and $\lambda$ respectively.
-A complete description of these maps and the corresponding equations that they obey can be found in~\cite{ghica-zanassi2023string}.
-The corresponding e-string diagram can be seen in Figure~\ref{fig:e-string-substitution}.
-The half-circle nodes correspond to application maps and the rounded rectangle with a wire attached to its left side is the abstraction map where the attached wire corresponds to the argument of the abstraction.
-A distinguishable feature of these string diagrams is that they are automatically quotiented by $\alpha$-equivalence and that a substitution is merely a rewrite step that glues an argument of the application to the attached wire of the abstraction.
-
-\begin{figure*}
+\begin{figure*}[t!]
+    \vspace{-3cm}
+    \centering
     \[
-        % \hspace{1.3cm}
-        \scalebox{0.5}{
+        \hspace{1.3cm}
+        \resizebox{0.8\textwidth}{!}{
         \tikzfig{categorical-semantics/egraph-translation-step-by-step-b-c}
         }
     \]
     \caption{Example translation from $(b)$ to $(c)$.}
     \label{fig:e-graph-example-b-c}
 \end{figure*}
+
+\section{E-string diagrams for lambda calculus}
+In this section we will show how a particular kind of SMTs can provide a new perspective on solving the long-standing issues of $\alpha$-equivalence and binding when using e-graphs for languages like lambda calculus.
+The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
+If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
+The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
+An example of a substitution can be seen in Figure~\ref{fig:e-graph-substitution}. An explicit substitution operator is the part of the syntax and the substitution of e-classes is defined inductively on the structure of all terms that these e-classes represent, \textit{i.e.}, computing a substitution of e-classes is achieved by computing a pair-wise substitution for all the instances of these e-classes.
+Notably, the terms that correspond to explicit substitution can be discarded at the end.
+
+
+By recalling the correspondence between Cartesian Closed SMCs and lambda-calculus we can consider the corresponding semilattice enriched Cartesian Closed SMTs.
+Apart from the generators in $\Sigma_{C}$ such theories also contain \textit{application} and $\textit{abstraction}$ maps that correspond to $app$ and $\lambda$ respectively.
+A complete description of these maps and the equations that they obey can be found in~\cite{ghica-zanassi2023string}.
+The e-string diagram version of the previous example can be seen in Figure~\ref{fig:e-string-substitution}.
+The half-circle nodes correspond to application maps and the rounded rectangles with a wire attached to their right sides are the abstraction maps where the attached wire corresponds to the argument of the abstraction.
+A distinguishable feature of these string diagrams is that they are automatically quotiented by $\alpha$-equivalence and that a $\beta$-reduction is merely a rewrite step that glues an argument of the application to the attached wire of the abstraction and the substitution is just string diagram composition.
+Another advantage of string diagrams is that every occurrence of the bound variable is essentially the same wire as opposed to de Brujin indices, so there is no need to modify any indices, the whole substitution is just a matter of reattaching the wires non-destructively.
+In particular, note how the substitution within $y + y$ was completely avoided.
+% The latter follows from the definition of the respective adjunction that defines these maps.
 
 \section{Conclusion}
 
