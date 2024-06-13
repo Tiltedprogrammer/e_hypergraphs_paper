@@ -33,30 +33,34 @@ jobs:
       - name: pdflatex main
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.tex
+          root_file: ${{env.MAIN_NAME}}.tex
           compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape 
+          args: -interaction=nonstopmode -shell-escape
+          working_directory: ${{env.MAIN_PATH}}
       - name: bibtex main
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.aux
+          root_file: ${{env.MAIN_NAME}}.aux
           compiler: bibtex
           args:
+          working_directory: ${{env.MAIN_PATH}}
       - name: pdflatex main
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.tex
+          root_file: ${{env.MAIN_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
+          working_directory: ${{env.MAIN_PATH}}
       - name: pdflatex main
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.tex
+          root_file: ${{env.MAIN_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
+          working_directory: ${{env.MAIN_PATH}}
 # # Compile submission
 #       - name: pdflatex E-Hypergraphs-LICS24 
 #         uses: dante-ev/latex-action@latest
@@ -93,33 +97,37 @@ jobs:
 #           compiler: pdflatex
 #           args: -interaction=nonstopmode -shell-escape
 # Compile Extended Abstract
-      - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
+      - name: pdflatex ${{env.EXT_ABSTRACT_NAME}}
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.tex
+          root_file: ${{env.EXT_ABSTRACT_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
+          working_directory: ${{env.EXT_ABSTRACT_PATH}}
       - name: bibtex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-            root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.aux
+            root_file: ${{env.EXT_ABSTRACT_NAME}}.aux
             compiler: bibtex
             args:
+            working_directory: ${{env.EXT_ABSTRACT_PATH}}
+      - name: pdflatex ${{env.EXT_ABSTRACT_NAME}}
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+            root_file: ${{env.EXT_ABSTRACT_NAME}}.tex
+            compiler: pdflatex
+            args: -interaction=nonstopmode -shell-escape
+            working_directory: ${{env.EXT_ABSTRACT_PATH}}
       - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-            root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.tex
+            root_file: ${{env.EXT_ABSTRACT_NAME}}.tex
             compiler: pdflatex
             args: -interaction=nonstopmode -shell-escape
-      - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-            root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.tex
-            compiler: pdflatex
-            args: -interaction=nonstopmode -shell-escape
+            working_directory: ${{env.EXT_ABSTRACT_PATH}}
 # Upload both pdfs
       - name: Upload the PDF to the release
         if: always()
