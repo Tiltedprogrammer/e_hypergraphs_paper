@@ -24,12 +24,12 @@
   \ifdefined\tikzitdraft%
     \IfFileExists{./cache/#1.pdf}
     {\includegraphics[scale=1,align=c]{./cache/#1.pdf}}
-    {\IfFileExists{./figures/#1.tikz}
-      {{\tikzstyle{every picture}=[tikzfig]\input{./figures/#1.tikz}}}
+    {\IfFileExists{./#1.tikz}
+      {{\tikzstyle{every picture}=[tikzfig]\input{./#1.tikz}}}
       {\tikz[baseline=-0.5em]{\node[draw=red,font=\color{red},fill=red!10!white] {\textit{#1}};}}}%
   \else%
-    \IfFileExists{./figures/#1.tikz}
-      {{\tikzstyle{every picture}=[tikzfig]\input{./figures/#1.tikz}}}
+    \IfFileExists{./#1.tikz}
+      {{\tikzstyle{every picture}=[tikzfig]\input{./#1.tikz}}}
       {\tikz[baseline=-0.5em]{\node[draw=red,font=\color{red},fill=red!10!white] {\textit{#1}};}}%
   \fi%
 }

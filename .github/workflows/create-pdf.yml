@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env: 
+      MAIN_PATH: 'arxiv/'
+      MAIN_NAME: 'E-Hypergraphs-arxiv'
+      EXT_ABSTRACT_PATH: 'extended_abstract/'
+      EXT_ABSTRACT_NAME: 'EGraphsExtendedAbstract'
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -28,91 +33,91 @@ jobs:
       - name: pdflatex main
         uses: dante-ev/latex-action@latest
         with:
-          root_file: main.tex
+          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape 
       - name: bibtex main
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: main.aux
+          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.aux
           compiler: bibtex
           args:
       - name: pdflatex main
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: main.tex
+          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
       - name: pdflatex main
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: main.tex
+          root_file: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
-# Compile submission
-      - name: pdflatex E-Hypergraphs-LICS24 
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: E-Hypergraphs-LICS24.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape 
-      - name: bibtex E-Hypergraphs-LICS24
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: E-Hypergraphs-LICS24.aux
-          compiler: bibtex
-          args:
-      - name: pdflatex E-Hypergraphs-LICS24
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: E-Hypergraphs-LICS24.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-      - name: pdflatex E-Hypergraphs-LICS24
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: E-Hypergraphs-LICS24.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-# Compile review response
-      - name: pdflatex Reviews-response.tex
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: Reviews-response.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
+# # Compile submission
+#       - name: pdflatex E-Hypergraphs-LICS24 
+#         uses: dante-ev/latex-action@latest
+#         with:
+#           root_file: E-Hypergraphs-LICS24.tex
+#           compiler: pdflatex
+#           args: -interaction=nonstopmode -shell-escape 
+#       - name: bibtex E-Hypergraphs-LICS24
+#         if: always()
+#         uses: dante-ev/latex-action@latest
+#         with:
+#           root_file: E-Hypergraphs-LICS24.aux
+#           compiler: bibtex
+#           args:
+#       - name: pdflatex E-Hypergraphs-LICS24
+#         if: always()
+#         uses: dante-ev/latex-action@latest
+#         with:
+#           root_file: E-Hypergraphs-LICS24.tex
+#           compiler: pdflatex
+#           args: -interaction=nonstopmode -shell-escape
+#       - name: pdflatex E-Hypergraphs-LICS24
+#         if: always()
+#         uses: dante-ev/latex-action@latest
+#         with:
+#           root_file: E-Hypergraphs-LICS24.tex
+#           compiler: pdflatex
+#           args: -interaction=nonstopmode -shell-escape
+# # Compile review response
+#       - name: pdflatex Reviews-response.tex
+#         uses: dante-ev/latex-action@latest
+#         with:
+#           root_file: Reviews-response.tex
+#           compiler: pdflatex
+#           args: -interaction=nonstopmode -shell-escape
 # Compile Extended Abstract
-      - name: pdflatex EGraphsExtendedAbstract.tex
+      - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
         uses: dante-ev/latex-action@latest
         with:
-          root_file: EGraphsExtendedAbstract.tex
+          root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.tex
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
-      - name: bibtex EGraphsExtendedAbstract
+      - name: bibtex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-            root_file: EGraphsExtendedAbstract.aux
+            root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.aux
             compiler: bibtex
             args:
-      - name: pdflatex EGraphsExtendedAbstract
+      - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-            root_file: EGraphsExtendedAbstract.tex
+            root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.tex
             compiler: pdflatex
             args: -interaction=nonstopmode -shell-escape
-      - name: pdflatex EGraphsExtendedAbstract
+      - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-            root_file: EGraphsExtendedAbstract.tex
+            root_file: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.tex
             compiler: pdflatex
             args: -interaction=nonstopmode -shell-escape
 # Upload both pdfs
@@ -123,8 +128,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: main.pdf
-          asset_name: paper.pdf
+          asset_path: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.pdf
+          asset_name: arxiv.pdf
           asset_content_type: pdf
       - name: Upload the PDF to the release
         if: always()
@@ -133,29 +138,29 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: E-Hypergraphs-LICS24.pdf
-          asset_name: LICS24-submission.pdf
+          asset_path: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.pdf
+          asset_name: ExtendedAbstract.pdf
           asset_content_type: pdf
-      - name: Upload the PDF to the release
-        if: always()
-        uses: actions/upload-release-asset@v1
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Reviews-response.pdf
-          asset_name: Reviews-response.pdf
-          asset_content_type: pdf
-      - name: Upload the PDF to the release
-        if: always()
-        uses: actions/upload-release-asset@v1
-        env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: EGraphsExtendedAbstract.pdf
-            asset_name: EGraphsExtendedAbstract.pdf
-            asset_content_type: pdf
+      # - name: Upload the PDF to the release
+      #   if: always()
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: Reviews-response.pdf
+      #     asset_name: Reviews-response.pdf
+      #     asset_content_type: pdf
+      # - name: Upload the PDF to the release
+      #   if: always()
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #       upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #       asset_path: EGraphsExtendedAbstract.pdf
+      #       asset_name: EGraphsExtendedAbstract.pdf
+      #       asset_content_type: pdf
       - name: Delete older releases
         if: always()
         uses: dev-drprasad/delete-older-releases@v0.2.0

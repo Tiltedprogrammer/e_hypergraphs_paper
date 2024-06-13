@@ -1,0 +1,422 @@
+\section{E-Hypergraphs}\label{sec:e-hypergraphs}
+
+Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalisation of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
+
+Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$  such that for all $c_1,c_2 \in \Sigma$, if arity (respectively, co-arity) of $c_1$ is 0, then co-arity (respectively, arity) of $c_2$ must be at least 1.
+This is to ensure we do not have terms of type $0 \to 0$.
+This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there.
+
+In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.  
+
+\begin{definition}[E-hypergraphs]
+\label{def:e-homo}    
+An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}.  
+We define the following additional notation.  
+For $x \in V + E$,  the set of \emph{parents} of $x$, is denoted as $[x) = \{x' ~|~ x' < x\; \}$.
+% \[
+% 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
+% \]
+We will denote the immediate parent $e$ of $x$ by writing $e <^{\mu} x$.
+We call edges $e$ such that $l(e) = \bot$ \textit{hierarchical},  and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \emph{top-level}.
+We require that the child relation satisfies the following conditions:
+\begin{enumerate}
+	\item each parent set contains exclusively hierarchical edges;
+	\item Each $x$ has at most one immediate parent;
+	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$ and similarly if $v \in t(e)$.
+\end{enumerate}
+We additionally define an equivalence relation $\consistency_p$,  called the \textit{consistency relation},  on each set $\{x \in V + E ~|~ p <^\mu x\}$ of elements which share the same parent.  
+We collect the union of all these equivalence relations into one relation $\consistency = \bigcup_{p} \consistency_p$,  which is defined on a subset of $V+E$. 
+Note that this relation is symmetric and transitive if considered on $V + E$.
+The consistency relation must additionally satisfy that if $v \in s(e)$ or $v \in t(e)$ and there exists $e'$ such that $e' <^{\mu} v$ and $e' <^{\mu} e$ then $v \consistency e$.
+\label{def:consistency_properties}
+\end{definition}
+Intuitively,  the child relation equips the hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of  string diagrams.  
+These edges can be designated as "parents" to sub-e-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the maximal sub-e-hypergraph below the hierarchical edge.  
+Technically,  condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for the consistency relation. 
+\begin{definition}[E-hypergraph homomorphism]
+An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
+\begin{enumerate}
+    \item $\phi$ is a hypergraph homomorphism
+    \item for $v \in V_{\mathcal{F}}$ and $e \in E_{\mathcal{F}}$
+	    \[
+        \text{if } e <_{\mathcal{F}}^{\mu} v \text{ then } \phi(e) <_{\mathcal{G}}^{\mu} \phi(v)
+        \]
+        and for $e_1, e_2 \in E_{\mathcal{F}}$
+        \[
+        \text{if } e_1 <_{\mathcal{F}}^{\mu} e_2 \text{ then } \phi(e_1) <_{\mathcal{G}}^{\mu} \phi(e_2)
+        \]
+        \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 ~\consistency_{\mathcal{F}}~ x_2$ implies $\phi(x_1) ~\consistency_{\mathcal{G}}~ \phi(x_2)$. 
+\end{enumerate}
+% If we further have that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we call the homomorphism \textit{strict}.
+\end{definition}
+The conditions on e-hypergraph homomorphisms require to preserve immediate parents and the consistency relation.  
+\begin{definition}[Category of e-hypergraphs]
+The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e-hypergraphs as objects and e-hypergraph homomorphisms as morphisms.  
+\end{definition}
+
+The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
+A concrete description of the pushout of two morphisms in this category is given in the Appendix.  
+Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied, including the requirement that the shared domain of the morphisms that form the span for the pushout is a discrete e-hypergraph.
+
+\begin{remark}
+When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we let the immediate parent to be undefined for all $x$ whose immediate parent in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
+\end{remark}
+
+When modelling enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extended cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
+
+We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n - m$ vertices,  in particular with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub-e-hypergraph of $n$.
+\begin{definition}[Category of e-hypergraphs with interfaces]
+    The category of \textit{e-hypergraphs with extended interfaces} $\Ecospans$ has discrete \textit{ordered} e-hypergraphs as objects,  with hom-sets $\Ecospans(n,m)$ consisting of isomorphism classes of \textit{extended cospans}, defined as follows:  
+    \[
+    n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
+    \]
+    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete ordered e-hypergraphs,  $f_{ext},g_{ext}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and such that vertices in the strictly internal interface (defined below) are not top-level.  We will sometimes write $\mathcal G$ to denote the extended cospan,  where it is clear from context $\mathcal G$ is equipped with extended interfaces. 
+
+We will call $n$  \textit{external input interfaces} and $n'$ \textit{internal input interfaces}.
+We call $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.  
+We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
+We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n'$ and $m'$,  and likewise $m, m, n', m'$ with their images in $\mathcal{G}$. 
+Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.  
+
+Consider a relation $R = \{x R y \text{ if } f_{int}(x) \consistency f_{int}(y) \text{ for } x,y \in n'\}$ and let $S$ be its reflexive closure.
+The latter partitions $n'$ into non-empty subsets $\{p_{j}\}_{j=1}^{k}$. We get an analogous partition for $m'$.
+An example of an extended cospan can be seen in Figure~\ref{fig:e-cospan-example}.
+The cospan represents a morphism that encodes symmetry put into a hierarchical edge.
+The partition of the interfaces is given with colours.
+The labels suggest how $f_{int}, f_{ext}$ (respectively, $g_{int}, g_{ext}$) act on vertices.
+The ordering of vertices in the interfaces is from left to right.
+
+\begin{figure}
+    \[
+    \scalebox{0.6}{
+        \tikzfig{../figures/combinatorial_semantics/extended_cospan_example}
+    }    
+    \]
+    \captionsetup{belowskip=-3ex}
+    \caption{Extended cospan example}
+    \label{fig:e-cospan-example}
+\end{figure}
+
+Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute and such that $\alpha$ and $\gamma$ preserve order within each $p_i$.
+\[
+\scalebox{0.75}{
+    \tikzfig{../figures/combinatorial_semantics/isomorphic_e_cospans}
+}
+\]
+Intuitively, such construction suggests that the position of the image of $n$ within $n'$ relative to the strict internal interface does not matter; and that when considering individual components of hierarchical edges with their respective portions of strict internal input and output interfaces as plain cospans of hypergraphs (by only considering top-level vertices and edges of these components) they should be isomorphic cospans of hypergraphs in the sense from~\cite{Frobenius}.
+Examples of isomorphic and non-isomorphic extended cospans can be found in Appendix.
+
+\begin{remark}\label{remark:embedding_functor}
+There is also a faithful identity-on-objects functor $E: \HypI{\Sigma} \to \Ecospans$ which maps a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ to an extended cospan $n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m$ such that $f_{ext};f_{int} = f$ and $g_{ext};g_{int} = g$.
+\end{remark}
+
+Composition of two morphisms 
+\begin{align*}
+	n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} &\mathcal{F} \xleftarrow{f'_{int}} m' \xleftarrow{f'_{ext}} m\\
+	m \xrightarrow{g_{ext}} m'\!' \xrightarrow{g_{int}} &\mathcal{G} \xleftarrow{g'_{int}} k' \xleftarrow{g'_{ext}} k
+\end{align*} is computed in two stages.
+First, $\mathcal{H}$ is computed as the result of the pushout square shown below; 
+% https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
+\[
+\trimbox{0cm 0cm 0cm 0.75cm}{
+\adjustbox{scale=0.9,center}
+{\tikzfig{../figures/combinatorial_semantics/pushout_e_cospans}}
+}
+\]
+then,  the result of composition is defined as follows:
+\[
+n \xrightarrow{f_{ext};\iota_1} n' + (m'' \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k' + (m' \setminus m) \xleftarrow{g'_{ext};\iota_1} k
+\]
+where $h_i$ are defined as follows,  using $|$ to denote the restriction of a function on a discrete e-hypergraph. 
+\[
+    h_1 = [ f_{int};p_1, ~(g_{int};p_2)|_{m'' \setminus m} ]
+\qquad
+    h_2 = [ g'_{int};p_2, ~(f'_{int};p_1)|_{m' \setminus m} ]
+\]
+% \[
+% \begin{tikzcd}
+% Y_{ext} \arrow[d] & 0 \arrow[l] \arrow[d]    \\
+% Y'          & Y' \setminus Y_{ext} \arrow[l]
+% \end{tikzcd}
+% \]
+% and then the disjoint union is just a coproduct. 
+% where $g'$ is the restriction of $g$ to ${Y' \setminus Y_{ext}}$ and $f'$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
+The identity of composition is given by the obvious extended cospan of identities. 
+$\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp({\Sigma}})$,  analogously to Definition~\ref{def:cspd}.  
+\end{definition}
+
+As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism). 
+% Unlike in the previous section,  we require (extended) cospans to consist of monomorphisms.  
+% This is to ensure the existence of the pushouts needed for composition,  since pushouts do not necessarily exist in $\textbf{EHyp}(\Sigma)$.  
+% This also means that we omit the monomorphism condition from the following definition.  
+We additionally introduce a notion of \textit{well-typing} of e-hypergraphs,  which ensures each component of an e-box has the same number of inputs (outputs) as every other component. 
+
+% https://q.uiver.app/#q=WzAsNSxbMCwwLCJYICsgWSJdLFsyLDAsIlggKyBZIl0sWzQsMCwiWSArIFgiXSxbNiwwLCJZICsgWCJdLFs4LDAsIlkgKyBYIl0sWzAsMSwiaWRfWCArIGlkX1kiXSxbMSwyLCJcXHNpZ21hX3tYLFl9Il0sWzQsMywiaWRfWSArIGlkX1giLDJdLFszLDIsImlkX1kgKyBpZF9YIiwyXV0=
+
+
+
+\begin{definition}[Category of well-typed MDA e-hypergraphs with interfaces]
+We call an extended cospan in $\Ecospans$,  as below,   \textit{monogamous directed acyclic (MDA)} if
+\[
+n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
+\]
+\begin{enumerate}
+        \item underlying hypergraph of $\mathcal{G}$ is directed acyclic; 
+        \item $f_{int}$, $g_{int}$ are monomorphisms; 
+        \item The in-degree and out-degree of every vertex is at most 1; 
+        \item Vertices with in-degree $0$ are precisely the image of $f_{int}$; 
+        \item Vertices with out-degree $0$ are precisely the image of $g_{int}$; 
+        % the item below is not assumed by the definition of a cospan of e-hypergraphs
+        % \item $[v) = \varnothing$ for all $v$ in the image of $f_{ext};f$, and for all $v$ in the image of $g_{ext};g$. 
+\end{enumerate}
+\label{def:monogamy_ehyp} 
+
+Further,  consider the sets of input and output vertices,  $I$ and $O$ respectively,  of a hierarchical edge $e$ of an e-hypergraph $\mathcal{G}$. 
+The consistency relation of $\mathcal{G}$ partitions $I$ and $O$.  
+We call $e$ \emph{well-typed} if the size of each subset in the partition of $I$ is $|s(e)|$ and the size of each partition of $O$ is $|t(e)|$.
+We will call an MDA extended-cospan in $\MdaEcospans$ \emph{well-typed} if all hierarchical edges in its apex are well-typed.
+
+We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of well-typed MDA extended-cospans. 
+\end{definition}
+Note,  $\MdaEcospans$ is indeed a category,  and in fact inherits the symmetric monoidal structure of $\Ecospans$:  it is easy to check that identities,  the monoidal unit,  symmetry,  and the composition and tensor product of any two well-typed cospans are all (again) well-typed.  
+
+
+
+Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  
+This is because the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation, apart from the commutativity equation which is absorbed by the definition of isomorphic cospans.  
+Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve sharing and copying, operations on string diagrams which are not usually quotiented away.
+% , cf. string diagrams for Cartesian categories.  
+An ideal combinatorial representation would factor out the two semilattice equations which \textit{do not} involve sharing and copying (namely,  associativity and idempotence) --- however, a limitation of the current work is that we do not achieve this.  
+Presently,  we will treat these equations via rewriting as well. 
+
+\section{DPOI-Rewriting for E-Hypergraphs}
+
+Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments. This is the purpose of this section of the paper. 
+
+We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
+Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows. 
+\[
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{L} \xleftarrow{} m' \xleftarrow{} m
+\qquad
+    n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m
+\] 
+Analogous to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data
+\[
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m
+\qquad
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
+\] allows us to encode rewrite rules as extended cospans of the following form
+\[
+\mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R}
+\] which will fit into the DPO formalism. We make this identification throughout,  without further mention. 
+%We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
+\begin{remark}
+There is a limitation of extended DPOI rewriting as defined in this section: it is unable to express rewriting
+for rules whose source or target contain a maximal connected sub-hypergraph with no input and output vertices.  
+While we believe this limitation can be overcome,  we find the technical development to be significantly simpler if we simply avoid consideration of such sub-hypergraphs.  
+For this reason,  in the remainder of the paper we consider signatures which can not result in construction of terms with type $0 \to 0$,  thus restricting possible e-hypergraphs to those without such problematic edges. 
+%This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
+%We claim that this is only a minor limitation because in practice such edges (morphisms) with no
+%incident nodes correspond to ‘scalars’, if we consider for example a category of vector spaces, and scalars are usually removed by being absorbed by vectors rather than introduced during rewrites.
+\end{remark}
+
+
+% The input interface on the left-hand side of the rule is $\{1, 2\}$, while the input interface on the right-hand side of the rule is $\{1,2,5,6,7,8\}$.
+% Note that the outermost interfaces are preserved.
+
+% Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
+% Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
+
+% The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
+% Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
+% The entry in the middle of the span depicts the outermost interfaces which are preserved.
+% The second row depicts the e-hypergraph to be rewritten on the left and the result of the rewrite on the right.
+% The result is obtained by first deleting the image of the left-hand side of the rewrite rule from the initial e-hypergraph (depicted in the middle) and then gluing the right-hand side of the rewrite rule into it. 
+% Note that the interfaces of the initial e-hypergraph and the residual e-hypergraph are different. 
+% Here, the outermost and the whole interfaces for the eventual e-hypergraph coincide, but if the nested-ness of the initial e-hypergraph was more intense the result could have inner interfaces as well as we would remove the interfaces of the inner edges when deleting the image of the left-hand side part of the rule from the initial e-hypergraph.
+
+
+Before introducing our definition of \textit{extended} DPOI rewriting,  we must modify the definition of boundary complement to guarantee that rewriting yields a monogamous directed acyclic e-hypergraph. 
+First,  we introduce the  notion of a \textit{down-closed} graph,  which will be necessary for the subsequent development. 
+\begin{definition}[Down-closed subgraph]
+%A \textit{subgraph} of $\mathcal G $ an e-hypergraph $\mathcal H$ 
+%is an e-hypergraph whose edge and vertex sets are subsets of those of $\mathcal H$, 
+%and whose remaining equipment is a restriction of that of $\mathcal H$ to those sets. 
+    We call  a sub-e-hypergraph $\mathcal G $ of $\mathcal H$ \emph{down-closed} if for all $e \in E_{\mathcal{G}}$,   all children of $e$ are also in $\mathcal{G}$.
+\end{definition}    
+
+\begin{definition}[Extended boundary complement]
+\label{def:boundary_new}
+
+% https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
+
+For MDA cospans 
+\[
+    i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
+\quad\text{ and }\quad
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
+\] and mono $m : \mathcal{L} \to \mathcal{G}$ in $\catname{EHyp(\Sigma)}$, a pushout complement $i + j \to \mathcal{L}^{\bot} \to \mathcal{G}$
+as depicted in the square below
+\[
+\scalebox{0.75}{
+
+    \tikzfig{../figures/combinatorial_semantics/DPOI_pushout_complement}
+}
+\]
+is a \textit{boundary complement} if
+\begin{enumerate} 
+    \item $m(\mathcal L)$ is a convex down-closed e-hypergraph;
+    \item $[c_1,c_2]$ is mono;
+    \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same set of parents, and either $v,w$ are top-level or else $v \consistency w$;
+    \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same set of parents, and either $v,w$ are top-level or else $v \consistency w$;
+    \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
+    \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended mda-cospan
+    \[
+    n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
+    \]
+    \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended mda-cospan
+    \[
+    n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
+    \]
+\end{enumerate}
+where $f_i$ and $g_i$ are defined as follows.  
+ %because the image of $m$ is a convex down-closed e-hypergraph, 
+The strictly internal interface $i' \setminus i$ of $\mathcal L$ is mapped to the internal interface $n'$ of $\mathcal G$,  since $\mathcal L$ is a down-closed subgraph of $\mathcal G$,  inducing an identification of $i' \setminus i$ in  $n'$. 
+Then map $f_1$ is given by $g_{ext}$ with its codomain restricted to $n' \setminus (i' \setminus i)$.\footnote{Noting the image of $g_{ext}$ indeed lies within $n' \setminus (i' \setminus i)$}  The map $g_1$ is derived from the restriction of $g_{int}$ to type $n' \setminus (i' \setminus i) \to \mathcal G$ by further observing that $\mathcal L^\bot$ can be identified within $\mathcal G$ --- and in particular has the internal interface $n'$ of $\mathcal G$ minus $i' \setminus i$.  The maps $f_2$ and $g_2$ are defined similarly. 
+%$i' \setminus i$, which is a strict internal interface of $\mathcal{L}$, is necessarily mapped to vertices in the strict internal interface of $\mathcal{G}$ which are also in the image of $n'$ and therefore we can construct a 
+%morphism $f' : i' \setminus i \to n'$ by first following $m$ and then composing with the partial inverse of $g_{int}$ which exists because it is mono. 
+%Then we define $n' \setminus (i' \setminus i)$ as the pushout complement in the diagram below
+%
+%\[
+%    \tikzfig{combinatorial_semantics/pushout_difference}
+%\]
+%and $g_1$ is obtained by composition $g';g_{int}$ and then composing with the inverse of $l$.
+%Similarly for $g_2$.
+% CHRIS: TRY TO DEFINE G1, G2 AS SIMPLY AS POSSIBLE, AND POSSIBLY ADD AN INFORMAL EXPLANATION BELOW THE DEFINITION. 
+% Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed, apart from the part that has a pre-image in $i + j$, there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
+% \[
+%     D = \{ v \in n' \text{ such that } \not \exists u \in (i' \setminus i) ~ . ~ g_{int}(v) = f'_{int};f(u) \}
+% \]
+% Similarly for $r \to \mathcal{L}^{\bot}$, which we denote as $g_2$.
+% Then there exists a morphism $n \to l$, because there is a morphism $n \to n'$ and the external interfaces of $n'$ and $l$ are the same.
+% That is, it is a morphism $f: n \to l$ such that $d_1 = f;g_1$.
+% Similarly for $k \to r$.
+\end{definition}
+
+Intuitively the above definition means that when the occurrence of $\mathcal{L}$ within $\mathcal{G}$ is top-level then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces and when the occurrence is nested, those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces.
+In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding mda-cospans above.
+The morphisms are then constructed correspondingly to require that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
+
+%The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
+%CHRIS: THE FOLLOWING SENTENCE IS UNCLEAR. 
+%The only difference is that we account for internal interfaces to require monogamous-ness and these interfaces must be computed explicitly to define the monogamous cospan.
+%
+%\begin{figure}
+%    \centering
+%    \[
+%    \scalebox{0.5}{\tikzfig{combinatorial_semantics/interfaces_change_example}}\]
+%    \caption{Hypothetical DPO square for $\catname{MACsp_{D}(EHyp_{\Sigma})}$}
+%    \label{fig:interface_change_example}
+%\end{figure}
+
+% The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
+
+Note that,  in the above definition,  the extended cospan 
+    \[
+    n \xrightarrow{} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{} k
+    \]
+ is not necessarily well-typed.
+This is because its input internal interface may contain vertices that previously were a part of the output internal interface and vice versa.
+\begin{remark}
+The boundary complement conditions, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
+\[
+	\mathcal{L} = \scalebox{0.8}{\tikzfig{../figures/combinatorial_semantics/f_times_g}} \qquad \mathcal{G} = \scalebox{0.6}{\tikzfig{../figures/combinatorial_semantics/f_plus_g_inline}}
+\]
+\end{remark}
+%The uniqueness and existence properties of boundary complements as defined above are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
+
+
+% \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
+%     The boundary complement in~\ref{def:boundary_new} when exists is unique.
+% \end{proposition}
+
+We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  
+It is analogous to Definition~\ref{def:convex_dpo},  except we must construct internal interfaces explicitly.
+More precisely, when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
+Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
+
+\begin{definition}[Convex EDPOI rewriting]
+\label{def:dpoi-e}
+Given an extended span of morphisms 
+\[
+    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
+\]
+in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites (convexly) to} $\mathcal{H}$ (\textit{with external interface} $n + k$ and \textit{taking internal interface} $n'+k'$ \textit{to} $n'' + k''$) --- denoted by $\mathcal{G} \Rrightarrow \mathcal H$  --- \textit{via a rewrite rule} 
+\[
+    \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+\] 
+if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram 
+\[
+ \scalebox{0.75}{
+    \tikzfig{../figures/combinatorial_semantics/DPOI_square}
+ }
+\]
+such that the two marked squares are pushouts and the following conditions hold:
+    \begin{enumerate}
+        \label{dpoi-e:assumptions}
+       % \item $m : \mathcal{L} \to \mathcal{G}$ is a convex match;
+        %\item $m(L)$ is a down-closed e-hypergraph;
+        \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement;
+	\item the internal interfaces of $\mathcal H$ are such that:
+	\[
+		n'' = n' \setminus (i' \setminus i) + (i'' \setminus i) \qquad k'' = k' \setminus (j' \setminus j) +  (j'' \setminus j)\\
+	\]
+	\item the map $f_1 = [g_1,h_1]: n'' \to \mathcal H$ in the diagram above consists of $g_1$ as defined in Definition \ref{def:boundary_new} of boundary complement,  and $h_1$ which is the restriction of the composite $i'' \to \mathcal R \to \mathcal H$ to $i'' \setminus i$,  and similarly for the map $f_2: k'' \to \mathcal H$.  
+    \end{enumerate}
+% The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan
+%  \[
+%     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
+% \]
+    Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that via it $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ if there exists a sequence of such rewrites. 
+\end{definition}
+% Together, the conditions ensure the result of a rewrite is a well-typed MDA e-hypergraph. 
+
+
+With our modified definition of extended DPOI rewriting in hand,  we proceed to prove that our combinatorial representation of semilattice-enriched SMCs is sound and complete in an appropriate sense. 
+
+
+%\begin{proposition}
+%    $n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k$ is a well-typed mda-cospan.
+%\end{proposition}
+   
+%Above we defined rewriting for cospans with empty input interfaces, when we will further build a correspondence between $\textsf{PROP}(\Sigma)^{+}$ and $\WellTypedMdaEcospans$.  %we will operate with cospans with non-empty input interfaces as well, so below we formulate what it means to rewrite cospans with non-empty input interfaces.
+%
+%\begin{definition}[Convex EDPOI in $\WellTypedMdaEcospans$]
+%    
+%We say that an \textit{mda-cospan}
+%\[
+%    n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
+%\]
+%\textit{rewrites convexly into another mda-cospan}
+%
+%\[
+%    n \xrightarrow{} n'' \xrightarrow{} \mathcal{H} \xleftarrow{} k'' \xleftarrow{} k
+%\]
+%
+%under a rewrite rule 
+%% \[
+%%     \langle x_{ext} \xrightarrow{a_1} l_{i} \xrightarrow{a_2} L \xleftarrow{b_2} l_{o} \xleftarrow{b_1} y_{ext}, 
+%%     x_{ext} \xrightarrow{a_1} r_{i} \xrightarrow{a_2} R \xleftarrow{b_2} r_{o} \xleftarrow{b_1} y_{ext} \rangle
+%% \]
+%
+%\[\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}\]
+%
+%if 
+%\begin{align*}    
+%    \mathcal{G} \xleftarrow{} n + k \Rrightarrow^{+} \mathcal{H} \xleftarrow{} n + k
+%\end{align*}
+%under the same rewrite rule.
+%We will use the same $\Rrightarrow^{+}$ and the concrete definition will be clear from the context.
+%
+%\end{definition}
+%

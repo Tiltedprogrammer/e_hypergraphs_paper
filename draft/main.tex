@@ -1,3 +1,5 @@
+% !TEX root = ../draft/main.tex
+
 \documentclass
   [ acmsmall
   , pdftex
@@ -14,22 +16,7 @@
 % including quiver redefines \Bbbk which leads to an error
 % \usepackage{quiver}
 
-\usepackage{tikz}
-\usepackage{tikz-network}
-\usepackage{xspace}
-\usepackage{xargs}
-\usepackage[
-  colorinlistoftodos,
-  prependcaption,
-  % disable,
-]{todonotes}
-\usepackage{fontenc}
-
 \usepackage{minted}
-
-\usepackage{subcaption}
-
-\usepackage{hyperref}
 
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Section}
@@ -49,13 +36,12 @@
 }
 
 
-\usepackage{adjustbox}
-
-\input{preamble}
-\input{macros}
-\input{sample.tikzstyles}
-\input{hypergraph.tikzstyles}
-\input{hypergraph.tikzdefs}
+\input{../preamble}
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+\input{../tikzit.sty}
 
 
 \definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
@@ -67,29 +53,7 @@
 \newcommand\question[1]{{\color{azure}#1}}
 \newcommand\update[1]{{\color{americanrose}#1}}
 
-% \usepackage{mathtools,mathrsfs}
-\usepackage{tikz-cd}
-\usepackage{tikzit}
 
-% for quotienting
-% \usepackage{faktor}
-\usepackage{xfrac} 
-
-\usepackage{import}
-
-% category names
-\newcommand{\MdaCospans}{{\catname{MACsp_{D}(Hyp_{\Sigma})}}}
-
-\newcommand{\Ecospans}{{\catname{ECsp_{D}(EHyp_{\Sigma})}}}
-\newcommand{\MdaEcospans}{{\catname{MAECsp_{D}(EHyp_{\Sigma})}}}
-\newcommand{\WellTypedMdaEcospans}{{\catname{\overline{MAECsp_{D}(EHyp_{\Sigma})}}}}
-
-% conflict
-\newcommand{\hashtag}{{\#}}
-\newcommand{\consistency}{{\smile}}
-% There is already a remark in the preamble, but it does
-% not work for some reason
-\newtheorem{remark}{Remark}
 
 \makeatletter
 \newsavebox{\@brx}
@@ -130,6 +94,6 @@ Furthermore, we present a sound and complete combinatorial representation of mor
 We are grateful to Sadrzadeh Mehrnoosh for enlightening discussions on potential applications of e-hypergraphs to computational linguistics. 
 
 \bibliographystyle{acm}
-\bibliography{bibliography}
+\bibliography{../bibliography}
 
 \end{document}

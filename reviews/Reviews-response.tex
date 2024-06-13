@@ -7,15 +7,14 @@
 \usepackage{stmaryrd}
 \usepackage{amssymb}
 
-\input{preamble}
-\input{macros}
-\input{sample.tikzstyles}
-\input{hypergraph.tikzstyles}
-\input{hypergraph.tikzdefs}
+\input{../preamble}
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
 
 \newcommand\id{\textsf{id}}
 \newcommand\sym{\textsf{sym}}
-\newcommand{\consistency}{{\smile}}
 
 
 \begin{document}
@@ -49,7 +48,7 @@ represented as
 \begin{figure}[h!]
     \[
     \scalebox{0.5}{
-        \tikzfig{reviews/sym}
+        \tikzfig{../figures/reviews/sym}
     }
     \]
 \end{figure}
@@ -61,7 +60,7 @@ represented as
 \begin{figure}[h!]
     \[
     \scalebox{0.5}{
-        \tikzfig{reviews/id}
+        \tikzfig{../figures/reviews/id}
     }
     \]
 \end{figure}
@@ -70,7 +69,7 @@ Clearly, it should be the case that $\{u_1 \mapsto u_1, \ldots u_4 \mapsto u_4\}
 However, the interfaces are ordered according to a remark on page 21 in [3], so the only possible isomorphism between $n'$ and $n''$ (respectively, $m'$ and $m''$) is identity.
 \[
     \scalebox{0.75}{
-        \tikzfig{combinatorial_semantics/isomorphic_e_cospans}
+        \tikzfig{../figures/combinatorial_semantics/isomorphic_e_cospans}
     }
 \]
 Then, the cospans above are not isomorphic. Consider the cases.
@@ -277,7 +276,7 @@ The workaround can be seen in the following example.
 
 \[
     \scalebox{0.5}{
-        \tikzfig{reviews/handling_scalars}
+        \tikzfig{../figures/reviews/handling_scalars}
     }
 \]
 

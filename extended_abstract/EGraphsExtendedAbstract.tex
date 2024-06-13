@@ -2,31 +2,8 @@
 
 \settopmatter{printacmref=false}
 
-\usepackage{amsmath}
+
 \usepackage{stmaryrd}
-% \usepackage{amssymb}
-\usepackage{tikz}
-\usepackage{tikz-network}
-\usepackage{xspace}
-\usepackage{xargs}
-\usepackage[
-  colorinlistoftodos,
-  prependcaption,
-  % disable,
-]{todonotes}
-\usepackage{fontenc}
-
-%\usepackage{minted}
-
-\usepackage{subcaption}
-\usepackage{caption}
-
-\usepackage{hyperref}
-
-
-\usepackage{docmute}
-\usepackage{hyperref}
-\usepackage{proof}
 
 \ifthenelse{\isundefined{\ismain}}{
     \newcommand{\ismain}{0}
@@ -37,29 +14,25 @@
 \usepackage{amsthm}
 
 
+% \newtheorem{thm}{Theorem}
+% \newtheorem{remark}[thm]{Remark}
 
-\usepackage{aliascnt}
-% \newaliascnt{definition}{thm}
-% \newaliascnt{remark}{thm}
-% \newaliascnt{example}{thm}
-\newtheorem{thm}{Theorem}
-\newtheorem{remark}[thm]{Remark}
+% \theoremstyle{definition}
+% \newtheorem{definition}[thm]{Definition}
 
-\theoremstyle{definition}
-\newtheorem{definition}[thm]{Definition}
-
-\newtheorem{example}[thm]{Example}
-\newtheorem{proposition}[thm]{Proposition}
+% \newtheorem{example}[thm]{Example}
+% \newtheorem{proposition}[thm]{Proposition}
 
 
 
 
 
 
-\input{macros}
-\input{sample.tikzstyles}
-\input{hypergraph.tikzstyles}
-\input{hypergraph.tikzdefs}
+\input{../macros}
+\input{../preamble}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
 
 
 \definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
@@ -71,37 +44,11 @@
 \newcommand\question[1]{{\color{azure}#1}}
 \newcommand\update[1]{{\color{americanrose}#1}}
 
-% \usepackage{mathtools,mathrsfs}
-\usepackage{tikz-cd}
-\usepackage{tikzit}
-% to reduce tikz picture white space
-\usepackage{adjustbox}
-
-% for quotienting
-% \usepackage{faktor}
-\usepackage{xfrac} 
-
-\usepackage{import}
-
-% category names
-%\newcommand{\MdaCospans}{{\catname{MACsp_{D}(Hyp_{\Sigma})}}}
-
-\newcommand\HypI[1]{\textbf{HypI}(#1)}
-\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
-\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
-\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
-\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
-% conflict
-\newcommand{\hashtag}{{\#}}
-\newcommand{\consistency}{{\smile}}
-% There is already a remark in the preamble, but it does
-% not work for some reason
 
 \newcommand\id{\textsf{id}}
 \newcommand\sym{\textsf{sym}}
 
 
-\usepackage{cleveref} % after hyperref!
 
 \begin{document}
 
@@ -177,19 +124,19 @@ It will often be convenient to give presentations of SMTs in terms of string dia
 The SMT of \textit{commutative comonoids} is given by the following generators, ${\Delta, !}$, depicted in string diagrammatic form:
 \[
 	\scalebox{0.8}{
-  	 \tikzfig{categorical-semantics/Cartesian-equipment}
+  	 \tikzfig{../figures/categorical-semantics/Cartesian-equipment}
 	}
 \]
 together with the following associativity, commutativity and unitality equations, again given in terms of string diagrams. 
 \[
 	\scalebox{0.6}{
-	\tikzfig{categorical-semantics/Cartesian-theory}	
+	\tikzfig{../figures/categorical-semantics/Cartesian-theory}	
 	}
 \]
 The Cartesian SMT is given by a set of generators $\Sigma_C$, together with the generators and equations of the SMT of commutative monoids, and the following additional naturality equations, for every $c \in \Sigma_C$
 \[
 	\scalebox{0.6}{
-	\tikzfig{categorical-semantics/Cartesian-naturality}
+	\tikzfig{../figures/categorical-semantics/Cartesian-naturality}
 	}
 \]
 By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
@@ -223,7 +170,7 @@ For example, the first equation can be read as: if $g$ is equivalent to $h$ then
 \begin{figure}
     \[
         \scalebox{0.65}{
-        \tikzfig{categorical-semantics/egraph-strings}
+        \tikzfig{../figures/categorical-semantics/egraph-strings}
         }
     \]
     \captionsetup{belowskip=-5ex}
@@ -242,7 +189,7 @@ Indeed, similar diagrammatic languages using boxes to express choice have been u
 \begin{figure*}
 \[  
     \scalebox{0.75}{
-	\tikzfig{categorical-semantics/egraph-strings-equations}
+	\tikzfig{../figures/categorical-semantics/egraph-strings-equations}
     }
 \]
 \caption{Equations for a  semilattice enriched symmetric monoidal category}
@@ -262,7 +209,7 @@ Then let $\textbf{CSMT}(\Sigma_{C},\mathcal{E}_{C})$ be the Cartesian SMT as int
 \begin{figure}
     \[
         \scalebox{0.5}{
-        \tikzfig{categorical-semantics/egraph-translation-2}
+        \tikzfig{../figures/categorical-semantics/egraph-translation-2}
         }
     \]
     \caption{Example translation of acyclic e-graphs into string diagrams for semilattice enriched Cartesian categories. }
@@ -289,7 +236,7 @@ One can note that the size of the eventual e-string diagram is comparable to the
 
 We can then translate an arbitrary e-graph into an e-string diagram as shown below, noting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
 \[
-    \tikzfig{categorical-semantics/egraph-translation-1}
+    \tikzfig{../figures/categorical-semantics/egraph-translation-1}
 \]
 Note, further, that in the Cartesian case we can restrict to generating morphisms $c$ to have a single output,  without loss of generality,  by applying the universal properties of the Cartesian product.  This means the (informal) translation given above is fully general for acyclic e-graphs.
 We believe that e-graphs with cycles can be represented as terms in Traced Cartesian SMTs and accounting for a trace above seems to be routine.
@@ -307,7 +254,7 @@ The work towards finding redexes and achieving maximal sharing without excessive
     \[
         % \hspace{1.3cm}
         \scalebox{0.5}{
-        \tikzfig{categorical-semantics/egraph-translation-step-by-step-a-b}
+        \tikzfig{../figures/categorical-semantics/egraph-translation-step-by-step-a-b}
         }
     \]
     \caption{Example translation from $(a)$ to $(b)$.}
@@ -318,7 +265,7 @@ The work towards finding redexes and achieving maximal sharing without excessive
     \[
         % \hspace{1.3cm}
         \scalebox{0.55}{
-        \tikzfig{categorical-semantics/e-graph-substitution}
+        \tikzfig{../figures/categorical-semantics/e-graph-substitution}
         }
     \]
     \caption{E-graph explicit substitution example.}
@@ -329,7 +276,7 @@ The work towards finding redexes and achieving maximal sharing without excessive
     \[
         % \hspace{1.3cm}
         \scalebox{0.5}{
-        \tikzfig{categorical-semantics/e-string-substitution-2}
+        \tikzfig{../figures/categorical-semantics/e-string-substitution-2}
         }
     \]
     \caption{E-string diagrammatic substitution example.}
@@ -342,7 +289,7 @@ The work towards finding redexes and achieving maximal sharing without excessive
     \[
         \hspace{1.3cm}
         \resizebox{0.8\textwidth}{!}{
-        \tikzfig{categorical-semantics/egraph-translation-step-by-step-b-c}
+        \tikzfig{../figures/categorical-semantics/egraph-translation-step-by-step-b-c}
         }
     \]
     \caption{Example translation from $(b)$ to $(c)$.}
@@ -376,6 +323,6 @@ Some other potential applications also include e-graphs for digital circuits~\ci
 We hope this work will foster discussion within e-graphs community, especially in designing a suitable data structure that would bring this theoretical generalisation into practice.
 
 \bibliographystyle{acm}
-\bibliography{bibliography}
+\bibliography{../bibliography}
 
 \end{document}

@@ -1,0 +1,2003 @@
+\section{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
+
+In this section we will define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists and we will explicitly construct such a pushout.
+We will also show the uniqueness of a boundary pushout complement.
+These condition will play a crucial role in showing that for each enrichment equation in $\textbf{PROP}^{+}(\Sigma)$ there is a sequence of rewrites in $\WellTypedMdaEcospans$.
+
+\begin{proposition}
+    Two cospans in $\catname{Hyp}(\Sigma)$ (\textit{i.e.}, morphisms in $\HypI{\Sigma}$) $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ and $n \xrightarrow{f'} \mathcal{G}' \xleftarrow{g'} m$ are equal if and only if
+    the following two cospans  $\catname{EHyp}(\Sigma)$ (\textit{i.e.} morphisms in $\Ecospans$)
+    \[
+    n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m
+    \]
+    \[
+        n \xrightarrow{f_{ext}'} n \xrightarrow{f_{int}'} \mathcal{G} \xleftarrow{g_{int}'} m \xleftarrow{g_{ext}'} m    
+    \]
+    such that $f = f_{ext};f_{int}, f'=f_{ext}';f_{int}'$ (respectively, $g = g_{ext};g_{int}, g' = g_{ext}';g_{int}'$) are equal.
+\end{proposition}
+This essentially means that $\catname{\HypI{\Sigma}}$ faithfully embeds into $\Ecospans$. 
+\begin{proof}
+    Recall that cospans are equal when they are isomorphic.
+    The proposition means that the following cospans are isomorphic (where $\alpha$ is an isomorphism)
+    \[\begin{tikzcd}
+            & \mathcal{G} \arrow[dd, "\alpha"] &                                                            \\
+    n \arrow[ru, "f", bend left] \arrow[rd, "f'"', bend right] &                                  & m \arrow[lu, "g"', bend right] \arrow[ld, "g'", bend left] \\
+            & \mathcal{G}'                     &                                                           
+    \end{tikzcd}
+    \]
+    if and only if the following cospans are isomorphic
+    \[
+        \begin{tikzcd}
+            & n \arrow[r, "f_{int}"] \arrow[dd, "\beta"] & \mathcal{G} \arrow[dd, "\alpha"] & m \arrow[l, "g_{int}"'] \arrow[dd, "\gamma"] &                                                                        \\
+n \arrow[ru, "f_{ext}", bend left] \arrow[rd, "f_{ext}'"', bend right] &                                            &                                  &                                              & m \arrow[lu, "g_{ext}"', bend right] \arrow[ld, "g_{ext}'", bend left] \\
+            & n \arrow[r, "f_{int}'"']                    & \mathcal{G}'                     & m \arrow[l, "g_{int}'"]                      &                                                                       
+\end{tikzcd}    
+    \]
+    such that $f = f_{ext};f_{int}, f'=f_{ext}';f_{int}'$ (respectively, $g = g_{ext};g_{int}, g' = g_{ext}';g_{int}'$).
+    The direction from right to left is straightforward: since the bottom diagram commutes $f;\alpha = f_{int};f_{ext};\alpha = f_{int}';f_{ext}' = f'$ and similarly for $g$.
+    
+    Let's show the direction from left to right.
+    Note that $f_{ext}$ and $f_{ext}'$ have inverses since they are injective and surjective (the injection is per the definition and surjection is because domain and codomain are equal).
+    Then we need $f_{ext};\beta = f_{ext}'$ and we define $\beta = f_{ext}^{-1};f_{ext}'$.
+    Similarly $\beta^{-1} = f_{ext}'^{-1};f_{ext}$. 
+    We can check that $\beta^{-1};\beta = f_{ext}'^{-1};f_{ext};f_{ext}^{-1};f_{ext}' = f_{ext}'^{-1};id;f_{ext}' = f_{ext}'^{-1};f_{ext}' = id$.
+    Then we have that $f_{ext};\beta;f_{int}' = f_{ext};f_{ext}^{-1};f_{ext}';f_{int}' = f_{ext}';f_{int}' = f' = f;\alpha = f_{ext};f_{int};\alpha$.
+    Since $f_{ext}$ is surjective, we have $\beta;f_{int}' = f_{int};\alpha$.
+    Analogously for $\beta^{-1}$ and the right-hand sides of the diagrams.
+\end{proof}
+
+\subsection{Existence of pushout}
+
+In constructing the pushout the functional versions of e-hypergraph relations will be useful.
+\begin{remark}
+    Both $<$ and $\consistency$ can be considered as (partial) functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
+    To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either a vertex or an edge into these functions.
+    For example, an immediate successor of a vertex $x$ can be written functionally as $<_{\mathcal{F}}^{\mu}(\iota_{V_{\mathcal{F}}}(x))$.
+\end{remark}
+
+\begin{remark}
+    Using functional notation we can reformulate the notion of a homomorphism between two e-hypergraphs in the following way.
+\end{remark}
+\begin{definition}
+        \label{def:e-homo-2}    
+        A \emph{homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
+        
+        \begin{enumerate}
+            \item $\phi$ is hypergraph homomorphism.
+            
+            \item When $x$ is not a top-level vertex, 
+                \[
+                \phi_{E}(<_{\mathcal{F}}^{\mu}(\iota_{V_{\mathcal{F}}}(x))) = <_{\mathcal{G}}^{\mu}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
+                \]
+                and
+                \[
+                \phi_{E}(<_{\mathcal{F}}^{\mu}(\iota_{E_{\mathcal{F}}}(x))) = <_{\mathcal{G}}^{\mu}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))  
+                \] when $x$ is a not top-level edge.
+                \item
+            When $x \in E_{\mathcal{F}}$
+            \[
+                [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}} ]^{*}(\consistency_{\mathcal{F}}(\iota_{E_{\mathcal{F}}}(x)))
+                \subseteq
+                \consistency_{\mathcal{G}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))
+            \]
+            where $\phi_{V};\iota_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} + E_{\mathcal{G}}$, and similarly for $\phi_{E};\iota_{E_\mathcal{G}}$ so that $[\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}] : V_{\mathcal{F}} + E_{\mathcal{F}} \to  V_{\mathcal{G}} + E_{\mathcal{G}}$.
+            \item When $x \in V_{\mathcal{F}}$
+            \[
+                [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{F}}(\iota_{V_{\mathcal{F}}}(x)))
+                \subseteq
+                \consistency_{\mathcal{G}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x)).
+            \]
+            \end{enumerate}
+\end{definition}
+
+\begin{theorem}[Existence of pushouts in $\catname{EHyp_{\Sigma}}$]
+\label{th:existence_of_pushouts}
+Consider the following span in $\catname{EHyp_{\Sigma}}$
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJaIl0sWzIsMCwiWCJdLFswLDIsIlkiXSxbMCwxLCJmIl0sWzAsMiwiZyIsMl1d
+\[\begin{tikzcd}
+	Z && X \\
+	\\
+	Y
+	\arrow["f", from=1-1, to=1-3]
+	\arrow["g"', from=1-1, to=3-1]
+\end{tikzcd}\]
+such that
+\begin{enumerate}
+\label{pushout:assumptions}
+    \item $Z$ is a \textit{discrete} e-hypergraph.
+    \item \label{assumption:equal_predecessors} $[f_{V}(v_i)) = [f_{V}(v_j))$ and $[g_{V}(v_i)) = [g_{V}(v_j))$ for all $v_{i},v_{j}$ in $V_{Z}$.
+    \item \label{assumption:non_ambiguous_predecessors} If $[f_{V}(v)) \not = \varnothing$ then $[g_{V}(v)) = \varnothing$ and if $[g_{V}(v)) \not = \varnothing$ then $[f_{V}(v)) = \varnothing$.
+    \item $\consistency(f_{V}(v_i)) = \consistency(f_{V}(v_j))$ and $\consistency(g_{V}(v_i)) = \consistency(g_{V}(v_j))$ for all $v_i,v_j$ in $V_{Z}$.
+\end{enumerate}    
+then the pushout $X +_{f,g} Y$ exists.
+\end{theorem}
+\begin{proof}
+    Consider the diagram below.
+    \[
+        \adjustbox{scale=1.25}{
+            \begin{tikzcd}
+            Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{\iota_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
+            Y \arrow[r, "\sfrac{\iota_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
+                                                                            &                                                                  & Q
+            \end{tikzcd}}
+    \]
+    Then, the pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
+    First, a coproduct of $X+Y$ is computed which is 
+    \[
+        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \consistency_{X+Y}, <_{X+Y} \}
+    \]
+    where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X+Y}, <_{X+Y}, \consistency_{X+Y}$.
+    We will omit labels as they are irrelevant to pushout construction.
+    Consider relations
+    \ifdefined\ONECOLUMN
+    \begin{align*}
+            S_{V} &= \;\{
+            (x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; |
+            \exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and }\\
+            &\qquad y_j = g_{V};\iota_{2,V}(z) \text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
+            \}\\
+            &\cup \;\{
+                (y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; |
+          \exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and }\\
+          &\qquad y_j = g_{V};\iota_{2,V}(z) \text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
+        \}\\
+        &\cup \;\{(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\}\\
+        S_{E} &= \;\{(x,x) \text{ where } x \in E_{X} + E_{Y}\}
+    \end{align*}
+    \else 
+    \begin{align*}    
+    S_{V} &= \{\\
+          &\;(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
+          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
+          &\}\\
+          &\cup\\
+          &\{\\
+          &\;(y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
+          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
+          &\}\\
+          &\cup\\
+          &\{\\
+          &\;(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\\
+          &\}\\
+        \\
+    S_{E} &= \{(x,x) \text{ where } x \in E_{X} + E_{Y}\}
+    \end{align*}
+    \fi
+    % \begin{align*}
+    % S_{E} &= \{\\
+    % &(x_i,y_j) \in (E_{X} + E_{Y}) \times (E_{X} + E_{Y})\; |\\
+    % &\exists z \in E_{Z} \; . \; x_i = f_{E};\iota_{1,E}(z) \text{ and } y_j = g_{E};\iota_{2,E}(z)\\
+    % &\text{ where $x_i \in E_{X}$ and $y_j \in E_{Y}$}\\
+    % &\}
+    % \end{align*}
+and let relations $R_{V},R_{E}$ be their transitive closures respectively.
+
+
+We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ respectively.
+\ifdefined \ONECOLUMN
+\begin{align*}
+    \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{
+        &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})}, \sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
+        &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\}    
+\end{align*}
+\else
+    \begin{align*}
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{&\\
+            &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})}, \sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
+        & \}    
+    \end{align*}
+\fi
+We will refer to $\sim (R_{V},R_{E})$ just as $\sim$, \textit{e.g.}, by writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and concrete relation will be clear from the context.
+Where necessary we will refer to $S_{V}$ and $S_{R}$ as $\sim_{S}$.
+We have 
+\[
+    \sfrac{s_{X+Y}}{\sim} : \sfrac{E_{X} + E_{Y}}{\sim} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*}
+\]
+and there is an obvious surjective function $[-]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[-]_{V}^{*}$ is its extension to sequences.
+There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
+We then define 
+\[
+    \sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[-]^{*}(e) = [s_{X+Y}(e)]^{*}
+\]
+We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
+Similarly, we will write $v_{x}$ to refer to a vertex with a pre-image in $V_{X}$.
+Likewise, 
+\[
+    t_{\sfrac{X+Y}{\sim}}([e]) = [t_{X+Y}(e)]^{*}
+\]
+
+These definitions make $([]_{V},[]_{E})$ automatically a homomorphism with respect to source and target maps.
+These maps are also automatically well-defined functions since $[e_1] = [e_2]$ implies $e_1 = e_2$ since the mappings for edges are mono.
+
+% So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[-]$ is a homomorphism with respect to sources and targets and therefore $\sfrac{\iota_1}{\sim}$ and $\sfrac{\iota_{2}}{\sim}$ are.
+
+Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we can first define 
+    \[<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e])
+    \] and 
+    \[
+        <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u])
+    \] where $\iota_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
+    We will consider several cases.
+    First, assume that $u$ is an element of $V_{X+Y}$ and
+    \begin{enumerate}
+        \item If there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ is defined and $u \sim v$
+              we let
+              \[
+                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]
+              \]
+        \item \label{def:child_respects_connectivity} $u$ has no pre-image in $V_{Z}$ and $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))$ is undefined (\textit{i.e.}, $[u) = \varnothing$).
+              If there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an \textit{undirected} path from $[u]$ to $[v]$, then we define
+              \[ 
+                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+              \]
+    \end{enumerate}
+    Note that the existence of a path in the definition (2) implies that there exists $v' \sim v$ such that there is a path from $u$ to $v'$ and furthermore $v \not = v'$.
+    If $v' = v$ then it would mean that $[u) \not = \varnothing$ since $[v) \not = \varnothing$ and there is a path from $u$ to $v$.
+    There is no case when $u$ has a pre-image in $V_{Z}$ and yet $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))$ is undefined and there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e$ and there is a path from $[u]$ to $[v]$.
+    The existence of a path would mean that there is $u' \sim u$ and $v' \sim v$ such that there is a path from $u'$ to $v'$ and since $u$ has a pre-image in $V_{Z}$, $u = f_{V};\iota_{1,V}(z_1)$.
+    $v' \sim v$ means that both $v'$ and $v$ have a pre-image in $V_{Z}$ (unless $v' = v$ in which case $[u') \not = \varnothing$ as there is a path from $u'$ to $v'$) and since $u = f_{V};\iota_{1,V}(z_1)$ and $[u) = \varnothing$ $f_{V};\iota_{1,V}(z) = \varnothing$ for all $z$.
+    Since $[v) \not = \varnothing$ and $v' \sim v$, $v$ is necessarily in the image of $g_{V};\iota_{2,V}$ and for all $z$ $[g_{V};\iota_{2,V}(z)) \not = \varnothing$ as well as for some $z'$ such that $u'' = g_{V};\iota_{2,V}(z')$ and $u'' \sim_{S} u$ which would mean that the case (1) is applicable to $u$.
+    Similarly, when $u = g_{V};\iota_{2,V}(z)$.
+    
+    Otherwise, we leave $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))$ undefined.
+    % \question{In the case when images of $f$ and $g$ are top-level the function is undefined. Shall we introduce bottom?}
+    Now, assume that $e$ is an element of $E_{X+Y}$.
+    Consider two cases.
+    \begin{enumerate}
+    \item  $<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e)) = e'$.
+            Then we define
+        \[
+            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e))]
+        \]
+    \item $[e) = \varnothing$ and there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an undirected path from $[e]$ to $[v]$, we define 
+        \[
+            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+        \] 
+    \end{enumerate}
+    Otherwise we leave $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{E_{X} + E_{Y}}{\sim}([e]))$ undefined.
+    % We will also build this relation in steps, first we do steps for vertices (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for vertices until fixed point.
+    % Essentially, this interleaving means that vertices inherit the relation from incident edges and vice versa.
+    Clearly, all the cases above are disjoint.
+
+    Let's show that the definition does not depend on a particular choice of $v$ in (1).
+    Suppose there exist $v_1$ and $v_2$ such that $v_1 \not = v_2$ and $[v_1) \not = \varnothing$ and $[v_2) \not = \varnothing$ and such that $u \sim v_1$ and $u \sim v_2$.
+    Then, it must be the case that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1)) = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))$.
+    Consider cases.
+    \begin{itemize}
+        \item $u = v_1$ and $u \sim_{S} v_2$. Then there exists $z \in V_{Z}$ such that $u = f_{V};\iota_{1,V}(z) = v_1$ and $v_2 = g_{V};\iota_{2,V}(z)$.
+              Since $[v_1) \not = \varnothing$, it must be the case that $[v_2) = \varnothing$ according to assumption \ref{assumption:non_ambiguous_predecessors} and we get a contraction to $[v_2) \not = \varnothing$.
+        \item $u = v_1$ and $u \sim v_2$. The latter implies that $u$ has a pre-image in $V_{Z}$ and so does $v_2$.
+              For both $[v_1) \not = \varnothing$ and $[v_2) \not = \varnothing$ they should be both in the image of $f_{V};\iota_{1,V}$ or $g_{V};\iota_{2,V}$ and according to assumption \ref{assumption:equal_predecessors} their sets of predecessors must be equal.
+        \item $u \sim_{S} v_1$ and $u \sim_{S} v_2$. This implies $u = f_{V};\iota_{1,V}(z_1) = f_{V};\iota_{1,V}(z_2)$ and $v_{1} = g_{V};\iota_{2,V}(z_1)$ and $v_{2} = g_{V};\iota_{2,V}(z_2)$.
+              By assumption \ref{assumption:equal_predecessors} it must be the case that $[g_{V}(z_1)) = [g_{V}(z_2))$ which implies that $[v_1) = [v_2)$.
+              The case when $u = g_{V};\iota_{2,V}(z_1)$ is symmetric.
+        \item $u \sim v_1$ and $u \sim v_2$. Same as above, by assumption \ref{assumption:non_ambiguous_predecessors} both $v_1$ and $v_2$ should be in the image of $f_{V};\iota_{1,V}$ or $g_{V};\iota_{2,V}$ and by assumption \ref{assumption:equal_predecessors} $[v_1) = [v_2)$.
+    \end{itemize}
+
+    Let's show that the definition does not depend on a particular choice of $v$ in (2).
+    Suppose, $[u) = \varnothing$ and there exist $v_1$ and $v_2$ such that $<_{X+Y}^{\mu}(v_1) = e_1$ and $<_{X+Y}^{\mu}(v_2) = e_2$ and $e_1 \not = e_2$ and such that there is a path from $[u]$ to $[v_1]$ and from $[u]$ to $[v_2]$.
+    The existence of a path from $[u]$ to $[v_1]$ means that there is $v_1' \sim v_1$ such that there is a path from $u'$ to $v_1'$ and similarly for $v_2$ and $v_2'$.
+    We will proceed by case analysis.
+    \begin{itemize}
+            \item If $v_1 = v_1'$ or $v_2 = v_2'$ it means that there is a path from $u$ to $v_1$ or from $u$ to $v_2$ and since $[v_1) \not = \varnothing$ as well as $[v_2) \not = \varnothing$ it must be the case that $[u) \not = \varnothing$ which contradicts the assumption that $[u) = \varnothing$.
+            \item Suppose $v_1 \sim_{S} v_1'$ which means there exists $z_1 \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z_1)$ and $v_1' = g_{V};\iota_{2,V}(z_1)$ and suppose $v_2 \sim_{S} v_2'$ which further means there exists $z_2 \in V_{Z}$ such that $v_2 = f_{V};\iota_{1,V}(z_2)$ and $v_2' = g_{V};\iota_{2,V}(z_2)$.
+                  Then we have
+                  \begin{align*}
+                    <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1)) &= <_{X+Y}^{\mu}(f_{V};\iota_{1,V};\iota_{V_{X} + V_{Y}}(z_1))\\
+                                                              &= \iota_{1,E}(<_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_1)))
+                \end{align*}
+                  and
+                  \begin{align*}
+                    <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2)) &= <_{X+Y}^{\mu}(f_{V};\iota_{1,V};\iota_{V_{X} + V_{Y}}(z_2))\\
+                                                              &= \iota_{1,E}(<_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_2)))
+                \end{align*}
+                and $e_1 \not = e_2$ implies $<_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_1)) \not = <_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_2))$ which contradicts the assumption \ref{assumption:equal_predecessors}.
+                The case if $v_2 = g_{V};\iota_{2,V}(z_2)$ and $v_1 = f_{V};\iota_{1,V}(z_1)$ ultimately contradicts the assumption \ref{assumption:non_ambiguous_predecessors} as it entails that both
+                \[
+                    <_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_1)) \not = \varnothing
+                \]
+                and
+                \[
+                    <_{Y}^{\mu}(g_{V};\iota_{V_{Y}}(z_2)) \not = \varnothing
+                \]
+                The cases when $v_1 = g_{V};\iota_{2,V}(z_1)$ and $v_2 = f_{V};\iota_{1,V}(z_2)$, and $v_1 = g_{V};\iota_{2,V}(z_1)$ and $v_2 = g_{V};\iota_{2,V}(z_2)$ are analogous.
+            \item Suppose $v_1 \sim_{S} v_1'$ and $v_2 \sim v_2'$ via $w = (x_1, \ldots, x_n)$ such that there is a path from $u$ to $v_1'$ and from $u$ to $x_n = v_2'$.
+                  The mere fact that $v_2 \sim v_2'$ implies that $v_2$ should have a pre-image in $V_{Z}$ and the same holds for $v_1$.
+                  By the same reasoning as above it must be the case that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1)) = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))$.
+            \item The case $v_1 \sim v_1'$ via $w = (x_1, \ldots, x_n)$ and $v_2 \sim_{S} v_1$ is symmetric to the above.
+            \item The case when $v_1 \sim v_1'$ and $v_2 \sim v_2'$ is analogous.
+    \end{itemize}
+
+    Let's check that this is a well-defined function.
+    Suppose $v_1, v_2$ are vertices and $v_1 \sim v_2$, then $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])$.
+    \begin{itemize}
+        \item If $[v_2) \not = \varnothing$, then, by definition we have
+                \begin{align*}
+                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))]\\
+                     &= \text{ as $v_2 \sim v_2$ and $[v_2) \not = \varnothing$ }\\
+                     &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_2])
+                \end{align*}
+        \item The case when $[v_1) \not = \varnothing$ is symmetric.
+        \item If both $[v_2) = \varnothing$ and $[v_1) = \varnothing$ but there exists $[v_3) \not = \varnothing$ such that $v_1 \sim v_3$, then
+        \begin{align*}
+            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_3))]\\
+             &= \text{ as $v_3 \sim v_3$ and $[v_3) \not = \varnothing$ }\\
+             &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_3])\\
+             &= \text{ as $v_2 \sim v_1 \sim v_3$}\\
+             &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_2])
+        \end{align*}
+    \end{itemize}
+    % $v_1 \sim v_2$ implies that either $v_1 = v_2$ and the well-definedness is trivial, or there exists a sequence $w = (x_1, \ldots, x_n)$ such that $v_1 = x_1$, $v_2 = x_n$ and $x_i \sim_{S} x_{i+1}$ for $i < n$.
+    % We will proceed by induction on the length of $w$.
+    % \begin{itemize}
+    %     \item $|w|$ and then $v_1 \sim_{S} v_2$ which means there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z)$ and $v_{2} = g_{V};\iota_{2,V}(z)$.
+    %           Consider the following cases.
+    %           \begin{itemize}
+    %             \item $[f_{V}(z)) \not = \varnothing$ and $g_{V}(z) = \varnothing$.
+    %                   Then, 
+    %                   \[
+    %                     <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [f_{V};\iota_{V_{X}};<_{X}^{\mu};\iota_{1,E}(z)]
+    %                   \]
+    %                   and
+    %                   \[
+    %                     <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [f_{V};\iota_{V_{X}};<_{X}^{\mu};\iota_{1,E}(z)]
+    %                   \]
+    %                   and we have well-definedness by definition.
+    %             \item $f_{V}(z) = \varnothing$ and $g_{V}(z) \not = \varnothing$ is symmetric to the above.
+    %           \end{itemize}
+    %     \item Assume that if $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n)$ then $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])$.
+    %     \item Now suppose $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n, x_{n+1})$.
+    %           We know that 
+    %           \[
+    %             <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[x_n])
+    %           \]
+    %           and that
+    %           \[
+    %             <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[x_n]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])
+    %           \]
+    %           by the same argument as in the base case,
+    %           which implies
+    %           \[
+    %             <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])
+    %           \]
+    % \end{itemize}
+    We do not need to check well-defined-ness for edges as $e_1 \sim e_2$ just implies $e_1 = e_2$ for edges.
+
+    We also need to make sure that $([]_{V},[]_{E})$ is homomorphic with respect to $<^{\mu}$.
+    That is, we need to check if $[v) \not = \varnothing$, then $[<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
+    Since $v \sim v$ this is homomorphic by definition.
+    Similarly for edges.
+    
+    Then $<_{\sfrac{X+Y}{\sim}} : V_{\sfrac{X+Y}{\sim}} + E_{\sfrac{X+Y}{\sim}} \to (E_{\sfrac{X+Y}{\sim}})^{*}$ is defined as a transitive closure of $<_{\sfrac{X+Y}{\sim}}^{\mu}$.
+        
+    Let's now define $\consistency_{\sfrac{X+Y}{\sim}}$.
+    We can consider the consistency relation from the coproduct as a function 
+    \[
+        \consistency_{X+Y} : (V_{X} + V_{Y}) + (E_{X} + E_{Y}) \to 2^{(V_{X} + V_{Y}) + (E_{X} + E_{Y})}
+    \]
+    Quotienting the values of the function gives us 
+    \[
+        \consistency_{X+Y}' : V_{X} + V_{Y} + E_{X} + E_{Y} \to 2^{(\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{(E_{X} + E_{Y})}{\sim})}
+     \]
+    which is essentially $[ []_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}$ (a copairing extended to sequences that we will further denote as $[ []_{V}^{\consistency} []_{E}^{\consistency}]$) applied to the return value of $\consistency_{X+Y}$.
+    We then first define an auxiliary relation $\consistency^{\hashtag}$ similarly to how $<^{\mu}_{\sfrac{X+Y}{\sim}}$ was defined. We begin with defining $\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}$ for vertices.
+
+    \begin{enumerate}
+        \item If there exists $v$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$ and $u \sim v$, we let
+              \ifdefined \ONECOLUMN
+              \[
+                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))
+                =
+                [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))
+              \]
+              \else
+              \begin{align*}
+                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))\\
+                &=\\
+                &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))
+            \end{align*}
+            \fi
+        \item $u$ has no pre-image in $V_{Z}$ and $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(u)) = \varnothing$ and there exists $v$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$ and such that there is an undirected path from $[u]$ to $[v]$.
+        Then we let
+        \[
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+        \]
+    \end{enumerate}
+
+    Next we define $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}$ for edges.
+
+    \begin{enumerate}
+        \item If $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)) \not = \varnothing$, then
+                \begin{align*}
+                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) =
+                    [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)))
+                \end{align*}
+        \item $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exists $v$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$ and such that there is an undirected path from $[e]$ to $[v]$
+        then
+        \[
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{V_{X} + V_{Y}}([v]))
+        \]
+    \end{enumerate}
+    
+    The well-definedness of this construction follows by the same argument as the well-definedness of $<_{\sfrac{X+Y}{\sim}}^{\mu}$.
+    Then we define
+    \ifdefined \ONECOLUMN
+    \[
+        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \qquad \text{and} \qquad \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))
+    \]
+    \else
+    \[
+        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+    \]
+    and
+    \[
+        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))
+    \]
+    \fi
+
+    as closures of $\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}$ as below.
+    \[
+      (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])))^{c}
+    \]
+    where $c$ denotes a closure and $\iota_{\sfrac{*}{\sim}}$ is $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}$ or $\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}$ depending on whether $[x_i]$ comes from $V_{X} + V_{Y}$ or $E_{X} + E_{Y}$, is the smallest set such that
+    \begin{itemize}
+        \item $[x] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])))^{c}$ if $\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$
+        \item if $[y] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x]))$ then 
+        \[
+            [x] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([y])))^{c}
+        \]
+        % \item if $[e] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then 
+        % \[
+        %     [v] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))^{c}
+        % \]
+        \item for any sequence $([x_1], \ldots, [x_n])$ such that
+        \ifdefined \ONECOLUMN
+        \[[x_i] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i+1}])) \qquad \text{or} \qquad [x_{i+1}] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))\]
+        \else
+        \[
+            [x_i] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i+1}]))
+        \] or 
+        \[
+            [x_{i+1}] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))
+        \]
+        \fi
+         for $i < n$ both
+        \ifdefined \ONECOLUMN
+        \[
+            [x_1] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{n}])))^{c} \qquad \text{and} \qquad [x_n] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{1}])))^{c}
+        \]
+        \else
+         \[
+            [x_1] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{n}])))^{c}
+        \]
+        and
+        \[
+            [x_n] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{1}])))^{c}
+        \]
+        \fi
+    \end{itemize}
+    Let's check that $([]_{V},[]_{E})$ is a homomorphism with respect to $\consistency$.
+    We need to check, if
+    \ifdefined \ONECOLUMN
+    \[
+        [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))
+        \subseteq
+        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+    \]
+    \else
+    \begin{align*}
+        &[[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))\\
+        &\subseteq\\
+        &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+    \end{align*}
+    \fi
+
+    \begin{enumerate}
+        \item The first case is when $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) = \varnothing$.
+              Then the property trivially holds as the empty set is a subset of any set.
+        \item Suppose $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$.
+              Then, 
+              \[
+                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}})(v))
+              \]
+              since $v \sim v$,
+              and hence
+              \ifdefined \ONECOLUMN
+              \begin{align*}
+                [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}})(v))
+                &\subseteq
+                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                &\subseteq
+                (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+              \end{align*}
+              \else
+              \begin{align*}
+                &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}})(v))\\
+                &\subseteq\\
+                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                &\subseteq\\
+                &(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+              \end{align*}
+              \fi
+              by recalling that $[[]_{V}^{\consistency}, []_{E}^{\consistency}] = [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]$.
+    \end{enumerate}
+
+    The cases for edges are analogous.
+
+    % and for vertices
+    % \begin{enumerate}
+
+    % \item If there exists $v' \in V_{X+Y}$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$, then
+    % \begin{align*}
+    %     &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V}))\\
+    %     &= [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')))
+    % \end{align*}
+    % \item If for all $v' \in V_{X+Y}$ such that $v' \sim v$, $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) = \varnothing$ and there exists $[u]$ such that there is an undirected path from $[v]$ to $[u]$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([u])) \not = \varnothing$, then
+    % \[
+    %     \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{E_{X} + E_{Y}}([u]_{V}))
+    % \]
+    % \end{enumerate}
+    % where $\iota_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
+    % % We also build this relation step by step as the relation above: first steps (1) for nodes and edges and then we interleave steps for edges and for nodes. 
+
+    % We then define
+    % \[
+    %   \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c}
+    % \]
+    % \[
+    %   \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))^{c}  
+    % \]
+    % where $c$ is a reflexive, symmetric and transitive closure.
+
+
+    % Again, we need to check that this is a well-defined function and that our $([]_{V},[]_{E})$ is indeed a homomorphism with respect to $\consistency$.
+
+    % \begin{itemize}
+    %     \item Let us show well-definedness.
+    %     \begin{itemize}
+
+    %         \item  Assume that $v_1, v_2 \in V_{X+Y}$ and $v_1 \sim v_2$ then we need to show that
+    %         \[
+    %             \consistency_{\sfrac{X+Y}{\sim}}(\iota_{E_{X} + E_{Y}}[v_1]) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{E_{X} + E_{Y}}[v_2])
+    %         \]
+    %           $v_1 \sim v_2$ implies there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z)$ and $v_2 = g_{V};\iota_{2,V}(z)$ and supposing that for any of $v_i$ $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i)) \not = \varnothing$, then
+    %           \begin{align*}
+    %             &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
+    %             & = ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
+    %           \end{align*}
+    %           Similarly,
+    %           \begin{align*}
+    %             &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))\\
+    %             &= ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
+    %         \end{align*}
+    %           and we get well-definedness on the nose.
+    %           We do not need to check well-definedness for edges as $e_1 \sim e_2$ implies $e_1 = e_2$.
+    %         \item Now suppose that both 
+    %         \[\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)) = \varnothing
+    %         \quad 
+    %         \text{and} 
+    %         \quad\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_2)) = \varnothing
+    %         \]
+    %         This would mean that for all $z \in V_{Z}$, $\consistency(f_{V}(z)) = \varnothing$ and $\consistency(g_{V}(z)) = \varnothing$ and automatically
+    %               \[
+    %                 \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
+    %               \]
+    %         \end{itemize}
+    %     \item Putting $\phi = ([]_{V},[]_{E})$ into the definition of a homomorphism gives us
+    %         \begin{align*}
+    %          &[[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)))\\
+    %          &\subseteq
+    %          \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x]))
+    %         \end{align*}
+    %         By definition, 
+    %         \begin{align*}
+    %             &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x])) =\\
+    %              [[]_{V}^{\consistency}, []_{E}^{\consistency} ]^{*} &(\bigcup_{x' \in V_{X} + V_{Y} | [x']_{V} = [x]_{V}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)))
+    %         \end{align*}
+    %         and by recalling that $[]_V^{\consistency} = []_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}$ and similarly for $[]_{E}^{\consistency}$ we get the inclusion 
+    %         \begin{align*}
+    %             &[[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)))\\
+    %             &\subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x]))
+    %         \end{align*}
+    %          and the latter is the subset of $\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x]))$ because it is a closure.
+    %         If $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)) = \varnothing$ then homomorphismness holds because empty set is a subset of any set.
+    %         Similarly for edges.
+    % \end{itemize}
+
+    So far we have shown that relations $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ are well-defined and $([]_{V},[]_{E})$ is a homomorphism.
+    By the Proposition~\ref{prop:pushout_is_e_hypergraph} the constructed $\sfrac{X+Y}{\sim}$ is an e-hypergraph.
+    To show that it is a pushout we need to check the universal property.
+    Let $u_{V}([\iota_{1,V}(x)]) = j_{1,V}(x)$ and $u_{V}([\iota_{2,V}(y)]) = j_2(y)$.
+    We will need to check that this a well-defined function as well as that it is indeed a homomorphism.
+
+    Let's say that $v_1 \sim v_2$ then we need to show that $u_{V}([v_1]) = u_{V}([v_2])$.
+    $v_1 \sim v_2$ means there is a sequence $w = (x_1, \ldots, x_n)$ such that $v_1 = x_1$, $v_2 = x_n$ and for all $i < n$ $x_i \sim_{S} x_{i+1}$. We will proceed by induction on the length of $w$.
+    \begin{itemize}
+        \item $|w| = 2$, then $v_1 \sim_{S} v_2$ and there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V})(z)$ and $v_2 = g_{V};\iota_{2,V}(z)$ and we have
+        \[
+            u_{V}([v_1]) = u_{V}([f_{V};\iota_{1,V}(z)]) = j_1({f_{V}(z)})
+        \] 
+        and 
+        \[
+            u_{V}([v_2]) = u_{V}([g_{V};\iota_{2,V}(z)]) = j_{2}(g_{V}(z))
+        \] 
+        which are equal by commutativity.
+        \item Assume if $v_1 \sim v_2$ via $w : |w| \leq n$ then $u_{V}([v_1]) = u_{V}([v_2])$.
+        \item Suppose $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n, x_{n+1})$.
+              By hypothesis, we know that $u_{V}([v_1]) = u_{V}([x_1]) = u_{V}([x_n])$ and that $u_{V}([x_n]) = u_{V}([x_{n+1}]) = u_{V}([v_2])$ and hence $u_{V}([v_1]) = u_{V}([v_2])$.
+    \end{itemize}
+    Because $v_1 \sim t_2$, it means that there exists $z \in V_{Z}$ such that $t_1 = f_{V};\iota_{1,V}(z)$ and $t_2 = g_{V};\iota_{2,V}(z)$.
+    Then, we have
+    \[
+    u_{V}([t_1]) = u_{V}([f_{V};\iota_{1,V}(z)]) = j_1({f_{V}(z)})
+    \] and 
+    \[
+    u_{V}([t_2]) = u_{V}([g_{V};\iota_{2,V}(z)]) = j_{2}(g_{V}(z))
+    \] which are equal by commutativity.
+
+    Let's show that such $(u_{V},u_{E})$ is unique.
+    Assume that there is $u'_{V}$ such that $j_{1,V}(v) = u'_{V}([\iota_{1,V}(v)])$ and $j_{2,V}(v) = u'_{V}([\iota_{2,V}(v)])$.
+    Then we have $u_{V}[\iota_{1,V}(v)] = j_{1,V}(v) = u'_{V}([\iota_{1,V}(v)])$ for all $v \in V_{X}$ (similarly for $v \in V_{Y}$) and hence $u_{V} = u'_{V}$.
+    Similarly for $u_{E}$.
+
+    Let's now check if $u = (u_{V},u_{E})$ is a homomorphism.
+    \begin{enumerate}
+        \item The first condition to check is if $u_{V}^{*}(s_{\sfrac{X+Y}{\sim}}([e])) = s_{Q}(u_{E}([e]))$. 
+              By construction of $s_{\sfrac{X+Y}{\sim}}$ we have
+              \[
+                u_{V}^{*}(s_{\sfrac{X+Y}{\sim}}([e])) = u_{V}^{*}([s_{X+Y}(e)]^{*})
+              \]
+              Suppose $e = \iota_{E_{X}}(e')$ and then
+              \[
+                u_{V}^{*}([s_{X+Y}(e)]^{*}) = u_{V}^{*}([s_{X+Y}(\iota_{1,E}(e'))]^{*}) = u_{V}^{*}([(\iota_{1,V}^{*}(s_{X}(e')))]^{*})
+              \]
+              Since $j_1$ and $j_2$ are homomorphisms, it must be the case that $s_{Q}(j_{1,E}(e')) = j_{1,V}^{*}(s_{X}(e'))$.
+              By definition, 
+              \begin{align*}                
+                u_{V}^{*}([(\iota_{1,V}^{*}(s_{X}(e')))]^{*}) &= j_{1,V}^{*}((s_{X}(e')))\\ 
+                &= s_{Q}(j_{1,E}(e'))\\
+                &= s_{Q}(u_{E}([\iota_{1,E}(e')]))\\
+                &= s_{Q}(u_{E}([e]))
+            \end{align*}
+            Similarly for $e = \iota_{E_{Y}}(e')$.
+        \item The case for targets is analogous.
+        \item The next condition to check is if $[[v]) \not = \varnothing$ then 
+    \[
+        <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+    \]
+    We need to consider a few cases.
+    \begin{itemize}
+        \item Suppose $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))]$ for $u \sim v$.
+              Then assume $u = \iota_{1,V}(u_{x})$ and then 
+              \begin{align*}
+                [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))] &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(\iota_{1,V}(u_{x})))]\\
+                &= [\iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(u_{x})))]
+            \end{align*}
+            and
+            \begin{align*}
+                u_{E}([\iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(u_{x})))]) &= j_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(u_{x})))\\
+                &= <_{Q}^{\mu}(\iota_{V_{Q}}(j_{1,V}(u_{x})))\\
+                &= <_{Q}^{\mu}(\iota_{V_{Q}}(u([\iota_{1,V}(u_{x})])))\\
+                &= <_{Q}^{\mu}(\iota_{V_{Q}}(u([v])))
+            \end{align*}
+            and we have
+            \[
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+            \]
+            The case when $u = \iota_{2,V}(u_{y})$ is symmetric.
+        \item Suppose $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))$ such that there is a path from $[v]$ to $[v']$ and $v$ has no pre-image in $V_{Z}$.
+              By the argument above, we know that
+              \[
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v']))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v']))
+              \]
+              and by definition
+              \[
+                u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v'])) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+              \]
+              since $(u_{V},u_{E})$ preserves sources and targets and there is a path from $[v]$ to $[v']$, there is a path from $u_{V}([v])$ to $u_{V}([v'])$ and because $Q$ is an e-hypergraph
+              \[
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v']))) = <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v])))
+              \]
+              and finally
+              \[
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+              \]
+        \end{itemize}
+    The cases for edges are analogous.
+    \item The last condition to check is if
+    \[
+    [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+    \]
+    Recall that
+    \[
+      \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c}
+    \]
+    and first we will check if
+    \[
+      [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+    \]
+    Consider cases
+    \begin{itemize}
+        \item If $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \varnothing$ then the inclusion is trivial and hence we assume that
+        \[
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \not = \varnothing
+        \]
+        \item Suppose $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(u)) \not = \varnothing$ and $v \sim u$ and then
+        \[
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(u)))
+        \]
+        Assume $u = \iota_{1,V}(u_{x})$, then
+        \ifdefined \ONECOLUMN
+        \begin{align*}
+            [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(u)))
+            &=
+            [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(\iota_{1,V}(u_{x}))))\\
+            &=
+            [\iota_{1,V};[]_{V}^{\consistency},\iota_{1,E};[]_{E}^{\consistency}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))
+        \end{align*}
+        \else
+        \begin{align*}
+            &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(u)))\\
+            &=\\
+            &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(\iota_{1,V}(u_{x}))))\\
+            &=\\
+            &[\iota_{1,V};[]_{V}^{\consistency},\iota_{1,E};[]_{E}^{\consistency}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))
+        \end{align*}
+        \fi
+
+        and
+        \ifdefined \ONECOLUMN
+        \begin{align*}
+            [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))
+            &=
+            [\iota_{1,V};[]_{V};u_{V};\iota_{V_{Q}},\iota_{1,E};[]_{E};u_{E};\iota_{Q_{E}}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))\\
+            &=
+            [j_{1,V};\iota_{V_{Q}},j_{1,E};\iota_{Q_{E}}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))\\
+            &\subseteq
+            \consistency_{Q}(\iota_{V_{Q}}(j_{1,V}(u_{x})))\\
+            &=
+            \consistency_{Q}(\iota_{V_{Q}}(u_{V}[\iota_{1,V}(u_{x})]))\\
+            &=
+            \consistency_{Q}(\iota_{V_{Q}}(u_{V}[u]))\\
+            &=
+            \consistency_{Q}(\iota_{V_{Q}}(u_{V}[v]))
+        \end{align*}
+        \else
+        \begin{align*}
+            &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+            &=\\
+            &[\iota_{1,V};[]_{V};u_{V};\iota_{V_{Q}},\iota_{1,E};[]_{E};u_{E};\iota_{Q_{E}}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))\\
+            &=\\
+            &[j_{1,V};\iota_{V_{Q}},j_{1,E};\iota_{Q_{E}}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))\\
+            &\subseteq\\
+            &\consistency_{Q}(\iota_{V_{Q}}(j_{1,V}(u_{x})))\\
+            &=\\
+            &\consistency_{Q}(\iota_{V_{Q}}(u_{V}[\iota_{1,V}(u_{x})]))\\
+            &=\\
+            &\consistency_{Q}(\iota_{V_{Q}}(u_{V}[u]))\\
+            &=\\
+            &\consistency_{Q}(\iota_{V_{Q}}(u_{V}[v]))
+        \end{align*}
+        \fi
+        The case when $u = \iota_{2,V}(u_{y})$ is symmetric.
+        \item Suppose that $v$ has no pre-image in $V_{Z}$ and $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) = \varnothing$ and there exists $u$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(u)) \not = \varnothing$ and such that there is an undirected path from $[v]$ to $[u]$ and then
+        \[
+            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))    
+        \]
+        By the argument above it follows that
+        \[
+            [u_{V};\iota_{Q_{V}},u_{E};\iota_{Q_{E}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))) \subseteq \consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))
+        \]
+        \end{itemize}
+       Since $(u_{V},u_{E})$ preserves paths, there is a path from $u_{V}([u])$ to $u_{V}([v])$ and since $Q$ is an e-hypergraph
+       \ifdefined \ONECOLUMN
+       \begin{align*}
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+        &=
+        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))\\
+        &\subseteq
+        \consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))\\
+        &=
+        &\consistency_{Q}(\iota_{V_{Q}}(u_{V}([v])))
+       \end{align*}
+       \else
+       \begin{align*}
+        &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+        &=\\
+        &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))\\
+        &\subseteq\\
+        &\consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))\\
+        &=\\
+        &\consistency_{Q}(\iota_{V_{Q}}(u_{V}([v])))
+    \end{align*}
+    \fi
+       So far we have shown that
+       \[
+        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+       \]
+       and
+       \[
+        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))) \subseteq \consistency_{Q}(u_{E};\iota_{E_{Q}}([e]))
+       \] follows by the same argument.
+       Then, to check if
+       \[
+        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+       \]
+       we need to verify if
+       \begin{itemize}
+        \item $[u_{V};\iota_{V_{Q}},u_{E};\iota_{E_{Q}}]^{*}(\{[v]\}) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))$.
+              This holds because $\consistency_{Q}$ is reflexive.
+        \item $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then 
+        \[
+            [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\{[v]\}) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([u]))
+        \]
+              The first bit implies that $u_{V};\iota_{V_{Q}}([u]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))$ and since $\consistency_{Q}$ is symmetric it must be the case that $u_{V_{Q}};\iota_{V_{Q}}[v] \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([u]))$
+        \item There exists a sequence $w = (x_1, \ldots, x_n)$ such that 
+        \[
+            \iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_i]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{i+1}]))
+        \] 
+        
+        or 
+        \[
+            \iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{i+1}]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{i}]))
+        \]
+        for $i < n$ (or similarly for edges), then $u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_n]))$.
+        \begin{itemize}
+            \item Base case is when $w = (x_1,x_2)$.
+                  Then the statement is trivial as 
+                  \begin{align*}
+                  &[u_{V};\iota_{V_{Q}},u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_2])))\\
+                  &\subseteq\\
+                  &\consistency_{Q}(u_{V};\iota_{V_{Q}}([x_2]))
+                  \end{align*}
+            \item Suppose the statement is true for all $w$ such that $|w| \leq n$.
+            \item Consider a sequence $w = (x_1, \ldots, x_{n}, x_{n+1})$.
+                  By assumption, we know that $u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_n]))$.
+                  The fact that $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{n}]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{n+1}]))$ (or its symmetric counterpart) implies that $u_{V};\iota_{V_{Q}}([x_{n}]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{n+1}]))$ and by the transitivity and symmetry of $\consistency_{Q}$ it follows that
+                \[
+                    u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{n+1}]))
+                \]
+                and
+                \[
+                    u_{V};\iota_{V_{Q}}([x_{n+1}]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{1}]))
+                \]
+        \end{itemize}
+       \end{itemize}
+       Therefore, we have
+       \[
+        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+       \]
+       and similarly for edges. Which concludes that $(u_{V},u_{E})$ is a homomorphism.
+    \end{enumerate}
+\end{proof}
+
+\begin{figure}
+    \[
+        \scalebox{0.5}{
+        \tikzfig{../figures/appendix/pushout_example}
+        }
+\]
+\captionsetup{belowskip=-3ex}
+\caption{Pushout in $\catname{EHyp_{\Sigma}}$}
+\label{fig:pushout_example}
+\end{figure}
+
+\begin{example}
+    Consider a diagram in Figure~\ref{fig:pushout_example} where the subscripts define the corresponding morphisms.
+    E-hypergraph $Q$ is not a pushout as there is no homomorphism $u$ that would complete the diagram.
+    In particular, there is no $(u_{V},u_{E})$ such that 
+    \[
+        [u_{V};\iota_{P_{V}},u_{E};\iota_{P_{E}}]^{*}(\consistency_{Q}(\iota_{V_{Q}}(q_1))) \subseteq \consistency_{P}(u_{V};\iota_{P_{V}}(q_1))
+    \]
+    If we let $u_{V}(i_{1,V}(v)) = j_{1,V}(v)$ for all $v \in V_{X}$ and $u_{V}(i_{2,V}(v)) = j_{2,V}(v)$ and similarly for edges.
+    Then 
+    \begin{align*}
+        &[u_{V};\iota_{P_{V}}, u_{E};\iota_{P_{E}}]^{*}(\consistency_{Q}(\iota_{V_{Q}}(q_1)))\\
+        &=\\
+        &[u_{V};\iota_{P_{V}}, u_{E};\iota_{P_{E}}]^{*}(\{q_1, q_2, q_3, q_4, f, h, g\})\\
+        &=\\
+        &[\iota_{P_{V}}(j_{1,V}(x_1)), \iota_{P_{V}}(j_{1,V}(x_2)), \iota_{P_{V}}(j_{1,V}(x_3)),\\
+         &\; \iota_{P_{V}}(j_{1,V}(x_4)), \iota_{P_{E}}(j_{1,E}(f)), \iota_{P_{E}}(j_{1,E}(g)), \iota_{P_{V}}(j_{2,V}(y_1)),\\
+         &\; \iota_{P_{V}}(j_{2,V}(y_2)), \iota_{P_{E}}(j_{2,E}(h))]\\
+        &=\\
+        &[p_1, p_2, p_3, p_4, f, h, g]\\
+        &\not \subseteq\\
+        &\consistency_{P}(u_{V};\iota_{P_{V}}(q_1))\\
+        &=\\
+        &\consistency_{P}(j_{1,V};\iota_{P_{V}}(x_1))\\
+        &=\\
+        &\consistency_{P}(\iota_{P_{V}}(p_1))\\
+        &=\\
+        &[p_1, f, h, p_2]
+    \end{align*}
+\end{example}
+
+% So far we have shown that the constructed $\sfrac{X+Y}{\sim}$ is a pushout but we are yet to show that it is an e-hypergraph.
+% The proof of the latter will follow below and the following corollaries will come in handy.
+% We will then proceed by showing that both relations satisfy the properties as defined in Definition~\ref{def:e-homo}.
+
+
+% By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$.
+
+\begin{lemma}
+\label{lemma:child_irreflexive}
+    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ is irreflexive.
+\end{lemma}
+\begin{proof}
+    Suppose there exist $[e]$ such that $[e] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))$.
+    Then we have two cases.
+    \begin{itemize}
+      \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e))] = [e]$
+      This would mean that $<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e)) = e$ as $[]_{E}$ is injective, which would mean that the relation $<_{X+Y}^{\mu}$ is not irreflexive because $e$ is the predecessor of $e$.
+      \item Suppose $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ is defined and there is a path from $[e]$ to $[v]$.
+            This implies
+            \[
+                [e] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]
+            \]
+            and
+            \[
+               e = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))
+            \]
+            The existence of a path from $[e]$ to $[v]$ means there is a path from $e$ to $v'$ such that $v' \sim v$.
+            \begin{itemize}
+                \item If $v' = v$, then there is a path from $e$ to $v$ which contradicts $e = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$
+                \item Consider the case when $v' \sim v$.
+                      $e = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ implies that both $e$ and $v$ are in the image of $(\iota_{1,V},\iota_{1,E})$ or $(\iota_{2,V},\iota_{2,E})$.
+                      Suppose $e = \iota_{1,E}(e_{x})$ and $v = \iota_{1,V}(v_{x})$.
+                      Since $v' \sim v$, $v_{x} = f_{V}(z_1)$. 
+                      And since there is a path from $v'$ to $e$, $v' = \iota_{1,V}(v'_{x})$ and $v'_{x} = f_{V}(z_2)$.
+                      This further implies
+                      \begin{align*}
+                        <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x})))\\
+                                                                &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_1))))\\
+                                                                &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_2))))\\
+                                                                &= \iota_{1,E}(e_{x})
+                    \end{align*}
+                      and
+                      \[
+                        e_{x} = <_{X}(\iota_{V_{X}}(f_{V}(z_2))) = <_{X}(\iota_{V_{X}}(v_{x}'))
+                      \]
+                      which contradicts that there is a path from $e_{x}$ to $v_{x}'$.
+                      The case when $e = \iota_{2,E}(e_{y})$ and $v = \iota_{2,V}(v_{y})$ is symmetric.
+            \end{itemize}
+    \end{itemize}                  
+      We do not need to check this requirement for vertices because a vertex can not be a predecessor.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:child_assymetric}
+    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ is asymmetric.
+\end{lemma}
+\begin{proof}
+    Let $e_1,e_2$ be edges. 
+    Then, if $[e_1] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))$ it must not be the case that $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
+    For $[e_1] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))$ we have two cases.
+    \begin{itemize}
+      \item 
+      \[
+        [e_1] = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_2))]
+      \]
+      which implies $e_1 = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_2))$.
+      Having at the same time $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$ gives us also two cases.
+      \begin{itemize}
+        \item $[e_2] = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))]$ and $e_2 = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))$ which implies that $e_1$ is the predecessor of $e_2$ and vice versa which contradicts e-hypergraphness of $X+Y$.
+        \item
+            \[
+                [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]
+            \]
+            such that $[e_1) = \varnothing$ and there is a path from $[e_1]$ to $[v]$, i.e. a path from $e_1$ to $v'$ such that $v' \sim v$.
+            \begin{itemize}
+                \item $v' \sim v$ and there is a path from $e_1$ to $v'$. 
+                Suppose $e_2 = \iota_{1,E}(e_{2,x})$ and $v = \iota_{1,V}(v_{x})$.
+                Since $e_1$ is the predecessor of $e_2$, the former should also be in the image of $\iota_{1,E}$, i.e. $e_1 = \iota_{1,E}(e_{1,x})$, and since there is a path from $e_1$ to $v'$, $v' = \iota_{1,V}(v'_{x})$.
+                $v' \sim v$ implies $v_{x} = f_{V}(z_1)$ and $v'_{x} = f_{V}(z_2)$.
+                Then,
+                \begin{align*}
+                    <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x})))\\
+                                                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_1))))\\
+                                                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_2))))\\
+                                                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x}')))\\
+                                                            &= <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v'))\\
+                                                            &= <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))
+                \end{align*}
+                which contradicts $e_1 = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_2))$.
+                The case when $e_2 = \iota_{2,E}(e_{2,y})$ and $v = \iota_{2,V}(v_{y})$ is symmetric.
+            \end{itemize}
+        \end{itemize}
+            \item The other case is when          
+            \[
+                [e_1] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))]
+            \]
+            such that there is a path from $e_2$ to $v'_1$ and $v_1 \sim v'_1$ and $[e_2) = \varnothing$.
+            \begin{itemize}
+                \item The case when $[e_2] = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))]$ is analogous to the last case above.
+                \item Suppose 
+                \[
+                    [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))]
+                \] such that there is a path from $e_1$ to $v'_2$ and $v_2 \sim v'_2$ and $[e_1) = \varnothing$.
+                    Suppose $e_1 = \iota_{1,E}(e_{1,x})$ and $v_1 = \iota_{1,V}(v_{1,x})$ which implies $v'_2 = \iota_{1,V}(v'_{2,x})$.
+                    Since $v_1 \sim v_1'$, $v_{1,x} = f_{V}(z_1)$ and similarly $v'_{2,x} = f_{V}(z_2)$.
+                    \begin{align*}
+                        e_1 &= <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))\\
+                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{1,x})))\\
+                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_1))))\\
+                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_2))))\\
+                            &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v'_{2,x})))\\
+                            &= <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v'_2))\\
+                            &= <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))
+                    \end{align*}
+                    And we get a contradiction to irreflexivity of $<_{X+Y}^{\mu}$.
+            \end{itemize}
+      \end{itemize} 
+    Once again, we do not need to check for vertices as a vertex can not be on the left-hand side of the relation.
+\end{proof}
+
+
+\begin{lemma}
+\label{lemma:child_respect}
+    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ respects connectivity.
+\end{lemma}
+\begin{proof}
+        We need to show that if $[v] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ and $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$ then $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])$.
+        We have two cases.
+        \begin{itemize}
+            \item \[
+            [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(e_1))]
+            \]
+            By definition, $s_{\sfrac{X+Y}{\sim}}([e_1]) = [s_{X+Y}(e_1)]^{*}$ and $[v] \in [s_{X+Y}(e_1)]^{*}$ means there exists $v' \sim v$ such that $v' \in s_{X+Y}(e_1)$.
+            \begin{itemize}
+                \item $v' = v$ and then $v \in s_{X+Y}(e_1)$ and therefore $e_2 = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ and $[e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]$.
+                \item $v' \sim v$ and then 
+                \begin{align*}
+                    [e_2] &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v'))]\\
+                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))\\
+                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+                \end{align*}
+            \end{itemize}
+            \item \[
+                [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))]    
+            \]
+            such that there is $v_1' \sim v_1$ and there is a path from $e_1$ to $v_1'$ and $[e_1) = \varnothing$.
+            $[v] \in [s_{X+Y}(e_1)]^{*}$ means there exists $v' \sim v$ such that $v' \in s_{X+Y}(e_1)$.
+            \begin{itemize}
+                \item $v' = v$ and then $v \in s_{X+Y}(e_1)$. Since there is a path from $e_1$ to $v_1'$, there is also a path from $v'$ to $v_1'$ and by definition
+                \[
+                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [e_2]
+                \]
+                \item $v' \sim v$ and then there is a path from $v'_1$ to $v'$. 
+                Suppose $v_1 = f_{V};\iota_{1,V}(z_1)$ and since $v_1' \in s_{X+Y}(e_1)$, $[e_1) = \varnothing$, both $v_1'$ and $v'$ should be in the image of $g_{V};\iota_{2,V}$.
+                Since $[v_1) \not = \varnothing$ it must be the case that for all $z$ $[f_{V}(z)) \not = \varnothing$ as well as for some $v'' \sim v'$ such that $v'' = f_{V};\iota_{1,V}(z'')$.
+                Clearly such $v''$ exists.
+                It is either $v$, if $v = f_{V};\iota_{1,V}(z'')$, or some $x_i$ in $(x_1, \ldots, x_n)$ such that $x_1 = v'$ and $x_n = v$.
+                \begin{align*}
+                    [e_2] &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))]\\
+                          &= [\iota_{1,E}(<_{X}(\iota_{V_{X}}(f_{V}(z_1))))]\\
+                          &= [\iota_{1,E}(<_{X}(\iota_{V_{X}}(f_{V}(z''))))]\\
+                          &= [<_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z'')))]\\
+                          &= [<_{X+Y}(\iota_{V_{X} + V_{Y}}(v''))]\\
+                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+                \end{align*}
+                The case when $v_1 = g_{V};\iota_{2,V}(z_1)$ is symmetric.
+            \end{itemize}
+            \end{itemize}
+            \item Finally, we need to check that if $[v] \in s([e_1])$ and $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
+            Once again, $[v] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ means that there exists $v' \in s_{X+Y}(e_1)$ such that $v' \sim v$.
+            \begin{itemize}
+                \item \[
+                [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v''))]
+                \] such that $v'' \sim v$ and $[v'') \not = \varnothing$.
+                \begin{itemize}
+                    \item If $v' = v$ and $v'' = v$ then $v \in s_{X+Y}(e_1)$ and since $[v'') = [v) \not = \varnothing$ and $v \in s_{X+Y}(e_1)$, it must be the case that
+                    $<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1)) = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(v))$ and further
+                    \begin{align*}
+                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))]\\
+                                                                                            &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(v))]\\
+                                                                                            &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                                                                                            &= [e_2]
+                    \end{align*}
+                    \item If $v' = v $ and $v'' \sim v$ then $v \in s_{X+Y}(e_1)$.
+                          Suppose $v'' = f_{V};\iota_{1,V}(z'')$.
+                          Consider cases.
+                          \begin{itemize}
+                            \item $v = f_{V};\iota_{1,V}(z)$, then $f_{V}(z) = f_{V}(z'') \not = \varnothing$ and $[e_1) = [v) = [v'')$
+                            \item $v = g_{V};\iota_{2,V}(z)$, then $g_{V}(z) = \varnothing$ and $[e_1) = \varnothing$.
+                                  Since there is a path from $v$ to $e_1$ and $[v'') \not = \varnothing$ and $v'' \sim v$, by definition,
+                                  \begin{align*}
+                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v''])) = [e_2]
+                                  \end{align*}
+                          \end{itemize}
+                          Case when $v'' = g_{V};\iota_{2,V}(z'')$ is symmetric.
+                    \item If $v' \sim v$ and $v'' = v$ then $v' \in s_{X+Y}(e_1)$. This implies that $[v) \not = \varnothing$
+                          \begin{itemize}
+                            \item If $v = f_{V};\iota_{1,V}(z)$ and $v' = f_{V};\iota_{1,V}(z')$ then $[e_1) = [v') = [v) \not = \varnothing $ since $[f_{V}(z')) = [f_{V}(z))$.
+                                  That is,
+                                  \begin{align*}
+                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}})(e_1)]\\
+                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v)]\\
+                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v'')]\\
+                                                                                                    &= [e_2]
+                                  \end{align*}
+                            \item $v = f_{V};\iota_{1,V}(z)$ and $v' = g_{V};\iota_{2,V}(z')$ and then $[g_{V}(z')) = \varnothing$ and $[e_1) = \varnothing$.
+                                  By definition,
+                                  \begin{align*}
+                                  <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                                                                                                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                                                                                                          &= [e_2]
+                                  \end{align*}
+                          \end{itemize}
+                          The case when $v = g_{V};\iota_{1,V}(z)$ is symmetric.
+                    \item If $v' \sim v$ and $v'' \sim v$ then $v' \in s_{X+Y}{e_1}$, $[v'') \not = \varnothing$ and $v'' \sim v'$.
+                    \begin{itemize}
+                        \item If $v'' = f_{V};\iota_{1,V}(z'')$ and $v' = f_{V};\iota_{2,V}(z')$ then $[e_1) = [v') = [v'')$ and
+                            \begin{align*}
+                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}})(e_1)]\\
+                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v')]\\
+                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v'')]\\
+                                                                                                    &= [e_2]
+                                  \end{align*}
+                        \item If $v'' = f_{V};\iota_{1,V}(z'')$ and $v' = g_{V};\iota_{2,V}(z')$ then $[g_{V}(z')) = \varnothing$ and $[e_1) = \varnothing$. 
+                        Then
+                        \begin{align*}
+                            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v''])) = [e_2]
+                        \end{align*}
+                        The case when $v'' = g_{V};\iota_{2,V}(z'')$ is symmetric.
+                    \end{itemize}
+                \end{itemize}
+                \item Now suppose that 
+                \[
+                [e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))
+                \]
+                such that $[v'') \not = \varnothing$, $[v) = \varnothing$ and there is a path from $[v]$ to $[v'']$, i.e. there is a path from $v$ to $v'$ and $v' \sim v''$.
+                In its turn $[v] \in s_{\sfrac{X + Y}{\sim}}([e_1])$ implies $v_1 \in s_{X+Y}(e_1)$ and $v \sim v_1$.
+                As per the comment below~\ref{def:child_respects_connectivity}, necessarily $v = v_1$ as $v$ should not have a pre-image in $V_{Z}$.
+                This implies that $v \in s_{X+Y}(e_1)$ and that $[e_1) = \varnothing$.
+                As there is a path from $v$ to $v'$, there is a path from $e_1$ to $v'$ and by definition, since $v'' \sim v'$ and $[v'') \not = \varnothing$,
+                \[
+                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v''])) = [e_2]
+                \]
+            \end{itemize}    
+\end{proof}
+
+
+\begin{lemma}
+\label{lemma:closures_of_equal_sets_are_equal}
+If
+\[
+\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+\]
+where $\iota_{\sfrac{*}{\sim}}$ is either $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}$ or $\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}$ depending on whether $[x_i]$ is in $V_{X} + V_{Y}$ or $E_{X} + E_{Y}$.
+Then
+\[
+\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))
+\]
+That is, closures of both sides are equal.
+\end{lemma}
+
+\begin{proof}
+    To check that the sets after closures are equal, we need to check if every element of the set on the left is also in the set on the right and vice versa.
+    Apart from $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))$ the set on the left also contains
+    \begin{itemize}
+        \item $[x_1]$ as per the reflexivity.
+        So we need to check if $[x_1] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+              Because 
+              \[
+              \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+              \]
+              there exists some $[y]$ such that 
+              \[
+              [y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))
+              \]
+               and
+            \[
+                [y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+            \]
+            that is, we have a sequence $([x_1],[y],[x_2])$ and by transitivity
+               \[
+               [x_1] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))
+               \]
+                and
+            \[
+            [x_2] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1]))
+            \]
+        \item $[y]$ for all $[y]$ such that $[x_1] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([y]))$.
+              Let's check if $[y] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+              As above, there exists $[z]$ such that
+              \[
+              [z] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))
+              \]
+               and
+              \[
+                [z] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+              \]
+              By a sequence $([y],[x_1],[z],[x_2])$ we get that
+              \[
+                [y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+              \]
+              Similarly for $[y]$ such that $[x_2] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([y]))$.
+        \item For any sequence $([x_1],\ldots,[x_n])$ such that $[x_i] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_{i+1}]))$ or $[x_{i+1}] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))$ for $i < n$ the set on the left contains $[x_n]$.
+              Let's check if $[x_n] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+              Since there exists $[y]$ such that $[y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))$ and $[y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))$ we can extend the sequence to $([x_2],[y],[x_1],\ldots,[x_n])$ and hence $[x_n] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+              Similarly, given a sequence $([x_2],\ldots, [x_n])$ and extending it to $([x_1],[y],[x_2],\ldots,[x_n])$ we get $[x_n] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1]))$.
+    \end{itemize}
+\end{proof}
+
+
+\begin{lemma}
+\label{lemma:consistency_respect}
+$\consistency_{\sfrac{X+Y}{\sim}}$ respects connectivity.
+\end{lemma}
+\begin{proof}
+    Suppose $[v_1] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ and $[[v_1]) = [[e_1]) \not = \varnothing$, then it must be the case that 
+    \[
+    \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+    \]
+    By the lemma above, to prove this, it is sufficient to show that
+
+    \[
+    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+    \]
+
+    $[v_1] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ means there exists $v_1' \in s_{X+Y}(e_1)$ such that $v_1 \sim v_1'$.
+    We then have two cases.
+    \begin{itemize}
+      \item $v_1 = v_1'$ and then $v_1 \in s_{X+Y}(e_1)$.
+      \begin{itemize}
+         \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1''))]$ such that $v_1'' \sim v_1$ and $[v_1'') \not = \varnothing$.
+            \begin{itemize}
+                \item $v_1'' = v_1$ and then $[v_1) \not = \varnothing$ and $[e_1) \not = \varnothing$.
+                      Furthermore, necessarily $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1))$.
+                      By applying $([]_{V},[]_{E})$ we get
+                      \ifdefined \ONECOLUMN
+                      \begin{align*}
+                        \text{by functionality}\\
+                          [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1))) &=
+                          [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))\\
+                          \text{by unfolding the definition}\\
+                          \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
+                          \end{align*} 
+                      \else
+                      \begin{align*}
+                      \text{by functionality}\\
+                        [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1))) &=\\
+                        [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1))) &\\
+                        \text{by unfolding the definition}\\
+                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
+                        \end{align*} 
+                      \fi
+                \item $v_1'' \sim v_1$. If $v_1'' = f_{V};\iota_{1,V}(z_1'')$ and $v_1 = f_{V};\iota_{1,V}(z_1)$ we get
+                    \begin{align*}
+                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v'')))\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z_1''))))\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z_1))))\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
+                                                                                                                &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+                    \end{align*}
+                    If $v_1'' = f_{V};\iota_{1,V}(z_1'')$ and $v_1 = g_{V};\iota_{1,V}(z_1)$ then $[v_1) = [e_1) = \varnothing$ and 
+                    \[
+                        \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)) = \consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \varnothing
+                    \]
+                    \begin{align*}
+                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'']))\\
+                                                                                                            &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))
+                    \end{align*}
+                \end{itemize}
+                \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))$ such that $[v_2) \not = \varnothing$ and there is a path from $[v_1]$ to $[v_2]$. 
+                By definition, this implies $[v_1) = \varnothing$ and $[e_1) = \varnothing$.
+                Again, by definition, we have
+                \begin{align*}
+                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))\\
+                                                                                                    &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+                \end{align*}
+                \end{itemize}
+                \item $v_1 \sim v_1'$ and then $v_1' \in s_{X+Y}(e_1)$.
+                \begin{itemize}
+                    \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1''))]$ such that $v_1 \sim v_1''$ and $[v_1'') \not = \varnothing$.
+                    \begin{itemize}
+                        \item $v_1 = v_1''$ and then $[v_1) \not = \varnothing$.
+                              Suppose $v_1 = f_{V};\iota_{1,V}(z_1)$ and $v_1' = f_{V};\iota_{1,V}(z_1')$. Then $[v_1') = [e_1) \not = \varnothing$ and 
+                            \begin{align*}
+                              \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) &= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')))\\
+                                                                                                                     &= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
+                                                                                                                     &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))\\
+                                                                                                                     &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1])
+                            \end{align*}
+                            Suppose $v_1' = g_{V};\iota_{2,V}(z_1')$ and then $[v_1') = [e_1) = \varnothing$.
+                            By definition,
+                            \[
+                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) = [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
+                            \]
+                            and since there is a path from $e_1$ to $v_1'$ and $v_1' \sim v_1$
+                            \[
+                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e_1]) = [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
+                            \]
+                            The cases when $v_1 = g_{V};\iota_{2,V}(z_1)$ is symmetric.
+                        \item $v_1 \sim v_1''$ and then $v_1' \sim v_1''$. Suppose $v_1'' = f_{V};\iota_{1,V}(z_1'')$.
+                              If $v_1'$ is in the image of $f_{V};\iota_{1,V}$, then
+                              \begin{align*}
+                                \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')) &= \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1''))\\ 
+                                                                               &= \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(e_1'))
+                              \end{align*}
+                              and
+                              \begin{align*}
+                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1]) &=
+                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1'])\\ &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e_1])
+                              \end{align*}
+                              If $v_1'$ is in the image of $g_{V};\iota_{2,V}$, then $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')) = \consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \varnothing$ and by definition as there is a path from $[e_1]$ to $[v_1'']$
+                              \begin{align*}
+                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'']))\\ 
+                                                                                                                        &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))
+                              \end{align*}
+                              The cases when $v_1'' = g_{V};\iota_{2,V}(z_1'')$ are symmetric.
+                    \end{itemize}
+                \end{itemize}
+     \end{itemize}
+The case when $[v] \in t([e])$ is symmetric.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:consistency_child}
+    $\consistency_{\sfrac{X+Y}{\sim}}$ is defined only for vertices and edges that are not top-level.
+\end{lemma}
+\begin{proof}
+  $\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$ if and only if $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([x]))$ is defined.
+  Let's first show from left to right. $\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$ implies $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$.
+  \begin{itemize}
+    \item $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\iota_{*}{\sim}(x'))$ such that $x \sim x'$.
+          By e-hypergraph-ness of $X+Y$ this implies that $[x') \not = \varnothing$ and hence $<_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x'])) = <_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = [<_{X+Y}^{\mu}(\iota_{*}(x))]$
+    \item $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ such that there is a path from $[x]$ to $[v]$ and
+          $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$. This implies that $[v) \not = \varnothing$ and by definition
+          \[
+            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([x])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([v]))  
+          \]
+  \end{itemize}
+  The right-to-left direction is analogous.
+\end{proof}
+
+
+\begin{proposition}[$\sfrac{X+Y}{\sim}$ is an e-hypergraph]
+\label{prop:pushout_is_e_hypergraph}
+For this we need to check that the defined relations --- $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ --- satisfy all the needed properties as per Definition~\ref{def:e-homo}.
+\end{proposition}
+\begin{proof}
+    This proposition then follows by applying the lemmas above.
+    % Lemmas~\ref{lemma:child_assymetric}~\ref{lemma:child_irreflexive}~\ref{lemma:child_respect}~\ref{lemma:consistency_child}~\ref{lemma:consistency_respect}.
+\end{proof}
+
+We will then discuss the uniqueness of the corresponding pushout complement.
+
+% \begin{definition}[Definition 3.16~\cite{bonchi_string_2022-1}]
+% Morphisms $\mathcal{K} \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every vertex of its source and target is either (i) not in the image of $m$ or (ii) in the image of $f ; m$.
+% They satisfy the no-identification condition if any two vertices merged by $m$ are in the image of $f$.
+% \end{definition}
+% Intuitively, the no-dangling condition guarantees that sources and targets of an edge are not deleted if the edge is not deleted.
+% The no-identification condition requires that if $m$ identifies two vertices, it must not be the case that one vertex should be removed and the other vertex should be preserved according to $\mathcal{K}$.
+
+
+% \begin{figure*}[t!]
+%     \begin{minipage}{0.1\textwidth}
+%         $\;$
+%     \end{minipage}
+%     \hfill
+% \begin{minipage}{0.7\textwidth}
+%     \[
+%         \scalebox{0.45}{
+%             \tikzfig{../figures/combinatorial_semantics/structural_rule_pushout}
+%         }
+%     \]
+%     \caption{The image of the top left equation from Figure~\ref{fig:string-equations} under $\llbracket - \rrbracket$}
+%     \label{fig:structural_rule_pushout}
+% \end{minipage}
+% \hfill
+% \begin{minipage}{0.1\textwidth}
+%         $\;$
+% \end{minipage}
+% \end{figure*}
+
+\begin{proposition}
+\label{prop:boundary_complement}
+    The boundary complement in~\ref{def:boundary_new} when exists is unique.
+\end{proposition}
+\begin{proof}
+        The pushout in~\ref{def:boundary_new} satisfies the assumptions in Definition~\ref{pushout:assumptions} (note that since $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j$ is an MDA cospan the image of $i + j$ in $\mathcal{L}$ consists of top-level vertices only) and therefore is isomorphic to the pushout constructed in~\ref{pushout:assumptions} and by construction should also be a pushout on the underlying sets of vertices and hyperedges.
+    % I think the above sufficies, but it can also be shown formally that every pushout in $\catname{EHyp_{\Sigma}}$ is a pushout on the underlying sets of edges and vertices by constructing an e-hyperghraph from the set of vertices and same for the set of edges and checking if the morphisms are well-defined.
+    %     Consider diagrams below,
+    %     \[
+    %         \begin{tikzcd}
+    %             & \mathcal{L} \arrow[d] \arrow[ldd, bend right] & i+j \arrow[l, "h"'] \arrow[d, "c"]           &                 & V_{\mathcal{L}} \arrow[d] \arrow[ldd, bend right] & i+j \arrow[l, "h_{V}"] \arrow[d, "c_{V}"]      \\
+    %             & \mathcal{G} \arrow[ld, "u"']                  & \mathcal{C} \arrow[l] \arrow[lld, bend left] &                 & V_{\mathcal{G}} \arrow[ld, "u_{V}"]               & V_\mathcal{C} \arrow[l] \arrow[lld, bend left] \\
+    % \mathcal{Q} &                                               &                                              & V_{\mathcal{Q}} &                                                   &                                               
+    % \end{tikzcd}  
+    %     \]
+    %     If $\mathcal{L} \xrightarrow{} \mathcal{G} \xleftarrow{} C$ is a pushout in $\catname{EHyp}_{\Sigma}$ then $V_{\mathcal{L}} \xrightarrow{} V_{\mathcal{G}} \xleftarrow{} V_{\mathcal{C}}$ is a pushout in $\catname{Set}$.
+    %     The small square on the right commutes because the square on the left commutes, so we only need to check the universal property.
+    %     Suppose there exist $i+j \to V_{\mathcal{L}} \to V_{Q} = i+j \to V_{\mathcal{C}} \to V_{Q}$ and we need to check that there exists a unique $u_{V}$ such that these morphisms factors out through $u_{V}$.
+    %     % Hence, pushout complement should yield pushout complements for the corresponding sets.
+    %     Construct an e-hypergraph $\mathcal{Q} = (V,E,s,t,<,\consistency)$ such that
+    %     \begin{itemize}
+    %         \item $V = V_{Q}$
+    %         \item $E = \sfrac{E_{\mathcal{L}} + E_{\mathcal{C}}}{\mathcal{R}}$ where $e_1 \mathcal{R} e_2$ if there exists $v \in V_{Q}$ such that $v = i_{V}(v_1)$ and $v = i_{V}(v_2)$ and $e_1 = <^{\mu}_{\mathcal{L}}(\iota_{V_{\mathcal{L}}}(v_1)), e_2 = <^{\mu}_{\mathcal{C}}(\iota_{V_{\mathcal{C}}}(v_2))$
+    %     \end{itemize}
+        In particular,
+    \[
+        \tikzfig{../figures/appendix/pushout_verticies}
+    \]
+    \[
+        \tikzfig{../figures/appendix/pushout_edges}
+    \]
+    where $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
+    Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
+    Then, since $m$ and $[c_1,c_2]$ are monos, the first square can be rewritten as follows.
+% https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3XFxcXFxcY29uZ1xcXFwgaSArIGogKyB6Il0sWzIsMSwiaF97VixleHR9IiwyXSxbMSwwLCJoX3tWLGludH0iLDJdLFswLDMsIm1fe1Z9IiwyXSxbNCwzLCJnX3tWfSJdLFsyLDQsImMiLDJdXQ==
+\[\begin{tikzcd}
+	{a + x + y} && {i + j + x} && {i+j} \\
+	\\
+	{a + x + y + z} &&&& {\begin{matrix} i + j + w \\ \cong \\ i + j + z \end{matrix}}
+	\arrow["{h_{V,ext}}"', from=1-5, to=1-3]
+	\arrow["{h_{V,int}}"', from=1-3, to=1-1]
+	\arrow["{m_{V}}"', from=1-1, to=3-1]
+	\arrow["{g_{V}}", from=3-5, to=3-1]
+	\arrow["c"', from=1-5, to=3-5]
+\end{tikzcd}\]
+    Because $a + x + y + w$ also yields a pushout it must be the case that $a+x+y+w \cong a + x + y + z$ and therefore $w \cong z$ and pushout complement for vertices is $i + j + z$ up to isomorphism.
+    One can further observe that $g_{V} = h_{V,ext};h_{V,int} + id_{n}$ and that $h_{V,ext}$ is mono and $h_{V,int} = [h_1,h_2]$ where $h_1,h_2$ are mono.
+    The above shows that edges and vertices in the pushout complement are uniquely determined.
+    To show that pushout complement is unique we next need to show that source and target maps are unique.
+    Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{\mathcal{L^{\bot}}}(e)) = s_{\mathcal{G}}(g_{E}(e))$ and $s_{\mathcal{L^{\bot}}}(e) \subseteq (g_{V}^{-1})^{*}(s_{\mathcal{G}}(g_{E}(e)))$.
+    Since $g_{V} = h_{V,ext};[h_1,h_2] + id_{n}$ the inverse image of $g_{V}$ contains at most two elements: one with the pre-image in $i$ and another with the pre-image in $j$.
+    If $g_{V}$ identified more than two vertices it would mean that $[h_1,h_2]$ identified more than two vertices which would mean that two of them come both either from $i$ or $j$ which would imply that either $h_1$ or $h_2$ is not mono.
+    If the inverse image contains exactly one vertex then the $s_{\mathcal{L^{\bot}}}(e)$ is uniquely fixed, otherwise suppose it contains $\{v_1,v_2\}$ such that $v_1 \in i$ and $v_2 \in j$.
+    However, $v_1$ can not be in $s_{\mathcal{L^{\bot}}}(e)$ as per the (6) and (7) conditions of the boundary complement~\ref{def:boundary_new} the image of $j$ in $\mathcal{L}^{\bot}$ should consist of vertices of in-degree 0.
+    
+    Similarly for $t_{\mathcal{L}^{\bot}}$.
+    % Suppose that there exist
+    % \[
+    %     \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s_{1},t)
+    % \qquad
+    % \text{and}
+    % \qquad
+    %     \mathcal{L}^{\bot}_{2} = (V_{\mathcal{L}^{\bot}},E_{\mathcal{L}^{\bot}},s_{2},t)
+    % \]
+    % Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{1}(e)) = s_{\mathcal{G}}^{*}(g_{E}(e)) = g_{V}^{*}(s_{2}(e))$.
+    % Because $g$ is mono, $g_{V}^{*}(s_{1}(e)) = g_{V}^{*}(s_{2}(e))$ implies $s_{1}(e) = s_{2}(e)$.
+    % Similarly for targets.
+    We also need to show that $<$ and $\consistency$ are unique.
+    Suppose that there exist
+    \[
+        \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s,t, <_{1})
+    \qquad
+    \text{and}
+    \qquad
+        \mathcal{L}^{\bot}_{2} = (V_{\mathcal{L}^{\bot}},E_{\mathcal{L}^{\bot}},s,t, <_{2})
+    \]
+    Because $g$ is homomorphism, it must be the case that 
+    \[
+        g_{E}(<_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) = <_{\mathcal{G}}(\iota_{V_{\mathcal{G}}}(g_{V}(v))) = g_{E}(<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)))
+    \]
+    which implies $<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) = <_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))$ for all $v$ such that $[v) \not = \varnothing$ since $g_{E}$ is mono.
+    Similarly for edges.
+    We now show that if $[v) = \varnothing$ for $v \in V_{\mathcal{L}^{\bot}}$ then necessarily $[g_{V}(v)) = \varnothing$.
+    Suppose $[v) = \varnothing$ and $<_{\mathcal{G}}(\iota_{V_{\mathcal{G}}}(g_{V}(v))) = e$ and there is a connected component that contains $v$ and such that for all $v'$ and $e'$ in this component $[v') = \varnothing = [e')$.
+    Consider $\mathcal{G'}$ which is obtained from $\mathcal{G}$ by making $[g_{V}(v')) = [g_{E}(e')) = \varnothing$ for $v', e'$ above.
+    Clearly there is a morphism from $\mathcal{L}^{\bot}$ to $\mathcal{G}'$, i.e. the morphism $g' = (g_{V},g_{E})$ that has the same action on edges and vertices as the morphism $g$ does, because $v'$ such that $[v') \not = \varnothing$ can be mapped to $g_{V}(v')$ such that $[g_{V}(v')) \not = \varnothing$.
+    The only case when such a morphism may not exist is when $[v'') \not = \varnothing$, $[v') = \varnothing$ and $g_{V}(v'') = g_{V}(v')$.
+    This implies that both $v''$ and $v'$ have a pre-image in $i + j$ and according to the definition of a boundary complement it must be $[[c_1,c_2](z_1)) = [[c_1,c_2](z_2))$ for all $z_1, z_2 \in V_{i + j}$.
+    For the same reason there is also a morphism from $\mathcal{L}$ to $\mathcal{G}'$.
+    The only case when such a morphism may not exist is when $v'' \in V_{\mathcal{L}}$ such that $[v'') \not = \varnothing$ is mapped to $m_{V}(v'') = g_{V}(v')$ such that $[v') = \varnothing$ which implies $v'$ and $v''$ share a pre-image in $i + j$.
+    This leads to a contradiction as the image of $i + j$ in $\mathcal{L}$ should consist of top-level vertices exclusively.
+    This construction results in a commutative diagram below
+    \[
+        \begin{tikzcd}
+            & \mathcal{L} \arrow[d, "m"'] \arrow[ldd, "m'"', bend right=49] & i'+j' \arrow[l] & i+j \arrow[d] \arrow[l]                                           \\
+            & \mathcal{G}                                                   &                 & \mathcal{L}^{\bot} \arrow[ll, "g"'] \arrow[llld, "g'", bend left] \\
+\mathcal{G}' &                                                               &                 &                                                                  
+\end{tikzcd}
+    \]
+    that further results in a contradiction since there is no morphism from $\mathcal{G}$ to $\mathcal{G'}$ because for any such morphism $u$ it must be the case that $[u_{V}(g_{V}(v'))) \not = \varnothing = [g'_{V}(v')) = \varnothing$ which would mean that $\mathcal{G}$ is not a pushout.
+    This means that either both $<_{1}(\iota_{*}(x))$ and $<_{2}(\iota_{*}(x))$ are undefined for a given $x$ or $<_{1}(\iota_{*}(x)) = <_{2}(\iota_{*}(x))$ which concludes that the relations are equal and $\mathcal{L}_{1}^{\bot} = \mathcal{L}_{2}^{\bot}$.
+
+    Finally, let's suppose there exist
+    \[
+        \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s,t, <, \consistency_{1})
+    \quad
+    \text{and}
+    \quad
+        \mathcal{L}^{\bot}_{2} = (V_{\mathcal{L}^{\bot}},V_{\mathcal{L}^{\bot}},s,t,<, \consistency_{2})
+    \]
+    Because $g$ is a homomorphism, we have
+    \[
+        [~g_{V};\iota_{V_{\mathcal{G}}}, g_{E};\iota_{E_{\mathcal{G}}}~]^{*}(\consistency_{\mathcal{L}^{\bot}_{1}}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) \subseteq \consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v))
+    \]
+    \[
+        [~g_{V};\iota_{V_{G}}, g_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{L}^{\bot}_{2}}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) \subseteq \consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v))
+    \]
+    \begin{itemize}
+        \item If $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) = \varnothing$ then both left-hand sides should be $\varnothing$ and therefore the relations are equal.
+        \item Suppose that $\consistency_{\mathcal{G}}(g_{V};\iota_{V_{\mathcal{G}}}(v)) \not = \varnothing$ which further means that $[g_{V};\iota_{V_{\mathcal{G}}}(v)) \not = \varnothing$.
+              $\consistency_{1} \not = \consistency_{2}$ implies there exist $v, v' \in \mathcal{L}^{\bot}$ such that $v \consistency_{1} v'$ and $v \not \consistency_{2} v'$ for $[v) = [v') \not = \varnothing$.
+              Then there are connected components $C_1, C_2$ in $\mathcal{L}_{2}^{\bot}$ such that for all $x \in C_1$ and $y \in C_2$ $x \not \consistency_{2} y$ and $v \in C_1$, $v' \in C_2$.
+              Consider $g_2 = (g_{V},g_{E}) : \mathcal{L}_2^{\bot} \to \mathcal{G}$ and construct $\mathcal{G'}$ that is obtained from $\mathcal{G}$ by making $g(x) \not \consistency g(y)$ for $x \in C_1$ and $y \in C_2$.
+              There is a morphism $g_2' = g_2 : \mathcal{L}_2^{\bot} \to \mathcal{G}'$. Like above, the only case when such morphism may not exist is when for $v' \not \consistency v$ $g_{V}(v) = g_{V}(v')$.
+              This implies $v, v'$ have a pre-image in $i + j$ and by definition it must be $v' \consistency v$.
+              Similarly, there is a morphism $m' : \mathcal{L} \to \mathcal{G}'$. The only case when it may not exist is when for $v_1, v_1' \in \mathcal{L}$ such that $v_1 \consistency v_1'$, $m_{V}(v_1) = g_{V}(v_2)$ and $m_{V}(v_1') = g_{V}(v_2')$ where $v_2 \in C_1$ and $v_2' \in C_2$.
+              It implies $v_1, v_1'$ have pre-image in $i + j$ and by definition of a boundary-complement the image of $i + j$ should consist of top-level vertices exclusively.
+              This results in the diagram below there is no morphism $u : G \to G'$, as the existence of such a morphism implies $u(g(x)) = u(g'(x))$, $u(g(y)) = u(g'(y))$ for $x \in C_1$ and $y \in C_2$ and $u(g(x)) \consistency u(g(y))$ and $u(g'(x)) \not \consistency u(g'(y))$.
+              This contradicts the fact that $\mathcal{G}$ is a pushout.
+              Hence, $\consistency_{1} = \consistency_{2}$ and $\mathcal{L}_{2}^{\bot} = \mathcal{L}_{1}^{\bot}$.
+    \end{itemize}
+    Ultimately, we have shown that $\mathcal{L}^{\bot}$ is unique up to isomorphism.
+\end{proof}
+
+Practically, the above proposition means that for any given match $m$ there is only one possible result of rewriting.
+
+
+% \begin{remark}
+%     Consider morphisms $i + j \xrightarrow{[f_{ext},g_{ext}];[f_{int},g_{int}]} \mathcal{L} \xrightarrow{m} \mathcal{G}$.
+%     If both of these morphisms are mono, then the boundary complement exists. 
+%     Intuitively, it exists for the same reason the corresponding boundary complement for plain hypergraphs exists: it is constructed by removing from $\mathcal{G}$ everything that has no pre-image in $i + j$.
+% \end{remark}
+
+% \begin{figure*}[t!]
+%     \begin{minipage}{0.1\textwidth}
+%         $\;$
+%     \end{minipage}
+%     \hfill
+% \begin{minipage}{0.7\textwidth}
+%     \[
+%         \scalebox{0.45}{
+%             \tikzfig{../figures/combinatorial_semantics/structural_rule_pushout}
+%         }
+%     \]
+%     \caption{The image of the top left equation from Figure~\ref{fig:string-equations} under $\llbracket - \rrbracket$}
+%     \label{fig:structural_rule_pushout}
+% \end{minipage}
+% \hfill
+% \begin{minipage}{0.1\textwidth}
+%         $\;$
+% \end{minipage}
+% \end{figure*}
+
+\section{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+
+In this section we will elaborate on soundness of our translation $\llbracket - \rrbracket : \textbf{PROP}^{+}(\Sigma) \to \WellTypedMdaEcospans / \mathcal{S}$.
+
+\begin{figure}
+    \[
+    \scalebox{0.75}{
+        \tikzfig{../figures/appendix/contexts}
+    }
+    \]
+    \caption{String diagrammatic contexts}
+    \label{fig:string_contexts}
+\end{figure}
+
+\begin{remark}
+    The construction in Figure~\ref{fig:A+B} naturally extends to $k$ operands.
+    Given a join of $k$ cospans of e-hypegraphs
+    \begin{align*}
+        n_1 \xrightarrow{} n_1' \xrightarrow{} &\mathcal{F}_1 \xleftarrow{} m_1' \xleftarrow{} m_1\\
+        &\;+\\
+        &\vdotswithin{+}\\
+        &\;+\\
+        n_k \xrightarrow{} n_k' \xrightarrow{} &\mathcal{F}_k \xleftarrow{} m_k' \xleftarrow{} m_k
+    \end{align*}
+    we will denote the carrier of the resulting cospan as
+    \[
+    \mathcal{F}_1 \; \hat{+}\; \ldots\; \hat{+}\; \mathcal{F}_{k}
+    \]
+    to distinguish it from the coproduct.
+\end{remark}
+
+\begin{proposition}[Proposition~\ref{prop:soundness} restatement]
+    \label{proof:appendix:soundness}
+The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
+\end{proposition}
+\begin{proof}
+    To prove this statement we essentially need to show that the functor $\llbracket - \rrbracket$ is well-defined, \textit{i.e.}, if $f = g$ in $\textbf{PROP}^{+}(\Sigma)$ then $\llbracket f\rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$ or $\llbracket f \rrbracket \Rrightarrow_{\mathcal{S}}^{*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans$.
+    $f = g$ implies that either
+    \begin{itemize}
+        \item $f = \mathcal{C}[l] = g$ for some morphism $l \in \textbf{PROP}^{+}(\Sigma)$.
+        \item $f = \mathcal{C}[l]$ and $g = \mathcal{C}[r]$ where $l = r$ or $r = l$ is from $\mathcal{S}$.
+        \item There is a sequence $w = (x_1, \ldots, x_n)$ such that $x_1 = f$ and $x_n = g$ and $x_i = x_{i+1}$ or $x_{i+1} = x_{i}$ in the sense above for $i < n$.
+    \end{itemize}
+    where $\mathcal{C}$ is a context defined as per the Figure~\ref{fig:string_contexts} and $\mathcal{C}[l]$ is defined by replacing the occurrence of
+    \scalebox{0.5}{
+    \begin{tikzpicture}[tikzfig]
+        \begin{pgfonlayer}{nodelayer}
+            \node [style=empty diag] (0) at (-0.5, 0.5) {};
+        \end{pgfonlayer}
+    \end{tikzpicture}
+    }
+    in $\mathcal{C}$ with a string diagram $l$.
+    Let's prove the statement by induction on $\mathcal{C}$ when $|w| = 2$.
+    \begin{itemize}
+        \item If $\mathcal{C}$ is empty, then either $f = g$ syntactically and $\llbracket f \rrbracket = \llbracket g \rrbracket$ or $f = l = r = g$ for some $l = r$ or $r = l$ in $\mathcal{S}$.
+              The latter trivially yields the E-DPO diagram below
+              \[
+                \begin{tikzcd}
+                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    \\
+                    {\mathcal{L}} && {i+j} && {\mathcal{R}} \\
+                    & {i'+j'} && {i''+j''} \\
+                    && {i+j}
+                    \arrow[from=1-1, to=3-1]
+                    \arrow[from=1-2, to=1-1]
+                    \arrow[from=1-3, to=1-2]
+                    \arrow[from=1-3, to=1-4]
+                    \arrow[from=1-3, to=3-3]
+                    \arrow[from=1-4, to=1-5]
+                    \arrow[from=1-5, to=3-5]
+                    \arrow["\lrcorner"{pos=0.05, rotate=90, description}, phantom, from=3-1, to=1-2]
+                    \arrow[from=3-3, to=3-1]
+                    \arrow[from=3-3, to=3-5]
+                    \arrow["\lrcorner"{pos=0.05, rotate=180, description}, phantom, from=3-5, to=1-4]
+                    \arrow[from=4-2, to=3-1]
+                    \arrow[from=4-4, to=3-5]
+                    \arrow[from=5-3, to=3-3]
+                    \arrow[from=5-3, to=4-2]
+                    \arrow[from=5-3, to=4-4]
+                \end{tikzcd}
+              \]
+              where $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j = \llbracket l \rrbracket = \llbracket f \rrbracket$ and $i \to i'' \to \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j = \llbracket r \rrbracket = \llbracket g \rrbracket$ and $i + j \to i + j \to \mathcal{L}$ is a boundary complement as per~\ref{def:boundary_new}.
+              Hence, $\llbracket f \rrbracket \Rrightarrow{}_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$.
+              \item Suppose 
+              \[
+                \scalebox{0.75}{\tikzfig{../figures/appendix/contexts_2}}
+              \]
+              and by inductive hypothesis $\llbracket \mathcal{C}[l] \rrbracket \Rrightarrow{} \llbracket \mathcal{C}[r] \rrbracket$ which results in the top half of the diagram below.
+              \[\begin{tikzcd}
+                {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                \\
+                {\llbracket \mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket \mathcal{C}[r]\rrbracket} \\
+                & {n_1'+m_1'} & {n_1+m_1} & {n_1''+m_1''} \\
+                {\llbracket f \rrbracket} && {\mathcal{L}_2^{\bot}} && {\llbracket g \rrbracket} \\
+                & {n_2' + m_2'} && {n_2''+m_2''} \\
+                && {n_2 + m_2}
+                \arrow[from=1-1, to=3-1]
+                \arrow[from=1-2, to=1-1]
+                \arrow[from=1-3, to=1-2]
+                \arrow[from=1-3, to=1-4]
+                \arrow[from=1-3, to=3-3]
+                \arrow[from=1-4, to=1-5]
+                \arrow[from=1-5, to=3-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=90, description}, draw=none, from=3-1, to=1-2]
+                \arrow[from=3-1, to=5-1]
+                \arrow[from=3-3, to=3-1]
+                \arrow[from=3-3, to=3-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=180, description}, draw=none, from=3-5, to=1-4]
+                \arrow[from=3-5, to=5-5]
+                \arrow[from=4-2, to=3-1]
+                \arrow[from=4-3, to=3-3]
+                \arrow[from=4-3, to=4-2]
+                \arrow[from=4-3, to=4-4]
+                \arrow[from=4-3, to=5-3]
+                \arrow[from=4-4, to=3-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=90, description}, draw=none, from=5-1, to=4-2]
+                \arrow[from=5-3, to=5-1]
+                \arrow[from=5-3, to=5-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=180, description}, draw=none, from=5-5, to=4-4]
+                \arrow[from=6-2, to=5-1]
+                \arrow[from=6-4, to=5-5]
+                \arrow[from=7-3, to=5-3]
+                \arrow[from=7-3, to=6-2]
+                \arrow[from=7-3, to=6-4]
+            \end{tikzcd}\]
+            Clearly the occurrence of $\llbracket \mathcal{C}[l] \rrbracket$ in $\llbracket f \rrbracket$ is convex and down-closed and by following the argument in Theorem 35~\cite{bonchi_string_2022-2}, there exists $n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2$ such that
+            \ifdefined \ONECOLUMN
+            \begin{align*}
+                \llbracket f \rrbracket &= \;
+                (0 \to 0 \to \llbracket C[l] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)
+                ;
+                (n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)\\
+                \llbracket g \rrbracket &= \;
+                (0 \to 0 \to \llbracket C[r] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)
+                ;
+                (n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)
+                \end{align*}
+            \else
+            \begin{align*}
+            \llbracket f \rrbracket = \;
+            &(0 \to 0 \to \llbracket C[l] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)\\
+            &;\\
+            &(n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)\\
+            \llbracket g \rrbracket = \;
+            &(0 \to 0 \to \llbracket C[r] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)\\
+            &;\\
+            &(n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)
+            \end{align*}
+            \fi
+            and
+            % $n'_2 + m'_2 = n_3 + m_3 + (n_1' + m_1' \setminus (n_1 + m_1))$
+            \[
+                n_2' = n_3 + (n_1' \setminus n_1) \qquad m_2' = m_3 + (m_1' \setminus m_1)
+            \]
+            and
+            \[
+            n_2 + m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1) + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1) + n_1 \xleftarrow{} m_2 + n_1    
+            \] is an MDA e-hypergraph.
+            By denoting the pushout of $\mathcal{L}_1^{\bot} \xleftarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot}$ with $\mathcal{L}_3^{\bot}$,
+            one can observe that $\llbracket f \rrbracket$ is the pushout object of $\mathcal{L} \xleftarrow{} i+j \xrightarrow{} \mathcal{L}$ as per the diagram below
+            \[\begin{tikzcd}
+                && {n_1+m_1} && {\mathcal{L}^{\bot}_2} \\
+                \\
+                {i+j} && {\mathcal{L}^{\bot}_1} && {\mathcal{L}^{\bot}_3} \\
+                \\
+                {\mathcal{L}} && {\mathcal{C}[l]} && {\llbracket f \rrbracket}
+                \arrow[from=1-3, to=1-5]
+                \arrow[from=1-3, to=3-3]
+                \arrow[from=1-5, to=3-5]
+                \arrow[from=3-1, to=3-3]
+                \arrow[from=3-1, to=5-1]
+                \arrow[from=3-3, to=3-5]
+                \arrow[from=3-3, to=5-3]
+                \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-3]
+                \arrow[from=3-5, to=5-5]
+                \arrow[from=5-1, to=5-3]
+                \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=5-3, to=3-1]
+                \arrow[from=5-3, to=5-5]
+                \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=5-5, to=3-3]
+            \end{tikzcd}
+            \]
+            The corestriction of $n_1 + m_1 \xrightarrow{[f_1,f_2]} \mathcal{L}_1^{\bot}$ to the image of $i + j \xrightarrow{[g_1,g_2]} \mathcal{L}_{1}^{\bot}$ is mono: suppose it is not mono, then there exist $z_1$, $z_2$, $z_3$ such that $f_1(z_1) = f_2(z_2) = g_1(z_3)$, then $[f_2,g_1]$ would not be mono, similarly if $f_1(z_1) = f_2(z_2) = g_2(z_3)$.\
+            By construction of the pushout the restriction of $\mathcal{L}_{1}^{\bot} \to \mathcal{L}_{3}^{\bot}$ is mono and hence the arrow $i + j \to \mathcal{L}_{3}^{\bot}$ is mono.
+            This implies that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L},\mathcal{R} \rangle} \llbracket g \rrbracket$.
+            \item Consider the case when
+            \[
+            \scalebox{0.75}{\tikzfig{../figures/appendix/contexts_3}}    
+            \]
+            By hypothesis, there exists a diagram
+                \[
+                \begin{tikzcd}
+                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    \\
+                    {\llbracket\mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket\mathcal{C}[r]\rrbracket} \\
+                    & {n'+m'} && {n''+m''} \\
+                    && {n+m}
+                    \arrow[from=1-1, to=3-1]
+                    \arrow[from=1-2, to=1-1]
+                    \arrow[from=1-3, to=1-2]
+                    \arrow[from=1-3, to=1-4]
+                    \arrow[from=1-3, to=3-3]
+                    \arrow[from=1-4, to=1-5]
+                    \arrow[from=1-5, to=3-5]
+                    \arrow[from=3-3, to=3-1]
+                    \arrow[from=3-3, to=3-5]
+                    \arrow[from=4-2, to=3-1]
+                    \arrow[from=4-4, to=3-5]
+                    \arrow[from=5-3, to=3-3]
+                    \arrow[from=5-3, to=4-2]
+                    \arrow[from=5-3, to=4-4]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=90}, draw=none, from=3-1, to=1-2]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-4]
+                \end{tikzcd}
+                \]
+                which implies the existence of the following diagram where both squares are pushouts by construction and the matching is convex and down-closed.
+                \ifdefined \ONECOLUMN
+                \[\adjustbox{width=0.95\linewidth}{
+                    \begin{tikzcd}
+                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    \\
+                    {\llbracket f_1 \rrbracket \; \hat{+}\; \ldots \hat{+} \; \llbracket\mathcal{C}[l]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \mathcal{L}_{1}^{\bot} \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket\mathcal{C}[r]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} \\
+                    & {n_1' + m_1'} && {n_1'' + m_1''} \\
+                    && {n + m}
+                    \arrow[from=1-1, to=3-1]
+                    \arrow[from=1-2, to=1-1]
+                    \arrow[from=1-3, to=1-2]
+                    \arrow[from=1-3, to=1-4]
+                    \arrow[from=1-3, to=3-3]
+                    \arrow[from=1-4, to=1-5]
+                    \arrow[from=1-5, to=3-5]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=90}, draw=none, from=3-1, to=1-2]
+                    \arrow[from=3-3, to=3-1]
+                    \arrow[from=3-3, to=3-5]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-4]
+                    \arrow[from=4-2, to=3-1]
+                    \arrow[from=4-4, to=3-5]
+                    \arrow[from=5-3, to=3-3]
+                    \arrow[from=5-3, to=4-2]
+                    \arrow[from=5-3, to=4-4]
+                \end{tikzcd}
+                }
+                \]
+                \else
+                \begin{figure*}[hbt!]
+                \[
+                    \begin{tikzcd}
+                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    \\
+                    {\llbracket f_1 \rrbracket \; \hat{+}\; \ldots \hat{+} \; \llbracket\mathcal{C}[l]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \mathcal{L}_{1}^{\bot} \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket\mathcal{C}[r]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} \\
+                    & {n_1' + m_1'} && {n_1'' + m_1''} \\
+                    && {n + m}
+                    \arrow[from=1-1, to=3-1]
+                    \arrow[from=1-2, to=1-1]
+                    \arrow[from=1-3, to=1-2]
+                    \arrow[from=1-3, to=1-4]
+                    \arrow[from=1-3, to=3-3]
+                    \arrow[from=1-4, to=1-5]
+                    \arrow[from=1-5, to=3-5]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=90}, draw=none, from=3-1, to=1-2]
+                    \arrow[from=3-3, to=3-1]
+                    \arrow[from=3-3, to=3-5]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-4]
+                    \arrow[from=4-2, to=3-1]
+                    \arrow[from=4-4, to=3-5]
+                    \arrow[from=5-3, to=3-3]
+                    \arrow[from=5-3, to=4-2]
+                    \arrow[from=5-3, to=4-4]
+                \end{tikzcd}
+                \]
+                \caption{$\llbracket f \rrbracket \Rrightarrow{}_{\langle \mathcal{L},\mathcal{R} \rangle} \llbracket g \rrbracket$}
+                \label{fig:f_rewrites_to_g_under_plus}
+            \end{figure*}
+            \fi
+                and hence we have $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$
+    \end{itemize}
+    The rest of the argument follows by induction on the length of $w$ and ultimately we have shown that if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans(\Sigma)/\mathcal{S}$.
+    % there is a sequence of SMC and enrichment equations such that when applied to $f$ it is turned into $g$.
+    % As SMC laws are subsumed by e-hypergraph representation we need to show that for each enrichment equation $l = r$ that turns $g$ into $h$ there is a pushout complement $\mathcal{C}$ such that $\llbracket g \rrbracket = \mathcal{C}[\llbracket l \rrbracket]$ and such that $\llbracket h \rrbracket = \mathcal{C}[\llbracket r \rrbracket]$, where $\mathcal{C}[-]$ is defined by computing the pushout along the common interfaces.
+    % We first note that any subterm of $g$ correspond to a convex down-closed subgraph of $\llbracket f \rrbracket$ and hence there is always a convex down-closed match of $\llbracket l \rrbracket$ within $\llbracket g \rrbracket$.
+    % The mapping of external interfaces into $\llbracket l \rrbracket$ is mono and therefore the corresponding pushout complement exists.
+    % We then need to show that for all $\llbracket l \rrbracket = \llbracket r \rrbracket$ in $\mathcal{S}$ the match satisfies the conditions in Proposition~\ref{prop:complement_existence} which will complete the first square of EDPOI and then check that the arrows in the second square satisfy the condition from Theorem~\ref{th:existence_of_pushouts}.
+
+    % Consider the rule $\llbracket l \rrbracket = \llbracket r \rrbracket$ in Figure~\ref{fig:structural_rule_pushout} which corresponds to the top-left equation in Figure~\ref{fig:string-equations}.
+    % And recall the diagram assuming $\mathcal{L} = \llbracket l \rrbracket$, $\mathcal{R} = \llbracket r \rrbracket$, $\mathcal{G} = \llbracket g \rrbracket$ and $\mathcal{H} = \llbracket h \rrbracket$.
+    % \begin{figure}[h!]
+    % \[
+    %     \scalebox{0.8}{
+    %     \tikzfig{../figures/combinatorial_semantics/DPOI_square}
+    %     }
+    % \]
+    % \end{figure}
+    % We then further note that if $l$ is a subterm of $g$ then the vertices in the image of input and output external interfaces of $\llbracket l \rrbracket$ in $\llbracket g \rrbracket$ all share the same set of parents and are pairwise consistent if the set of parents is non-empty.
+    % This satisfies conditions (1)-(2) in Proposition~\ref{prop:complement_existence}.
+    % The no-dangling condition is satisfied because we consider only mda-cospans.
+    % Therefore, there exists a unique pushout complement $\mathcal{C}$ which is $\llbracket g \rrbracket$ with $\llbracket l \rrbracket$ removed.
+    % Then necessarily vertices in $\mathcal{C}$ in the image of $i+j$ share the same set of parents and are pairwise consistent as they do so in $\mathcal{G}$.
+    % The same is true for the image of $i + j$ in $\mathcal{R}$ and therefore the necessary pushout exists which is $\mathcal{C}$ with $\mathcal{R} = \llbracket r \rrbracket$ glued in and it is equal to $\llbracket h \rrbracket$.
+    % Hence, $\llbracket g \rrbracket \Rrightarrow{} \llbracket h \rrbracket$.
+    % The rest follows by induction on the number of applied equations.
+    % Similar argument then applies to other rules in $\mathcal{S}$ as well.
+\end{proof}   
+
+% \begin{proposition}[Proposition~\ref{prop:wnormal_form} restatement]
+%     For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
+%     \[
+%         f = f_1 + \ldots + f_n
+%     \]
+%      such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+% \end{proposition}
+% \begin{proof}
+%     We will define the depth of an edge $e$ as the number of parents it has, \textit{i.e.}, by $|[e)|$.
+%     Then we will build the required weak normal form in steps and first will build a form $f = f_1 + \ldots + f_n$ such that every of $f_i$ is also of the form $g_1 + \ldots + g_k$ and so on and we will assume that $f$ has at least one hierarchical edge (otherwise is is already a weak normal form).
+%     In order to achieve the latter we will apply rewrite rules that correspond to equations (1)-(4) from Figure~\ref{fig:string-equations}.
+%     At step 1 we search for matches among the edges with depth 0 and then note that each such rewrite reduces the number of such edges until there is only one edge of depth 0, and it is necessarily a hierarchical one: because we have a finite number of edges of each depth, this process terminates.
+%     At step $k$ we similarly search for matches among the edges with depth $k-1$ noting that this process terminates when we end up with $l$ groups of edges of depth $k-1$ such that edges within a group are pair-wise not consistent.
+%     Because we do not increase the maximum depth in $f$ we will eventually reach a maximum value of $k$ and stop because there will be no hierarchical edges of depth $max(k)$ (otherwise their children would have depth $max(k) + 1$).
+    
+%     Then we will apply rules (5), from right to left, (6) and (8), from right to left.
+%     Note that each of these rules decreases the number of hierarchical edges, so we apply them until there is only one hierarchical edge of depth 0, \textit{i.e.}, the top-level one.
+%     This brings us to a weak normal form $f = f_1 + \ldots + f_n$ where each of $f_i$ does not contain any hierarchical edges and for $i \not = j$, $f_i \not = f_j$, the latter is guaranteed by rule (8).
+% \end{proof}
+
+\section{Additional figures for Section~\ref{sec:introduction}:Introduction}
+
+This section contains the figures with more elaborate transformation of e-string diagrams from the Figure~\ref{fig:e-graph-example}.
+
+\ifdefined\ONECOLUMN
+\begin{figure}[htb!]
+    \vspace{-3cm}
+    \centering
+    \[
+        \hspace{1.3cm}
+        \resizebox{0.8\textwidth}{!}{
+        \tikzfig{../figures/categorical-semantics/egraph-translation-step-by-step-b-c}
+        }
+    \]
+    \caption{Example translation from $(b)$ to $(c)$.}
+    \label{fig:e-graph-example-b-c}
+\end{figure}
+\else
+\begin{figure*}[htb!]
+    \vspace{-3cm}
+    \centering
+    \[
+        \hspace{1.3cm}
+        \resizebox{0.8\textwidth}{!}{
+        \tikzfig{../figures/categorical-semantics/egraph-translation-step-by-step-b-c}
+        }
+    \]
+    \caption{Example translation from $(b)$ to $(c)$.}
+    \label{fig:e-graph-example-b-c}
+\end{figure*}
+\fi
+
+\ifdefined\ONECOLUMN
+\begin{figure}[htb!]
+    \[
+        % \hspace{1.3cm}
+        \scalebox{0.4}{
+        \tikzfig{../figures/categorical-semantics/egraph-translation-step-by-step-a-b}
+        }
+    \]
+    \caption{Example translation from $(a)$ to $(b)$.}
+    \label{fig:e-graph-example-a-b}
+\end{figure}
+\else
+\begin{figure*}[htb!]
+    \[
+        % \hspace{1.3cm}
+        \scalebox{0.5}{
+        \tikzfig{../figures/categorical-semantics/egraph-translation-step-by-step-a-b}
+        }
+    \]
+    \caption{Example translation from $(a)$ to $(b)$.}
+    \label{fig:e-graph-example-a-b}
+\end{figure*}
+\fi
+
+\section{Additional figures for Section~\ref{sec:e-hypergraphs}: E-hypergraphs}
+\begin{example}
+    Consider cospans from Figure~\ref{fig:appendix:non-isomorphic-cospans}(a) where the $f_{int}, f_{ext}$ (respectively, $g_{int},g_{ext}$) maps are shown with red arrows.
+    The left cospan represents a symmetry placed inside a hierarchical edge while the right one depicts a tensor product of two identities put inside the hierarchical edge.
+    The colours of the vertices show the induced partition of the interfaces.
+    We will try to build an isomorphism step-by-step.
+    To make the diagram commute, clearly, it must be the case that $u_0 \mapsto u_0$ and $u_1 \mapsto u_1$.
+    Then, because the isomorphism should preserve the order within the subset of green verices, it must be the case that $u_2 \mapsto u_2$ and $u_3 \mapsto u_3$.
+    Similarly for the output interfaces.
+    To further make the diagram commute, we need to map $v_2 \mapsto v_3$ and $v_3 \mapsto v_2$.
+    This, however, contradicts the requirement that $g_{int};\gamma(w_2) = g_{int}(w_2)$.
+    Hence, the two cospans are not isomorphic.
+\end{example}
+
+\begin{example}
+    Now consider the cospans from Figure~\ref{fig:appendix:non-isomorphic-cospans}(b).
+    Notice how the position of external input interface relative to strict internal interface is different in the second cospan.
+    The isomorphism would map $u_0 \mapsto u_2, u_1 \mapsto u_1, u_2 \mapsto u_0, u_3 \mapsto u_3$.
+    The other mappings are identities. 
+    One can check that the corresponding diagram commutes.
+\end{example}
+
+\begin{figure*}
+    \begin{subfigure}[T]{0.48\textwidth}
+    \begin{subfigure}[T]{0.45\textwidth}
+        \[
+    \scalebox{0.6}{
+        \tikzfig{../figures/appendix/sym_cospan}
+    }    
+    \]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[T]{0.45\textwidth}
+        \[
+            \scalebox{0.6}{
+                \tikzfig{../figures/appendix/id_x_id_cospan}
+            }    
+            \]
+    \end{subfigure}
+    \subcaption{\;}
+\end{subfigure}
+    \hfill
+\begin{subfigure}[T]{0.48\textwidth}
+    \begin{subfigure}[T]{0.45\textwidth}
+        \[
+            \scalebox{0.6}{
+                \tikzfig{../figures/appendix/id_x_id_cospan}
+            }    
+            \]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[T]{0.45\textwidth}
+        \[
+            \scalebox{0.6}{
+                \tikzfig{../figures/appendix/id_x_id_cospan_2}
+            }    
+            \]
+    \end{subfigure}
+    \subcaption{\;}
+\end{subfigure}
+    \caption{Non-isomorphic cospans (a) and isomorphic cospans (b)}
+    \label{fig:appendix:non-isomorphic-cospans}
+\end{figure*}

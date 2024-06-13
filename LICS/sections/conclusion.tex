@@ -1,0 +1,45 @@
+\section{Conclusion}
+
+We have seen how e-graphs over algebraic theories can be expressed in terms of Cartesian categories enriched over the category of semilattices. 
+In fact, e-graphs are an instance of a more general construction that can account for monoidal theories in terms of SMCs,  similarly enriched.  
+Having described a translation of e-graphs into this categorical framework, a combinatorial representation of morphisms in the free category is also provided. 
+As expected, this representation factors out the structural SMC equations, while remaining sensitive to the complexity-relevant equations induced by the enrichment.  The design of such a representation and its corresponding rewrite theory proved to be delicate, and, together with its proof of completeness, constitute the main technical contributions of the paper.  
+
+In the future,  we intend to investigate a number of natural extensions to mathematical treatment of (acyclic) e-graphs developed here.
+Some of the extensions that can be considered are: support for `functorial boxes'~\cite{mellies_functorial_2006} (in addition to e-boxes), which have a variety of applications, including the Cartesian-closure required for the implementation of functional programming languages~\cite{ghica_hierarchical_2023}, as sketched in Fig. \ref{fig:app1}(a); the `spiders' used by the ZX-calculus to model quantum circuits~\cite{coecke_interacting_2011,ZX}, as sketched in Fig. \ref{fig:app1}(b); or trace~\cite{joyal_geometry_1991, Hasegawa-traced} which can be used to express feedback in categorical models of digital circuits~\cite{ghica_jung_2017,ghica_compositional_2023} and, indeed in conventional e-graphs to encode infinite equivalence classes, as sketched in Fig.~\ref{fig:app2}. All these application domains stand to benefit from the use of optimisation techniques, which in turn can take advantage of the appropriate e-graph technique.
+
+\begin{figure}
+\begin{subfigure}{0.45\linewidth}
+\[
+	\scalebox{0.75}{
+	\tikzfig{../figures/conclusion/example-e-graphs_1}
+	}
+\]
+\subcaption{\;} 
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\linewidth}
+\[
+	\scalebox{0.75}{
+	\tikzfig{../figures/conclusion/example-e-graphs_2}
+	}
+\]
+\subcaption{\;}
+\end{subfigure}
+\caption{E-(hyper)graphs for functorial boxes and the ZX-calculus}
+\label{fig:app1}
+\end{figure}
+
+\begin{figure}
+	\[
+	\scalebox{0.65}{
+	\tikzfig{../figures/conclusion/example-traced}
+	}
+\]
+	\caption{E-graphs with cycles and e-hypergraphs with trace}
+	\label{fig:app2}
+\end{figure}
+
+In each case above,  we aim to combine our combinatorial representation with existing combinatorial representations of the relevant structure.  Indeed,  the hypergraph representation and DPO-rewriting theory of each case is already well-studied independently of any e-graph structure \cite{ghica_rewriting_2023,alvarez-picallo-functorial_2021}. % traced comonoid
+%The hierarchical ``e-box'' structure within string diagrams and their associated e-hypergraphs (categorically modelled by semilattice enrichment) is essentially orthogonal to these developments. Combining the two, to give notions of e-hypergraphs specifically suited to these particular monoidal theories should be conceptually straightforward.  However, as we have seen in this paper, the technical details can be delicate. 
+Finally,  a term calculus (e-terms) can be reverse engineered from the string-diagram notation~\cite{ghica_structural_nominal, Heijltjes:FMCII}. Although term calculi are less important in the algorithmics of optimisation, they still play a role in specification and in aiding readability.  

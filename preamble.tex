@@ -4,16 +4,50 @@
 \usepackage{hyperref}
 \usepackage{proof}
 
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+
+%\usepackage{minted}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac} 
+
+\usepackage{import}
+
+% category names
+%\newcommand{\MdaCospans}{{\catname{MACsp_{D}(Hyp_{\Sigma})}}}
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+% There is already a remark in the preamble, but it does
+% not work for some reason
+\newtheorem{remark}{Remark}
+
+
 \usepackage{xifthen}
 \ifthenelse{\isundefined{\ismain}}{
   \newcommand{\ismain}{0}
 }{}
 
 \usepackage{enumitem}
-
-
-\usepackage[draft]{tikzit}
-
  
 \newcommand{\ignora}[1]{ }
 

@@ -1,0 +1,46 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-3, -0.5) {$f$};
+		\node [style=none] (1) at (-2, -0.5) {$=$};
+		\node [style=none] (2) at (1, 3) {};
+		\node [style=none] (3) at (0, 1) {};
+		\node [style=none] (4) at (2, 1) {};
+		\node [style=none] (5) at (0, 0) {};
+		\node [style=none] (6) at (2, -2) {};
+		\node [style=none] (7) at (1, 2) {};
+		\node [style=large horizontal box] (8) at (1, 1.5) {$f_1$};
+		\node [style=large horizontal box] (9) at (1, -2.5) {$f_2$};
+		\node [style=small box] (10) at (0, -0.5) {$\mathcal{C}[l]$};
+		\node [style=none] (11) at (0, -1) {};
+		\node [style=none] (12) at (0, -2) {};
+		\node [style=none] (13) at (1, -3) {};
+		\node [style=none] (14) at (1, -4) {};
+		\node [style=none] (45) at (9.5, 3) {};
+		\node [style=none] (46) at (8.5, 1) {};
+		\node [style=none] (47) at (10.5, 1) {};
+		\node [style=none] (48) at (8.5, 0) {};
+		\node [style=none] (49) at (10.5, -2) {};
+		\node [style=none] (50) at (9.5, 2) {};
+		\node [style=large horizontal box] (51) at (9.5, 1.5) {$f_1$};
+		\node [style=large horizontal box] (52) at (9.5, -2.5) {$f_2$};
+		\node [style=small box] (53) at (8.5, -0.5) {$\mathcal{C}[r]$};
+		\node [style=none] (54) at (8.5, -1) {};
+		\node [style=none] (55) at (8.5, -2) {};
+		\node [style=none] (56) at (9.5, -3) {};
+		\node [style=none] (57) at (9.5, -4) {};
+		\node [style=none] (58) at (5.75, -0.5) {$g$};
+		\node [style=none] (59) at (6.75, -0.5) {$=$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (5.center) to (3.center);
+		\draw (6.center) to (4.center);
+		\draw (2.center) to (7.center);
+		\draw (11.center) to (12.center);
+		\draw (13.center) to (14.center);
+		\draw (48.center) to (46.center);
+		\draw (49.center) to (47.center);
+		\draw (45.center) to (50.center);
+		\draw (54.center) to (55.center);
+		\draw (56.center) to (57.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
