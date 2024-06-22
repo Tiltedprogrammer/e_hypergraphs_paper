@@ -1,2 +1,3 @@
-- Main pdf can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/paper.pdf)
-- LICS-24 pdf can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/LICS24-submission.pdf)
+- The paper can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/arxiv.pdf)
+- EGRAPHS2024 extended abstract can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/ExtendedAbstract.pdf)
+- Slides can be found [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/slides.pdf)
