@@ -87,7 +87,7 @@ Given $f : n \to m$, $g : k \to l$, $f \otimes g : n + k \to m + l$
 
 \begin{example}
     \[
-    (\mu\;;\sigma_{1,1}\;;i \otimes id_{1}) \otimes (\mu\;;(id_{1}\otimes id_{1}))
+    (\mu\;;(\sigma_{1,1}\;;i \otimes id_{1})) \otimes (\mu\;;(id_{1}\otimes id_{1}))
     \]
 \end{example}
 
@@ -467,10 +467,43 @@ Given a rewrite rule (in a string diagrammatic form) and a source string diagram
 \end{frame}
 
 \begin{frame}{}
+    \small
     \vfill
     Lambda calculus is a model for a Cartesian Closed SMT and the benefits of using string diagrams for lambda calculus is that they are automatically quotiented by $\alpha$-equivalence (variables just become wires) and by linear substitution
     \vfill
+    Compare the following
+
+    \begin{minipage}{0.3\linewidth}
+        \[
+        \scalebox{0.5}{
+        \tikzfig{figures/e-graphs-binding-example-plain}
+        }
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \[
+        \scalebox{0.5}{
+        \tikzfig{figures/e-graphs-binding-example-indices}
+        }
+        \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \[
+        \scalebox{0.5}{
+        \tikzfig{figures/e-graphs-binding-string}
+        }
+        \]
+    \end{minipage}
+    \vfill
+    
+\end{frame}
+
+\begin{frame}
+    \vfill
     Thus we can represent e-graphs for lambda calculus with string diagrams for an enriched Cartesian Closed SMT
+    \vfill
 \end{frame}
 
 \begin{frame}
