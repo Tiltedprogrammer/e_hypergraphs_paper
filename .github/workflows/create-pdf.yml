@@ -136,9 +136,7 @@ jobs:
         uses: dante-ev/latex-action@latest
         with:
           root_file: ${{env.SLIDES_NAME}}.tex
-          latexmk_shell_escape: true
-          latexmk_use_xelatex: true
-          args: -interaction=nonstopmode -shell-escape
+          args: -xelatex -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -shell-escape
           working_directory: ${{env.SLIDES_PATH}}
 # Upload both pdfs
       - name: Upload the PDF to the release
