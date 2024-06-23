@@ -1,19 +1,29 @@
 %!LW recipe=xelatex
-
 \documentclass[aspectratio=169]{beamer}
 
 \usepackage{tikz}
+
 \usepackage{tikz-network}
 \usepackage{tikz-cd}
 \usepackage{tikzit}
 \usepackage{subcaption}
 \usepackage{minted}
+\usepackage{mathtools}
+
+% \hypersetup{
+%     colorlinks=true,
+%     linkcolor=gray,
+%     filecolor=magenta,      
+%     urlcolor=cyan,
+%     pdftitle={Overleaf Example},
+%     pdfpagemode=FullScreen,
+%     }
 
 \input{../sample.tikzstyles}
 \input{../hypergraph.tikzstyles}
 \input{../hypergraph.tikzdefs}
 
-\usetheme{metropolis}
+\usetheme[subsectionpage=simple]{metropolis}
 % \usetheme{awesome}
 
 % \setsansfont{Ubuntu}
@@ -38,9 +48,11 @@
   }
 }
 
-% \setbeamertemplate{footline}{\insertshortauthor~(\insertshortinstitute)}
-% \usepackage{custom_footer}
+\makeatletter
+\metropolis@disablesubsectionpage
+\makeatother
 
+\newcommand{\bsubsection}[1]{\subsection{$\bullet$ #1}}
 
 \title{Equivalence Hypergraphs: E-Graphs for Monoidal Theories} 
 \date{June 24, 2024} % Use metropolis theme 
@@ -51,15 +63,18 @@
 \maketitle 
 
 \begin{frame}{Table of contents}
+    \small
     \setbeamertemplate{section in toc}[sections numbered]
-    \tableofcontents[hideallsubsections]
+    \tableofcontents
 \end{frame}
 
-\section{What and Why?} 
+\section{What and Why?}
+\bsubsection{Algebraic theories}
 
 \begin{frame}
     Traditionally, e-graphs are used for \alert{theories} over \alert{algebraic} signatures with a single sort of composition $()$
-
+    \pause
+    \vfill
     \begin{example}[Commutative monoid]
     
     \begin{align*}
@@ -70,8 +85,10 @@
     \end{align*}
     \end{example}
 
-    However, there are more general theories that describe the interaction of processes, \textit{e.g.}, quantum
+    % However, there are more general theories that describe the interaction of processes, \textit{e.g.}, quantum
 \end{frame}
+
+\bsubsection{Monoidal theories}
 
 \begin{frame}{}
     
@@ -85,6 +102,7 @@ Given $f : n \to m, g : m \to k$, $f\;;g : n \to k$
 
 Given $f : n \to m$, $g : k \to l$, $f \otimes g : n + k \to m + l$
 
+\pause
 \begin{example}
     \[
     (\mu\;;(\sigma_{1,1}\;;i \otimes id_{1})) \otimes (\mu\;;(id_{1}\otimes id_{1}))
@@ -101,7 +119,7 @@ Given $f : n \to m$, $g : k \to l$, $f \otimes g : n + k \to m + l$
 \Sigma = \{id_n : n \to n,\sigma_{n,m} : n + m \to m + n,\mu : 1 \to 2, i : 1 \to 0\}
 \]
  
-Such signatures also come with \alert{built-in} equations
+Such signatures also come with \alert{built-in} equations (the laws of a symmetric monoidal category)
 
 
 \begin{minipage}[c][][c]{0.45\textwidth}
@@ -123,16 +141,18 @@ id_{0} \otimes s \equiv s \otimes id_{0}\\
 \end{align*}    
 \end{minipage}
 
-\vspace{-1.5em}
+\end{frame}
 
-A \textit{symmetric monoidal theory (SMT)} over $\Sigma$ is a set of terms constructed out of the symbols from $\Sigma$ using $;$ and $\otimes$ \textit{quotiented} by the equations above and by some other equations $\mathcal{E}$
+\begin{frame}
+    
+    A \textit{symmetric monoidal theory (SMT)} over $\Sigma$ is a set of terms constructed out of the symbols from $\Sigma$ using $;$ and $\otimes$ \textit{quotiented} by the equations above and by some other equations $\mathcal{E}$
 
-\begin{example}[Commutative comonoid]
-    % \vspace{-1.5em}
-    \[
-        \mathcal{E} = \{ \mu \;; (\mu \otimes id_{1}) \equiv \mu \;; (id_{1} \otimes \mu), \mu \;; (i \otimes id_{1}) \equiv id_{1} \equiv \mu\;;(id_{1} \otimes i\;), \mu;\sigma_{1,1} \equiv \mu \}  
-    \]
-\end{example}
+    \begin{example}[Commutative comonoid]
+        % \vspace{-1.5em}
+        \[
+            \mathcal{E} = \{ \mu \;; (\mu \otimes id_{1}) \equiv \mu \;; (id_{1} \otimes \mu), \mu \;; (i \otimes id_{1}) \equiv id_{1} \equiv \mu\;;(id_{1} \otimes i\;), \mu;\sigma_{1,1} \equiv \mu \}  
+        \]
+    \end{example}
 
 \end{frame}
 
@@ -142,10 +162,11 @@ A \textit{symmetric monoidal theory (SMT)} over $\Sigma$ is a set of terms const
 
     \vfill
 
-    The equations above are the laws of a (strict) symmetric monoidal category
+    One gets a semantics of an SMT by building a functor for the corresponding \textbf{PROP}, \textit{e.g.} a functor into a category of vector spaces \textbf{$\text{Vect}_{k}$}
+
     \vfill
 
-    One gets a semantics of an SMT by building a functor for the corresponding \textbf{PROP}, \textit{e.g.} a functor into a category of vector spaces \textbf{$\text{Vect}_{k}$}
+    If the functor has nice properties, we can reason about the target category (e.g. \textbf{$\text{Vect}_{k}$}) syntactically
 \end{frame}
 
 \begin{frame}
@@ -159,6 +180,8 @@ A \textit{symmetric monoidal theory (SMT)} over $\Sigma$ is a set of terms const
     \end{itemize}
 \end{frame}
 
+\bsubsection{Why e-graphs struggle with monoidal theories}
+
 \begin{frame}[containsverbatim]{}
 
 It is possible to encode such theories using e-graphs, for example as
@@ -168,7 +191,7 @@ It is possible to encode such theories using e-graphs, for example as
         "mu" = Mu,
         "i" = I,
         ";" = Compose([Id;2]),
-        "tensor" = Tensor([Id;2]),
+        "parallel" = Parallel([Id;2]),
         "id" = Identity,
         "I" = Unit,
         "sym" = Sym    
@@ -180,25 +203,45 @@ It is possible to encode such theories using e-graphs, for example as
 \end{frame}
 
 \begin{frame}
-    However, the buit-in equations (the laws of monoidal category) lead to an explosion of the number of e-classes
+    However, the laws of monoidal category lead to an explosion of the number of e-classes
+\end{frame}
 
+\begin{frame}
     \begin{example}
         \vspace{1em}
         E-graph for
         \[
-            (\mu\;;\sigma_{1,1}\;;i \otimes id_{1}) \otimes (\mu\;;(id_{1}\otimes id_{1}))
+            (\mu\;;(\sigma_{1,1}\;;i \otimes id_{1})) \otimes (\mu\;;(id_{1}\otimes id_{1}))
         \]
-            
+
+        Before saturation
+        \vspace{-2em}
+        \begin{figure}
+            \includegraphics[scale=0.4]{figures/egraph_before_saturation.pdf}
+        \end{figure}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+        \vspace{1em}
+        E-graph for
+        \[
+            (\mu\;;(\sigma_{1,1}\;;i \otimes id_{1})) \otimes (\mu\;;(id_{1}\otimes id_{1}))
+        \]
+        After saturation
         \begin{figure}
             \includegraphics[width=\linewidth]{figures/dot_5.pdf}
         \end{figure}
         
         \end{example}
-        
-        \pause
-        
-        Can we somehow get rid of these equations?
 \end{frame}
+
+\begin{frame}[standout]
+    Can we somehow get rid of these equations?
+\end{frame}
+
+\bsubsection{String diagrams and hypergraphs}
 
 \begin{frame}{}
     
@@ -273,9 +316,93 @@ Further structure is encoded as rewrites and/or by enforcing additional constrai
 \end{frame}
 
 \begin{frame}
-So \alert{yes}, we can get rid of these equations if we use \alert{hypergraphs}
+    \begin{example}
+        \begin{minipage}{0.45\linewidth}
+        Assuming $\mu \coloneqq $\raisebox{-1.5em}{\scalebox{0.6}{\begin{tikzpicture}
+            \begin{pgfonlayer}{nodelayer}
+                \node [style=round box] (0) at (0.5, 0.5) {$\mu$};
+                \node [style=none] (1) at (0.5, 1.5) {};
+                \node [style=none] (2) at (0, -0.5) {};
+                \node [style=none] (3) at (1, -0.5) {};
+                \node [style=none] (4) at (0.25, 0.25) {};
+                \node [style=none] (5) at (0.75, 0.25) {};
+            \end{pgfonlayer}
+            \begin{pgfonlayer}{edgelayer}
+                \draw (0) to (1.center);
+                \draw [bend right=15] (4.center) to (2.center);
+                \draw [bend left=15] (5.center) to (3.center);
+            \end{pgfonlayer}
+        \end{tikzpicture}}}
+        and $i \coloneqq \;\;$\raisebox{-0.2em}{\scalebox{0.6}{\begin{tikzpicture}
+            \begin{pgfonlayer}{nodelayer}
+                \node [style=none] (0) at (3.5, 1) {};
+                \node [style=vertex] (1) at (3.5, 0.5) {};
+            \end{pgfonlayer}
+            \begin{pgfonlayer}{edgelayer}
+                \draw (0.center) to (1);
+            \end{pgfonlayer}
+        \end{tikzpicture}        
+        }} a string diagrammatic version of
+        \[ 
+            (\mu\;;(\sigma_{1,1}\;;i \otimes id_{1})) \otimes (\mu\;;(id_{1}\otimes id_{1}))
+        \] looks like
+    \end{minipage}
+        \hfill
+    \begin{minipage}{0.45\linewidth}
+        \begin{tikzpicture}
+                \begin{pgfonlayer}{nodelayer}
+                    \node [style=round box] (0) at (0.5, 0.5) {$\mu$};
+                    \node [style=none] (1) at (0.5, 1.5) {};
+                    \node [style=none] (2) at (0, -0.25) {};
+                    \node [style=none] (3) at (1, -0.25) {};
+                    \node [style=none] (4) at (0.25, 0.25) {};
+                    \node [style=none] (5) at (0.75, 0.25) {};
+                    \node [style=vertex] (6) at (1, -2.25) {};
+                    \node [style=none] (7) at (1, -1.75) {};
+                    \node [style=round box] (8) at (3.5, 0.5) {$\mu$};
+                    \node [style=none] (9) at (3.5, 1.5) {};
+                    \node [style=none] (10) at (3, -0.25) {};
+                    \node [style=none] (11) at (4, -0.25) {};
+                    \node [style=none] (12) at (3.25, 0.25) {};
+                    \node [style=none] (13) at (3.75, 0.25) {};
+                    \node [style=none] (16) at (0.5, -1) {};
+                    \node [style=none] (17) at (0, -1.75) {};
+                    \node [style=none] (18) at (1, -1.75) {};
+                    \node [style=none] (19) at (0, -2.25) {};
+                    \node [style=none] (20) at (3, -2.25) {};
+                    \node [style=none] (21) at (4, -2.25) {};
+                \end{pgfonlayer}
+                \begin{pgfonlayer}{edgelayer}
+                    \draw (0) to (1.center);
+                    \draw [bend right=15] (4.center) to (2.center);
+                    \draw [bend left=15] (5.center) to (3.center);
+                    \draw (6) to (7.center);
+                    \draw (8) to (9.center);
+                    \draw [bend right=15] (12.center) to (10.center);
+                    \draw [bend left=15] (13.center) to (11.center);
+                    \draw [in=30, out=-90] (3.center) to (16.center);
+                    \draw [in=90, out=-135] (16.center) to (17.center);
+                    \draw [in=315, out=90] (18.center) to (16.center);
+                    \draw [in=-90, out=150] (16.center) to (2.center);
+                    \draw (17.center) to (19.center);
+                    \draw (10.center) to (20.center);
+                    \draw (11.center) to (21.center);
+                \end{pgfonlayer}
+            \end{tikzpicture}
+    \end{minipage}
+    \vfill
+    Which is already saturated with respect to the built-in equations
+    \end{example} 
+\end{frame}
+
+\begin{frame}[standout]
+So \alert{yes}, we can get rid of these equations if we use \alert{hypergraphs} (derived from string diagrams)
+\end{frame}
+
+\begin{frame}
 \vfill
-The work next formalises e-graphs for SMTs that would use string diagrams (hypergraphs) as a representation for terms
+The work next formalises e-graphs for SMTs that would use string diagrams (hypergraphs) as a representation for terms in a bottom-up manner deriving this formalisation from an SMT itself
+\vfill
 \end{frame}
 
 % \begin{frame}{}
@@ -389,15 +516,24 @@ Given a rewrite rule (in a string diagrammatic form) and a source string diagram
 \begin{frame}{}
     \vfill
     Now equivalence classes represent equivalent subgraphs rather than subtrees
+    \pause
     \vfill
-    Such combinatorial structures are shown to be \textit{sound} and \textit{complete} in terms of representing terms of enriched SMTs
+    \pause
+    Such combinatorial structures are shown to be \textit{sound} and \textit{complete} for representing terms of enriched SMTs
     \vfill
+    \pause
     String diagrammatic reasoning becomes e-hypergraph rewriting
     \vfill
-    The latter is defined as a \textit{double-pushout rewriting} which is a convenient framework to study properties of a rewriting system, e.g. confluence applicability of parallel rewrites etc.
+    \pause
+    The latter is defined as a \textit{double-pushout rewriting} which is a convenient framework to study properties of a rewriting system, e.g. confluence, applicability of parallel rewrites etc.
+    \vfill
+    \pause
+    Note that they absorb the laws of symmetric monoidal category but not the structural rules for $+$
 \end{frame}
 
 \section{Case Studies}
+
+\bsubsection{(acyclic) E-graphs are e-hypergraphs for Cartesian monoidal theories}
 
 \begin{frame}{}
     If we consider an SMT with a copy and delete generators we get essentially an algebraic theory, the one for which e-graphs are designed
@@ -429,8 +565,6 @@ Given a rewrite rule (in a string diagrammatic form) and a source string diagram
 
 
     We can show that our construction is indeed a generalisation of e-graphs
-
-    The latter gives a categorical presentation of e-graphs and provides a framework for reasoning about them in terms of e-hypergraph rewriting
 \end{frame}
 
 \begin{frame}{}
@@ -456,7 +590,7 @@ Given a rewrite rule (in a string diagrammatic form) and a source string diagram
     \scalebox{0.5}{
     \tikzfig{figures/e-graphs-translation-3}
     }
-    \]
+    \]\footnote{[1]Willsey, M., Nandi, C., Remy Wang, Y., Flatt, O., Tatlock, Z., and Panchekha, P., “egg: Fast and Extensible Equality Saturation”, 2020.}
     Can be rendered as
     \[
         % \hspace{1.3cm}
@@ -465,6 +599,14 @@ Given a rewrite rule (in a string diagrammatic form) and a source string diagram
         }
     \]
 \end{frame}
+
+\begin{frame}
+    \vfill
+    This serves as a sanity check for our construction, provides a categorical presentation of e-graphs and therefore a possible framework for reasoning about them in terms of e-hypergraph rewriting
+    \vfill
+\end{frame}
+
+\bsubsection{Support for binding}
 
 \begin{frame}{}
     \small
@@ -513,9 +655,10 @@ Given a rewrite rule (in a string diagrammatic form) and a source string diagram
         \tikzfig{../figures/categorical-semantics/e-graph-substitution}
         }
     \]
+    \tiny{[2]\href{https://pldi23.sigplan.org/details/egraphs-2023-papers/12/Optimizing-Beta-Reduction-in-E-Graphs}{Optimizing-Beta-Reduction-in-E-Graphs}}
     \[
         % \hspace{1.3cm}
-        \scalebox{0.38}{
+        \scalebox{0.35}{
         \tikzfig{../figures/categorical-semantics/e-string-substitution-2}
         }
     \]
