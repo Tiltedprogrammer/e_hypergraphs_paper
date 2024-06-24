@@ -94,7 +94,7 @@
     
 Consider a \alert{co-algebraic} signature 
 \[
-\Sigma = \{id_n : n \to n,\sigma_{n,m} : n + m \to m + n,\mu : 1 \to 2, i : 1 \to 0\}
+\Sigma = \{id_0 : 0 \to 0, id_{1} : 1 \to 1, \sigma_{1,1} : 1 + 1 \to 1 + 1,\mu : 1 \to 2, i : 1 \to 0\}
 \]
 and a family of terms $t$ such that every term is constructed from the generators above by combining them sequentially ($;$) and in parallel ($\otimes$).
 
@@ -188,13 +188,13 @@ It is possible to encode such theories using e-graphs, for example as
 
 \begin{minted}{c++}
     enum CommutativeComonoids {
-        "mu" = Mu,
-        "i" = I,
+        "mu" = Mu([Id;1]),
+        "i" = I([Id;1]),
         ";" = Compose([Id;2]),
         "parallel" = Parallel([Id;2]),
-        "id" = Identity,
+        "id" = Identity([Id;1]),
         "I" = Unit,
-        "sym" = Sym    
+        "sym" = Sym([Id;2])   
     }
 \end{minted}
 
@@ -203,10 +203,11 @@ It is possible to encode such theories using e-graphs, for example as
 \end{frame}
 
 \begin{frame}
-    However, the laws of monoidal category lead to an explosion of the number of e-classes
+    However, because of the laws of monoidal category this does not scale very well
 \end{frame}
 
 \begin{frame}
+    \small
     \begin{example}
         \vspace{1em}
         E-graph for
@@ -215,7 +216,7 @@ It is possible to encode such theories using e-graphs, for example as
         \]
 
         Before saturation
-        \vspace{-2em}
+        \vspace{-3em}
         \begin{figure}
             \includegraphics[scale=0.4]{figures/egraph_before_saturation.pdf}
         \end{figure}
@@ -223,6 +224,7 @@ It is possible to encode such theories using e-graphs, for example as
 \end{frame}
 
 \begin{frame}
+    \small
     \begin{example}
         \vspace{1em}
         E-graph for
@@ -231,7 +233,7 @@ It is possible to encode such theories using e-graphs, for example as
         \]
         After saturation
         \begin{figure}
-            \includegraphics[width=\linewidth]{figures/dot_5.pdf}
+            \includegraphics[width=0.9\linewidth]{figures/dot_5.jpeg}
         \end{figure}
         
         \end{example}
@@ -391,8 +393,20 @@ Further structure is encoded as rewrites and/or by enforcing additional constrai
             \end{tikzpicture}
     \end{minipage}
     \vfill
-    Which is already saturated with respect to the built-in equations
+    Which is already `saturated' with respect to the built-in equations
     \end{example} 
+\end{frame}
+
+\begin{frame}
+
+A hypergraph form of the above example is 
+
+\[
+\scalebox{0.6}{
+    \tikzfig{figures/hypergraph_with_interfaces}
+}    
+\]
+    
 \end{frame}
 
 \begin{frame}[standout]
