@@ -146,7 +146,7 @@ jobs:
         uses: dante-ev/latex-action@latest
         with:
           root_file: ${{env.CLOSED_MONOIDAL_NAME}}.tex
-          args: -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape -latexoption=-pdf
+          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
           working_directory: ${{env.CLOSED_MONOIDAL_PATH}}
 # Upload both pdfs
       - name: Upload the PDF to the release
