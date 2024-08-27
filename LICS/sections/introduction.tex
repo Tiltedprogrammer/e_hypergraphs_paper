@@ -20,7 +20,7 @@ The \textit{join} operator lifts the formalism so that it can now operate with (
 
 Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}. 
 This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
-\cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica_hierarchical_2023}, or computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  
+\cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica-zanassi2023string}, or computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  
 However, in this work we offer little to the e-graph practitioner, as we focus exclusively on foundational aspects, introducing no new applications or improved e-graph algorithmics. 
 
 A final contribution of this work is giving a concrete combinatorial representation of enriched string diagrams in terms of (hierarchical)  hypergraphs, which we call \textit{e-hypergraphs}.  We also give a specification of e-hypergraph rewriting via a suitable extension of the double pushout (DPO) rewriting framework 
@@ -180,7 +180,7 @@ In the particular case of a monoidal signature including natural copy and delete
 Although e-graphs were first developed in the 80s \cite{nelson1980techniques}, there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.  This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.  We are hopeful that our novel perspective on e-graphs can be extended to give uniform foundations to these investigations.  Some further avenues for investigation, including potential applications, are given in the conclusion of this paper. 
 
 % String diagrams
-Our use of string diagrams is also central to the intuition behind our work \cite{Selinger_2010, joyal_geometry_1991}.  There is a breadth of work on similar string diagrammatic formalisms,  including hierarchical string diagrams \cite{ghica_hierarchical_2023} and functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
+Our use of string diagrams is also central to the intuition behind our work \cite{Selinger_2010, joyal_geometry_1991}.  There is a breadth of work on similar string diagrammatic formalisms,  including hierarchical string diagrams \cite{ghica-zanassi2023string} and functorial boxes \cite{mellies_functorial_2006},  proof nets for compact closed categories with biproducts \cite{duncan_generalised_2009}, and recent work on tape diagrams for rig categories with biproducts \cite{bonchi_tape_nodate}. 
 % Hierarchical hypergraphs
 Hierarchical (hyper-)graphs are also a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}. 
 % String diagram rewrites
@@ -276,7 +276,7 @@ To aid reasoning, we introduce a new language of string diagrams for semilattice
 
 Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
 The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
-We use string diagrams informally in this paper, but it is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. 
+It is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. 
 Indeed, similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
 
 \ifdefined \ONECOLUMN

@@ -88,7 +88,7 @@ The ordering of vertices in the interfaces is from left to right.
 
 \begin{figure}
     \[
-    \scalebox{0.6}{
+    \scalebox{0.5}{
         \tikzfig{../figures/combinatorial_semantics/extended_cospan_example}
     }    
     \]
@@ -270,11 +270,11 @@ is a \textit{boundary complement} if
     \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same set of parents, and either $v,w$ are top-level or else $v \consistency w$;
     \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same set of parents, and either $v,w$ are top-level or else $v \consistency w$;
     \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
-    \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended mda-cospan
+    \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended MDA cospan
     \[
     n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
     \]
-    \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended mda-cospan
+    \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended MDA cospan
     \[
     n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
     \]
@@ -304,7 +304,7 @@ Then map $f_1$ is given by $g_{ext}$ with its codomain restricted to $n' \setmin
 \end{definition}
 
 Intuitively the above definition means that when the occurrence of $\mathcal{L}$ within $\mathcal{G}$ is top-level then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces and when the occurrence is nested, those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces.
-In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding mda-cospans above.
+In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding MDA cospans above.
 The morphisms are then constructed correspondingly to require that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
 
 %The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
@@ -333,12 +333,11 @@ The boundary complement conditions, in particular, prohibit finding a match for 
 	\mathcal{L} = \scalebox{0.8}{\tikzfig{../figures/combinatorial_semantics/f_times_g}} \qquad \mathcal{G} = \scalebox{0.6}{\tikzfig{../figures/combinatorial_semantics/f_plus_g_inline}}
 \]
 \end{remark}
-%The uniqueness and existence properties of boundary complements as defined above are discussed in the appendix (Proposition~\ref{prop:boundary_complement} and Proposition~\ref{prop:complement_existence}).
 
-
-% \begin{proposition}[Proposition~\ref{prop:boundary_complement} restatement]
-%     The boundary complement in~\ref{def:boundary_new} when exists is unique.
-% \end{proposition}
+\begin{proposition}
+\label{prop:boundary_unique}
+    The boundary complement in~\ref{def:boundary_new} when exists is unique.
+\end{proposition}
 
 We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  
 It is analogous to Definition~\ref{def:convex_dpo},  except we must construct internal interfaces explicitly.

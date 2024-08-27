@@ -45,6 +45,7 @@ Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\ma
 \]
 \end{definition}
 
+We will then omit double square brackets around the set of equations and just write $\Rrightarrow_{\mathcal{E}}$ to mean the above.
 Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts (and pushout complements) for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist~\ref{proof:appendix:soundness}.
 Let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
 %Let $\mathcal E$ be an arbitrary set of $\Sigma$-equations. 
@@ -65,7 +66,7 @@ which by uniqueness must be the free semilattice-enriched functor from $\textbf{
 \]
 Note that it is immediate from the previous result that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is indeed a semilattice-enriched PROP.  
 
-The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed from left to right way to form a terminating rewrite system,  which results in a cospan in \textit{weak normal form}. 
+The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed from left to right way to form a terminating rewrite system,  which results in a cospan in a \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
 \label{prop:wnormal_form}
 For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
@@ -76,7 +77,40 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 \end{proposition}    
 The proof follows the familiar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
 
-This normal form can be used to prove the main theorem of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
+% This normal form can be used to prove the main theorems of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma)$ and $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
+This normal form will come in handy when proving the following theorem.
+
+\begin{theorem}
+\label{thm:completeness_simple}
+We have the following equivalence of categories
+\[
+	\textbf{SMT}^{+}(\Sigma) \cong \WellTypedMdaEcospans / \mathcal{S}~.
+\]	
+\end{theorem}
+\begin{proof}
+The equivalence is given by the functor $\llbracket - \rrbracket$.  
+First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  
+In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ of symmetric monoidal theories and plain MDA cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma)$; see Theorem 35 of ~\cite{bonchi_string_2022-2}.
+
+To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  
+First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we thus have that
+\[
+	\llbracket f \rrbracket = \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \qquad
+	\llbracket g \rrbracket = \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
+\]
+Observe that $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  
+We consider two cases: where $n \neq m$ and where $n = m$.  
+In the first case,  it is immediate that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $,  since equal terms have weak normal forms with the same number of components.  
+Otherwise,  if $n = m$,  assume for contradiction that $\llbracket f \rrbracket = \llbracket g \rrbracket$.  
+We have that there exists a permutation $\sigma$ such that for every index $i$ we have $\llbracket f_i \rrbracket = \llbracket g_{\sigma(i)} \rrbracket $,  and thus by  $(*)$ that $f_i = g_{\sigma(i)}$,  implying that $f = g$ which is a contradiction.  
+Therefore $\llbracket f \rrbracket \neq \llbracket g \rrbracket$ as required. 
+
+To see that the functor is full,  consider a morphism $f$ in $\WellTypedMdaEcospans / \mathcal{S}$.  
+We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ contains no hierarchical edges.  
+By $(*)$ we can find morphisms $g_i$ in $\textbf{SMT}(\Sigma)$ such that $\llbracket g_i \rrbracket = f_i$.  
+Thus,  we can construct a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
+\end{proof}
+
 \begin{theorem}[Full completeness]
 We have the following equivalence of categories
 \[
@@ -84,32 +118,83 @@ We have the following equivalence of categories
 \]
 \end{theorem}
 \begin{proof}
-The equivalence is given by the functor $\llbracket - \rrbracket$.  First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma, \mathcal E) \cong \textbf{MHypI}(\Sigma)/\mathcal{E}$ of symmetric monoidal theories and (appropriately quotiented) plain mda-cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma, \mathcal E)$; see Theorem 35 of ~\cite{bonchi_string_2022-2}.  
-
-To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma, \mathcal E)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we thus have that
+The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
+The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.
+The fullness follows by the same argument as above, so we will proceed to show faithfulness.
+The latter amounts to showing that if $\llbracket f \rrbracket \Rrightarrow_{\llbracket \mathcal{E} \rrbracket}^{*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$ then $f = g$ in $\catname{SMT}^{+}(\Sigma,\mathcal{E})$.
+% By the theorem~\ref{thm:completeness_simple} if $\llbracket f \rrbracket = \llbracket g \rrbracket$ via rules from $\mathcal{S}$ then $f = g$ so we will show that the same holds when $\llbracket f \rrbracket = \llbracket g \rrbracket$ via rules from $\mathcal{E}$.
+Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle = \langle \mathcal{L}, \mathcal{R} \rangle$ such that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$ and suppose
 \[
-	\llbracket f \rrbracket = \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \qquad
-	\llbracket g \rrbracket = \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
+	\llbracket f \rrbracket = n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m ~.
 \]
-Observe that $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  
-% We consider two cases: where $n \neq m$ and where $n = m$.  
-% In the first case,  it is immediate that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $,  since equal terms have weak normal forms with the same number of components.  
-% Otherwise,  if $n = m$,  assume for contradiction that $\llbracket f \rrbracket = \llbracket g \rrbracket$.  
-% We have that there exists a permutation $\sigma$ such that for every index $i$ we have $\llbracket f_i \rrbracket = \llbracket g_{\sigma(i)} \rrbracket $,  and thus by  $(*)$ that $f_i = g_{\sigma(i)}$,  implying that $f = g$ which is a contradiction.  Therefore $\llbracket f \rrbracket \neq \llbracket g \rrbracket$ as required. 
-Suppose $n \leq m$ and assume for contradiction that $\llbracket f \rrbracket = \llbracket g \rrbracket$. 
-This implies that for each $1 \leq i \leq n$ there exists a family of $\{j_k\}_{i}$ such that $\llbracket f_{i} \rrbracket = \sum\limits_{\{j_{k}\}_{i}}\llbracket g_{j_{k}} \rrbracket$ and such that $\sum\limits_{i=1}^{n}(\sum\limits_{j_{k} \in \{j_{k}\}_{i}} \llbracket g_{j_{k}} \rrbracket) = \llbracket g \rrbracket$ and by (*) that $f_{i} = \sum\limits_{\{j_{k}\}_{i}}g_{j_{k}}$ and $\sum\limits_{i=1}^{n}f_{i} = g$.
-Therefore, $f \neq g$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.
+This implies the existence of a diagram as in~\ref{def:dpoi-e}.
+We will proceed by induction on the level of the occurrence of $\mathcal{L}$ within $\mathcal{F}$.
+\begin{itemize}
+	\item Suppose the image of $\mathcal{L}$ in $\mathcal{F}$ is top-level.
+		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans
+		\begin{align*}
+			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
+		\end{align*}
+		By fullness of $\llbracket - \rrbracket$ there exist $c_{1}$ and $c_{2}$ such that 
+		\[
+		\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k \qquad \llbracket c_{2} \rrbracket = j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
+		\]
+		By functoriality, $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes l);c_{2} \rrbracket$ and by faithfulness we have that $f = c_{1};(id \otimes l);c_{2}$ to which we can apply $\langle l, r \rangle$ and get $g' = c_{1};(id \otimes r);c_{2}$.
+		We then have $\llbracket g' \rrbracket = \llbracket c_{1};(id \otimes r);c_{2} \rrbracket =  \llbracket g \rrbracket$ since the boundary complement is unique (Proposition ~\ref{prop:boundary_unique}) and $g' = g$ by faithfulness.
 
-To see that the functor is full,  consider a morphism $f$ in $\WellTypedMdaEcospans$.  We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ contains no hierarchical edges.  By $(*)$ we can find morphisms $g_i$ in $\textbf{SMT}(\Sigma, \mathcal E)$ such that $\llbracket g_i \rrbracket = f_i$.  Thus,  we can construct a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
+		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as
+		\begin{align*}
+			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
+		\end{align*}
+		such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $F'$.
+		Since the image of $\mathcal{L}$ lies within $\mathcal{F}'$, there is an EDPO rewrite step that turns
+		\[
+			(i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)	
+		\]
+		into
+		\[
+			(i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)	
+		\]
+		via $\langle \mathcal{L}, \mathcal{R} \rangle$.
+		By fullness and inductive hypothesis, there exist $f'$ and $g'$ such that 
+		\[
+			\llbracket f' \rrbracket = i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j \qquad \llbracket g' \rrbracket = (i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)
+		\]
+		and that $f' = g'$.
+		By decomposition and fullness we have $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes f');c_{2} \rrbracket$ and $f = c_{1};(id \otimes f');c_{2}$ by faithfulness.
+		By applying $f' = g'$ we get $f = g'' = c_{1};(id \otimes g');c_{2}$.
+		Finally, $\llbracket g'' \rrbracket = \llbracket c_{1};(id \otimes g');c_{2} \rrbracket = \llbracket g \rrbracket$ (by the uniqueness of the boundary complement) and $g'' = g = f$ by faithfulness.
+
+		\item or, $\llbracket f \rrbracket$ is decomposable as
+		\begin{align*}
+			n_1 \xrightarrow{} n_1' \xrightarrow{} &\mathcal{F}_1 \xleftarrow{} m_1' \xleftarrow{} m_1\\
+			&\;+\\
+			&\vdotswithin{+}\\
+			&\;+\\
+			n_p \xrightarrow{} n_p' \xrightarrow{} &\mathcal{F}_p \xleftarrow{} m_p' \xleftarrow{} m_p\\
+			&\;+\\
+			&\vdotswithin{+}\\
+			&\;+\\
+			n_k \xrightarrow{} n_k' \xrightarrow{} &\mathcal{F}_k \xleftarrow{} m_k' \xleftarrow{} m_k
+		\end{align*}
+		such that the image of $\mathcal{L}$ lies within $\mathcal{F}_{p}$.
+		By inductive hypothesis we have that $\llbracket f_{p} \rrbracket = n_p \xrightarrow{} n_{p}' \xrightarrow{} \mathcal{F}_{p} \xleftarrow{} m_{p}' \xleftarrow{} m_{p}$ rewrites into $\llbracket g_{p} \rrbracket = n_p \xrightarrow{} n_{p}'' \xrightarrow{} \mathcal{G}_{p} \xleftarrow{} m_{p}'' \xleftarrow{} m_{p}$ such that $f_{p} = g_{p}$.
+		By fullness and the fact that $\llbracket - \rrbracket$ is enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
+		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1} + \ldots + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
+\end{itemize}
 \end{proof}
 
-Unfolding the definitions,  we can spell out the previous theorem in terms of EDPOI-rewriting. 
-\begin{corollary}[Completeness of rewriting]
-For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
-\[
-	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
-\]
- \end{corollary}
+% Unfolding the definitions,  we can spell out the previous theorem in terms of EDPOI-rewriting. 
+% \begin{corollary}[Completeness of rewriting]
+% For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
+% \[
+% 	f = g \quad \iff \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
+% \]
+%  \end{corollary}
 %
 %\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %
@@ -125,4 +210,4 @@ For any $f, g \in \textbf{SMT}^{+}(\Sigma, \mathcal{E})$,  we have
 %\begin{theorem}
 %    $a \Rightarrow_{\langle l, r \rangle}^{+} b$ in $\textsf{PROP}^{+}$ iff $[a] \Rrightarrow_{\langle [l],[r] \rangle} [b]$ in $\sfrac{\WellTypedMdaEcospans}{\mathcal{S}}$.
 %\end{theorem}
-Note that in string diagram rewrite theory as developed in \cite{bonchi_string_2022-2},  some extra steps are taken to prove the claim that $f \rightsquigarrow g$ if and only if $\llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket$,  for an appropriate definition of $\Sigma$-term rewriting $\rightsquigarrow$.  We omit this extra detail for brevity and clarity,  dealing with equational theories rather than rewrite theories,  but it is straightforward to extend our results to prove an analogous claim.  
+% Note that in string diagram rewrite theory as developed in \cite{bonchi_string_2022-2},  some extra steps are taken to prove the claim that $f \rightsquigarrow g$ if and only if $\llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket$,  for an appropriate definition of $\Sigma$-term rewriting $\rightsquigarrow$.  We omit this extra detail for brevity and clarity,  dealing with equational theories rather than rewrite theories,  but it is straightforward to extend our results to prove an analogous claim.  

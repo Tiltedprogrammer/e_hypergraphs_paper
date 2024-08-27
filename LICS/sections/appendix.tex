@@ -90,9 +90,9 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
             \end{enumerate}
 \end{definition}
 
-\begin{theorem}[Existence of pushouts in $\catname{EHyp_{\Sigma}}$]
+\begin{theorem}[Existence of pushouts in $\catname{EHyp}(\Sigma)$]
 \label{th:existence_of_pushouts}
-Consider the following span in $\catname{EHyp_{\Sigma}}$
+Consider the following span in $\catname{EHyp}(\Sigma)$
 % https://q.uiver.app/#q=WzAsMyxbMCwwLCJaIl0sWzIsMCwiWCJdLFswLDIsIlkiXSxbMCwxLCJmIl0sWzAsMiwiZyIsMl1d
 \[\begin{tikzcd}
 	Z && X \\
@@ -196,11 +196,11 @@ We have
 \[
     \sfrac{s_{X+Y}}{\sim} : \sfrac{E_{X} + E_{Y}}{\sim} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*}
 \]
-and there is an obvious surjective function $[-]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[-]_{V}^{*}$ is its extension to sequences.
-There is also $[-] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
+and there is an obvious surjective function $[]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[]_{V}^{*}$ is its extension to sequences.
+There is also $[] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
 We then define 
 \[
-    \sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[-]^{*}(e) = [s_{X+Y}(e)]^{*}
+    \sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[]^{*}(e) = [s_{X+Y}(e)]^{*}
 \]
 We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
 Similarly, we will write $v_{x}$ to refer to a vertex with a pre-image in $V_{X}$.
@@ -212,7 +212,7 @@ Likewise,
 These definitions make $([]_{V},[]_{E})$ automatically a homomorphism with respect to source and target maps.
 These maps are also automatically well-defined functions since $[e_1] = [e_2]$ implies $e_1 = e_2$ since the mappings for edges are mono.
 
-% So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[-]$ is a homomorphism with respect to sources and targets and therefore $\sfrac{\iota_1}{\sim}$ and $\sfrac{\iota_{2}}{\sim}$ are.
+% So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[]$ is a homomorphism with respect to sources and targets and therefore $\sfrac{\iota_1}{\sim}$ and $\sfrac{\iota_{2}}{\sim}$ are.
 
 Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we can first define 
     \[<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e])
@@ -874,6 +874,11 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     \end{enumerate}
 \end{proof}
 
+\begin{remark}
+    If in a span $Y \xleftarrow{g} Z \xrightarrow{f} X$ of morphisms in $\catname{EHyp}(\Sigma)$ the morphisms $f$ and $g$ are monos, then the arrows $f'$ and $g'$ of the pushout $Y \xrightarrow{g'} X +_{f,g} Y \xleftarrow{f'} X$ are also monos.
+\end{remark}
+This is because $[]_{V}$ identifies two vertices $v_1$ and $v_2$ only if there exists a vertex $z$ in $V_{Z}$ such that $f_{V};\iota_{1,V}(z) = v_1$ and $g_{V};\iota_{2,V}(z) = v_2$ and therefore $f' = \iota_{1};[]$ and $g' = \iota_{2};[]$ are monos.
+
 \begin{figure}
     \[
         \scalebox{0.5}{
@@ -881,7 +886,7 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         }
 \]
 \captionsetup{belowskip=-3ex}
-\caption{Pushout in $\catname{EHyp_{\Sigma}}$}
+\caption{Pushout in $\catname{EHyp}(\Sigma)$}
 \label{fig:pushout_example}
 \end{figure}
 
@@ -1367,7 +1372,7 @@ For this we need to check that the defined relations --- $<_{\sfrac{X+Y}{\sim}}$
     % Lemmas~\ref{lemma:child_assymetric}~\ref{lemma:child_irreflexive}~\ref{lemma:child_respect}~\ref{lemma:consistency_child}~\ref{lemma:consistency_respect}.
 \end{proof}
 
-We will then discuss the uniqueness of the corresponding pushout complement.
+We will then discuss the uniqueness of the corresponding boundary pushout complement.
 
 % \begin{definition}[Definition 3.16~\cite{bonchi_string_2022-1}]
 % Morphisms $\mathcal{K} \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ satisfy the \textit{no-dangling} condition if, for every hyperedge not in the image of $m$, every vertex of its source and target is either (i) not in the image of $m$ or (ii) in the image of $f ; m$.
@@ -1397,12 +1402,12 @@ We will then discuss the uniqueness of the corresponding pushout complement.
 % \end{minipage}
 % \end{figure*}
 
-\begin{proposition}
+\begin{proposition}[Proposition~\ref{prop:boundary_unique} restatement]
 \label{prop:boundary_complement}
     The boundary complement in~\ref{def:boundary_new} when exists is unique.
 \end{proposition}
 \begin{proof}
-        The pushout in~\ref{def:boundary_new} satisfies the assumptions in Definition~\ref{pushout:assumptions} (note that since $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j$ is an MDA cospan the image of $i + j$ in $\mathcal{L}$ consists of top-level vertices only) and therefore is isomorphic to the pushout constructed in~\ref{pushout:assumptions} and by construction should also be a pushout on the underlying sets of vertices and hyperedges.
+        The pushout in~\ref{def:boundary_new} satisfies the assumptions in Definition~\ref{pushout:assumptions} (note that since $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j$ is an MDA cospan, the image of $i + j$ in $\mathcal{L}$ consists of top-level vertices only) and therefore is isomorphic to the pushout constructed in~\ref{pushout:assumptions} and by construction should also be a pushout on the underlying sets of vertices and hyperedges.
     % I think the above sufficies, but it can also be shown formally that every pushout in $\catname{EHyp_{\Sigma}}$ is a pushout on the underlying sets of edges and vertices by constructing an e-hyperghraph from the set of vertices and same for the set of edges and checking if the morphisms are well-defined.
     %     Consider diagrams below,
     %     \[
@@ -1591,6 +1596,11 @@ In this section we will elaborate on soundness of our translation $\llbracket - 
     to distinguish it from the coproduct.
 \end{remark}
 
+\begin{remark}
+    Below we will also occasionally conflate the cospan resulting from $\llbracket - \rrbracket$ with its carrier which will be clear from the context.
+    For example, if $\llbracket f \rrbracket = n \to n' \to \mathcal{F} \xleftarrow{} m' \xleftarrow{} m$, then we will also use $\llbracket f \rrbracket$ to denote $\mathcal{F}$.
+\end{remark}
+
 \begin{proposition}[Proposition~\ref{prop:soundness} restatement]
     \label{proof:appendix:soundness}
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
@@ -1717,9 +1727,9 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
             and
             \[
             n_2 + m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1) + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1) + n_1 \xleftarrow{} m_2 + n_1    
-            \] is an MDA e-hypergraph.
+            \] is an MDA cospan.
             By denoting the pushout of $\mathcal{L}_1^{\bot} \xleftarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot}$ with $\mathcal{L}_3^{\bot}$,
-            one can observe that $\llbracket f \rrbracket$ is the pushout object of $\mathcal{L} \xleftarrow{} i+j \xrightarrow{} \mathcal{L}$ as per the diagram below
+            one can observe that $\llbracket f \rrbracket$ is the pushout object of $\mathcal{L} \xleftarrow{} i+j \xrightarrow{} \mathcal{L}_{3}^{\bot}$ as per the diagram below
             \[\begin{tikzcd}
                 && {n_1+m_1} && {\mathcal{L}^{\bot}_2} \\
                 \\
@@ -1835,9 +1845,9 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
             \fi
                 and hence we have $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$
     \end{itemize}
-    The rest of the argument follows by induction on the length of $w$ and ultimately we have shown that if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans(\Sigma)/\mathcal{S}$.
+    The rest of the argument follows by induction on the length of $w$ and ultimately we have shown that if $f = g$ then $\llbracket f \rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
     % there is a sequence of SMC and enrichment equations such that when applied to $f$ it is turned into $g$.
-    % As SMC laws are subsumed by e-hypergraph representation we need to show that for each enrichment equation $l = r$ that turns $g$ into $h$ there is a pushout complement $\mathcal{C}$ such that $\llbracket g \rrbracket = \mathcal{C}[\llbracket l \rrbracket]$ and such that $\llbracket h \rrbracket = \mathcal{C}[\llbracket r \rrbracket]$, where $\mathcal{C}[-]$ is defined by computing the pushout along the common interfaces.
+    % As SMC laws are subsumed by e-hypergraph representation we need to show that for each enrichment equation $l = r$ that turns $g$ into $h$ there is a pushout complement $\mathcal{C}$ such that $\llbracket g \rrbracket = \mathcal{C}[\llbracket l \rrbracket]$ and such that $\llbracket h \rrbracket = \mathcal{C}[\llbracket r \rrbracket]$, where $\mathcal{C}[]$ is defined by computing the pushout along the common interfaces.
     % We first note that any subterm of $g$ correspond to a convex down-closed subgraph of $\llbracket f \rrbracket$ and hence there is always a convex down-closed match of $\llbracket l \rrbracket$ within $\llbracket g \rrbracket$.
     % The mapping of external interfaces into $\llbracket l \rrbracket$ is mono and therefore the corresponding pushout complement exists.
     % We then need to show that for all $\llbracket l \rrbracket = \llbracket r \rrbracket$ in $\mathcal{S}$ the match satisfies the conditions in Proposition~\ref{prop:complement_existence} which will complete the first square of EDPOI and then check that the arrows in the second square satisfy the condition from Theorem~\ref{th:existence_of_pushouts}.
@@ -1860,7 +1870,71 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
     % Hence, $\llbracket g \rrbracket \Rrightarrow{} \llbracket h \rrbracket$.
     % The rest follows by induction on the number of applied equations.
     % Similar argument then applies to other rules in $\mathcal{S}$ as well.
-\end{proof}   
+\end{proof}
+
+\begin{lemma}
+\label{lemma:decomposition}
+    Let $n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m$ be an MDA extended cospan.
+    If $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $\mathcal{G}$ such that the immediate predecessors of top-level connected components of $\mathcal{L}$ in $\mathcal{G}$ are either undefined or coincide and pair-wise consistent then either
+    \begin{itemize}
+    \item there exists a cospan $i \to i' \to \mathcal{G}' \xleftarrow{} j' \xleftarrow{} j$ and $k \in \mathbb{N}$ such that $\mathcal{G}$ is decomposable as
+    \begin{align}
+        \label{fig:decomposition:1}
+    \scalebox{0.6}{
+        \tikzfig{../figures/appendix/G_decomposition_1}
+    }
+    \end{align}
+    \item or, $\mathcal{G}$ is decomposable as
+    \begin{align}
+        \label{fig:decomposition:2}
+    \scalebox{0.6}{
+        \tikzfig{../figures/appendix/G_decomposition_2}
+    }
+    \end{align}
+    \end{itemize}
+    such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $\mathcal{G}'$ and all the cospans are MDA.
+\end{lemma}
+\begin{proof}
+    Suppose the image of top-level components of $\mathcal{L}$ consists of top-level edges and vertices.
+    Then let $\mathcal{C}_1$ be the smallest e-hypergraph consisting of the input vertices of $\mathcal{G}$ and every hyperedge $h$ (and its successors) that is not in $\mathcal{L}$ but has a path to it.
+    Let $\mathcal{C}_{2}$ be the smallest e-hypergraph such that $\mathcal{G} = \mathcal{C}_{1} \cup \mathcal{L} \cup \mathcal{C}_{2}$.
+    These e-hypergraphs overlap only on vertices so we define
+    \begin{align*}
+        i = V_{\mathcal{C}_{1}} \cap V_{\mathcal{L}}\\
+        j = V_{\mathcal{C}_{2}} \cap V_{\mathcal{L}}\\
+        k = (V_{\mathcal{C}_{1}} \cap V_{\mathcal{C}_{2}}) \setminus V_{\mathcal{L}}
+    \end{align*}
+    and let $i'$ be the union of $i$ and the vertices of $\mathcal{L}$ in the image of $f'$ and $j'$ be the union of $j$ and the vertices of $\mathcal{L}$ in the image of $g'$.
+    Let $n_{1}'$ be pre-image of the co-restriction of $f'$ to $\mathcal{C}_{1}$ and $n_{2}'$ be the pre-image of the co-restriction of $f'$ to $\mathcal{C}_{2}$.
+    Similarly, for $m_{1}'$ and $m_{2}'$ with regard to $g'$.
+    Then there are cospans
+    \begin{align*}
+        n \to n_{1}' \to &\mathcal{C}_{1} \xleftarrow{} m_{1}' + k + i \xleftarrow{} k + i\\
+        i \to i' \to &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j\\
+        k + j \to n_{2}' + k + j \to &\mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m\\
+    \end{align*}
+    and $n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m$ is the co-limit of the following diagram
+    \[
+        n \to n_{1}' \to \mathcal{C}_{1} \xleftarrow{} m_{1}' + k \xleftarrow{} i + k \to i' + k \to \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n_{2}' + k + j \to \mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m
+    \]
+    The two spans identify precisely those nodes from $\mathcal{G}$ that occur in more than one sub-hypergraph, so this amounts to simply taking the union
+    \[
+    n \to n_{1}' \cup n_{2}' \cup i' \to \mathcal{C}_{1} \cup \mathcal{C}_{2} \cup \mathcal{L} \xleftarrow{} m_{1}' \cup m_{2}' \cup j' \xleftarrow{} m  = n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m
+    \]
+    If we let $\mathcal{G}' = \mathcal{L}$ we get the decomposition as in~(\ref{fig:decomposition:1}).
+    This follows the construction of a similar lemma in~\cite{bonchi_string_2022-1} (Lemma 24). 
+    The cospans with $\mathcal{C}_{1}$ and $\mathcal{C}_{2}$ are MDAs because they are closed under successors and predecessors and the cospan with $\mathcal{L}$ is an MDA because it is convex.
+
+
+    Now suppose that the image of top-level components of $\mathcal{L}$ consist of non top-level edges and vertices $e$ and $v$.
+    Take a hyperedge $h$ such that $h \leq e$ and for all $e' \not = h$ such that $e' \leq e$, $h \leq e'$.
+    Let $\mathcal{G}''$ be $h$ including all its sources and targets and successors.
+    If $\mathcal{G} = \mathcal{G}''$ then it is decomposable as in~(\ref{fig:decomposition:2}) and let $\mathcal{G}'$ be the component that contains the image of $\mathcal{L}$ which exists by pair-wise consistency.
+    All $\mathcal{G}_{i}$ (and their respective cospans) are MDA by definitions.
+    Otherwise, if $\mathcal{G} \not = \mathcal{G}''$ then $\mathcal{G}''$ is a convex down-closed sub-e-hypergraph of $\mathcal{G}$ and 
+    by applying the same construction as above we get~(\ref{fig:decomposition:1}).
+\end{proof}
+
 
 % \begin{proposition}[Proposition~\ref{prop:wnormal_form} restatement]
 %     For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 

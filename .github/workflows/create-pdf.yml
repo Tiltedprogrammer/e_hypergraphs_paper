@@ -17,6 +17,8 @@ jobs:
       EXT_ABSTRACT_NAME: 'EGraphsExtendedAbstract'
       SLIDES_PATH: 'slides/'
       SLIDES_NAME: 'slides'
+      CLOSED_MONOIDAL_PATH: 'closed_monoidal/'
+      CLOSED_MONOIDAL_NAME: 'closed_monoidal'
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -138,6 +140,14 @@ jobs:
           root_file: ${{env.SLIDES_NAME}}.tex
           args: -xelatex -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape -latexoption=-pdf
           working_directory: ${{env.SLIDES_PATH}}
+# Compile closed_monoidal
+      - name: latexmk ${{env.CLOSED_MONOIDAL_PATH}}${{env.CLOSED_MONOIDAL_NAME}}
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: ${{env.CLOSED_MONOIDAL_NAME}}.tex
+          args: -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape -latexoption=-pdf
+          working_directory: ${{env.CLOSED_MONOIDAL_PATH}}
 # Upload both pdfs
       - name: Upload the PDF to the release
         if: always()
@@ -168,6 +178,16 @@ jobs:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: ${{env.SLIDES_PATH}}${{env.SLIDES_NAME}}.pdf
             asset_name: slides.pdf
+            asset_content_type: pdf
+      - name: Upload the PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ${{env.CLOSED_MONOIDAL_PATH}}${{env.CLOSED_MONOIDAL_NAME}}.pdf
+            asset_name: closed_monoidal.pdf
             asset_content_type: pdf
       - name: Delete older releases
         if: always()
