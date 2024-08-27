@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=node] (3) at (2.25, -1.5) {};
+		\node [style=hedge] (4) at (-4.25, -2.75) {$*$};
+		\node [style=node] (5) at (-5, -4.75) {};
+		\node [style=node] (10) at (-3.5, -4.75) {};
+		\node [style=hedge] (11) at (2.25, -4.75) {$2$};
+		\node [style=hedge] (12) at (0.25, -2.75) {$>>$};
+		\node [style=node] (13) at (-0.5, -4.75) {};
+		\node [style=node] (14) at (1, -4.75) {};
+		\node [style=node] (17) at (-4.25, -1.5) {};
+		\node [style=node] (18) at (0.25, -1.5) {};
+		\node [style=none] (19) at (-6, 2) {};
+		\node [style=none] (20) at (4, 2) {};
+		\node [style=none] (21) at (4, -8) {};
+		\node [style=none] (22) at (-6, -8) {};
+		\node [style=none] (23) at (-1.5, 2) {};
+		\node [style=none] (24) at (-1.5, -8) {};
+		\node [style=hedge] (43) at (-3.5, -7) {$2$};
+		\node [style=hedge] (45) at (-5, -7) {$a$};
+		\node [style=node] (51) at (-2.25, -1.5) {};
+		\node [style=hedge] (52) at (-2.25, -4.75) {$2$};
+		\node [style=hedge] (56) at (-3.25, 0) {$/$};
+		\node [style=hedge] (57) at (1.25, 0) {$/$};
+		\node [style=node] (58) at (-1.5, 3.75) {};
+		\node [style=node] (59) at (-3.25, 1.5) {};
+		\node [style=node] (60) at (1.25, 1.5) {};
+		\node [style=hedge] (61) at (1, -7) {$1$};
+		\node [style=hedge] (62) at (-0.5, -7) {$a$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [bend left=15] (5) to (4);
+		\draw [bend left=15] (4) to (10);
+		\draw [bend right=15] (12) to (13);
+		\draw [bend left=15] (12) to (14);
+		\draw (4) to (17);
+		\draw (12) to (18);
+		\draw [style=dashed edge] (21.center)
+			 to (22.center)
+			 to (19.center)
+			 to (20.center)
+			 to cycle;
+		\draw [style=dashed edge] (23.center) to (24.center);
+		\draw (11) to (3);
+		\draw (52) to (51);
+		\draw [bend left=15] (17) to (56);
+		\draw [bend right=15] (51) to (56);
+		\draw (56) to (59);
+		\draw (57) to (60);
+		\draw [bend right=15] (57) to (18);
+		\draw [bend right=15] (3) to (57);
+		\draw (58) to (23.center);
+		\draw (5) to (45);
+		\draw (43) to (10);
+		\draw (61) to (14);
+		\draw (13) to (62);
+	\end{pgfonlayer}
+\end{tikzpicture}

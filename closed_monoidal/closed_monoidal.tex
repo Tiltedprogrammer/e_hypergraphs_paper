@@ -1,0 +1,748 @@
+%!LW recipe=pdflatex -> bibtex -> pdflatex * 2
+\documentclass[acmsmall, screen, nonacm]{acmart}
+
+
+
+\newcommand*{\ONECOLUMN}{}
+
+% \input{../preamble}
+
+\usepackage{hyperref}
+
+\usepackage{amsthm}
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac} 
+
+\usepackage{import}
+
+
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+% There is already a remark in the preamble, but it does
+% not work for some reason
+\newcommand\obj[1]{{\textbf{obj}(#1)}}
+
+
+\usepackage{xifthen}
+\ifthenelse{\isundefined{\ismain}}{
+  \newcommand{\ismain}{0}
+}{}
+
+\usepackage{enumitem}
+ 
+\newcommand{\ignora}[1]{ }
+
+% \newcounter{thm}
+
+% % \ignora{
+% \usepackage{aliascnt}
+% % alias-counters
+% \newaliascnt{definition}{thm}
+% \newaliascnt{proposition}{thm} 
+% \newaliascnt{lemma}{thm}
+% \newaliascnt{corollary}{thm}
+% \newaliascnt{conjecture}{thm}
+% \newaliascnt{remark}{thm}
+% \newaliascnt{example}{thm}
+% \newaliascnt{examples}{thm}
+% \newaliascnt{assumption}{thm}
+% \newaliascnt{construction}{thm}
+% \newaliascnt{claim}{thm}
+
+% % \theoremstyle{plain}
+% \theoremstyle{definition}
+
+% \newtheorem{theorem}[thm]{Theorem}
+% \newtheorem{proposition}[proposition]{Proposition} 
+% \aliascntresetthe{proposition}
+% \newtheorem{lemma}[lemma]{Lemma}
+% \aliascntresetthe{lemma}
+% \newtheorem{corollary}[corollary]{Corollary}
+% \aliascntresetthe{corollary}
+% \newtheorem{conjecture}[conjecture]{Conjecture}
+% \aliascntresetthe{conjecture}
+% \newtheorem{remark}[remark]{Remark}
+% \aliascntresetthe{remark}
+% \newtheorem{assumption}[assumption]{Assumption}
+% \aliascntresetthe{assumption}
+% \newtheorem{construction}[construction]{Construction}
+% \aliascntresetthe{construction}
+% \newtheorem{claim}[claim]{Claim}
+% \aliascntresetthe{claim}
+
+
+% \theoremstyle{definition}
+% \newtheorem{definition}[definition]{Definition}
+% \aliascntresetthe{definition}
+% \newtheorem{example}[example]{Example}
+% \aliascntresetthe{example}
+% \newtheorem{examples}[examples]{Examples}
+% \aliascntresetthe{examples}
+% }
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+\usepackage{cleveref} % after hyperref!
+
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+% These are for comments
+\newcommand\question[1]{{\color{azure}#1}}
+\newcommand\update[1]{{\color{americanrose}#1}}
+
+\newcommand\enriched[1]{{\overline{\mathcal{#1}}}}
+
+
+\makeatletter
+\newsavebox{\@brx}
+\newcommand{\llangle}[1][]{\savebox{\@brx}{\(\m@th{#1\langle}\)}%
+  \mathopen{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\newcommand{\rrangle}[1][]{\savebox{\@brx}{\(\m@th{#1\rangle}\)}%
+  \mathclose{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\makeatother
+
+
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+% \setcopyright{acmlicensed}
+% \copyrightyear{2024}
+% \acmYear{2024}
+% \acmDOI{XXXXXXX.XXXXXXX}
+
+%% These commands are for a PROCEEDINGS abstract or paper.
+
+%%
+%%  Uncomment \acmBooktitle if the title of the proceedings is different
+%%  from ``Proceedings of ...''!
+%%
+%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%%  June 03--05, 2018, Woodstock, NY}
+% \acmISBN{978-1-4503-XXXX-X/18/06}
+
+
+%%
+%% Submission ID.
+%% Use this when submitting an article to a sponsored event. You'll
+%% receive a unique submission ID from the organizers
+%% of the event, and this ID should be used as the parameter to this command.
+%%\acmSubmissionID{123-A56-BU3}
+
+%%
+%% For managing citations, it is recommended to use bibliography
+%% files in BibTeX format.
+%%
+%% You can then either use BibTeX with the ACM-Reference-Format style,
+%% or BibLaTeX with the acmnumeric or acmauthoryear sytles, that include
+%% support for advanced citation of software artefact from the
+%% biblatex-software package, also separately available on CTAN.
+%%
+%% Look at the sample-*-biblatex.tex files for templates showcasing
+%% the biblatex styles.
+%%
+
+%%
+%% The majority of ACM publications use numbered citations and
+%% references.  The command \citestyle{authoryear} switches to the
+%% "author year" style.
+%%
+%% If you are preparing content for an event
+%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
+%% citations and references.
+%% Uncommenting
+%% the next command will enable that style.
+%%\citestyle{acmauthoryear}
+
+\begin{abstract}
+  These notes contain the foundations of categories enriched over a category of semilattices and the respective string diagrams for such categories.
+  It introduces the required notions and carefully checks that all properties are satisfied.
+\end{abstract}
+
+\begin{document}
+
+\title{Equivalence Hypergraphs: E-Graphs for Monoidal Theories}
+
+\maketitle
+
+
+
+\begin{section}{Enriched Categories}
+
+\begin{definition}[Definition 6.2.1~\cite{Borceux_1994}]
+  Let $\mathcal{V} = (\mathcal{V}_{0}, I_{\mathcal{V}}, \otimes, l, r, a, \sigma)$ be a closed symmetric monoidal category where $l$ and $r$ are left and right unitors and $\sigma$ is a symmetry.
+  We define a $\mathcal{V}$-enriched category $\enriched{C}$ consisting of the following data
+  \begin{enumerate}
+    \item a class of objects $\obj{\enriched{C}}$
+    \item for every pair of objects $A,B \in \obj{\enriched{C}}$ --- an (hom-)object $\obj{\enriched{C}}(A,B) \in \mathcal{V}$
+    \item for every triple of objects $A,B,C \in \obj{\enriched{C}}$ --- a composition morphism in $\mathcal{V}$
+    \[
+    c_{A,B,C} : \enriched{C}(A,B) \otimes \enriched{C}(B,C) \to \enriched{C}(A,C)
+    \]
+    \item for every object $A \in \obj{\enriched{C}}$ --- a unit morphism
+    \[
+      u_{A} : I_{\mathcal{V}} \to \enriched{C}(A,A)
+    \]
+  \end{enumerate}
+  such that the following diagrams commute (associativity and unitality)
+  \[
+  \begin{tikzcd}
+    {(\enriched{C}(A,B) \otimes \enriched{C}(B,C)) \otimes \enriched{C}(C,D)} \arrow[rr, "{c_{A,B,C} \otimes 1}"] \arrow[d, "{a_{\enriched{C}(A,B),\enriched{C}(B,C),\enriched{C}(C,D)}}"']   &  & {\enriched{C}(A,C) \otimes \enriched{C}(C,D)} \arrow[dd, "{c_{A,C,D}}"]                                                                                     \\
+    {\enriched{C}(A,B) \otimes (\enriched{C}(B,C) \otimes \enriched{C}(C,D))} \arrow[d, "{1\otimes c_{B,C,D}}"']                                             &  &                                                                                                                                       \\
+    {\enriched{C}(A,B) \otimes \enriched{C}(B,D)} \arrow[rr, "{c_{A,B,D}}"]                                                                       &  & {\enriched{C}(A,D)}                                                                                                                             
+  \end{tikzcd}
+  \]
+
+  \[
+  \begin{tikzcd}
+    {I_{\mathcal{V}} \otimes \enriched{C}(A,B)} \arrow[dd, "u_{A} \otimes 1"'] \arrow[r, "{l_{\enriched{C}(A,B)}}"]                                             & {\enriched{C}(A,B)} \arrow[dd, "{1_{\enriched{C}(A,B)}}"] & {\enriched{C}(A,B) \otimes I_{\mathcal{V}}} \arrow[l, "{r_{\enriched{C}(A,B)}}"'] \arrow[dd, "1 \otimes u_{B}"]                                                           \\
+    &                                     &                                                                                                                                       \\
+{\enriched{C}(A,A) \otimes \enriched{C}(A,B)} \arrow[r, "{c_{A,A,B}}"]                                                                        & {\enriched{C}(A,B)}                            & {\enriched{C}(A,B) \otimes \enriched{C}(B,B)} \arrow[l, "{c_{A,B,B}}"']                                                                                    
+\end{tikzcd}
+  \]
+\end{definition}
+
+\begin{remark}
+  We will occasionally use $c_{A,B,C}$ as $;$, \textit{i.e.}, instead of $c_{A,B,C}(f,g)$ we will write $f ; g$ when it makes sense to talk about components of hom-objects.
+\end{remark}
+
+\begin{example}
+When $\mathcal{V} = \catname{Set}$ we end up with the usual definition of a category.
+$c_{A,B,C}$ becomes the usual morphism composition ($f;g$ rather than $g \circ f$) and $u_{A} : I_{\mathcal{V}} \to \enriched{C}(A,A)$ picks out the identity morphism from the homset $\enriched{C}(A,A)$ by matching the only element of a singleton set $I \cong \{*\} \mapsto 1_{A}$ and component-wise the diagrams above commute.
+\end{example}
+
+TODO: another example
+
+\begin{definition}[Semilattice]
+  A \textit{semilattice} is a set equipped with an operation that we denote as $+$ which is associative, commutative and idempotent.
+\end{definition}
+
+Note that we do not require the existence of a unit for $+$. 
+Semilattices that satisfy this extra requirement are sometimes called \textit{bounded}, i.e., they are idempotent commutative monoids.
+
+\begin{definition}[Semilattice homomorphism]
+
+A homomorphism between two semilattices $S_{1}$ and $S_{2}$ is a map $h$ that respects $+$.
+That is, for all $s,s' \in S_{1}$, $h(s +_{S_{1}} s') = h(s) +_{S_{2}} h(s')$.
+\end{definition}
+
+\begin{definition}[Category of semilattices]
+  
+Semilattices with their respective homomorphisms form a category that we denote $\catname{SLat}$.
+\end{definition}
+
+\begin{proposition}
+  $\catname{SLat}$ is a closed symmetric monoidal category.
+\end{proposition}
+\begin{proof}
+  The tensor product of two semilattices $S_{1}$ and $S_{2}$ is defined as follows.
+  $S_{1} \otimes S_{2}$ consists of pairs $(s_1,s_2)$ $s_{1} \in S_{1}$, $s_{2} \in S_{2}$ quotiented by commutativity, idempotence and associativity and additionally by the following relations
+  \begin{itemize}
+    \item $(s_{1} +_{S_{1}} s_{1}',s_{2}) \cong (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+    \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \cong (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+  \end{itemize}
+
+  The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
+  Clearly $S \otimes I \cong S$ by mapping $(s,*) \mapsto s$ for all $s \in S$ and vice versa.
+  The symmetry, associators and unitors are then obvious morphisms.
+  Finally, the category is closed since the set of homomorpisms between two semilattices is a semilattice by defining $(f + g)(x)$ as $f(x) + g(x)$.
+  $f + g$ is a homomorphism since $(f + g)(x+y) = f(x+y) + g(x+y) = f(x) + f(y) + g(x) + g(y) = f(x) + g(x) + f(y) + g(y) = f(x+y) + g(x+y)$.
+\end{proof}
+
+This makes $\catname{SLat}$ a suitable base for enrichment and allows us to take $\mathcal{V} = \catname{SLat}$.
+Before we proceed we need to define what an enriched functor is and define what it means to freely enrich a category over $\catname{SLat}$.
+
+\begin{definition}[Isomorphism in $\enriched{C}$]
+
+Let $\enriched{C}$ be a $\mathcal{V}$-enriched category.
+Given two objects $A,B \in \enriched{C}$ and a morphism $f : I_{\mathcal{V}} \to \enriched{C}(A,B)$, we call $f$ an isomorphism if there is a $g : I_{\mathcal{V}} \to \enriched{C}(B,A)$ such that
+\[
+  I_{\mathcal{V}} \cong I_{\mathcal{V}} \otimes I_{\mathcal{V}} \xrightarrow{f \otimes g} \enriched{C}(A,B) \otimes \enriched{C}(B,A) \xrightarrow{c_{A,B,A}} \enriched{C}(A,A)
+\]
+equals $u_{A} : I_{\mathcal{V}} \to \enriched{C}(A,A)$.
+\end{definition}
+
+TODO: I took this definition from \url{https://mathoverflow.net/questions/326575/isomorphisms-in-enriched-categories#:~:text=equals%20id%3A1%E2%86%92,C(X%2CY).} 
+Need a proper reference. Riehl, for example, only defines isomorphism of $A$ $B$ in terms of objects of the underlying category.
+
+\begin{definition}
+  Let $\enriched{C}$ and $\enriched{D}$ be two $\mathcal{V}$-categories.
+  A $\mathcal{V}$-enriched functor $F : \enriched{C} \to \enriched{D}$ is defined by the following data.
+  \begin{enumerate}
+    \item A mapping $F : \obj{\enriched{C}} \to \obj{\enriched{D}}$
+    \item An object-indexed family of morphisms in $\mathcal{V}$ $F_{A,B} : \enriched{C}(A,B) \to \enriched{D}(FA,FB)$
+  \end{enumerate}
+  such that the following diagrams commute
+
+  \[
+  \begin{tikzcd}
+	{\enriched{C}(A,A') \otimes \enriched{C}(A',A'')} && {\enriched{C}(A,A'')} \\
+	\\
+	{\enriched{D}(FA,FA') \otimes \enriched{D}(FA',FA'')} && {\enriched{D}(FA,FA'')}
+	\arrow["{c_{A,A',A''}}"', from=1-1, to=1-3]
+	\arrow["{F_{A,A'} \otimes F_{A',A''}}", from=1-1, to=3-1]
+	\arrow["{F_{A,A''}}"', from=1-3, to=3-3]
+	\arrow["{c_{FA,FA',FA''}}"', from=3-1, to=3-3]
+\end{tikzcd}
+\]
+
+\[
+\begin{tikzcd}
+	I_{\mathcal{V}} && {\enriched{C}(A,A)} \\
+	\\
+	&& {\enriched{D}(FA,FA)}
+	\arrow["{u_{A}}", from=1-1, to=1-3]
+	\arrow["{u_{FA}}"', from=1-1, to=3-3]
+	\arrow["{F_{A,A}}", from=1-3, to=3-3]
+\end{tikzcd}
+\]
+\end{definition}
+
+\begin{definition}
+  Given two $\mathcal{V}$-functors $F,G : \enriched{C} \to \enriched{D}$ a $\mathcal{V}$-natural transformation is family of morphisms indexed by objects in $\enriched{C}$, $\alpha_{A} : I_{\mathcal{V}} \to \enriched{D}(FA,GA)$ in $\mathcal{V}$ such that the following diagram commutes
+  \[
+  \begin{tikzcd}
+	& {\enriched{C}(A,A')\otimes I_{\mathcal{V}}} && {\enriched{D}(FA,FA') \otimes \enriched{D}(FA',GA')} \\
+	{\enriched{C}(A,A')} &&&& {\enriched{D}(FA,GA')} \\
+	& {I_{\mathcal{V}} \otimes \enriched{C}(A,A')} && {\enriched{D}(FA,GA) \otimes \enriched{D}(GA,GA')}
+	\arrow["{G_{A,A'}\otimes \alpha_{A'}}"', from=1-2, to=1-4]
+	\arrow["{c_{FA,FA',GA'}}"', from=1-4, to=2-5]
+	\arrow["{r^{-1}}", from=2-1, to=1-2]
+	\arrow["{l^{-1}}", from=2-1, to=3-2]
+	\arrow["{\alpha_{A} \otimes F_{A,A'}}", from=3-2, to=3-4]
+	\arrow["{c_{FA,GA,GA'}}", from=3-4, to=2-5]
+\end{tikzcd}
+\]
+\end{definition}
+
+\begin{remark}
+  When $\mathcal{V}$ is $\catname{Set}$, a family of morphisms $\alpha_{A} : I_{\mathcal{V}} \to \enriched{C}(FA,GA)$ is defined by mapping $* \mapsto \alpha'_{A}$ where $\alpha'_{A} : FA \to GA$ is usual natural transformation.
+  We can then trace the diagram to get
+
+\[\begin{tikzcd}
+	& {f \otimes *} && {Gf \otimes \alpha'_{A'}} \\
+	f &&&& {Gf;\alpha'_{A} = \alpha'_{A};Ff} \\
+	& {* \otimes f} && {\alpha'_{A} \otimes Ff}
+	\arrow[from=1-2, to=1-4]
+	\arrow[from=1-4, to=2-5]
+	\arrow[from=2-1, to=1-2]
+	\arrow[from=2-1, to=3-2]
+	\arrow[from=3-2, to=3-4]
+	\arrow[from=3-4, to=2-5]
+\end{tikzcd}\]
+
+which is the usual naturality condition.
+
+\end{remark}
+
+\begin{proposition}
+  The forgetful functor $U : \catname{SLat} \to \catname{Set}$ has a left adjoint free functor $F : \catname{Set} \to \catname{SLat}$.
+\end{proposition}
+\begin{proof}
+  The functor is defined by letting $F(A) = \coprod_{A} I$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
+  The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
+  In particular, $F(I) = I_{\catname{SLat}}$ and therefore such functor is monoidal with $F(A \otimes B) \cong F(A) \otimes F(B)$.
+\end{proof}
+
+TODO: add a note that this follows from the definition of a copower.
+
+\begin{definition}[Proposition 6.4.7~\cite{Borceux_1994}]
+  Let $\mathcal{C}$ be a small category.
+  Freely enriched $\catname{SLat}$-category $\enriched{C}$ is defined as follows
+  \begin{enumerate}
+    \item $\obj{\enriched{C}} = \obj{\mathcal{C}}$;
+    \item $\enriched{C}(A,B) = F(\mathcal{C}(A,B))$, where $F$ is the left adjoint to $U : \catname{SLat} \to \catname{Set}$;
+    \item $c_{A,B,C} : \enriched{C}(A,B) \otimes \enriched{C}(B,C) \to \enriched{C}(A,C)$ is the composite
+    \[
+    F(\mathcal{C}(A,B)) \otimes F(\mathcal{C}(B,C)) \cong F(\mathcal{C}(A,B) \otimes \mathcal{C}(B,C)) \xrightarrow{F(;)} F(\mathcal{C}(A,C))
+    \] 
+    where the arrow is the image of the ordinary composition
+    \item $u_{A} : I_{\catname{SLat}} \to \enriched{C}(A,A)$ is the composite
+    \[
+    I_{\catname{SLat}} \cong F(I) \to F(\mathcal{C}(A,A))
+    \]
+    where the arrow is $* \mapsto 1_{A}$.
+  \end{enumerate}
+\end{definition}
+
+We will then consider \textit{only} such freely-enriched categories.
+
+\begin{remark}
+  Suppose $\mathcal{C}(A,B) = \{f,g\}$ and $\mathcal{C}(B,C) = \{h\}$, then $f + g \in \enriched{C}(A,B)$ and in particular $(f+g);h = f;h + g;h$ since $c_{A,B,C}$ is a semilattice homomorphism.
+\end{remark}
+
+\begin{proposition}
+\label{prop:functoriality_preserved}
+  A functor $G : \mathcal{C} \to \mathcal{D}$ induces an enriched functor $\overline{G} : \enriched{C} \to \enriched{D}$.
+\end{proposition}
+\begin{proof}
+  We define
+  \begin{itemize}
+    \item $\overline{G}(A) = G(A)$ for all $A \in \enriched{C}$
+    \item $\overline{G}_{A,B}(\enriched{C}(A,B)) = F(G_{A,B}(\mathcal{C}(A,B)))$
+  \end{itemize}
+  The functoriality follows from the following diagrams
+\[
+\adjustbox{width=\linewidth}{
+\begin{tikzcd}
+	{\enriched{C}(A,A')\otimes \enriched{C}(A',A'')} && {\enriched{C}(A,A'')} && {(f, g)} && {f;g} \\
+	\\
+	{\enriched{D}(GA,GA') \otimes \enriched{D}(GA',GA'')} && {\enriched{D}(GA,GA'')} && {(Gf,Gg)} && {Gf;Gg = G(f;g)}
+	\arrow[from=1-1, to=1-3]
+	\arrow[from=1-1, to=3-1]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-5, to=1-7]
+	\arrow[from=1-5, to=3-5]
+	\arrow[from=1-7, to=3-7]
+	\arrow[from=3-1, to=3-3]
+	\arrow[from=3-5, to=3-7]
+\end{tikzcd}}
+\]
+where the right-hand diagram is a component render of the left-hand diagram.
+It commutes because $G$ is a functor. 
+By freeness, the commutativity of more complex components follows from the commutativity for generators.
+The following diagrams commute for the same reason.
+\[\begin{tikzcd}
+	I_{\catname{SLat}} && {\enriched{C}(A,A)} && {*} && {1_{A}} \\
+	\\
+	&& {\enriched{D}(GA,GA)} &&&& {G(1_{A}) = 1_{G(A)}}
+	\arrow[from=1-1, to=1-3]
+	\arrow[from=1-1, to=3-3]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-5, to=1-7]
+	\arrow[from=1-5, to=3-7]
+	\arrow[from=1-7, to=3-7]
+\end{tikzcd}\]
+\end{proof}
+
+\begin{remark}
+  Again, because $\overline{G}_{A,B}$ is a semilattice homomorphism, we have $\overline{G}(f+g) = \overline{G}(f) + \overline{G}(g)$ for any $\catname{SLat}$-enriched functor $\overline{G}$.
+\end{remark}
+
+\begin{example}
+  Consider a monoidal bifunctor $\otimes : \mathcal{C} \times \mathcal{C} \to \mathcal{C}$ on $\mathcal{C}$.
+  It induces an enriched monoidal bifunctor $\overline{\otimes}$ on $\enriched{C}$.
+  \begin{enumerate}
+    \item $A \overline{\otimes} B \coloneq A \otimes B$;
+    \item $\overline{l} : A \overline{\otimes} I \to A \coloneq I \to \enriched{C}(A \overline{\otimes} I, I)$, i.e. $\overline{l}$ picks out $l$ out of $\enriched{C}(A \overline{\otimes} I, I)$;
+    \item similarly for $\overline{r}$, $\overline{\alpha}$.
+  \end{enumerate}
+  $\otimes_{A,B,C,D} : \mathcal{C}(A,B) \times \mathcal{C}(C,D) \to \mathcal{C}(A \otimes C, B \otimes D)$ becomes $\overline{\otimes}_{A,B,C,D} : \enriched{C}(A,B) \times \enriched{C}(C,D) \to \enriched{C}(A \overline{\otimes} C, B \overline{\otimes} D)$.
+  In particular, $f + g \;\overline{\otimes}\; h + k = (f \;\overline{\otimes}\; h + k) + (g \;\overline{\otimes}\; h + k) = (f \;\overline{\otimes}\; k) + (f \;\overline{\otimes}\; h) + (g \;\overline{\otimes}\; h) + (g \;\overline{\otimes}\; k)$, where $+$ binds tighter than $\overline{\otimes}$.
+\end{example}
+
+\begin{proposition}[Proposition 6.2.8~\cite{Borceux_1994}]
+  When $F,G$ are $\mathcal{V}$-valued $\mathcal{V}$-functors, the notion of $\mathcal{V}$-natural transformation reduces to
+  $\alpha_{A} : FA \to GA$ and the following diagram
+  \[\begin{tikzcd}
+	{C(A,B)} && {[FA,FB]} \\
+	\\
+	{[GA,GB]} && {[FA,GB]}
+	\arrow["{F_{A,B}}", from=1-1, to=1-3]
+	\arrow["{G_{A,B}}"', from=1-1, to=3-1]
+	\arrow["{[1,\alpha_{B}]}", from=1-3, to=3-3]
+	\arrow["{[\alpha_{A},1]}"', from=3-1, to=3-3]
+\end{tikzcd}\]
+\end{proposition}
+
+Note the flip of the domain and co-domain of the bottom arrow.
+This is because the functor $[-,-] : \enriched{C}^{\text{op}} \otimes \enriched{C} \to \mathcal{V}$ is contravariant in its first argument.
+
+\begin{definition}[$\mathcal{V}$-enriched adjunction]
+  Let $\mathcal{V}$ be a closed symmetric monoidal category and $\enriched{C}$, $\enriched{D}$ two $\mathcal{V}$-categories.
+  Two $\mathcal{V}$-functors $\overline{L} : \enriched{D} \to \enriched{C}$ and $\overline{R} : \enriched{C} \to \enriched{D}$ are $\mathcal{V}$-adjoint, $\overline{L}$ left adjoint to $\overline{R}$ and $\overline{R}$ right adjoint to $\overline{L}$, when there exist isomorphisms in $\mathcal{V}$
+  \[
+  \enriched{C}(\overline{L}A,B) \cong \enriched{D}(A, \overline{R}B) \;,
+  \]
+  which are $\mathcal{V}$-natural in $A$ and $B$.
+\end{definition}
+
+Equivalently, one can give a definition of an adjunction in terms of unit and co-unit natural transformations.
+
+\begin{definition}[Section 1.11 in~\cite{Kelly2022BASICCO}]
+  A $\mathcal{V}$-adjunction $\eta, \epsilon: \overline{L} \;\reflectbox{$\vdash$}\; \overline{R} : \enriched{C} \to \enriched{D}$ between functors $L : \enriched{D} \to \enriched{C}$ and $\enriched{R} : \enriched{C} \to \enriched{D}$ consists of $\mathcal{V}$-natural $\eta : 1 \to RL$ (the \textit{unit}) and $\epsilon : LR \to 1$ (the \textit{co-unit}) satisfying the triangular equations
+  \[
+  \overline{R}\epsilon . \eta_{\overline{L}} = 1 \qquad \epsilon_{\overline{L}} . \overline{R} \eta = 1
+  \]
+\end{definition}
+Furthermore we have that the isomorphism $\alpha : \enriched{C}(\overline{L}A,B) \to \enriched{D}(A, \overline{R}B)$ has the form $\enriched{D}(\eta, 1)\overline{R}$:
+\[
+  \alpha = \enriched{C}(\overline{L}A, B) \xrightarrow{\overline{R}} \enriched{D}(\overline{RL}A, \overline{R}B) \xrightarrow{\enriched{D}(\eta, 1)} \enriched{D}(A, \enriched{R}B)
+\]
+and $\eta = u_{\overline{L}A};\alpha_{\overline{L}A} = I \xrightarrow{u_{\overline{L}A}}\enriched{C}(\overline{L}A, \overline{L}A) \xrightarrow{\alpha_{\overline{L}A}} \enriched{D}(A,\overline{RL}A)$.
+Similarly, $\alpha^{-1} = \enriched{C}(1,\epsilon)\overline{L}$ and $\epsilon = u_{\overline{R}B};\alpha^{-1}_{\overline{R}B}$.
+
+\begin{proposition}
+\label{prop:naturality_preserved}
+  For a natural transformation $\alpha : T \to S$ for $T,S : \mathcal{C} \to \mathcal{D}$ there is a $\catname{SLat}$-natural transformation $\overline{\alpha} : \overline{T} \to \overline{S}$ where $\overline{T},\overline{S} : \enriched{C} \to \enriched{D}$.
+\end{proposition}
+\begin{proof}
+  The component of a natural transformation $\overline{\alpha}_{A}$ is given by $I_{\catname{SLat}} \to \enriched{D}(\overline{T}A, \overline{S}A)$, i.e. a morphism that picks out the original $\alpha_{A}$.
+  We need to check if so defined $\overline{\alpha}$ is $\catname{SLat}$-natural.
+  This follows from the following commutativity diagrams
+  \[
+  \adjustbox{width=\linewidth}{
+  \begin{tikzcd}
+	&& {\enriched{C}(A,B) \otimes I_{\catname{SLat}}} && {\enriched{D}(\overline{T}A,\overline{T}B) \otimes \enriched{D}(\overline{T}B, \overline{S}B)} &&&&& {f \otimes *} && {\overline{T}f \otimes F\alpha_{B}} \\
+	{\enriched{C}(A,B)} &&&&&& {\enriched{D}(\overline{T}A,\overline{S}B)} && f &&&& {F\alpha_{A};\overline{S}f = \overline{T}f ;F\alpha_{B}} \\
+	&& {I_{\catname{SLat}} \otimes \enriched{C}(A,B)} && {\enriched{D}(\overline{T}A,\overline{S}A) \otimes \enriched{D}(\overline{S}A,\overline{S}B)} &&&&& {* \otimes f} && {F\alpha_{A} \otimes \overline{S}f}
+	\arrow["{\overline{T}_{A,B} \otimes \overline{\alpha_{B}}}", from=1-3, to=1-5]
+	\arrow["{c_{\overline{T}A,\overline{T}B,\overline{S}B}}", from=1-5, to=2-7]
+	\arrow[from=1-10, to=1-12]
+	\arrow[from=1-12, to=2-13]
+	\arrow[from=2-1, to=1-3]
+	\arrow[from=2-1, to=3-3]
+	\arrow[from=2-9, to=1-10]
+	\arrow[from=2-9, to=3-10]
+	\arrow["{\overline{\alpha_{A}} \otimes \overline{S}(A,B)}", from=3-3, to=3-5]
+	\arrow["{c_{\overline{T}A,\overline{S}A,\overline{T}B}}"', from=3-5, to=2-7]
+	\arrow[from=3-10, to=3-12]
+	\arrow[from=3-12, to=2-13]
+\end{tikzcd}}
+\]
+The diagram on the right is the component-wise rendering of the diagram on the left.
+It commutes because it is essentially a lifting of the following diagram (naturality of $\alpha$) using free enrichment functor $F$.
+
+\[
+\begin{tikzcd}
+	TA && SA && {\overline{T}A} && {\overline{S}A} \\
+	\\
+	TB && SB && {\overline{T}B} && {\overline{S}B}
+	\arrow["{\alpha_{A}}"', from=1-1, to=1-3]
+	\arrow["Tf", from=1-1, to=3-1]
+	\arrow["Sf"', from=1-3, to=3-3]
+	\arrow["{F\alpha_{A}}"', from=1-5, to=1-7]
+	\arrow["{\overline{T}f}", from=1-5, to=3-5]
+	\arrow["{\overline{S}A}"', from=1-7, to=3-7]
+	\arrow["{\alpha_{B}}", from=3-1, to=3-3]
+	\arrow["{F\alpha_{B}}", from=3-5, to=3-7]
+\end{tikzcd}
+\]
+
+The commutativity for more complex elements of a semilattice like $f + g$ follows component-wise.
+
+\end{proof}
+
+\begin{example}
+
+Consider a symmetry natural transformation for a given symmetric monoidal category $\mathcal{C}$ $\sigma_{A,B} : A \otimes B \to B \otimes A$ and its freely $\catname{SLat}$ enriched version $\overline{\sigma_{A,B}} : I_{\catname{SLat}} \to \enriched{C}(A \overline{\otimes} B, B \overline{\otimes} A)$.
+$\catname{SLat}$-naturality takes the following form
+
+\[
+\adjustbox{width=\linewidth}{
+\begin{tikzcd}
+	&& {(\enriched{C}(A,B) \times \enriched{C}(C,D)) \otimes I} && {\enriched{C}(A \overline{\otimes} C, B \overline{\otimes} D) \otimes \enriched{C}(B \overline{\otimes} D, D \overline{\otimes} B)} \\
+	{\enriched{C}(A,B) \times \enriched{C}(C,D)} &&&&&& {\enriched{C}(A \overline{\otimes} C, D \overline{\otimes} B)} \\
+	&& {I \otimes (\enriched{C}(A,B) \times \enriched{C}(C,D))} && {\enriched{C}(A \overline{\otimes} C, C \overline{\otimes} A) \otimes \enriched{C}(C \overline{\otimes} A, D \overline{\otimes} B)} \\
+	\\
+	&& {(f,g) \otimes *} && {(f \overline{\otimes} g) \otimes \sigma} \\
+	{(f,g)} &&&&&& {\sigma;(g \overline{\otimes}f) = (f\overline{\otimes}g);\sigma} \\
+	&& {* \otimes (f,g)} && {\sigma \otimes (g \overline{\otimes} f)}
+	\arrow["{\overline{\otimes} \otimes \overline{\sigma}_{B,D}}", from=1-3, to=1-5]
+	\arrow[from=1-5, to=2-7]
+	\arrow[from=2-1, to=1-3]
+	\arrow[from=2-1, to=3-3]
+	\arrow["{\overline{\sigma}_{C,A} \otimes \overline{\otimes}}"', from=3-3, to=3-5]
+	\arrow[from=3-5, to=2-7]
+	\arrow[from=5-3, to=5-5]
+	\arrow[from=5-5, to=6-7]
+	\arrow[from=6-1, to=5-3]
+	\arrow[from=6-1, to=7-3]
+	\arrow[from=7-3, to=7-5]
+	\arrow[from=7-5, to=6-7]
+\end{tikzcd}}\]
+
+Given $(f_1 + f_2, g)$ we have $((f_1 + f_2) \;\overline{\otimes}\; g);\sigma = (f_1 \;\overline{\otimes}\; g) + (f_{2} \;\overline{\otimes}\; g);\sigma = (f_{1} \;\overline{\otimes}\; g);\sigma + (f_{2} \;\overline{\otimes}\; g);\sigma = \sigma;(g \;\overline{\otimes}\; f_{1}) + \sigma;(g \;\overline{\otimes}\; f_{2})$
+
+\end{example}
+
+
+\begin{proposition}
+
+Functor $F: \mathcal{Cat} \to \catname{SLat}-\mathcal{Cat}$ is a 2-functor.
+\end{proposition}
+\begin{proof}
+  This is implied by Propositions~\ref{prop:functoriality_preserved} and \ref{prop:naturality_preserved}.
+\end{proof}
+
+The above proposition means, in particular, that an ordinary adjunction gives rise to a corresponding $\catname{SLat}$-enriched adjuntion.
+The latter, however, could be also shown Equivalently as below.
+
+\begin{proposition}
+  Given an adjunction $\mathcal{C}(LA,B) \cong \mathcal{D}(A,RB)$ of plain functors we also get an $\catname{SLat}$-enriched adjunction $\enriched{C}(\overline{L}A,B) \cong \enriched{D}(A, \overline{R}B)$.
+  Because $\overline{L}$ acts on objects as $L$ we will further omit the bar.
+\end{proposition}
+\begin{proof}
+  The first adjunction implies the existence of natural isomorphisms (in $A$ and $B$) between $\mathcal{C}(L-,B)$ and $\mathcal{D}(-,RB)$ and $\mathcal{C}(LA,-)$ and $\mathcal{D}(A,R-)$ respectively.
+  Naturality in $B$ is by definition the commutativity of the following diagram
+  \begin{equation}
+    \label{diag:naturality_plain}
+  \begin{tikzcd}
+	{\mathcal{C}(LA,B)} && {\mathcal{D}(A,RB)} \\
+	\\
+	{\mathcal{C}(LA,B')} && {\mathcal{D}(A,RB')}
+	\arrow["{\alpha_{B}}"', from=1-1, to=1-3]
+	\arrow["{\mathcal{C}(LA,f)}"', from=1-1, to=3-1]
+	\arrow["{\mathcal{D}(A,Rf)}", from=1-3, to=3-3]
+	\arrow["{\alpha_{B'}}", from=3-1, to=3-3]
+  \end{tikzcd}
+\end{equation}
+  and similarly for the naturality in $A$.
+  The claim is that $\enriched{C}(LA,B) \cong \enriched{D}(A,RB)$ is an $\catname{SLat}$-adjunction.
+  Recall that $\enriched{C}(LA,B) = F(\mathcal{C}(LA,B))$ and similarly for another hom-set and clearly the isomorphism is preserved: given $\alpha$, an isomorphism from $\mathcal{C}(LA,B) \to \mathcal{D}(A,RB)$, the isomorphism from $\enriched{C}(LA,B) \to \enriched{D}(A,RB)$ is $\enriched{\alpha} = F(\alpha)$.
+  We need to check that this $\enriched{\alpha}$ is natural.
+  This is equivalent to checking if the following diagram commutes
+  \[\begin{tikzcd}
+	{\enriched{C}(B,B')} && {[\enriched{C}(LA,B),\enriched{C}(LA,B')]} \\
+	\\
+	{[\enriched{D}(A,RB),\enriched{D}(A,RB')]} && {[\enriched{C}(A,RB),\enriched{D}(A,RB')]}
+	\arrow["{\enriched{C}(LA,-)}", from=1-1, to=1-3]
+	\arrow["{\enriched{D}(A,R-)}"', from=1-1, to=3-1]
+	\arrow["{[1,\overline{\alpha}_{B'}]}", from=1-3, to=3-3]
+	\arrow["{[\overline{\alpha_{B}},1]}"', from=3-1, to=3-3]
+\end{tikzcd}\]
+which component-wise becomes
+
+\[
+\begin{tikzcd}
+	f & {\enriched{C}(LA,f)} \\
+	{\enriched{D}(A,Rf)} & {\overline{\alpha}_{B};\enriched{D}(A,Rf);1 = 1;\enriched{C}(LA,f);\overline{\alpha}_{B}'}
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=1-1, to=2-1]
+	\arrow[from=1-2, to=2-2]
+	\arrow[from=2-1, to=2-2]
+\end{tikzcd}
+\]
+
+The commutativity of the diagram above follows from applying $F$ to the diagram \ref{diag:naturality_plain}:
+\[\begin{tikzcd}
+	{\enriched{C}(LA,B)} && {\enriched{D}(A,RB)} \\
+	\\
+	{\enriched{C}(LA,B')} && {\enriched{D}(A,RB')}
+	\arrow["{\overline{\alpha}_{B}}", from=1-1, to=1-3]
+	\arrow["{\enriched{C}(LA,f)}"', from=1-1, to=3-1]
+	\arrow["{\enriched{D}(A,Rf)}", from=1-3, to=3-3]
+	\arrow["{\overline{\alpha}_{B'}}", from=3-1, to=3-3]
+\end{tikzcd}
+\]
+The commutativity for more complex elements of $\enriched{C}(B,B')$, \textit{e.g.} $f + g$, follows component-wise.
+Similarly for naturality in $A$.
+Then, $\catname{Slat}$-naturality separately in $A$ and $B$ implies $\catname{SLat}$-naturality in both $A$ and $B$, a consequence of a more general statement about $\mathcal{V}$-naturality ((1.21) in~\cite{Kelly2022BASICCO})
+
+\end{proof}
+
+
+\end{section}
+
+\begin{section}{String diagrams for freely $\catname{SLat}$-enriched symmetric monoidal categories}
+  
+String diagrams are a two-dimensional syntax for describing morphisms in symmetric monoidal categories which is typically given by the following grammar parameterised over a monoidal signature $\Sigma$ of symbols.
+The labels on wires specify the types of the morphisms.
+
+\[
+\tikzfig{./figures/string_diagrams}
+\]
+
+The diagrams constructed by using the rules above are then subject to SMC equations.
+
+By freely enriching home-sets to hom-objects in $\catname{SLat}$ we still can access the morphisms within these objects.
+To support `new' morphisms we extend the grammar by adding a production for $f + g$
+
+\[
+\adjustbox{scale=0.8}{
+\tikzfig{./figures/f_plus_g}
+}
+\]
+
+Once we consider string diagrams for a $\catname{SLat}$-enriched category $\enriched{C}$, $;$ and $\otimes$ become $c_{A,B,C}$ and $\overline{\otimes}$ respectively.
+Since the latter are semilattice homomorphisms, we have the following equations (with labels on wires omitted) for the newly introduced dashed boxes.
+
+\[
+\adjustbox{width=\linewidth}{
+\tikzfig{./figures/egraph-strings-equations}
+}
+\]
+
+The fact of $+$ being associative and commutative justifies the usage of $\ldots$ in the equations.
+\end{section}
+
+
+TODO: string diagrams for functorial boxes and natural transformations (unit-counit ones).
+
+% \[
+% \adjustbox{scale=0.95, lap={\width}{-12em}}{
+%     \begin{tikzcd}
+%         & {\enriched{C}(A_1,A_2)} \arrow[ld] \arrow[rd]                       &                                                                                                                                                                                                            \\
+% {I \otimes \enriched{C}(A_1,A_2)} \arrow[dd, "{\alpha'_{A_1} \otimes \overline{\mathcal{D}}(\overline{L}A,-)}"]                                                                    &                                                                               & {\enriched{C}(A_1,A_2) \otimes I} \arrow[dd, "{\enriched{C}(\overline{L}A,-) \otimes \alpha'_{A_2}}"]                                                                                  \\
+%         &                                                                               &                                                                                                                                                                                                            \\
+% {\mathcal{V}(\enriched{C}(\overline{L}A,A_1),\overline{\mathcal{D}}(A,A_1)) \otimes \mathcal{V}(\overline{\mathcal{D}}(A,A_1),\overline{\mathcal{D}}(A,A_2)))} \arrow[rd, "\circ"] &                                                                               & {\mathcal{V}(\enriched{C}(\overline{L}A,A_1),\enriched{C}(\overline{L}A,A_2))) \otimes \mathcal{V}(\enriched{C}(LA,A_2),\overline{\mathcal{D}}(A,A_2))} \arrow[ld, "\circ"'] \\
+%         & {\mathcal{V}(\enriched{C}(\overline{L}A,A_1), \overline{D}(A,A_2))} &                                                                                                                                                                                                           
+% \end{tikzcd}
+% }
+% \]
+
+% \[
+%   \begin{tikzcd}
+%     {\enriched{C}(B,B')} \arrow[rr, "{\enriched{C}(LA,-)}"] \arrow[d, "{\overline{\mathcal{D}}(A,R-)}"] &  & {[\enriched{C}(LA,B), \enriched{C}(LA,B')]} \arrow[d, "{[1,\overline{\alpha_{B'}}]}"] \\
+%     {[\overline{\mathcal{D}}(A,RB),\overline{\mathcal{D}}(A,RB')]} \arrow[rr, "{[\overline{\alpha_{B}},1]}"]                &  & {[\enriched{C}(LA,B),\overline{\mathcal{D}}(A,RB')]}                                           
+%     \end{tikzcd}
+% \]
+
+% \vspace{4em}
+
+% \[
+%   \begin{tikzcd}
+%     {\enriched{C}(B,B')} \arrow[rr, "{\enriched{C}(LA,-)}"] \arrow[d, "{\overline{\mathcal{D}}(A,R-)}"] &  & {[\enriched{C}(LA,B), \enriched{C}(LA,B')]} \arrow[d, "{[1,\overline{\alpha_{B'}}]}"]                             \\
+%     {[\overline{\mathcal{D}}(A,RB),\overline{\mathcal{D}}(A,RB')]} \arrow[rr, "{[\overline{\alpha_{B}},1]}"]                &  & {[\enriched{C}(LA,B),\overline{\mathcal{D}}(A,RB')]}                                                                        \\
+%     f \arrow[rr] \arrow[d]                                                                                                  &  & {\enriched{C}(LA,f)} \arrow[d]                                                                                              \\
+%     {\overline{\mathcal{D}}(A,Rf)} \arrow[rr]                                                                               &  & {1;\enriched{C}(LA,f);\overline{\alpha_{B'}} = \overline{\alpha_{B}};\overline{\mathcal{D}}(A,Rf);1}
+%     \end{tikzcd}
+% \]
+
+\bibliographystyle{acm}
+\bibliography{bibliography}
+
+\end{document}
