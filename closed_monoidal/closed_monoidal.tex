@@ -213,7 +213,7 @@
 \begin{section}{Enriched Categories}
 
 \begin{definition}[Definition 6.2.1~\cite{Borceux_1994}]
-  Let $\mathcal{V} = (\mathcal{V}_{0}, I_{\mathcal{V}}, \otimes, l, r, a, \sigma)$ be a closed symmetric monoidal category where $l$ and $r$ are left and right unitors and $\sigma$ is a symmetry.
+  Let $\mathcal{V} = (\mathcal{V}_{0}, I_{\mathcal{V}}, \otimes, l, r, a)$ be a monoidal category where $l$ and $r$ are left and right unitors.
   We define a $\mathcal{V}$-enriched category $\enriched{C}$ consisting of the following data
   \begin{enumerate}
     \item a class of objects $\obj{\enriched{C}}$
@@ -249,6 +249,12 @@
   We will occasionally use $c_{A,B,C}$ as $;$, \textit{i.e.}, instead of $c_{A,B,C}(f,g)$ we will write $f ; g$ when it makes sense to talk about components of hom-objects.
 \end{remark}
 
+\begin{remark}
+
+Requiring that a category $\mathcal{V}$ is monoidal is the most basic requirement for enriched category theory.
+To make the notion of enriched category more useful, in particular to be able to talk about a free enrichment, we will further require that $\mathcal{V}$ is a closed symmetric monoidal category.
+\end{remark}
+
 \begin{example}
 When $\mathcal{V} = \catname{Set}$ we end up with the usual definition of a category.
 $c_{A,B,C}$ becomes the usual morphism composition ($f;g$ rather than $g \circ f$) and $u_{A} : I_{\mathcal{V}} \to \enriched{C}(A,A)$ picks out the identity morphism from the homset $\enriched{C}(A,A)$ by matching the only element of a singleton set $I \cong \{*\} \mapsto 1_{A}$ and component-wise the diagrams above commute.
@@ -281,8 +287,8 @@ Semilattices with their respective homomorphisms form a category that we denote 
   The tensor product of two semilattices $S_{1}$ and $S_{2}$ is defined as follows.
   $S_{1} \otimes S_{2}$ consists of pairs $(s_1,s_2)$ $s_{1} \in S_{1}$, $s_{2} \in S_{2}$ quotiented by commutativity, idempotence and associativity and additionally by the following relations
   \begin{itemize}
-    \item $(s_{1} +_{S_{1}} s_{1}',s_{2}) \cong (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
-    \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \cong (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+    \item $(s_{1} +_{S_{1}} s_{1}',s_{2}) \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+    \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
   \end{itemize}
 
   The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
@@ -295,7 +301,7 @@ Semilattices with their respective homomorphisms form a category that we denote 
 This makes $\catname{SLat}$ a suitable base for enrichment and allows us to take $\mathcal{V} = \catname{SLat}$.
 Before we proceed we need to define what an enriched functor is and define what it means to freely enrich a category over $\catname{SLat}$.
 
-\begin{definition}[Isomorphism in $\enriched{C}$]
+\begin{definition}[Isomorphism in $\enriched{C}$. Lemma 3.5.12~\cite{Riehl_2014}]
 
 Let $\enriched{C}$ be a $\mathcal{V}$-enriched category.
 Given two objects $A,B \in \enriched{C}$ and a morphism $f : I_{\mathcal{V}} \to \enriched{C}(A,B)$, we call $f$ an isomorphism if there is a $g : I_{\mathcal{V}} \to \enriched{C}(B,A)$ such that
@@ -305,8 +311,8 @@ Given two objects $A,B \in \enriched{C}$ and a morphism $f : I_{\mathcal{V}} \to
 equals $u_{A} : I_{\mathcal{V}} \to \enriched{C}(A,A)$.
 \end{definition}
 
-TODO: I took this definition from \url{https://mathoverflow.net/questions/326575/isomorphisms-in-enriched-categories#:~:text=equals%20id%3A1%E2%86%92,C(X%2CY).} 
-Need a proper reference. Riehl, for example, only defines isomorphism of $A$ $B$ in terms of objects of the underlying category.
+% TODO: I took this definition from \url{https://mathoverflow.net/questions/326575/isomorphisms-in-enriched-categories#:~:text=equals%20id%3A1%E2%86%92,C(X%2CY).} 
+% Need a proper reference. Riehl, for example, only defines isomorphism of $A$ $B$ in terms of objects of the underlying category.
 
 \begin{definition}
   Let $\enriched{C}$ and $\enriched{D}$ be two $\mathcal{V}$-categories.
@@ -378,35 +384,69 @@ which is the usual naturality condition.
 
 \end{remark}
 
+\begin{definition}
+Forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(I_{\catname{SLat}, -}) : \catname{SLat} \to \catname{Set}$.
+\end{definition}
+
+Intuitively, the above functor returns the underlying set of a given semilattice $S$ as each morphism from $\{*\} \to S$ picks out an element of $S$.
+
 \begin{proposition}
   The forgetful functor $U : \catname{SLat} \to \catname{Set}$ has a left adjoint free functor $F : \catname{Set} \to \catname{SLat}$.
 \end{proposition}
 \begin{proof}
-  The functor is defined by letting $F(A) = \coprod_{A} I$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
+  The functor $F$ is defined by letting $F(A) = \coprod_{A} I_{\catname{SLat}}$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
   The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
-  In particular, $F(I) = I_{\catname{SLat}}$ and therefore such functor is monoidal with $F(A \otimes B) \cong F(A) \otimes F(B)$.
+  The adjunction is then given by the following natural isomorphisms
+  \[
+  \catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) \cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B)) \cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B)) \cong \catname{Set}(A, U(B))
+  \]
+  The fist isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
+  Furthermore, we have, 
+  \[
+  F(I) \cong I_{\catname{SLat}}
+  \]
+  and 
+  \begin{align*}
+  F(A) \otimes F(B) &\cong (\coprod_{A} I_{\catname{SLat}}) \otimes (\coprod_{B} I_{\catname{SLat}})\\
+        &\cong \coprod_{A} (I_{\catname{SLat}} \otimes \coprod_{B} I_{\catname{SLat}})\\
+        &\cong \coprod_{A} (\coprod_{B} (I_{\catname{SLat}} \otimes I_{\catname{SLat}}))\\
+        &\cong \coprod_{A} (\coprod_{B} I_{\catname{SLat}})\\
+        &\cong \coprod_{A \times B} I_{\catname{SLat}}\\
+        &\cong F(A \times B)
+  \end{align*}
+In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
 \end{proof}
 
-TODO: add a note that this follows from the definition of a copower.
+\begin{remark}
+  The above proposition in fact works for any symmetric monoidal closed category $\mathcal{V}$ picked as a base for enrichment (Proposition 6.4.6~\cite{Borceux_1994}) 
+\end{remark}
+
+\begin{remark}
+
+  Free semilattice on a set $S$ can be though of as a set of non-empty subsets of $S$.
+\end{remark}
 
 \begin{definition}[Proposition 6.4.7~\cite{Borceux_1994}]
+\label{def:free_slat}
   Let $\mathcal{C}$ be a small category.
   Freely enriched $\catname{SLat}$-category $\enriched{C}$ is defined as follows
   \begin{enumerate}
     \item $\obj{\enriched{C}} = \obj{\mathcal{C}}$;
     \item $\enriched{C}(A,B) = F(\mathcal{C}(A,B))$, where $F$ is the left adjoint to $U : \catname{SLat} \to \catname{Set}$;
-    \item $c_{A,B,C} : \enriched{C}(A,B) \otimes \enriched{C}(B,C) \to \enriched{C}(A,C)$ is the composite
+    \item $c_{A,B,C} : \enriched{C}(A,B) \otimes \enriched{C}(B,C) \to \enriched{C}(A,C)$ is the composite $\cong ; F(;)$ below
     \[
-    F(\mathcal{C}(A,B)) \otimes F(\mathcal{C}(B,C)) \cong F(\mathcal{C}(A,B) \otimes \mathcal{C}(B,C)) \xrightarrow{F(;)} F(\mathcal{C}(A,C))
+    F(\mathcal{C}(A,B)) \otimes F(\mathcal{C}(B,C)) \xrightarrow{\cong} F(\mathcal{C}(A,B) \otimes \mathcal{C}(B,C)) \xrightarrow{F(;)} F(\mathcal{C}(A,C))
     \] 
-    where the arrow is the image of the ordinary composition
+    where the rightmost arrow is the image of the ordinary composition;
     \item $u_{A} : I_{\catname{SLat}} \to \enriched{C}(A,A)$ is the composite
     \[
-    I_{\catname{SLat}} \cong F(I) \to F(\mathcal{C}(A,A))
+    I_{\catname{SLat}} \xrightarrow{\cong} F(I) \to F(\mathcal{C}(A,A))
     \]
-    where the arrow is $* \mapsto 1_{A}$.
+    where the rightmost arrow is $* \mapsto 1_{A}$.
   \end{enumerate}
 \end{definition}
+
+This is again a specialisation of a more general definition of a free $\mathcal{V}$-category (Proposition 6.4.7~\cite{Borceux_1994}).
 
 We will then consider \textit{only} such freely-enriched categories.
 
@@ -463,8 +503,8 @@ The following diagrams commute for the same reason.
 \end{remark}
 
 \begin{example}
-  Consider a monoidal bifunctor $\otimes : \mathcal{C} \times \mathcal{C} \to \mathcal{C}$ on $\mathcal{C}$.
-  It induces an enriched monoidal bifunctor $\overline{\otimes}$ on $\enriched{C}$.
+  Let $\mathcal{C} = (\mathcal{C}_{0},I,\otimes, l, r, \alpha)$ be a monoidal category and consider the bifunctor $\otimes : \mathcal{C} \times \mathcal{C} \to \mathcal{C}$ on $\mathcal{C}$.
+  It induces an enriched monoidal category $\enriched{C} = (\enriched{C}_{0}, I, \enriched{\otimes}, \overline{l}, \overline{r}, \enriched{\alpha})$ such that
   \begin{enumerate}
     \item $A \overline{\otimes} B \coloneq A \otimes B$;
     \item $\overline{l} : A \overline{\otimes} I \to A \coloneq I \to \enriched{C}(A \overline{\otimes} I, I)$, i.e. $\overline{l}$ picks out $l$ out of $\enriched{C}(A \overline{\otimes} I, I)$;
@@ -520,7 +560,10 @@ Similarly, $\alpha^{-1} = \enriched{C}(1,\epsilon)\overline{L}$ and $\epsilon = 
   For a natural transformation $\alpha : T \to S$ for $T,S : \mathcal{C} \to \mathcal{D}$ there is a $\catname{SLat}$-natural transformation $\overline{\alpha} : \overline{T} \to \overline{S}$ where $\overline{T},\overline{S} : \enriched{C} \to \enriched{D}$.
 \end{proposition}
 \begin{proof}
-  The component of a natural transformation $\overline{\alpha}_{A}$ is given by $I_{\catname{SLat}} \to \enriched{D}(\overline{T}A, \overline{S}A)$, i.e. a morphism that picks out the original $\alpha_{A}$.
+  Recall that an ordinary natural transformation is in fact a $\catname{Set}$-enriched natural transformation and has the form $\alpha_{A} : I \to \mathcal{D}(TA,SA)$.
+  We then obtain an $\catname{SLat}$-natural transformation $\overline{\alpha_{A}} = F(\alpha_{A}) : F(I) \to F(\mathcal{D}(TA,SA))$, or $\overline{\alpha_{A}} : I_{\catname{SLat}} \to \enriched{D}(TA,SA)$ given as $* \mapsto F\alpha_{A}$.
+  Again, we can use $TA$ or $\overline{T}A$ interchangeably as their action on objects is the same.
+  % The component of a natural transformation $\overline{\alpha}_{A}$ is given by $I_{\catname{SLat}} \to \enriched{D}(\overline{T}A, \overline{S}A)$, i.e. a morphism that picks out the original $\alpha_{A}$.
   We need to check if so defined $\overline{\alpha}$ is $\catname{SLat}$-natural.
   This follows from the following commutativity diagrams
   \[
@@ -601,18 +644,17 @@ Given $(f_1 + f_2, g)$ we have $((f_1 + f_2) \;\overline{\otimes}\; g);\sigma = 
 
 
 \begin{proposition}
-
-Functor $F: \mathcal{Cat} \to \catname{SLat}-\mathcal{Cat}$ is a 2-functor.
+Functor $F : \catname{Set} \to \catname{SLat}$ induces a 2-functor $F^{2}: \catname{Cat} \to \catname{SLat}-\catname{Cat}$ from the category of small categories to the category of small categories enriched over a category of semilattices.
 \end{proposition}
 \begin{proof}
-  This is implied by Propositions~\ref{prop:functoriality_preserved} and \ref{prop:naturality_preserved}.
+  The functoriality of $F^{2}$ is given by Definition~\ref{def:free_slat} and 2-functoriality is implied by Propositions~\ref{prop:functoriality_preserved} and \ref{prop:naturality_preserved}.
 \end{proof}
 
 The above proposition means, in particular, that an ordinary adjunction gives rise to a corresponding $\catname{SLat}$-enriched adjuntion.
-The latter, however, could be also shown Equivalently as below.
+The latter, however, could be also shown equivalently as below.
 
 \begin{proposition}
-  Given an adjunction $\mathcal{C}(LA,B) \cong \mathcal{D}(A,RB)$ of plain functors we also get an $\catname{SLat}$-enriched adjunction $\enriched{C}(\overline{L}A,B) \cong \enriched{D}(A, \overline{R}B)$.
+  Given an adjunction $\mathcal{C}(LA,B) \cong \mathcal{D}(A,RB)$ of plain functors $L : \mathcal{D} \to \mathcal{C}$ and $R : \mathcal{C} \to \mathcal{D}$, we also get an $\catname{SLat}$-enriched adjunction $\enriched{C}(\overline{L}A,B) \cong \enriched{D}(A, \overline{R}B)$ of $\catname{SLat}$-functors $\overline{L} : \enriched{D} \to \enriched{C}$ and $\overline{R} : \enriched{C} \to \enriched{D}$.
   Because $\overline{L}$ acts on objects as $L$ we will further omit the bar.
 \end{proposition}
 \begin{proof}
@@ -683,7 +725,9 @@ String diagrams are a two-dimensional syntax for describing morphisms in symmetr
 The labels on wires specify the types of the morphisms.
 
 \[
+\adjustbox{scale=0.7}{
 \tikzfig{./figures/string_diagrams}
+}
 \]
 
 The diagrams constructed by using the rules above are then subject to SMC equations.
@@ -707,10 +751,93 @@ Since the latter are semilattice homomorphisms, we have the following equations 
 \]
 
 The fact of $+$ being associative and commutative justifies the usage of $\ldots$ in the equations.
+
+Then we can reuse the diagrams for functorial boxes~\cite{GhicaZanassiStringLambda}.
+Given a functor $F : \mathcal{C} \to \mathcal{D}$ and a morphism $f \in C(A,B)$ we can depict the application of $Ff$ as below (left) together with the functoriality equations in Figure~\ref{fig:functoriality_laws}
+
+\[
+  \adjustbox{scale=0.7}{
+  \tikzfig{./figures/functorial_string}
+  }
+\]
+
+\begin{figure}
+  \begin{subfigure}[c]{0.4\linewidth}
+    \[
+    \adjustbox{scale=0.7}{
+    \tikzfig{./figures/functoriality_eq_1_string}
+    }
+    \]
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[c]{0.4\linewidth}
+    \[
+    \adjustbox{scale=0.7}{
+    \tikzfig{./figures/functoriality_eq_2_string}
+    }
+    \]
+  \end{subfigure}
+  \caption{String diagrammatic equations for functoriality}
+  \label{fig:functoriality_laws}
+\end{figure}
 \end{section}
 
+A functor $\overline{F}$ induced by the functor $F$ has the same diagrammatic rendering with the addition of an extra equation.
 
-TODO: string diagrams for functorial boxes and natural transformations (unit-counit ones).
+\[
+\adjustbox{scale=0.7}{
+\tikzfig{./figures/functoriality_enriched_eq}
+}
+\]
+
+Since a component of a natural transformation $\overline{\alpha}$ between two $\catname{SLat}$-enriched functors $\overline{F} : \enriched{C} \to \enriched{D}$ and $\overline{G}: \enriched{C} \to \enriched{D}$ has the form $\overline{\alpha_{A}} : I_{\catname{SLat}} \to \enriched{D}(FA, GA)$, it can be identified with the element of $\enriched{D}(FA,GA)$, i.e. we can use the syntax for plain morphism to depict components of natural transformations.
+This allows us to reuse the whole syntax machinery for Cartesian closed categories for their free $\catname{SLat}$-enriched version which induce an additional equation 
+
+\[
+\adjustbox{scale=0.7}{
+  \tikzfig{./figures/lambda_enriched_eq}
+}
+\]
+
+We can similarly lift a trace from a traced monoidal category $\mathcal{C}$ to $\enriched{C}$.
+Recall that a trace is an operator
+\[
+\text{tr}^{X} : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A,B)
+\]
+\textit{i.e.}, a mapping between hom-sets, such that it satisfies the equations
+\begin{enumerate}
+  \item \textit{Tightening} (naturality in $A,B$) For all $A, B, C, D, X \in \mathcal{C}$, $g : A \to B$, $f : B \otimes X \to C \otimes X$, $h : C \to D$
+  \[
+  \text{tr}^{X}((h \otimes id_{X});f;(g \otimes id_{X})) = h;\text{tr}^{X}(f);g
+  \]
+  \item \textit{Sliding} (naturality in $X$) For all $A,B,X,Y \in \mathcal{C}$, $f : A \otimes X \to B \otimes Y$, $g : Y \to X$
+  \[
+   \text{tr}^{X}(f;(id_{B} \otimes g)) = \text{tr}^{Y}((id_{A} \otimes g); f) 
+  \]
+  \item \textit{Vanishing} For all $A,B,X,Y \in \mathcal{C}$,
+  \[
+  \text{tr}^{I}(f) = f,\; \forall f : A \to B \qquad \text{and} \qquad \text{tr}^{X \otimes Y}(f) = \text{tr}^{X}(\text{tr}^{Y}(f)), \; \forall f : A \otimes X \otimes Y \to B \otimes X \otimes Y
+  \]
+  \item \textit{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : C \otimes X \to D \otimes X$, $g : A \to B$
+    \[
+    \text{tr}^{X}(g \otimes f) = g \otimes \text{tr}^{X}(f)
+    \] 
+  \item \textit{Yanking} (when $\mathcal{C}$ is symmetric)
+    \[
+    \text{tr}^{X}(\sigma_{X,X}) = id_{X}
+    \]
+\end{enumerate}
+
+By freely enriching $\mathcal{C}$ we obtain an enriched trace
+\[
+\text{tr}^{X} : \enriched{C}(A \overline{\otimes} X, B \overline{\otimes} X) \to \enriched{C}(A,B)
+\]
+and all the equations are preserved with the addition of a new equation
+\[
+  \text{tr}^{X}(f + g) = \text{tr}^{X}(f) + \text{tr}^{X}(g)
+\]
+for $f,g : A \overline{\otimes} X \to B \overline{\otimes} X$
+TODO: trace?
 
 % \[
 % \adjustbox{scale=0.95, lap={\width}{-12em}}{
