@@ -188,13 +188,18 @@ It is possible to encode such theories using e-graphs, for example as
 
 \begin{minted}{c++}
     enum CommutativeComonoids {
-        "mu" = Mu([Id;1]),
-        "i" = I([Id;1]),
+        "mu" = Mu, // mu : 1 -> 2
+        "i" = I, // i : 1 -> 0
         ";" = Compose([Id;2]),
         "parallel" = Parallel([Id;2]),
-        "id" = Identity([Id;1]),
+        "id" = Identity1,
+        "id_2" = Identity2,
         "I" = Unit,
-        "sym" = Sym([Id;2])   
+        "sym_1_1" = Sym1_1,
+        "sym_2_2" = Sym2_2,
+        "sym_2_1" = Sym2_1,
+        "sym_1_2" = Sym1_2,
+        Symbol(egg::Symbol),
     }
 \end{minted}
 
@@ -218,7 +223,7 @@ It is possible to encode such theories using e-graphs, for example as
         Before saturation
         \vspace{-3em}
         \begin{figure}
-            \includegraphics[scale=0.4]{figures/egraph_before_saturation.pdf}
+            \includegraphics[scale=0.4]{figures/egraph_before_saturation_fix.pdf}
         \end{figure}
     \end{example}
 \end{frame}
