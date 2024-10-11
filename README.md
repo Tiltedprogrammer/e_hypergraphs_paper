@@ -1,3 +1,4 @@
 - The paper can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/arxiv.pdf)
 - EGRAPHS2024 extended abstract can be accessed [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/ExtendedAbstract.pdf)
 - Slides can be found [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/slides.pdf)
+- Notes on enrichment and closed monoidal e-hypergraphs are [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/closed_monoidal.pdf)
