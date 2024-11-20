@@ -1,0 +1,78 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=small box] (0) at (-4, 0.5) {$\mathcal{F}$};
+		\node [style=none] (27) at (-2.5, 0.5) {};
+		\node [style=none] (28) at (-1.5, 0.5) {};
+		\node [style=none] (29) at (-0.75, 3.25) {};
+		\node [style=none] (30) at (-0.75, -2) {};
+		\node [style=none] (31) at (0.75, -2) {};
+		\node [style=none] (32) at (0.75, 3.25) {};
+		\node [style=node] (33) at (0, 1.25) {};
+		\node [style=node] (34) at (0, -1.25) {};
+		\node [style=none] (35) at (0, 0) {$\vdots$};
+		\node [style=none] (36) at (2.75, 3.25) {};
+		\node [style=none] (37) at (2.75, -2) {};
+		\node [style=none] (38) at (4.25, -2) {};
+		\node [style=none] (39) at (4.25, 3.25) {};
+		\node [style=node] (40) at (3.5, 1.25) {};
+		\node [style=node] (41) at (3.5, -1.25) {};
+		\node [style=none] (42) at (3.5, 0) {$\vdots$};
+		\node [style=none] (43) at (1.25, 0.5) {};
+		\node [style=none] (44) at (2.25, 0.5) {};
+		\node [style=none] (45) at (4.75, 0.5) {};
+		\node [style=none] (46) at (5.75, 0.5) {};
+		\node [style=none] (47) at (6.5, 3.25) {};
+		\node [style=none] (48) at (6.5, -2) {};
+		\node [style=none] (49) at (8, -2) {};
+		\node [style=none] (50) at (8, 3.25) {};
+		\node [style=node] (51) at (7.25, 1.25) {};
+		\node [style=node] (52) at (7.25, -1.25) {};
+		\node [style=none] (53) at (7.25, 0) {$\vdots$};
+		\node [style=none] (54) at (8.5, 0.5) {};
+		\node [style=none] (55) at (9.5, 0.5) {};
+		\node [style=hedge interface] (57) at (0, 2.25) {};
+		\node [style=hedge interface] (58) at (3.5, 2.25) {};
+		\node [style=hedge interface] (59) at (7.25, 2.25) {};
+		\node [style=none] (63) at (10.75, 2) {};
+		\node [style=none] (64) at (10.75, -1) {};
+		\node [style=none] (67) at (13.75, -1) {};
+		\node [style=none] (68) at (13.75, 2) {};
+		\node [style=small box] (70) at (12.25, 0.5) {$\mathcal{F}$};
+		\node [style=none] (71) at (16.25, 2) {};
+		\node [style=none] (72) at (16.25, -1) {};
+		\node [style=hedge] (73) at (15, 0.5) {};
+		\node [style=none] (74) at (0, 3) {$a_{1}$};
+		\node [style=none] (75) at (3.5, 3) {$a_{1}$};
+		\node [style=none] (76) at (7.25, 3) {$a_{1}$};
+		\node [style=none] (78) at (-4, 1.5) {$a_{1}$};
+		\node [style=none] (79) at (11.25, -1.5) {$a_{1}$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=diredge] (28.center) to (27.center);
+		\draw [style=boundary frame] (32.center)
+			 to (31.center)
+			 to (30.center)
+			 to (29.center)
+			 to cycle;
+		\draw [style=boundary frame] (39.center)
+			 to (38.center)
+			 to (37.center)
+			 to (36.center)
+			 to cycle;
+		\draw [style=diredge] (44.center) to (43.center);
+		\draw [style=diredge] (45.center) to (46.center);
+		\draw [style=boundary frame] (48.center)
+			 to (47.center)
+			 to (50.center)
+			 to (49.center)
+			 to cycle;
+		\draw [style=diredge] (54.center) to (55.center);
+		\draw [style=dashed edge] (63.center) to (68.center);
+		\draw [style=dashed edge] (68.center) to (67.center);
+		\draw [style=dashed edge] (67.center) to (64.center);
+		\draw [style=dashed edge] (63.center) to (64.center);
+		\draw [style=dashed edge] (68.center) to (71.center);
+		\draw [style=dashed edge] (67.center) to (72.center);
+		\draw [style=dashed edge] (72.center) to (71.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

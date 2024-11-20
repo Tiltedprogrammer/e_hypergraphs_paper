@@ -1,0 +1,50 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=hedge] (0) at (-2.5, 6) {$a$};
+		\node [style=hedge] (1) at (-2.5, 3) {$!$};
+		\node [style=none] (2) at (-1.5, 4.5) {};
+		\node [style=none] (3) at (-0.5, 4.5) {};
+		\node [style=none] (4) at (0, 5.25) {};
+		\node [style=none] (5) at (1.25, 5.25) {};
+		\node [style=none] (6) at (1.25, 4) {};
+		\node [style=none] (7) at (0, 4) {};
+		\node [style=none] (8) at (2.25, 4.5) {};
+		\node [style=none] (9) at (3.25, 4.5) {};
+		\node [style=none] (10) at (4, 5.25) {};
+		\node [style=none] (11) at (5.25, 5.25) {};
+		\node [style=none] (12) at (5.25, 4) {};
+		\node [style=none] (13) at (4, 4) {};
+		\node [style=none] (14) at (7.75, 5.25) {};
+		\node [style=none] (15) at (9, 5.25) {};
+		\node [style=none] (16) at (9, 4) {};
+		\node [style=none] (17) at (7.75, 4) {};
+		\node [style=none] (18) at (6, 4.5) {};
+		\node [style=none] (19) at (7, 4.5) {};
+		\node [style=none] (20) at (9.5, 4.5) {};
+		\node [style=none] (21) at (10.75, 4.5) {};
+		\node [style=node] (22) at (-2.5, 4.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=diredge] (3.center) to (2.center);
+		\draw [style=boundary frame] (6.center)
+			 to (7.center)
+			 to (4.center)
+			 to (5.center)
+			 to cycle;
+		\draw [style=diredge] (9.center) to (8.center);
+		\draw [style=boundary frame] (12.center)
+			 to (13.center)
+			 to (10.center)
+			 to (11.center)
+			 to cycle;
+		\draw [style=boundary frame] (17.center)
+			 to (14.center)
+			 to (15.center)
+			 to (16.center)
+			 to cycle;
+		\draw [style=diredge] (18.center) to (19.center);
+		\draw [style=diredge] (20.center) to (21.center);
+		\draw (22) to (0);
+		\draw (22) to (1);
+	\end{pgfonlayer}
+\end{tikzpicture}

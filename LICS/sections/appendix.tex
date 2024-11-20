@@ -874,6 +874,15 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     \end{enumerate}
 \end{proof}
 
+
+\begin{remark}
+    The first assumption in~\ref{pushout:assumptions} can be dropped with extra requirements that for all egdes $e_{i}, e_{j} \in E_{Z}$:
+    \begin{itemize}
+        \item $[f_{E}(e_{i})) = [f_{E}(e_{j}))$ and $[g_{E}(e_{i})) = [g_{E}(e_{j}))$ \textcolor{red}{This has to be dropped}
+        \item \textcolor{red}{Find appropriate conditions}
+    \end{itemize}
+\end{remark}
+
 \begin{remark}
     If in a span $Y \xleftarrow{g} Z \xrightarrow{f} X$ of morphisms in $\catname{EHyp}(\Sigma)$ the morphisms $f$ and $g$ are monos, then the arrows $f'$ and $g'$ of the pushout $Y \xrightarrow{g'} X +_{f,g} Y \xleftarrow{f'} X$ are also monos.
 \end{remark}
@@ -1438,16 +1447,19 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     Then, since $m$ and $[c_1,c_2]$ are monos, the first square can be rewritten as follows.
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3XFxcXFxcY29uZ1xcXFwgaSArIGogKyB6Il0sWzIsMSwiaF97VixleHR9IiwyXSxbMSwwLCJoX3tWLGludH0iLDJdLFswLDMsIm1fe1Z9IiwyXSxbNCwzLCJnX3tWfSJdLFsyLDQsImMiLDJdXQ==
 \[\begin{tikzcd}
-	{a + x + y} && {i + j + x} && {i+j} \\
+	{a + y} && {i + j + x} && {i+j} \\
 	\\
-	{a + x + y + z} &&&& {\begin{matrix} i + j + w \\ \cong \\ i + j + z \end{matrix}}
+	{a + y + z} &&&& {\begin{matrix} i + j + w \\ \cong \\ i + j + z \end{matrix}}
 	\arrow["{h_{V,ext}}"', from=1-5, to=1-3]
 	\arrow["{h_{V,int}}"', from=1-3, to=1-1]
 	\arrow["{m_{V}}"', from=1-1, to=3-1]
 	\arrow["{g_{V}}", from=3-5, to=3-1]
 	\arrow["c"', from=1-5, to=3-5]
 \end{tikzcd}\]
-    Because $a + x + y + w$ also yields a pushout it must be the case that $a+x+y+w \cong a + x + y + z$ and therefore $w \cong z$ and pushout complement for vertices is $i + j + z$ up to isomorphism.
+    Where $y$ is the image of $i + j$. Clearly, $i + j + z$ is a pushout complement, as computing the pushout identifies $i + j$ with its image within $y$ and leaves $z$ as is.
+    Suppose there is another pushout complement $i + j + w$.
+    Because $a + y + w$ also yields a pushout it must be the case that $a + y + w \cong a + y + z$ and therefore $w \cong z$ and pushout complement for vertices is $i + j + z$ up to isomorphism.
+    \textcolor{red}{The same reasoning applies to show $E_{\mathcal{L}^{\bot}}$} is unique.
     One can further observe that $g_{V} = h_{V,ext};h_{V,int} + id_{n}$ and that $h_{V,ext}$ is mono and $h_{V,int} = [h_1,h_2]$ where $h_1,h_2$ are mono.
     The above shows that edges and vertices in the pushout complement are uniquely determined.
     To show that pushout complement is unique we next need to show that source and target maps are unique.
@@ -1749,8 +1761,10 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
                 \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=5-3, to=3-1]
                 \arrow[from=5-3, to=5-5]
                 \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=5-5, to=3-3]
+                \arrow["\dagger", draw=none, from=5-5, to=3-3]
             \end{tikzcd}
             \]
+            where the square marked with $\dagger$ is a pushout because of pushout pasting law.
             The corestriction of $n_1 + m_1 \xrightarrow{[f_1,f_2]} \mathcal{L}_1^{\bot}$ to the image of $i + j \xrightarrow{[g_1,g_2]} \mathcal{L}_{1}^{\bot}$ is mono: suppose it is not mono, then there exist $z_1$, $z_2$, $z_3$ such that $f_1(z_1) = f_2(z_2) = g_1(z_3)$, then $[f_2,g_1]$ would not be mono, similarly if $f_1(z_1) = f_2(z_2) = g_2(z_3)$.\
             By construction of the pushout the restriction of $\mathcal{L}_{1}^{\bot} \to \mathcal{L}_{3}^{\bot}$ is mono and hence the arrow $i + j \to \mathcal{L}_{3}^{\bot}$ is mono.
             This implies that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L},\mathcal{R} \rangle} \llbracket g \rrbracket$.
@@ -1785,6 +1799,7 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
                 \end{tikzcd}
                 \]
                 which implies the existence of the following diagram where both squares are pushouts by construction and the matching is convex and down-closed.
+                \textcolor{red}{Consider cases when $\mathcal{L}$ has no-input and no-output sub-hypergraph and when it does not. Basically, repeat the above reasoning here as well, but say that if $n+m$ is empty, then there is no pushout.}
                 \ifdefined \ONECOLUMN
                 \[\adjustbox{width=0.95\linewidth}{
                     \begin{tikzcd}
@@ -2075,3 +2090,320 @@ This section contains the figures with more elaborate transformation of e-string
     \caption{Non-isomorphic cospans (a) and isomorphic cospans (b)}
     \label{fig:appendix:non-isomorphic-cospans}
 \end{figure*}
+
+\section{DPO rewriting for arbitrary signatures}
+\label{sec:dpo-fix}
+Here we will discuss how one can formulate DPO rewrite rules where the left-hand of right-hand sides contain sub-hypergraphs with no inputs and outputs at the outermost level.
+First we will illustrate where the restriction in the original formulation of the DPO rewriting as per the Definition~\ref{def:convex_dpo} comes from via several examples: one for Cartesian equations (which are important to express e-graphs as e-hypergraphs) and two for the structural rules we need for $\catname{MEHypI}_{\Sigma} / \mathcal{S}$ to be a category enriched over $\catname{SLat}$.
+Consider a rewrite rule induced by the Cartesian structure $a;! = id_{I}$ for $a : 0 \to 1$ which is rendered string diagrammatically as 
+\[
+\tikzfig{../figures/appendix/cartesian_rewrite_string}
+\]
+which becomes the following extended cospan of e-hypergraphs
+\[
+\tikzfig{../figures/appendix/cartesian_rewrite_hypergraph}
+\]
+
+Assume we want to perform a rewrite within the e-hypergraph in Figure~\ref{fig:dpo-stuck} (left).
+
+\begin{figure}
+    \begin{subfigure}{0.4\linewidth}
+    \[
+    \adjustbox{scale=0.7}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_source_graph}
+    }
+    \]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.55\linewidth}
+        \[
+        \adjustbox{scale=0.7}{
+        \tikzfig{../figures/appendix/cartesian_rewrite_dpo_stuck}
+        }
+        \]
+    \end{subfigure}
+    \caption{DPO rewriting stuck}
+    \label{fig:dpo-stuck}
+\end{figure}
+
+However, we are immediately stuck as there is no matching of the left-hand side of the rule within the graph as there is no pushout complement: the only way we can impose a constraint that an edge shall have a particular predecessor in the pushout is through its adjacent vertices, but the sub-hypergraph for $a;!$ does not have any as demonstrated in the right subfigure.
+
+Another problematic rewrite arises when we want to utilise the structural rule of the free enrichment
+
+\[
+\adjustbox{scale=0.75}{
+\tikzfig{../figures/appendix/structural_rewrite_problem}
+}
+\]
+
+if we consider the following DPO square
+
+\[
+\adjustbox{scale=0.55}{
+    \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck}
+}
+\]
+
+
+
+% we can not express id_I + id_I in such a way
+% The last example is the rewrite that corresponds to the idempotence for the identity on the tensor unit $id_{I} = id_{I} + id_{I}$
+
+% \[
+% \adjustbox{scale=0.75}{
+%     \tikzfig{../figures/appendix/structural_id_unit_problem}
+% }
+% \]
+
+% with the DPO square as 
+
+% \[
+% \adjustbox{scale=0.75}{
+% \tikzfig{../figures/appendix/structural_rewrite_id_unit_dpo_stuck}
+% }
+% \]
+
+\begin{definition}
+
+We will define the action of $+$ on two cospans where either of the carriers is the empty e-hypergraph as
+
+\begin{align*}
+n \xrightarrow{} n' \xrightarrow{} &\;\mathcal{F} \xleftarrow{} m' \xleftarrow{} m\\
+&\;+ \hspace{6em} \Coloneqq \hspace{2em} n  \xrightarrow{} n' \xrightarrow{} \;\mathcal{F} \xleftarrow{} m' \xleftarrow{} m\\
+0 \xrightarrow{} 0 \xrightarrow{} &\;\varnothing \xleftarrow{} 0 \xleftarrow{} 0.
+\end{align*}
+
+\end{definition}
+
+This is so that we can absorb some equations and to seamlessly introduce what follows.
+
+% \begin{remark}
+% By putting no restrictions on the signature we need to enforce some restrictions on the equations in $\mathcal{E}$.
+% Recall that $\llbracket id_{I} + id_{I}\rrbracket = \llbracket id_{I} \rrbracket$ as per the Remark~\ref{remark:f+g}.
+% This implies that for all $f : 0 \to 0$, $\llbracket f + id_{I} \rrbracket$
+% Consider a cospan of e-hypergraphs that corresponds to a morphism $f + g + (id_{I} + id_{I})$
+
+% \[
+% \adjustbox{scale=0.75}{
+%     \tikzfig{../figures/appendix/remark_on_equations}
+% }
+% \]
+
+% By using the idempotence equation for $id_{I} + id_{I}$ we can rewrite it to
+
+% \[
+%     \adjustbox{scale=0.75}{
+%         \tikzfig{../figures/appendix/remark_on_equations_2}
+%     }
+% \]
+
+% However, there is no rewrite rule to go back and equate these two cospans in $\MdaEcospans / \mathcal{S,E}$.
+% To fix that, we need to introduce the following rewrite rule schema
+% \[
+% \adjustbox{scale=0.75}{
+%     \tikzfig{../figures/appendix/remark_on_equations_3}
+% }
+% \]
+% By introducing this equation we automatically require that every morphism $0 \to 0$ is essentially $id_{I}$.
+
+% \end{remark}
+
+We will start completing all the above DPO squares by first considering the structural rules.
+We will include special unlabelled edges with no inputs and outputs to the interfaces to be able to impose the hierarchical relation on subgraphs with no inputs and outputs.
+That is, the previously mentioned structural rule will become
+
+\[
+\adjustbox{scale=0.75}{
+    \tikzfig{../figures/appendix/structural_rewrite_problem_fix}
+}
+\]
+
+where the labels show how interface edges are mapped to the edges of the corresponding e-hypergraphs.
+For example, the edge in the interface labelled $a_1$ is mapped to the outermost edge on the right.
+We can now compute the pushout complement and complete the DPO square below
+
+\[
+\adjustbox{scale=0.55}{
+    \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
+}
+\]
+
+Handling deletion or introduction rewrite rules will require the introduction of auxiliary rules.
+In particular, two rules for introduction and elimination of these special edges
+
+\begin{figure}[h!]
+\begin{subfigure}{0.45\linewidth}
+    \[
+    \adjustbox{scale=0.55}{
+    \tikzfig{../figures/appendix/idI_elimination_hypergraph}
+    }
+    \]
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\linewidth}
+    \[
+    \adjustbox{scale=0.55}{
+    \tikzfig{../figures/appendix/idI_introduction_hypergraph}
+    }
+    \]
+\end{subfigure}
+\end{figure}
+
+and similar rules to introduce and eliminate in nested contexts
+
+\begin{figure}[h!]
+    \begin{subfigure}{\linewidth}
+        \[
+        \adjustbox{scale=0.55}{
+        \tikzfig{../figures/appendix/idI_elimination_nested_hypergraph}
+        }
+        \]
+    \end{subfigure}
+    \vspace{1em}
+    \begin{subfigure}{\linewidth}
+        \[
+        \adjustbox{scale=0.55}{
+        \tikzfig{../figures/appendix/idI_introduction_nested_hypergraph}
+        }
+        \]
+    \end{subfigure}
+\end{figure}
+
+and, finally, the rules to introduce such edges as new consistent components.
+Intuitively such edge plays the role of a tensor unit identity that can be inserted in any context.
+
+\begin{figure}[h!]
+    \begin{subfigure}{0.45\linewidth}
+        \[
+        \adjustbox{scale=0.55}{
+        \tikzfig{../figures/appendix/idI_introduction_new_component_hypergraph}
+        }
+        \]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \[
+        \adjustbox{scale=0.55}{
+        \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
+        }
+        \]
+    \end{subfigure}
+    \end{figure}
+
+
+% \[
+% \adjustbox{scale=0.75}{
+% \tikzfig{../figures/appendix/auxiliary_schema}
+% }
+% \]
+
+% This rule makes sense in any SMT where there is a unique morphism $I \to I$ which is $id_{I}$.
+Then the deletion rule is reconstructed as
+
+\[
+\adjustbox{scale=0.75}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_fix}
+}
+\]
+
+and the full DPO square becomes
+
+\[
+\adjustbox{scale=0.75}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix}
+}
+\]
+
+The target e-hypergraph is not exactly what we wanted, however, but we can use the auxiliary rule to remove this unlabelled edge.
+
+\[
+\adjustbox{scale=0.75}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix_2}
+}
+\]
+
+% and then utilise the idempotence rule for the identity of the tensor unit
+
+% \[
+%     \adjustbox{scale=0.75}{
+%         \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix_3}
+%     }
+% \]
+
+Generally, given an interpretation of a structural rule (where the right-hand side contains a single edge at the outermost level) $\llangle \llbracket l \rrbracket, \llbracket r \rrbracket \rrangle$, for each connected component $C_{i}$ at the outermost level with no inputs and outputs and for each hyperedge with no inputs \textit{or} outputs  in $C_{i}$  we introduce an empty hyperedge into the interfaces which are mapped to the single edge at the outermost level in $\llbracket r \rrbracket$.
+Symmetric rules are handled by performing the above in the other direction.
+
+Rules for deletion and introduction from Cartesian structure are interpreted similarly, by mapping all interface edges to a single empty hyperedge on the right (respectively, left) when deleting (respectively, introducing).
+For an arbitrary rule $\llangle \llbracket l \rrbracket, \llbracket r \rrbracket \rrangle$ induced by $\mathcal{E}$ consider connected components with no inputs and outputs $C^{l}_{i}$ and $C^{r}_{j}$ for left-hand and right-hand sides respectively.
+Let $c^{l}_{1,1}, \ldots, c^{l}_{k,n}$ and $c^{r}_{1,1}, \ldots, c^{r}_{p,m}$ where $c^{l}_{i,j}$ is $i$-th edge with no inputs or outputs in component $C^{l}_{j}$ and similarly for $c^{r}_{i,j}$ and let the interface contain the largest of the two sets.
+And let the morphism be any valid morphism from $\{^{l}_{1,1}, \ldots, c^{l}_{k,n}\} \to c^{r}_{1,1}, \ldots, c^{r}_{p,m}$ is the former is larger as a set, or the other way around if the latter is larger.
+Graphically, this is expressed as follows
+
+\[
+\adjustbox{scale=0.65}{
+    \tikzfig{../figures/appendix/rule_transformation_example}
+}
+\]
+
+assuming that $|c^{l}_{1,1}, \ldots, c^{l}_{k,n}| > |c^{r}_{1,1}, \ldots, c^{r}_{p,m}|$ and $f = \{ c^{l}_{1,1} \mapsto c^{l}_{1,1}, \ldots, c^{l}_{k,n} \mapsto c^{l}_{k,n} \}$ and $g$ is any valid mapping of $c^{l}_{1,1}, \ldots, c^{l}_{k,n}$ to $c^{r}_{1,1}, \ldots, c^{r}_{p,m}$.
+
+\section{Going from e-graph to e-hypergraph}
+
+\begin{figure}
+
+\begin{align*}
+    \text{functional symbols}& \hspace{2em} f,g\\
+    \text{e-class id}& \hspace{2em} a,b\\
+    \text{terms}& \hspace{2em} t \Coloneqq f \;|\; f (t_1, \ldots, t_m) \hspace{2em} &m \geq 1\\
+    \text{e-nodes}& \hspace{2em} n \Coloneqq f \;|\; f (a_1, \ldots, a_m) \hspace{2em} &m \geq 1\\
+    \text{e-classes}& \hspace{2em} c \Coloneqq \{n_1, \ldots, n_m\}   \hspace{2em} &m \geq 1
+\end{align*}
+\caption{E-graph components}
+\label{fig:e-graph-components}
+\end{figure}
+
+\begin{definition}[E-graph~\cite{EggPaper}]
+    E-graph is a data-structure that consists of
+    \begin{itemize}
+        \item components defined in a grammar in Figure~\ref{fig:e-graph-components}
+        \item a union find structure $U$ that stores equivalence relation on e-class ids
+        \item \textit{e-class} map $M$ that maps e-class ids to e-classes. All equivalent e-class ids map to the same e-class, \textit{i.e.}, if $a \equiv_{id} b$ then $M[a]$ and $M[b]$ are the same set.
+              An e-class id $a$ is said to refer to e-class $M[\text{find}(a)]$. NB: $\text{find}()$ returns the canonical representative for the equivalence, i.e. the last predecessor of $a$ in $U$.
+        \item The \textit{hashcons} map $H$ that maps e-nodes to e-class ids.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Hashcons invariant]
+The hashcons $H$ must map all canonical e-nodes to their e-class ids:
+\[
+\text{e-node } n \in M[a] \text{ iff } H[\text{canonicalize}(n)] = \text{find}(a)
+\]
+
+
+\begin{algorithm}
+    \caption{Pattern Matching Pseudocode Example}
+    \begin{algorithmic}[1]
+    \ForAll{e-class-id in H}
+    \State edge $edge \gets$ mkEdge(e-class-id)
+        \ForAll {e-node in H \textbf{where} H[e-node] == e-class-id}
+            \State \textbf{match} e-node \textbf{with}
+                \State \quad \textbf{case} \texttt{f}:
+                %    \State \quad \quad edge.add(mk_edge(f))
+        \EndFor
+    \EndFor
+    % \Function{matchPattern}{shape}
+    %     \State \textbf{match} shape \textbf{with}
+    %     \State \quad \textbf{case} \texttt{Circle(radius)}:
+    %     \State \quad \quad \Return $\pi \cdot \texttt{radius}^2$
+    %     \State \quad \textbf{case} \texttt{Rectangle(width, height)}:
+    %     \State \quad \quad \Return \texttt{width} $\times$ \texttt{height}
+    %     \State \quad \textbf{case} \texttt{Triangle(base, height)}:
+    %     \State \quad \quad \Return $\frac{1}{2} \times \texttt{base} \times \texttt{height}$
+    %     \State \quad \textbf{case} \texttt{Square(side)}:
+    %     \State \quad \quad \Return \texttt{side}$^2$
+    %     \State \quad \textbf{case} \texttt{\_}:
+    %     \State \quad \quad \Return ``Unknown shape''
+    % \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+\end{definition}
