@@ -843,6 +843,49 @@ and all the equations are preserved with the addition of a new equation
 for $f,g : A \overline{\otimes} X \to B \overline{\otimes} X$
 
 
+\section{Motivation for e-graphs}
+
+a particular kind of SMTs can provide a new perspective on solving the long-standing issues of $\alpha$-equivalence and binding when using e-graphs for languages like lambda calculus.
+The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
+If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
+The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
+An example of a substitution can be seen in Figure~\ref{fig:e-graph-substitution}. An explicit substitution operator is the part of the syntax and the substitution of e-classes is defined inductively on the structure of all terms that these e-classes represent, \textit{i.e.}, computing a substitution of e-classes is achieved by computing a pair-wise substitution for all the instances of these e-classes.
+Notably, the terms that correspond to explicit substitution can be discarded at the end.
+
+
+By recalling the correspondence between Cartesian Closed SMCs and lambda-calculus we can consider the corresponding semilattice enriched Cartesian Closed SMTs.
+Apart from the generators in $\Sigma_{C}$ such theories also contain \textit{application} and $\textit{abstraction}$ maps that correspond to $app$ and $\lambda$ respectively.
+A complete description of these maps and the equations that they obey can be found in~\cite{GhicaZanassiStringLambda}.
+The e-string diagram version of the previous example can be seen in Figure~\ref{fig:e-string-substitution}.
+The half-circle nodes correspond to application maps and the rounded rectangles with a wire attached to their right sides are the abstraction maps where the attached wire corresponds to the argument of the abstraction.
+A distinguishable feature of these string diagrams is that they are automatically quotiented by $\alpha$-equivalence and that a $\beta$-reduction is merely a rewrite step that glues an argument of the application to the attached wire of the abstraction and the substitution is just string diagram composition.
+Another advantage of string diagrams is that every occurrence of the bound variable is essentially the same wire as opposed to de Brujin indices, so there is no need to modify any indices, the whole substitution is just a matter of reattaching the wires non-destructively.
+In particular, note how the substitution within $y + y$ was completely avoided.
+
+\textcolor{red}{Another motivating example is sharing after $\beta$-redution, add figure}
+
+\begin{figure*}
+  \[
+      % \hspace{1.3cm}
+      \adjustbox{width=\textwidth}{
+      \tikzfig{../figures/categorical-semantics/e-graph-substitution}
+      }
+  \]
+  \caption{E-graph explicit substitution example.}
+  \label{fig:e-graph-substitution}
+\end{figure*}
+
+\begin{figure*}
+  \[
+      % \hspace{1.3cm}
+      \adjustbox{width=\textwidth}{
+      \tikzfig{../figures/categorical-semantics/e-string-substitution-2}
+      }
+  \]
+  \caption{E-string diagrammatic substitution example.}
+  \label{fig:e-string-substitution}
+\end{figure*}
+
 \section{E-Hypergraphs for $\catname{SLat}$-enriched symmetric closed monoidal categories}
 
 

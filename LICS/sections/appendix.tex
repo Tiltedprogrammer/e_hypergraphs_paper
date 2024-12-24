@@ -876,10 +876,11 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
 
 
 \begin{remark}
-    The first assumption in~\ref{pushout:assumptions} can be dropped with extra requirements that for all egdes $e_{i}, e_{j} \in E_{Z}$:
+    The first assumption in~\ref{pushout:assumptions} can be weakened by allowing $E_{Z}$ to contain unlabelled edges with no inputs and outputs such that:
     \begin{itemize}
-        \item $[f_{E}(e_{i})) = [f_{E}(e_{j}))$ and $[g_{E}(e_{i})) = [g_{E}(e_{j}))$ \textcolor{red}{This has to be dropped}
-        \item \textcolor{red}{Find appropriate conditions}
+        \item $[f_{E}(e_{i})) = [f_{E}(e_{j}))$ and $[g_{E}(e_{i})) = [g_{E}(e_{j}))$ for all $e_{i},e_{j} \in E_{Z}$ 
+        \item If $[f_{E}(e)) \not = \varnothing$ then $[g_{E}(e)) = \varnothing$ and if $[g_{E}(e)) \not = \varnothing$ then $[f_{E}(e)) = \varnothing$.
+        \item $\consistency(f_{E}(e_{i})) = \consistency(f_{E}(e_{j}))$ and $\consistency(g_{E}(e_i)) = \consistency(g_{E}(e_j))$ for all $e_i,e_j$ in $E_{Z}$.
     \end{itemize}
 \end{remark}
 
@@ -887,6 +888,7 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     If in a span $Y \xleftarrow{g} Z \xrightarrow{f} X$ of morphisms in $\catname{EHyp}(\Sigma)$ the morphisms $f$ and $g$ are monos, then the arrows $f'$ and $g'$ of the pushout $Y \xrightarrow{g'} X +_{f,g} Y \xleftarrow{f'} X$ are also monos.
 \end{remark}
 This is because $[]_{V}$ identifies two vertices $v_1$ and $v_2$ only if there exists a vertex $z$ in $V_{Z}$ such that $f_{V};\iota_{1,V}(z) = v_1$ and $g_{V};\iota_{2,V}(z) = v_2$ and therefore $f' = \iota_{1};[]$ and $g' = \iota_{2};[]$ are monos.
+Similarly for edges.
 
 \begin{figure}
     \[
@@ -1442,9 +1444,9 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     \[
         \tikzfig{../figures/appendix/pushout_edges}
     \]
-    where $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements.
-    Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
-    Then, since $m$ and $[c_1,c_2]$ are monos, the first square can be rewritten as follows.
+    where $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements and where $E_{0}$ is either empty or contains edges with no inputs and outputs only.
+    % Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
+    Since $m$ and $[c_1,c_2]$ are monos, the first square can be rewritten as follows.
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3XFxcXFxcY29uZ1xcXFwgaSArIGogKyB6Il0sWzIsMSwiaF97VixleHR9IiwyXSxbMSwwLCJoX3tWLGludH0iLDJdLFswLDMsIm1fe1Z9IiwyXSxbNCwzLCJnX3tWfSJdLFsyLDQsImMiLDJdXQ==
 \[\begin{tikzcd}
 	{a + y} && {i + j + x} && {i+j} \\
@@ -1459,17 +1461,28 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     Where $y$ is the image of $i + j$. Clearly, $i + j + z$ is a pushout complement, as computing the pushout identifies $i + j$ with its image within $y$ and leaves $z$ as is.
     Suppose there is another pushout complement $i + j + w$.
     Because $a + y + w$ also yields a pushout it must be the case that $a + y + w \cong a + y + z$ and therefore $w \cong z$ and pushout complement for vertices is $i + j + z$ up to isomorphism.
-    \textcolor{red}{The same reasoning applies to show $E_{\mathcal{L}^{\bot}}$} is unique.
-    One can further observe that $g_{V} = h_{V,ext};h_{V,int} + id_{n}$ and that $h_{V,ext}$ is mono and $h_{V,int} = [h_1,h_2]$ where $h_1,h_2$ are mono.
-    The above shows that edges and vertices in the pushout complement are uniquely determined.
+    \textcolor{red}{The same reasoning applies to show that $E_{\mathcal{L}^{\bot}}$} is unique and hence the sets of edges and vertices are uniquely determined in the pushout complement.
+    One can observe that $g_{V} = h_{V,ext};h_{V,int} + id_{n}$ and that $h_{V,ext}$ is mono and $h_{V,int} = [h_1,h_2]$ where $h_1,h_2$ are mono.
     To show that pushout complement is unique we next need to show that source and target maps are unique.
-    Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{\mathcal{L^{\bot}}}(e)) = s_{\mathcal{G}}(g_{E}(e))$ and $s_{\mathcal{L^{\bot}}}(e) \subseteq (g_{V}^{-1})^{*}(s_{\mathcal{G}}(g_{E}(e)))$.
-    Since $g_{V} = h_{V,ext};[h_1,h_2] + id_{n}$ the inverse image of $g_{V}$ contains at most two elements: one with the pre-image in $i$ and another with the pre-image in $j$.
-    If $g_{V}$ identified more than two vertices it would mean that $[h_1,h_2]$ identified more than two vertices which would mean that two of them come both either from $i$ or $j$ which would imply that either $h_1$ or $h_2$ is not mono.
-    If the inverse image contains exactly one vertex then the $s_{\mathcal{L^{\bot}}}(e)$ is uniquely fixed, otherwise suppose it contains $\{v_1,v_2\}$ such that $v_1 \in i$ and $v_2 \in j$.
-    However, $v_1$ can not be in $s_{\mathcal{L^{\bot}}}(e)$ as per the (6) and (7) conditions of the boundary complement~\ref{def:boundary_new} the image of $j$ in $\mathcal{L}^{\bot}$ should consist of vertices of in-degree 0.
-    
+    Suppose, on contrary, that there exist
+    \[
+    \mathcal{L}_{1}^{\bot} = \langle V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s_{1} \rangle \qquad \mathcal{L}_{2}^{\bot} = \langle V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s_{2} \rangle
+    \]
+
+    such that there is $e \in E_{\mathcal{L}^{\bot}}$ and $s_{1}(e) \not = s_{2}(e)$.
+    As $g$ is a homomorphism, it must be the case that $g^{*}_{V}(s_{1}(e)) = g^{*}_{V}(s_{2}(e)) = s_{\mathcal{G}}(g(e))$, or
+    $(h_{V,ext};[h_{1},h_{2}] + id_{n})(s_{1}(e)) = (h_{V,ext};[h_{1},h_{2}] + id_{n})(s_{2}(e))$.
+    For the latter to hold when $s_{1}(e) \not = s_{2}(e)$ it must be the case that $h_{V,ext};[h_{1},h_{2}]$ identifies $v_{1} \in s_{1}(e)$ with $v_{2} \in s_{2}(e)$ and necessarily $v_{1}$ and $v_{2}$ are in the image of $c$.
+    This can only happen if $v_1 \in i$ and $v_2 \in j$, \textit{i.e.} they belong to input and output interfaces respectively.
+    However, this contradicts the fact that $v_2 \in s_2(e)$ as a vertex which is a source of some edge can not be in the output interface as per the (6) and (7) conditions of the boundary complement~\ref{def:boundary_new} the image of $j$ in $\mathcal{L}^{\bot}$ should consist of vertices of in-degree 0.
     Similarly for $t_{\mathcal{L}^{\bot}}$.
+
+    % Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{\mathcal{L^{\bot}}}(e)) = s_{\mathcal{G}}(g_{E}(e))$ and $s_{\mathcal{L^{\bot}}}(e) \subseteq (g_{V}^{-1})^{*}(s_{\mathcal{G}}(g_{E}(e)))$.
+    % Since $g_{V} = h_{V,ext};[h_1,h_2] + id_{n}$ the inverse image of $g_{V}$ contains at most two elements: one with the pre-image in $i$ and another with the pre-image in $j$.
+    % If $g_{V}$ identified more than two vertices it would mean that $[h_1,h_2]$ identified more than two vertices which would mean that two of them come both either from $i$ or $j$ which would imply that either $h_1$ or $h_2$ is not mono.
+    % If the inverse image contains exactly one vertex then the $s_{\mathcal{L^{\bot}}}(e)$ is uniquely fixed, otherwise suppose it contains $\{v_1,v_2\}$ such that $v_1 \in i$ and $v_2 \in j$.
+    % However, $v_1$ can not be in $s_{\mathcal{L^{\bot}}}(e)$ as per the (6) and (7) conditions of the boundary complement~\ref{def:boundary_new} the image of $j$ in $\mathcal{L}^{\bot}$ should consist of vertices of in-degree 0.
+    
     % Suppose that there exist
     % \[
     %     \mathcal{L}^{\bot}_{1} = (V_{\mathcal{L}^{\bot}}, E_{\mathcal{L}^{\bot}}, s_{1},t)
@@ -1494,12 +1507,12 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     \[
         g_{E}(<_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))) = <_{\mathcal{G}}(\iota_{V_{\mathcal{G}}}(g_{V}(v))) = g_{E}(<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)))
     \]
-    which implies $<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) = <_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))$ for all $v$ such that $[v) \not = \varnothing$ since $g_{E}$ is mono.
+    which implies $<_{2}(\iota_{V_{\mathcal{L}^{\bot}}}(v)) = <_{1}(\iota_{V_{\mathcal{L}^{\bot}}}(v))$ for all $v$ such that $[v) \not = \varnothing$ since $g_{E}$ \textcolor{red}{only identifies edges with no successors}.
     Similarly for edges.
     We now show that if $[v) = \varnothing$ for $v \in V_{\mathcal{L}^{\bot}}$ then necessarily $[g_{V}(v)) = \varnothing$.
     Suppose $[v) = \varnothing$ and $<_{\mathcal{G}}(\iota_{V_{\mathcal{G}}}(g_{V}(v))) = e$ and there is a connected component that contains $v$ and such that for all $v'$ and $e'$ in this component $[v') = \varnothing = [e')$.
     Consider $\mathcal{G'}$ which is obtained from $\mathcal{G}$ by making $[g_{V}(v')) = [g_{E}(e')) = \varnothing$ for $v', e'$ above.
-    Clearly there is a morphism from $\mathcal{L}^{\bot}$ to $\mathcal{G}'$, i.e. the morphism $g' = (g_{V},g_{E})$ that has the same action on edges and vertices as the morphism $g$ does, because $v'$ such that $[v') \not = \varnothing$ can be mapped to $g_{V}(v')$ such that $[g_{V}(v')) \not = \varnothing$.
+    Clearly there is a morphism from $\mathcal{L}^{\bot}$ to $\mathcal{G}'$, i.e. the morphism $g' = (g_{V},g_{E})$ that has the same action on edges and vertices as the morphism $g$ does, because $v'$ such that $[v') = \varnothing$ can be mapped to $g_{V}(v')$ such that $[g_{V}(v')) \not = \varnothing$.
     The only case when such a morphism may not exist is when $[v'') \not = \varnothing$, $[v') = \varnothing$ and $g_{V}(v'') = g_{V}(v')$.
     This implies that both $v''$ and $v'$ have a pre-image in $i + j$ and according to the definition of a boundary complement it must be $[[c_1,c_2](z_1)) = [[c_1,c_2](z_2))$ for all $z_1, z_2 \in V_{i + j}$.
     For the same reason there is also a morphism from $\mathcal{L}$ to $\mathcal{G}'$.
@@ -1515,6 +1528,7 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     \]
     that further results in a contradiction since there is no morphism from $\mathcal{G}$ to $\mathcal{G'}$ because for any such morphism $u$ it must be the case that $[u_{V}(g_{V}(v'))) \not = \varnothing = [g'_{V}(v')) = \varnothing$ which would mean that $\mathcal{G}$ is not a pushout.
     This means that either both $<_{1}(\iota_{*}(x))$ and $<_{2}(\iota_{*}(x))$ are undefined for a given $x$ or $<_{1}(\iota_{*}(x)) = <_{2}(\iota_{*}(x))$ which concludes that the relations are equal and $\mathcal{L}_{1}^{\bot} = \mathcal{L}_{2}^{\bot}$.
+    The same reasoning applies when we consider $<_{1}(\iota_{E_{\mathcal{L}^{\bot}}}(e))$ and $<_{2}(\iota_{E_{\mathcal{L}^{\bot}}}(e))$.
 
     Finally, let's suppose there exist
     \[
@@ -1546,6 +1560,7 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
               Hence, $\consistency_{1} = \consistency_{2}$ and $\mathcal{L}_{2}^{\bot} = \mathcal{L}_{1}^{\bot}$.
     \end{itemize}
     Ultimately, we have shown that $\mathcal{L}^{\bot}$ is unique up to isomorphism.
+    The same reasoning applies when we consider edges instead of vertices.
 \end{proof}
 
 Practically, the above proposition means that for any given match $m$ there is only one possible result of rewriting.
@@ -2407,3 +2422,17 @@ The hashcons $H$ must map all canonical e-nodes to their e-class ids:
     \end{algorithmic}
     \end{algorithm}
 \end{definition}
+
+\begin{lemma} Two e-classes $e_1$ and $e_2$ are merged if and only if there are rewrite rules that turn every term representable by $e_1$ into $e_2$.
+
+\end{lemma}
+
+\begin{lemma}
+Every hierarchical edge can be decomposed as follows.
+
+\[
+\tikzfig{../figures/appendix/hyperedge_decomposition}
+\]
+\end{lemma}
+
+Then, given e-classes $e_1$ and $e_2$ for sub-hypergraphs $C$ and $D$ respectively, we introduce e-nodes into the e-graph $A(e_1)$ and $B(e_2)$ that reside in e-class $e_3$.

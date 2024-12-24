@@ -5,13 +5,13 @@ Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hier
 Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$  such that for all $c_1,c_2 \in \Sigma$, if arity (respectively, co-arity) of $c_1$ is 0, then co-arity (respectively, arity) of $c_2$ must be at least 1.
 This is to ensure we do not have terms of type $0 \to 0$.
 This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there.
+\textcolor{red}{The definitions and proofs without this extra assumption are given in the Appendix.}
 
-In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.  
+In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.
 
 \begin{definition}[E-hypergraphs]
 \label{def:e-homo}    
-An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}.  
-We define the following additional notation.  
+An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}, for which we introduce the following additional notation.
 For $x \in V + E$,  the set of \emph{parents} of $x$, is denoted as $[x) = \{x' ~|~ x' < x\; \}$.
 % \[
 % 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
@@ -22,17 +22,42 @@ We require that the child relation satisfies the following conditions:
 \begin{enumerate}
 	\item each parent set contains exclusively hierarchical edges;
 	\item Each $x$ has at most one immediate parent;
+	\item The maximal edges must be labelled;
 	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$ and similarly if $v \in t(e)$.
 \end{enumerate}
-We additionally define an equivalence relation $\consistency_p$,  called the \textit{consistency relation},  on each set $\{x \in V + E ~|~ p <^\mu x\}$ of elements which share the same parent.  
-We collect the union of all these equivalence relations into one relation $\consistency = \bigcup_{p} \consistency_p$,  which is defined on a subset of $V+E$. 
-Note that this relation is symmetric and transitive if considered on $V + E$.
-The consistency relation must additionally satisfy that if $v \in s(e)$ or $v \in t(e)$ and there exists $e'$ such that $e' <^{\mu} v$ and $e' <^{\mu} e$ then $v \consistency e$.
+Finally, $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p <^\mu x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p <^{\mu}(v)$ and $p <^{\mu}(e)$ then $v \consistency_{p} e$.
+We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p <^{\mu} v\}$ and $E_{p} = \{ e ~ | ~ p <^{\mu} e\}$.
+% We collect the union of all these equivalence relations into one relation $\consistency = \bigcup_{p} \consistency_p$,  which is defined on a subset of $V+E$. 
+% Note that this relation is symmetric and transitive if considered on $V + E$.
+% The consistency relation must additionally satisfy that if $v \in s(e)$ or $v \in t(e)$ and there exists $e'$ such that $e' <^{\mu} v$ and $e' <^{\mu} e$ then $v \consistency e$.
 \label{def:consistency_properties}
 \end{definition}
-Intuitively,  the child relation equips the hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of  string diagrams.  
-These edges can be designated as "parents" to sub-e-hypergraphs,  which interpret the various components of the e-boxes.  These components are distinguished by the consistency relation, which partitions the maximal sub-e-hypergraph below the hierarchical edge.  
-Technically,  condition $(3)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for the consistency relation. 
+Intuitively,  the child relation equips a hypergraph with a hierarchical structure: certain edges,  labelled with $\bot$,  are meant to interpret the dashed e-boxes of string diagrams.  
+These edges can be designated as "parents" to sub-e-hypergraphs,  which interpret the various components of the e-boxes.  
+These components are distinguished by the consistency relation, which partitions the maximal sub-e-hypergraph below the hierarchical edge.
+% Technically,  condition $(4)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for the consistency relation. 
+An example of an e-hypergraph can be seen below.
+\[
+\adjustbox{scale=0.75}{
+\tikzfig{../figures/combinatorial_semantics/e-hypergraph-example-2}
+}
+\]
+
+This e-hypergraph corresponds to the following tuple
+\[
+(V = (v_1, v_2, v_3, v_4, v_5, v_6\}, E = \{e_1, e_2, e_3\}, s, t, l, <, \consistency)
+\]
+\begin{align*}
+s(e_1) = \{v_1\} & t(e_1) = \{v_2\} & l(e_1) = \bot \\
+s(e_2) = \{v_3\} & t(e_2) = \{v_4\} & l(e_2) = e_2 \\
+s(e_3) = \{v_5\} & t(e_3) = \{v_6\} & l(e_3) = e_3 \\
+\end{align*}
+
+and $[v_3) = [v_4) = [v_5) = [v_6) = [e_2) = [e_3) = \{e_1\}$ and $[v_1) = [v_2) = [e_1) = \varnothing$.
+$v_3 \consistency v_4 \consistency e_2$ and $v_5 \consistency e_3 \consistency v_6$ and the relation is undefined for the rest vertices and edges.
+Because $v_3 \not \consistency v_5$ and because the relation is closed under connectivity we delimit the connected components by a dashed vertical line.
+The condition $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$, in particular, does not allow hierarchical edges with no delimiting lines.
+$e_2$ and $e_3$ are maximal edges.
 \begin{definition}[E-hypergraph homomorphism]
 An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
 \begin{enumerate}
@@ -58,11 +83,13 @@ The category of e-hypergraphs has coproducts,  given by the disjoint union of e-
 A concrete description of the pushout of two morphisms in this category is given in the Appendix.  
 Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied, including the requirement that the shared domain of the morphisms that form the span for the pushout is a discrete e-hypergraph.
 
-\begin{remark}
-When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we let the immediate parent to be undefined for all $x$ whose immediate parent in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
-\end{remark}
 
-When modelling enriched string diagrams using e-hypergraphs,  we require to keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extended cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
+% This remark is confusing
+% \begin{remark}
+% When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we let the immediate parent to be undefined for all $x$ whose immediate parent in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
+% \end{remark}
+
+When modelling enriched string diagrams using e-hypergraphs,  we require keeping track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extended cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
 
 We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n - m$ vertices,  in particular with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub-e-hypergraph of $n$.
 \begin{definition}[Category of e-hypergraphs with interfaces]

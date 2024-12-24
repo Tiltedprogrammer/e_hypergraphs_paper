@@ -8,7 +8,7 @@ Because the application of some rewrites can either enable or block the subseque
 
 A recently proposed,  alternative solution is \textit{equality saturation} 
 \cite{10.1145/1594834.1480915}: instead of maintaining a \textit{single},  putatively optimised program which is rewritten \textit{destructively} at each step, a \textit{set} of equivalent programs is maintained instead, whereas each rewrite step \textit{non-destructively} grows the set.  Upon reaching a fixed point (\textit{saturation}),  a \textit{globally} optimal program can then be extracted from this set.
-A naive approach is clearly unfeasible, since the size of this set grows exponentially with the number of rewrites. 
+A na\"ive approach is clearly unfeasible, since the size of this set grows exponentially with the number of rewrites. 
 However, \textit{equality graphs (e-graphs)} \cite{EggPaper} are a data structure that can represent this set compactly, thus making the set tractable in practical applications. 
 
 Although equality saturation is already a state-of-the-art algorithmic optimisation technique, there is an opportunity to better understand its mathematical foundations. 
@@ -16,7 +16,7 @@ We propose to address this issue via a categorical axiomatisation for e-graphs a
 Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple \textit{semilattice-enriched} Cartesian categories. 
 The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, as encountered in a large body of research. 
 The starting innovation of our approach is the semilattice-enrichment. 
-The \textit{join} operator lifts the formalism so that it can now operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation. 
+\textcolor{red}{The \textit{join} operator lifts the formalism} so that it can now operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation. 
 
 Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}. 
 This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
