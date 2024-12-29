@@ -238,10 +238,10 @@ Analogous to Section \ref{sec:combinatorial-semantics}, observing that the follo
 \] which will fit into the DPO formalism. We make this identification throughout,  without further mention. 
 %We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
 \begin{remark}
-There is a limitation of extended DPOI rewriting as defined in this section: it is unable to express rewriting
-for rules whose source or target contain a maximal connected sub-hypergraph with no input and output vertices.
-While this limitation can be overcome by specifically encoding such rewrite rules, we find the technical development to be simpler if we avoid consideration of such rules and therefore consider signatures which can not result in construction of terms with type $0 \to 0$.
-The discussion of a general case can be found in Section~\ref{sec:dpo-fix} of Appendix.
+The extended DPOI rewriting as defined in this section trades off simplicity for expressiveness: it is unable to express rewriting for rules whose source or target contain a maximal connected sub-hypergraph with no input and output vertices.
+While this limitation can be overcome by specifically encoding such rewrite rules, we find the technical development to be simpler if we avoid consideration of such rules and therefore consider signatures which can not result in construction of terms with type $0 \to 0$. 
+This limitation has no practical impact in applications of interest. 
+However, the general case without this limitation can be found in Section~\ref{sec:dpo-fix} of Appendix.
 %This is because there is no way to impose both consistency and child relation of such an edge as it has no incident nodes in its context.
 %We claim that this is only a minor limitation because in practice such edges (morphisms) with no
 %incident nodes correspond to ‘scalars’, if we consider for example a category of vector spaces, and scalars are usually removed by being absorbed by vectors rather than introduced during rewrites.

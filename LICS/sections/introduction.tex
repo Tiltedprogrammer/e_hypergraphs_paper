@@ -98,7 +98,7 @@ This would result into a possibility of extracting the optimal term consisting o
 To support such cycles we need a richer structure for our e-string diagrams.
 While equipping the e-string diagrams which such structure is straightforward, it is out of the scope of this work, and thus we limit ourselves to acyclic e-graphs and e-string diagrams for the purposes of presentation.
 Note that while the transformations of the e-graph are guided by the algorithm, the transformations of the e-string diagrammatic version is guided by the equations of the underlying theory.
-A step-by-step application of such equations for the rewrite rule from $(a)$ to $(b)$ and $(b)$ to $(c)$ can be seen in Figure~\ref{fig:e-graph-example-a-b} and Figure~\ref{fig:e-graph-example-b-c} respectively.
+A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively, in the Appendix. 
 The equations applied are the ones from Figure~\ref{fig:string-equations} along with the naturality of delete and copy.
 One can note that the size of the eventual e-string diagram is comparable to the size of the corresponding e-graph.
 % Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
@@ -251,7 +251,8 @@ Generally,  we may define a category \textit{enriched} in any other monoidal cat
 \]
 is defined as an $M$-morphism.  In other words,  composition must respect the additional structure on hom-sets.  
 In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
-We omit further details of the general case of enrichment here, and instead work with the following more concrete definition, where $M = \textbf{SLatt}$.  
+We omit further details of the general case of enrichment here, and instead work with the concrete definition required for our application, where $M = \textbf{SLatt}$.
+It remains to be seen if more general enrichments have interesting applications. 
 
 \begin{definition}[Semilattice-enriched SMC]\label{def:enriched-prop}
 A \textit{semilattice enriched strict SMC}  $\mathbb{C}$ is given by an SMC $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms.
@@ -276,8 +277,7 @@ To aid reasoning, we introduce a new language of string diagrams for semilattice
 
 Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
 The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
-It is intuitively clear that these diagrams are sound and complete with respect to their intended categorical semantics. 
-Indeed, similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
+We will later prove the intuitive fact that these diagrams are sound and complete with respect to their intended categorical semantics, noting that similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
 
 \ifdefined \ONECOLUMN
 \begin{figure}
