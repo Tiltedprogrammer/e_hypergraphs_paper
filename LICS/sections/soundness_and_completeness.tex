@@ -87,8 +87,9 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 	f = f_1 + \ldots + f_n
 \]
  such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
-\end{proposition}    
-The proof follows the familiar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
+\end{proposition}
+
+% The proof follows the familiar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
 
 % This normal form can be used to prove the main theorems of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma)$ and $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
 This normal form will come in handy when proving the following theorem.
@@ -101,9 +102,11 @@ We have the following equivalence of categories
 \]	
 \end{theorem}
 \begin{proof}
-The equivalence is given by the functor $\llbracket - \rrbracket$.  
+The equivalence is given by the semilattice-enriched SMC functor $\llbracket - \rrbracket$.  
 First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  
-In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ of symmetric monoidal theories and plain MDA cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma)$; see Theorem 35 of ~\cite{bonchi_string_2022-2}.
+In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ 
+% of symmetric monoidal theories and plain MDA cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma)$
+; see Theorem 35 of ~\cite{bonchi_string_2022-2}.
 
 To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  
 First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we thus have that

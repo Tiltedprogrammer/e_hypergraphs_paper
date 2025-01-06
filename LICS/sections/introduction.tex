@@ -4,27 +4,32 @@
 
 
 Rewrite-driven program optimisation consists of the application of a sequence of semantics-preserving rewrites which may improve the cost of execution, such as time or space (memory). 
-Because the application of some rewrites can either enable or block the subsequent application of others, the choice of application order significantly impacts the quality of the resulting optimisation.  This long-standing issue is known as the \textit{phase-ordering problem}, with a \textit{phase} referring to a particular set of rewrites. Typical approaches to this problem use heuristics to determine an ordering. 
+Because the application of some rewrites can either enable or block the subsequent application of others, the choice of application order significantly impacts the quality of the resulting optimisation.  
+This long-standing issue is known as the \textit{phase-ordering problem}, with a \textit{phase} referring to a particular set of rewrites.
+Typical approaches to this problem use heuristics to determine an ordering. 
 
 A recently proposed,  alternative solution is \textit{equality saturation} 
-\cite{10.1145/1594834.1480915}: instead of maintaining a \textit{single},  putatively optimised program which is rewritten \textit{destructively} at each step, a \textit{set} of equivalent programs is maintained instead, whereas each rewrite step \textit{non-destructively} grows the set.  Upon reaching a fixed point (\textit{saturation}),  a \textit{globally} optimal program can then be extracted from this set.
+\cite{10.1145/1594834.1480915}: instead of maintaining a \textit{single},  putatively optimised program which is rewritten \textit{destructively}, \textit{i.e.}, forgetting the part of the program that is replaced by the rewrite, at each step, a \textit{set} of equivalent programs is maintained instead, whereas each rewrite step \textit{non-destructively} grows the set.  
+Upon reaching a fixed point (\textit{saturation}),  a \textit{globally} optimal program can then be extracted from this set.
 A na\"ive approach is clearly unfeasible, since the size of this set grows exponentially with the number of rewrites. 
 However, \textit{equality graphs (e-graphs)} \cite{EggPaper} are a data structure that can represent this set compactly, thus making the set tractable in practical applications. 
 
 Although equality saturation is already a state-of-the-art algorithmic optimisation technique, there is an opportunity to better understand its mathematical foundations. 
 We propose to address this issue via a categorical axiomatisation for e-graphs and their rewriting. 
-Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple \textit{semilattice-enriched} Cartesian categories. 
+Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple Cartesian categories enriched over a category of semilattices (\textit{semilattice-enriched}).
 The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, as encountered in a large body of research. 
 The starting innovation of our approach is the semilattice-enrichment. 
-\textcolor{red}{The \textit{join} operator lifts the formalism} so that it can now operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation. 
+By using the binary operator of a given semilattice we can operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation.
 
 Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}. 
 This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
 \cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica-zanassi2023string}, or computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  
 However, in this work we offer little to the e-graph practitioner, as we focus exclusively on foundational aspects, introducing no new applications or improved e-graph algorithmics. 
 
-A final contribution of this work is giving a concrete combinatorial representation of enriched string diagrams in terms of (hierarchical)  hypergraphs, which we call \textit{e-hypergraphs}.  We also give a specification of e-hypergraph rewriting via a suitable extension of the double pushout (DPO) rewriting framework 
-\cite{dpo, bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022},  proving the representation \textit{sound and complete} with respect to our categorical semantics.  As a corollary, this also provides a formalisation of the rewriting theory of e-graphs as encountered in the literature. 
+A final contribution of this work is giving a concrete combinatorial representation of enriched string diagrams in terms of (hierarchical)  hypergraphs, which we call \textit{e-hypergraphs}. 
+We also give a specification of e-hypergraph rewriting via a suitable extension of the double pushout (DPO) rewriting framework 
+\cite{dpo, bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022},  proving the representation \textit{sound and complete} with respect to our categorical semantics.  
+As a corollary, this also provides a formalisation of the rewriting theory of e-graphs as encountered in the literature. 
 
 \subsection{E-graphs}
 
@@ -75,10 +80,10 @@ The string diagram version is slightly different than conventional e-graphs by r
 }
 . 
 
-Nodes are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs. 
-Initially each equivalence class has a single node. 
-The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$. 
-This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself. 
+Nodes are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs rooted at these boxes.
+Initially each equivalence class has a single node (subgraph).
+The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$.
+This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself.
 Explicit discarding (weakening) nodes, depicted with black dots with a single wire inside the dashed boxes 
 \scalebox{0.4}{
 	\begin{tikzpicture}
@@ -90,7 +95,7 @@ Explicit discarding (weakening) nodes, depicted with black dots with a single wi
 			\draw (0) to (1.center);
 		\end{pgfonlayer}
 	\end{tikzpicture}
-}, indicate which of the class-level edges are connected to which nodes inside the class. 
+}, indicate which of the class-level edges are connected to which nodes inside the class.
 
 The other steps, (c) to (e), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules.
 If we were to apply another rule, $x * 1 \to x$, we would identify the e-class of $a$ with the top-level e-class of the e-graph which would require a cycle to be introduced: the left argument of node $*$ would be the same e-class that $*$ belongs to.
@@ -98,7 +103,7 @@ This would result into a possibility of extracting the optimal term consisting o
 To support such cycles we need a richer structure for our e-string diagrams.
 While equipping the e-string diagrams which such structure is straightforward, it is out of the scope of this work, and thus we limit ourselves to acyclic e-graphs and e-string diagrams for the purposes of presentation.
 Note that while the transformations of the e-graph are guided by the algorithm, the transformations of the e-string diagrammatic version is guided by the equations of the underlying theory.
-A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively, in the Appendix. 
+A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively, in the Appendix.
 The equations applied are the ones from Figure~\ref{fig:string-equations} along with the naturality of delete and copy.
 One can note that the size of the eventual e-string diagram is comparable to the size of the corresponding e-graph.
 % Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
@@ -136,7 +141,7 @@ Examples of this translation are given in the second row of Figure \ref{fig:e-gr
 % In particular, note that the translation of the \textit{cyclic} e-graph (e) requires the use of a categorical \textit{trace}, generating a cycle. 
 % In this paper, we focus on \textit{acyclic} e-graphs and their corresponding categories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
 
-Note that the motivating example of our work, e-graphs, requires the Cartesian structure. 
+Note that the motivating example of our work, e-graphs, requires the Cartesian structure to express arbitrary sharing as used in e-graphs.
 However, we will see how all the core of the theory of e-hypergraph rewriting only requires the monoidal structure. 
 Thus we can readily generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we briefly outline in the conclusion of this paper.   
 
@@ -191,12 +196,15 @@ In this section,  we introduce the required preliminaries on semilattice enriche
 
 Given a category $\mathbb{C}$  with objects $A,B \in \mathbb{C}$ we denote by $\mathbb{C}(A,B)$ the corresponding hom-set.  We write the identity morphism on $A$ as $\id_A$,  or simply $A$.  We commonly write $f;g$ for composition in diagram order.  Composition in the usual order is written $g \circ f$.  
 We denote the tensor product of an SMC $\mathbb{C}$ by $\otimes$,  its unit by $I$ and its symmetry natural transformation as $\sym$ \cite{maclane}.  
-We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  We denote by $\catname{SLatt}$ the category of semilattices.  
+We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  
+We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  
+We denote by $\catname{SLatt}$ the closed monoidal category of semilattices which is defined in the Appendix (\textcolor{red}{add definition of $\catname{SLatt}$ in the Appendix}).
 
 
 \subsection{Symmetric Monoidal Theories and PROPs.}
 
-A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalisations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  First,  we generalise the notion of a signature. 
+A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature.  We are interested here in symmetric monoidal theories, which are generalisations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  
+First,  we generalise the notion of a signature. 
 \begin{definition}[Monoidal signature]
 A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $c: n \to m$,  with \textit{arity} $n$ and \textit{co-arity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
 \end{definition}
@@ -206,17 +214,28 @@ A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators
 % 	This is to ensure we do not have terms of type $0 \to 0$.
 % \end{remark}
 
-A categorical presentation of a monoidal signature is given by a freely generated products and permutations category.  
-\begin{definition}[Products and permutations category]
-A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category with natural numbers as objects,  and such that $n \otimes m = n+m$.  A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects. 
-We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\textbf{PROP}(\Sigma)$.  
-\end{definition}
-The free category $\textbf{PROP}(\Sigma)$ can be syntactically constructed from taking (typed) categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$, quotiented by the axioms of a symmetric monoidal category.  
+A \textit{symmetric monoidal theory} is then defined using $\Sigma$-terms.
+A set of such terms is the set obtained by taking well-typed combinations of $c \in \Sigma, id_{1}, \text{sym}_{1,1}, (;), \text{ and } \otimes$.
+A categorical presentation of a set of $\Sigma$-terms is given by a freely generated products and permutations category.
 
-An equation associated with a monoidal signature is a pair of parallel morphisms of the form above, leading to the following definition of a symmetric monoidal theory. 
-\begin{definition}[Symmetric Monoidal Theory]
-A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel morphisms $f,g: n \to m$ of $\textbf{PROP}(\Sigma)$.
-A \textit{symmetric monoidal theory} $\textbf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by $\textbf{PROP}(\Sigma)$ quotiented by the least congruence including $\mathcal{E}$.
+\begin{definition}[Products and permutations category]
+A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category with natural numbers as objects,  and such that $n \otimes m = n+m$.  
+A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects.
+We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\catname{S}(\Sigma)$.
+Such PROPs and functors between them define the category $\catname{PROP}$ and, in particular, $\catname{S}(\Sigma) \in \catname{PROP}$.
+\end{definition}
+The free category $\textbf{S}(\Sigma)$ can be syntactically constructed by quotienting the set of $\Sigma$-terms by the axioms of a symmetric monoidal category.
+Thus, $\textbf{S}$ stands for \textit{syntactic} as another way of saying free.
+
+An equation associated with a monoidal signature is a pair of parallel $\Sigma$-terms, leading to the following definition of a symmetric monoidal theory. 
+\begin{definition}[Symmetric Monoidal Theory (Definition 2.1~\cite{bonchi_string_2022-1})]
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel $\Sigma$-terms $f,g: n \to m$.
+A \textit{symmetric monoidal theory} $\textbf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by a set of $\Sigma$-terms quotiented by the least congruence including $\mathcal{E}$.
+\end{definition}
+
+\begin{definition}(Definition 2.4~\cite{bonchi_string_2022-1})
+Let $\catname{S}(\Sigma, \mathcal{E})$ a free PROP presented by $\catname{SMT}(\Sigma, \mathcal{E})$.
+That is, it is given by $\catname{S}(\Sigma)$ additionally quotiented by the least congruence including $\mathcal{E}$.
 \end{definition}
 
 It will often be convenient to give presentations of SMTs in terms of string diagrams.
@@ -233,45 +252,114 @@ together with the following associativity, commutativity and unitality equations
 	\tikzfig{../figures/categorical-semantics/Cartesian-theory}	
 	}
 \]
-The Cartesian SMT is given by a set of generators $\Sigma_C$ which additionally contains the generators of commutative comonoids, together with the equations of the SMT of commutative comonoids, and the following additional naturality equations, for every $c \in \Sigma_C$
+A Cartesian SMT is given by a set of generators $\Sigma_C$ which additionally contains the generators of commutative comonoids, together with the equations of the SMT of commutative comonoids, and the following additional naturality equations, for every $c \in \Sigma_C$
 \[
 	\scalebox{0.6}{
 	\tikzfig{../figures/categorical-semantics/Cartesian-naturality}
 	}
 \]
-By Fox's Theorem~\cite{fox},  $\textbf{SMT}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
+By Fox's Theorem~\cite{fox},  $\textbf{S}(\Sigma_C, \mathcal{E}_C)$ is equivalent to the free Cartesian category over $\Sigma_C$. 
 \end{example}
 
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
-We will use enrichment to axiomatize the e-box structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. Note, in particular,  that semilattices do not require a unit for $+$. This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane}---a degeneracy we wish to avoid.  More precisely our hom-sets will be given the structure of a semilattice.  
-Generally,  we may define a category \textit{enriched} in any other monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  In this case,  hom-sets are generalised to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
+We will use enrichment to axiomatize the e-box (e-class) structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. 
+More precisely our hom-sets will be given the structure of a semilattice.
+% Note, in particular,  that we do not require semilattices to have a unit for $+$. 
+% This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane}---a degeneracy we wish to avoid.  
+Generally,  we may define a category \textit{enriched} in any other (closed) monoidal category $M$ (\textit{e.g.},  \textbf{SLatt}).  
+In this case,  hom-sets are generalised to hom-objects of $M$ (\textit{e.g.},  a semilattice) and composition 
 \[
 	\circ: Hom(B,C) \otimes Hom(A,B) \to Hom(A,C)
 \]
-is defined as an $M$-morphism.  In other words,  composition must respect the additional structure on hom-sets.  
-In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
+is defined as an $M$-morphism which satisfies certain axioms.
+Composition being an $M$-morphism implies it respects the additional structure on hom-sets.
+%  In other words,  composition must respect the additional structure on hom-sets.  
+% In our case,  the category we wish to enrich is also monoidal,  so we additionally ask that the monoidal structure also respects this structure.  Technically, this amounts to asking that the tensor product is an enriched functor. 
 We omit further details of the general case of enrichment here, and instead work with the concrete definition required for our application, where $M = \textbf{SLatt}$.
 It remains to be seen if more general enrichments have interesting applications. 
 
-\begin{definition}[Semilattice-enriched SMC]\label{def:enriched-prop}
-A \textit{semilattice enriched strict SMC}  $\mathbb{C}$ is given by an SMC $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms.
-\begin{align*}
-f ; (g+h) &= f;g + f;h &
-(f+g) ; h &= f;h + g;h \\
-f \otimes (g+h) &= f \otimes g + f \otimes h & 
-(f+g) \otimes h &= f \otimes h + g \otimes h,
-%\item A set $ob(\mathbb{C})$ of objects;
-%\item For every pair $A,B \in ob(\mathbb{C})$, a hom-semigroup $Hom(A,B)$;
-%\item An element $\textsf{id}_{A,B} \in Hom(A,B)$; 
-\end{align*}
-Note,  we take $(;\!)$ and $\otimes$ to bind more tightly than $+$.
-A \textit{semilattice enriched strict SMC functor} $F: (\mathbb{C}, \otimes, 1,+) \to (\mathbb{D}, \otimes, 1,+)$ is given by a strict SMC functor on the underlying SMCs which additionally satisfies $F(f+g) = F(f)+F(g)$.
-All definitions extend to \textit{PROP} when the manipulated categories are PROPs rather than SMCs. 
-We denote the \textit{freely enriched PROP (SMT)} over a monoidal signature $\Sigma$ as $\textbf{PROP}^+(\Sigma)$ ($\textbf{SMT}^+(\Sigma, \mathcal{E})$,  respectively). 
+\begin{definition}[Semilattice-enriched category]
+A semilattice-enriched category $\mathbb{C}$ is defined by the following data
+\begin{itemize}
+	\item a set of objects $\mathbb{C}$
+	\item for every pair of objects $A,B \in \mathbb{C})$ --- a hom-object $\mathbb{C}(A,B \in \catname{SLatt}$
+	\item for every triple of objects $A,B,C \in \mathbb{C}$ --- a composition morphism
+	\[
+		\circ: \mathbb{C}(B,C) \otimes \mathbb{C}(A,B) \to \mathbb{C}(A,C)
+	\]
+	\item for every object $A \in C$ --- a unit morphism
+	\[
+	u_{A} : I \to \mathbb{C}(A,A), \text{ where $I$ is the monoidal unit for $\catname{SLatt}$}
+	\]
+\end{itemize}
+such that particular coherence diagrams commute~\cite{Borceux_1994}.
 \end{definition}
 
-The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category.  
+Intuitively such enrichment equips every hom-set with a commutative, associative and idempotent operator $+$ that is respected by the composition in the following sense
+\[
+	f ; (g+h) = f;g + f;h \qquad (f+g) ; h = f;h + g;h
+\]
+for all appropriately typed morphisms. 
+We take $(;\!)$ to bind more tightly than $+$.
+
+Note, in particular,  that we do not require semilattices to have a unit for $+$, \textit{i.e.,} we work with \textit{unbounded} semilattices.
+We also will not utilize the ordering that is induced by the operator of a semilattice in any meaningful way, so a semilattice can be thought of as a commutative idempotent semigroup throughout the paper.
+We stick to the term semilattice as it is shorter.
+
+\begin{definition}[Semilattice-enriched SMC]\label{def:enriched-prop}
+A \textit{semilattice enriched strict SMC}  $\mathbb{C}$ is given by a semilattice-enriched category $\mathbb{C}$ as above that additionally has
+\begin{itemize}
+\item a unit object $I_{C} \in \mathbb{C}$
+\item for every pair of objects $A,B \in \mathbb{C}$ --- an object $A \otimes B \in \mathbb{C}$
+\item for all $A,B,C,D$ --- a tensor morphism $ - \otimes_{C} - : \mathbb{C}(A,C) \otimes \mathbb{C}(B,D) \to \mathbb{C}(A \otimes B, C \otimes D)$
+\end{itemize}
+such that particular coherence diagrams commute~\cite{enriched_monoidal}.
+\end{definition}
+The latter morphism being in $\catname{SLatt}$ implies the following equations that $\otimes$ satisfy
+\[
+f \otimes (g+h) = f \otimes g + f \otimes h \qquad (f+g) \otimes h = f \otimes h + g \otimes h
+\]
+
+Again, we take $\otimes$ to bind more tightly than $+$.
+
+\begin{proposition}(A specialized case of Proposition 6.4.7~\cite{Borceux_1994})
+There is a 2-adjunction 
+% https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
+\[\begin{tikzcd}
+	\catname{SLatt}\text{--}\catname{Cat}\arrow[rr, "\mathcal{U}", bend left] & \hspace{-1em}\top & \catname{Cat} \arrow[ll, "\mathcal{F}", bend left]
+	\end{tikzcd}
+\]
+that is induced by a usual free-forgetful adjunction 
+
+\[\begin{tikzcd}
+	\catname{SLatt} \arrow[rr, "U", bend left] & \top & \catname{Set} \arrow[ll, "F", bend left]
+	\end{tikzcd}
+\]
+\end{proposition}
+
+In particular, 2-functor $F$ turns every category $\mathbb{C'} \in \catname{Cat}$ into a free semilattice enriched $\mathbb{C} \in \catname{SLatt}\text{--}\catname{Cat}$ by making every hom-set of $\mathbb{C'}$ into a free semilattice on this set.
+% SMC $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms.
+% \begin{align*}
+% f ; (g+h) &= f;g + f;h &
+% (f+g) ; h &= f;h + g;h \\
+% f \otimes (g+h) &= f \otimes g + f \otimes h & 
+% (f+g) \otimes h &= f \otimes h + g \otimes h,
+% %\item A set $ob(\mathbb{C})$ of objects;
+% %\item For every pair $A,B \in ob(\mathbb{C})$, a hom-semigroup $Hom(A,B)$;
+% %\item An element $\textsf{id}_{A,B} \in Hom(A,B)$; 
+% \end{align*}
+% Note,  we take $(;\!)$ and $\otimes$ to bind more tightly than $+$.
+% A \textit{semilattice enriched strict SMC functor} $F: (\mathbb{C}, \otimes, 1,+) \to (\mathbb{D}, \otimes, 1,+)$ is given by a strict SMC functor on the underlying SMCs which additionally satisfies $F(f+g) = F(f)+F(g)$.
+% All definitions extend to \textit{PROP} when the manipulated categories are PROPs rather than SMCs. 
+% We denote the \textit{freely enriched PROP (SMT)} over a monoidal signature $\Sigma$ as $\textbf{PROP}^+(\Sigma)$ ($\textbf{SMT}^+(\Sigma, \mathcal{E})$,  respectively). 
+% \end{definition}
+\begin{definition}
+We define $\catname{S}^{+}(\Sigma)$ and $\catname{S}^{+}(\Sigma, \mathcal{E})$ to be semilattice-enriched SMCs obtained as $\mathcal{F}(\catname{S}(\Sigma))$ and $\mathcal{F}(\catname{S}(\Sigma, \mathcal{E}))$ respectively.
+Both of these categories are in $\catname{PROP}^{+}$ that is obtained from $\catname{PROP}$ via the same adjunction.
+\end{definition}
+Equivalently, they can be constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category (and the least congruence including $\mathcal{E}$ in the case of $\catname{S}^{+}(\Sigma, \mathcal{E})$).
+% The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category.
 
 To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
 

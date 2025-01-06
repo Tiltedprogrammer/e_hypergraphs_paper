@@ -10,12 +10,12 @@ We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightar
 
 \subsection{Hypergraphs}
 
-In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for SMTs including a Frobenius algebra. 
+In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for categorical presentations of SMTs including a Frobenius algebra. 
 Hypergraphs generalise graphs by allowing edges to have multiple sources and targets. 
 When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
 However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
 This gives rise to the definition of a hypergraph with interfaces.  
-Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams and the category of such hypergraphs.
+Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of such hypergraphs.
 
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
@@ -57,7 +57,7 @@ Symmetry is inherited from $\mathbb{C}$ as the coproduct~\cite{MonoidalCoproduct
 \end{definition}
 
 
-Then, morphisms of $\textbf{PROP}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces~\cite{bonchi_string_2022-2}.
+Then, morphisms of $\catname{S}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces~\cite{bonchi_string_2022-2}.
 \begin{definition}[Hypergraphs with interfaces]
 \label{def:cspd}
 Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)}$ as the full sub-category of $\catname{Csp(Hyp(\Sigma))}$ with discrete hypergraphs as objects.
