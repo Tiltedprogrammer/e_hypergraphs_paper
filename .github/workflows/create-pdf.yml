@@ -19,6 +19,8 @@ jobs:
       SLIDES_NAME: 'slides'
       CLOSED_MONOIDAL_PATH: 'closed_monoidal/'
       CLOSED_MONOIDAL_NAME: 'closed_monoidal'
+      LICS25_CLOSED_PATH: 'LICS_2025/e_graphs_with_bindings/'
+      LICS25_CLOSED_NAME: 'E-graphs-with-bindings'
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -65,41 +67,6 @@ jobs:
           compiler: pdflatex
           args: -interaction=nonstopmode -shell-escape
           working_directory: ${{env.MAIN_PATH}}
-# # Compile submission
-#       - name: pdflatex E-Hypergraphs-LICS24 
-#         uses: dante-ev/latex-action@latest
-#         with:
-#           root_file: E-Hypergraphs-LICS24.tex
-#           compiler: pdflatex
-#           args: -interaction=nonstopmode -shell-escape 
-#       - name: bibtex E-Hypergraphs-LICS24
-#         if: always()
-#         uses: dante-ev/latex-action@latest
-#         with:
-#           root_file: E-Hypergraphs-LICS24.aux
-#           compiler: bibtex
-#           args:
-#       - name: pdflatex E-Hypergraphs-LICS24
-#         if: always()
-#         uses: dante-ev/latex-action@latest
-#         with:
-#           root_file: E-Hypergraphs-LICS24.tex
-#           compiler: pdflatex
-#           args: -interaction=nonstopmode -shell-escape
-#       - name: pdflatex E-Hypergraphs-LICS24
-#         if: always()
-#         uses: dante-ev/latex-action@latest
-#         with:
-#           root_file: E-Hypergraphs-LICS24.tex
-#           compiler: pdflatex
-#           args: -interaction=nonstopmode -shell-escape
-# # Compile review response
-#       - name: pdflatex Reviews-response.tex
-#         uses: dante-ev/latex-action@latest
-#         with:
-#           root_file: Reviews-response.tex
-#           compiler: pdflatex
-#           args: -interaction=nonstopmode -shell-escape
 # Compile Extended Abstract
       - name: pdflatex ${{env.EXT_ABSTRACT_NAME}}
         uses: dante-ev/latex-action@latest
@@ -148,8 +115,16 @@ jobs:
           root_file: ${{env.CLOSED_MONOIDAL_NAME}}.tex
           args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
           working_directory: ${{env.CLOSED_MONOIDAL_PATH}}
-# Upload both pdfs
-      - name: Upload the PDF to the release
+# Compile lics closed 
+      - name: latexmk ${{env.LICS25_CLOSED_PATH}}${{env.LICS25_CLOSED_NAME}}
+        if: always()
+        uses: dante-ev/latex-action@latest
+        with:
+         root_file: ${{env.LICS25_CLOSED_NAME}}.tex
+         args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
+         working_directory: ${{env.LICS25_CLOSED_PATH}}
+# Upload all pdfs
+      - name: Upload main PDF to the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:
@@ -159,7 +134,7 @@ jobs:
           asset_path: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.pdf
           asset_name: arxiv.pdf
           asset_content_type: pdf
-      - name: Upload the PDF to the release
+      - name: Upload extended abstract PDF to the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:
@@ -179,7 +154,7 @@ jobs:
             asset_path: ${{env.SLIDES_PATH}}${{env.SLIDES_NAME}}.pdf
             asset_name: slides.pdf
             asset_content_type: pdf
-      - name: Upload the PDF to the release
+      - name: Upload closed monoidal notes PDF to the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:
@@ -188,6 +163,16 @@ jobs:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: ${{env.CLOSED_MONOIDAL_PATH}}${{env.CLOSED_MONOIDAL_NAME}}.pdf
             asset_name: closed_monoidal.pdf
+            asset_content_type: pdf
+      - name: Upload LICS25 closed PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ${{env.LICS25_CLOSED_PATH}}${{env.LICS25_CLOSED_NAME}}.pdf
+            asset_name: LICS25Closed.pdf
             asset_content_type: pdf
       - name: Delete older releases
         if: always()

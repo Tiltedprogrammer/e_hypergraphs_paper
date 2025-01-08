@@ -1,0 +1,321 @@
+\documentclass[peerreviewcls]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{amsthm}
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac} 
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+% some macros that maybe should be moved elsewhere
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+
+\input{../../macros}
+\input{../../sample.tikzstyles}
+\input{../../hypergraph.tikzstyles}
+\input{../../hypergraph.tikzdefs}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{E-graphs With Bindings
+}
+
+% \author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
+% \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+% \textit{name of organization (of Aff.)}\\
+% City, Country \\
+% email address or ORCID}
+% \and
+% }
+
+\author{Anonymous}
+
+\maketitle
+
+\begin{abstract}
+This is abstract.
+\end{abstract}
+
+\begin{IEEEkeywords}
+component, formatting, style, styling, insert.
+\end{IEEEkeywords}
+
+\section{Introduction}
+E-graphs~\cite{EggPaper} are a data structure designed to facilitate equality reasoning in the context of term rewriting systems, \textit{e.g.}, for program optimisation.
+They aim to solve the phase-ordering problem that arises when performing term rewriting, that is, the problem of one rewrite blocking the application of another rewrite due to removing the redex from the initial term.
+They do this by making the process of applying rewrite rules non-destructive: an application of a rewrite rule $\langle l, r \rangle$ simply adds the right-hand side $r$ to the e-graph that has a term with a redex for $l$ such that the new e-graph contains the original term and the $r$ at the same time in a compact manner by utilising sharing as much as possible.
+This way the application of another rule $\langle l, r' \rangle$ would not be blocked as the residual e-graph still contains the redex with $l$ which would have been blocked should we simply replaced all the occurrences of $l$ in the initial term with $r$.
+E-graphs have been around for a while since being introduced in the 80s~\cite{nelson1980techniques} and yet there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.
+This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.
+
+There are domains, however, where the effective usage of e-graphs requires \textit{ad hoc} tweaks to achieve the desired performance, namely domains that include variable \textit{binding} and the closely related notion of \textit{substitution}, for example, lambda calculus with $\beta$-reduction.
+The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
+If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
+The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
+This work shows how these two problems can be uniformly solved with \textit{string diagrams} by building on top of the recent result of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} that provided a categorical semantics for e-graphs by showing a correspondence between e-graphs and string diagrams for Cartesian semilattice-enriched symmetric monoidal categories or concrete combinatorial structures called \textit{e-hypergraphs} that encode them.
+It proceeds in doing so by showing how e-graphs with bindings can be realized as string diagrams (or e-hypergraphs) for closed (Cartesian) semilattice-enriched symmetric monoidal categories.
+
+\subsection{E-graphs}
+
+E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.  They generalise the typical DAG representation of terms to include equivalence classes.
+The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Figure~\ref{fig:e-graph-example}.
+This example is a `Hello world!' of e-graphs, presented first in~\cite{EggPaper}.
+
+\begin{figure*}
+\[
+\adjustbox{scale=0.7}{
+\tikzfig{figures/e-graph-example}
+}
+\]
+\caption{E-graph example (top) and its equivalent string diagram representation (bottom)}
+\label{fig:e-graph-example}
+\end{figure*}
+
+Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent e-string diagram representation, an e-hypergraph as developed in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}. 
+The initial term, $(a*2)/2$ (which corresponds to subfigure (a)), is already represented efficiently in the e-graph by sharing the node 2.
+The string diagram version is slightly different than conventional e-graphs by representing the sharing of the node 2 explicitly, using a sharing (contraction) node
+\scalebox{0.3}{
+	\begin{tikzpicture}
+		\begin{pgfonlayer}{nodelayer}
+			\node [style=vertex] (0) at (1.5, 3.5) {};
+			\node [style=none] (1) at (1.5, 3) {};
+			\node [style=none] (2) at (1, 4) {};
+			\node [style=none] (3) at (2, 4) {};
+		\end{pgfonlayer}
+		\begin{pgfonlayer}{edgelayer}
+			\draw (0) to (1.center);
+			\draw [bend right=45] (0) to (3.center);
+			\draw [bend left=45] (0) to (2.center);
+		\end{pgfonlayer}
+	\end{tikzpicture}
+}
+. 
+
+Nodes of an e-graph are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs rooted at these boxes.
+Initially each equivalence class has a single node (subgraph).
+The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary (containing more than one node or subgraph) equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$.
+This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself.
+Explicit discarding (weakening) nodes, depicted with black dots with a single wire inside the dashed boxes 
+\scalebox{0.4}{
+	\begin{tikzpicture}
+		\begin{pgfonlayer}{nodelayer}
+			\node [style=vertex] (0) at (1.5, 3.5) {};
+			\node [style=none] (1) at (1.5, 3) {};
+		\end{pgfonlayer}
+		\begin{pgfonlayer}{edgelayer}
+			\draw (0) to (1.center);
+		\end{pgfonlayer}
+	\end{tikzpicture}
+}, indicate which of the class-level edges are connected to which nodes inside the class.
+
+The other steps, (c) to (e), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules.
+
+\textcolor{red}{Add example showing that using De Brujin indices with e-graphs breaks sharing}
+
+\textcolor{red}{Add example showing $\beta$-reduction in e-graphs compared to string diagrams}
+
+
+\begin{figure*}
+    \[
+        % \hspace{1.3cm}
+        \adjustbox{width=\textwidth}{
+        \tikzfig{../../figures/categorical-semantics/e-graph-substitution}
+        }
+    \]
+    \caption{E-graph explicit substitution example.}
+    \label{fig:e-graph-substitution}
+  \end{figure*}
+  
+  \begin{figure*}
+    \[
+        % \hspace{1.3cm}
+        \adjustbox{width=\textwidth}{
+        \tikzfig{../../figures/categorical-semantics/e-string-substitution-2}
+        }
+    \]
+    \caption{E-string diagrammatic substitution example.}
+    \label{fig:e-string-substitution}
+  \end{figure*}
+
+\section{Categorical semantics}
+
+Free semilattice enrichment of a closed SMC.
+
+\section{Combinatorial semantics}
+
+
+We can extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness.
+
+\begin{definition}
+Closed monoidal signature $\Sigma$ is a pair $(\Sigma_{O},\Sigma_{M})$ of signatures for objects and signatures for morphisms with sources and targets in $\text{obj}_{\Sigma_{O}}$ defined as
+\begin{itemize}
+  \item $I$ (monoidal unit) is in $\text{obj}_{\Sigma_{O}}$
+  \item For every $o \in \Sigma_{O}$, $o \in \text{obj}_{\Sigma_{O}}$;
+  \item For every $o_1$ and $o_2$ $ \in \text{obj}_{\Sigma_{O}}$, $o_1 \otimes o_2 \in \text{obj}{\Sigma_{O}}$ and $o_1 \multimap o_2 \in \text{obj}_{\Sigma_{O}}$
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+ Closed symmetric monoidal theory ($\catname{CSMT}$) over a closed monoidal signature $\Sigma$ and equations $\mathcal{E}$ denoted as $\catname{CSMT}(\Sigma, \mathcal{E})$ is given by a set of terms $T$
+ \begin{align*}
+ T \coloneq\; &t : A \to B \in \Sigma_{M} \;|\; t_1 \otimes t_2 : A \otimes C \to B \otimes D \text{ for } t_{1} : A \to B, t_{2} : C \to D \in T\\
+            & \;|\; t_{1};t_{2} : A \to C \text{ for } t_{1} : A \to B, t_{2} : B \to C \in T \; | \;  \Lambda(t) : A \to X \multimap B \text{ for } t : A \otimes X \to B \\
+            &  \;|\; \text{eval}(t_1 \otimes t_2) : B \text{ for } t_1 : X \multimap B, t_2 : X \in T \\
+            &  \;|\; \text{sym}_{A,B} \;|\; id_{A}
+ \end{align*}
+ quotiented by the laws of a closed symmetric monoidal category.
+\end{definition}
+% \question{Maybe types and terms combined is not a good idea}
+\begin{definition}
+
+We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{red}{<}, \textcolor{blue}{<},\consistency)$ where
+\begin{itemize}
+  \item $V$ is a set of vertices;
+  \item $E = \textcolor{gray}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that include \textit{plain} edges and two types of \textit{hierarchical} edges respectively;
+  \item $s,t : E \to V^{*}$ are source and target functions;
+  \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \text{obj}_{\Sigma_{O}}$ are \textit{label} functions;
+  \item $\textcolor{red}{<} : V + E \to \textcolor{red}{E}$ and $\textcolor{blue}{<} : V + E \to \textcolor{blue}{E}$ are partial \textit{child} functions that are disjoint: if $\textcolor{red}{<}(x)$ is defined then $\textcolor{blue}{<}(x)$ is undefined and vice-versa;
+  \item $\consistency = \bigcup_{p} \consistency_{p}$, where $\consistency_{p}$ is a \textit{consistency} relation defined on each set $\{x \in V + E \;|\; p \;\textcolor{red}{<^{\mu}}\; x\}$;
+\end{itemize} 
+\end{definition}
+
+$\textcolor{red}{E}$ will contain edges that encode the equivalence classes and $\textcolor{blue}{E}$ the ones that defined the lambda abstraction.
+All the above functions and relations must satisfy the obvious properties (TODO: add them).
+
+Similarly, we have a category of (extended) cospans formed by such e-hypergraphs where morphisms are of the form
+\[
+n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
+\]
+
+where $n$ and $m$ are external input and output interfaces respectively and $n'$, $m'$ are input and output internal interfaces.
+$n,n',m,m'$ are discrete ordered e-hypergraphs.
+We further require that $f_{\text{ext}}$ and $g_{\text{ext}}$ are monos and all vertices in the image of $f_{\text{ext}};f_{\text{int}}$ (respectively, $g_{\text{ext}};g_{\text{int}}$) are top-level.
+
+To build a correspondence between terms of a closed SMC and e-hypergraphs with interfaces (above) we restrict the cospans of the latter to monogamous cospans.
+
+\begin{definition}
+  We call a cospan 
+  \[
+n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
+\]
+\textit{weak} monogamous if
+\begin{itemize}
+  \item in- and out- degrees of every vertex is at most 1;
+  \item $f_{\text{int}}$ and $g_{\text{int}}$ are monos;
+  \item Vertices with in-degree (respectively, out-degree) of 0 are precisely the image of $f_{\text{int}}$ (respectively, $g_{\text{int}}$).
+\end{itemize}
+
+\end{definition}
+
+
+\begin{definition}[Isomorphic cospans]
+Consider a relation 
+\[
+R = \{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{blue}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{blue}{<}^{\mu} f_{\text{int}}(y)\}
+\]
+for $x, y \in n'$.
+And let $S$ be its reflexive closure.
+The latter partitions $n'$ into non-empty subsets $\{p_{j}\}^{k}_{j=1}$.
+We get an analogous partition for $m'$.
+
+Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute and such that $\alpha$ and $\gamma$ preserve order within each $p_j$.
+\[
+\scalebox{0.8}{
+    \tikzfig{../../figures/combinatorial_semantics/isomorphic_e_cospans}
+}
+\]
+\end{definition}
+
+
+Consider an example of isomorphic and non-isomorphic cospans below and their respective string diagrams
+
+\begin{figure}
+  \begin{subfigure}[c]{0.4\linewidth}
+    \[
+    \adjustbox{scale=0.6}{
+    \tikzfig{./figures/closed_iso_example_1}
+    }
+    \]
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[c]{0.4\linewidth}
+    \[
+    \adjustbox{scale=0.6}{
+    \tikzfig{./figures/closed_iso_example_2}
+    }
+    \]
+  \end{subfigure}
+\end{figure}
+
+\begin{definition}
+
+We define ordered sets of \textit{input} (respectively, \textit{output}) vertices of a hierarchical edge $e$ as the vertices $v_{i}$ such that $e < v_{i}$ which are in the image of $f_{\text{int}}$ (respectively, $g_{\text{ext}}$) with the induced ordering.
+\end{definition}
+
+\begin{definition}
+
+Given an ordered set $S$ of labelled vertices we can form words formed by concatenating the labels.
+We will denote such words as $w(S)$.
+\end{definition}
+
+\begin{definition}
+We call a monogamous cospan
+\[
+  n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
+\]
+\textit{well-typed} if all hierarchical edges of $\mathcal{G}$ are well-typed in the sense below.
+\begin{itemize}
+  \item For each $e \in \textcolor{red}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$.
+        $e$ is well-typed if for each element $S$ of the partition of $I$ $w(S) = w(s(e))$ and similarly for $O$ and $t(e)$.
+  \item For each $e \in \textcolor{blue}{E}$ consider sets $I$ and $O$ of its input and output vertices.
+        $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $[...s(e), B] = w(I)$ and $B \multimap w(O) = w(t(e))$
+\end{itemize}
+\end{definition}
+
+
+\bibliographystyle{acm}
+\bibliography{../../bibliography}
+
+\end{document}

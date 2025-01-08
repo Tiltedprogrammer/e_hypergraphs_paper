@@ -2,6 +2,9 @@ LICS24="E-Hypergraphs-LICS24"
 LICS24_PATH="LICS"
 LICS24_SOURCE=$(LICS24).tex
 
+LICS_CLOSED="E-graphs-with-bindings"
+LICS_CLOSED_PATH="LICS_2025/e_graphs_with_bindings"
+LICS_CLOSED_SOURCE=$(LICS_CLOSED).tex
 
 
 CLOSED="closed_monoidal"
@@ -17,8 +20,8 @@ SLIDES_PATH="slides"
 SLIDES_SOURCE=$(SLIDES).tex
 
 
-PDFLATEX= pdflatex -interaction nonstopmode -file-line-error -shell-escape -interaction=nonstopmode
-XELATEX= xelatex -interaction nonstopmode -file-line-error -shell-escape -interaction=nonstopmode -pdf
+PDFLATEX= pdflatex -file-line-error -shell-escape -interaction=nonstopmode
+XELATEX= xelatex -file-line-error -shell-escape -interaction=nonstopmode -pdf
 
 CLEANALL= rm -rf auto _* *.aux *.log *.nav *.out *.snm *.toc *~ *.blg *.bbl *.cut *.dvi *.xcp *.fdb_latexmk *.fls *.synctex.gz *.pdf
 
@@ -32,6 +35,10 @@ closed:
 
 lics:
 	cd $(LICS24_PATH) && $(CLEANALL) && $(PDFLATEX) $(LICS24_SOURCE) && bibtex $(LICS24) && $(PDFLATEX) $(LICS24_SOURCE) && $(PDFLATEX) $(LICS24_SOURCE)
+
+lics_closed:
+	cd $(LICS_CLOSED_PATH) && $(CLEANALL) && $(PDFLATEX) $(LICS_CLOSED_SOURCE) && bibtex $(LICS_CLOSED) && $(PDFLATEX) $(LICS_CLOSED_SOURCE) && $(PDFLATEX) $(LICS_CLOSED_SOURCE)
+
 
 slides:
 	cd $(SLIDES_PATH) && $(CLEANALL) && $(XELATEX) $(SLIDES_SOURCE)

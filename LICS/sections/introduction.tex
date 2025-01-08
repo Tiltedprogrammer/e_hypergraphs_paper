@@ -61,7 +61,7 @@ The key concepts of e-graphs can be intuitively grasped from some simple (but no
 This example is a `Hello world!' of e-graphs, presented first in~\cite{EggPaper}.
 
 Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent e-string diagram representation, an e-hypergraph. 
-The initial term, $(a*2)/2$, is already represented efficiently in the e-graph by sharing the node 2.
+The initial term, $(a*2)/2$ (which corresponds to subfigure (a)), is already represented efficiently in the e-graph by sharing the node 2.
 The string diagram version is slightly different than conventional e-graphs by representing the sharing of the node 2 explicitly, using a sharing (contraction) node
 \scalebox{0.3}{
 	\begin{tikzpicture}
@@ -82,7 +82,7 @@ The string diagram version is slightly different than conventional e-graphs by r
 
 Nodes are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs rooted at these boxes.
 Initially each equivalence class has a single node (subgraph).
-The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$.
+The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary (containing more than one node or subgraph) equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$.
 This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself.
 Explicit discarding (weakening) nodes, depicted with black dots with a single wire inside the dashed boxes 
 \scalebox{0.4}{
@@ -118,11 +118,11 @@ One can note that the size of the eventual e-string diagram is comparable to the
 	}
 \]
 \captionsetup{belowskip=-4ex}
-\caption{String diagrams for semilattice enriched symmetric monoidal categories.}
+\caption{String diagrams for semilattice-enriched symmetric monoidal categories.}
 \label{fig:egraph-strings}
 \end{figure}
 
-Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category
+Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category (see \textit{e.g.}~\cite{GhicaZanassiStringLambda})
 makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator
 \[
 \infer{f_1 + \ldots + f_n: A \to B}{\{f_i: A \to B\}_{i \in \{1,\ldots,n\}}}
@@ -215,7 +215,7 @@ A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators
 % \end{remark}
 
 A \textit{symmetric monoidal theory} is then defined using $\Sigma$-terms.
-A set of such terms is the set obtained by taking well-typed combinations of $c \in \Sigma, id_{1}, \text{sym}_{1,1}, (;), \text{ and } \otimes$.
+A set of such terms is the set obtained by taking well-typed combinations of $c \in \Sigma, \textsf{id}_{I}, \textsf{id}_{1}, \text{sym}_{1,1}, (;), \text{ and } \otimes$.
 A categorical presentation of a set of $\Sigma$-terms is given by a freely generated products and permutations category.
 
 \begin{definition}[Products and permutations category]
@@ -355,15 +355,16 @@ In particular, 2-functor $F$ turns every category $\mathbb{C'} \in \catname{Cat}
 % We denote the \textit{freely enriched PROP (SMT)} over a monoidal signature $\Sigma$ as $\textbf{PROP}^+(\Sigma)$ ($\textbf{SMT}^+(\Sigma, \mathcal{E})$,  respectively). 
 % \end{definition}
 \begin{definition}
-We define $\catname{S}^{+}(\Sigma)$ and $\catname{S}^{+}(\Sigma, \mathcal{E})$ to be semilattice-enriched SMCs obtained as $\mathcal{F}(\catname{S}(\Sigma))$ and $\mathcal{F}(\catname{S}(\Sigma, \mathcal{E}))$ respectively.
+We define $\catname{S}(\Sigma)^{+}$ and $\catname{S}(\Sigma, \mathcal{E})^{+}$ to be semilattice-enriched SMCs obtained as $\mathcal{F}(\catname{S}(\Sigma))$ and $\mathcal{F}(\catname{S}(\Sigma, \mathcal{E}))$ respectively.
 Both of these categories are in $\catname{PROP}^{+}$ that is obtained from $\catname{PROP}$ via the same adjunction.
 \end{definition}
-Equivalently, they can be constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category (and the least congruence including $\mathcal{E}$ in the case of $\catname{S}^{+}(\Sigma, \mathcal{E})$).
+Equivalently, they can be constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category (and the least congruence including $\mathcal{E}$ in the case of $\catname{S}(\Sigma, \mathcal{E})^{+}$).
 % The free category $\textbf{PROP}^+(\Sigma)$ can be syntactically constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category.
 
 To aid reasoning, we introduce a new language of string diagrams for semilattice enriched SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
 
-Figure \ref{fig:egraph-strings} displays the generators of this language and Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
+Figure \ref{fig:egraph-strings} displays the generators of this language which is the usual string diagrammatic syntax~\cite{Selinger_2010} apart from the last component which is our notation for $+$; the first component denotes an empty diagram. 
+Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
 The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
 We will later prove the intuitive fact that these diagrams are sound and complete with respect to their intended categorical semantics, noting that similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
 

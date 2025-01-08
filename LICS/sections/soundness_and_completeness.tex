@@ -1,9 +1,42 @@
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
-This section contains the main technical results of the paper,  building on those of \cite{bonchi_string_2022-2}. 
-We first construct an interpretation of terms generating $\textbf{PROP}^+(\Sigma)$ in $\WellTypedMdaEcospans$.  
-As expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
-Instead,  we implement the semilattice equations via EDPOI rewrites,  leading to the following soundness and completeness result: for any morphisms $f$ and $g$ in $\textbf{SMT}(\Sigma, \mathcal E)$,  $f = g$  if and only if there exists a sequence of EDPOI-rewrites --- each induced by either a structural semilattice equation or $\mathcal E$ --- between their combinatorial representations. 
+This section contains the main technical results of the paper,  building on those of \cite{bonchi_string_2022-2}.
+We give the interpretation of $\catname{S}(\Sigma)^{+}$ terms in $\WellTypedMdaEcospans$ by extending the interpretation of $\catname{S}$ in $\MdaCospans$ by first endowing each hom-set of cospans in $\WellTypedMdaEcospans$ with a semilattice structure turning it into a semilattice-enriched category.
+To achieve the latter we quotient each hom-set by EDPOI structural rewrite rules that correspond to the axioms of a semilattice-enriched SMC:
+as expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
+
+% We first construct an interpretation of terms generating $\catname{S}(\Sigma)^{+}$ in $\WellTypedMdaEcospans$.  
+% As expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
+% Instead,  we implement the semilattice equations via EDPOI rewrites,  leading to the following soundness and completeness result: for any morphisms $f$ and $g$ in $\catname{S}(\Sigma, \mathcal E)$,  $f = g$  if and only if there exists a sequence of EDPOI-rewrites --- each induced by either a structural semilattice equation or $\mathcal E$ --- between their combinatorial representations. 
+
+\begin{definition}
+We define $+$ of two extended cospans in $\WellTypedMdaEcospans(n,m)$ as in Figure~\ref{fig:A+B}
+by introducing a hierarchical edge with $n$ inputs and $k$ outputs that has both carriers of the two cospans as its successors and where the carriers are different equivalence classes under $\consistency$ as implied by the dashed delimiter.
+The two carriers become two different consistent components of a newly introduced hierarchical edge such that the interface morphisms are preserved.
+In particular, $[f_{\text{int}}(b_1), \ldots, f_{\text{int}(b_{m})}] = s(\mathcal{F})$ and so on.
+
+The only extended cospan of type $0 \to 0$ has the empty e-hypergraph as its carrier and we will overload $+$ for such cospans to have the empty carrier as well.
+That is, we will let 
+\begin{align*}
+	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
+	&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0 \to 0 \to \varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
+	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0
+\end{align*}
+\end{definition}
+
+To make this newly defined $+$ obey the laws of a semilattice-enriched SMC we will quotient $\WellTypedMdaEcospans$ by certain EDPOI structural rewrite rules.
+
+We define the appropriate notion of quotient by EDPOI rewrites below.  
+% Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms).
+Given a set of equations $\mathcal{E}$ of $\Sigma^{+}$-terms, $\llbracket \mathcal{E} \rrbracket$ is defined as $\{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle \text{ for each } l = r \in \mathcal{E} \} \cup \{\langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for each } l = r \in \mathcal{E}\}$.
+% \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
+\begin{definition}[Quotient by rewrites]  
+Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
+\[
+	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\llbracket \mathcal E \rrbracket} g ~ . 
+\]
+\end{definition}
+
 
 \begin{figure}
     \[
@@ -11,15 +44,16 @@ Instead,  we implement the semilattice equations via EDPOI rewrites,  leading to
     \tikzfig{../figures/combinatorial_semantics/f_plus_g_new}
     }
     \]
-    \captionsetup{belowskip=-4ex}
+    \captionsetup{belowskip=-3.5ex}
     \caption{$+$ of two morphisms in $\Ecospans$}
     \label{fig:A+B}
 \end{figure}
 Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
-Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  
+Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_I$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  
 We will write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  
 
-We wish to specify a set of EDPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.  In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of $\Sigma$-terms in $\WellTypedMdaEcospans$ (as given by the free functor from $\textbf{PROP}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
+We wish to specify a set of EDPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.
+In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of $\Sigma$-terms in $\MdaCospans$ (as given by the free functor from $\catname{S}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
 \begin{definition}[Interpretation function] 
 %Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
 Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by induction on the type derivation of $\Sigma$-terms by 
@@ -33,19 +67,21 @@ where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \re
 The definitions of the right-hand sides of the base cases above can be found in~\cite{bonchi_string_2022-1} that defines the corresponding cospans of hypergraphs. One can then get extended cospans by following~\ref{remark:embedding_functor}.
 \end{definition}
 
-\begin{remark}
-\label{remark:f+g}
-The action of the operation $+$ defined in Figure~\ref{fig:A+B} on two extended cospan is given by introducing a hierarchical edge with $n$ inputs and $k$ outputs that has both carriers of the two cospans as its successors and where the carriers are different equivalence classes under $\consistency$ as implied by the dashed delimiter.
-The only extended cospan of type $0 \to 0$ has the empty e-hypergraph as its carrier and we will overload $+$ for such cospans to have the empty carrier as well.
-That is, we will let 
-\begin{align*}
-	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
-	&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0 \to 0 \to \varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
-	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0
-\end{align*}
-\end{remark}
+% \begin{remark}
+% \label{remark:f+g}
+% The action of the operation $+$ defined in Figure~\ref{fig:A+B} on two extended cospan is given by introducing a hierarchical edge with $n$ inputs and $k$ outputs that has both carriers of the two cospans as its successors and where the carriers are different equivalence classes under $\consistency$ as implied by the dashed delimiter.
+% The only extended cospan of type $0 \to 0$ has the empty e-hypergraph as its carrier and we will overload $+$ for such cospans to have the empty carrier as well.
+% That is, we will let 
+% \begin{align*}
+% 	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
+% 	&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0 \to 0 \to \varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
+% 	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0
+% \end{align*}
+% \end{remark}
 
-In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$,  and completeness is expressed as the faithfulness of this functor.  In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
+In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  
+This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{S}(\Sigma, \mathcal E)^{+}$,  and completeness is expressed as the faithfulness of this functor.  
+In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
 
 We define the appropriate notion of quotient by EDPOI rewrites below.  
 % Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms).
@@ -69,15 +105,55 @@ The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PRO
 \end{proposition}
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
 
-The reason for calling the previous result \textit{soundness} is that the interpretation function on $\Sigma^+$-terms induces a semilattice-enriched SMC functor $\llbracket - \rrbracket: \textbf{PROP}^+(\Sigma) \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which further induces the following semilattice-enriched SMC functor,  for a set of equations $\mathcal E$:
+The reason for calling the previous result \textit{soundness} is that the interpretation function on $\Sigma^+$-terms induces a semilattice-enriched SMC functor $\llbracket - \rrbracket: \catname{S}(\Sigma)^{+} \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which further induces the following semilattice-enriched SMC functor,  for a set of equations $\mathcal E$:
 \[
-	\llbracket - \rrbracket_{\mathcal E}: \textbf{SMT}^+(\Sigma, \mathcal E) \to \WellTypedMdaEcospans/{\mathcal{S,E}}
+	\llbracket - \rrbracket_{\mathcal E}: \catname{S}(\Sigma, \mathcal E)^{+} \to \WellTypedMdaEcospans/{\mathcal{S,E}}
 \]
-which by uniqueness must be the free semilattice-enriched functor from $\textbf{SMT}^+(\Sigma, \mathcal E)$ induced by the interpretation of $\Sigma$ as itself.  Unfolding definitions,  it follows that
+which by uniqueness must be the free semilattice-enriched functor from $\catname{S}(\Sigma, \mathcal E)^{+}$ induced by the interpretation of $\Sigma$ as itself.  
+Unfolding definitions,  it follows that
 \[
 	f = g \quad \Rightarrow \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
 \]
 Note that it is immediate from the previous result that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is indeed a semilattice-enriched PROP.  
+
+\begin{lemma}
+We have the following equivalence obtained by applying the free enrichment 2-functor $\mathcal{F}$ to $\catname{S}(\Sigma) \cong \MdaCospans$
+\[
+\catname{S}(\Sigma)^{+} \cong \MdaCospans^{+}
+\]
+\end{lemma}
+
+\begin{lemma}
+
+There is an inclusion
+\[
+\MdaCospans \xhookrightarrow{In} \MdaEcospans
+\]
+
+That is identity on objects and which maps a cospan $n \xrightarrow{} F \xleftarrow{} m$ to $n \xrightarrow{} n \xrightarrow{} F \xleftarrow{} m \xleftarrow{} m$ by recalling that every hypergraph is also an e-hypergraph.
+\end{lemma}
+
+\begin{lemma}
+We have the following equivalence of semilattice-enriched categories
+\[
+\MdaCospans^{+} \cong \MdaEcospans/\mathcal{S}
+\]
+\end{lemma}
+\begin{proof}
+The equivalence is given by the full and faithful semilattice-enriched functor $[]$.
+First observe that in $\MdaCospans^{+}$ we can consider only canonical morphisms of the form $f_{1} + \ldots + f_{n}$ where each of $f_{i}$ is an mda-cospan and for $i \not = j$, $f_{i} \not = f_{j}$.
+Then, $[]$ is defined as follows.
+\begin{itemize}
+\item It maps each discrete hypergraph in $\MdaCospans^{+}$ to a corresponding discrete e-hypergraph in $\MdaEcospans/\mathcal{S}$.
+\item Every morphism $f_{1} + \ldots + f_{n}$ is mapped to $\text{In}(f_{1}) + \ldots + \text{In}(f_{n})$ as in Figure~\ref{fig:A+B}.
+\end{itemize}
+To show the functor is faithful, suppose $f = f_{1} + \ldots + f_{n} \not = g_{1} + \ldots + g_{m} = g$.
+Then it must be that $[f] \not = [g]$.
+If $n \not = m$ then it is immediately $[f] \not = [g]$ as $[f]$ and $[g]$ contain different number of non-isomorphic components.
+If $n = m$ then assume for a contradiction that $[f] \not = [g]$. 
+We have that there exists a permutation $\sigma$ such that for every index $i$ we have $[f_{i}] = [g_{\sigma(i)}]$ and thus by $\text{In}$ that $f_{i} = g_{\sigma(i)}$, implying $f = g$ which is a contradiction.
+Therefore, we have $[f] \not = [g]$ as required.
+\end{proof}
 
 The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed from left to right way to form a terminating rewrite system,  which results in a cospan in a \textit{weak normal form}. 
 \begin{proposition}[Weak normal form]
@@ -98,13 +174,13 @@ This normal form will come in handy when proving the following theorem.
 \label{thm:completeness_simple}
 We have the following equivalence of categories
 \[
-	\textbf{SMT}^{+}(\Sigma) \cong \WellTypedMdaEcospans / \mathcal{S}~.
+	\catname{S}(\Sigma)^{+} \cong \WellTypedMdaEcospans / \mathcal{S}~.
 \]	
 \end{theorem}
 \begin{proof}
-The equivalence is given by the semilattice-enriched SMC functor $\llbracket - \rrbracket$.  
+The equivalence is given by the semilattice-enriched SMC functor $\llbracket - \rrbracket$.
 First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  
-In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\textbf{SMT}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ 
+In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\catname{S}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ 
 % of symmetric monoidal theories and plain MDA cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma)$
 ; see Theorem 35 of ~\cite{bonchi_string_2022-2}.
 
