@@ -11,10 +11,9 @@ as expected,  the SMC equations are factored out in our representation of terms 
 
 \begin{definition}
 We define $+$ of two extended cospans in $\WellTypedMdaEcospans(n,m)$ as in Figure~\ref{fig:A+B}
-by introducing a hierarchical edge with $n$ inputs and $k$ outputs that has both carriers of the two cospans as its successors and where the carriers are different equivalence classes under $\consistency$ as implied by the dashed delimiter.
+by introducing a hierarchical edge with $n$ inputs and $k$ outputs that has both carriers of the two cospans as its successors.
 The two carriers become two different consistent components of a newly introduced hierarchical edge such that the interface morphisms are preserved.
-In particular, $[f_{\text{int}}(b_1), \ldots, f_{\text{int}(b_{m})}] = s(\mathcal{F})$ and so on.
-
+In particular, $f_{1,\text{int}}(b_i) = f_{\text{int}}(b_i)$ and so on.
 The only extended cospan of type $0 \to 0$ has the empty e-hypergraph as its carrier and we will overload $+$ for such cospans to have the empty carrier as well.
 That is, we will let 
 \begin{align*}
@@ -28,12 +27,12 @@ To make this newly defined $+$ obey the laws of a semilattice-enriched SMC we wi
 
 We define the appropriate notion of quotient by EDPOI rewrites below.  
 % Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms).
-Given a set of equations $\mathcal{E}$ of $\Sigma^{+}$-terms, $\llbracket \mathcal{E} \rrbracket$ is defined as $\{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle \text{ for each } l = r \in \mathcal{E} \} \cup \{\langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for each } l = r \in \mathcal{E}\}$.
+% Given a set of equations $\mathcal{E}$ of $\Sigma^{+}$-terms, $\llbracket \mathcal{E} \rrbracket$ is defined as $\{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle \text{ for each } l = r \in \mathcal{E} \} \cup \{\langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for each } l = r \in \mathcal{E}\}$.
 % \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
 \begin{definition}[Quotient by rewrites]  
-Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
+Given a set of EDPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation.
 \[
-	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\llbracket \mathcal E \rrbracket} g ~ . 
+	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g ~ . 
 \]
 \end{definition}
 
@@ -48,24 +47,38 @@ Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\ma
     \caption{$+$ of two morphisms in $\Ecospans$}
     \label{fig:A+B}
 \end{figure}
-Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
-Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_I$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  
-We will write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  
+% Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
+% Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_I$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  
+% We will write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  
 
-We wish to specify a set of EDPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.
-In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of $\Sigma$-terms in $\MdaCospans$ (as given by the free functor from $\catname{S}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
-\begin{definition}[Interpretation function] 
-%Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
-Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by induction on the type derivation of $\Sigma$-terms by 
-\begin{align*}
-	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket f ; g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} ; \llbracket g \rrbracket_{n,m} \\
-	\llbracket I \rrbracket_{n,m} &= I & \llbracket f \otimes g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} \otimes \llbracket g \rrbracket_{n,m} \\
-	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
-	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket_{n,m}
-\end{align*}
-where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  It uses the notation of dashed boxes for hierarchical edges, with its children drawn inside,  and maximally consistent components separated by another dashed line.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context.
-The definitions of the right-hand sides of the base cases above can be found in~\cite{bonchi_string_2022-1} that defines the corresponding cospans of hypergraphs. One can then get extended cospans by following~\ref{remark:embedding_functor}.
+\begin{definition}
+	Let $\mathcal{S}$ be the set of EDPOI rewrite rules (or rather schema rules) that correspond to string diagrammatic equations in Figure~\ref{fig:string-equations}.
 \end{definition}
+
+For example, the first equations would yield two EDPOI schema rules (one for each reading the span from left to right and from right to left):
+
+\[
+\adjustbox{scale=0.4}{
+	\tikzfig{../figures/soundness_and_completeness/semilattice_rule_1}~.
+}
+\]
+Also, we do not need to introduce rewrite rules for commutativity equations as these are absorbed by our notion of isomorphism~\ref{def:iso}.
+Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts (and pushout complements) for rewrites for the rules we are interested in do exist~\ref{proof:appendix:soundness} and thus the quotienting is well-defined.
+
+% We wish to specify a set of EDPOI rewrite rules corresponding to those in Figure \ref{fig:string-equations}.
+% In order to do this,  we specify a function which maps  uninterpreted $\Sigma^+$-terms into $\WellTypedMdaEcospans$ morphisms,  and which also extends the expected interpretation of $\Sigma$-terms in $\MdaCospans$ (as given by the free functor from $\catname{S}(\Sigma)$ induced by the interpretation of $\Sigma$ as itself,  detailed in \cite{bonchi_string_2022-2}). 
+% \begin{definition}[Interpretation function] 
+% %Let $\llbracket - \rrbracket: \textbf{PROP}(\Sigma) \to \WellTypedMdaEcospans$ be the unique SMC-functor induced by the interpretation sending $\Sigma$ to itself.  
+% Let $\llbracket - \rrbracket_{n,m}: \Sigma^+(n,m) \to \WellTypedMdaEcospans(n,m)$ be the function defined by induction on the type derivation of $\Sigma$-terms by 
+% \begin{align*}
+% 	\llbracket \id \rrbracket_{n,m} &= \id  &	\llbracket f ; g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} ; \llbracket g \rrbracket_{n,m} \\
+% 	\llbracket I \rrbracket_{n,m} &= I & \llbracket f \otimes g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} \otimes \llbracket g \rrbracket_{n,m} \\
+% 	\llbracket \sym \rrbracket_{n,m} &= \sym  & \llbracket c \rrbracket_{n,m} &= c   \\ 
+% 	\llbracket f+g \rrbracket_{n,m} &= \llbracket f \rrbracket_{n,m} + \llbracket g \rrbracket_{n,m}
+% \end{align*}
+% where $c \in \Sigma$ and $+$ in $\WellTypedMdaEcospans$ is defined by Figure \ref{fig:A+B}.  It uses the notation of dashed boxes for hierarchical edges, with its children drawn inside,  and maximally consistent components separated by another dashed line.  We will omit the subscripts in $\llbracket - \rrbracket_{n,m}$ where it is clear from context.
+% The definitions of the right-hand sides of the base cases above can be found in~\cite{bonchi_string_2022-1} that defines the corresponding cospans of hypergraphs. One can then get extended cospans by following~\ref{remark:embedding_functor}.
+% \end{definition}
 
 % \begin{remark}
 % \label{remark:f+g}
@@ -79,24 +92,24 @@ The definitions of the right-hand sides of the base cases above can be found in~
 % \end{align*}
 % \end{remark}
 
-In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  
-This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{S}(\Sigma, \mathcal E)^{+}$,  and completeness is expressed as the faithfulness of this functor.  
-In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
+% In order to phrase our soundness and completeness results categorically,  we define the following quotient of $\WellTypedMdaEcospans$ by EDPOI rewrites.  
+% This means that soundness is expressed as the extension of $\llbracket - \rrbracket$ to a semilattice-enriched SMC functor from $\textbf{S}(\Sigma, \mathcal E)^{+}$,  and completeness is expressed as the faithfulness of this functor.  
+% In fact,  we prove that the functor is also full,  giving an equivalence of categories. 
 
-We define the appropriate notion of quotient by EDPOI rewrites below.  
+% We define the appropriate notion of quotient by EDPOI rewrites below.  
 % Let the function $\llbracket - \rrbracket$ extend in the obvious way to apply to equations (\textit{i.e.}, pairs of $\Sigma^+$-terms).
-Given a set of equations $\mathcal{E}$ of $\Sigma^{+}$-terms, $\llbracket \mathcal{E} \rrbracket$ is defined as $\{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle \text{ for each } l = r \in \mathcal{E} \} \cup \{\langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for each } l = r \in \mathcal{E}\}$.
+% Given a set of equations $\mathcal{E}$ of $\Sigma^{+}$-terms, $\llbracket \mathcal{E} \rrbracket$ is defined as $\{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle \text{ for each } l = r \in \mathcal{E} \} \cup \{\langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for each } l = r \in \mathcal{E}\}$.
 % \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
-\begin{definition}[Quotient by rewrites]  
-Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
-\[
-	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\llbracket \mathcal E \rrbracket} g ~ . 
-\]
-\end{definition}
+% \begin{definition}[Quotient by rewrites]  
+% Given a set of equations $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation. 
+% \[
+% 	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\llbracket \mathcal E \rrbracket} g ~ . 
+% \]
+% \end{definition}
 
-We will then omit double square brackets around the set of equations and just write $\Rrightarrow_{\mathcal{E}}$ to mean the above.
-Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts (and pushout complements) for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist~\ref{proof:appendix:soundness}.
-Let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
+% We will then omit double square brackets around the set of equations and just write $\Rrightarrow_{\mathcal{E}}$ to mean the above.
+% Note that not all pushouts (or pushout complements) in $\textbf{MEHypI}(\Sigma)$ are guaranteed to exist: however,  pushouts (and pushout complements) for rewrites generated from $\Sigma$-equations and those generated from the semilattice equations on $\Sigma^+$-terms do exist~\ref{proof:appendix:soundness}.
+% Let $\mathcal{S}$ be the set equations of Figure \ref{fig:string-equations},  \textit{i.e.},  the semilattice equations over $\Sigma^+$-terms. 
 %Let $\mathcal E$ be an arbitrary set of $\Sigma$-equations. 
 Then we have the following result. 
 \begin{proposition}[Soundness]
@@ -104,181 +117,221 @@ Then we have the following result.
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
 Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
+Ultimately we want to give interpretation of morphisms in $\catname{S}(\Sigma)$ in $\WellTypedMdaEcospans / \mathcal{S}$ for which we will need a few lemmas.
 
-The reason for calling the previous result \textit{soundness} is that the interpretation function on $\Sigma^+$-terms induces a semilattice-enriched SMC functor $\llbracket - \rrbracket: \catname{S}(\Sigma)^{+} \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which further induces the following semilattice-enriched SMC functor,  for a set of equations $\mathcal E$:
-\[
-	\llbracket - \rrbracket_{\mathcal E}: \catname{S}(\Sigma, \mathcal E)^{+} \to \WellTypedMdaEcospans/{\mathcal{S,E}}
-\]
-which by uniqueness must be the free semilattice-enriched functor from $\catname{S}(\Sigma, \mathcal E)^{+}$ induced by the interpretation of $\Sigma$ as itself.  
-Unfolding definitions,  it follows that
-\[
-	f = g \quad \Rightarrow \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
-\]
-Note that it is immediate from the previous result that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is indeed a semilattice-enriched PROP.  
+First notice, that this quotienting gives us certain normal forms.
 
 \begin{lemma}
-We have the following equivalence obtained by applying the free enrichment 2-functor $\mathcal{F}$ to $\catname{S}(\Sigma) \cong \MdaCospans$
-\[
-\catname{S}(\Sigma)^{+} \cong \MdaCospans^{+}
-\]
-\end{lemma}
-
-\begin{lemma}
-
-There is an inclusion
-\[
-\MdaCospans \xhookrightarrow{In} \MdaEcospans
-\]
-
-That is identity on objects and which maps a cospan $n \xrightarrow{} F \xleftarrow{} m$ to $n \xrightarrow{} n \xrightarrow{} F \xleftarrow{} m \xleftarrow{} m$ by recalling that every hypergraph is also an e-hypergraph.
-\end{lemma}
-
-\begin{lemma}
-We have the following equivalence of semilattice-enriched categories
-\[
-\MdaCospans^{+} \cong \MdaEcospans/\mathcal{S}
-\]
-\end{lemma}
-\begin{proof}
-The equivalence is given by the full and faithful semilattice-enriched functor $[]$.
-First observe that in $\MdaCospans^{+}$ we can consider only canonical morphisms of the form $f_{1} + \ldots + f_{n}$ where each of $f_{i}$ is an mda-cospan and for $i \not = j$, $f_{i} \not = f_{j}$.
-Then, $[]$ is defined as follows.
-\begin{itemize}
-\item It maps each discrete hypergraph in $\MdaCospans^{+}$ to a corresponding discrete e-hypergraph in $\MdaEcospans/\mathcal{S}$.
-\item Every morphism $f_{1} + \ldots + f_{n}$ is mapped to $\text{In}(f_{1}) + \ldots + \text{In}(f_{n})$ as in Figure~\ref{fig:A+B}.
-\end{itemize}
-To show the functor is faithful, suppose $f = f_{1} + \ldots + f_{n} \not = g_{1} + \ldots + g_{m} = g$.
-Then it must be that $[f] \not = [g]$.
-If $n \not = m$ then it is immediately $[f] \not = [g]$ as $[f]$ and $[g]$ contain different number of non-isomorphic components.
-If $n = m$ then assume for a contradiction that $[f] \not = [g]$. 
-We have that there exists a permutation $\sigma$ such that for every index $i$ we have $[f_{i}] = [g_{\sigma(i)}]$ and thus by $\text{In}$ that $f_{i} = g_{\sigma(i)}$, implying $f = g$ which is a contradiction.
-Therefore, we have $[f] \not = [g]$ as required.
-\end{proof}
-
-The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed from left to right way to form a terminating rewrite system,  which results in a cospan in a \textit{weak normal form}. 
-\begin{proposition}[Weak normal form]
-\label{prop:wnormal_form}
-For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
+\label{lemma:normal_form}
+For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{normal form} such that 
 \[
 	f = f_1 + \ldots + f_n
 \]
- such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
-\end{proposition}
+	such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+\end{lemma}
+
+% The reason for calling the previous result \textit{soundness} is that the interpretation function on $\Sigma^+$-terms induces a semilattice-enriched SMC functor $\llbracket - \rrbracket: \catname{S}(\Sigma)^{+} \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which further induces the following semilattice-enriched SMC functor,  for a set of equations $\mathcal E$:
+% \[
+% 	\llbracket - \rrbracket_{\mathcal E}: \catname{S}(\Sigma, \mathcal E)^{+} \to \WellTypedMdaEcospans/{\mathcal{S,E}}
+% \]
+% which by uniqueness must be the free semilattice-enriched functor from $\catname{S}(\Sigma, \mathcal E)^{+}$ induced by the interpretation of $\Sigma$ as itself.  
+% Unfolding definitions,  it follows that
+% \[
+% 	f = g \quad \Rightarrow \quad \llbracket f \rrbracket \Rrightarrow^{*}_{\mathcal{S}, \mathcal{E}} \llbracket g \rrbracket~ . 
+% \]
+% Note that it is immediate from the previous result that $\WellTypedMdaEcospans/{\mathcal{S,E}}$ is indeed a semilattice-enriched PROP.  
+
+\begin{lemma}
+\label{lemma:2functor_equiv}
+We have the following equivalence obtained by applying the free enrichment 2-functor $\mathcal{F}$ to $\catname{S}(\Sigma) \cong \MdaCospans$
+\[
+\catname{S}(\Sigma)^{+} \cong \MdaCospans^{+}~.
+\]
+\end{lemma}
+
+% \begin{lemma}
+
+% There is an inclusion
+% \[
+% \MdaCospans \xhookrightarrow{In} \MdaEcospans
+% \]
+
+% That is identity on objects and which maps a cospan $n \xrightarrow{} F \xleftarrow{} m$ to $n \xrightarrow{} n \xrightarrow{} F \xleftarrow{} m \xleftarrow{} m$ by recalling that every hypergraph is also an e-hypergraph.
+% \end{lemma}
+
+\begin{lemma}
+\label{lemma:cospans_plus_equiv}
+We have the following equivalence of semilattice-enriched categories
+\[
+\MdaCospans^{+} \cong \MdaEcospans/\mathcal{S}~.
+\]
+\end{lemma}
+\begin{proof}
+We will denote the semilattice-enriched functor giving this equivalence as $M$.
+Observe that in $\MdaCospans^{+}$ we can consider only canonical morphisms of the form $f_{1} + \ldots + f_{n}$ where each of $f_{i}$ is an mda-cospan and for $i \not = j$, $f_{i} \not = f_{j}$.
+Then, $M$ is defined as follows.
+\begin{itemize}
+\item It maps each discrete hypergraph in $\MdaCospans^{+}$ to a corresponding discrete e-hypergraph in $\MdaEcospans/\mathcal{S}$.
+\item Every morphism $f_{1} + \ldots + f_{n}$ is mapped to $\text{In}(f_{1}) + \ldots + \text{In}(f_{n})$ where $\text{In}$ is the faithful functor induced by Remark~\ref{remark:embedding_functor}.
+\end{itemize}
+To show the functor $M$ is faithful, suppose $f = f_{1} + \ldots + f_{n} \not = g_{1} + \ldots + g_{m} = g$.
+Then it must be that $Mf \not = Mg$.
+If $n \not = m$ then it is immediately $Mf \not = Mg$ as $Mf$ and $Mg$ contain different number of non-isomorphic components.
+If $n = m$ then assume for a contradiction that $Mf = Mg$. 
+We have that there exists a permutation $\sigma$ such that for every index $i$ we have $Mf_{i} = Mg_{\sigma(i)}$ and thus by $\text{In}$ that $f_{i} = g_{\sigma(i)}$, implying $f = g$ which is a contradiction.
+Therefore, we have $Mf \not = Mg$ as required.
+
+To show that the functor is full consider a morphism $f = f_{1} + \ldots + f_{n}$ in $\WellTypedMdaEcospans / \mathcal{S}$ (by Lemma~\ref{lemma:normal_form}), as each of $f_{i}$ does not contain any hierarchical edges they are in the image of $\text{In}$ which for each $f_{i}$ gives us $g_{i}$ such that $f_{i} = Mg_{i}$.
+This gives us a morphism $g = g_{1} + \ldots + {g_{n}}$ in $\MdaCospans^{+}$ such that $Mg = f$.
+This concludes that the functor is full.
+As it is also surjective on objects, it makes it into an equivalence.
+\end{proof}
+
+
+\begin{theorem}
+	\label{thm:completeness_simple}
+	We have the following equivalence of categories
+	\[
+		\catname{S}(\Sigma)^{+} \cong \WellTypedMdaEcospans / \mathcal{S}~.
+	\]	
+	\end{theorem}
+\begin{proof}
+	The equivalence is given by a semilattice-enriched functor $\llbracket \rrbracket$ that is obtained by composing the functors from Lemma~\ref{lemma:2functor_equiv} and Lemma~\ref{lemma:cospans_plus_equiv}.
+\end{proof}
+The benefit of working with the equivalence defined above as compared to the one in Lemma~\ref{lemma:2functor_equiv} is that the former allows us to define EDPOI rewriting more naturally as every morphism is an (extended) cospan.
+Finally, we can state the following result.
+
+% The equations of Figure~\ref{fig:string-equations} -- excepting the commutativity equation -- can all be directed from left to right way to form a terminating rewrite system,  which results in a cospan in a \textit{weak normal form}. 
+% \begin{proposition}[Weak normal form]
+% \label{prop:wnormal_form}
+% For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
+% \[
+% 	f = f_1 + \ldots + f_n
+% \]
+%  such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+% \end{proposition}
 
 % The proof follows the familiar argument (\textit{i.e.},  termination of distributivity rewrites) that $\Sigma^+$-terms can be rewritten via the semilattice-enrichment equations into a similar normal form.  
 
 % This normal form can be used to prove the main theorems of the paper: the (full) completeness of our combinatorial representation of $\textbf{SMT}^{+}(\Sigma)$ and $\textbf{SMT}^{+}(\Sigma, \mathcal {E} )$. 
-This normal form will come in handy when proving the following theorem.
+% This normal form will come in handy when proving the following theorem.
 
-\begin{theorem}
-\label{thm:completeness_simple}
-We have the following equivalence of categories
-\[
-	\catname{S}(\Sigma)^{+} \cong \WellTypedMdaEcospans / \mathcal{S}~.
-\]	
-\end{theorem}
-\begin{proof}
-The equivalence is given by the semilattice-enriched SMC functor $\llbracket - \rrbracket$.
-First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  
-In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\catname{S}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ 
-% of symmetric monoidal theories and plain MDA cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma)$
-; see Theorem 35 of ~\cite{bonchi_string_2022-2}.
+% \begin{theorem}
+% \label{thm:completeness_simple}
+% We have the following equivalence of categories
+% \[
+% 	\catname{S}(\Sigma)^{+} \cong \WellTypedMdaEcospans / \mathcal{S}~.
+% \]	
+% \end{theorem}
+% \begin{proof}
+% The equivalence is given by the semilattice-enriched SMC functor $\llbracket - \rrbracket$.
+% First, note that the functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.  
+% In each case,  the result follows by a normal form argument in combination with relying on the equivalence $(*)$ $\catname{S}(\Sigma) \cong \textbf{MHypI}(\Sigma)$ 
+% % of symmetric monoidal theories and plain MDA cospans which is given by the obvious restriction of $\llbracket - \rrbracket$ to $\textbf{SMT}(\Sigma)$
+% ; see Theorem 35 of ~\cite{bonchi_string_2022-2}.
 
-To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  
-First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we thus have that
-\[
-	\llbracket f \rrbracket = \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \qquad
-	\llbracket g \rrbracket = \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
-\]
-Observe that $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  
-We consider two cases: where $n \neq m$ and where $n = m$.  
-In the first case,  it is immediate that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $,  since equal terms have weak normal forms with the same number of components.  
-Otherwise,  if $n = m$,  assume for contradiction that $\llbracket f \rrbracket = \llbracket g \rrbracket$.  
-We have that there exists a permutation $\sigma$ such that for every index $i$ we have $\llbracket f_i \rrbracket = \llbracket g_{\sigma(i)} \rrbracket $,  and thus by  $(*)$ that $f_i = g_{\sigma(i)}$,  implying that $f = g$ which is a contradiction.  
-Therefore $\llbracket f \rrbracket \neq \llbracket g \rrbracket$ as required. 
+% To see that the functor is faithful,  we prove that $f \neq g$ in $\textbf{SMT}^+(\Sigma)$ implies $\llbracket f \rrbracket \neq \llbracket g \rrbracket$.  
+% First,  calculate weak normal form $\Sigma^+$-terms of $f$ and $g$ as $f_1 + \ldots + f_n$ and $g_1 + \ldots + g_m$,  respectively.  Applying the functor $\llbracket - \rrbracket$,  we thus have that
+% \[
+% 	\llbracket f \rrbracket = \llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket \qquad
+% 	\llbracket g \rrbracket = \llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket ~ . 
+% \]
+% Observe that $\llbracket f_1 \rrbracket + \ldots + \llbracket f_n \rrbracket$ and $\llbracket g_1 \rrbracket + \ldots + \llbracket g_m \rrbracket$ are weak normal forms.  
+% We consider two cases: where $n \neq m$ and where $n = m$.  
+% In the first case,  it is immediate that $\llbracket f \rrbracket \neq \llbracket g \rrbracket $,  since equal terms have weak normal forms with the same number of components.  
+% Otherwise,  if $n = m$,  assume for contradiction that $\llbracket f \rrbracket = \llbracket g \rrbracket$.  
+% We have that there exists a permutation $\sigma$ such that for every index $i$ we have $\llbracket f_i \rrbracket = \llbracket g_{\sigma(i)} \rrbracket $,  and thus by  $(*)$ that $f_i = g_{\sigma(i)}$,  implying that $f = g$ which is a contradiction.  
+% Therefore $\llbracket f \rrbracket \neq \llbracket g \rrbracket$ as required. 
 
-To see that the functor is full,  consider a morphism $f$ in $\WellTypedMdaEcospans / \mathcal{S}$.  
-We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ contains no hierarchical edges.  
-By $(*)$ we can find morphisms $g_i$ in $\textbf{SMT}(\Sigma)$ such that $\llbracket g_i \rrbracket = f_i$.  
-Thus,  we can construct a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
-\end{proof}
+% To see that the functor is full,  consider a morphism $f$ in $\WellTypedMdaEcospans / \mathcal{S}$.  
+% We can find an equivalent weak normal form $f_1 + \ldots + f_n$,  where each $f_i$ contains no hierarchical edges.  
+% By $(*)$ we can find morphisms $g_i$ in $\textbf{SMT}(\Sigma)$ such that $\llbracket g_i \rrbracket = f_i$.  
+% Thus,  we can construct a morphism $g_1 + \ldots + g_n$ such that $\llbracket g_1 + \ldots + g_n \rrbracket = \llbracket g_1 \rrbracket + \ldots \llbracket g_n \rrbracket = f_1 + \ldots + f_n$,  as required. 
+% \end{proof}
 
 \begin{theorem}[Full completeness]
-We have the following equivalence of categories
+Let $\mathcal{E}$ be the set of equations $l = r$ of $\Sigma$-terms, then we have the following equivalence of categories
 \[
-	\textbf{SMT}^{+}(\Sigma, \mathcal {E} ) \cong \WellTypedMdaEcospans / \mathcal{S,E}~.
+	\catname{S}^{+}(\Sigma, \mathcal {E} ) \cong \WellTypedMdaEcospans / \mathcal{S,E}~.
 \]
+where $\mathcal{E}$ on the right is overloaded as a set of EDPOI rewrite rules containing $\langle \llbracket l \rrbracket, \llbracket r \rrbracket  \rangle$ and $\langle \llbracket r \rrbracket, \llbracket l \rrbracket  \rangle$ for every equation $l = r$.
 \end{theorem}
-\begin{proof}
-The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
-The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.
-The fullness follows by the same argument as above, so we will proceed to show faithfulness.
-The latter amounts to showing that if $\llbracket f \rrbracket \Rrightarrow_{\llbracket \mathcal{E} \rrbracket}^{*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$ then $f = g$ in $\catname{SMT}^{+}(\Sigma,\mathcal{E})$.
-% By the theorem~\ref{thm:completeness_simple} if $\llbracket f \rrbracket = \llbracket g \rrbracket$ via rules from $\mathcal{S}$ then $f = g$ so we will show that the same holds when $\llbracket f \rrbracket = \llbracket g \rrbracket$ via rules from $\mathcal{E}$.
-Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle = \langle \mathcal{L}, \mathcal{R} \rangle$ such that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$ and suppose
-\[
-	\llbracket f \rrbracket = n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m ~.
-\]
-This implies the existence of a diagram as in~\ref{def:dpoi-e}.
-We will proceed by induction on the level of the occurrence of $\mathcal{L}$ within $\mathcal{F}$.
-\begin{itemize}
-	\item Suppose the image of $\mathcal{L}$ in $\mathcal{F}$ is top-level.
-		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans
-		\begin{align*}
-			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
-			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
-		\end{align*}
-		By fullness of $\llbracket - \rrbracket$ there exist $c_{1}$ and $c_{2}$ such that 
-		\[
-		\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k \qquad \llbracket c_{2} \rrbracket = j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
-		\]
-		By functoriality, $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes l);c_{2} \rrbracket$ and by faithfulness we have that $f = c_{1};(id \otimes l);c_{2}$ to which we can apply $\langle l, r \rangle$ and get $g' = c_{1};(id \otimes r);c_{2}$.
-		We then have $\llbracket g' \rrbracket = \llbracket c_{1};(id \otimes r);c_{2} \rrbracket =  \llbracket g \rrbracket$ since the boundary complement is unique (Proposition ~\ref{prop:boundary_unique}) and $g' = g$ by faithfulness.
 
-		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as
-		\begin{align*}
-			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
-			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
-		\end{align*}
-		such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $F'$.
-		Since the image of $\mathcal{L}$ lies within $\mathcal{F}'$, there is an EDPO rewrite step that turns
-		\[
-			(i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)	
-		\]
-		into
-		\[
-			(i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)	
-		\]
-		via $\langle \mathcal{L}, \mathcal{R} \rangle$.
-		By fullness and inductive hypothesis, there exist $f'$ and $g'$ such that 
-		\[
-			\llbracket f' \rrbracket = i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j \qquad \llbracket g' \rrbracket = (i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)
-		\]
-		and that $f' = g'$.
-		By decomposition and fullness we have $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes f');c_{2} \rrbracket$ and $f = c_{1};(id \otimes f');c_{2}$ by faithfulness.
-		By applying $f' = g'$ we get $f = g'' = c_{1};(id \otimes g');c_{2}$.
-		Finally, $\llbracket g'' \rrbracket = \llbracket c_{1};(id \otimes g');c_{2} \rrbracket = \llbracket g \rrbracket$ (by the uniqueness of the boundary complement) and $g'' = g = f$ by faithfulness.
+\begin{proposition}
 
-		\item or, $\llbracket f \rrbracket$ is decomposable as
-		\begin{align*}
-			n_1 \xrightarrow{} n_1' \xrightarrow{} &\mathcal{F}_1 \xleftarrow{} m_1' \xleftarrow{} m_1\\
-			&\;+\\
-			&\vdotswithin{+}\\
-			&\;+\\
-			n_p \xrightarrow{} n_p' \xrightarrow{} &\mathcal{F}_p \xleftarrow{} m_p' \xleftarrow{} m_p\\
-			&\;+\\
-			&\vdotswithin{+}\\
-			&\;+\\
-			n_k \xrightarrow{} n_k' \xrightarrow{} &\mathcal{F}_k \xleftarrow{} m_k' \xleftarrow{} m_k
-		\end{align*}
-		such that the image of $\mathcal{L}$ lies within $\mathcal{F}_{p}$.
-		By inductive hypothesis we have that $\llbracket f_{p} \rrbracket = n_p \xrightarrow{} n_{p}' \xrightarrow{} \mathcal{F}_{p} \xleftarrow{} m_{p}' \xleftarrow{} m_{p}$ rewrites into $\llbracket g_{p} \rrbracket = n_p \xrightarrow{} n_{p}'' \xrightarrow{} \mathcal{G}_{p} \xleftarrow{} m_{p}'' \xleftarrow{} m_{p}$ such that $f_{p} = g_{p}$.
-		By fullness and the fact that $\llbracket - \rrbracket$ is enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
-		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1} + \ldots + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
-\end{itemize}
-\end{proof}
+For every canonical acyclic connected e-graph there is a corresponding cospan of e-hypergraphs given by a function $[]$ that is illustrated by the figure in the introduction and further developed in the Appendix.
+One e-graph can be turned into another one via addition and upward merging if and only if one e-hypergraph can be rewritten into another one and vice versa.
+\end{proposition}
+% \begin{proof}
+% The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
+% The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.
+% The fullness follows by the same argument as above, so we will proceed to show faithfulness.
+% The latter amounts to showing that if $\llbracket f \rrbracket \Rrightarrow_{\llbracket \mathcal{E} \rrbracket}^{*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$ then $f = g$ in $\catname{SMT}^{+}(\Sigma,\mathcal{E})$.
+% % By the theorem~\ref{thm:completeness_simple} if $\llbracket f \rrbracket = \llbracket g \rrbracket$ via rules from $\mathcal{S}$ then $f = g$ so we will show that the same holds when $\llbracket f \rrbracket = \llbracket g \rrbracket$ via rules from $\mathcal{E}$.
+% Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle = \langle \mathcal{L}, \mathcal{R} \rangle$ such that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$ and suppose
+% \[
+% 	\llbracket f \rrbracket = n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m ~.
+% \]
+% This implies the existence of a diagram as in~\ref{def:dpoi-e}.
+% We will proceed by induction on the level of the occurrence of $\mathcal{L}$ within $\mathcal{F}$.
+% \begin{itemize}
+% 	\item Suppose the image of $\mathcal{L}$ in $\mathcal{F}$ is top-level.
+% 		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans
+% 		\begin{align*}
+% 			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+% 			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+% 			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
+% 		\end{align*}
+% 		By fullness of $\llbracket - \rrbracket$ there exist $c_{1}$ and $c_{2}$ such that 
+% 		\[
+% 		\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k \qquad \llbracket c_{2} \rrbracket = j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
+% 		\]
+% 		By functoriality, $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes l);c_{2} \rrbracket$ and by faithfulness we have that $f = c_{1};(id \otimes l);c_{2}$ to which we can apply $\langle l, r \rangle$ and get $g' = c_{1};(id \otimes r);c_{2}$.
+% 		We then have $\llbracket g' \rrbracket = \llbracket c_{1};(id \otimes r);c_{2} \rrbracket =  \llbracket g \rrbracket$ since the boundary complement is unique (Proposition ~\ref{prop:boundary_unique}) and $g' = g$ by faithfulness.
+
+% 		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as
+% 		\begin{align*}
+% 			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+% 			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+% 			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
+% 		\end{align*}
+% 		such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $F'$.
+% 		Since the image of $\mathcal{L}$ lies within $\mathcal{F}'$, there is an EDPO rewrite step that turns
+% 		\[
+% 			(i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)	
+% 		\]
+% 		into
+% 		\[
+% 			(i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)	
+% 		\]
+% 		via $\langle \mathcal{L}, \mathcal{R} \rangle$.
+% 		By fullness and inductive hypothesis, there exist $f'$ and $g'$ such that 
+% 		\[
+% 			\llbracket f' \rrbracket = i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j \qquad \llbracket g' \rrbracket = (i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)
+% 		\]
+% 		and that $f' = g'$.
+% 		By decomposition and fullness we have $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes f');c_{2} \rrbracket$ and $f = c_{1};(id \otimes f');c_{2}$ by faithfulness.
+% 		By applying $f' = g'$ we get $f = g'' = c_{1};(id \otimes g');c_{2}$.
+% 		Finally, $\llbracket g'' \rrbracket = \llbracket c_{1};(id \otimes g');c_{2} \rrbracket = \llbracket g \rrbracket$ (by the uniqueness of the boundary complement) and $g'' = g = f$ by faithfulness.
+
+% 		\item or, $\llbracket f \rrbracket$ is decomposable as
+% 		\begin{align*}
+% 			n_1 \xrightarrow{} n_1' \xrightarrow{} &\mathcal{F}_1 \xleftarrow{} m_1' \xleftarrow{} m_1\\
+% 			&\;+\\
+% 			&\vdotswithin{+}\\
+% 			&\;+\\
+% 			n_p \xrightarrow{} n_p' \xrightarrow{} &\mathcal{F}_p \xleftarrow{} m_p' \xleftarrow{} m_p\\
+% 			&\;+\\
+% 			&\vdotswithin{+}\\
+% 			&\;+\\
+% 			n_k \xrightarrow{} n_k' \xrightarrow{} &\mathcal{F}_k \xleftarrow{} m_k' \xleftarrow{} m_k
+% 		\end{align*}
+% 		such that the image of $\mathcal{L}$ lies within $\mathcal{F}_{p}$.
+% 		By inductive hypothesis we have that $\llbracket f_{p} \rrbracket = n_p \xrightarrow{} n_{p}' \xrightarrow{} \mathcal{F}_{p} \xleftarrow{} m_{p}' \xleftarrow{} m_{p}$ rewrites into $\llbracket g_{p} \rrbracket = n_p \xrightarrow{} n_{p}'' \xrightarrow{} \mathcal{G}_{p} \xleftarrow{} m_{p}'' \xleftarrow{} m_{p}$ such that $f_{p} = g_{p}$.
+% 		By fullness and the fact that $\llbracket - \rrbracket$ is enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
+% 		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1} + \ldots + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
+% \end{itemize}
+% \end{proof}
 
 % Unfolding the definitions,  we can spell out the previous theorem in terms of EDPOI-rewriting. 
 % \begin{corollary}[Completeness of rewriting]

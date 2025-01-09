@@ -97,6 +97,8 @@ The other issue is that having binding entails having a substitution and computi
 This work shows how these two problems can be uniformly solved with \textit{string diagrams} by building on top of the recent result of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} that provided a categorical semantics for e-graphs by showing a correspondence between e-graphs and string diagrams for Cartesian semilattice-enriched symmetric monoidal categories or concrete combinatorial structures called \textit{e-hypergraphs} that encode them.
 It proceeds in doing so by showing how e-graphs with bindings can be realized as string diagrams (or e-hypergraphs) for closed (Cartesian) semilattice-enriched symmetric monoidal categories.
 
+\subsection{String diagrams}
+
 \subsection{E-graphs}
 
 E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.  They generalise the typical DAG representation of terms to include equivalence classes.
@@ -113,7 +115,7 @@ This example is a `Hello world!' of e-graphs, presented first in~\cite{EggPaper}
 \label{fig:e-graph-example}
 \end{figure*}
 
-Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent e-string diagram representation, an e-hypergraph as developed in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}. 
+Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent string diagram representation, an e-hypergraph as developed in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}. 
 The initial term, $(a*2)/2$ (which corresponds to subfigure (a)), is already represented efficiently in the e-graph by sharing the node 2.
 The string diagram version is slightly different than conventional e-graphs by representing the sharing of the node 2 explicitly, using a sharing (contraction) node
 \scalebox{0.3}{
@@ -152,6 +154,63 @@ Explicit discarding (weakening) nodes, depicted with black dots with a single wi
 
 The other steps, (c) to (e), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules.
 
+
+A typical way on encoding $\beta$-reduction in lambda-calculus in e-graphs is by explicit substitution~\cite{EggPaper,koehler2022sketchguided}: by adding a special substitution nodes and introduce rewrite rules for them.
+After the reduction has been done these nodes serve no purpose and can be removed.
+We show that $\beta$-reduction comes naturally as a composition when using string diagrams for enriched closed monoidal categories.
+Consider an example in Figure~\ref{fig:e-graph-substitution} where successive iterations of an e-graph for a term $(\lambda x . (y + y) + x) 1$ are shown following the $\beta$-reduction.
+First the subterm for an explicit substitution is introduced which is deemed equivalent to the top-level application term.
+It is then rewritten using the rules for explicit substitution at the top of each column.
+At the end all explicit substitution nodes can be removed.
+
+Now consider an example from Figure~\ref{fig:e-string-substitution} which encodes the same $\beta$-reduction for the same term.
+The $\lambda$-abstraction is represented by a rounded box and the bound variable is the dangling wire.
+The application node is depicted as 
+\adjustbox{scale=0.015}{\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (1, 6.75) {};
+		\node [style=none] (1) at (1.25, 7.75) {};
+		\node [style=none] (2) at (2, 8) {};
+		\node [style=none] (3) at (2.75, 7.75) {};
+		\node [style=none] (4) at (3, 6.75) {};
+		\node [style=none] (5) at (1.5, 6.75) {};
+		\node [style=none] (6) at (2.5, 6.75) {};
+		\node [style=none] (7) at (2, 9) {};
+		\node [style=none] (8) at (1.5, 5.75) {};
+		\node [style=none] (9) at (2.5, 5.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new edge style 2] (3.center)
+			 to [in=60, out=-30, looseness=0.75] (4.center)
+			 to (0.center)
+			 to [in=-150, out=120, looseness=0.75] (1.center)
+			 to [in=-180, out=45, looseness=0.75] (2.center)
+			 to [in=135, out=0, looseness=0.75] cycle;
+		\draw (2.center) to (7.center);
+		\draw (5.center) to (8.center);
+		\draw (9.center) to (6.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
+}. 
+The reduction is just the re-attachment of wires.
+Note how we avoided re-attachment for subterms as they did not use the bound variable wire, unlike in the case $[x \mapsto 1](y+y)$ before.
+
+A common solution to replace explicit variable names in e-graphs is by using De Brujin indices~\cite{koehler2022sketchguided}.
+The issue with this approach is that it interferes with sharing as equivalent subterms can be structurally different.
+Consider the example $\lambda f . f (\lambda x . f x)$ which is represented as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$ using De Brujin indices.
+Notice how two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$ which means they can not be shared in an e-graph.
+A string diagrammatic representation of the same term makes it possible for $f$ to be shared as demonstrated below.
+
+\[
+\adjustbox{scale=0.6}{
+    \tikzfig{figures/de-brujin-string}
+}
+\]
+
+Using De Brujin indices when performing $\beta$-reduction also introduces the complexity of representing the reduction as a rewrite rule.
+Special shifting operators need to be introduced on the right-hand side of a rewrite rule which makes it not merely syntactic~\cite{koehler2022sketchguided}.
+
+
 \textcolor{red}{Add example showing that using De Brujin indices with e-graphs breaks sharing}
 
 \textcolor{red}{Add example showing $\beta$-reduction in e-graphs compared to string diagrams}
@@ -161,7 +220,7 @@ The other steps, (c) to (e), represent further elaborations of the e-graph, or e
     \[
         % \hspace{1.3cm}
         \adjustbox{width=\textwidth}{
-        \tikzfig{../../figures/categorical-semantics/e-graph-substitution}
+        \tikzfig{figures/e-graph-substitution}
         }
     \]
     \caption{E-graph explicit substitution example.}
@@ -172,10 +231,10 @@ The other steps, (c) to (e), represent further elaborations of the e-graph, or e
     \[
         % \hspace{1.3cm}
         \adjustbox{width=\textwidth}{
-        \tikzfig{../../figures/categorical-semantics/e-string-substitution-2}
+        \tikzfig{figures/e-string-substitution-2}
         }
     \]
-    \caption{E-string diagrammatic substitution example.}
+    \caption{String diagrammatic substitution example.}
     \label{fig:e-string-substitution}
   \end{figure*}
 

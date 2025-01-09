@@ -2183,8 +2183,8 @@ if we consider the following DPO square
 We will define the action of $+$ on two cospans where either of the carriers is the empty e-hypergraph as
 
 \begin{align*}
-n \xrightarrow{} n' \xrightarrow{} &\;\mathcal{F} \xleftarrow{} m' \xleftarrow{} m\\
-&\;+ \hspace{6em} \Coloneqq \hspace{2em} n  \xrightarrow{} n' \xrightarrow{} \;\mathcal{F} \xleftarrow{} m' \xleftarrow{} m\\
+0 \xrightarrow{} n \xrightarrow{} &\;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
+&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0  \xrightarrow{} n \xrightarrow{} \;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
 0 \xrightarrow{} 0 \xrightarrow{} &\;\varnothing \xleftarrow{} 0 \xleftarrow{} 0.
 \end{align*}
 
@@ -2393,18 +2393,81 @@ The hashcons $H$ must map all canonical e-nodes to their e-class ids:
 \[
 \text{e-node } n \in M[a] \text{ iff } H[\text{canonicalize}(n)] = \text{find}(a)
 \]
+\end{definition}
 
+The pseudocode below shows the translation from a \textit{canonical} (the one for which the above invariant holds).
+For the following e-graph with e-classes shown as dashed boxes it produces the following cospan of e-hypergraphs.
+\texttt{connect} and \texttt{mkEdge} are responsible for making things shared using $\triangle$.
+
+\begin{figure}
+    \begin{subfigure}{0.4\linewidth}
+\[
+\adjustbox{scale=0.6}{
+\tikzfig{../figures/appendix/e-graph-example_1}
+}
+\]
+\end{subfigure}
+\begin{subfigure}{0.4\linewidth}
+    \[
+    \adjustbox{scale=0.6}{
+    \tikzfig{../figures/appendix/e-hypergraph-example_1}
+    }
+    \]
+\end{subfigure}
+\end{figure}
 
 \begin{algorithm}
-    \caption{Pattern Matching Pseudocode Example}
+    \caption{E-graph to e-hypergraph translation}
     \begin{algorithmic}[1]
-    \ForAll{e-class-id in H}
-    \State edge $edge \gets$ mkEdge(e-class-id)
-        \ForAll {e-node in H \textbf{where} H[e-node] == e-class-id}
-            \State \textbf{match} e-node \textbf{with}
-                \State \quad \textbf{case} \texttt{f}:
-                %    \State \quad \quad edge.add(mk_edge(f))
-        \EndFor
+    \Function{e-class-to-HEdge}{e\_class\_id}
+    \State e\_nodes $\gets$ [e\_node$_{1}$ $\ldots$ e\_node$_{n}$] \textbf{in} H.keys() \textbf{where} H[e\_node$_{i}$] == M[e\_class\_id]
+    % \State \textbf{for} [$\text{e_node}_{1}, \ldots, \text{e_node}_{n}$] \textbf{in} H \textbf{where} H[$\text{e_node}_{i}$] == M[e-class-id] \texbf{do}
+    \ForAll {e\_node$_{i}$ in e\_nodes}
+    \State edge $\gets$ mkEdge(e\_class\_id)
+    \Comment {Create a hierarchical edge that represents an e-class}
+    \State \textbf{match} e\_node$_{i}$ \textbf{with}
+    \State \qquad \textbf{case} f($e_1 \ldots e_{n}$) :
+    \State \qquad \qquad \textbf{if} is\_singleton(e\_class\_id) \textbf{then}
+    % \If{is\_singleton(e\_class\_id)}
+        \State \qquad\qquad \hspace{2em} edge $\gets$ mkEdge(f)
+        \Comment {Create an edge that represents the generator f $: k \to 1$}
+        \State \qquad \qquad \hspace{2em} edges $\gets$ [\Call{e-class-to-HEdge}{$e_1$} $\ldots$ \Call{e-class-to-HEdge}{$e_n$}]
+        \State \qquad \qquad \hspace{2em} edge.connect(edges)
+        \State \qquad \qquad \hspace{2em} \Return edge
+    % \Else
+    \State \qquad \qquad \textbf{else}
+    \State \qquad \qquad \hspace{2em} graph $\gets$ discard([e\_node$_1$$\ldots$e\_node$_{i-1}$]) $\cup$ mkEdge(f) $\cup$ discard([e\_node$_{i+1}$ $\ldots$ e\_node$_{n}$])
+        \State \qquad \qquad \hspace{2em} edges $\gets$ [\Call{e-class-to-HEdge}{$e_1$} $\ldots$ \Call{e-class-to-HEdge}{$e_n$}]
+        \State \qquad \qquad \hspace{2em} edge.add(graph)
+        \Comment {Add \texttt{graph} as a consistent component into hierarchical edge \texttt{edge}}
+        \State \qquad \qquad \hspace{2em} edge.connect(edges)
+    % \EndIf
+    \EndFor
+    \State \Return edge
+    % \Comment {There will be a single e-node in a singleton e-class}
+    % \ForAll {e-node in H \textbf{where} H[e-node] == M[e-class-id]}
+    %     \State \textbf{match} e-node \textbf{with}
+    %     \State \quad \textbf{case} \texttt{f}: \Return (mkEdge(f))
+    %     \State \quad \textbf{case} \texttt{f}($e_1$, $\ldots$, $e_{n}$) :
+    %     % this is nested
+    %         \State \qquad\qquad edge $\gets$ mkEdge(f)
+    %         \State \qquad\qquad edge.connect([e-class-to-HEdge(e) | e $\gets$ [$e_1$, \ldots, $e_{n}$]])
+    %         \State \qquad\qquad \Return edge
+    % \EndFor
+    % \Else
+    % \State edge $\gets$ mkEdge(M[e-class-id])
+    % \ForAll {e-node in H \textbf{where} H[e-node] == M[e-class-id]}
+    %     \State \textbf{match} e-node \textbf{with}
+    %     \State \quad \textbf{case} \texttt{f}: edge.add(f)
+    %     \State \quad \textbf{case} \texttt{f}($e_1$, $\ldots$, $e_{n}$): edge.add(f)
+    % \EndFor
+    % \EndIf
+    \EndFunction
+    \State
+    \State graph $\gets \varnothing$ 
+    \ForAll{e\_class\_id in H.values()}
+    \State graph $\gets$ graph $\cup$ \Call {e-class-to-HEdge}{e\_class\_id})
+
     \EndFor
     % \Function{matchPattern}{shape}
     %     \State \textbf{match} shape \textbf{with}
@@ -2420,8 +2483,7 @@ The hashcons $H$ must map all canonical e-nodes to their e-class ids:
     %     \State \quad \quad \Return ``Unknown shape''
     % \EndFunction
     \end{algorithmic}
-    \end{algorithm}
-\end{definition}
+\end{algorithm}
 
 \begin{lemma} Two e-classes $e_1$ and $e_2$ are merged if and only if there are rewrite rules that turn every term representable by $e_1$ into $e_2$.
 
