@@ -250,6 +250,7 @@ Finally, we can state the following result.
 % \end{proof}
 
 \begin{theorem}[Full completeness]
+\label{thm:full-completeness}
 Let $\mathcal{E}$ be the set of equations $l = r$ of $\Sigma$-terms, then we have the following equivalence of categories
 \[
 	\catname{S}^{+}(\Sigma, \mathcal {E} ) \cong \WellTypedMdaEcospans / \mathcal{S,E}~.
@@ -257,11 +258,22 @@ Let $\mathcal{E}$ be the set of equations $l = r$ of $\Sigma$-terms, then we hav
 where $\mathcal{E}$ on the right is overloaded as a set of EDPOI rewrite rules containing $\langle \llbracket l \rrbracket, \llbracket r \rrbracket  \rangle$ and $\langle \llbracket r \rrbracket, \llbracket l \rrbracket  \rangle$ for every equation $l = r$.
 \end{theorem}
 
-\begin{proposition}
+The literal meaning of the above statement is that $f = g$ in $\catname{S}^{+}(\Sigma, \mathcal{E})$ if and only if $\llbracket f \rrbracket \Rrightarrow{}^{*}_{\mathcal{E}} \llbracket g \rrbracket$.
 
-For every canonical acyclic connected e-graph there is a corresponding cospan of e-hypergraphs given by a function $[]$ that is illustrated by the figure in the introduction and further developed in the Appendix.
-One e-graph can be turned into another one via addition and upward merging if and only if one e-hypergraph can be rewritten into another one and vice versa.
+Now we can define DPO (EDPOI) rewriting for e-graphs by following the informal translation in Section~\ref{sec:introduction} that renders a given \textit{canonical} \textit{acyclic} \textit{connected} e-graph as a morphism of $\catname{S}(\Sigma \cup \Sigma_{C}, \mathcal{E} \cup \mathcal{E}_{C})$ and applying the functor of Theorem~\ref{thm:completeness_simple}.
+\begin{proposition}
+The data above define a function $\llbracket - \rrbracket : \catname{E}\text{-}\catname{graph} \to \WellTypedMdaEcospans / \mathcal{S}$ where the latter has a naturally defined EDPOI rewriting.
+Moreover, we have that the following diagram commutes
+\[
+\begin{tikzcd}
+		e_1 \arrow[r, "\leadsto"] \arrow[d, shift right=2]                & e_2 \arrow[d]                                        \\
+		\llbracket e_1 \rrbracket \arrow[r, "\Rrightarrow^{*}"] \arrow[u] & \llbracket e_{2} \rrbracket \arrow[u, shift right=2]
+\end{tikzcd}
+\]
 \end{proposition}
+
+Note that the domain of this function is just the set of e-graphs over the same signature and equations which is not a category.
+The arrow $\leadsto$ expresses the fact that e-graph $e_2$ is obtainable from e-graph $e_1$ via the application of equations from $\mathcal{E}$: it includes adding nodes and merging e-classes.
 % \begin{proof}
 % The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
 % The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.

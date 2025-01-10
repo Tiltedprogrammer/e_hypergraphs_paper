@@ -166,7 +166,7 @@ At the end all explicit substitution nodes can be removed.
 Now consider an example from Figure~\ref{fig:e-string-substitution} which encodes the same $\beta$-reduction for the same term.
 The $\lambda$-abstraction is represented by a rounded box and the bound variable is the dangling wire.
 The application node is depicted as 
-\adjustbox{scale=0.015}{\begin{tikzpicture}
+\adjustbox{scale=0.15}{\begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
 		\node [style=none] (0) at (1, 6.75) {};
 		\node [style=none] (1) at (1.25, 7.75) {};
@@ -197,7 +197,7 @@ Note how we avoided re-attachment for subterms as they did not use the bound var
 
 A common solution to replace explicit variable names in e-graphs is by using De Brujin indices~\cite{koehler2022sketchguided}.
 The issue with this approach is that it interferes with sharing as equivalent subterms can be structurally different.
-Consider the example $\lambda f . f (\lambda x . f x)$ which is represented as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$ using De Brujin indices.
+Consider the example $\lambda f . f ((\lambda x . f x) 2)$ which is represented as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$ using De Brujin indices.
 Notice how two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$ which means they can not be shared in an e-graph.
 A string diagrammatic representation of the same term makes it possible for $f$ to be shared as demonstrated below.
 
