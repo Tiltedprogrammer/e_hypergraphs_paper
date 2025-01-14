@@ -83,19 +83,28 @@ component, formatting, style, styling, insert.
 \end{IEEEkeywords}
 
 \section{Introduction}
-E-graphs~\cite{EggPaper} are a data structure designed to facilitate equality reasoning in the context of term rewriting systems, \textit{e.g.}, for program optimisation.
-They aim to solve the phase-ordering problem that arises when performing term rewriting, that is, the problem of one rewrite blocking the application of another rewrite due to removing the redex from the initial term.
-They do this by making the process of applying rewrite rules non-destructive: an application of a rewrite rule $\langle l, r \rangle$ simply adds the right-hand side $r$ to the e-graph that has a term with a redex for $l$ such that the new e-graph contains the original term and the $r$ at the same time in a compact manner by utilising sharing as much as possible.
-This way the application of another rule $\langle l, r' \rangle$ would not be blocked as the residual e-graph still contains the redex with $l$ which would have been blocked should we simply replaced all the occurrences of $l$ in the initial term with $r$.
-E-graphs have been around for a while since being introduced in the 80s~\cite{nelson1980techniques} and yet there has recently been an explosion of interest in them for the purpose of building program optimisers and synthesisers, especially due to recent work on the equality saturation technique \cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}.
-This includes interest in various extensions of the e-graph formalism, for example to account for conditional rewriting \cite{singher2023colored},  to reason about rewriting for the $\lambda$-calculus \cite{koehler2022sketchguided},  and to combine techniques of e-graphs and database queries (``relational e-matching'') \cite{zhang_relational_2022}.
 
+\subsection{Motivation and contribution}
+
+E-graphs (short for \emph{equality graphs})~\cite{EggPaper} are a data structure incorporating equivalence representation and used in automated theorem proving, compiler optimisation, and program analysis. 
+Using e-graphs mitigates the so-called \emph{phase-ordering problem} of term rewriting, that is the fact that the way rewrites are scheduled may enable or block further rewrites due to introduction or elimination or redexes. 
+This is achieved by making rewrites on e-graphs non-destructive: an application of a rewrite rule instead of replacing the left-hand side by the right-hand side, adds the latter to the graph so that all pre-existing redexes are protected and new ones are introduced. 
+Explosive growth of the graph is avoided by the clever use of sharing of vertices. 
+
+E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest particularly for optimisation and synthesis using so called \emph{equality saturation}~\cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}, the repeated application of rewrites to an e-graph until a fixpoint is reached. 
+The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
+Of particular interest to us is using e-graphs in the context of functional programming languages, which requires a representation of the $\lambda$-calculus using it. 
+Pioneering work in this direction has been done by~\cite{koehler2022sketchguided}.
+The well-known twin challenges of binding and capture-avoiding substitution remain however somewhat problematic in this work because DAN: IT IS UNCLEAR WHY THIS IS PROBLEMATIC IN LOC. CIT. THE TEXT BELOW IS UNCONVINCING. CAN YOU ILLUSTRATE THE PROBLEM WITH SOME SIMPLE EXAMPLES? 
+\begin{quotation}
 There are domains, however, where the effective usage of e-graphs requires \textit{ad hoc} tweaks to achieve the desired performance, namely domains that include variable \textit{binding} and the closely related notion of \textit{substitution}, for example, lambda calculus with $\beta$-reduction.
 The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
 If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
 The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
-This work shows how these two problems can be uniformly solved with \textit{string diagrams} by building on top of the recent result of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} that provided a categorical semantics for e-graphs by showing a correspondence between e-graphs and string diagrams for Cartesian semilattice-enriched symmetric monoidal categories or concrete combinatorial structures called \textit{e-hypergraphs} that encode them.
-It proceeds in doing so by showing how e-graphs with bindings can be realized as string diagrams (or e-hypergraphs) for closed (Cartesian) semilattice-enriched symmetric monoidal categories.
+\end{quotation}
+
+In this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}  
+The approach in \emph{loc. cit.} was originally motivated by the desire to support the machinery of categorial (DPO) graph rewriting for e-graphs, but by extending the semilattice-enrichment to monoidal-categories it paves the way to a natural derivation of e-graphs with binding. 
 
 \subsection{String diagrams}
 
