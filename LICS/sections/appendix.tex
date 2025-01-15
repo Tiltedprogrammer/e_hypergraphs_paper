@@ -2109,7 +2109,7 @@ This section contains the figures with more elaborate transformation of e-string
 \section{DPO rewriting for arbitrary signatures}
 \label{sec:dpo-fix}
 Here we will discuss how one can formulate DPO rewrite rules where the left-hand of right-hand sides contain sub-hypergraphs with no inputs and outputs at the outermost level.
-First we will illustrate where the restriction in the original formulation of the DPO rewriting as per the Definition~\ref{def:convex_dpo} comes from via several examples: one for Cartesian equations (which are important to express e-graphs as e-hypergraphs) and two for the structural rules we need for $\catname{MEHypI}_{\Sigma} / \mathcal{S}$ to be a category enriched over $\catname{SLat}$.
+First we will illustrate where the restriction in the original formulation of the DPO rewriting as per the Definition~\ref{def:convex_dpo} comes from via several examples: one for Cartesian equations (which are important to express e-graphs as e-hypergraphs) and two for the structural rules we need for $\WellTypedMdaEcospans / \mathcal{S}$ to be a category enriched over $\catname{SLat}$.
 Consider a rewrite rule induced by the Cartesian structure $a;! = id_{I}$ for $a : 0 \to 1$ which is rendered string diagrammatically as 
 \[
 \tikzfig{../figures/appendix/cartesian_rewrite_string}
@@ -2388,16 +2388,44 @@ assuming that $|c^{l}_{1,1}, \ldots, c^{l}_{k,n}| > |c^{r}_{1,1}, \ldots, c^{r}_
     \end{itemize}
 \end{definition}
 
-\begin{definition}[Hashcons invariant]
+\begin{definition}[Congruence invariant~\cite{EggPaper}]
+Two e-nodes $f(a_{1}, \ldots, a_{n})$ and $f_{b_{1}, \ldots, b_{n}}$ are \textit{congruent}, if $find(a_{i}) = find(b_{i})$ for all $i$.
+The equivalence relation on e-nodes must be closed under this congruence, that is, two congruent e-nodes must reside in the same e-class.
+\end{definition}
+
+\begin{definition}[Hashcons invariant~\cite{EggPaper}]
 The hashcons $H$ must map all canonical e-nodes to their e-class ids:
 \[
 \text{e-node } n \in M[a] \text{ iff } H[\text{canonicalize}(n)] = \text{find}(a)
 \]
 \end{definition}
 
-The pseudocode below shows the translation from a \textit{canonical} (the one for which the above invariant holds).
+\begin{definition}[~\cite{EggPaper}]
+A rewriting over an e-graph is given by composition of the following operations
+\begin{itemize}
+    \item \textit{add} takes an e-node $n$ and:
+    \begin{itemize}
+        \item if $n$ is present in $H$, return $H[n]$;
+        \item else create e-class id $a$ and set $H[n] = a$ such that $M[a] = \{n\}$.
+    \end{itemize}
+    \item \textit{merge} given two e-class ids $a$ and $b$ unions them in the union find $U$ such that $M[a] = M[b] = M[a] \cup M[b]$.
+\end{itemize}
+\end{definition}
+Then, given a rewrite rule $l \to r$, as, for example, $x * 2 \to x \ll 1$ in Figure~\ref{fig:e-graph-example}, applying it to an e-graph amounts several steps.
+First, finding a tuple $(\sigma, c)$ where e-class id $c$ contains $\sigma(l)$ where sigma is the mapping from variables to e-class ids, for example, $c = H[a * 2]$ and $\sigma(l) = (a * 2)$.
+Then, adding $\sigma(r)$ to the e-graph and merging $c$ with $add(\sigma(r))$.
+The latter step may require additional merges to maintain the invariant.
+If two terms $f(a,b)$ and $f(a,c)$ reside in different e-classes, merging e-classes for $a$ and $b$ would require merging e-classes for $f(a,b)$ and $f(a,c)$ as they become congruent as congruent e-nodes must reside in the same e-class.
+The process of maintaining the invariants by additional merging is called \textit{upward merging}~\cite{EggPaper}.
+We will denote the process of obtaining e-graph $e_2$ from e-graph $e_1$ after applying a rule $l \to r$ (including upward merging) as $e_1 \leadsto e_2$.
+
+
+\begin{definition}
+The pseudocode in Algorithm~\ref{alg:translation} defines the translation function $\llbracket \rrbracket : \catname{E}\text{-}\catname{graph} \to \WellTypedMdaEcospans$ that turns a \textit{canonical} (the one for which the above invariants hold) to a cospan of e-hypergraphs.
+\end{definition}
+
 For the following e-graph with e-classes shown as dashed boxes it produces the following cospan of e-hypergraphs.
-\texttt{connect} and \texttt{mkEdge} are responsible for making things shared using $\triangle$.
+\texttt{connect} and \texttt{mkEdge} are responsible for making things shared using $\triangle$ and discarding unused inputs via $!$.
 
 \begin{figure}
     \begin{subfigure}{0.4\linewidth}
@@ -2418,6 +2446,7 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
 
 \begin{algorithm}
     \caption{E-graph to e-hypergraph translation}
+    \label{alg:translation}
     \begin{algorithmic}[1]
     \Function{e-class-to-HEdge}{e\_class\_id}
     \State e\_nodes $\gets$ [e\_node$_{1}$ $\ldots$ e\_node$_{n}$] \textbf{in} H.keys() \textbf{where} H[e\_node$_{i}$] == M[e\_class\_id]
@@ -2444,24 +2473,6 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
     % \EndIf
     \EndFor
     \State \Return edge
-    % \Comment {There will be a single e-node in a singleton e-class}
-    % \ForAll {e-node in H \textbf{where} H[e-node] == M[e-class-id]}
-    %     \State \textbf{match} e-node \textbf{with}
-    %     \State \quad \textbf{case} \texttt{f}: \Return (mkEdge(f))
-    %     \State \quad \textbf{case} \texttt{f}($e_1$, $\ldots$, $e_{n}$) :
-    %     % this is nested
-    %         \State \qquad\qquad edge $\gets$ mkEdge(f)
-    %         \State \qquad\qquad edge.connect([e-class-to-HEdge(e) | e $\gets$ [$e_1$, \ldots, $e_{n}$]])
-    %         \State \qquad\qquad \Return edge
-    % \EndFor
-    % \Else
-    % \State edge $\gets$ mkEdge(M[e-class-id])
-    % \ForAll {e-node in H \textbf{where} H[e-node] == M[e-class-id]}
-    %     \State \textbf{match} e-node \textbf{with}
-    %     \State \quad \textbf{case} \texttt{f}: edge.add(f)
-    %     \State \quad \textbf{case} \texttt{f}($e_1$, $\ldots$, $e_{n}$): edge.add(f)
-    % \EndFor
-    % \EndIf
     \EndFunction
     \State
     \State graph $\gets \varnothing$ 
@@ -2469,32 +2480,64 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
     \State graph $\gets$ graph $\cup$ \Call {e-class-to-HEdge}{e\_class\_id})
 
     \EndFor
-    % \Function{matchPattern}{shape}
-    %     \State \textbf{match} shape \textbf{with}
-    %     \State \quad \textbf{case} \texttt{Circle(radius)}:
-    %     \State \quad \quad \Return $\pi \cdot \texttt{radius}^2$
-    %     \State \quad \textbf{case} \texttt{Rectangle(width, height)}:
-    %     \State \quad \quad \Return \texttt{width} $\times$ \texttt{height}
-    %     \State \quad \textbf{case} \texttt{Triangle(base, height)}:
-    %     \State \quad \quad \Return $\frac{1}{2} \times \texttt{base} \times \texttt{height}$
-    %     \State \quad \textbf{case} \texttt{Square(side)}:
-    %     \State \quad \quad \Return \texttt{side}$^2$
-    %     \State \quad \textbf{case} \texttt{\_}:
-    %     \State \quad \quad \Return ``Unknown shape''
-    % \EndFunction
     \end{algorithmic}
 \end{algorithm}
 
-\begin{lemma} Two e-classes $e_1$ and $e_2$ are merged if and only if there are rewrite rules that turn every term representable by $e_1$ into $e_2$.
-
+\begin{lemma} 
+    Two e-classes $e_1$ and $e_2$ are merged if and only if there are rewrite rules that turn every term representable by $e_1$ into $e_2$.
 \end{lemma}
 
 \begin{lemma}
-Every hierarchical edge can be decomposed as follows.
+Given a set of equations $\mathcal{E}$ between $\Sigma$-terms that induces a set of rewrite rules $l \to r$ and $r \to l$ for every $l = r \in \mathcal{E}$, $e_1 \leadsto e_2$ if and only if $\llbracket e_1 \rrbracket \Rrightarrow{}^{*} \llbracket e_2 \llbracket$.
+\end{lemma}
+\begin{proof}
+
+We will prove this by example showing how an addition of an e-node followed by a series of merges can be expressed as a series of DPO rewrites.
+Consider an example in Figure~\ref{fig:e-graph-rewrite}.
+It shows the rewrite $b \to c$ applied to e-graph that initially encodes a single term $f(a,b) + f(a,c)$.
+The first step is $\textit{merge}(b, \textit{add}(c))$ which unions e-classes for $b$ and $c$ by making the latter be the parent of the former, \textit{i.e.}, \text{find}$(b) = c$.
+Then it recanonicalizes the e-node for $f(a,b)$ so that it points to the canonical e-class id for $b$.
+This makes it possible to further merge two e-classes as they contain congruent e-nodes.
+The interpretation of these steps as DPO rewrites is given in Figure~\ref{fig:e-string-rewrite}.
+Subfigure $(a)$ is the direct translation of the initial e-graph by using $\llbracket \rrbracket$.
+Then we utilize the idempotence twice as $b = b + b$ and $c = c + c$ (subfigure (b)) and use the fact that our rewrite rules are symmetric as they are induced by the set of equations and apply $b \to c$ and $c \to b$ (subfigure (c)) and then use the rules for sharing from the Cartesian structure (subfigures (d)-(e)).
+The reverse direction follows by finding normal forms for $\llbracket e_{1} \rrbracket$ and $\llbracket e_{2} \rrbracket$.
+\end{proof}
+
+\begin{remark}
+
+Technically, rewrite rules formed by $\Sigma$-terms do not contain any variables as they are not a part of the signature while the rewrite rules for a given e-graph do contain variables as, for example, $x * 2 \to x \ll 1$.
+This is however not a limitation, as variables are merely interfaces and we can express the above-mentioned rule as a pair of $\Sigma$-terms $*;id \otimes 2 \to \ll ; id \otimes 1$.
+\end{remark}
+
+\begin{figure}
 
 \[
-\tikzfig{../figures/appendix/hyperedge_decomposition}
+\adjustbox{width=\linewidth}{
+    \tikzfig{../figures/appendix/e-graph-rewrite-example}
+}
 \]
-\end{lemma}
+\caption{E-graph rewrite example.}
+\label{fig:e-graph-rewrite}
+\end{figure}
 
-Then, given e-classes $e_1$ and $e_2$ for sub-hypergraphs $C$ and $D$ respectively, we introduce e-nodes into the e-graph $A(e_1)$ and $B(e_2)$ that reside in e-class $e_3$.
+\begin{figure}
+
+    \[
+        \adjustbox{width=\linewidth}{
+            \tikzfig{../figures/appendix/e-string-rewrite-example}
+        }
+        \]
+        \caption{String diagram rewrite example.}
+        \label{fig:e-string-rewrite}
+\end{figure}
+
+% \begin{lemma}
+% Every hierarchical edge can be decomposed as follows.
+
+% \[
+% \tikzfig{../figures/appendix/hyperedge_decomposition}
+% \]
+% \end{lemma}
+
+% Then, given e-classes $e_1$ and $e_2$ for sub-hypergraphs $C$ and $D$ respectively, we introduce e-nodes into the e-graph $A(e_1)$ and $B(e_2)$ that reside in e-class $e_3$.
