@@ -1,5 +1,5 @@
 \documentclass[peerreviewcls]{IEEEtran}
-\IEEEoverridecommandlockouts
+% \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 %Template version as of 6/27/2024
 
@@ -94,17 +94,25 @@ Explosive growth of the graph is avoided by the clever use of sharing of vertice
 E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest particularly for optimisation and synthesis using so called \emph{equality saturation}~\cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}, the repeated application of rewrites to an e-graph until a fixpoint is reached. 
 The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 Of particular interest to us is using e-graphs in the context of functional programming languages, which requires a representation of the $\lambda$-calculus using it. 
-Pioneering work in this direction has been done by~\cite{koehler2022sketchguided}.
-The well-known twin challenges of binding and capture-avoiding substitution remain however somewhat problematic in this work because DAN: IT IS UNCLEAR WHY THIS IS PROBLEMATIC IN LOC. CIT. THE TEXT BELOW IS UNCONVINCING. CAN YOU ILLUSTRATE THE PROBLEM WITH SOME SIMPLE EXAMPLES? 
-\begin{quotation}
-There are domains, however, where the effective usage of e-graphs requires \textit{ad hoc} tweaks to achieve the desired performance, namely domains that include variable \textit{binding} and the closely related notion of \textit{substitution}, for example, lambda calculus with $\beta$-reduction.
-The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
-If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
-The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
-\end{quotation}
+\textcolor{red}{Pioneering work in this direction has been done by~\cite{koehler2022sketchguided} where
+the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when doing equality saturation for $\lambda$-calculus with e-graphs.
+As e-graph endeavours to represent multiple terms at once with as much sharing as possible, using variable names for binding means that two $\alpha$-equivalent terms can not be shared as they are structurally different.
+Even though such simple encoding makes expressing $\beta$-reduction as a rewrite rule in terms of explicit substitution simpler, applying such rules requires computing extra free variable predicates and populates a given e-graph with extra nodes for explicit substitution.
+On the other hand, encoding binding using $\textit{de Brujin}$ while still fails to represent $\alpha$-equivalent terms as being structurally equivalent, as \textit{e.g.}, in $\lambda . \%0 ((\lambda . \%1 \%0) 42)$ the same binder is represented with $\%0$ and $\%1$, avoids explicit substitution when implementing $\beta$-reduction at the cost of including \textit{ad hoc} operators for index shifting into the rewrite rules.
+Generally, the incurred redundancy these challenges remain problematic because variable binding is not inherent to e-graphs as they do not provide an internal support for it.
+Other works suggested an approach to add internal support for binding which however made the formulation of e-graph considerably more complicated~\cite{slotted-egraphs}.
+}
+\textcolor{blue}{The reference above is a workshop unpublished work, I do not know if it is good to use such reference.} 
+% The well-known twin challenges of binding and capture-avoiding substitution remain however somewhat problematic in this work because DAN: IT IS UNCLEAR WHY THIS IS PROBLEMATIC IN LOC. CIT. THE TEXT BELOW IS UNCONVINCING. CAN YOU ILLUSTRATE THE PROBLEM WITH SOME SIMPLE EXAMPLES? 
+% \begin{quotation}
+% There are domains, however, where the effective usage of e-graphs requires \textit{ad hoc} tweaks to achieve the desired performance, namely domains that include variable \textit{binding} and the closely related notion of \textit{substitution}, for example, lambda calculus with $\beta$-reduction.
+% The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
+% If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
+% The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
+% \end{quotation}
 
-In this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}  
-The approach in \emph{loc. cit.} was originally motivated by the desire to support the machinery of categorial (DPO) graph rewriting for e-graphs, but by extending the semilattice-enrichment to monoidal-categories it paves the way to a natural derivation of e-graphs with binding. 
+In this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}
+The approach in \emph{loc. cit.} was originally motivated by the desire to support the machinery of categorial (DPO) graph rewriting for e-graphs, but by extending the semilattice-enrichment to monoidal-categories it paves the way to a natural derivation of e-graphs with binding.
 
 \subsection{String diagrams}
 
