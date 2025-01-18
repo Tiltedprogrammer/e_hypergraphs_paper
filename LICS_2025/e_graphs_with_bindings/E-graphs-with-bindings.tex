@@ -94,27 +94,44 @@ Explosive growth of the graph is avoided by the clever use of sharing of vertice
 E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest particularly for optimisation and synthesis using so called \emph{equality saturation}~\cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}, the repeated application of rewrites to an e-graph until a fixpoint is reached. 
 The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 Of particular interest to us is using e-graphs in the context of functional programming languages, which requires a representation of the $\lambda$-calculus using it. 
-\textcolor{red}{Pioneering work in this direction has been done by~\cite{koehler2022sketchguided} where
+Pioneering work in this direction has been done by~\cite{koehler2022sketchguided} where
 the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when doing equality saturation for $\lambda$-calculus with e-graphs.
-As e-graph endeavours to represent multiple terms at once with as much sharing as possible, using variable names for binding means that two $\alpha$-equivalent terms can not be shared as they are structurally different.
-Even though such simple encoding makes expressing $\beta$-reduction as a rewrite rule in terms of explicit substitution simpler, applying such rules requires computing extra free variable predicates and populates a given e-graph with extra nodes for explicit substitution.
-On the other hand, encoding binding using $\textit{de Brujin}$ while still fails to represent $\alpha$-equivalent terms as being structurally equivalent, as \textit{e.g.}, in $\lambda . \%0 ((\lambda . \%1 \%0) 42)$ the same binder is represented with $\%0$ and $\%1$, avoids explicit substitution when implementing $\beta$-reduction at the cost of including \textit{ad hoc} operators for index shifting into the rewrite rules.
+A key challenge is that as e-graphs represent multiple terms at once, with as much sharing as possible, using variable names for binding means that two $\alpha$-equivalent terms can not be shared as they are not identical.
+
+\begin{red}
+DRG: UNCLEAR. Even though such simple encoding makes expressing $\beta$-reduction as a rewrite rule in terms of explicit substitution simpler, applying such rules requires computing extra free variable predicates and populates a given e-graph with extra nodes for explicit substitution.
+The commonly deployed solution to quotienting terms by $\alpha$-equivalence, encoding binding using $\textit{de Brujin}$ indices, still fails to represent $\alpha$-equivalent terms as being structurally equivalent for the purpose of e-graphs. 
+Consider the simple example term $\lambda . \%0 ((\lambda . \%1 \%0) 42)$ the same binder is represented with $\%0$ and $\%1$, avoids explicit substitution when implementing $\beta$-reduction at the cost of including \textit{ad hoc} operators for index shifting into the rewrite rules.
 Generally, the incurred redundancy these challenges remain problematic because variable binding is not inherent to e-graphs as they do not provide an internal support for it.
-Other works suggested an approach to add internal support for binding which however made the formulation of e-graph considerably more complicated~\cite{slotted-egraphs}.
-}
-\textcolor{blue}{The reference above is a workshop unpublished work, I do not know if it is good to use such reference.} 
-% The well-known twin challenges of binding and capture-avoiding substitution remain however somewhat problematic in this work because DAN: IT IS UNCLEAR WHY THIS IS PROBLEMATIC IN LOC. CIT. THE TEXT BELOW IS UNCONVINCING. CAN YOU ILLUSTRATE THE PROBLEM WITH SOME SIMPLE EXAMPLES? 
-% \begin{quotation}
-% There are domains, however, where the effective usage of e-graphs requires \textit{ad hoc} tweaks to achieve the desired performance, namely domains that include variable \textit{binding} and the closely related notion of \textit{substitution}, for example, lambda calculus with $\beta$-reduction.
-% The first issue appears due to the fact that lambda calculus terms are quotiented by renaming of bound variables.
-% If such renaming is not accounted for by the language encoding, \textit{e.g.,} by using \textit{de Brujin} indices, populating an e-graph with $\alpha$-equivalent terms increases the size of an e-graph without adding any meaningful equivalences.
-% The other issue is that having binding entails having a substitution and computing substitution in e-graphs is hard as it is not a mere substitution of terms but rather a substitution of equivalence classes that represent a lot of terms at once.
-% \end{quotation}
+There are also other inchoate approaches to adding internal support for binding which, however, make the formulation of e-graph considerably more complicated~\cite{slotted-egraphs}.
+\end{red}
 
 In this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}
 The approach in \emph{loc. cit.} was originally motivated by the desire to support the machinery of categorial (DPO) graph rewriting for e-graphs, but by extending the semilattice-enrichment to monoidal-categories it paves the way to a natural derivation of e-graphs with binding.
 
 \subsection{String diagrams}
+
+We build on the technology of string diagrams, which is by now well developed in a number of areas. 
+String diagrams have the advantage of being a direct bridge from the language of category theory, which in turn can be used to give semantic models to a variety of programming languages and logics, to the concrete language of graphs, all based on solid mathematical foundations. 
+To solve the new problems discuss above, of dealing with binding and capture avoiding substitution, we just follow the categorical breadcrumb trail. 
+
+The general background literature for string diagrams is summarised in~\cite{https://arxiv.org/abs/2305.08768}.
+The particular context of string diagrams with bindings is given in~\cite{https://arxiv.org/abs/2305.18945}, while string diagrams for e-graphs without bindings are defined in~\cite{https://arxiv.org/abs/2406.15882}.
+
+String diagrams provide a geometric or topological framework for understanding monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out. 
+Key structures in monoidal categories---such as the monoidal product, tensor unit, braiding, and dualities---are represented through operations like placing, weaving, or bending strings. 
+This visual approach makes complex operations such as the trace intuitive and reveals insights sometimes obscured by symbolic notation. 
+Originating from notations by Hotz~\cite{??} (for automata) and Penrose~\cite{??} (for tensor networks), string diagrams generalise to any monoidal category and even bicategories, offering a dual perspective to commutative diagrams through Poincaré duality. 
+
+As described above, string diagrams are commonly an informal yet rigorous two-dimensional syntax for the internal language of a category. 
+They can be formalised by representing them as graphs or hypergraphs~\cite{https://dl.acm.org/doi/full/10.1145/3502719}, which has two further benefits. 
+The first benefit is that the property of two string diagrams being equal if and only if they ``look the same'' can be spelled out as graph isomorphism, eliminating any possible ambiguity of interpretation. 
+The second benefit is that equational reasoning can also be formalised as (categorical) graph rewriting, for instance double-pushout rewriting (DPO). 
+
+Finally, to represent diagrammatically two concepts essential to both programming languages (binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{https://link.springer.com/chapter/10.1007/11874683_1}. 
+The diagrammatic boxes require the introduction of further structure to (hyper)graphs in the form of a hierarchical layering of the graphs, as studied in \emph{loc. cit.}.
+
+DRG TODO: ADD AN EXAMPLE OF A STRING DIAGRAM HERE BEFORE DISCUSSING IT IN THE NEXT SECTIONS. BEST WE HAVE A RUNNING EXAMPLE THAT IS RELATED TO THE DIFFICULTY OF REPRESENTING E-GRAPHS FOR LAMBDA CALCULUS. 
 
 \subsection{E-graphs}
 
