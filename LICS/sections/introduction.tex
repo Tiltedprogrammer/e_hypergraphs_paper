@@ -3,33 +3,37 @@
 \section{Introduction}\label{sec:introduction}
 
 
-Rewrite-driven program optimisation consists of the application of a sequence of semantics-preserving rewrites which may improve the cost of execution, such as time or space (memory). 
-Because the application of some rewrites can either enable or block the subsequent application of others, the choice of application order significantly impacts the quality of the resulting optimisation.  
+Rewrite-driven program optimisation consists of the application of a sequence of semantics-preserving rewrites which may improve the cost of execution, \emph{e.g.}, in terms of running time or memory.
+However, applying some rewrites may enable or disable the application of subsequent rewrites, so the choice of application order significantly impacts the quality of the resulting optimisation.  
 This long-standing issue is known as the \textit{phase-ordering problem}, with a \textit{phase} referring to a particular set of rewrites.
-Typical approaches to this problem use heuristics to determine an ordering. 
+Typical approaches to this problem use heuristics to determine an optimal ordering.
 
-A recently proposed,  alternative solution is \textit{equality saturation} 
+A recently proposed alternative solution is \textit{equality saturation} 
 \cite{10.1145/1594834.1480915}: instead of maintaining a \textit{single},  putatively optimised program which is rewritten \textit{destructively}, \textit{i.e.}, forgetting the part of the program that is replaced by the rewrite, at each step, a \textit{set} of equivalent programs is maintained instead, whereas each rewrite step \textit{non-destructively} grows the set.  
 Upon reaching a fixed point (\textit{saturation}),  a \textit{globally} optimal program can then be extracted from this set.
-A na\"ive approach is clearly unfeasible, since the size of this set grows exponentially with the number of rewrites. 
-However, \textit{equality graphs (e-graphs)} \cite{EggPaper} are a data structure that can represent this set compactly, thus making the set tractable in practical applications. 
+A na\"ive approach for this is unfeasible, since the size of this set grows exponentially with the number of rewrites. 
+\textit{Equality graphs (e-graphs)} \cite{EggPaper} are a data structure that can represent this set compactly, thus making this technique computationally tractable in practical applications.
 
-Although equality saturation is already a state-of-the-art algorithmic optimisation technique, there is an opportunity to better understand its mathematical foundations. 
-We propose to address this issue via a categorical axiomatisation for e-graphs and their rewriting. 
-Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and (string diagrams for) simple Cartesian categories enriched over a category of semilattices (\textit{semilattice-enriched}).
-The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, as encountered in a large body of research. 
-The starting innovation of our approach is the semilattice-enrichment. 
+Although equality saturation is already a state-of-the-art algorithmic optimisation technique, there is an opportunity to better understand its mathematical foundations and the foundations of e-graphs in particular.
+We propose to address this gap via a categorical axiomatisation for e-graphs and their rewriting.
+Considering programs as represented by terms of an arbitrary algebraic theory, we demonstrate a correspondence between e-graphs and morphisms of Cartesian categories enriched over a category of semilattices (\textit{semilattice-enriched}).
+The morphisms of the latter can also be depicted using \emph{string diagrams}~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}: a two-dimensional syntax that encodes equivalence classes of morphism terms.
+Enriched categories generalise plain categories by imposing more structure making the categorical language more expressive~\cite{Borceux_1994,Kelly2022BASICCO} which will be useful for modelling equivalence between terms as encountered in e-graphs.
+The approach we take is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, for which there are existing precedents in the literature~\cite{bonchi_string_2022,bonchi_string_2022-1,bonchi_string_2022-2,ghica_rewriting_2023,ghica_hierarchical_2023}.
+The key ingredient of our categorical approach is the semilattice-enrichment.
+By the latter we will mean an idempotent commutative semigroup given by a binary operator but will stick to the word semilattice as it is shorter.
 By using the binary operator of a given semilattice we can operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation.
 
-Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}. 
+Although our primary interest is theoretical, we believe that phrasing e-graphs in the more general language of category theory will open the door to new potential domains of applications that are already phrased in categorical language with a defined notion of rewriting and thus these applications will benefit from the mentioned optimisation technique.
+% now use string diagrams and which require the application of optimisation techniques \cite{Selinger_2010, Hasegawa-traced}.
 This may include areas as diverse as digital \cite{ghica_compositional_2023} and quantum circuits
-\cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica-zanassi2023string}, or computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.  
-However, in this work we offer little to the e-graph practitioner, as we focus exclusively on foundational aspects, introducing no new applications or improved e-graph algorithmics. 
+\cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica-zanassi2023string}, or computational linguistics \cite{wazni_quantum_2022,coecke_lambek_2013}.
+% However, in this work we offer little to the e-graph practitioner, as we focus exclusively on foundational aspects, introducing no new applications or improved e-graph algorithmics. 
 
-A final contribution of this work is giving a concrete combinatorial representation of enriched string diagrams in terms of (hierarchical)  hypergraphs, which we call \textit{e-hypergraphs}. 
+A final contribution of this work is giving a concrete combinatorial representation of string diagrams for semilattice-enriched categories in terms of (hierarchical)  hypergraphs, which we call \textit{e-hypergraphs}.
 We also give a specification of e-hypergraph rewriting via a suitable extension of the double pushout (DPO) rewriting framework 
 \cite{dpo, bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022},  proving the representation \textit{sound and complete} with respect to our categorical semantics.  
-As a corollary, this also provides a formalisation of the rewriting theory of e-graphs as encountered in the literature. 
+As a corollary, this also provides a formalisation of the rewriting theory of e-graphs as encountered in the literature~\cite{EggPaper}.
 
 \subsection{E-graphs}
 
@@ -56,13 +60,14 @@ As a corollary, this also provides a formalisation of the rewriting theory of e-
 \end{figure*}
 \fi
 
-E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.  They generalise the typical DAG representation of terms to include equivalence classes. 
+E-graphs are a data structure which can efficiently represent many equivalent terms of an algebraic theory.
+They generalise the typical \emph{directed acyclic graph} (DAG) representation of terms to include equivalence classes of subterms (subgraphs).
 The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Figure~\ref{fig:e-graph-example}.
-This example is a `Hello world!' of e-graphs, presented first in~\cite{EggPaper}.
+This example illustrates how an optimiser using e-graphs may non-destructively apply a set of rewrites to initial term $(a * 2) / 2$, presented first in~\cite{EggPaper}.
 
-Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent e-string diagram representation, an e-hypergraph. 
+Each column represents a term (or term rewrite rule), the conventional e-graph representation, and the equivalent string diagram representation: an e-hypergraph. 
 The initial term, $(a*2)/2$ (which corresponds to subfigure (a)), is already represented efficiently in the e-graph by sharing the node 2.
-The string diagram version is slightly different than conventional e-graphs by representing the sharing of the node 2 explicitly, using a sharing (contraction) node
+The string diagram version is slightly different to the conventional e-graph version, as it represents the sharing of the node 2 explicitly, using a sharing (contraction) node
 \scalebox{0.3}{
 	\begin{tikzpicture}
 		\begin{pgfonlayer}{nodelayer}
@@ -81,9 +86,9 @@ The string diagram version is slightly different than conventional e-graphs by r
 . 
 
 Nodes are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs rooted at these boxes.
-Initially each equivalence class has a single node (subgraph).
-The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator creates the first non-unitary (containing more than one node or subgraph) equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing, that of node $a$.
-This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs, namely the fact that in the former edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself.
+Initially, each equivalence class has a single node (subgraph).
+The first rewrite rule, replacing multiplication by the more efficient \emph{shift-left} operator, creates the first non-unitary (containing more than one node or subgraph) equivalence class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) operator nodes, with a new sharing: that of node $a$.
+This second e-graph illustrates the other difference, besides sharing, between conventional e-graphs and e-hypergraphs: in the former, edges connect directly to nodes inside the equivalence class, whereas in the latter, edges connect to the equivalence class itself.
 Explicit discarding (weakening) nodes, depicted with black dots with a single wire inside the dashed boxes 
 \scalebox{0.4}{
 	\begin{tikzpicture}
@@ -98,14 +103,15 @@ Explicit discarding (weakening) nodes, depicted with black dots with a single wi
 }, indicate which of the class-level edges are connected to which nodes inside the class.
 
 The other steps, (c) to (e), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules.
-If we were to apply another rule, $x * 1 \to x$, we would identify the e-class of $a$ with the top-level e-class of the e-graph which would require a cycle to be introduced: the left argument of node $*$ would be the same e-class that $*$ belongs to.
-This would result into a possibility of extracting the optimal term consisting of only the node $a$, discarding everything else.
-To support such cycles we need a richer structure for our e-string diagrams.
-While equipping the e-string diagrams which such structure is straightforward, it is out of the scope of this work, and thus we limit ourselves to acyclic e-graphs and e-string diagrams for the purposes of presentation.
-Note that while the transformations of the e-graph are guided by the algorithm, the transformations of the e-string diagrammatic version is guided by the equations of the underlying theory.
+If we were to apply another rule, $x * 1 \to x$, we would identify the e-class (dashed box) containing $a$ with the e-class containing $a * 1$ (the topmost dashed box) which would require a cycle to be introduced: the left argument of node $*$ would be the same e-class that $*$ belongs to.
+Then, a deemed optimal (as its size as a graph is minimal) term $a$ could be extracted from the e-graph by traversing all the e-classes.
+To support such cycles we need a richer categorical structure for our string diagrams.
+Such categorical structure may be added by combining the results of this work with the results of~\cite{ghica_rewriting_2023} and for the purposes of presentation we will limit ourselves to the case of acyclic e-graphs.
+% While equipping the string diagrams which such structure is straightforward, it is out of the scope of this work, and thus we limit ourselves to acyclic e-graphs and e-string diagrams for the purposes of presentation.
+Note that while the transformations of the e-graph are guided by the algorithm, the transformations of the string diagrammatic version is guided by the equations of the underlying theory.
 A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively, in the Appendix.
 The equations applied are the ones from Figure~\ref{fig:string-equations} along with the naturality of delete and copy.
-One can note that the size of the eventual e-string diagram is comparable to the size of the corresponding e-graph.
+One can note that the size of the eventual string diagram is comparable to the size of the corresponding e-graph.
 % Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
 % From the saturated graph the optimal term consisting of only the node $a$ can be then extracted, discarding everything else. 
 
@@ -122,40 +128,50 @@ One can note that the size of the eventual e-string diagram is comparable to the
 \label{fig:egraph-strings}
 \end{figure}
 
-Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category (see \textit{e.g.}~\cite{GhicaZanassiStringLambda})
-makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a suitably enriched Cartesian category, taken as string diagrams~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}. We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator
+Recall that there is a correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category (see \textit{e.g.}~\cite{ghica-zanassi2023string}).
+% Recalling the correspondence between DAG representations of algebraic terms and  string-diagrams for morphisms of a suitable Cartesian category (see \textit{e.g.}~\cite{ghica-zanassi2023string})
+It makes perspicuous the correspondence between (acyclic) e-graphs and morphisms of a semilattice-enriched Cartesian category, taken as string diagrams.
+We extend the usual vocabulary of string diagrams for symmetric monoidal categories with the additional generator
 \[
 \infer{f_1 + \ldots + f_n: A \to B}{\{f_i: A \to B\}_{i \in \{1,\ldots,n\}}}
 \]
-The ability to take formal (non-empty) joins of morphisms is used to model the equivalence class structure of e-graphs.
+Taking formal (non-empty) joins of morphisms is used to model the equivalence class structure of e-graphs.
 
-String diagrams are read from bottom-to-top; we consider additional generators for the duplication and deletion transformations of a Cartesian category.  Note, further, that in the Cartesian case we can restrict to generating morphisms $c$ to have a single output,  without loss of generality,  by applying the universal properties of the Cartesian product.  This means the (informal) translation given below is fully general for acyclic e-graphs. 
+String diagrams are read from bottom-to-top, and we implicitly consider additional generators for the duplication and deletion transformations of a (semilattice-enriched) Cartesian category.
+Note, further, that in the Cartesian case we can restrict generating morphisms $c$ to have a single output,  without loss of generality,  by applying the universal properties of the Cartesian product.  
+This means the (informal) translation given below is fully general for acyclic e-graphs. 
 
-The translation from e-graphs to enriched string diagrams is illustrated informally below,
-noting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding in each component all unnecessary inputs.
+The translation from e-graphs to enriched string diagrams is illustrated informally in Figure~\ref{fig:e-graph-to-string},
+noting how the typing constraints of the $+$ constructor are satisfied in the image of the translation by discarding, in each component, all unnecessary inputs.
+
+\begin{figure}
 \[
     \tikzfig{../figures/categorical-semantics/egraph-translation-1}
 \]
-The figure on the right above is slightly simplified: if we denote the arity of each $c_i$ as $a_{c_{i}}$, then the dashed box on the right contains $\sum\limits_{i} a_{c_{i}}$ inputs and each component $c_j$ has $\sum\limits_{i \not = j} a_{c_{i}}$ weakening nodes inside.
+\caption{E-graph e-class translation to string diagram.}
+\label{fig:e-graph-to-string}
+\end{figure}
+The subfigure on the right is slightly simplified: if we denote the arity of each $c_i$ as $a_{c_{i}}$, then the dashed box on the right should contain $\sum\limits_{i} a_{c_{i}}$ inputs and each component $c_j$ has $\sum\limits_{i \not = j} a_{c_{i}}$ weakening nodes inside.
 Examples of this translation are given in the second row of Figure \ref{fig:e-graph-example}.
 % In particular, note that the translation of the \textit{cyclic} e-graph (e) requires the use of a categorical \textit{trace}, generating a cycle. 
 % In this paper, we focus on \textit{acyclic} e-graphs and their corresponding categories; but the above example illustrates that the extension to the cyclic case seems to be routine. As it would involve needless additional presentational complexity we leave it as further work. 
 
-Note that the motivating example of our work, e-graphs, requires the Cartesian structure to express arbitrary sharing as used in e-graphs.
+The motivating example of our work, e-graphs, requires the Cartesian structure to express arbitrary sharing as used in e-graphs.
 However, we will see how all the core of the theory of e-hypergraph rewriting only requires the monoidal structure. 
-Thus we can readily generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we briefly outline in the conclusion of this paper.   
+Thus, we can readily generalise e-graphs from algebraic to monoidal theories, giving rise to a  host of new potential applications, which we briefly outline in the conclusion of this paper.   
 
 \subsection{Combinatorial Representation of Enriched String Diagrams}
 
-In order to \textit{implement} generalised e-graphs, rewriting must be performed on concrete representations of the corresponding string diagrams.  String diagrams can be considered equivalently as either topological objects (\textit{i.e.}, taken modulo ``connectivity'') or as a 2-dimensional syntax quotiented by the equations of a \textit{symmetric monoidal category (SMC)}. 
-For example, we have the following equivalences between diagrams. 
+In order to \textit{implement} generalised e-graphs, rewriting must be performed on concrete representations of the corresponding string diagrams.  
+String diagrams can be considered equivalently as either topological objects (\textit{i.e.}, taken modulo ``connectivity'') or as a 2-dimensional syntax quotiented by the equations of a \textit{symmetric monoidal category (SMC)}.
+For example, we have the following equivalences between diagrams:
 %\[(f_1 \otimes f_2) ; (g_1 \otimes g_2) = (f_1 ; g_1) \otimes (f_2 ; g_2)\] 
 \[
 	\scalebox{0.6}{
 	\tikzfig{../figures/categorical-semantics/interchange}
 	}
 \]
-This representation makes string diagrams unamenable to efficient implementation due to the difficulty of calculating the quotient. 
+The latter representation makes string diagrams unamenable to efficient implementation due to the difficulty of calculating the quotient. 
 A large body of research work shows how this issue can be solved by taking a different approach, representing string diagrams as hypergraphs~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022}.  Here, the generators $c_i$ become hyper-edges,  and wires become vertices.  Thus the expected quotient becomes simply hypergraph isomorphism. With appropriate restrictions on the form these hypergraphs can take, this approach can be used to \textit{characterise} the free symmetric monoidal category generated by some~$c_i$. 
 
 We are interested not only in the free SMC over a set of generators, but also in \textit{(symmetric) monoidal theories} with extra equations such as, for instance, the rewrite rules (b)--(d) of Figure \ref{fig:e-graph-example}. These can be seen as equations between string diagrams, and thus rewrites of their hypergraph representations.  Because the generating equations can be applied in any context, we are led to the notion of \textit{(hyper)graph rewriting}: given an equation $l=r$, we require some way to identify (a sub-hypergraph corresponding to) $l$ within a hypergraph and replace it with (a sub-hypergraph corresponding to) $r$.

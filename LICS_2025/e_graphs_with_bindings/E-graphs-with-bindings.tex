@@ -1,4 +1,4 @@
-\documentclass[peerreviewcls]{IEEEtran}
+\documentclass[]{IEEEtran}
 % \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 %Template version as of 6/27/2024
@@ -59,7 +59,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{E-graphs With Bindings
+\title{E-Graphs With Bindings
 }
 
 % \author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
@@ -75,7 +75,12 @@
 \maketitle
 
 \begin{abstract}
-This is abstract.
+    The technique of equality saturation for program optimization and reasoning has recently gained significant attention due to the renewed popularity of equality graphs (e-graphs).
+    E-graphs represent multiple terms that are equivalent modulo a given set of rewrite rules. 
+    This capability allows rewriting to be performed over a family of terms simultaneously.    
+    However, there are domains where e-graphs fail to achieve optimal performance. Notably, e-graphs struggle in domains involving variable binding, such as $\lambda$-calculus, because they lack native support for binding.
+    Building on recent work that provides a categorical interpretation of e-graphs as morphisms in a semilattice-enriched symmetric monoidal category, we extend this framework. Specifically, we show how e-graphs with bindings can be derived as morphisms in a closed symmetric monoidal category with similar enrichment. This extension provides a principled approach to equality saturation for $\lambda$-calculus.
+    We then define a concrete combinatorial representation of these morphisms using hierarchical hypergraphs. Additionally, we introduce a corresponding notion of double-pushout (DPO) rewriting. Finally, we demonstrate the equivalence between term rewriting and DPO rewriting, with the key property that DPO rewriting absorbs the equations of the symmetric monoidal category.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -96,15 +101,24 @@ The wide range of application domains led to extensions of the e-graph formalism
 Of particular interest to us is using e-graphs in the context of functional programming languages, which requires a representation of the $\lambda$-calculus using it. 
 Pioneering work in this direction has been done by~\cite{koehler2022sketchguided} where
 the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when doing equality saturation for $\lambda$-calculus with e-graphs.
-A key challenge is that as e-graphs represent multiple terms at once, with as much sharing as possible, using variable names for binding means that two $\alpha$-equivalent terms can not be shared as they are not identical.
-
-\begin{red}
+\textcolor{blue}{
+The challenge is two-fold.
+On one hand, as an e-graph represent a family of terms at once a $\beta$-reduction should also operate with families of terms which makes it a very expensive rewrite.
+On the other hand, e-graphs should represent these families with as much sharing of subterms as possible, and a particular choice of binding encoding affects this requirement.
+In this work we will focus on the second part of this challenge.
+The most simple way of encoding binding in e-graph is by using explicit variable names.
+A major drawback of such encoding is that it fails to share $\alpha$-equivalent terms as, $\textit{e.g.}$, $\lambda x . x$ and $\lambda y . y$ are structurally different and hence will be represented as different subterms in an e-graph that uses such encoding.
+$\beta$-reduction is then implemented by introducing an explicit substitution operator into the term calculus.
+When applying a $\beta$-reduction rule, such explicit substitution nodes quickly populate an e-graph which results in performance issues.
+The rewrite rule itself also becomes more complicated as there is a need to compute free variable predicates in order to apply the rule.
+}
+\textcolor{red}{
 DRG: UNCLEAR. Even though such simple encoding makes expressing $\beta$-reduction as a rewrite rule in terms of explicit substitution simpler, applying such rules requires computing extra free variable predicates and populates a given e-graph with extra nodes for explicit substitution.
 The commonly deployed solution to quotienting terms by $\alpha$-equivalence, encoding binding using $\textit{de Brujin}$ indices, still fails to represent $\alpha$-equivalent terms as being structurally equivalent for the purpose of e-graphs. 
 Consider the simple example term $\lambda . \%0 ((\lambda . \%1 \%0) 42)$ the same binder is represented with $\%0$ and $\%1$, avoids explicit substitution when implementing $\beta$-reduction at the cost of including \textit{ad hoc} operators for index shifting into the rewrite rules.
 Generally, the incurred redundancy these challenges remain problematic because variable binding is not inherent to e-graphs as they do not provide an internal support for it.
 There are also other inchoate approaches to adding internal support for binding which, however, make the formulation of e-graph considerably more complicated~\cite{slotted-egraphs}.
-\end{red}
+}
 
 In this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}
 The approach in \emph{loc. cit.} was originally motivated by the desire to support the machinery of categorial (DPO) graph rewriting for e-graphs, but by extending the semilattice-enrichment to monoidal-categories it paves the way to a natural derivation of e-graphs with binding.
@@ -275,137 +289,7 @@ Special shifting operators need to be introduced on the right-hand side of a rew
   \end{figure*}
 
 \input{sections/categorical_semantics}
-
-\section{Combinatorial semantics}
-
-
-We can extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness.
-
-\begin{definition}
-Closed monoidal signature $\Sigma$ is a pair $(\Sigma_{O},\Sigma_{M})$ of signatures for objects and signatures for morphisms with sources and targets in $\text{obj}_{\Sigma_{O}}$ defined as
-\begin{itemize}
-  \item $I$ (monoidal unit) is in $\text{obj}_{\Sigma_{O}}$
-  \item For every $o \in \Sigma_{O}$, $o \in \text{obj}_{\Sigma_{O}}$;
-  \item For every $o_1$ and $o_2$ $ \in \text{obj}_{\Sigma_{O}}$, $o_1 \otimes o_2 \in \text{obj}{\Sigma_{O}}$ and $o_1 \multimap o_2 \in \text{obj}_{\Sigma_{O}}$
-\end{itemize}
-\end{definition}
-
-\begin{definition}
- Closed symmetric monoidal theory ($\catname{CSMT}$) over a closed monoidal signature $\Sigma$ and equations $\mathcal{E}$ denoted as $\catname{CSMT}(\Sigma, \mathcal{E})$ is given by a set of terms $T$
- \begin{align*}
- T \coloneq\; &t : A \to B \in \Sigma_{M} \;|\; t_1 \otimes t_2 : A \otimes C \to B \otimes D \text{ for } t_{1} : A \to B, t_{2} : C \to D \in T\\
-            & \;|\; t_{1};t_{2} : A \to C \text{ for } t_{1} : A \to B, t_{2} : B \to C \in T \; | \;  \Lambda(t) : A \to X \multimap B \text{ for } t : A \otimes X \to B \\
-            &  \;|\; \text{eval}(t_1 \otimes t_2) : B \text{ for } t_1 : X \multimap B, t_2 : X \in T \\
-            &  \;|\; \text{sym}_{A,B} \;|\; id_{A}
- \end{align*}
- quotiented by the laws of a closed symmetric monoidal category.
-\end{definition}
-% \question{Maybe types and terms combined is not a good idea}
-\begin{definition}
-
-We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{red}{<}, \textcolor{blue}{<},\consistency)$ where
-\begin{itemize}
-  \item $V$ is a set of vertices;
-  \item $E = \textcolor{gray}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that include \textit{plain} edges and two types of \textit{hierarchical} edges respectively;
-  \item $s,t : E \to V^{*}$ are source and target functions;
-  \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \text{obj}_{\Sigma_{O}}$ are \textit{label} functions;
-  \item $\textcolor{red}{<} : V + E \to \textcolor{red}{E}$ and $\textcolor{blue}{<} : V + E \to \textcolor{blue}{E}$ are partial \textit{child} functions that are disjoint: if $\textcolor{red}{<}(x)$ is defined then $\textcolor{blue}{<}(x)$ is undefined and vice-versa;
-  \item $\consistency = \bigcup_{p} \consistency_{p}$, where $\consistency_{p}$ is a \textit{consistency} relation defined on each set $\{x \in V + E \;|\; p \;\textcolor{red}{<^{\mu}}\; x\}$;
-\end{itemize} 
-\end{definition}
-
-$\textcolor{red}{E}$ will contain edges that encode the equivalence classes and $\textcolor{blue}{E}$ the ones that defined the lambda abstraction.
-All the above functions and relations must satisfy the obvious properties (TODO: add them).
-
-Similarly, we have a category of (extended) cospans formed by such e-hypergraphs where morphisms are of the form
-\[
-n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
-\]
-
-where $n$ and $m$ are external input and output interfaces respectively and $n'$, $m'$ are input and output internal interfaces.
-$n,n',m,m'$ are discrete ordered e-hypergraphs.
-We further require that $f_{\text{ext}}$ and $g_{\text{ext}}$ are monos and all vertices in the image of $f_{\text{ext}};f_{\text{int}}$ (respectively, $g_{\text{ext}};g_{\text{int}}$) are top-level.
-
-To build a correspondence between terms of a closed SMC and e-hypergraphs with interfaces (above) we restrict the cospans of the latter to monogamous cospans.
-
-\begin{definition}
-  We call a cospan 
-  \[
-n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
-\]
-\textit{weak} monogamous if
-\begin{itemize}
-  \item in- and out- degrees of every vertex is at most 1;
-  \item $f_{\text{int}}$ and $g_{\text{int}}$ are monos;
-  \item Vertices with in-degree (respectively, out-degree) of 0 are precisely the image of $f_{\text{int}}$ (respectively, $g_{\text{int}}$).
-\end{itemize}
-
-\end{definition}
-
-
-\begin{definition}[Isomorphic cospans]
-Consider a relation 
-\[
-R = \{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{blue}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{blue}{<}^{\mu} f_{\text{int}}(y)\}
-\]
-for $x, y \in n'$.
-And let $S$ be its reflexive closure.
-The latter partitions $n'$ into non-empty subsets $\{p_{j}\}^{k}_{j=1}$.
-We get an analogous partition for $m'$.
-
-Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute and such that $\alpha$ and $\gamma$ preserve order within each $p_j$.
-\[
-\scalebox{0.8}{
-    \tikzfig{../../figures/combinatorial_semantics/isomorphic_e_cospans}
-}
-\]
-\end{definition}
-
-
-Consider an example of isomorphic and non-isomorphic cospans below and their respective string diagrams
-
-\begin{figure}
-  \begin{subfigure}[c]{0.4\linewidth}
-    \[
-    \adjustbox{scale=0.6}{
-    \tikzfig{./figures/closed_iso_example_1}
-    }
-    \]
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[c]{0.4\linewidth}
-    \[
-    \adjustbox{scale=0.6}{
-    \tikzfig{./figures/closed_iso_example_2}
-    }
-    \]
-  \end{subfigure}
-\end{figure}
-
-\begin{definition}
-
-We define ordered sets of \textit{input} (respectively, \textit{output}) vertices of a hierarchical edge $e$ as the vertices $v_{i}$ such that $e < v_{i}$ which are in the image of $f_{\text{int}}$ (respectively, $g_{\text{ext}}$) with the induced ordering.
-\end{definition}
-
-\begin{definition}
-
-Given an ordered set $S$ of labelled vertices we can form words formed by concatenating the labels.
-We will denote such words as $w(S)$.
-\end{definition}
-
-\begin{definition}
-We call a monogamous cospan
-\[
-  n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
-\]
-\textit{well-typed} if all hierarchical edges of $\mathcal{G}$ are well-typed in the sense below.
-\begin{itemize}
-  \item For each $e \in \textcolor{red}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$.
-        $e$ is well-typed if for each element $S$ of the partition of $I$ $w(S) = w(s(e))$ and similarly for $O$ and $t(e)$.
-  \item For each $e \in \textcolor{blue}{E}$ consider sets $I$ and $O$ of its input and output vertices.
-        $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $[...s(e), B] = w(I)$ and $B \multimap w(O) = w(t(e))$
-\end{itemize}
-\end{definition}
+\input{sections/combinatorial_semantics}
 
 
 

@@ -607,15 +607,6 @@ misc{alvarez-picallo_functorial_2021,
 	file = {Wilson et al. - 2023 - String Diagrams for Non-Strict Monoidal Categories.pdf:/Users/chris/Zotero/storage/Y4HXUALR/Wilson et al. - 2023 - String Diagrams for Non-Strict Monoidal Categories.pdf:application/pdf},
 }
 
-@article{ghica_rewriting_2023-1,
-	title = {Rewriting {Modulo} {Traced} {Comonoid} {Structure}},
-	abstract = {In this paper we adapt previous work on rewriting string diagrams using hypergraphs to the case where the underlying category has a traced comonoid structure, in which wires can be forked and the outputs of a morphism can be connected to its input. Such a structure is particularly interesting because any traced Cartesian (dataflow) category has an underlying traced comonoid structure. We show that certain subclasses of hypergraphs are fully complete for traced comonoid categories: that is to say, every term in such a category has a unique corresponding hypergraph up to isomorphism, and from every hypergraph with the desired properties, a unique term in the category can be retrieved up to the axioms of traced comonoid categories. We also show how the framework of double pushout rewriting (DPO) can be adapted for traced comonoid categories by characterising the valid pushout complements for rewriting in our setting. We conclude by presenting a case study in the form of recent work on an equational theory for sequential circuits: circuits built from primitive logic gates with delay and feedback. The graph rewriting framework allows for the definition of an operational semantics for sequential circuits.},
-	language = {en},
-	author = {Ghica, Dan R and Kaye, George},
-	year = {2023},
-	file = {Ghica and Kaye - 2023 - Rewriting Modulo Traced Comonoid Structure.pdf:/Users/chris/Zotero/storage/7UEUPZF7/Ghica and Kaye - 2023 - Rewriting Modulo Traced Comonoid Structure.pdf:application/pdf},
-}
-
 @misc{ghica_hierarchical_2023,
 	title = {Hierarchical string diagrams and applications},
 	url = {http://arxiv.org/abs/2305.18945},
@@ -800,8 +791,6 @@ The Conference on Formal Methods in Computer-Aided Design (FMCAD) is an annual c
 	year = {1991},
 	pages = {55--112},
 }
-
-@inproceedings{10.1145/1480881.1480915, author = {Tate, Ross and Stepp, Michael and Tatlock, Zachary and Lerner, Sorin}, title = {Equality Saturation: A New Approach to Optimization}, year = {2009}, isbn = {9781605583792}, publisher = {Association for Computing Machinery}, address = {New York, NY, USA}, url = {https://doi.org/10.1145/1480881.1480915}, doi = {10.1145/1480881.1480915}, abstract = {Optimizations in a traditional compiler are applied sequentially, with each optimization destructively modifying the program to produce a transformed program that is then passed to the next optimization. We present a new approach for structuring the optimization phase of a compiler. In our approach, optimizations take the form of equality analyses that add equality information to a common intermediate representation. The optimizer works by repeatedly applying these analyses to infer equivalences between program fragments, thus saturating the intermediate representation with equalities. Once saturated, the intermediate representation encodes multiple optimized versions of the input program. At this point, a profitability heuristic picks the final optimized program from the various programs represented in the saturated representation. Our proposed way of structuring optimizers has a variety of benefits over previous approaches: our approach obviates the need to worry about optimization ordering, enables the use of a global optimization heuristic that selects among fully optimized programs, and can be used to perform translation validation, even on compilers other than our own. We present our approach, formalize it, and describe our choice of intermediate representation. We also present experimental results showing that our approach is practical in terms of time and space overhead, is effective at discovering intricate optimization opportunities, and is effective at performing translation validation for a realistic optimizer.}, booktitle = {Proceedings of the 36th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages}, pages = {264–276}, numpages = {13}, keywords = {intermediate representation, equality reasoning, compiler optimization}, location = {Savannah, GA, USA}, series = {POPL '09} }
  
  
 @article{10.1145/1594834.1480915, author = {Tate, Ross and Stepp, Michael and Tatlock, Zachary and Lerner, Sorin}, title = {Equality Saturation: A New Approach to Optimization}, year = {2009}, issue_date = {January 2009}, publisher = {Association for Computing Machinery}, address = {New York, NY, USA}, volume = {44}, number = {1}, issn = {0362-1340}, url = {https://doi.org/10.1145/1594834.1480915}, doi = {10.1145/1594834.1480915}, abstract = {Optimizations in a traditional compiler are applied sequentially, with each optimization destructively modifying the program to produce a transformed program that is then passed to the next optimization. We present a new approach for structuring the optimization phase of a compiler. In our approach, optimizations take the form of equality analyses that add equality information to a common intermediate representation. The optimizer works by repeatedly applying these analyses to infer equivalences between program fragments, thus saturating the intermediate representation with equalities. Once saturated, the intermediate representation encodes multiple optimized versions of the input program. At this point, a profitability heuristic picks the final optimized program from the various programs represented in the saturated representation. Our proposed way of structuring optimizers has a variety of benefits over previous approaches: our approach obviates the need to worry about optimization ordering, enables the use of a global optimization heuristic that selects among fully optimized programs, and can be used to perform translation validation, even on compilers other than our own. We present our approach, formalize it, and describe our choice of intermediate representation. We also present experimental results showing that our approach is practical in terms of time and space overhead, is effective at discovering intricate optimization opportunities, and is effective at performing translation validation for a realistic optimizer.}, journal = {SIGPLAN Not.}, month = {jan}, pages = {264–276}, numpages = {13}, keywords = {intermediate representation, equality reasoning, compiler optimization} }
@@ -900,7 +889,7 @@ abstract = {Event structures, Game Semantics strategies and Linear Logic proof-n
 @inbook{Borceux_1994, 
         place={Cambridge}, 
         series={Encyclopedia of Mathematics and its Applications}, 
-        title={Enriched category theory}, 
+        title={Handbook of Categorical Algebra II}, 
         booktitle={Handbook of Categorical Algebra}, 
         publisher={Cambridge University Press}, 
         author={Borceux, Francis}, year={1994}, 
@@ -934,3 +923,18 @@ abstract = {Event structures, Game Semantics strategies and Linear Logic proof-n
       url={https://arxiv.org/abs/2406.15882}, 
 }
 
+@misc{slotted-egraphs,
+  author       = {Rudi Schneider, Thomas Koehler, Michel Steuwer},
+  title        = {Slotted E-Graphs},
+  year         = {2024},
+  howpublished = {Presented at the EGRAPHS 2024 workshop},
+  url          = {https://michel.steuwer.info/files/publications/2024/EGRAPHS-2024.pdf}
+}
+
+@article{Kelly2022BASICCO,
+  title={BASIC CONCEPTS OF ENRICHED CATEGORY THEORY},
+  author={G. M. Kelly and Toby Bartels and William Boshuck and Maria Manuel Clementino and Robert Dawson and Stephen Lack and Tom Leinster and Francisco Marmolejo and Shane O 'conchuir and Craig A. Pastro and Mark Weber and Ralph L. Wojtowicz and G. Max and Kelly Sydney},
+  journal={Elements of {$\infty$}-Category Theory},
+  year={2022},
+  url={https://api.semanticscholar.org/CorpusID:16424720}
+}
