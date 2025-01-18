@@ -100,27 +100,20 @@ E-graphs were first introduced in the automated theorem proving literature in th
 The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 Of particular interest to us is using e-graphs in the context of functional programming languages, which requires a representation of the $\lambda$-calculus using it. 
 Pioneering work in this direction has been done by~\cite{koehler2022sketchguided} where
-the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when doing equality saturation for $\lambda$-calculus with e-graphs.
-\textcolor{blue}{
-The challenge is two-fold.
-On one hand, as an e-graph represent a family of terms at once a $\beta$-reduction should also operate with families of terms which makes it a very expensive rewrite.
-On the other hand, e-graphs should represent these families with as much sharing of subterms as possible, and a particular choice of binding encoding affects this requirement.
-In this work we will focus on the second part of this challenge.
-The most simple way of encoding binding in e-graph is by using explicit variable names.
-A major drawback of such encoding is that it fails to share $\alpha$-equivalent terms as, $\textit{e.g.}$, $\lambda x . x$ and $\lambda y . y$ are structurally different and hence will be represented as different subterms in an e-graph that uses such encoding.
-$\beta$-reduction is then implemented by introducing an explicit substitution operator into the term calculus.
-When applying a $\beta$-reduction rule, such explicit substitution nodes quickly populate an e-graph which results in performance issues.
-The rewrite rule itself also becomes more complicated as there is a need to compute free variable predicates in order to apply the rule.
-}
-\textcolor{red}{
-DRG: UNCLEAR. Even though such simple encoding makes expressing $\beta$-reduction as a rewrite rule in terms of explicit substitution simpler, applying such rules requires computing extra free variable predicates and populates a given e-graph with extra nodes for explicit substitution.
-The commonly deployed solution to quotienting terms by $\alpha$-equivalence, encoding binding using $\textit{de Brujin}$ indices, still fails to represent $\alpha$-equivalent terms as being structurally equivalent for the purpose of e-graphs. 
-Consider the simple example term $\lambda . \%0 ((\lambda . \%1 \%0) 42)$ the same binder is represented with $\%0$ and $\%1$, avoids explicit substitution when implementing $\beta$-reduction at the cost of including \textit{ad hoc} operators for index shifting into the rewrite rules.
-Generally, the incurred redundancy these challenges remain problematic because variable binding is not inherent to e-graphs as they do not provide an internal support for it.
-There are also other inchoate approaches to adding internal support for binding which, however, make the formulation of e-graph considerably more complicated~\cite{slotted-egraphs}.
-}
+the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise applying equality saturation to $\lambda$-calculus e-graphs.
 
-In this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}
+In the textual representation of $\lambda$ terms, $\alpha$-equivalent terms are distinct and thus cannot be shared, which is not only problematic but also inefficient. 
+Using De Bruijin indices is also problematic because the same variable can be assigned different indices depending on under the scope of how many binders it lies. 
+This again interferes with sharing. 
+As a simple example, consider the term $\lambda f . f ((\lambda x . f x) 2)$ which is encoded as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$.
+Notice how two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$, which cannot be shared in an e-graph.
+
+Another distinct challenge is presented by $\beta$-reduction, which is handled using \emph{explicit substitutions}. 
+However, calculi of explicit substitutions have many technical subtleties which also directly impact how equivalence is defined, for instance \emph{graph equivalence} instituted between terms which have non-interfering explicit substitutions applied in different orders~\cite{doi:10.1145/2535838.2535886}. 
+These difficulties are not handled in \emph{loc. cit.}.
+
+All these issues can be resolved by the use of \emph{string diagrams}.
+Thus, in this paper we take what we consider to be a principled approach to e-graphs with bindings by lifting to monoidal closed categories prior work showing how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}
 The approach in \emph{loc. cit.} was originally motivated by the desire to support the machinery of categorial (DPO) graph rewriting for e-graphs, but by extending the semilattice-enrichment to monoidal-categories it paves the way to a natural derivation of e-graphs with binding.
 
 \subsection{String diagrams}
@@ -145,7 +138,59 @@ The second benefit is that equational reasoning can also be formalised as (categ
 Finally, to represent diagrammatically two concepts essential to both programming languages (binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{https://link.springer.com/chapter/10.1007/11874683_1}. 
 The diagrammatic boxes require the introduction of further structure to (hyper)graphs in the form of a hierarchical layering of the graphs, as studied in \emph{loc. cit.}.
 
-DRG TODO: ADD AN EXAMPLE OF A STRING DIAGRAM HERE BEFORE DISCUSSING IT IN THE NEXT SECTIONS. BEST WE HAVE A RUNNING EXAMPLE THAT IS RELATED TO THE DIFFICULTY OF REPRESENTING E-GRAPHS FOR LAMBDA CALCULUS. 
+Revisiting the simple earlier example $\lambda f . f ((\lambda x . f x) 2)$, note its string diagrammatic representation below, in which the two occurrences of $f$ are now shared.
+$\lambda$-abstraction is represented by a rounded box with the bound variable a dangling wire attached to the frame,
+the application node a half-circle
+\adjustbox{scale=0.15}{\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (1, 6.75) {};
+		\node [style=none] (1) at (1.25, 7.75) {};
+		\node [style=none] (2) at (2, 8) {};
+		\node [style=none] (3) at (2.75, 7.75) {};
+		\node [style=none] (4) at (3, 6.75) {};
+		\node [style=none] (5) at (1.5, 6.75) {};
+		\node [style=none] (6) at (2.5, 6.75) {};
+		\node [style=none] (7) at (2, 9) {};
+		\node [style=none] (8) at (1.5, 5.75) {};
+		\node [style=none] (9) at (2.5, 5.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new edge style 2] (3.center)
+			 to [in=60, out=-30, looseness=0.75] (4.center)
+			 to (0.center)
+			 to [in=-150, out=120, looseness=0.75] (1.center)
+			 to [in=-180, out=45, looseness=0.75] (2.center)
+			 to [in=135, out=0, looseness=0.75] cycle;
+		\draw (2.center) to (7.center);
+		\draw (5.center) to (8.center);
+		\draw (9.center) to (6.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
+}, 
+and sharing a \emph{contraction node} DRG: IT'S UPSIDE DOWN?
+\scalebox{0.3}{
+	\begin{tikzpicture}
+		\begin{pgfonlayer}{nodelayer}
+			\node [style=vertex] (0) at (1.5, 3.5) {};
+			\node [style=none] (1) at (1.5, 3) {};
+			\node [style=none] (2) at (1, 4) {};
+			\node [style=none] (3) at (2, 4) {};
+		\end{pgfonlayer}
+		\begin{pgfonlayer}{edgelayer}
+			\draw (0) to (1.center);
+			\draw [bend right=45] (0) to (3.center);
+			\draw [bend left=45] (0) to (2.center);
+		\end{pgfonlayer}
+	\end{tikzpicture}
+}
+. 
+
+DRG USE WRAP-BOX. 
+\[
+\adjustbox{scale=0.6}{
+    \tikzfig{figures/de-brujin-string}
+}
+\]
 
 \subsection{E-graphs}
 
@@ -163,23 +208,7 @@ The key concepts of e-graphs can be intuitively grasped from some simple (but no
 \end{figure*}
 
 Each column represents a term (or term rewrite rule), its conventional e-graph, and the equivalent string diagram representation using the approach in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}. 
-Note that for the initial term, $(a*2)/2$ (subfigure (a)), which is already represented efficiently in the e-graph by sharing the node `2', the string diagram version shares this node explicitly, using a contraction node
-\scalebox{0.4}{
-	\begin{tikzpicture}
-		\begin{pgfonlayer}{nodelayer}
-			\node [style=vertex] (0) at (1.5, 3.5) {};
-			\node [style=none] (1) at (1.5, 3) {};
-			\node [style=none] (2) at (1, 4) {};
-			\node [style=none] (3) at (2, 4) {};
-		\end{pgfonlayer}
-		\begin{pgfonlayer}{edgelayer}
-			\draw (0) to (1.center);
-			\draw [bend right=45] (0) to (3.center);
-			\draw [bend left=45] (0) to (2.center);
-		\end{pgfonlayer}
-	\end{tikzpicture}
-}
-. 
+Note that for the initial term, $(a*2)/2$ (subfigure (a)), which is already represented efficiently in the e-graph by sharing the node `2', the string diagram version shares this node explicitly, using the contraction node.
 
 Nodes of an e-graph are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs rooted at these boxes.
 A term graph is embedded as an e-graph by making each equivalence class have a single node.
@@ -211,60 +240,13 @@ Before diving into the technical details let us compare how substitution works i
 In Figure~\ref{fig:e-graph-substitution} we show successive iterations of a conventional e-graph for $(\lambda x . (y + y) + x) 1$ following the $\beta$-reductions.
 A subterm for an explicit substitution must be introduced, which is deemed equivalent to the top-level application term, to be rewritten using the rules for explicit substitution at the top of each column.
 At the end, all explicit substitution nodes can be removed.
+The same example is then given again in Figure~\ref{fig:e-string-substitution}, this time using string diagrams. 
 
-The same example is given in Figure~\ref{fig:e-string-substitution} using string diagrams. 
-The $\lambda$-abstraction is represented by a rounded box and the bound variable is the dangling wire.
-The application node is depicted as 
-\adjustbox{scale=0.15}{\begin{tikzpicture}
-	\begin{pgfonlayer}{nodelayer}
-		\node [style=none] (0) at (1, 6.75) {};
-		\node [style=none] (1) at (1.25, 7.75) {};
-		\node [style=none] (2) at (2, 8) {};
-		\node [style=none] (3) at (2.75, 7.75) {};
-		\node [style=none] (4) at (3, 6.75) {};
-		\node [style=none] (5) at (1.5, 6.75) {};
-		\node [style=none] (6) at (2.5, 6.75) {};
-		\node [style=none] (7) at (2, 9) {};
-		\node [style=none] (8) at (1.5, 5.75) {};
-		\node [style=none] (9) at (2.5, 5.75) {};
-	\end{pgfonlayer}
-	\begin{pgfonlayer}{edgelayer}
-		\draw [style=new edge style 2] (3.center)
-			 to [in=60, out=-30, looseness=0.75] (4.center)
-			 to (0.center)
-			 to [in=-150, out=120, looseness=0.75] (1.center)
-			 to [in=-180, out=45, looseness=0.75] (2.center)
-			 to [in=135, out=0, looseness=0.75] cycle;
-		\draw (2.center) to (7.center);
-		\draw (5.center) to (8.center);
-		\draw (9.center) to (6.center);
-	\end{pgfonlayer}
-\end{tikzpicture}
-}. 
-The reduction is now simply the re-attachment of wires, and the overall process is visibly simpler. 
-DRG UNCLEAR: Note how we avoided re-attachment for subterms as they did not use the bound variable wire, unlike in the case $[x \mapsto 1](y+y)$ before.
-
-DRG UNCLEAR: A common solution to replace explicit variable names in e-graphs is by using De Brujin indices~\cite{koehler2022sketchguided}.
-The issue with this approach is that it interferes with sharing as equivalent subterms can be structurally different.
-Consider the example $\lambda f . f ((\lambda x . f x) 2)$ which is represented as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$ using De Brujin indices.
-Notice how two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$ which means they can not be shared in an e-graph.
-A string diagrammatic representation of the same term makes it possible for $f$ to be shared as demonstrated below.
-
-DRG USE WRAP-BOX. 
-\[
-\adjustbox{scale=0.6}{
-    \tikzfig{figures/de-brujin-string}
-}
-\]
-
-Using De Brujin indices when performing $\beta$-reduction also introduces the complexity of representing the reduction as a rewrite rule.
-Special shifting operators need to be introduced on the right-hand side of a rewrite rule which makes it not merely syntactic~\cite{koehler2022sketchguided}.
-
-
-\textcolor{red}{Add example showing that using De Brujin indices with e-graphs breaks sharing}
-
-\textcolor{red}{Add example showing $\beta$-reduction in e-graphs compared to string diagrams}
-
+Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram where an application node meets an abstraction, and explicit substitution simplifies into mere composition. 
+This is appears to be simpler just by comparing diagrams, but the technical advantages of using string diagrams run deep. 
+The explicit occurrences of variable names in the older approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which makes proving various mathematical properties essentially intractable. 
+Additionally, explicit substitutions need to be propagated recursively throughout the graph, which is also inefficient. 
+Using De Brujin indices when performing $\beta$-reduction would hardly solve this problem, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
 
 \begin{figure*}
     \[
@@ -287,6 +269,10 @@ Special shifting operators need to be introduced on the right-hand side of a rew
     \caption{String diagrammatic substitution example.}
     \label{fig:e-string-substitution}
   \end{figure*}
+
+\subsection{Contributions}
+
+DRG: LIST THE MAIN DEFINITIONS AND THEOREMS AND WHAT THEY MEAN
 
 \input{sections/categorical_semantics}
 \input{sections/combinatorial_semantics}
