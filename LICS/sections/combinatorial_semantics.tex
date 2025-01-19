@@ -3,10 +3,11 @@
 In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
-We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $\psi$ to a relation on ordered sequences. 
+We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences. 
 We will sometimes use functional notation for relations,  so that given $R \subseteq V \times W$ and $v \in V$,  $R(v) \subseteq W$. 
 We elide associativity and unit isomorphisms associated with coproducts $(+)$,  and denote by $\iota_j: X_{j} \rightarrow X_{1} + \ldots X_{j} + \ldots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]: A_1 + A_2 \to B$ the co-pairing of two morphisms $f: A_1 \to B$ and $g:A_2 \to B$. 
 We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightarrow{g} B$.
+We will also refer to $A,B$ as \textit{feet} of the cospan, and to $C$ as \textit{carrier}.
 
 \subsection{Hypergraphs}
 
@@ -73,7 +74,7 @@ A \emph{path} from $e_0$ to $e_{n-1}$ of length $n$ in a hypergraph $\mathcal{G}
 A hypergraph is \emph{directed acyclic} if it contains no paths of length $n > 0$ that start and end in the same edge.
 \end{definition}
 
-In order to represent only morphisms of $\textbf{PROP}(\Sigma)$,  it is necessary to restrict our attention to the following subset of hypergraphs with interfaces. 
+In order to represent only morphisms of $\catname{S}(\Sigma)$,  it is necessary to restrict our attention to the following subset of hypergraphs with interfaces. 
 \begin{definition}[Category of MDA Hypergraphs with Interfaces]
 \label{def:monogamy_hyp}
 We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sigma}$ \emph{monogamous directed acyclic (MDA)} if:
@@ -84,16 +85,16 @@ We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sig
     \item vertices with in-degree $0$ are precisely the image of $f$; and
     \item vertices with out-degree $0$ are precisely the image of $g$.
 \end{enumerate}
-We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of MDA cospans. 
+We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of MDA cospans.
 \end{definition}
 Note that $\MdaCospans$ remains a symmetric monoidal category with the same equipment as before.  We now recall from
-\cite{bonchi_string_2022-2} the following theorem,  which says the category $\MdaCospans$ is in fact \textit{equivalent} to $\textbf{PROP}(\Sigma)$. 
+\cite{bonchi_string_2022-2} the following theorem,  which says the category $\MdaCospans$ is in fact \textit{equivalent} to $\catname{S}(\Sigma)$. 
 \begin{theorem}[Corollary 26 of~\cite{bonchi_string_2022-2}]\label{thm:prop-equiv}
-    $\textbf{PROP}(\Sigma) \cong \MdaCospans$
+    $\catname{S}(\Sigma) \cong \MdaCospans$
 \end{theorem}
 
 \subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
-The correspondence of the previous section means that the symmetric monoidal equations of $\textbf{SMT}(\Sigma, \mathcal{E})$ are absorbed in the hypergraph representation.  The equations $\mathcal{E}$ are then to be considered as rewrite rules on string diagrams,  which are then modelled as DPO-rewrites on hypergraphs with interfaces. 
+The correspondence of the previous section means that the symmetric monoidal equations of $\catname{S}(\Sigma, \mathcal{E})$ are absorbed in the hypergraph representation.  The equations $\mathcal{E}$ are then to be considered as rewrite rules on string diagrams,  which are then modelled as DPO-rewrites on hypergraphs with interfaces. 
 DPO rewriting is a standard technique for formalising graph rewriting categorically. 
 In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting. 
 
@@ -223,6 +224,8 @@ is an MDA cospan.
 %    Note how the requirement for $i \xrightarrow{} L \xleftarrow{} j$ and $n \xrightarrow{} G \xleftarrow{} m$ being monogamous, i.e. morphisms in $\MdaCospans$, is a part of the above definition.
 %\end{remark}
 Intuitively,  requiring boundary complements ensures that inputs are glued exclusively to outputs and vice-versa in the two pushout squares.
+Yet, this restriction is not enough to make DPOI rewriting complete for $\catname{S,\mathcal{E}}$: there might be cospans with carriers $\mathcal{G}$ and $\mathcal{H}$ such that one can be rewritten into another but their corresponding morphisms are not equal modulo $\mathcal{E}$~\cite{bonchi_string_2022-1}.
+To make the DPOI rewriting complete, we need to add a restriction on the image of the match.
 
 \begin{definition}[Convex match]
 We call a subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ a \emph{convex subgraph} if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
@@ -241,7 +244,7 @@ and the following conditions hold
 \end{itemize}
 \end{definition}
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
-We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  but the work proves that for any morphisms $f$ and $g$ in $\mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that $f = g$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as hypergraphs.  In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
+We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  but the work proves that for any morphisms $f$ and $g$ in $\catname{S}(\Sigma, \mathcal{E})$,  we have that $f = g$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as hypergraphs.  In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
 %\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
 %\[

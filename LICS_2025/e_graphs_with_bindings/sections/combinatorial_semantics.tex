@@ -1,43 +1,66 @@
 \section{Combinatorial semantics}
 
+\textcolor{red}{Add intro to hypergraphs}
 
 We can extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness.
 
-\begin{definition}
-Closed monoidal signature $\Sigma$ is a pair $(\Sigma_{O},\Sigma_{M})$ of signatures for objects and signatures for morphisms with sources and targets in $\text{obj}_{\Sigma_{O}}$ defined as
-\begin{itemize}
-  \item $I$ (monoidal unit) is in $\text{obj}_{\Sigma_{O}}$
-  \item For every $o \in \Sigma_{O}$, $o \in \text{obj}_{\Sigma_{O}}$;
-  \item For every $o_1$ and $o_2$ $ \in \text{obj}_{\Sigma_{O}}$, $o_1 \otimes o_2 \in \text{obj}{\Sigma_{O}}$ and $o_1 \multimap o_2 \in \text{obj}_{\Sigma_{O}}$
-\end{itemize}
-\end{definition}
 
 \begin{definition}
- Closed symmetric monoidal theory ($\catname{CSMT}$) over a closed monoidal signature $\Sigma$ and equations $\mathcal{E}$ denoted as $\catname{CSMT}(\Sigma, \mathcal{E})$ is given by a set of terms $T$
- \begin{align*}
- T \coloneq\; &t : A \to B \in \Sigma_{M} \;|\; t_1 \otimes t_2 : A \otimes C \to B \otimes D \text{ for } t_{1} : A \to B, t_{2} : C \to D \in T\\
-            & \;|\; t_{1};t_{2} : A \to C \text{ for } t_{1} : A \to B, t_{2} : B \to C \in T \; | \;  \Lambda(t) : A \to X \multimap B \text{ for } t : A \otimes X \to B \\
-            &  \;|\; \text{eval}(t_1 \otimes t_2) : B \text{ for } t_1 : X \multimap B, t_2 : X \in T \\
-            &  \;|\; \text{sym}_{A,B} \;|\; id_{A}
- \end{align*}
- quotiented by the laws of a closed symmetric monoidal category.
-\end{definition}
-% \question{Maybe types and terms combined is not a good idea}
-\begin{definition}
-
-We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{red}{<}, \textcolor{blue}{<},\consistency)$ where
+We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{red}{<}, \textcolor{blue}{<},\consistency)$ where
 \begin{itemize}
-  \item $V$ is a set of vertices;
-  \item $E = \textcolor{gray}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that include \textit{plain} edges and two types of \textit{hierarchical} edges respectively;
-  \item $s,t : E \to V^{*}$ are source and target functions;
-  \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \text{obj}_{\Sigma_{O}}$ are \textit{label} functions;
-  \item $\textcolor{red}{<} : V + E \to \textcolor{red}{E}$ and $\textcolor{blue}{<} : V + E \to \textcolor{blue}{E}$ are partial \textit{child} functions that are disjoint: if $\textcolor{red}{<}(x)$ is defined then $\textcolor{blue}{<}(x)$ is undefined and vice-versa;
-  \item $\consistency = \bigcup_{p} \consistency_{p}$, where $\consistency_{p}$ is a \textit{consistency} relation defined on each set $\{x \in V + E \;|\; p \;\textcolor{red}{<^{\mu}}\; x\}$;
+  \item $V$ is a set of vertices.
+  \item $E = \textcolor{gray}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
+  \item $s,t : E \to V^{*}$ are source and target functions.
+  \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are \textit{label} functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
+  \item $\textcolor{red}{<} \subseteq \textcolor{red}{E} \times V + E$ and $\textcolor{blue}{<} \subseteq \textcolor{blue}{E} \times V + E $ with $\textcolor{red}{E}, \textcolor{blue} \subset E$ are disjoint partial orders.
+        For $x \in V + E$, the set of predecessors of $x$ is denoted as $[x) = \{x' ~|~ \exists y_{1} = x', \ldots, y_{n} = x,  y_{i} \textcolor{red}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{blue}{<^{\mu}} y_{i+1}\; \}$.
+        We will denote the immediate predecessor $y$ of $x$ as $y \textcolor{red}{<^{\mu}} x$ and $y \textcolor{blue}{<^{\mu}} x$.
+        We will call edges $e$ such that $l(e) = \bot$ hierarchical and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \textit{top-level}.
+        Each of these relations should satisfy the following
+        \begin{enumerate}
+          \item each set of predecessors consists exclusively of hierarchical edges;
+          \item each $x$ has at most one immediate predecessor;
+          \item edges $e$ such that there is no $x$ such that $e \textcolor{red}{<^{\mu}} x$ or $e \textcolor{red}{<^{\mu}} x$ are labelled;
+          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{red}{<^{\mu}} e$ iff $e' \textcolor{red}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{blue}{<}$.
+        \end{enumerate}
+  \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{red}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{red}{<^{\mu}}(v)$ and $p \textcolor{red}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
+  We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{red}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{red}{<^{\mu}} e\}$.
 \end{itemize} 
+$\textcolor{red}{E}$ and $\textcolor{blue}{E}$ are then induced by the corresponding relations can consist of exclusively hierarchical edges, then we have $\textcolor{gray}{E} = E \setminus \textcolor{red}{E} \cup \textcolor{blue}{E}$.
 \end{definition}
 
-$\textcolor{red}{E}$ will contain edges that encode the equivalence classes and $\textcolor{blue}{E}$ the ones that defined the lambda abstraction.
-All the above functions and relations must satisfy the obvious properties (TODO: add them).
+Intuitively, edges from $\textcolor{red}{E}$ will encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{blue}{E}$ will encode lambda-abstraction boxes.
+
+Consider an example in the middle part of Figure~\ref{fig:e-cospan-example}.
+The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
+\[
+\begin{array}{cccc}
+  v_{4} \textcolor{red}{<^{\mu}} e_{1} & v_{7} \textcolor{blue}{<^{\mu}} e_{2} & v_{4} \consistency e_{3} & v_{4} \not \consistency v_{10}\\
+  e_{3} \textcolor{red}{<^{\mu}} e_{1} & e_{5} \textcolor{blue}{<^{\mu}} e_{2} &  e_{3} \consistency u_{1} & e_{2} \not \consistency e_{6}\\
+  e_{2} \textcolor{red}{<^{\mu}} e_{1} & w_{7} \textcolor{blue}{<^{\mu}} e_{2} & e_{2} \consistency e_{4} & e_{4} \not \consistency e_{7}\\  
+  \ldots & \ldots & \ldots & \ldots \\
+  v_{12} \textcolor{red}{<^{\mu}} e_{1} & w_{9} \textcolor{blue}{<^{\mu}} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
+\end{array}
+\]
+$\consistency_{e_{1}}$ defines a partition on immediate successors of $e_{1}$ which we delimit by a vertical dashed line.
+Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\textcolor{blue}{E}$ --- with a round solid box.
+
+\begin{figure}
+
+\[
+\adjustbox{scale=0.6}{
+\tikzfig{./figures/closed_iso_example_2}
+}
+\]
+\caption{Cospan of e-hypergraphs example}
+\label{fig:e-cospan-example}
+\end{figure}
+
+\begin{definition}[E-hypergraph homomorphism]
+TODO
+\end{definition}
+
+E-hypergraphs and their homomorphisms define a category $\catname{EHyp}({\Sigma})$.
 
 Similarly, we have a category of (extended) cospans formed by such e-hypergraphs where morphisms are of the form
 \[
@@ -84,25 +107,25 @@ Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta
 \end{definition}
 
 
-Consider an example of isomorphic and non-isomorphic cospans below and their respective string diagrams
+% Consider an example of isomorphic and non-isomorphic cospans below and their respective string diagrams
 
-\begin{figure}
-  \begin{subfigure}[c]{0.4\linewidth}
-    \[
-    \adjustbox{scale=0.6}{
-    \tikzfig{./figures/closed_iso_example_1}
-    }
-    \]
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[c]{0.4\linewidth}
-    \[
-    \adjustbox{scale=0.6}{
-    \tikzfig{./figures/closed_iso_example_2}
-    }
-    \]
-  \end{subfigure}
-\end{figure}
+% \begin{figure}
+%   \begin{subfigure}[c]{0.4\linewidth}
+%     \[
+%     \adjustbox{scale=0.6}{
+%     \tikzfig{./figures/closed_iso_example_1}
+%     }
+%     \]
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}[c]{0.4\linewidth}
+%     \[
+%     \adjustbox{scale=0.6}{
+%     \tikzfig{./figures/closed_iso_example_2}
+%     }
+%     \]
+%   \end{subfigure}
+% \end{figure}
 
 \begin{definition}
 
@@ -128,3 +151,5 @@ We call a monogamous cospan
         $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $[...s(e), B] = w(I)$ and $B \multimap w(O) = w(t(e))$
 \end{itemize}
 \end{definition}
+
+\textcolor{red}{TODO: dpo rewriting}

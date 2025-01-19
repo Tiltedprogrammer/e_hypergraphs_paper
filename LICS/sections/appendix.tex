@@ -1,4 +1,81 @@
+\section{$\catname{SLat}$}
+\label{sec:appendix:1}
+
+In this section we will define the category of semilattices that we use as a base for enrichment throughout the paper.
+
+\begin{definition}[Semilattice]
+    A \textit{semilattice} is a set equipped with an operation that we denote as $+$ which is associative, commutative and idempotent.
+  \end{definition}
+  
+  Note that we do not require the existence of a unit for $+$. 
+  Semilattices that satisfy this extra requirement are sometimes called \textit{bounded}, i.e., they are idempotent commutative monoids.
+  
+  \begin{definition}[Semilattice homomorphism]
+  
+  A homomorphism between two semilattices $S_{1}$ and $S_{2}$ is a map $h$ that respects $+$.
+  That is, for all $s,s' \in S_{1}$, $h(s +_{S_{1}} s') = h(s) +_{S_{2}} h(s')$.
+  \end{definition}
+  
+  \begin{definition}[Category of semilattices]
+    
+  Semilattices with their respective homomorphisms form a category that we denote $\catname{SLat}$.
+  \end{definition}
+  
+  \begin{proposition}
+    $\catname{SLat}$ is a closed symmetric monoidal category.
+  \end{proposition}
+  \begin{proof}
+    The tensor product of two semilattices $S_{1}$ and $S_{2}$ is defined as follows.
+    $S_{1} \otimes S_{2}$ consists of pairs $(s_1,s_2)$ $s_{1} \in S_{1}$, $s_{2} \in S_{2}$ quotiented by commutativity, idempotence and associativity and additionally by the following relations
+    \begin{itemize}
+      \item $(s_{1} +_{S_{1}} s_{1}',s_{2}) \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+      \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+    \end{itemize}
+  
+    The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
+    Clearly $S \otimes I \cong S$ by mapping $(s,*) \mapsto s$ for all $s \in S$ and vice versa.
+    The symmetry, associators and unitors are then obvious morphisms.
+    Finally, the category is closed since the set of homomorpisms between two semilattices is a semilattice by defining $(f + g)(x)$ as $f(x) + g(x)$.
+    $f + g$ is a homomorphism since $(f + g)(x+y) = f(x+y) + g(x+y) = f(x) + f(y) + g(x) + g(y) = f(x) + g(x) + f(y) + g(y) = f(x+y) + g(x+y)$.
+  \end{proof}
+  
+  This makes $\catname{SLat}$ a suitable base for enrichment and allows us to take $\mathcal{V} = \catname{SLat}$.
+
+  \begin{definition}
+    Forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(I_{\catname{SLat}, -}) : \catname{SLat} \to \catname{Set}$.
+    \end{definition}
+    
+    Intuitively, the above functor returns the underlying set of a given semilattice $S$ as each morphism from $\{*\} \to S$ picks out an element of $S$.
+    
+    \begin{proposition}[Special case of Proposition 6.4.6~\cite{Borceux_1994}]
+      The forgetful functor $U : \catname{SLat} \to \catname{Set}$ has a left adjoint free functor $F : \catname{Set} \to \catname{SLat}$.
+    \end{proposition}
+    \begin{proof}
+      The functor $F$ is defined by letting $F(A) = \coprod_{A} I_{\catname{SLat}}$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
+      The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
+      The adjunction is then given by the following natural isomorphisms
+      \[
+      \catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) \cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B)) \cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B)) \cong \catname{Set}(A, U(B))
+      \]
+      The fist isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
+      Furthermore, we have, 
+      \[
+      F(I) \cong I_{\catname{SLat}}
+      \]
+      and 
+      \begin{align*}
+      F(A) \otimes F(B) &\cong (\coprod_{A} I_{\catname{SLat}}) \otimes (\coprod_{B} I_{\catname{SLat}})\\
+            &\cong \coprod_{A} (I_{\catname{SLat}} \otimes \coprod_{B} I_{\catname{SLat}})\\
+            &\cong \coprod_{A} (\coprod_{B} (I_{\catname{SLat}} \otimes I_{\catname{SLat}}))\\
+            &\cong \coprod_{A} (\coprod_{B} I_{\catname{SLat}})\\
+            &\cong \coprod_{A \times B} I_{\catname{SLat}}\\
+            &\cong F(A \times B)
+      \end{align*}
+    In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
+    \end{proof}
+
 \section{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
+\label{sec:appendix:2}
 
 In this section we will define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists and we will explicitly construct such a pushout.
 We will also show the uniqueness of a boundary pushout complement.

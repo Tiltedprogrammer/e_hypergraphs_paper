@@ -1,28 +1,34 @@
 \section{E-Hypergraphs}\label{sec:e-hypergraphs}
 
-Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\textbf{PROP}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice enriched setting.  First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. Then,  we extend this notion with interfaces via a generalisation of the cospan construction.  Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
+Hierarchical (hyper-)graphs are a well-studied area of research \cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical}.  
+In this section,  we follow analogous steps to those used to achieve a combinatorial representation of $\catname{S}(\Sigma)$ by $\mathbf{MHypI}(\Sigma)$,  but in the semilattice-enriched setting.  
+First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. 
+Then,  we extend this notion with interfaces via a generalisation of the cospan construction.  
+Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  
+An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
 
 Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$  such that for all $c_1,c_2 \in \Sigma$, if arity (respectively, co-arity) of $c_1$ is 0, then co-arity (respectively, arity) of $c_2$ must be at least 1.
 This is to ensure we do not have terms of type $0 \to 0$.
 This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section,  and we explain it further there.
-\textcolor{red}{The definitions and proofs without this extra assumption are given in the Appendix.}
+A discussion of a general case can be found in section~\ref{sec:dpo-fix} of Appendix.
 
 In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.
 
 \begin{definition}[E-hypergraphs]
 \label{def:e-homo}    
 An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}, for which we introduce the following additional notation.
-For $x \in V + E$,  the set of \emph{parents} of $x$, is denoted as $[x) = \{x' ~|~ x' < x\; \}$.
+For $x \in V + E$,  the set of \emph{parents} of $x$ is denoted as $[x) = \{x' ~|~ x' < x\; \}$.
 % \[
 % 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
 % \]
 We will denote the immediate parent $e$ of $x$ by writing $e <^{\mu} x$.
 We call edges $e$ such that $l(e) = \bot$ \textit{hierarchical},  and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \emph{top-level}.
+An edge $e$ is called maximal if $\{x' | e < x'\} = \varnothing$.
 We require that the child relation satisfies the following conditions:
 \begin{enumerate}
 	\item each parent set contains exclusively hierarchical edges;
-	\item Each $x$ has at most one immediate parent;
-	\item The maximal edges must be labelled;
+	\item each $x$ has at most one immediate parent;
+	\item the maximal edges must be labelled;
 	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$ and similarly if $v \in t(e)$.
 \end{enumerate}
 Finally, $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p <^\mu x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p <^{\mu}(v)$ and $p <^{\mu}(e)$ then $v \consistency_{p} e$.
@@ -48,9 +54,9 @@ This e-hypergraph corresponds to the following tuple
 (V = (v_1, v_2, v_3, v_4, v_5, v_6\}, E = \{e_1, e_2, e_3\}, s, t, l, <, \consistency)
 \]
 \begin{align*}
-s(e_1) = \{v_1\} & t(e_1) = \{v_2\} & l(e_1) = \bot \\
-s(e_2) = \{v_3\} & t(e_2) = \{v_4\} & l(e_2) = e_2 \\
-s(e_3) = \{v_5\} & t(e_3) = \{v_6\} & l(e_3) = e_3 \\
+s(e_1) = \{v_1\} &\; t(e_1) = \{v_2\} &\; l(e_1) = \bot \\
+s(e_2) = \{v_3\} &\; t(e_2) = \{v_4\} &\; l(e_2) = e_2 \\
+s(e_3) = \{v_5\} &\; t(e_3) = \{v_6\} &\; l(e_3) = e_3 \\
 \end{align*}
 
 and $[v_3) = [v_4) = [v_5) = [v_6) = [e_2) = [e_3) = \{e_1\}$ and $[v_1) = [v_2) = [e_1) = \varnothing$.

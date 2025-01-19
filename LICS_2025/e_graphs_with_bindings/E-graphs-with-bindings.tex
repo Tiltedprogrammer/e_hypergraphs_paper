@@ -155,7 +155,7 @@ the application node a half-circle
 		\node [style=none] (9) at (2.5, 5.75) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
-		\draw [style=new edge style 2] (3.center)
+		\draw [style=lambda_unit_string] (3.center)
 			 to [in=60, out=-30, looseness=0.75] (4.center)
 			 to (0.center)
 			 to [in=-150, out=120, looseness=0.75] (1.center)
@@ -281,5 +281,9 @@ DRG: LIST THE MAIN DEFINITIONS AND THEOREMS AND WHAT THEY MEAN
 
 \bibliographystyle{acm}
 \bibliography{../../bibliography}
+
+\appendix
+
+\input{sections/appendix}
 
 \end{document}
