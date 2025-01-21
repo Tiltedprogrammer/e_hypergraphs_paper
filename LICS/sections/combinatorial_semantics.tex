@@ -16,7 +16,7 @@ Hypergraphs generalise graphs by allowing edges to have multiple sources and tar
 When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
 However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
 This gives rise to the definition of a hypergraph with interfaces.  
-Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of such hypergraphs.
+Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of (cospans of) such hypergraphs.
 
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
@@ -61,11 +61,12 @@ Symmetry is inherited from $\mathbb{C}$ as the coproduct~\cite{MonoidalCoproduct
 Then, morphisms of $\catname{S}(\Sigma)$ can be interpreted as particular cospans of discrete hypergraphs,  which we call hypergraphs with interfaces~\cite{bonchi_string_2022-2}.
 \begin{definition}[Hypergraphs with interfaces]
 \label{def:cspd}
-Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)}$ as the full sub-category of $\catname{Csp(Hyp(\Sigma))}$ with discrete hypergraphs as objects.
+Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)}$ as the full sub-category of $\catname{Csp(Hyp(\Sigma))}$ with discrete \textit{ordered} hypergraphs as objects.
 \end{definition}
 
 In particular, this means that any morphism in $\HypI{\Sigma}$ is of the form $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$,
-where $n,\;m$ are discrete hypergraphs and $\mathcal{G}$ is an arbitrary hypergraph.  The morphisms $f$ and $g$ into $\mathcal{G}$ will specify which vertices are to be considered as inputs and outputs,  respectively.   
+where $n,\;m$ are discrete hypergraphs and $\mathcal{G}$ is an arbitrary hypergraph.  The morphisms $f$ and $g$ into $\mathcal{G}$ will specify which vertices are to be considered as inputs and outputs,  respectively.
+The ordering of the interface hypergraphs is the way to differentiate between the interpretations of morphisms $f \otimes g$ and $g \otimes f$.
 
 \begin{definition}[Degree,  path,  acyclic] 
 The \emph{in-degree} of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.  
@@ -74,8 +75,8 @@ A \emph{path} from $e_0$ to $e_{n-1}$ of length $n$ in a hypergraph $\mathcal{G}
 A hypergraph is \emph{directed acyclic} if it contains no paths of length $n > 0$ that start and end in the same edge.
 \end{definition}
 
-In order to represent only morphisms of $\catname{S}(\Sigma)$,  it is necessary to restrict our attention to the following subset of hypergraphs with interfaces. 
-\begin{definition}[Category of MDA Hypergraphs with Interfaces]
+In order to make the interpretation complete with respect to $\catname{S}(\Sigma)$,  it is necessary to restrict our attention to the following subset of hypergraphs with interfaces. 
+\begin{definition}[Category of MDA Hypergraphs with Interfaces~\cite{bonchi_string_2022-2}]
 \label{def:monogamy_hyp}
 We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sigma}$ \emph{monogamous directed acyclic (MDA)} if:
 \begin{enumerate}
@@ -224,7 +225,7 @@ is an MDA cospan.
 %    Note how the requirement for $i \xrightarrow{} L \xleftarrow{} j$ and $n \xrightarrow{} G \xleftarrow{} m$ being monogamous, i.e. morphisms in $\MdaCospans$, is a part of the above definition.
 %\end{remark}
 Intuitively,  requiring boundary complements ensures that inputs are glued exclusively to outputs and vice-versa in the two pushout squares.
-Yet, this restriction is not enough to make DPOI rewriting complete for $\catname{S,\mathcal{E}}$: there might be cospans with carriers $\mathcal{G}$ and $\mathcal{H}$ such that one can be rewritten into another but their corresponding morphisms are not equal modulo $\mathcal{E}$~\cite{bonchi_string_2022-1}.
+Yet, this restriction is not enough to make DPOI rewriting complete for $\catname{S}(\Sigma,\mathcal{E})$: there might be cospans with carriers $\mathcal{G}$ and $\mathcal{H}$ such that one can be rewritten into another but their corresponding morphisms are not equal modulo $\mathcal{E}$~\cite{bonchi_string_2022-2}.
 To make the DPOI rewriting complete, we need to add a restriction on the image of the match.
 
 \begin{definition}[Convex match]
@@ -244,7 +245,8 @@ and the following conditions hold
 \end{itemize}
 \end{definition}
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
-We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  but the work proves that for any morphisms $f$ and $g$ in $\catname{S}(\Sigma, \mathcal{E})$,  we have that $f = g$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as hypergraphs.  In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
+We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  but the work proves that for any morphisms $f$ and $g$ in $\catname{S}(\Sigma, \mathcal{E})$,  we have that $f = g$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as (cospans of) hypergraphs.
+In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
 %\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
 %\[

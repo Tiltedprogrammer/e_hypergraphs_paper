@@ -1,5 +1,5 @@
 \section{$\catname{SLat}$}
-\label{sec:appendix:1}
+\label{sec:appendix:slat}
 
 In this section we will define the category of semilattices that we use as a base for enrichment throughout the paper.
 
@@ -75,9 +75,9 @@ In this section we will define the category of semilattices that we use as a bas
     \end{proof}
 
 \section{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
-\label{sec:appendix:2}
+\label{sec:appendix:pushout}
 
-In this section we will define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists and we will explicitly construct such a pushout.
+In this section we will define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists, and we will explicitly construct such a pushout.
 We will also show the uniqueness of a boundary pushout complement.
 These condition will play a crucial role in showing that for each enrichment equation in $\textbf{PROP}^{+}(\Sigma)$ there is a sequence of rewrites in $\WellTypedMdaEcospans$.
 
@@ -116,7 +116,7 @@ n \arrow[ru, "f_{ext}", bend left] \arrow[rd, "f_{ext}'"', bend right] &        
     Let's show the direction from left to right.
     Note that $f_{ext}$ and $f_{ext}'$ have inverses since they are injective and surjective (the injection is per the definition and surjection is because domain and codomain are equal).
     Then we need $f_{ext};\beta = f_{ext}'$ and we define $\beta = f_{ext}^{-1};f_{ext}'$.
-    Similarly $\beta^{-1} = f_{ext}'^{-1};f_{ext}$. 
+    Similarly, $\beta^{-1} = f_{ext}'^{-1};f_{ext}$. 
     We can check that $\beta^{-1};\beta = f_{ext}'^{-1};f_{ext};f_{ext}^{-1};f_{ext}' = f_{ext}'^{-1};id;f_{ext}' = f_{ext}'^{-1};f_{ext}' = id$.
     Then we have that $f_{ext};\beta;f_{int}' = f_{ext};f_{ext}^{-1};f_{ext}';f_{int}' = f_{ext}';f_{int}' = f' = f;\alpha = f_{ext};f_{int};\alpha$.
     Since $f_{ext}$ is surjective, we have $\beta;f_{int}' = f_{int};\alpha$.
@@ -2120,6 +2120,7 @@ This section contains the figures with more elaborate transformation of e-string
 \fi
 
 \section{Additional figures for Section~\ref{sec:e-hypergraphs}: E-hypergraphs}
+\label{sec:appendix:iso}
 \begin{example}
     Consider cospans from Figure~\ref{fig:appendix:non-isomorphic-cospans}(a) where the $f_{int}, f_{ext}$ (respectively, $g_{int},g_{ext}$) maps are shown with red arrows.
     The left cospan represents a symmetry placed inside a hierarchical edge while the right one depicts a tensor product of two identities put inside the hierarchical edge.

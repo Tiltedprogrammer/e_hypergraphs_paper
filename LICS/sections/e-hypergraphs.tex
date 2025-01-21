@@ -5,7 +5,7 @@ In this section,  we follow analogous steps to those used to achieve a combinato
 First we define an \textit{e-hypergraph},  which supports a hierarchical notion of ``e-box'' with distinct components. 
 Then,  we extend this notion with interfaces via a generalisation of the cospan construction.  
 Finally,  we restrict the morphisms under consideration to those satisfying the MDA condition,  as in the previous section.  
-An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
+% An example diagram representing e-hypergraphs with interfaces can be found in Figure \ref{fig:A+B}.
 
 Note that here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$  such that for all $c_1,c_2 \in \Sigma$, if arity (respectively, co-arity) of $c_1$ is 0, then co-arity (respectively, arity) of $c_2$ must be at least 1.
 This is to ensure we do not have terms of type $0 \to 0$.
@@ -33,6 +33,7 @@ We require that the child relation satisfies the following conditions:
 \end{enumerate}
 Finally, $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p <^\mu x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p <^{\mu}(v)$ and $p <^{\mu}(e)$ then $v \consistency_{p} e$.
 We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p <^{\mu} v\}$ and $E_{p} = \{ e ~ | ~ p <^{\mu} e\}$.
+Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $<$ and $\consistency$.
 % We collect the union of all these equivalence relations into one relation $\consistency = \bigcup_{p} \consistency_p$,  which is defined on a subset of $V+E$. 
 % Note that this relation is symmetric and transitive if considered on $V + E$.
 % The consistency relation must additionally satisfy that if $v \in s(e)$ or $v \in t(e)$ and there exists $e'$ such that $e' <^{\mu} v$ and $e' <^{\mu} e$ then $v \consistency e$.
@@ -42,30 +43,21 @@ Intuitively,  the child relation equips a hypergraph with a hierarchical structu
 These edges can be designated as "parents" to sub-e-hypergraphs,  which interpret the various components of the e-boxes.  
 These components are distinguished by the consistency relation, which partitions the maximal sub-e-hypergraph below the hierarchical edge.
 % Technically,  condition $(4)$ on the child relations says that $<^{\mu}$ respects connectivity of edges and vertices,  and similarly for the consistency relation. 
-An example of an e-hypergraph can be seen below.
+An example of an e-hypergraph can be seen below in Figure~\ref{fig:e-cospan-example} (within a grey shaded region).
+The e-hypergraph is given by $E = \{e_1, e_2\}, V = \{v_1, \ldots, w_4 \}$, $s$,$t$, $l = \{e_1 \mapsto \bot, e_2 \mapsto f\}$ and
 \[
-\adjustbox{scale=0.75}{
-\tikzfig{../figures/combinatorial_semantics/e-hypergraph-example-2}
-}
+\begin{array}{ccc}
+    v_3 <^{\mu} e_1 & v_3 \consistency v_4 & v_3 \not \consistency v_5\\
+    \ldots & \ldots & \ldots\\
+    w_4 <^{\mu} e_1 & w_3 \consistency w_4 & v_4 \not \consistency w_4
+\end{array}
 \]
-
-This e-hypergraph corresponds to the following tuple
-\[
-(V = (v_1, v_2, v_3, v_4, v_5, v_6\}, E = \{e_1, e_2, e_3\}, s, t, l, <, \consistency)
-\]
-\begin{align*}
-s(e_1) = \{v_1\} &\; t(e_1) = \{v_2\} &\; l(e_1) = \bot \\
-s(e_2) = \{v_3\} &\; t(e_2) = \{v_4\} &\; l(e_2) = e_2 \\
-s(e_3) = \{v_5\} &\; t(e_3) = \{v_6\} &\; l(e_3) = e_3 \\
-\end{align*}
-
-and $[v_3) = [v_4) = [v_5) = [v_6) = [e_2) = [e_3) = \{e_1\}$ and $[v_1) = [v_2) = [e_1) = \varnothing$.
-$v_3 \consistency v_4 \consistency e_2$ and $v_5 \consistency e_3 \consistency v_6$ and the relation is undefined for the rest vertices and edges.
-Because $v_3 \not \consistency v_5$ and because the relation is closed under connectivity we delimit the connected components by a dashed vertical line.
+A hierarchical edge is depicted with a dashed box.
+The partition induced by $\consistency_{e_1}$ is depicted with a dashed vertical line.
 The condition $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$, in particular, does not allow hierarchical edges with no delimiting lines.
-$e_2$ and $e_3$ are maximal edges.
+$e_1$ is the maximal edge and hence labelled.
 \begin{definition}[E-hypergraph homomorphism]
-An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ of e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
+An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ between e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
 \begin{enumerate}
     \item $\phi$ is a hypergraph homomorphism
     \item for $v \in V_{\mathcal{F}}$ and $e \in E_{\mathcal{F}}$
@@ -86,8 +78,8 @@ The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e
 \end{definition}
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
-A concrete description of the pushout of two morphisms in this category is given in the Appendix.  
-Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does when certain technical conditions are satisfied, including the requirement that the shared domain of the morphisms that form the span for the pushout is a discrete e-hypergraph.
+A concrete description of the pushout of two morphisms in this category is given in the Appendix section~\ref{sec:appendix:pushout}.
+Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does in all scenarios that we are interested in, most importantly the pushout for the composition of two cospans with discrete feet exists.
 
 
 % This remark is confusing
@@ -95,7 +87,9 @@ Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but w
 % When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we let the immediate parent to be undefined for all $x$ whose immediate parent in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
 % \end{remark}
 
-When modelling enriched string diagrams using e-hypergraphs,  we require keeping track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  Thus,  we introduce an \textit{extended} cospan construction.  Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extended cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist. 
+When modelling enriched string diagrams using e-hypergraphs,  we require keeping track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  
+Thus,  we introduce an \textit{extended} cospan construction.  
+Since the $\catname{EHyp(\Sigma)}$ does not have pushouts in general,  we skip straight to considering a category of extended cospans of discrete e-hypergraphs (\textit{i.e.},  discrete hypergraphs considered as e-hypergraphs in the obvious way),  for which pushouts do exist.
 
 We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n - m$ vertices,  in particular with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub-e-hypergraph of $n$.
 \begin{definition}[Category of e-hypergraphs with interfaces]
@@ -103,8 +97,10 @@ We use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n 
     \[
     n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m' \xleftarrow{g_{ext}} m
     \]
-    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete ordered e-hypergraphs,  $f_{ext},g_{ext}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and such that vertices in the strictly internal interface (defined below) are not top-level.  We will sometimes write $\mathcal G$ to denote the extended cospan,  where it is clear from context $\mathcal G$ is equipped with extended interfaces. 
+    where $\mathcal{G}$ is an e-hypergraph,  and $n, n', m, m'$ are discrete ordered e-hypergraphs,  $f_{ext},g_{ext}$ are monomorphisms in $\catname{EHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and such that vertices in the strictly internal interface (defined below) are not top-level.  
+    We will sometimes write $\mathcal G$ to denote the extended cospan,  where it is clear from context $\mathcal G$ is equipped with extended interfaces. 
 
+\end{definition}
 We will call $n$  \textit{external input interfaces} and $n'$ \textit{internal input interfaces}.
 We call $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.  
 We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
@@ -112,9 +108,9 @@ We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from 
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.  
 
 Consider a relation $R = \{x R y \text{ if } f_{int}(x) \consistency f_{int}(y) \text{ for } x,y \in n'\}$ and let $S$ be its reflexive closure.
-The latter partitions $n'$ into non-empty subsets $\{p_{j}\}_{j=1}^{k}$. We get an analogous partition for $m'$.
+The latter partitions $n'$ into non-empty subsets $\{p_{j}\}_{j=1}^{k}$. 
+We get an analogous partition for $m'$.
 An example of an extended cospan can be seen in Figure~\ref{fig:e-cospan-example}.
-The cospan represents a morphism that encodes symmetry put into a hierarchical edge.
 The partition of the interfaces is given with colours.
 The labels suggest how $f_{int}, f_{ext}$ (respectively, $g_{int}, g_{ext}$) act on vertices.
 The ordering of vertices in the interfaces is from left to right.
@@ -140,7 +136,7 @@ Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta
 \]
 \end{definition}
 Intuitively, such construction suggests that the position of the image of $n$ within $n'$ relative to the strict internal interface does not matter; and that when considering individual components of hierarchical edges with their respective portions of strict internal input and output interfaces as plain cospans of hypergraphs (by only considering top-level vertices and edges of these components) they should be isomorphic cospans of hypergraphs in the sense from~\cite{bonchi_string_2022-1}.
-Examples of isomorphic and non-isomorphic extended cospans can be found in Appendix.
+Examples of isomorphic and non-isomorphic extended cospans can be found in Appendix section~\ref{sec:appendix:iso}.
 
 \begin{remark}\label{remark:embedding_functor}
 There is also a faithful identity-on-objects functor $E: \HypI{\Sigma} \to \Ecospans$ which maps a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ to an extended cospan $n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m$ such that $f_{ext};f_{int} = f$ and $g_{ext};g_{int} = g$.
@@ -178,8 +174,7 @@ where $h_i$ are defined as follows,  using $|$ to denote the restriction of a fu
 % and then the disjoint union is just a coproduct. 
 % where $g'$ is the restriction of $g$ to ${Y' \setminus Y_{ext}}$ and $f'$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
 The identity of composition is given by the obvious extended cospan of identities. 
-$\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp({\Sigma}})$,  analogously to Definition~\ref{def:cspd}.  
-\end{definition}
+$\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{EHyp({\Sigma}})$,  analogously to Definition~\ref{def:cspd}.
 
 As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism). 
 % Unlike in the previous section,  we require (extended) cospans to consist of monomorphisms.  
@@ -199,9 +194,9 @@ n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}
 \begin{enumerate}
         \item underlying hypergraph of $\mathcal{G}$ is directed acyclic; 
         \item $f_{int}$, $g_{int}$ are monomorphisms; 
-        \item The in-degree and out-degree of every vertex is at most 1; 
-        \item Vertices with in-degree $0$ are precisely the image of $f_{int}$; 
-        \item Vertices with out-degree $0$ are precisely the image of $g_{int}$; 
+        \item in-degree and out-degree of every vertex is at most 1; 
+        \item vertices with in-degree $0$ are precisely the image of $f_{int}$; 
+        \item vertices with out-degree $0$ are precisely the image of $g_{int}$; 
         % the item below is not assumed by the definition of a cospan of e-hypergraphs
         % \item $[v) = \varnothing$ for all $v$ in the image of $f_{ext};f$, and for all $v$ in the image of $g_{ext};g$. 
 \end{enumerate}
@@ -210,19 +205,18 @@ n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}
 Further,  consider the sets of input and output vertices,  $I$ and $O$ respectively,  of a hierarchical edge $e$ of an e-hypergraph $\mathcal{G}$. 
 The consistency relation of $\mathcal{G}$ partitions $I$ and $O$.  
 We call $e$ \emph{well-typed} if the size of each subset in the partition of $I$ is $|s(e)|$ and the size of each partition of $O$ is $|t(e)|$.
-We will call an MDA extended-cospan in $\MdaEcospans$ \emph{well-typed} if all hierarchical edges in its apex are well-typed.
-
+We will call an MDA extended-cospan in $\MdaEcospans$ \emph{well-typed} if all hierarchical edges in its carrier are well-typed.
 We denote by $\MdaEcospans$ the subcategory of $\Ecospans$ consisting of well-typed MDA extended-cospans. 
 \end{definition}
 Note,  $\MdaEcospans$ is indeed a category,  and in fact inherits the symmetric monoidal structure of $\Ecospans$:  it is easy to check that identities,  the monoidal unit,  symmetry,  and the composition and tensor product of any two well-typed cospans are all (again) well-typed.  
 
 
 
-Unlike in the previous section,  in order to give an equivalence with $\textbf{PROP}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.  
-This is because the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation, apart from the commutativity equation which is absorbed by the definition of isomorphic cospans.  
+Unlike in the previous section,  in order to give an equivalence with $\catname{S}^+(\Sigma)$,  we must first develop the theory of DPOI rewriting for e-hypergraphs.
+This is because the equations for semilattice enrichment are not intended to be subsumed by the e-hypergraph representation, apart from the commutativity equation which is absorbed by the definition of isomorphic cospans.
 Instead,  we will treat them via rewriting,  as we do with equations of the signature.  This is because the semilattice equations involve sharing and copying, operations on string diagrams which are not usually quotiented away.
 % , cf. string diagrams for Cartesian categories.  
-An ideal combinatorial representation would factor out the two semilattice equations which \textit{do not} involve sharing and copying (namely,  associativity and idempotence) --- however, a limitation of the current work is that we do not achieve this.  
+An ideal combinatorial representation would factor out the two semilattice equations which \textit{do not} involve sharing and copying (namely,  associativity and idempotence) --- however, a limitation of the current work is that we do not achieve this.
 Presently,  we will treat these equations via rewriting as well. 
 
 \section{DPOI-Rewriting for E-Hypergraphs}

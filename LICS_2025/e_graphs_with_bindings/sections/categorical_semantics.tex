@@ -76,7 +76,7 @@ The free closed symmetric monoidal category $\catname{CS}(\Sigma)$ is given by a
 \end{definition}
 
 To encode equivalences between morphisms (or $\Sigma$-terms), the hom-sets of the corresponding free categories can be endowed with additional structure of a semilattice induced by an idempotent, commutative and associative operator $+$.
-This endowment turns such categories into $\catname{SLat}$-enriched categories where $\catname{SLat}$ is a category of \textit{unbounded} semilattices and homomorphisms between them (see Appendix section~\ref{sec:appendix:1}).
+This endowment turns such categories into $\catname{SLat}$-enriched categories where $\catname{SLat}$ is a category of \textit{unbounded} semilattices and homomorphisms between them (see Appendix section~\ref{sec:appendix:slat}).
 
 \begin{definition}[Semilattice-enriched category]
     A semilattice-enriched category $\mathbb{C}$ is defined by the following data
@@ -123,7 +123,7 @@ This endowment turns such categories into $\catname{SLat}$-enriched categories w
     
     Again, we take $\otimes$ to bind more tightly than $+$.
     
-    \begin{proposition}(A specialized case of Proposition 6.4.7~\cite{Borceux_1994})
+    \begin{proposition}(A specialised case of Proposition 6.4.7~\cite{Borceux_1994})
     There is a 2-adjunction 
     % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
     \[\begin{tikzcd}
@@ -150,4 +150,13 @@ The following equation can then be derived which will be useful in encoding equi
                        &= \Lambda_{A,B,C}(f) + \Lambda_{A,B,C}(g)
 \end{align*}
 
-Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of $\Sigma^{+}$-terms.
+Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of $\Sigma^{+}$-terms, the latter being defined as follows.
+Every $\Sigma$-term is also a $\Sigma^{+}$-term. 
+Given two $\Sigma^{+}$-terms $f : A \to B$ and $g : A \to B$, $f + g : A \to B$ is also a $\Sigma^{+}$-term.
+
+
+To aid reasoning, we introduce a new language of string diagrams for $\catname{SLat}$-SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms.  It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting. 
+Figure \ref{fig:egraph-strings} displays the generators of this language which is the usual string diagrammatic syntax~\cite{Selinger_2010} apart from the last component which is our notation for $+$; the first component denotes an empty diagram. 
+Figure \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
+The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
+We will later prove the intuitive fact that these diagrams are sound and complete with respect to their intended categorical semantics, noting that similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
