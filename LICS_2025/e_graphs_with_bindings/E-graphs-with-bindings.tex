@@ -30,7 +30,7 @@
 
 % for quotienting
 \usepackage{xfrac} 
-
+\usepackage{wrapfig}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}[theorem]{Definition}
@@ -109,7 +109,7 @@ As a simple example, consider the term $\lambda f . f ((\lambda x . f x) 2)$ whi
 Notice how two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$, which cannot be shared in an e-graph.
 
 Another distinct challenge is presented by $\beta$-reduction, which is handled using \emph{explicit substitutions}. 
-However, calculi of explicit substitutions have many technical subtleties which also directly impact how equivalence is defined, for instance \emph{graph equivalence} instituted between terms which have non-interfering explicit substitutions applied in different orders~\cite{doi:10.1145/2535838.2535886}. 
+However, calculi of explicit substitutions have many technical subtleties which also directly impact how equivalence is defined, for instance \emph{graph equivalence} instituted between terms which have non-interfering explicit substitutions applied in different orders~\cite{accattoli2014nonstandard}. 
 These difficulties are not handled in \emph{loc. cit.}.
 
 All these issues can be resolved by the use of \emph{string diagrams}.
@@ -122,21 +122,29 @@ We build on the technology of string diagrams, which is by now well developed in
 String diagrams have the advantage of being a direct bridge from the language of category theory, which in turn can be used to give semantic models to a variety of programming languages and logics, to the concrete language of graphs, all based on solid mathematical foundations. 
 To solve the new problems discuss above, of dealing with binding and capture avoiding substitution, we just follow the categorical breadcrumb trail. 
 
-The general background literature for string diagrams is summarised in~\cite{https://arxiv.org/abs/2305.08768}.
-The particular context of string diagrams with bindings is given in~\cite{https://arxiv.org/abs/2305.18945}, while string diagrams for e-graphs without bindings are defined in~\cite{https://arxiv.org/abs/2406.15882}.
+The general background literature for string diagrams is summarised in~\cite{piedeleu2023introductionstringdiagramscomputer}.
+The particular context of string diagrams with bindings is given in~\cite{ghica2024stringdiagramslambdacalculifunctional}, while string diagrams for e-graphs without bindings are defined in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
 
 String diagrams provide a geometric or topological framework for understanding monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out. 
 Key structures in monoidal categories---such as the monoidal product, tensor unit, braiding, and dualities---are represented through operations like placing, weaving, or bending strings. 
 This visual approach makes complex operations such as the trace intuitive and reveals insights sometimes obscured by symbolic notation. 
-Originating from notations by Hotz~\cite{??} (for automata) and Penrose~\cite{??} (for tensor networks), string diagrams generalise to any monoidal category and even bicategories, offering a dual perspective to commutative diagrams through Poincaré duality. 
+Originating from notations by Hotz~\cite{hotzsd} (for automata) and Penrose~\cite{penrose1984spinors} (for tensor networks), string diagrams generalise to any monoidal category and even bicategories, offering a dual perspective to commutative diagrams through Poincaré duality. 
 
 As described above, string diagrams are commonly an informal yet rigorous two-dimensional syntax for the internal language of a category. 
-They can be formalised by representing them as graphs or hypergraphs~\cite{https://dl.acm.org/doi/full/10.1145/3502719}, which has two further benefits. 
+They can be formalised by representing them as graphs or hypergraphs~\cite{1011453502719}, which has two further benefits. 
 The first benefit is that the property of two string diagrams being equal if and only if they ``look the same'' can be spelled out as graph isomorphism, eliminating any possible ambiguity of interpretation. 
 The second benefit is that equational reasoning can also be formalised as (categorical) graph rewriting, for instance double-pushout rewriting (DPO). 
 
-Finally, to represent diagrammatically two concepts essential to both programming languages (binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{https://link.springer.com/chapter/10.1007/11874683_1}. 
+Finally, to represent diagrammatically two concepts essential to both programming languages (binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{10.1007/11874683_1}. 
 The diagrammatic boxes require the introduction of further structure to (hyper)graphs in the form of a hierarchical layering of the graphs, as studied in \emph{loc. cit.}.
+
+\begin{wrapfigure}{L}{0.2\textwidth}
+\[
+\adjustbox{scale=0.6}{
+    \tikzfig{figures/de-brujin-string}
+}
+\]
+\end{wrapfigure}
 
 Revisiting the simple earlier example $\lambda f . f ((\lambda x . f x) 2)$, note its string diagrammatic representation below, in which the two occurrences of $f$ are now shared.
 $\lambda$-abstraction is represented by a rounded box with the bound variable a dangling wire attached to the frame,
@@ -167,7 +175,7 @@ the application node a half-circle
 	\end{pgfonlayer}
 \end{tikzpicture}
 }, 
-and sharing a \emph{contraction node} DRG: IT'S UPSIDE DOWN?
+and sharing a \emph{contraction node} 
 \scalebox{0.3}{
 	\begin{tikzpicture}
 		\begin{pgfonlayer}{nodelayer}
@@ -185,12 +193,6 @@ and sharing a \emph{contraction node} DRG: IT'S UPSIDE DOWN?
 }
 . 
 
-DRG USE WRAP-BOX. 
-\[
-\adjustbox{scale=0.6}{
-    \tikzfig{figures/de-brujin-string}
-}
-\]
 
 \subsection{E-graphs}
 
@@ -216,6 +218,7 @@ The first rewrite rule, replacing multiplication by \emph{shift-left} creates th
 This second e-graph illustrates the other representational difference, besides sharing, between conventional e-graphs and e-hypergraphs.
 In the former, edges connect directly to nodes inside the equivalence class, whereas in the latter edges connect to the equivalence class itself.
 Explicit discarding (weakening) nodes, depicted with black dots with a single wire inside the dashed boxes 
+
 \scalebox{0.4}{
 	\begin{tikzpicture}
 		\begin{pgfonlayer}{nodelayer}
