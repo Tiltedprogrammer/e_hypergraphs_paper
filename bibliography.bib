@@ -285,58 +285,27 @@ journal = {Handbook of Graph Grammars and Computing by Graph Transformation},
 doi = {10.1142/9789812384720_0003}
 }
 
-@article{Frobenius,
-author = {Bonchi, Filippo and Gadducci, Fabio and Kissinger, Aleks and Sobocinski, Pawel and Zanasi, Fabio},
-title = {String Diagram Rewrite Theory I: Rewriting with Frobenius Structure},
-year = {2022},
-issue_date = {April 2022},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {69},
-number = {2},
-issn = {0004-5411},
-url = {https://doi.org/10.1145/3502719},
-doi = {10.1145/3502719},
-journal = {J. ACM},
-month = {mar},
-articleno = {14},
-numpages = {58},
-keywords = {category theory, double-pushout rewriting, Frobenius algebra, String diagram}
-}
 
-@article{Frobenius2,
- title={String diagram rewrite theory II: Rewriting with symmetric monoidal structure},
- volume={32},
- DOI={10.1017/S0960129522000317}, 
- number={4}, 
- journal={Mathematical Structures in Computer Science}, 
- publisher={Cambridge University Press}, 
- author={Bonchi, Filippo and Gadducci, Fabio and Kissinger, Aleks and Sobocinski, Pawel and Zanasi, Fabio}, 
- year={2022}, 
- pages={511–541}
-}
-
-
-@inproceedings{fscd,
-  author    = {Mario Alvarez{-}Picallo and
-               Dan R. Ghica and
-               David Sprunger and
-               Fabio Zanasi},
-  editor    = {Amy P. Felty},
-  title     = {Rewriting for Monoidal Closed Categories},
-  booktitle = {7th International Conference on Formal Structures for Computation
-               and Deduction, {FSCD} 2022, August 2-5, 2022, Haifa, Israel},
-  series    = {LIPIcs},
-  volume    = {228},
-  pages     = {29:1--29:20},
-  publisher = {Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik},
-  year      = {2022},
-  url       = {https://doi.org/10.4230/LIPIcs.FSCD.2022.29},
-  doi       = {10.4230/LIPIcs.FSCD.2022.29},
-  timestamp = {Wed, 07 Dec 2022 23:13:59 +0100},
-  biburl    = {https://dblp.org/rec/conf/fscd/Alvarez-Picallo22.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
+ @inproceedings{fscd,
+   author    = {Mario Alvarez{-}Picallo and
+                Dan R. Ghica and
+                David Sprunger and
+                Fabio Zanasi},
+   editor    = {Amy P. Felty},
+   title     = {Rewriting for Monoidal Closed Categories},
+   booktitle = {7th International Conference on Formal Structures for Computation
+                and Deduction, {FSCD} 2022, August 2-5, 2022, Haifa, Israel},
+   series    = {LIPIcs},
+   volume    = {228},
+   pages     = {29:1--29:20},
+   publisher = {Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik},
+   year      = {2022},
+   url       = {https://doi.org/10.4230/LIPIcs.FSCD.2022.29},
+   doi       = {10.4230/LIPIcs.FSCD.2022.29},
+   timestamp = {Wed, 07 Dec 2022 23:13:59 +0100},
+   biburl    = {https://dblp.org/rec/conf/fscd/Alvarez-Picallo22.bib},
+   bibsource = {dblp computer science bibliography, https://dblp.org}
+ }
 
 @book{maclane,
   added-at = {2009-09-18T21:22:09.000+0200},
@@ -447,16 +416,8 @@ misc{alvarez-picallo_functorial_2021,
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 
-@article{alvarez-picallo_rewriting_2022,
-	title = {Rewriting for {Monoidal} {Closed} {Categories}},
-	abstract = {This paper develops a formal string diagram language for monoidal closed categories. Previous work has shown that string diagrams for freely generated symmetric monoidal categories can be viewed as hypergraphs with interfaces, and the axioms of these categories can be realized by rewriting systems. This work proposes hierarchical hypergraphs as a suitable formalization of string diagrams for monoidal closed categories. We then show double pushout rewriting captures the axioms of these closed categories.},
-	language = {en},
-	author = {Alvarez-Picallo, Mario and Ghica, Dan and Sprunger, David and Zanasi, Fabio},
-	year = {2022},
-	file = {Alvarez-Picallo et al. - 2022 - Rewriting for Monoidal Closed Categories.pdf:/Users/chris/Zotero/storage/UK7C7NQ3/Alvarez-Picallo et al. - 2022 - Rewriting for Monoidal Closed Categories.pdf:application/pdf},
-}
 
-@article{bonchi_string_2022,
+@article{bonchi_string_2022-3,
 	title = {String diagram rewrite theory {III}: {Confluence} with and without {Frobenius}},
 	issn = {0960-1295, 1469-8072},
 	shorttitle = {String diagram rewrite theory {III}},
@@ -699,19 +660,19 @@ misc{alvarez-picallo_functorial_2021,
 	file = {Wilson et al. - 2023 - String Diagrams for Non-Strict Monoidal Categories.pdf:/Users/chris/Zotero/storage/Y4HXUALR/Wilson et al. - 2023 - String Diagrams for Non-Strict Monoidal Categories.pdf:application/pdf},
 }
 
-@misc{ghica_hierarchical_2023,
-	title = {Hierarchical string diagrams and applications},
-	url = {http://arxiv.org/abs/2305.18945},
-	doi = {10.48550/arXiv.2305.18945},
-	abstract = {This is a tutorial text giving an advanced introduction to the diagrammatic syntax of monoidal (and Cartesian) closed categories in the style of "functorial boxes". This syntax can be efficiently represented as a data structure which we call hierarchical hypergraphs, the systematic rewriting of which represents a way of deriving abstract machines for higher-order programming languages directly from their operational semantics. To arrive at this main intended application we pay attention in particular to the diagrammatic language of adjunctions and explicit strictifications. Finally, we present new proof techniques made possible by a quasi-canonical presentation of terms in monoidal closed categories called foliations which are useful in the case of complicated program transformations such as automatic differentiation and closure conversion.},
-	urldate = {2023-08-03},
-	publisher = {arXiv},
-	author = {Ghica, Dan and Zanasi, Fabio},
-	month = may,
-	year = {2023},
-	note = {arXiv:2305.18945 [cs, math]},
-	keywords = {Computer Science - Logic in Computer Science, Computer Science - Programming Languages, Mathematics - Category Theory},
-	file = {arXiv Fulltext PDF:/Users/chris/Zotero/storage/YLKDZ4SW/Ghica and Zanasi - 2023 - Hierarchical string diagrams and applications.pdf:application/pdf;arXiv.org Snapshot:/Users/chris/Zotero/storage/77ICS4TD/2305.html:text/html},
+% misc{ghica_hierarchical_2023,
+ 	title = {Hierarchical string diagrams and applications},
+ 	url = {http://arxiv.org/abs/2305.18945},
+ 	doi = {10.48550/arXiv.2305.18945},
+ 	abstract = {This is a tutorial text giving an advanced introduction to the diagrammatic syntax of monoidal (and Cartesian) closed categories in the style of "functorial boxes". This syntax can be efficiently represented as a data structure which we call hierarchical hypergraphs, the systematic rewriting of which represents a way of deriving abstract machines for higher-order programming languages directly from their operational semantics. To arrive at this main intended application we pay attention in particular to the diagrammatic language of adjunctions and explicit strictifications. Finally, we present new proof techniques made possible by a quasi-canonical presentation of terms in monoidal closed categories called foliations which are useful in the case of complicated program transformations such as automatic differentiation and closure conversion.},
+ 	urldate = {2023-08-03},
+ 	publisher = {arXiv},
+ 	author = {Ghica, Dan and Zanasi, Fabio},
+ 	month = may,
+ 	year = {2023},
+ 	note = {Accepted for publication by Cambridge University Press, Elements},
+ 	keywords = {Computer Science - Logic in Computer Science, Computer Science - Programming Languages, Mathematics - Category Theory},
+ 	file = {arXiv Fulltext PDF:/Users/chris/Zotero/storage/YLKDZ4SW/Ghica and Zanasi - 2023 - Hierarchical string diagrams and applications.pdf:application/pdf;arXiv.org Snapshot:/Users/chris/Zotero/storage/77ICS4TD/2305.html:text/html}
 }
 
 @misc{ghica_compositional_2023,
@@ -844,11 +805,6 @@ The Conference on Formal Methods in Computer-Aided Design (FMCAD) is an annual c
 	file = {arXiv Fulltext PDF:/Users/chris/Zotero/storage/V9IAZ286/Heijltjes - 2023 - The Functional Machine Calculus.pdf:application/pdf;arXiv.org Snapshot:/Users/chris/Zotero/storage/JJR5XTLA/2212.html:text/html},
 }
 
-@misc{noauthor_categories_nodate,
-	title = {Categories for the {Working} {Mathematician} {\textbar} {SpringerLink}},
-	url = {https://link.springer.com/book/10.1007/978-1-4757-4721-8},
-	urldate = {2023-08-03},
-}
 
 @inproceedings{mellies_functorial_2006,
 	address = {Berlin, Heidelberg},
@@ -975,7 +931,8 @@ abstract = {Event structures, Game Semantics strategies and Linear Logic proof-n
       year={2023},
       eprint={2305.18945},
       archivePrefix={arXiv},
-      primaryClass={cs.LO}
+      primaryClass={cs.LO},
+	  note={Accepted for publication by Cambridge University Press, Elements}
 }
 
 @inbook{Borceux_1994, 
