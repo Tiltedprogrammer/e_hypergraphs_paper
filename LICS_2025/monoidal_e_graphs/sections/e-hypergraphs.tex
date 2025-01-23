@@ -82,8 +82,8 @@ The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e
 \end{definition}
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
-A concrete description of the pushout of two morphisms in this category is given in the Appendix section~\ref{sec:appendix:pushout}.
-Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does in all scenarios that we are interested in, most importantly the pushout for the composition of two cospans with discrete feet exists.
+A concrete description of the pushout of two morphisms in this category is given in Appendix~\ref{sec:appendix:pushout}.
+Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does in all scenarios that we are interested in; most importantly, the pushout for the composition of two cospans with discrete feet always exists.
 
 
 % This remark is confusing
@@ -91,7 +91,7 @@ Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but w
 % When we wish to consider $\phi(\mathcal{F}) \subseteq \mathcal{G}$ as an e-hypergraph in its own right,  we let the immediate parent to be undefined for all $x$ whose immediate parent in $\mathcal{G}$ is outside $\phi(\mathcal{F})$.
 % \end{remark}
 
-When modelling enriched string diagrams using e-hypergraphs,  we require keeping track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which we must also keep track of.  
+When modelling enriched string diagrams using e-hypergraphs,  we must keep track of more than simply the ultimate external inputs and outputs of the diagram: each internal e-box has its own inputs and outputs,  which also must be tracked.  
 Thus,  we introduce an \textit{extended} cospan construction.  
 
 % To save space
@@ -149,9 +149,8 @@ Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta
 Intuitively, such construction suggests that the position of the image of $n$ within $n'$ relative to the strict internal interface does not matter; and that when considering individual components of hierarchical edges with their respective portions of strict internal input and output interfaces as plain cospans of hypergraphs (by only considering top-level vertices and edges of these components) they should be isomorphic cospans of hypergraphs in the sense from~\cite{bonchi_string_2022-1}.
 An example of an extended cospan can be seen in Figure~\ref{fig:e-cospan-example}.
 The partition of the interfaces is given with colours.
-The labels suggest how $f_{int}, f_{ext}$ (respectively, $g_{int}, g_{ext}$) act on vertices.
-The ordering of vertices in the interfaces is from left to right.
-Examples of isomorphic and non-isomorphic extended cospans can be found in Appendix section~\ref{sec:appendix:iso}.
+The labels suggest how $f_{int}, f_{ext}$ (respectively, $g_{int}, g_{ext}$) act on vertices, with the ordering of vertices in the interfaces given left to right.
+Examples of isomorphic and non-isomorphic extended cospans can be found in Appendix~\ref{sec:appendix:iso}.
 
 % \begin{remark}\label{remark:embedding_functor}
 % There is also a faithful identity-on-objects functor $E: \HypI{\Sigma} \to \Ecospans$ which maps a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ to an extended cospan $n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m$ such that $f_{ext};f_{int} = f$ and $g_{ext};g_{int} = g$.
@@ -162,7 +161,7 @@ Composition of two morphisms
 	n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} &\mathcal{F} \xleftarrow{f'_{int}} m' \xleftarrow{f'_{ext}} m\\
 	m \xrightarrow{g_{ext}} m'\!' \xrightarrow{g_{int}} &\mathcal{G} \xleftarrow{g'_{int}} k' \xleftarrow{g'_{ext}} k
 \end{align*} is computed in two stages.
-First, $\mathcal{H}$ is computed as the result of the pushout square shown below; 
+First, $\mathcal{H}$ is computed as the result of the pushout square shown below: 
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
 \[
 \trimbox{0cm 0cm 0cm 0.75cm}{
@@ -242,23 +241,23 @@ Instead,  we will treat them via rewriting,  as we do with equations of the sign
 
 \section{DPOI-Rewriting for E-Hypergraphs}
 
-Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments. This is the purpose of this section of the paper. 
+Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments.
 
 We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
-Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows. 
+Thus,  we wish for a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows: 
 \[
-    n \xrightarrow{} n' \xrightarrow{} \mathcal{L} \xleftarrow{} m' \xleftarrow{} m
+    n \xrightarrow{} n' \xrightarrow{} \mathcal{L} \xleftarrow{} m' \xleftarrow{} m,
 \qquad
-    n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m
+    n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m.
 \] 
-Analogous to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data
+Analogously to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data:
 \[
     0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m
 \;
     0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
-\] allows us to encode rewrite rules as extended cospans of the following form
+\] allows us to encode rewrite rules as extended cospans of the following form:
 \[
-\mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R}
+\mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R},
 \] which will fit into the DPO formalism. We make this identification throughout,  without further mention. 
 %We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
 
@@ -357,8 +356,8 @@ The maps $f_2$ and $g_2$ are defined similarly.
 \end{definition}
 
 First, note that conditions (6) and (7) are disjoint.
-Intuitively the above definition means that when the occurrence of $\mathcal{L}$ within $\mathcal{G}$ is top-level (premise for condition (6)) then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces (as in the case of Definition~\ref{def:dpoi}) and when the occurrence is nested (premise of condition (7)), those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces: one can think about the latter as applying Definition~\ref{def:dpoi} in a nested context.
-In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding MDA cospans above.
+Intuitively, the above definition means that when the occurrence of $\mathcal{L}$ within $\mathcal{G}$ is top-level (premise for condition (6)) then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces (as in the case of Definition~\ref{def:dpoi}), and when the occurrence is nested (premise of condition (7)), those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces: one can think about the latter as applying Definition~\ref{def:dpoi} in a nested context.
+In both cases, when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding MDA cospans above.
 The morphisms are then constructed correspondingly to require that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
 
 %The notion of a boundary complement above is essentially the same as the one from Section~\ref{sec:combinatorial-semantics}.
@@ -383,7 +382,7 @@ Note that,  in the above definition,  the extended cospan
     \]
  is not necessarily well-typed.
 This is because its input internal interface may contain vertices that previously were a part of the output internal interface and vice versa.
-Examples and non-examples of a boundary complement can be found in Appendix section~\ref{sec:appendix:iso}.
+Examples and non-examples of a boundary complement can be found in Appendix~\ref{sec:appendix:iso}.
 % \begin{remark}
 % The boundary complement conditions, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
 % \[
@@ -393,7 +392,7 @@ Examples and non-examples of a boundary complement can be found in Appendix sect
 
 \begin{proposition}
 \label{prop:boundary_unique}
-    The boundary complement in~\ref{def:boundary_new} when exists is unique.
+    The boundary complement in~\ref{def:boundary_new} when it exists is unique.
 \end{proposition}
 
 We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  
@@ -435,7 +434,7 @@ such that the two marked squares are pushouts and the following conditions hold:
 % \]
 \end{definition}
 Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that via it $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ for reflexive, symmetric, and transitive closure of $\Rrightarrow{}$.
-An example of rewriting of extended cospans can be found in Appendix section~\ref{sec:appendix:iso}.
+An example of rewriting of extended cospans can be found in Appendix~\ref{sec:appendix:iso}.
 % Together, the conditions ensure the result of a rewrite is a well-typed MDA e-hypergraph. 
 
 

@@ -1,6 +1,6 @@
 \section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
 
-In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
+In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences. 
@@ -81,7 +81,7 @@ Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)
 
 In particular, this means that any morphism in $\HypI{\Sigma}$ is of the form $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$,
 where $n,\;m$ are discrete ordered hypergraphs and $\mathcal{G}$ is an arbitrary hypergraph.  The morphisms $f$ and $g$ into $\mathcal{G}$ will specify which vertices are to be considered as inputs and outputs,  respectively.
-The ordering of the interface hypergraphs is the way to differentiate between the interpretations of morphisms $f \otimes g$ and $g \otimes f$.
+The ordering of the interface associated to a hypergraph is used to differentiate between the interpretations of morphisms $f \otimes g$ and $g \otimes f$.
 
 \begin{definition}[Degree,  path,  acyclic] 
 The \emph{in-degree} of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.  
@@ -276,7 +276,7 @@ and the following conditions hold
 \end{definition}
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
 It is then proved in~\cite{bonchi_string_2022-2} that this notion of DPOI rewriting is sound and complete for $\catname{S}(\Sigma, \mathcal{E})$: for any morphisms $f$ and $g$ in $\catname{S}(\Sigma)$,  we have that $f = g$ modulo $\mathcal{E}$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as (cospans of) hypergraphs.
-As SMC equations get absorbed by the representation, it makes this approach computationally appealing.
+As SMC equations get absorbed by the representation, it makes this approach computationally appealing as they do not need to be represented explicitly.
 % In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
 %\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 

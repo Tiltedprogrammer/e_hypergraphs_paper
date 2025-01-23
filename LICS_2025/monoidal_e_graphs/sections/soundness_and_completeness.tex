@@ -4,7 +4,7 @@ This section contains the main technical results of the paper,  building on thos
 We give the interpretation of $\catname{S}(\Sigma)^{+}$ terms in $\WellTypedMdaEcospans$ by extending the interpretation of $\catname{S}(\Sigma)$ in $\MdaCospans$ (see Appendix) by first endowing each hom-set of cospans in $\WellTypedMdaEcospans$ with a semilattice structure turning it into an $\catname{SLat}$-category.
 % To achieve the latter we quotient each hom-set by EDPOI structural rewrite rules that correspond to the axioms of an $\catname{SLat}$-SMC:
 % the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.
-Detailed proofs of the statements in this section can be found in Appendix section~\ref{proof:appendix:soundness}.
+Detailed proofs of the statements in this section can be found in Appendix~\ref{proof:appendix:soundness}.
 
 % We first construct an interpretation of terms generating $\catname{S}(\Sigma)^{+}$ in $\WellTypedMdaEcospans$.  
 % As expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
@@ -122,8 +122,8 @@ Then we have the following result.
 \label{prop:soundness}
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
-Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
-Ultimately we want to give interpretation of morphisms in $\catname{S}^{+}(\Sigma)$ in $\WellTypedMdaEcospans / \mathcal{S}$ for which we will need a few lemmas.
+Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are instead covered by the fact we have quotiented our representation by certain rewrites. 
+Ultimately, we want to give interpretation of morphisms in $\catname{S}^{+}(\Sigma)$ in $\WellTypedMdaEcospans / \mathcal{S}$ for which we will need a few lemmas.
 
 % First, notice that this quotienting gives us certain normal forms.
 
@@ -276,9 +276,8 @@ where $\mathcal{E}$ on the right is overloaded as a set of EDPOI rewrite rules c
 
 The literal meaning of the above statement is that $f = g$ in $\catname{S}^{+}(\Sigma)$ modulo $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}^{*}_{\mathcal{E}} \llbracket g \rrbracket$.
 
-Now we are ready to define DPO (EDPOI) rewriting for e-graphs by following the informal translation in Section~\ref{sec:introduction} that renders a given \textit{canonical} \textit{acyclic} \textit{connected} e-graph as a morphism of $\catname{S}^{+}(\Sigma_{C}, \mathcal{E}_{C})$ or as morphisms of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$  after applying the functor of Theorem~\ref{thm:full-completeness}.
-An e-graph is canonical if it directly corresponds to its graphical representation (as shown in~\nameref{sec:introduction}).
-An e-graph is connected if it contains a single connected component.
+Now we are ready to define DPO (EDPOI) rewriting for e-graphs by following the informal translation in Section~\ref{sec:introduction} that renders a given \textit{canonical} \textit{acyclic} \textit{connected} e-graph as a morphism of $\catname{S}^{+}(\Sigma_{C}, \mathcal{E}_{C})$, or as morphisms of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$  after applying the functor of Theorem~\ref{thm:full-completeness}.
+An e-graph is \emph{canonical} if it directly corresponds to its graphical representation (as shown in~\nameref{sec:introduction}), and \emph{connected} if it contains a single connected component.
 \begin{proposition}
 The data above define a function $\llbracket - \rrbracket : \catname{E}\text{-}\catname{graph} \to \catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$ where the latter has a naturally defined EDPOI rewriting.
 Moreover, we have that the following diagram commutes
@@ -290,10 +289,10 @@ Moreover, we have that the following diagram commutes
 \]
 \end{proposition}
 
-Note that the domain of this function is the set of e-graphs over the same signature and equations which is not a category.
-The arrow $\leadsto$ expresses the fact that e-graph $e_2$ is obtainable from e-graph $e_1$ via the application of equations from $\mathcal{E}$: it includes adding nodes and merging e-classes.
+Note that the domain of this function is the set of e-graphs over the same signature and equations, which is not a category.
+The arrow $\leadsto$ expresses the fact that e-graph $e_2$ is obtainable from e-graph $e_1$ via the application of equations from $\mathcal{E}$; it includes adding nodes and merging e-classes.
 Intuitively, the diagram above implies that we can mimic e-graph transformations by DPO rewrites over e-hypergraphs in a sound and complete manner.
-A more detailed discussion can be found in section~\ref{sec:appendix:e-graph-translation} of the Appendix.
+We defer a more elaborate analysis to Appendix~\ref{sec:appendix:e-graph-translation}.
 % \begin{proof}
 % The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
 % The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.
