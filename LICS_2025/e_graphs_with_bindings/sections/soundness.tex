@@ -1,0 +1,14 @@
+\section{Soundness and completeness}
+
+In this section we explore soundness and completeness of DPOI rewriting introduced in previous section with respect to rewriting of closed $\Sigma^{+}$-terms.
+First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
+
+\begin{definition}
+    We say that a $\Sigma$-term $f$ rewrites ($\leadsto$) to a $\Sigma$-term $g$ modulo SMC-laws via a rewrite rule $\langle l, r \rangle$ if they are representable as
+    \[
+    f = c_{1};(id_{k} \otimes l);c_{2} \qquad g = c_{2};(id_{k} \otimes r);c_{2}~.
+    \]
+    These representations are so-called SMC normal forms.
+\end{definition}
+
+This notion generalises to rewriting of closed $\Sigma$-terms by introducing contexts (in string diagrammatic notation).

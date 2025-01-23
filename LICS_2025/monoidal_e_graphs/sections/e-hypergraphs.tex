@@ -124,7 +124,7 @@ Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \texti
     }    
     \]
     \captionsetup{belowskip=-3ex, skip=0pt}
-    \caption{Extended cospan example}
+    \caption{Morphism of $\Ecospans$}
     \label{fig:e-cospan-example}
 \end{figure}
 
@@ -146,11 +146,33 @@ The latter partitions $n'$ into non-empty subsets $\{p_{j}\}_{j=1}^{k}$.
 We get an analogous partition for $m'$, $n''$, $m''$.
 Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the above diagram commute and such that $\alpha$ and $\gamma$ preserve order within each $p_i$.
 \end{definition}
-Intuitively, such construction suggests that the position of the image of $n$ within $n'$ relative to the strict internal interface does not matter; and that when considering individual components of hierarchical edges with their respective portions of strict internal input and output interfaces as plain cospans of hypergraphs (by only considering top-level vertices and edges of these components) they should be isomorphic cospans of hypergraphs in the sense from~\cite{bonchi_string_2022-1}.
 An example of an extended cospan can be seen in Figure~\ref{fig:e-cospan-example}.
 The partition of the interfaces is given with colours.
 The labels suggest how $f_{int}, f_{ext}$ (respectively, $g_{int}, g_{ext}$) act on vertices, with the ordering of vertices in the interfaces given left to right.
-Examples of isomorphic and non-isomorphic extended cospans can be found in Appendix~\ref{sec:appendix:iso}.
+Intuitively, such notion of isomorphism suggests that the position of the image of $n$ within $n'$ relative to the strict internal interface does not matter, for example, vertices
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=red node, label={above:$v_{3}$}] (0) at (-0.5, 3.5) {};
+		\node [style=red node, label={above:$v_4$}] (1) at (0, 3.5) {};
+	\end{pgfonlayer}
+\end{tikzpicture}
+can be swapped with vertices
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=blue node, label={above:$v_{5}$}] (0) at (-0.5, 3.5) {};
+		\node [style=blue node, label={above:$v_6$}] (1) at (0, 3.5) {};
+	\end{pgfonlayer}
+\end{tikzpicture}
+in the input interface yielding an isomorphic cospan.
+However, we may not swap
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=red node, label={above:$v_{3}$}] (0) at (-0.5, 3.5) {};
+		\node [style=red node, label={above:$v_4$}] (1) at (0, 3.5) {};
+	\end{pgfonlayer}
+\end{tikzpicture}
+with each other --- this would yield a non-isomorphic cospan.
+Further examples of isomorphic and non-isomorphic extended cospans can be found in Appendix~\ref{sec:appendix:iso}.
 
 % \begin{remark}\label{remark:embedding_functor}
 % There is also a faithful identity-on-objects functor $E: \HypI{\Sigma} \to \Ecospans$ which maps a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ to an extended cospan $n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m$ such that $f_{ext};f_{int} = f$ and $g_{ext};g_{int} = g$.

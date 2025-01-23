@@ -2105,16 +2105,41 @@ Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracke
 \[
 	\llbracket f \rrbracket = n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m ~.
 \]
+
+\begin{figure*}
+    \begin{subfigure}{\linewidth}
+\begin{align*}
+    (k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+    n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+    (i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
+\end{align*}
+\subcaption{\;}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{\linewidth}
+    \begin{align*}
+        (k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+        n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+        (i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
+    \end{align*}
+\subcaption{\;}
+\end{subfigure}
+\caption{Decomposition}
+\label{fig:decomposition_1}
+\end{figure*}
+
+
 This implies the existence of a diagram as in~\ref{def:dpoi-e}.
 We will proceed by induction on the level of the occurrence of $\mathcal{L}$ within $\mathcal{F}$.
 \begin{itemize}
 	\item Suppose the image of $\mathcal{L}$ in $\mathcal{F}$ is top-level.
-		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans
-		\begin{align*}
-			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
-			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
-		\end{align*}
+		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans as in Figure~\ref{fig:decomposition_1}.
+
+		% \begin{align*}
+		% 	(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+		% 	(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
+		% \end{align*}
 		By fullness of $\llbracket - \rrbracket$ (from Theorem~\ref{thm:completeness_simple}) there exist $c_{1}$ and $c_{2}$ such that 
 		\begin{align*}
 		&\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k\\
@@ -2123,12 +2148,12 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 		By functoriality, $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes l);c_{2} \rrbracket$ and by faithfulness we have that $f = c_{1};(id \otimes l);c_{2}$ to which we can apply $\langle l, r \rangle$ and get $g' = c_{1};(id \otimes r);c_{2}$.
 		We then have $\llbracket g' \rrbracket = \llbracket c_{1};(id \otimes r);c_{2} \rrbracket =  \llbracket g \rrbracket$ since the boundary complement is unique (Proposition ~\ref{prop:boundary_unique}) and $g' = g$ by faithfulness.
 
-		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as
-		\begin{align*}
-			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
-			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
-		\end{align*}
+		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as in Figure~\ref{fig:decomposition_2}
+		% \begin{align*}
+		% 	(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+		% 	(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
+		% \end{align*}
 		such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $F'$.
 		Since the image of $\mathcal{L}$ lies within $\mathcal{F}'$, there is an EDPO rewrite step that turns
 		\[
@@ -2163,7 +2188,7 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 		\end{align*}
 		such that the image of $\mathcal{L}$ lies within $\mathcal{F}_{p}$.
 		By inductive hypothesis we have that $\llbracket f_{p} \rrbracket = n_p \xrightarrow{} n_{p}' \xrightarrow{} \mathcal{F}_{p} \xleftarrow{} m_{p}' \xleftarrow{} m_{p}$ rewrites into $\llbracket g_{p} \rrbracket = n_p \xrightarrow{} n_{p}'' \xrightarrow{} \mathcal{G}_{p} \xleftarrow{} m_{p}'' \xleftarrow{} m_{p}$ such that $f_{p} = g_{p}$.
-		By fullness and the fact that $\llbracket - \rrbracket$ is enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
+		By fullness and the fact that $\llbracket - \rrbracket$ is $\catname{SLat}$-enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
 		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1} + \ldots + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
 \end{itemize}
     % there is a sequence of SMC and enrichment equations such that when applied to $f$ it is turned into $g$.
@@ -2240,7 +2265,7 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
     \[
     \adjustbox{width=\linewidth}{
     \begin{tikzcd}
-        n \arrow[r] & n'_{1} \arrow[r] & \mathcal{C}_{1} & m'_{1} + k \arrow[l]     & i+k \arrow[l] \arrow[r] & i'+k \arrow[rd] &             \\
+        n \arrow[r] & n'_{1} \arrow[r] & \mathcal{C}_{1} & m'_{1} + i + k \arrow[l]     & i+k \arrow[l] \arrow[r] & i'+k \arrow[rd] &             \\
                     &                  &                 &                          &                         &                 & \mathcal{L} \\
         m \arrow[r] & m'_{2} \arrow[r] & \mathcal{C}_{2} & n'_{2} + k + j \arrow[l] & k+j \arrow[r] \arrow[l] & k+j' \arrow[ru] &            
     \end{tikzcd}
