@@ -9,7 +9,7 @@ We extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetri
 We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{red}{<}, \textcolor{blue}{<},\consistency)$ where
 \begin{itemize}
   \item $V$ is a set of vertices.
-  \item $E = \textcolor{gray}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
+  \item $E = \colorbox{yellow}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
   \item $s,t : E \to V^{*}$ are source and target functions.
   \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are \textit{label} functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
   \item $\textcolor{red}{<} \subseteq \textcolor{red}{E} \times V + E$ and $\textcolor{blue}{<} \subseteq \textcolor{blue}{E} \times V + E $ with $\textcolor{red}{E}, \textcolor{blue} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{red}{<^{\mu}}$ and $\textcolor{blue}{<^{\mu}}$.
@@ -25,7 +25,7 @@ We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signatu
   \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{red}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{red}{<^{\mu}}(v)$ and $p \textcolor{red}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
   We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{red}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{red}{<^{\mu}} e\}$.
 \end{itemize} 
-$\textcolor{red}{E}$ and $\textcolor{blue}{E}$ are then induced by the corresponding relations can consist of exclusively hierarchical edges, then we have $\textcolor{gray}{E} = E \setminus \textcolor{red}{E} \cup \textcolor{blue}{E}$.
+$\textcolor{red}{E}$ and $\textcolor{blue}{E}$ are then induced by the corresponding relations can consist of exclusively hierarchical edges, then we have $\colorbox{yellow}{E} = E \setminus \textcolor{red}{E} \cup \textcolor{blue}{E}$.
 Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $<$ and~$\consistency$.
 \end{definition}
 
