@@ -4,6 +4,7 @@ In this section we explore soundness and completeness of DPOI rewriting introduc
 First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
 
 \begin{definition}
+\label{def:rewrite}
     We say that a $\Sigma$-term $f$ rewrites ($\leadsto$) to a $\Sigma$-term $g$ modulo SMC-laws via a rewrite rule $\langle l, r \rangle$ if they are representable as
     \[
     f = c_{1};(id_{k} \otimes l);c_{2} \qquad g = c_{2};(id_{k} \otimes r);c_{2}~.
@@ -11,4 +12,85 @@ First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
     These representations are so-called SMC normal forms.
 \end{definition}
 
-This notion generalises to rewriting of closed $\Sigma$-terms by introducing contexts (in string diagrammatic notation).
+This notion generalises to rewriting of closed $\Sigma$-terms
+
+\begin{definition}
+    We say that a closed-$\Sigma$-term $f$ rewrites ($\leadsto$) to a closed-$\Sigma$-term $g$ modulo SMC-laws via a rewrite rule $\langle l, r \rangle$ if they are representable as either in Definition~\ref{def:rewrite}, or as 
+    \[
+    f = c_{1};(id_{k} \otimes d);c_{2} \qquad g = c_{2};(id_{k} \otimes e);c_{2}
+    \]
+    and $d \leadsto_{\langle l, r \rangle} e$
+\end{definition}
+
+\begin{lemma}
+
+    Every closed $\Sigma^{+}$ term $f$ can be equivalently represented as
+    \[
+    f_{1} + \ldots + f_{n}
+    \] where none of $f_{i}$ contain the join operator.
+\end{lemma}
+\begin{proof}
+Such forms are given by orienting $\catname{SLat}$-equations such that $+$ gets propagated to the top, as, for example $f \otimes (g + h) = f \otimes g + g \otimes h$.
+Most notably, we can also escape lambda abstractions by using distributivity law~\ref{law:distributivity}.
+\end{proof}
+
+This takes us to the following definition of rewriting for closed $\Sigma^{+}$-terms.
+\begin{definition}
+    We say that a closed-$\Sigma^{+}$-term $f$ rewrites ($\leadsto$) to a closed-$\Sigma^{+}$-term $g$ modulo SMC-laws via a rewrite rule $\langle l, r \rangle$ if they are representable as
+    \[
+    f = f_{1} + \ldots + f_{n} \qquad g = f_{1} + \ldots + f_{n}
+    \]
+    such that there is a permutation $\sigma$ such that there exist indices $i,j$ and $\sigma(f_{i}) \leadsto f_{j}$.
+\end{definition}
+
+To formulate the correspondence between rewriting systems we first define interpretation of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
+It follows by first defining the interpretation of generators by extending the interpretation of plain $\Sigma$ terms as morphisms in $\MdaCospans$ as given in Appendix~\ref{sec:appendix:interpretation}.
+The only missing cases are $[\textsf{ev}_{A,B}]$ and $[\Lambda_{A,B,C}]$.
+
+\begin{figure}
+    \begin{subfigure}{0.45\linewidth}
+\[
+\adjustbox{scale=0.5}{
+    \tikzfig{./figures/ev_interpretation}
+}
+\]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \[
+        \adjustbox{scale=0.5}{
+            \tikzfig{./figures/lambda_interpretation}
+        }
+        \]
+    \end{subfigure}
+
+\end{figure}
+
+Then we can make $\WellTypedMdaEcospans$ into closed $\catname{SLat}$ category by defining a join of two cospans, $\Lambda$ of a cospan, and a designated $\textsf{ev}$ cospan and introducing DPOI rewrite rules to make these construction satisfy the laws of closed $\catname{SLat}$ symmetric monoidal category.
+The join of two cospans is defined as in Figure~\ref{fig:f+g} and the quotienting is done through DPOI rewrite schema rules one for each axiom.
+For example, the distributivity rule for $\otimes$ is given by the following schema rule
+\[
+\adjustbox{width=\linewidth}{
+\tikzfig{./figures/semilattice_rule_1}~.
+}
+\]
+
+We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category $\WellTypedMdaEcospans / \mathcal{S}$ is a closed $\catname{SLat}$ SMC.
+
+\begin{proposition}
+
+For two closed $\Sigma^{+}$-terms $f$ and $g$ and a $\mathcal{E}$-equation $l = r$  $f \leadsto g$ if and only if $\llbracket f \rrbracket \Rrightarrow{} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
+\end{proposition}
+\begin{proof}
+    
+\end{proof}
+
+\begin{figure}
+\[
+        \adjustbox{scale=0.5}{
+            \tikzfig{./figures/f_plus_g_new}
+        }
+\]
+\caption{$+$ of two morphisms in $\WellTypedMdaEcospans$}
+\label{fig:f+g}
+\end{figure}
