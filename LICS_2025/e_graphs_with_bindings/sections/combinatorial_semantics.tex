@@ -14,13 +14,13 @@ We will also refer to $A,B$ as \textit{feet} of the cospan, and to $C$ as \texti
 
 \subsection{Hypergraphs}
 
-In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for categorical presentations of SMTs including a Frobenius algebra. 
+In ~\cite{bonchi_string_2022-2}, certain class of hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for categorical presentations of arbitrary SMTs.
 Hypergraphs generalise graphs by allowing edges to have multiple sources and targets. 
-When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
+When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.
 However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
 This gives rise to the definition of a hypergraph with interfaces.  
-Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of (cospans of) such hypergraphs.
-We then evoke the definition of hypergraphs and corresponding cospans as introduced in~\cite{bonchi_string_2022-1,bonchi_string_2022-2} over not uni-typed signatures.
+% Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of (cospans of) such hypergraphs.
+We then evoke the definition of hypergraphs and corresponding cospans as introduced in~\cite{bonchi_string_2022-1,bonchi_string_2022-2}.
 
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
@@ -29,10 +29,8 @@ The labelling function must respect the typing of the operator: for all edges $e
 We call a hypergraph \textit{discrete} if its set of edges is empty.   
 A \emph{hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ is given by a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that the following hold. 
 \begin{enumerate}
-    \item $\phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e))$
-    \item $\phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))$
-    \item $l_{V,\mathcal{F}}(v) = l_{V,\mathcal{G}}(\phi_V(v))$
-    \item $l_{E,\mathcal{F}}(e) = l_{E,\mathcal{G}}(\phi_E(e))$
+    \item $\phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e)) \qquad \phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))$
+    \item $l_{V,\mathcal{F}}(v) = l_{V,\mathcal{G}}(\phi_V(v)) \qquad\;\; l_{E,\mathcal{F}}(e) = l_{E,\mathcal{G}}(\phi_E(e))$
 \end{enumerate}
 That is, a homomorphism should preserve sources and targets of edges and preserve the labels.
 We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$ and hypergraph homomorphisms.
@@ -63,7 +61,6 @@ A hypergraph with interfaces is a cospan $n \xrightarrow{f} \mathcal{G} \xleftar
 Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)}$ as the category with discrete \textit{ordered} hypergraphs as objects and isomorphism classes of hypergraphs with interfaces as morphisms.
 \end{definition}
 $\HypI{\Sigma}$ is a symmetric monoidal category with the tensor product given by coproduct in $\catname{Hyp}(\Sigma)$:
-
 \begin{align*}
 n \xrightarrow{f} &\mathcal{F} \xleftarrow{g} m\\
 &\times \qquad \quad \Coloneqq n + n' \xrightarrow{f + f'} \mathcal{F} + \mathcal{G} \xleftarrow{g + g'} m + m'\\
@@ -76,12 +73,10 @@ Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m;m \xr
 \[
 n \xrightarrow{f} \mathcal{F} +_{g,f'} \mathcal{G} \xleftarrow{g'} k
 \]
-
 that is computed by identifying vertices in $\mathcal{F} + \mathcal{G}$ that share pre-image in $m$.
 As pushout is only defined up to isomorphism, it justifies the morphisms in this category being isomorphism classes of cospans.
 
-To make such cospans complete with respect to representing morphism of $\catname{S}(\Sigma)$, we need to impose some restriction in their form.
-
+To make such cospans complete with respect to representing morphism of $\catname{S}(\Sigma)$, we need to impose some restriction on their form.
 \begin{definition}[Degree,  path,  acyclic] 
 The \emph{in-degree} of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.  
 Similarly, the out-degree of $v$ is the number of edges $e \in E_\mathcal{G}$ such that $v \in s(e)$.
@@ -130,7 +125,7 @@ Thus we reach the following variant of DPO rewriting.
 Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the rightmost commutative diagram in Figure~\ref{fig:dpo_dpoi} such that the two marked squares are pushouts.
 
 \begin{figure}[t!]
-    \begin{subfigure}[T]{0.4\linewidth}
+    \begin{subfigure}[T]{0.35\linewidth}
     \[
                 % \tikzfig{../figures/combinatorial_semantics/DPO_square}
                 \begin{tikzcd}
@@ -177,6 +172,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
     % \subcaption{DPOI square}
     % \label{fig:dpoi}
     \end{subfigure}
+    \hfill
     \captionsetup{belowskip=-3ex}
     \caption{DPO and DPOI squares}
     \label{fig:dpo_dpoi}
@@ -223,14 +219,14 @@ and the following conditions hold
 \end{definition}
 
 Then, the authors of~\cite{bonchi_string_2022-2} showed that this enhanced notion of DPOI rewriting is sound and complete in the following sense.
-Any two $\Sigma$-terms $f$ and $g$ are equal modulo SMC laws and equations $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} \llbracket g \rrbracket$ where $\llbracket - \rrbracket$ is the functor giving the equivalence in Theorem~\ref{thm:prop-equiv} and $\llbracket E \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for } l=r \in \mathcal{E} \}$.
+Any two $\Sigma$-terms $f$ and $g$ are equal modulo SMC laws and equations $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} \llbracket g \rrbracket$ where $\llbracket - \rrbracket$ is the functor giving the equivalence in Theorem~\ref{thm:prop-equiv} and $\llbracket \mathcal{E} \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \text{ for } l=r \in \mathcal{E} \}$.
 We then proceed with building a combinatorial representation for closed $\Sigma^{+}$-terms to obtain a notion of DPOI rewriting that would also subsume equality modulo SMC laws.
 
 
 \section{Closed E-hypergraphs}
 Prior work of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} introduced a notion of \textit{e-hypergraph} --- a combinatorial representation of morphism terms for free semilattice-enriched symmetric monoidal category with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
 The semilattice enrichment structure was encoded using hierarchical edges in a hypergraph following the approach of a well-established area of hierarchical hypergraphs~\cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical, fscd}.
-The latter work in \textit{loc. cit.}, in particular, introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
+The first work in \textit{loc. cit.}, in particular, introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
 Notably, the laws of a semilattice enrichment in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} and the laws of Definition~\ref{def:closed} in~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
 
 We follow an analogous approach by combining combinatorial representations of~\cite{fscd} and~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
@@ -270,6 +266,7 @@ $\textcolor{blue}{<}$ defines closed monoidal structure as defined in~\cite{fscd
 Consider an example in the middle part of Figure~\ref{fig:e-cospan-example}.
 The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{red}{E} = \{e_{1}\}$, $\textcolor{blue}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
 \[
+\vspace{-1ex}
 \begin{array}{cccc}
   v_{4} \textcolor{red}{<^{\mu}} e_{1} & v_{7} \textcolor{blue}{<^{\mu}} e_{2} & v_{4} \consistency e_{2} & v_{4} \not \consistency v_{10}\\
   e_{3} \textcolor{red}{<^{\mu}} e_{1} & v_{8} \textcolor{blue}{<^{\mu}} e_{2} &  e_{2} \consistency u_{1} & e_{2} \not \consistency e_{6}\\
@@ -281,18 +278,16 @@ The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E =
 and, in particular, we have $[e_{5}) = \{e_2, e_1\}$.
 $\consistency_{e_{1}}$ defines a partition on immediate successors of $e_{1}$ which we delimit by a vertical dashed line.
 Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\textcolor{blue}{E}$ --- with a round solid box.
-
 \begin{figure}
-
 \[
 \adjustbox{scale=0.6}{
 \tikzfig{./figures/closed_iso_example_2}
 }
 \]
+\captionsetup{skip=0pt, belowskip=-1ex}
 \caption{Cospan of e-hypergraphs example}
 \label{fig:e-cospan-example}
 \end{figure}
-
 \begin{definition}[E-hypergraph homomorphism]
   An \textit{e-hypergraph homomorphism} $\phi:\mathcal{F}\to\mathcal{G}$ between e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
   \begin{enumerate}
@@ -300,17 +295,17 @@ Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\t
       \item $\phi_{E}(\textcolor{red}{E_{\mathcal{F}}}) \subseteq \textcolor{red}{E_{\mathcal{G}}}$ and $\phi_{E}(\textcolor{blue}{E_{\mathcal{F}}}) \subseteq \textcolor{blue}{E_{\mathcal{G}}}$;
       \item for $v \in V_{\mathcal{F}}$ and $e \in E_{\mathcal{F}}$
         \begin{align*}
-          &\text{if } e \textcolor{red}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{red}{<_{\mathcal{G}}^{\mu}} \phi(v)\\
-          &\text{and}\\
-          &\text{if } e \textcolor{blue}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(v)
+          \text{if } e \textcolor{red}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{red}{<_{\mathcal{G}}^{\mu}} \phi(v)
+          \qquad
+          \text{if } e \textcolor{blue}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(v)
         \end{align*}
           and for $e_1, e_2 \in E_{\mathcal{F}}$
           \begin{align*}
-          &\text{if } e_1 \textcolor{red}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{red}{<_{\mathcal{G}}^{\mu}} \phi(e_2)\\
-          &\text{and}\\
-          &\text{if } e_1 \textcolor{blue}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
+          \text{if } e_1 \textcolor{red}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{red}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
+          \qquad
+          \text{if } e_1 \textcolor{blue}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
           \end{align*}
-          \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 ~\consistency_{\mathcal{F}}~ x_2$ implies $\phi(x_1) ~\consistency_{\mathcal{G}}~ \phi(x_2)$. 
+          \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 ~\consistency_{\mathcal{F}}~ x_2$ implies $\phi(x_1) ~\consistency_{\mathcal{G}}~ \phi(x_2)$.
   \end{enumerate}
   % If we further have that if $[x_1) = \varnothing$ then $[\phi(x_1)) = \varnothing$ we call the homomorphism \textit{strict}.
   \end{definition}
@@ -322,9 +317,9 @@ Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\t
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
 A concrete description of the pushout of two morphisms in this category is given in the Appendix section~\ref{sec:appendix:pushout}.
 Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but it does when certain technical conditions are satisfied. 
-Most importantly a pushout for the composition of two cospans with discrete feet exists, as described below.
+Most importantly a pushout for the composition of two cospans with discrete feet always exists, as described below.
   
-As in the case of $\catname{S}(\Sigma)$ and $\MdaCospans$, e-hypergraphs requires interfaces in order to model string diagrams with dedicated inputs and outputs.
+As in the case of $\catname{S}(\Sigma)$ and $\MdaCospans$, e-hypergraphs require interfaces in order to model string diagrams with dedicated inputs and outputs.
 Because string diagrams for closed semilattice-enriched symmetric monoidal categories are nested, containing substring diagrams inside e-boxes and lambda abstraction boxes, we need to account for the interfaces in these nested contexts as well.
 Nested inputs and outputs of a string diagram do not participate in composition of string diagrams, hence they need to be distinguished from the ones that participate in the composition.
 We thus propose \textit{extended} cospans of discrete e-hypergraphs and use the notation $n \setminus m$ to denote the discrete e-hypergraph with $n \setminus m$ vertices, in particular
@@ -413,9 +408,9 @@ n \xrightarrow{f_{ext};\iota_1} n' + (m'' \setminus m) \xrightarrow{h_{1}} \math
 \]
 where $h_i$ are defined as follows,  using $|$ to denote the restriction of a function on a discrete e-hypergraph. 
 \begin{align*}
-    h_1 = [ f_{int};p_1, ~(g_{int};p_2)|_{m'' \setminus m} ]
-\\
-    h_2 = [ g'_{int};p_2, ~(f'_{int};p_1)|_{m' \setminus m} ]
+    h_1 = [ f_{int};p_1, ~(g_{int};p_2)|_{m'' \setminus m} ] \; h_2 = [ g'_{int};p_2, ~(f'_{int};p_1)|_{m' \setminus m} ]
+% \\
+    % h_2 = [ g'_{int};p_2, ~(f'_{int};p_1)|_{m' \setminus m} ]
 \end{align*}
 % \[
 % \begin{tikzcd}
@@ -464,7 +459,7 @@ MDA cospans and discrete e-hypergraphs form a category $\MdaEcospans$.
 
   We denote the category of well typed MDA cospans as $\WellTypedMdaEcospans$.
   \end{definition}
-This is a proper category as identities, symmetries, and tensor unit are well-typed and composition and tensor product of two well-typed MDA cospans is again a well typed MDA cospan.
+% This is a proper category as identities, symmetries, and tensor unit are well-typed and composition and tensor product of two well-typed MDA cospans is again a well typed MDA cospan.
 
 Consider, again, Figure ~\ref{fig:e-cospan-example}.
 To make edge $e_{1}$ well-typed, it is necessary that $l_{V}^{*}([v_{4},v_{5},v_{6}]) = l_{V}^{*}([v_{10},v_{11},v_{12}]) = l_{V}^{*}([v_1,v_2,v_3])$ and $l_{V}^{*}([w_{4},w_{5},w_{6}]) = l_{V}^{*}([w_{10},v_{12},v_{11}]) = l_{V}^{*}([w_1,w_2,w_3])$ (note the change of ordering in the output of $e_{1}$).
@@ -485,11 +480,11 @@ Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hyp
     n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m
 \] 
 Analogous to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data
-\[
-    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m
-\qquad
-    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
-\] allows us to encode rewrite rules as extended cospans of the following form
+\begin{align*}
+    &0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m\\
+    &0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
+\end{align*} 
+allows us to encode rewrite rules as extended cospans of the following form
 \[
 \mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R}
 \] 
@@ -548,7 +543,7 @@ is a \textit{boundary complement} if
     \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended MDA cospan
     \[
-    n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
+    \hspace{-2em}n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
     \]
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended MDA cospan
     \[
@@ -654,8 +649,9 @@ such that the two marked squares are pushouts and the following conditions hold:
 %  \[
 %     \mathcal{H} \xleftarrow{} n'' + k'' \xleftarrow{} n + k
 % \]
-    Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that via it $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ if there exists a sequence of such rewrites. 
+    Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that via it $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ for its reflexive, transitive and symmetric closure.
 \end{definition}
 % Together, the conditions ensure the result of a rewrite is a well-typed MDA e-hypergraph. 
 
 The enhanced definition of extended DPOI ensures that the combinatorial representation of closed semilattice-enriched SMCs is sound and complete for rewriting of closed $\Sigma^{+}$-terms.
+We use the term DPOI to mean EDPOI when it is clear from the context.

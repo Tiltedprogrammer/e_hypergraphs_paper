@@ -78,22 +78,13 @@
 \maketitle
 
 \begin{abstract}
-    The technique of equality saturation for program optimisation and reasoning has recently gained significant attention due to the renewed popularity of equality graphs (e-graphs).
-    E-graphs represent multiple terms that are equivalent modulo a given set of rewrite rules. 
-    This capability allows rewriting to be performed over a family of terms simultaneously.    
-    However, there are domains where e-graphs fail to achieve optimal performance. 
-	Notably, e-graphs struggle in domains involving variable binding, such as $\lambda$-calculus, because they lack native support for binding.
-    Building on recent work that provided a categorical interpretation of e-graphs as morphisms in a semilattice-enriched symmetric monoidal category, we extend this framework. 
-	Specifically, we show how e-graphs with bindings can be derived as morphisms in a closed symmetric monoidal category with similar enrichment. 
-	This extension provides a principled approach to equality saturation for $\lambda$-calculus.
-    We then define a concrete combinatorial representation of these morphisms using hierarchical hypergraphs. 
-	Additionally, we introduce a corresponding notion of double-pushout (DPO) rewriting. 
-	Finally, we demonstrate the equivalence between term rewriting and DPO rewriting, with the key property that DPO rewriting absorbs the equations of the symmetric monoidal category.
+    Equality saturation, a technique for program optimisation and reasoning, has gained attention due to the resurgence of equality graphs (e-graphs). 
+	E-graphs represent equivalence classes of terms under rewrite rules, enabling simultaneous rewriting across a family of terms. 
+	However, they struggle in domains like $\lambda$-calculus that involve variable binding, due to a lack of native support for bindings.
+	Building on recent work interpreting e-graphs categorically as morphisms in semilattice-enriched symmetric monoidal categories, we extend this framework to closed symmetric monoidal categories to handle bindings. 
+	We provide a concrete combinatorial representation using hierarchical hypergraphs and introduce a corresponding double-pushout (DPO) rewriting mechanism. 
+	Finally, we establish the equivalence of term rewriting and DPO rewriting, with the key property that the combinatorial representation absorbs the equations of the symmetric monoidal category.
 \end{abstract}
-
-\begin{IEEEkeywords}
-component, formatting, style, styling, insert.
-\end{IEEEkeywords}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -140,7 +131,7 @@ This visual approach makes complex operations such as the trace intuitive and re
 Originating from notations by Hotz~\cite{hotzsd} (for automata) and Penrose~\cite{penrose1984spinors} (for tensor networks), string diagrams generalise to any monoidal category and even bicategories, offering a dual perspective to commutative diagrams through Poincaré duality. 
 
 As described above, string diagrams are commonly an informal yet rigorous two-dimensional syntax for the internal language of a category. 
-They can be formalised by representing them as graphs or hypergraphs~\cite{1011453502719}, which has two further benefits. 
+They can be formalised by representing them as graphs or hypergraphs~\cite{bonchi_string_2022-1}, which has two further benefits. 
 The first benefit is that the property of two string diagrams being equal if and only if they ``look the same'' can be spelled out as graph isomorphism, eliminating any possible ambiguity of interpretation. 
 The second benefit is that equational reasoning can also be formalised as (categorical) graph rewriting, for instance double-pushout rewriting (DPO). 
 
@@ -206,11 +197,11 @@ and sharing a \emph{contraction node}
 \subsection{E-graphs}
 
 E-graphs can efficiently simultaneously represent several equivalent terms of an algebraic theory, generalising the \textit{directed acyclic graph} (DAG) representation of terms to include equivalence classes of subterms (or subgraphs).
-The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Figure~\ref{fig:e-graph-example}, where it is shown how a series of rewrite rules can be non-destructively applied to an e-graph as first presented in ~\cite{EggPaper}.
+The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Figure~\ref{fig:e-graph-example}, where it is shown how a series of rewrite rules can be non-destructively applied to an e-graph as first presented in~\cite{EggPaper}.
 
-\begin{figure*}
+\begin{figure*}[h!]
 \[
-\adjustbox{scale=0.7}{
+\adjustbox{scale=0.6}{
 \tikzfig{figures/e-graph-example}
 }
 \]
@@ -261,30 +252,50 @@ Additionally, explicit substitutions need to be propagated recursively throughou
 Using De Brujin indices when performing $\beta$-reduction would hardly solve this problem, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
 
 \begin{figure*}
+	\begin{subfigure}{\linewidth}
     \[
         % \hspace{1.3cm}
         \adjustbox{width=\textwidth}{
         \tikzfig{figures/e-graph-substitution}
         }
     \]
-    \caption{E-graph explicit substitution example.}
+	% \captionsetup{skip=0pt}
+    \subcaption{E-graph explicit substitution example.}
     \label{fig:e-graph-substitution}
-  \end{figure*}
-  
-  \begin{figure*}
-    \[
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\[
         % \hspace{1.3cm}
         \adjustbox{width=\textwidth}{
         \tikzfig{figures/e-string-substitution-2}
         }
     \]
-    \caption{String diagrammatic substitution example.}
-    \label{fig:e-string-substitution}
-  \end{figure*}
+	\subcaption{String diagrammatic substitution example.}
+	\end{subfigure}
+\end{figure*}
+  %   \begin{figure*}
+%     \[
+%         % \hspace{1.3cm}
+%         \adjustbox{width=\textwidth}{
+%         \tikzfig{figures/e-string-substitution-2}
+%         }
+%     \]
+% 	\captionsetup{skip=0pt}
+%     \caption{String diagrammatic substitution example.}
+%     \label{fig:e-string-substitution}
+%   \end{figure*}
 
 \subsection{Contributions}
 
-DRG: LIST THE MAIN DEFINITIONS AND THEOREMS AND WHAT THEY MEAN
+In~\cite{ghica2024stringdiagramslambdacalculifunctional} it was shown that e-graphs over some signature $\Sigma$ can be represented as morphisms of a semilattice-enriched free Cartesian symmetric monoidal category over the same signature.
+We argue that restricting the categorical domain to free semilattice-enriched closed symmetric monoidal categories gives rise to structures that naturally support binding and equivalence classes of morphisms.
+That is, morphisms (string diagrams) of such category can both encode variable binding and equivalence between subterms (sub-diagrams).
+We call these string diagrams, or more precisely, the combinatorial representation of them, e-graphs with bindings.
+
+We then define a combinatorial representation for such string diagrams in terms of hierarchical hypergraphs with a suitable notion of DPO rewriting.
+Finally, we show that this notion of rewriting is sound and complete with respect to rewriting of morphism terms.
+
+% DRG: LIST THE MAIN DEFINITIONS AND THEOREMS AND WHAT THEY MEAN
 
 \input{sections/categorical_semantics}
 \input{sections/combinatorial_semantics}

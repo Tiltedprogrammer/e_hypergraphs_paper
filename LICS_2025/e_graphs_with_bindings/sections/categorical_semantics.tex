@@ -9,7 +9,8 @@ We commonly write $f;g$ for composition in diagrammatic order.
 Composition in the usual order is written $g \circ f$.  
 We denote the tensor product of an SMC $\mathbb{C}$ by $\otimes$,  its unit by $I$, and its symmetry natural transformation as $\sym$ \cite{maclane}.  
 We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  
-We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  
+We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.
+Given two adjoint functors $F : \mathbb{A} \to \mathbb{B}$ and $G : \mathbb{B} \to \mathbb{A}$ with $F$ being left-adjoint, we write $F \dashv G : \mathbb{B} \to \mathbb{A}$ for this adjunction.
 
 
 First, recall some basic definitions.
@@ -81,9 +82,10 @@ We can similarly consider a free closed symmetric monoidal category that is indu
 \end{definition}
 
 To encode equivalences between morphisms (or $\Sigma$-terms), the hom-sets of the corresponding free categories can be endowed with the additional structure of a semilattice induced by an idempotent, commutative and associative operator \textit{join} $+$ as presented in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
-This endowment turns such categories into $\catname{SLat}$-enriched categories where $\catname{SLat}$ is a category of \textit{unbounded} semilattices and homomorphisms between them (see Appendix section~\ref{sec:appendix:slat}).
+This endowment turns such categories into $\catname{SLat}$-enriched categories where $\catname{SLat}$ is a category of \textit{unbounded} semilattices and homomorphisms between them (see Appendix~\ref{sec:appendix:slat}).
 
 \begin{definition}[Semilattice-enriched category~\cite{Borceux_1994}]
+\label{def:slat-cat}
     A semilattice-enriched category $\mathbb{C}$ is defined by the following data:
     \begin{itemize}
         \item a set of objects $\mathbb{C}$
@@ -99,6 +101,10 @@ This endowment turns such categories into $\catname{SLat}$-enriched categories w
     \end{itemize}
     such that particular coherence diagrams commute.
 \end{definition}
+As the composition is a semilattice homomorphism (morphism of $\catname{SLat}$), we have the following equations 
+\[
+(f + g); h = f;h + g;h \quad f;(g+h) = f;g + f;h
+\]
 
 \begin{definition}[$\catname{SLat}$-functor]
 	Let $\mathbb{C}$ and $\mathbb{D}$ be two $\catname{SLat}$-categories.
@@ -127,24 +133,35 @@ This endowment turns such categories into $\catname{SLat}$-enriched categories w
     \]
     
     Again, we take $\otimes$ to bind more tightly than $+$.
+
+    Then, the axioms of $\catname{SLat}$-SMC consist of equations in Definitions~\ref{def:enriched-prop}~\ref{def:slat-cat} and associativity, commutativity, and idempotence equations for $+$.
     
     \begin{proposition}(A specialised case of Proposition 6.4.7~\cite{Borceux_1994})
-    There is a 2-adjunction 
-    % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
-    \[\begin{tikzcd}
-        \catname{SLat}\text{--}\catname{Cat}\arrow[rr, "\mathcal{U}", bend left] & \hspace{-1em}\top & \catname{Cat} \arrow[ll, "\mathcal{F}", bend left]
-        \end{tikzcd}
-    \]
-    that is induced by a usual free-forgetful adjunction 
-    
-    \[\begin{tikzcd}
-        \catname{SLat} \arrow[rr, "U", bend left] & \top & \catname{Set} \arrow[ll, "F", bend left]
-        \end{tikzcd}
-    \]
+        There is a 2-adjunction 
+        % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
+        % \[\begin{tikzcd}
+        % 	\catname{SLatt}\text{--}\catname{Cat}\arrow[rr, "\mathcal{U}", bend left] & \hspace{-1em}\top & \catname{Cat} \arrow[ll, "\mathcal{F}", bend left]
+        % 	\end{tikzcd}
+        % \]
+        \vspace{-1mm}
+        \[
+        \mathcal{F} \dashv \mathcal{U} : \catname{SLat}\text{--}\catname{Cat} \to \catname{Cat}
+        \vspace{-1mm}
+        \]
+        that is induced by a usual free-forgetful adjunction 
+        
+        % \[\begin{tikzcd}
+        % 	\catname{SLatt} \arrow[rr, "U", bend left] & \top & \catname{Set} \arrow[ll, "F", bend left]
+        % 	\end{tikzcd}
+        % \]
+        \vspace{-1mm}
+        \[
+        F \dashv U : \catname{SLat} \to \catname{Set}
+        \vspace{-1mm}
+        \]        
     \end{proposition}
-    
 In particular, 2-functor $\mathcal{F}$ turns every category $\mathbb{C'} \in \catname{Cat}$ into a free semilattice enriched $\mathbb{C} \in \catname{SLat}\text{--}\catname{Cat}$ by making every hom-set of $\mathbb{C'}$ into a free semilattice on this set.
-Being a 2-functor it also lifts an adjunction in $\catname{Cat}$ $F \dashv G$ into an $\catname{Slat}$-adjunction.
+Being a 2-functor, it also lifts an adjunction in $\catname{Cat}$ $F \dashv G$ into an $\catname{Slat}$-adjunction.
 Thus, applying the functor to $\catname{CS}(\Sigma)$ we get a closed symmetric monoidal $\catname{Slat}$-category $\catname{CS}(\Sigma)^{+}$ by lifting the adjunction $(- \otimes B, B \multimap{} -, \eta, \varepsilon)$.
 We can similarly derive $\catname{SLat}$-enriched versions of  $\Lambda_{A,B,C}$ and $\textbf{ev}_{A,B}$ morphisms using the lifted adjunction as $\textbf{ev}_{A,B} = \varepsilon_{A}$ and $\Lambda_{A,B,C}(f) = \eta; (B \multimap{} f)$.
 The following distributivity law can then be derived, forming the basis of encoding equivalences inside abstractions.
@@ -158,9 +175,9 @@ The following distributivity law can then be derived, forming the basis of encod
 \end{equation}
 \label{law:distributivity}
 
-Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of $\Sigma^{+}$-terms, the latter being defined as follows.
-Every $\Sigma$-term is also a $\Sigma^{+}$-term. 
-Given two $\Sigma^{+}$-terms $f : A \to B$ and $g : A \to B$, $f + g : A \to B$ is also a $\Sigma^{+}$-term.
+Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of closed $\Sigma^{+}$-terms, the latter being defined as follows.
+Every closed $\Sigma$-term is also a $\Sigma^{+}$-term. 
+Given two closed $\Sigma^{+}$-terms $f : A \to B$ and $g : A \to B$, $f + g : A \to B$ is also a closed $\Sigma^{+}$-term.
 Terms of $\catname{CS}(\Sigma)^{+}$ are quotiented by the laws of closed $\catname{SLat}$-SMC, including the distributivity law~\ref{law:distributivity}.
 
 
@@ -172,17 +189,18 @@ Note the orientation of string diagrams are now from top to bottom as opposed to
 % The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
 % We will later prove the intuitive fact that these diagrams are sound and complete with respect to their intended categorical semantics, noting that similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
 
-In~\cite{ghica2024stringdiagramslambdacalculifunctional} it was shown that e-graphs over some signature $\Sigma$ can be represented as morphisms of a semilattice-enriched free Cartesian symmetric monoidal category over the same signature.
-We argue that restricting the categorical domain to free semilattice-enriched closed symmetric monoidal categories gives rise to structures that naturally support binding and equivalence classes of morphisms.
-That is, morphisms (string diagrams) of such category can both encode variable binding and equivalence between subterms (sub-diagrams).
-We call these string diagrams, or more precisely, the combinatorial representation of that will follow, e-graphs with bindings.
+% In~\cite{ghica2024stringdiagramslambdacalculifunctional} it was shown that e-graphs over some signature $\Sigma$ can be represented as morphisms of a semilattice-enriched free Cartesian symmetric monoidal category over the same signature.
+% We argue that restricting the categorical domain to free semilattice-enriched closed symmetric monoidal categories gives rise to structures that naturally support binding and equivalence classes of morphisms.
+% That is, morphisms (string diagrams) of such category can both encode variable binding and equivalence between subterms (sub-diagrams).
+% We call these string diagrams, or more precisely, the combinatorial representation of that will follow, e-graphs with bindings.
 
 \begin{figure*}
 \[
-\adjustbox{scale=0.75}{
+\adjustbox{scale=0.65}{
 \tikzfig{./figures/egraph-strings}
 }
 \]
+\captionsetup{skip=0pt, belowskip=-2ex}
 \caption{String diagrams for closed semilattice-enriched symmetric monoidal categories.}
 \label{fig:egraph-strings}
 \end{figure*}
