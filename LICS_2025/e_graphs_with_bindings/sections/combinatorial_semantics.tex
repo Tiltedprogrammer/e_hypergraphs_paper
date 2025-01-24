@@ -223,12 +223,12 @@ We then proceed with building a combinatorial representation for closed $\Sigma^
 
 \section{Closed E-hypergraphs}
 Prior work of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} introduced a notion of \textit{e-hypergraph} --- a combinatorial representation of morphism terms for free semilattice-enriched symmetric monoidal category with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
-The semilattice enrichment structure was encoded using hierarchical edges in a hypergraph following the approach of a well-established area of hierarchical hypergraphs~\cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical, fscd}.
+The semilattice enrichment structure was encoded using hierarchical edges in a hypergraph following the approach of a well-established body of literature on hierarchical hypergraphs~\cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical, fscd}.
 The first work in \textit{loc. cit.}, in particular, introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
 Notably, the laws of a semilattice enrichment in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} and the laws of Definition~\ref{def:closed} in~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
 
 We follow an analogous approach by combining combinatorial representations of~\cite{fscd} and~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
-We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness and when evoking a term e-hypergraph we will mean the notion introduced in what follows rather than what was defined in \textit{loc. cit.}.
+We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness, and when evoking a term e-hypergraph modify the original definitions as follows.
 
 
 \begin{definition}
@@ -257,7 +257,7 @@ Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{unde
 
 Intuitively, edges from $\textcolor{red}{E}$ encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{blue}{E}$ encode lambda-abstraction boxes.
 Also note the typing on the $l_{V}$ function.
-We work with freely generated closed semilattice-enriched categories and to avoid unnecessary complications we limit the labelling of vertices to such a type.
+We work with freely generated closed semilattice-enriched categories, and to avoid unnecessary complications we limit the labelling of vertices to such a type.
 In particular, it prohibits vertices to be labelled with, \emph{e.g.}, $A \otimes B$, but allows them to be labelled with $A \otimes B \multimap C \otimes D$.
 $\textcolor{blue}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{red}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
 
@@ -313,7 +313,7 @@ Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\t
   \end{definition}
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
-A concrete description of the pushout of two morphisms in this category is given in the Appendix~\ref{sec:appendix:pushout}.
+A concrete description of the pushout of two morphisms in this category is given in Appendix~\ref{sec:appendix:pushout}.
 Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but it does when certain technical conditions are satisfied. 
 Most importantly a pushout for the composition of two cospans with discrete feet always exists, as described below.
   
