@@ -1,5 +1,3 @@
-\section{Combinatorial semantics}
-
 \section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
 
 In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
@@ -315,7 +313,7 @@ Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\t
   \end{definition}
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
-A concrete description of the pushout of two morphisms in this category is given in the Appendix section~\ref{sec:appendix:pushout}.
+A concrete description of the pushout of two morphisms in this category is given in the Appendix~\ref{sec:appendix:pushout}.
 Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but it does when certain technical conditions are satisfied. 
 Most importantly a pushout for the composition of two cospans with discrete feet always exists, as described below.
   
@@ -616,17 +614,17 @@ We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $
 It is analogous to Definition~\ref{def:convex_dpo},  except we must construct internal interfaces explicitly.
 More precisely, when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, \emph{i.e.}, by computing the pushout complement, the internal interfaces of the resulting e-hypergraph should be modified to \textit{exclude} the vertices corresponding to $\mathcal{L}$'s strictly internal interfaces (since the vertices they map to have been removed). 
 Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
-
-\begin{definition}[Convex EDPOI rewriting]
-\label{def:dpoi-e}
+\begin{definition}[Convex EDPOI rewriting]\label{def:dpoi-e}
 Given an extended span of morphisms 
+\vspace{-5mm}
 \[
-    \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
+\mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
 \]
 in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites (convexly) to} $\mathcal{H}$ (\textit{with external interface} $n + k$ and \textit{taking internal interface} $n'+k'$ \textit{to} $n'' + k''$) --- denoted by $\mathcal{G} \Rrightarrow \mathcal H$  --- \textit{via a rewrite rule} 
+\vspace{-3mm}
 \[
-    \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-\] 
+\mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
+\]
 if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram 
 \[
  \scalebox{0.75}{
@@ -653,5 +651,6 @@ such that the two marked squares are pushouts and the following conditions hold:
 \end{definition}
 % Together, the conditions ensure the result of a rewrite is a well-typed MDA e-hypergraph. 
 
+An example of EDPOI rewrite can be seen in Appendix~\ref{sec:appendix:dpoi}.
 The enhanced definition of extended DPOI ensures that the combinatorial representation of closed semilattice-enriched SMCs is sound and complete for rewriting of closed $\Sigma^{+}$-terms.
 We use the term DPOI to mean EDPOI when it is clear from the context.
