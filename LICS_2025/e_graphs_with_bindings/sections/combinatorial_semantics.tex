@@ -1,6 +1,6 @@
 \section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
 
-In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
+In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences.
@@ -115,7 +115,7 @@ The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined wh
 When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal{L}^{\bot}$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is then recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$ --- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
 
 To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI) as shown in Figure~\ref{fig:dpo_dpoi}~(right).
-In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  
+In the case of $ \catname{Hyp(\Sigma)}$,  we wish for a rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  
 By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  
 We now make this identification throughout without further mention.  
 Thus we reach the following variant of DPO rewriting.
@@ -392,7 +392,7 @@ Composition of two morphisms
 	n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} &\mathcal{F} \xleftarrow{f'_{int}} m' \xleftarrow{f'_{ext}} m\\
 	m \xrightarrow{g_{ext}} m'\!' \xrightarrow{g_{int}} &\mathcal{G} \xleftarrow{g'_{int}} k' \xleftarrow{g'_{ext}} k
 \end{align*} is computed in two stages.
-First, $\mathcal{H}$ is computed as the result of the pushout square shown below; 
+First, $\mathcal{H}$ is computed as the result of the pushout square shown below: 
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
 \[
 \trimbox{0cm 0cm 0cm 0.75cm}{
@@ -477,14 +477,14 @@ Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hyp
 \qquad
     n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m
 \] 
-Analogous to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data
+Analogously to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data:
 \begin{align*}
     &0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m\\
     &0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
 \end{align*} 
-allows us to encode rewrite rules as extended cospans of the following form
+allows us to encode rewrite rules as extended cospans of the following form:
 \[
-\mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R}
+\mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R},
 \] 
 which fits into the DPO formalism. We make this identification throughout,  without further mention. 
 %We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
@@ -607,7 +607,7 @@ The conditions (3) and (4) require that top-level connected components in $\math
 
 \begin{proposition}
 \label{prop:boundary_unique}
-    The boundary complement in~\ref{def:boundary_new} when exists is unique.
+    The boundary complement in~\ref{def:boundary_new} when it exists is unique.
 \end{proposition}
 
 We are now ready to define \textit{convex extended DPOI (EDPOI) rewriting} for $\catname{EHyp({\Sigma})}$.  
@@ -616,12 +616,10 @@ More precisely, when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$
 Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
 \begin{definition}[Convex EDPOI rewriting]\label{def:dpoi-e}
 Given an extended span of morphisms 
-\vspace{-5mm}
 \[
 \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
 \]
 in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites (convexly) to} $\mathcal{H}$ (\textit{with external interface} $n + k$ and \textit{taking internal interface} $n'+k'$ \textit{to} $n'' + k''$) --- denoted by $\mathcal{G} \Rrightarrow \mathcal H$  --- \textit{via a rewrite rule} 
-\vspace{-3mm}
 \[
 \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
 \]
