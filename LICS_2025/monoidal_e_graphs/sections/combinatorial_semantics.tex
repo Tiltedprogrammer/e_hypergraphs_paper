@@ -1,6 +1,6 @@
 \section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
 
-In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  building to the recapitulation of the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
+In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences. 
@@ -11,22 +11,34 @@ We will also refer to $A,B$ as \textit{feet} of the cospan, and to $C$ as \texti
 
 \subsection{Hypergraphs}
 
-In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for categorical presentations of SMTs including a Frobenius algebra. 
-Hypergraphs generalise graphs by allowing edges to have multiple sources and targets. 
-When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
-However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
-This gives rise to the definition of a hypergraph with interfaces.  
-Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of (cospans of) such hypergraphs.
+% In ~\cite{bonchi_string_2022-1},  hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for categorical presentations of SMTs including a Frobenius algebra. 
+% Hypergraphs generalise graphs by allowing edges to have multiple sources and targets. 
+% When interpreting string diagrams as hypergraphs,  morphisms are interpreted as edges,  and wires as vertices.  
+% However,  there is also a need to specify which vertices are to be considered as \textit{input} and \textit{outputs},  corresponding to the dangling wires at the bottom and top of a string diagram. 
+% This gives rise to the definition of a hypergraph with interfaces.  
+% Subsequent work \cite{bonchi_string_2022-2} builds on this correspondence to give a restriction of hypergraphs with interfaces (called \textit{monogamous} directed acyclic),  leading to a correspondence between symmetric monoidal string diagrams (\textit{i.e.}, without requiring a Frobenius algebra) and the category of (cospans of) such hypergraphs.
 
+In ~\cite{bonchi_string_2022-1}, hypergraphs \textit{with interfaces} and their DPO rewriting are shown to be sound and complete for categorical presentations of SMTs, including Frobenius algebras.
+Hypergraphs extend graphs by allowing edges with multiple sources and targets. 
+Interpreting string diagrams as hypergraphs maps morphisms to edges and wires to vertices, while the dangling wires at the diagram's top and bottom give rise to \textit{input} and \textit{output} interfaces for a hypergraph.
+Subsequent work \cite{bonchi_string_2022-2} refines this to \textit{monogamous} directed acyclic hypergraphs, establishing a correspondence between symmetric monoidal string diagrams (without Frobenius algebra) and the category of (cospans of) such hypergraphs.
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
 A \emph{hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l)$,  where $V$ is a finite set of vertices, $E$ is a finite set of edges, $s : E \to V^{*}$ is a source function, $t : E \to V^{*}$ is a target function,  and $l : E \to \Sigma$ is a labelling function that assigns each edge a generator from monoidal signature $\Sigma$.  The labelling function must respect the typing of the generator: for all edges $e$,  $|s(e)| = m$ and $|t(e)| = n$,  where $l(e) : m \to n$.  We call a hypergraph \textit{discrete} if its set of edges is empty.   
 A \emph{hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ is given by a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that the following hold. 
 \begin{enumerate}
+    \vspace{-1.25mm}
     \item $\phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e))$
     \item $\phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))$
     \item $l_{\mathcal{F}}(e) = l_{\mathcal{G}}(\phi_E(e))$
+    \vspace{-0.5mm}
 \end{enumerate}
+% \[
+% \begin{array}{ll}
+%     \phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e)) & \phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))\\
+%     l_{\mathcal{F}}(e) = l_{\mathcal{G}}(\phi_E(e)) & \;
+% \end{array}
+% \]
 We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$ and hypergraph homomorphisms. 
 \end{definition}
 Note that $\catname{Hyp(\Sigma)}$ has all finite colimits and, in particular,  the coproduct is given by the disjoint union of hypergraphs.
@@ -43,14 +55,17 @@ Let $\mathbb{C}$ be a category with all finite colimits.  A cospan from $X$ to $
 %\end{tikzcd}
 %\]
 %For $X \in \mathbb{C}$ an $id$-cospan is $X \xrightarrow{id_X} X \xleftarrow{id_X} X$.
-Composition of cospans $X \xrightarrow{f} A \xleftarrow{g} Y$ and $Y \xrightarrow{h} B \xleftarrow{i} Z$ is given by pushout: $X \xrightarrow{f} A +_{g,h} B \xleftarrow{i} Z$,  with identity given by the cospan of identities.  Its monoidal product is given by the coproduct of $\mathbb{C}$ as follows: 
+Composition of cospans $X \xrightarrow{f} A \xleftarrow{g} Y$ and $Y \xrightarrow{h} B \xleftarrow{i} Z$ is given by pushout: $X \xrightarrow{f} A +_{g,h} B \xleftarrow{i} Z$,  with identity given by the cospan of identities.  
+Its monoidal product is given by the coproduct of $\mathbb{C}$ as follows: 
 \ifdefined \ONECOLUMN
 \[
     (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) \otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq A + A' \xrightarrow{f+f'} \mathcal{G} + \mathcal{G'} \xleftarrow{g+g'} B + B'  ,
 \]
 \else
+\vspace{-2mm}
 \begin{multline*}
     (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) \otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq\\ A + A' \xrightarrow{f+f'} \mathcal{G} + \mathcal{G'} \xleftarrow{g+g'} B + B'  , 
+    \vspace{-1.25cm}
 \end{multline*}
 \fi
 and its unit by the initial object of $\mathbb{C}$.
@@ -65,8 +80,8 @@ Define the category of \emph{hypergraphs with interfaces} $\catname{HypI(\Sigma)
 \end{definition}
 
 In particular, this means that any morphism in $\HypI{\Sigma}$ is of the form $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$,
-where $n,\;m$ are discrete hypergraphs and $\mathcal{G}$ is an arbitrary hypergraph.  The morphisms $f$ and $g$ into $\mathcal{G}$ will specify which vertices are to be considered as inputs and outputs,  respectively.
-The ordering of the interface hypergraphs is the way to differentiate between the interpretations of morphisms $f \otimes g$ and $g \otimes f$.
+where $n,\;m$ are discrete ordered hypergraphs and $\mathcal{G}$ is an arbitrary hypergraph.  The morphisms $f$ and $g$ into $\mathcal{G}$ will specify which vertices are to be considered as inputs and outputs,  respectively.
+The ordering of the interface associated to a hypergraph is used to differentiate between the interpretations of morphisms $f \otimes g$ and $g \otimes f$.
 
 \begin{definition}[Degree,  path,  acyclic] 
 The \emph{in-degree} of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.  
@@ -95,10 +110,14 @@ Note that $\MdaCospans$ remains a symmetric monoidal category with the same equi
 \end{theorem}
 
 \subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
-The correspondence of the previous section means that the symmetric monoidal equations of $\catname{S}(\Sigma, \mathcal{E})$ are absorbed in the hypergraph representation.  The equations $\mathcal{E}$ are then to be considered as rewrite rules on string diagrams,  which are then modelled as DPO-rewrites on hypergraphs with interfaces. 
-DPO rewriting is a standard technique for formalising graph rewriting categorically. 
-In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting. 
+% The correspondence of the previous section means that the symmetric monoidal equations of $\catname{S}(\Sigma, \mathcal{E})$ are absorbed in the hypergraph representation.  The equations $\mathcal{E}$ are then to be considered as rewrite rules on string diagrams,  which are then modelled as DPO-rewrites on hypergraphs with interfaces. 
+% DPO rewriting is a standard technique for formalising graph rewriting categorically. 
+% In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting. 
+The correspondence from the previous section absorbs the symmetric monoidal equations of $\catname{S}(\Sigma, \mathcal{E})$ into the hypergraph representation. 
+The equations $\mathcal{E}$ become rewrite rules on string diagrams, modelled as DPO rewrites on hypergraphs with interfaces.
+This section reviews standard DPO rewriting for hypergraphs and the \textit{convex} rewriting, which is sound and complete for arbitrary SMTs.
 
+DPO rewriting is a standard categorical approach to graph transformations~\cite{dpo}.
 The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalised as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
 A typical DPO square is depicted in Figure~\ref{fig:dpo_dpoi}~(left).
 
@@ -115,14 +134,21 @@ A typical DPO square is depicted in Figure~\ref{fig:dpo_dpoi}~(left).
 %     }
 % \]
 
-The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement}---the pair of morphisms $\mathcal K \to \mathcal \mathcal{L}^{\bot} \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. 
-When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal{L}^{\bot}$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is then recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$ --- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
+% The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement}---the pair of morphisms $\mathcal K \to \mathcal \mathcal{L}^{\bot} \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. 
+% When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal{L}^{\bot}$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  
+% The final graph $\mathcal H$ is then recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$ --- hence the two pushouts: one for deletion and one for insertion.  
+% In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
+
+The morphism $\mathcal L \to \mathcal G$ is called a \textit{match}, defined when a corresponding \textit{pushout complement} exists, comprising morphisms $\mathcal K \to \mathcal{L}^\bot \to \mathcal G$ completing the top half of the pushout square $\mathcal K \to \mathcal L \to \mathcal G$. 
+For monomorphic rewrite rules, constructing $\mathcal{L}^\bot$ involves identifying $\mathcal L$ in $\mathcal G$ and removing elements with no pre-image in $\mathcal K$. 
+The final graph $\mathcal H$ is then obtained by inserting into the resulting ``hole'' the elements of $\mathcal R$ without pre-image in $\mathcal K$, resulting in two pushouts: one for deletion and one for insertion. 
+Thus, we say that $\mathcal G$ is rewritten into $\mathcal H$ via $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
 
 To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI) as shown in Figure~\ref{fig:dpo_dpoi}~(right).
-In the case of $ \catname{Hyp(\Sigma)}$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  
+In the case of $ \catname{Hyp}(\Sigma)$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  
 By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  
 We now make this identification throughout without further mention.  
-Thus we reach the following variant of DPO rewriting.
+Thus, we reach the following variant of DPO rewriting.
 \begin{definition}[DPOI rewriting]\label{def:dpoi}
 Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal{L}^{\bot}$ and morphisms which complete the right commutative diagram in Figure~\ref{fig:dpo_dpoi} such that the two marked squares are pushouts.
 % \[
@@ -133,7 +159,8 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
 % \end{tikzcd}
 % \]
 \begin{figure}[t!]
-    \begin{subfigure}[C]{0.4\linewidth}
+    \vspace{-0.5cm}
+    \begin{subfigure}[T]{0.35\linewidth}
     \[
                 % \tikzfig{../figures/combinatorial_semantics/DPO_square}
                 \begin{tikzcd}
@@ -154,7 +181,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
     % \label{fig:dpo}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[C]{0.4\linewidth}
+    \begin{subfigure}[T]{0.35\linewidth}
         \[
     % \scalebox{0.8}{
         % \tikzfig{../figures/combinatorial_semantics/DPOI_square_Hyp}
@@ -180,14 +207,17 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
     % \subcaption{DPOI square}
     % \label{fig:dpoi}
     \end{subfigure}
-    \captionsetup{belowskip=-3ex}
+    \hfill
+    \captionsetup{skip=0pt, belowskip=0pt}
     \caption{DPO and DPOI squares}
     \label{fig:dpo_dpoi}
+    \vspace{-7mm}
 \end{figure}
 
 \end{definition}
+\vspace{-1ex}
 We need to restrict the notions of pushout complement and of match in order to preserve monogamy and directed acyclicity.  
-
+\vspace{-1ex}
 \begin{definition}[Boundary complement]
 \label{def:boundary_original}
 For MDA cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} \mathcal G \xleftarrow{b_2} m$
@@ -245,8 +275,9 @@ and the following conditions hold
 \end{itemize}
 \end{definition}
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.
-We do not formally recite the main result of \cite{bonchi_string_2022-2} here,  but the work proves that for any morphisms $f$ and $g$ in $\catname{S}(\Sigma, \mathcal{E})$,  we have that $f = g$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as (cospans of) hypergraphs.
-In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
+It is then proved in~\cite{bonchi_string_2022-2} that this notion of DPOI rewriting is sound and complete for $\catname{S}(\Sigma, \mathcal{E})$: for any morphisms $f$ and $g$ in $\catname{S}(\Sigma)$,  we have that $f = g$ modulo $\mathcal{E}$ if and only if there exist a sequence of DPO rewrites (induced by $\mathcal{E}$) between the representations of $f$ and $g$ as (cospans of) hypergraphs.
+As SMC equations get absorbed by the representation, it makes this approach computationally appealing as they do not need to be represented explicitly.
+% In particular,  Theorem \ref{thm:prop-equiv} means that the structural SMC equations are factored out in the representation of $f$ and $g$,  and the DPO rewrites necessary are only those induced by $\mathcal{E}$. 
 %\begin{theorem}[Theorem 35~\cite{bonchi_string_2022-2}]
 %For any $f,g \in \mathbf{SMT}(\Sigma, \mathcal{E})$,  we have that 
 %\[

@@ -1,4 +1,4 @@
-\section{$\catname{SLat}$}
+\subsection{$\catname{SLat}$}
 \label{sec:appendix:slat}
 
 In this section we define the category of semilattices that we use as a base for enrichment throughout the paper.
@@ -54,9 +54,11 @@ In this section we define the category of semilattices that we use as a base for
       The functor $F$ is defined by letting $F(A) = \coprod_{A} I_{\catname{SLat}}$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
       The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
       The adjunction is then given by the following natural isomorphisms
-      \[
-      \catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) \cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B)) \cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B)) \cong \catname{Set}(A, U(B))
-      \]
+      \begin{align*}
+      \catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) &\cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B))\\
+                                                         &\cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B))\\
+                                                         &\cong \catname{Set}(A, U(B))
+      \end{align*}
       The fist isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
       Furthermore, we have, 
       \[
@@ -74,7 +76,50 @@ In this section we define the category of semilattices that we use as a base for
     In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
     \end{proof}
 
-\section{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
+    \begin{definition}
+        Given two $\catname{SLat}$-functors $F,G : \mathbb{C} \to \mathbb{D}$ a $\catname{SLat}$-natural transformation is family of morphisms indexed by objects in $\mathbb{C}$, $\alpha_{A} : I_{\catname{SLat}} \to \mathbb{D}(FA,GA)$ in $\catname{SLat}$ such that the following diagram commutes
+        \[
+        \adjustbox{width=\linewidth}{
+        \begin{tikzcd}
+          & {\mathbb{C}(A,A')\otimes I_{\mathcal{V}}} && {\mathbb{D}(FA,FA') \otimes \mathbb{D}(FA',GA')} \\
+          {\mathbb{C}(A,A')} &&&& {\mathbb{D}(FA,GA')} \\
+          & {I_{\mathcal{V}} \otimes \mathbb{C}(A,A')} && {\mathbb{D}(FA,GA) \otimes \mathbb{D}(GA,GA')}
+          \arrow["{G_{A,A'}\otimes \alpha_{A'}}"', from=1-2, to=1-4]
+          \arrow["{c_{FA,FA',GA'}}"', from=1-4, to=2-5]
+          \arrow["{r^{-1}}", from=2-1, to=1-2]
+          \arrow["{l^{-1}}", from=2-1, to=3-2]
+          \arrow["{\alpha_{A} \otimes F_{A,A'}}", from=3-2, to=3-4]
+          \arrow["{c_{FA,GA,GA'}}", from=3-4, to=2-5]
+      \end{tikzcd}}
+      \]
+      \end{definition}
+
+      Intuitively, in the case of free enrichment $\alpha_{A}$ picks a usual natural transformation from $\mathbb{D}(FA,GA)$.
+      
+      \begin{example}
+        Consider a copy natural transformation $\triangle_{A} : A \to A \times A$ of $\catname{S}(\Sigma_{C},\mathcal{E}_{C})$.
+        The later Cartesian PROP is lifted to a Cartesian $\catname{SLat}$-PROP where the naturality condition can be traced component-wise where ${*}$ is a one element semilattice:
+      
+      \[\adjustbox{width=\linewidth}{
+      \begin{tikzcd}  
+          & {f + g \otimes *} && {\triangle_{A} \otimes ((f+g) \times (f+g))} \\
+          f + g &&&& {\triangle_{A'};((f + g) \times (f+g)) = (f + g);\triangle_{A'};} \\
+          & {* \otimes f + g} && {f + g \otimes \triangle_{A'}}
+          \arrow[from=1-2, to=1-4]
+          \arrow[from=1-4, to=2-5]
+          \arrow[from=2-1, to=1-2]
+          \arrow[from=2-1, to=3-2]
+          \arrow[from=3-2, to=3-4]
+          \arrow[from=3-4, to=2-5]
+      \end{tikzcd}}
+      \]
+      
+      which is the usual naturality condition.
+      
+      \end{example}
+      
+
+\subsection{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
 \label{sec:appendix:pushout}
 
 In this section we define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists, and we explicitly construct such a pushout.
@@ -261,10 +306,14 @@ We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ re
 \end{align*}
 \else
     \begin{align*}
-        \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{&\\
-            &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})}, \sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
-            &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
-        & \}    
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = (&\\
+            &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})},\\
+            &\consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}},\\
+            &<_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
+        &)    
     \end{align*}
 \fi
 We will refer to $\sim (R_{V},R_{E})$ just as $\sim$, \textit{e.g.}, by writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and concrete relation will be clear from the context.
@@ -728,9 +777,10 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
                 u_{V}^{*}(s_{\sfrac{X+Y}{\sim}}([e])) = u_{V}^{*}([s_{X+Y}(e)]^{*})
               \]
               Suppose $e = \iota_{E_{X}}(e')$ and then
-              \[
-                u_{V}^{*}([s_{X+Y}(e)]^{*}) = u_{V}^{*}([s_{X+Y}(\iota_{1,E}(e'))]^{*}) = u_{V}^{*}([(\iota_{1,V}^{*}(s_{X}(e')))]^{*})
-              \]
+              \begin{align*}
+                u_{V}^{*}([s_{X+Y}(e)]^{*}) &= u_{V}^{*}([s_{X+Y}(\iota_{1,E}(e'))]^{*})\\
+                                            &= u_{V}^{*}([(\iota_{1,V}^{*}(s_{X}(e')))]^{*})
+              \end{align*}
               Since $j_1$ and $j_2$ are homomorphisms, it must be the case that $s_{Q}(j_{1,E}(e')) = j_{1,V}^{*}(s_{X}(e'))$.
               By definition, 
               \begin{align*}                
@@ -785,17 +835,21 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         \end{itemize}
     The cases for edges are analogous.
     \item The last condition to check is if
-    \[
-    [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
-    \]
+    \begin{align*}
+    &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+    &\;\subseteq\\
+    &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+    \end{align*}
     Recall that
     \[
       \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c}
     \]
     and first we will check if
-    \[
-      [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
-    \]
+    \begin{align*}
+      &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+      &\;\subseteq\\
+      &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+    \end{align*}
     Consider cases
     \begin{itemize}
         \item If $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \varnothing$ then the inclusion is trivial and hence we assume that
@@ -865,9 +919,11 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
             \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))    
         \]
         By the argument above it follows that
-        \[
-            [u_{V};\iota_{Q_{V}},u_{E};\iota_{Q_{E}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))) \subseteq \consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))
-        \]
+        \begin{align*}
+            &[u_{V};\iota_{Q_{V}},u_{E};\iota_{Q_{E}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])))\\
+            &\;\subseteq\\
+            &\consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))
+        \end{align*}
         \end{itemize}
        Since $(u_{V},u_{E})$ preserves paths, there is a path from $u_{V}([u])$ to $u_{V}([v])$ and since $Q$ is an e-hypergraph
        \ifdefined \ONECOLUMN
@@ -892,17 +948,23 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     \end{align*}
     \fi
        So far we have shown that
-       \[
-        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
-       \]
+       \begin{align*}
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+        &\;\subseteq\\
+        & \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+       \end{align*}
        and
-       \[
-        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))) \subseteq \consistency_{Q}(u_{E};\iota_{E_{Q}}([e]))
-       \] follows by the same argument.
+       \begin{align*}
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))\\
+        &\;\subseteq\\
+        &\consistency_{Q}(u_{E};\iota_{E_{Q}}([e]))
+       \end{align*} follows by the same argument.
        Then, to check if
-       \[
-        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
-       \]
+       \begin{align*}
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+        &\; \subseteq\\
+        &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+       \end{align*}
        we need to verify if
        \begin{itemize}
         \item $[u_{V};\iota_{V_{Q}},u_{E};\iota_{E_{Q}}]^{*}(\{[v]\}) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))$.
@@ -944,9 +1006,11 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         \end{itemize}
        \end{itemize}
        Therefore, we have
-       \[
-        [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
-       \]
+       \begin{align*}
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+        &\;\subseteq\\
+        &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
+       \end{align*}
        and similarly for edges. Which concludes that $(u_{V},u_{E})$ is a homomorphism.
     \end{enumerate}
 \end{proof}
@@ -1200,7 +1264,8 @@ Similarly for edges.
                             \item $v = g_{V};\iota_{2,V}(z)$, then $g_{V}(z) = \varnothing$ and $[e_1) = \varnothing$.
                                   Since there is a path from $v$ to $e_1$ and $[v'') \not = \varnothing$ and $v'' \sim v$, by definition,
                                   \begin{align*}
-                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v''])) = [e_2]
+                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                                    &= [e_2]
                                   \end{align*}
                           \end{itemize}
                           Case when $v'' = g_{V};\iota_{2,V}(z'')$ is symmetric.
@@ -1235,7 +1300,8 @@ Similarly for edges.
                         \item If $v'' = f_{V};\iota_{1,V}(z'')$ and $v' = g_{V};\iota_{2,V}(z')$ then $[g_{V}(z')) = \varnothing$ and $[e_1) = \varnothing$. 
                         Then
                         \begin{align*}
-                            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v''])) = [e_2]
+                            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                                                                                                    &= [e_2]
                         \end{align*}
                         The case when $v'' = g_{V};\iota_{2,V}(z'')$ is symmetric.
                     \end{itemize}
@@ -1249,9 +1315,10 @@ Similarly for edges.
                 As per the comment below~\ref{def:child_respects_connectivity}, necessarily $v = v_1$ as $v$ should not have a pre-image in $V_{Z}$.
                 This implies that $v \in s_{X+Y}(e_1)$ and that $[e_1) = \varnothing$.
                 As there is a path from $v$ to $v'$, there is a path from $e_1$ to $v'$ and by definition, since $v'' \sim v'$ and $[v'') \not = \varnothing$,
-                \[
-                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v''])) = [e_2]
-                \]
+                \begin{align*}
+                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                 &\;= [e_2]
+                \end{align*}
             \end{itemize}    
 \end{proof}
 
@@ -1358,12 +1425,14 @@ $\consistency_{\sfrac{X+Y}{\sim}}$ respects connectivity.
                         [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1))) &=\\
                         [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1))) &\\
                         \text{by unfolding the definition}\\
-                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
+                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &=\\
+                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))&
                         \end{align*} 
                       \fi
                 \item $v_1'' \sim v_1$. If $v_1'' = f_{V};\iota_{1,V}(z_1'')$ and $v_1 = f_{V};\iota_{1,V}(z_1)$ we get
                     \begin{align*}
-                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v'')))\\
+                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) =\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v'')))\\
                                                                                                                 &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z_1''))))\\
                                                                                                                 &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z_1))))\\
                                                                                                                 &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
@@ -1393,20 +1462,23 @@ $\consistency_{\sfrac{X+Y}{\sim}}$ respects connectivity.
                         \item $v_1 = v_1''$ and then $[v_1) \not = \varnothing$.
                               Suppose $v_1 = f_{V};\iota_{1,V}(z_1)$ and $v_1' = f_{V};\iota_{1,V}(z_1')$. Then $[v_1') = [e_1) \not = \varnothing$ and 
                             \begin{align*}
-                              \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) &= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')))\\
-                                                                                                                     &= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
-                                                                                                                     &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))\\
-                                                                                                                     &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1])
+                              \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) =\\
+                              &\;= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')))\\
+                                                                                                                     &\;= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
+                                                                                                                     &\;= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))\\
+                                                                                                                     &\;= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1])
                             \end{align*}
                             Suppose $v_1' = g_{V};\iota_{2,V}(z_1')$ and then $[v_1') = [e_1) = \varnothing$.
                             By definition,
-                            \[
-                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) = [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
-                            \]
+                            \begin{align*}
+                                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) =\\
+                                &\;[[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
+                            \end{align*}
                             and since there is a path from $e_1$ to $v_1'$ and $v_1' \sim v_1$
-                            \[
-                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e_1]) = [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
-                            \]
+                            \begin{align*}
+                                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e_1]) =\\
+                                &\;[[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
+                            \end{align*}
                             The cases when $v_1 = g_{V};\iota_{2,V}(z_1)$ is symmetric.
                         \item $v_1 \sim v_1''$ and then $v_1' \sim v_1''$. Suppose $v_1'' = f_{V};\iota_{1,V}(z_1'')$.
                               If $v_1'$ is in the image of $f_{V};\iota_{1,V}$, then
@@ -1421,7 +1493,8 @@ $\consistency_{\sfrac{X+Y}{\sim}}$ respects connectivity.
                               \end{align*}
                               If $v_1'$ is in the image of $g_{V};\iota_{2,V}$, then $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')) = \consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \varnothing$ and by definition as there is a path from $[e_1]$ to $[v_1'']$
                               \begin{align*}
-                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'']))\\ 
+                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) =\\
+                                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'']))\\ 
                                                                                                                         &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))
                               \end{align*}
                               The cases when $v_1'' = g_{V};\iota_{2,V}(z_1'')$ are symmetric.
@@ -1669,14 +1742,29 @@ Practically, the above proposition means that for any given match $m$ there is o
 % \end{minipage}
 % \end{figure*}
 
-\section{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
-
+\subsection{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+\label{sec:appendix:detailed_proofs}
 In this section we will elaborate on soundness and completeness of our translation $\llbracket - \rrbracket : \catname{S}^{+}(\Sigma, \mathcal{E}) \to \WellTypedMdaEcospans / \mathcal{S}, \mathcal{E}$.
 First we recite the interpretation function $[]$ on $\Sigma$-terms as defined in~\cite{bonchi_string_2022-2} that induces a functor $\catname{S}(\Sigma) \to \MdaCospans$ and eventually a functor $\catname{S}^{+}(\Sigma) \to \MdaCospans^{+}$.
 The base cases for interpretation function $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$ is given in the Figure~\ref{fig:base_cases}.
-Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g]$ and $[f;g] \Coloneq [f];[g]$ and by freeness induces the corresponding functor.
+Then it is defined inductively by letting $[f \otimes g] \Coloneqq [f] \otimes [g]$ and $[f;g] \Coloneqq [f];[g]$ and by freeness induces the corresponding functor.
 
-\begin{figure}
+\begin{remark}\label{remark:embedding_functor}
+    There is a faithful identity-on-objects functor $E: \HypI{\Sigma} \to \Ecospans$ which maps a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ to an extended cospan $n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m$ such that $f_{ext};f_{int} = f$ and $g_{ext};g_{int} = g$.
+\end{remark}
+
+
+\begin{lemma}
+\label{lemma:normal_form}
+For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{normal form} such that 
+\[
+	f = f_1 + \ldots + f_n
+\]
+	such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+\end{lemma}
+
+
+\begin{figure*}
 \[
 \adjustbox{width=\textwidth}{
 \tikzfig{../figures/appendix/interpretation}
@@ -1684,7 +1772,7 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
 \]
 \caption{Base cases for $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$}
 \label{fig:base_cases}
-\end{figure}
+\end{figure*}
 
 
 \begin{lemma}[Lemma~\ref{lemma:cospans_plus_equiv} restatement]
@@ -1700,7 +1788,7 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
     Then, $M$ is defined as follows.
     \begin{itemize}
     \item It maps each discrete hypergraph in $\MdaCospans^{+}$ to a corresponding discrete e-hypergraph in $\MdaEcospans/\mathcal{S}$.
-    \item Every morphism $f_{1} + \ldots + f_{n}$ is mapped to $\text{In}(f_{1}) + \ldots + \text{In}(f_{n})$ where $\text{In}$ is the faithful functor induced by Remark~\ref{remark:embedding_functor}.
+    \item Every morphism $f_{1} + \ldots + f_{n}$ is mapped to $\text{E}(f_{1}) + \ldots + \text{E}(f_{n})$ where $\text{E}$ is the faithful functor induced by Remark~\ref{remark:embedding_functor}.
           This makes $M$ into $\catname{SLat}$-functor by construction.
     \end{itemize}
     To show the functor $M$ is faithful, suppose $f = f_{1} + \ldots + f_{n} \not = g_{1} + \ldots + g_{m} = g$.
@@ -1708,11 +1796,11 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
     If $n \not = m$ then, immediately $Mf \not = Mg$ as $Mf$ and $Mg$ contain different number of non-isomorphic components.
     If $n = m$ then assume for a contradiction that $Mf = Mg$. 
     There exists a permutation $\sigma$, such that for every index $i$, $Mf_{i} = Mg_{\sigma(i)}$.
-    Thus, by $\text{In}$ we have that $f_{i} = g_{\sigma(i)}$, implying $f = g$ which is a contradiction.
+    Thus, by $\text{E}$ we have that $f_{i} = g_{\sigma(i)}$, implying $f = g$ which is a contradiction.
     Therefore, $Mf \not = Mg$ as required.
     
     To show that the functor is full, consider a morphism $f = f_{1} + \ldots + f_{n}$ in $\WellTypedMdaEcospans / \mathcal{S}$ (by Lemma~\ref{lemma:normal_form}). 
-    As each of $f_{i}$ does not contain any hierarchical edges, they are in the image of $\text{In}$, which for each $f_{i}$ gives us $g_{i}$, such that $f_{i} = Mg_{i}$.
+    As each of $f_{i}$ does not contain any hierarchical edges, they are in the image of $\text{E}$, which for each $f_{i}$ gives us $g_{i}$, such that $f_{i} = Mg_{i}$.
     This gives us a morphism $g = g_{1} + \ldots + {g_{n}}$ in $\MdaCospans^{+}$ such that $Mg = f$.
     This concludes that the functor is full.
     As it is also surjective on objects, it makes it into an equivalence.
@@ -1814,7 +1902,10 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
                 \scalebox{0.75}{\tikzfig{../figures/appendix/contexts_2}}
               \]
               and by inductive hypothesis $\llbracket \mathcal{C}[l] \rrbracket \Rrightarrow{} \llbracket \mathcal{C}[r] \rrbracket$ which results in the top half of the diagram below.
-              \[\begin{tikzcd}
+              
+              \[
+              \adjustbox{width=\linewidth}{
+              \begin{tikzcd}
                 {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
                 \\
                 {\llbracket \mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket \mathcal{C}[r]\rrbracket} \\
@@ -1850,7 +1941,8 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
                 \arrow[from=7-3, to=5-3]
                 \arrow[from=7-3, to=6-2]
                 \arrow[from=7-3, to=6-4]
-            \end{tikzcd}\]
+            \end{tikzcd}}
+            \]
             Clearly the occurrence of $\llbracket \mathcal{C}[l] \rrbracket$ in $\llbracket f \rrbracket$ is convex and down-closed and by following the argument in Theorem 35~\cite{bonchi_string_2022-2}, there exists $n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2$ such that
             \ifdefined \ONECOLUMN
             \begin{align*}
@@ -1918,6 +2010,7 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
             \]
             By hypothesis, there exists a diagram
                 \[
+                \adjustbox{width=\linewidth}{
                 \begin{tikzcd}
                     {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
                     \\
@@ -1940,7 +2033,7 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
                     \arrow[from=5-3, to=4-4]
                     \arrow["\lrcorner"{description, pos=0.025, rotate=90}, draw=none, from=3-1, to=1-2]
                     \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-4]
-                \end{tikzcd}
+                \end{tikzcd}}
                 \]
                 which implies the existence of the following diagram where both squares are pushouts by construction and the matching is convex and down-closed.
                 % \textcolor{red}{Consider cases when $\mathcal{L}$ has no-input and no-output sub-hypergraph and when it does not. Basically, repeat the above reasoning here as well, but say that if $n+m$ is empty, then there is no pushout.}
@@ -1973,7 +2066,7 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
                 \]
                 \else
                 \begin{figure*}[hbt!]
-                \[
+                \[\adjustbox{width=\linewidth}{
                     \begin{tikzcd}
                     {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
                     \\
@@ -1996,7 +2089,7 @@ Then it is defined inductively by letting $[f \otimes g] \Coloneq [f] \otimes [g
                     \arrow[from=5-3, to=3-3]
                     \arrow[from=5-3, to=4-2]
                     \arrow[from=5-3, to=4-4]
-                \end{tikzcd}
+                \end{tikzcd}}
                 \]
                 \caption{$\llbracket f \rrbracket \Rrightarrow{}_{\langle \mathcal{L},\mathcal{R} \rangle} \llbracket g \rrbracket$}
                 \label{fig:f_rewrites_to_g_under_plus}
@@ -2012,29 +2105,55 @@ Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracke
 \[
 	\llbracket f \rrbracket = n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m ~.
 \]
+
+\begin{figure*}
+    \begin{subfigure}{\linewidth}
+\begin{align*}
+    (k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+    n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+    (i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
+\end{align*}
+\subcaption{\;}
+\end{subfigure}
+\vspace{1ex}
+\begin{subfigure}{\linewidth}
+    \begin{align*}
+        (k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+        n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+        (i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
+    \end{align*}
+\subcaption{\;}
+\end{subfigure}
+\caption{Decomposition}
+\label{fig:decomposition_1}
+\end{figure*}
+
+
 This implies the existence of a diagram as in~\ref{def:dpoi-e}.
 We will proceed by induction on the level of the occurrence of $\mathcal{L}$ within $\mathcal{F}$.
 \begin{itemize}
 	\item Suppose the image of $\mathcal{L}$ in $\mathcal{F}$ is top-level.
-		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans
-		\begin{align*}
-			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
-			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
-		\end{align*}
+		  Then, by lemma~\ref{lemma:decomposition}, there exists a decomposition of $\llbracket f \rrbracket$ in terms of MDA cospans as in Figure~\ref{fig:decomposition_1}.
+
+		% \begin{align*}
+		% 	(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+		% 	(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
+		% \end{align*}
 		By fullness of $\llbracket - \rrbracket$ (from Theorem~\ref{thm:completeness_simple}) there exist $c_{1}$ and $c_{2}$ such that 
-		\[
-		\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k \qquad \llbracket c_{2} \rrbracket = j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
-		\]
+		\begin{align*}
+		&\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k\\
+        &\llbracket c_{2} \rrbracket = j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
+        \end{align*}
 		By functoriality, $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes l);c_{2} \rrbracket$ and by faithfulness we have that $f = c_{1};(id \otimes l);c_{2}$ to which we can apply $\langle l, r \rangle$ and get $g' = c_{1};(id \otimes r);c_{2}$.
 		We then have $\llbracket g' \rrbracket = \llbracket c_{1};(id \otimes r);c_{2} \rrbracket =  \llbracket g \rrbracket$ since the boundary complement is unique (Proposition ~\ref{prop:boundary_unique}) and $g' = g$ by faithfulness.
 
-		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as
-		\begin{align*}
-			(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-			n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
-			(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
-		\end{align*}
+		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as in Figure~\ref{fig:decomposition_2}
+		% \begin{align*}
+		% 	(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
+		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+		% 	(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
+		% \end{align*}
 		such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $F'$.
 		Since the image of $\mathcal{L}$ lies within $\mathcal{F}'$, there is an EDPO rewrite step that turns
 		\[
@@ -2046,9 +2165,10 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 		\]
 		via $\langle \mathcal{L}, \mathcal{R} \rangle$.
 		By fullness and inductive hypothesis, there exist $f'$ and $g'$ such that 
-		\[
-			\llbracket f' \rrbracket = i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j \qquad \llbracket g' \rrbracket = (i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)
-		\]
+		\begin{align*}
+			&\llbracket f' \rrbracket = i \xrightarrow{} i' \xrightarrow{} \mathcal{F'} \xleftarrow{} j' \xleftarrow{} j\\
+            &\llbracket g' \rrbracket = (i \xrightarrow{} i'' \xrightarrow{} \mathcal{G'} \xleftarrow{} j'' \xleftarrow{} j)
+        \end{align*}
 		and that $f' = g'$.
 		By decomposition and fullness we have $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes f');c_{2} \rrbracket$ and $f = c_{1};(id \otimes f');c_{2}$ by faithfulness.
 		By applying $f' = g'$ we get $f = g'' = c_{1};(id \otimes g');c_{2}$.
@@ -2068,7 +2188,7 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 		\end{align*}
 		such that the image of $\mathcal{L}$ lies within $\mathcal{F}_{p}$.
 		By inductive hypothesis we have that $\llbracket f_{p} \rrbracket = n_p \xrightarrow{} n_{p}' \xrightarrow{} \mathcal{F}_{p} \xleftarrow{} m_{p}' \xleftarrow{} m_{p}$ rewrites into $\llbracket g_{p} \rrbracket = n_p \xrightarrow{} n_{p}'' \xrightarrow{} \mathcal{G}_{p} \xleftarrow{} m_{p}'' \xleftarrow{} m_{p}$ such that $f_{p} = g_{p}$.
-		By fullness and the fact that $\llbracket - \rrbracket$ is enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
+		By fullness and the fact that $\llbracket - \rrbracket$ is $\catname{SLat}$-enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
 		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1} + \ldots + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
 \end{itemize}
     % there is a sequence of SMC and enrichment equations such that when applied to $f$ it is turned into $g$.
@@ -2139,13 +2259,23 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
         k + j \to n_{2}' + k + j \to &\mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m\\
     \end{align*}
     and $n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m$ is the co-limit of the following diagram
+    % \[
+    %     n \to n_{1}' \to \mathcal{C}_{1} \xleftarrow{} m_{1}' + k \xleftarrow{} i + k \to i' + k \to \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n_{2}' + k + j \to \mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m
+    % \]
     \[
-        n \to n_{1}' \to \mathcal{C}_{1} \xleftarrow{} m_{1}' + k \xleftarrow{} i + k \to i' + k \to \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n_{2}' + k + j \to \mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m
+    \adjustbox{width=\linewidth}{
+    \begin{tikzcd}
+        n \arrow[r] & n'_{1} \arrow[r] & \mathcal{C}_{1} & m'_{1} + i + k \arrow[l]     & i+k \arrow[l] \arrow[r] & i'+k \arrow[rd] &             \\
+                    &                  &                 &                          &                         &                 & \mathcal{L} \\
+        m \arrow[r] & m'_{2} \arrow[r] & \mathcal{C}_{2} & n'_{2} + k + j \arrow[l] & k+j \arrow[r] \arrow[l] & k+j' \arrow[ru] &            
+    \end{tikzcd}
+    }
     \]
     The two spans identify precisely those nodes from $\mathcal{G}$ that occur in more than one sub-hypergraph, so this amounts to simply taking the union
-    \[
-    n \to n_{1}' \cup n_{2}' \cup i' \to \mathcal{C}_{1} \cup \mathcal{C}_{2} \cup \mathcal{L} \xleftarrow{} m_{1}' \cup m_{2}' \cup j' \xleftarrow{} m  = n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m
-    \]
+    \begin{align*}
+    &n \to n_{1}' \cup n_{2}' \cup i' \to \mathcal{C}_{1} \cup \mathcal{C}_{2} \cup \mathcal{L} \xleftarrow{} m_{1}' \cup m_{2}' \cup j' \xleftarrow{} m  =\\
+    &\;= n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m
+    \end{align*}
     If we let $\mathcal{G}' = \mathcal{L}$ we get the decomposition as in~(\ref{fig:decomposition:1}).
     This follows the construction of a similar lemma in~\cite{bonchi_string_2022-1} (Lemma 24). 
     The cospans with $\mathcal{C}_{1}$ and $\mathcal{C}_{2}$ are MDAs because they are closed under successors and predecessors and the cospan with $\mathcal{L}$ is an MDA because it is convex.
@@ -2181,7 +2311,7 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 %     This brings us to a weak normal form $f = f_1 + \ldots + f_n$ where each of $f_i$ does not contain any hierarchical edges and for $i \not = j$, $f_i \not = f_j$, the latter is guaranteed by rule (8).
 % \end{proof}
 
-\section{Additional figures for Section~\ref{sec:introduction}:Introduction}
+\subsection{Additional figures for Section~\ref{sec:introduction}:Introduction}
 
 This section contains the figures with more elaborate transformation of e-string diagrams from the Figure~\ref{fig:e-graph-example}.
 
@@ -2237,7 +2367,7 @@ This section contains the figures with more elaborate transformation of e-string
 \end{figure*}
 \fi
 
-\section{Additional figures for Section~\ref{sec:e-hypergraphs}: E-hypergraphs}
+\subsection{Additional figures for Section~\ref{sec:e-hypergraphs}: E-hypergraphs}
 \label{sec:appendix:iso}
 
 First we will explore the notion of isomorphism of two extended cospans in more detail.
@@ -2325,7 +2455,7 @@ Then, for the resulting e-hypergraph to form a valid well-typed MDA extended cos
     \label{fig:appendix:non-isomorphic-cospans}
 \end{figure*}
 
-\begin{figure}
+\begin{figure*}
     \begin{subfigure}{0.48\textwidth}
 \[
 \adjustbox{scale=0.55}{
@@ -2353,26 +2483,30 @@ Then, for the resulting e-hypergraph to form a valid well-typed MDA extended cos
         \end{subfigure}
 \caption{DPO examples}
 \label{fig:not_boundary_complement}
-\end{figure}
+\end{figure*}
 
 
-\section{DPO rewriting for arbitrary signatures}
+\subsection{DPO rewriting for arbitrary signatures}
 \label{sec:dpo-fix}
 Here we will discuss how one can formulate DPO rewrite rules where the left-hand of right-hand sides contain sub-hypergraphs with no inputs and outputs at the outermost level.
 First we will illustrate where the restriction in the original formulation of the DPO rewriting as per the Definition~\ref{def:convex_dpo} comes from via several examples: one for Cartesian equations (which are important to express e-graphs as e-hypergraphs) and two for the structural rules we need for $\WellTypedMdaEcospans / \mathcal{S}$ to be a category enriched over $\catname{SLat}$.
 Consider a rewrite rule induced by the Cartesian structure $a;! = id_{I}$ for $a : 0 \to 1$ which is rendered string diagrammatically as 
 \[
+\adjustbox{scale=0.6}{
 \tikzfig{../figures/appendix/cartesian_rewrite_string}
+}
 \]
 which becomes the following extended cospan of e-hypergraphs
 \[
+\adjustbox{scale=0.6}{
 \tikzfig{../figures/appendix/cartesian_rewrite_hypergraph}
+}
 \]
 
 Assume we want to perform a rewrite within the e-hypergraph in Figure~\ref{fig:dpo-stuck} (left).
 However, we are immediately stuck as there is no matching of the left-hand side of the rule within the graph as there is no pushout complement: the only way we can impose a constraint that an edge shall have a particular predecessor in the pushout is through its adjacent vertices, but the sub-hypergraph for $a;!$ does not have any as demonstrated in the right subfigure.
 
-\begin{figure}
+\begin{figure*}
     \begin{subfigure}{0.4\linewidth}
     \[
     \adjustbox{scale=0.7}{
@@ -2390,21 +2524,16 @@ However, we are immediately stuck as there is no matching of the left-hand side 
     \end{subfigure}
     \caption{DPO rewriting stuck}
     \label{fig:dpo-stuck}
-\end{figure}
-
-
+\end{figure*}
 Another problematic rewrite arises when we want to utilise the structural rule of the free enrichment
-
 \[
-\adjustbox{scale=0.75}{
+\adjustbox{width=\linewidth}{
 \tikzfig{../figures/appendix/structural_rewrite_problem}
 }
 \]
-
 if we consider the following DPO square
-
 \[
-\adjustbox{scale=0.55}{
+\adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck}
 }
 \]
@@ -2478,7 +2607,7 @@ We will include special unlabelled edges with no inputs and outputs to the inter
 That is, the previously mentioned structural rule will become
 
 \[
-\adjustbox{scale=0.75}{
+\adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/structural_rewrite_problem_fix}
 }
 \]
@@ -2488,7 +2617,7 @@ For example, the edge in the interface labelled $a_1$ is mapped to the outermost
 We can now compute the pushout complement and complete the DPO square below
 
 \[
-\adjustbox{scale=0.55}{
+\adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
 }
 \]
@@ -2514,7 +2643,8 @@ In particular, two rules for introduction and elimination of these special edges
 \end{subfigure}
 \end{figure}
 
-and similar rules to introduce and eliminate in nested contexts
+and similar rules to introduce and eliminate in nested contexts (Figure~\ref{fig:nested_elimination}).
+
 
 \begin{figure}[h!]
     \begin{subfigure}{\linewidth}
@@ -2532,28 +2662,32 @@ and similar rules to introduce and eliminate in nested contexts
         }
         \]
     \end{subfigure}
+    \caption{Special edge nested elimination}
+    \label{fig:nested_elimination}
 \end{figure}
 
-and, finally, the rules to introduce such edges as new consistent components.
+and, finally, the rules to introduce such edges as new consistent components (Figure~\ref{fig:consistent_introduction}).
 Intuitively such edge plays the role of a tensor unit identity that can be inserted in any context.
 
 \begin{figure}[h!]
-    \begin{subfigure}{0.45\linewidth}
+    \begin{subfigure}{\linewidth}
         \[
-        \adjustbox{scale=0.55}{
+        \adjustbox{width=\linewidth}{
         \tikzfig{../figures/appendix/idI_introduction_new_component_hypergraph}
         }
         \]
     \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\linewidth}
+    \vspace{1em}
+    \begin{subfigure}{\linewidth}
         \[
-        \adjustbox{scale=0.55}{
+        \adjustbox{width=\linewidth}{
         \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
         }
         \]
     \end{subfigure}
-    \end{figure}
+    \caption{New consistent component introduction (top) and elimination (bottom) rule}
+    \label{fig:consistent_introduction}
+\end{figure}
 
 
 % \[
@@ -2566,7 +2700,7 @@ Intuitively such edge plays the role of a tensor unit identity that can be inser
 Then the deletion rule is reconstructed as
 
 \[
-\adjustbox{scale=0.75}{
+\adjustbox{width=0.8\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_fix}
 }
 \]
@@ -2574,7 +2708,7 @@ Then the deletion rule is reconstructed as
 and the full DPO square becomes
 
 \[
-\adjustbox{scale=0.75}{
+\adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix}
 }
 \]
@@ -2582,7 +2716,7 @@ and the full DPO square becomes
 The target e-hypergraph is not exactly what we wanted, however, but we can use the auxiliary rule to remove this unlabelled edge.
 
 \[
-\adjustbox{scale=0.75}{
+\adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix_2}
 }
 \]
@@ -2605,7 +2739,7 @@ And let the morphism be any valid morphism from $\{^{l}_{1,1}, \ldots, c^{l}_{k,
 Graphically, this is expressed as follows
 
 \[
-\adjustbox{scale=0.65}{
+\adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/rule_transformation_example}
 }
 \]
@@ -2620,7 +2754,7 @@ The Definition~\ref{def:boundary_new} will then need a few additional constraint
 \end{itemize}
 Then, when constructing the corresponding extended cospans, such auxiliary edges must be ignored in the interfaces.
 
-\section{E-graph interpretation in $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$}
+\subsection{E-graph interpretation in $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$}
 \label{sec:appendix:e-graph-translation}
 
 In this section we will elaborate on the interpretation of e-graphs as morphisms of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$.
@@ -2690,7 +2824,7 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
 \texttt{connect} and \texttt{mkEdge} are responsible for making things shared using $\triangle$ and discarding unused inputs via $!$.
 
 \begin{figure}
-    \begin{subfigure}[C]{0.4\linewidth}
+    \begin{subfigure}[C]{0.35\linewidth}
 \[
 \adjustbox{scale=0.6}{
 \tikzfig{../figures/appendix/e-graph-example_1}
@@ -2699,7 +2833,7 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
 \caption{\;}
 \end{subfigure}
 \hfill
-\begin{subfigure}[C]{0.4\linewidth}
+\begin{subfigure}[C]{0.6\linewidth}
     \[
     \adjustbox{scale=0.6}{
     \tikzfig{../figures/appendix/e-hypergraph-example_1}
@@ -2707,11 +2841,12 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
     \]
 \caption{\;}
 \end{subfigure}
-\caption{E-graph (a) and a corresponding morphism of $\catname{MEHypI}(\Sigma \cup \Sigma_{C})$ (b)}
+\hfill
+\caption{E-graph (a) and a corresponding morphism of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$ (b)}
 \label{fig:e-graph-to-cospan}
 \end{figure}
 
-\begin{algorithm}
+\begin{algorithm*}
     \caption{E-graph to e-hypergraph translation}
     \label{alg:translation}
     \begin{algorithmic}[1]
@@ -2748,7 +2883,7 @@ For the following e-graph with e-classes shown as dashed boxes it produces the f
 
     \EndFor
     \end{algorithmic}
-\end{algorithm}
+\end{algorithm*}
 
 \begin{lemma} 
     Two e-classes $e_1$ and $e_2$ are merged if and only if there are rewrite rules that turn every term representable by $e_1$ into $e_2$.

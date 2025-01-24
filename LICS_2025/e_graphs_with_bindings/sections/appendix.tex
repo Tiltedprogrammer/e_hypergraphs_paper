@@ -1,4 +1,4 @@
-\section{$\catname{SLat}$}
+\subsection{$\catname{SLat}$}
 \label{sec:appendix:1}
 
 In this section we will define the category of semilattices that we use as a base for enrichment throughout the paper.
@@ -76,8 +76,25 @@ In this section we will define the category of semilattices that we use as a bas
     In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
     \end{proof}
 
-\section{Pushout in $\catname{EHyp}(\Sigma)$}
+\subsection{Pushout in $\catname{EHyp}(\Sigma)$}
 \label{sec:appendix:pushout}
 
 In this section we will describe the construction of the pushout in $\catname{EHyp}(\Sigma)$.
 TODO
+
+\subsection{Interpretation of $\Sigma$-terms as cospans of hypergraphs}
+\label{sec:appendix:interpretation}
+\begin{figure*}
+  \[
+  \adjustbox{width=\textwidth}{
+  \tikzfig{./figures/interpretation}
+  }
+  \]
+  \caption{Base cases for $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$}
+  \label{fig:base_cases}
+\end{figure*}
+
+The base cases for interpretation function $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$ is given in the Figure~\ref{fig:base_cases}.
+Then it is defined inductively by letting $[f \otimes g] \Coloneqq [f] \otimes [g]$ and $[f;g] \Coloneqq [f];[g]$ and by freeness induces the corresponding functor.
+
+  

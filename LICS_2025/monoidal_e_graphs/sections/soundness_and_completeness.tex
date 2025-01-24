@@ -1,10 +1,10 @@
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
 This section contains the main technical results of the paper,  building on those of \cite{bonchi_string_2022-2}.
-We give the interpretation of $\catname{S}(\Sigma)^{+}$ terms in $\WellTypedMdaEcospans$ by extending the interpretation of $\catname{S}(\Sigma)$ in $\MdaCospans$ by first endowing each hom-set of cospans in $\WellTypedMdaEcospans$ with a semilattice structure turning it into a semilattice-enriched category.
-To achieve the latter we quotient each hom-set by EDPOI structural rewrite rules that correspond to the axioms of a semilattice-enriched SMC:
-the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.
-Detailed proofs of the statements in this section can be found in Appendix section~\ref{proof:appendix:soundness}.
+We give the interpretation of $\catname{S}(\Sigma)^{+}$ terms in $\WellTypedMdaEcospans$ by extending the interpretation of $\catname{S}(\Sigma)$ in $\MdaCospans$ (see Appendix) by first endowing each hom-set of cospans in $\WellTypedMdaEcospans$ with a semilattice structure turning it into an $\catname{SLat}$-category.
+% To achieve the latter we quotient each hom-set by EDPOI structural rewrite rules that correspond to the axioms of an $\catname{SLat}$-SMC:
+% the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.
+Detailed proofs of the statements in this section can be found in Appendix~\ref{proof:appendix:soundness}.
 
 % We first construct an interpretation of terms generating $\catname{S}(\Sigma)^{+}$ in $\WellTypedMdaEcospans$.  
 % As expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
@@ -14,14 +14,16 @@ Detailed proofs of the statements in this section can be found in Appendix secti
 We define the join $+$ of two extended cospans in $\WellTypedMdaEcospans(n,m)$ as in Figure~\ref{fig:A+B}
 by introducing a hierarchical edge with $n$ inputs and $k$ outputs that has both carriers of the two cospans as its successors.
 The two carriers become two different consistent components of a newly introduced hierarchical edge such that the interface morphisms are preserved.
-In particular, $f_{1,\text{int}}(b_i) = f_{\text{int}}(b_i)$ and so on.
-The only extended cospan of type $0 \to 0$ has the empty e-hypergraph as its carrier and we will overload $+$ for such cospans to have the empty carrier as well.
-That is, we will let 
-\begin{align*}
-	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
-	&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0 \to 0 \to \varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
-	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0
-\end{align*}
+
+% Saving space
+% In particular, $f_{1,\text{int}}(b_i) = f_{\text{int}}(b_i)$ and so on.
+% The only extended cospan of type $0 \to 0$ has the empty e-hypergraph as its carrier and we will overload $+$ for such cospans to have the empty carrier as well.
+% That is, we will let 
+% \begin{align*}
+% 	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
+% 	&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0 \to 0 \to \varnothing \xleftarrow{} 0 \xleftarrow{} 0\\
+% 	0 \to 0 \to \;&\varnothing \xleftarrow{} 0 \xleftarrow{} 0
+% \end{align*}
 \end{definition}
 
 To make this newly defined $+$ obey the laws of a semilattice-enriched SMC we will quotient $\WellTypedMdaEcospans$ by certain EDPOI structural rewrite rules.
@@ -32,8 +34,10 @@ We define the appropriate notion of quotient by EDPOI rewrites next.
 % \update{below definition depends on whether we require the homomorphism to reflect the conflicts}
 \begin{definition}[Quotient by rewrites]  
 Given a set of EDPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation.
+\vspace{-2mm}
 \[
 	f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g ~ . 
+\vspace{-1mm}
 \]
 \end{definition}
 
@@ -45,7 +49,7 @@ Given a set of EDPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEc
     }
     \]
     \captionsetup{belowskip=-3.5ex}
-    \caption{$+$ of two morphisms in $\Ecospans$}
+    \caption{$+$ of two morphisms in $\WellTypedMdaEcospans$}
     \label{fig:A+B}
 \end{figure}
 % Recall from Section \ref{sec:e-hypergraphs} that $ \WellTypedMdaEcospans$ has a symmetric monoidal structure inherited from the coproduct structure of $\textbf{EHypI}(\Sigma)$.  
@@ -118,19 +122,19 @@ Then we have the following result.
 \label{prop:soundness}
 The category $\WellTypedMdaEcospans/{\mathcal{S}}$ is a semilattice-enriched PROP. 
 \end{proposition}
-Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are covered by the fact we have quotiented our representation by certain rewrites. 
-Ultimately we want to give interpretation of morphisms in $\catname{S}^{+}(\Sigma)$ in $\WellTypedMdaEcospans / \mathcal{S}$ for which we will need a few lemmas.
+Note that the symmetric monoidal equations are absorbed in the hypergraph representation,  but the semilattice equations are instead covered by the fact we have quotiented our representation by certain rewrites. 
+Ultimately, we want to give interpretation of morphisms in $\catname{S}^{+}(\Sigma)$ in $\WellTypedMdaEcospans / \mathcal{S}$ for which we will need a few lemmas.
 
-First, notice that this quotienting gives us certain normal forms.
+% First, notice that this quotienting gives us certain normal forms.
 
-\begin{lemma}
-\label{lemma:normal_form}
-For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{normal form} such that 
-\[
-	f = f_1 + \ldots + f_n
-\]
-	such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
-\end{lemma}
+% \begin{lemma}
+% \label{lemma:normal_form}
+% For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{normal form} such that 
+% \[
+% 	f = f_1 + \ldots + f_n
+% \]
+% 	such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
+% \end{lemma}
 
 % The reason for calling the previous result \textit{soundness} is that the interpretation function on $\Sigma^+$-terms induces a semilattice-enriched SMC functor $\llbracket - \rrbracket: \catname{S}(\Sigma)^{+} \to \WellTypedMdaEcospans/{\mathcal{S}}$,  which further induces the following semilattice-enriched SMC functor,  for a set of equations $\mathcal E$:
 % \[
@@ -164,8 +168,10 @@ We have the following equivalence obtained by applying the free enrichment 2-fun
 \begin{lemma}
 \label{lemma:cospans_plus_equiv}
 We have the following equivalence of $\catname{SLat}$-categories
+\vspace{-2mm}
 \[
 \MdaCospans^{+} \cong \MdaEcospans/\mathcal{S}~.
+\vspace{-1mm}
 \]
 \end{lemma}
 % \begin{proof}
@@ -196,13 +202,16 @@ We have the following equivalence of $\catname{SLat}$-categories
 \begin{theorem}
 	\label{thm:completeness_simple}
 	We have the following equivalence of $\catname{SLat}$-categories
+	\vspace{-2mm}
 	\[
 		\catname{S}(\Sigma)^{+} \cong \WellTypedMdaEcospans / \mathcal{S}~.
+	\vspace{-1mm}
 	\]	
 	\end{theorem}
 \begin{proof}
 	The equivalence is given by an $\catname{SLat}$-functor $\llbracket \rrbracket$ that is obtained by composing the functors from Lemma~\ref{lemma:2functor_equiv} and Lemma~\ref{lemma:cospans_plus_equiv}.
 \end{proof}
+\vspace{-2mm}
 The benefit of working with the equivalence defined above as compared to the one in Lemma~\ref{lemma:2functor_equiv} is that the former allows us to define EDPOI rewriting more naturally as every morphism is an (extended) cospan.
 Finally, we can state the following result.
 
@@ -256,18 +265,19 @@ Finally, we can state the following result.
 
 \begin{theorem}[Full completeness]
 \label{thm:full-completeness}
-Let $\mathcal{E}$ be the a of equations $l = r$ of $\Sigma$-terms, then we have the following equivalence of $\catname{SLat}$-categories
+Let $\mathcal{E}$ be a set of equations $l = r$ of $\Sigma$-terms, then we have the following equivalence of $\catname{SLat}$-categories
+\vspace{-2mm}
 \[
 	\catname{S}^{+}(\Sigma, \mathcal {E} ) \cong \WellTypedMdaEcospans / \mathcal{S,E}~.
+\vspace{-1mm}
 \]
 where $\mathcal{E}$ on the right is overloaded as a set of EDPOI rewrite rules containing $\langle \llbracket l \rrbracket, \llbracket r \rrbracket  \rangle$ and $\langle \llbracket r \rrbracket, \llbracket l \rrbracket  \rangle$ for every equation $l = r$.
 \end{theorem}
 
-The literal meaning of the above statement is that $f = g$ in $\catname{S}^{+}(\Sigma)$ modulo $\mathcal{E})$ if and only if $\llbracket f \rrbracket \Rrightarrow{}^{*}_{\mathcal{E}} \llbracket g \rrbracket$.
+The literal meaning of the above statement is that $f = g$ in $\catname{S}^{+}(\Sigma)$ modulo $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}^{*}_{\mathcal{E}} \llbracket g \rrbracket$.
 
-Now we are ready to define DPO (EDPOI) rewriting for e-graphs by following the informal translation in Section~\ref{sec:introduction} that renders a given \textit{canonical} \textit{acyclic} \textit{connected} e-graph as a morphism of $\catname{S}^{+}(\Sigma_{C}, \mathcal{E}_{C})$ or as morphisms of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$  after applying the functor of Theorem~\ref{thm:full-completeness}.
-An e-graph is canonical if it directly corresponds to its graphical representation (as shown in~\nameref{sec:introduction}).
-An e-graph is connected if it contains a single connected component.
+Now we are ready to define DPO (EDPOI) rewriting for e-graphs by following the informal translation in Section~\ref{sec:introduction} that renders a given \textit{canonical} \textit{acyclic} \textit{connected} e-graph as a morphism of $\catname{S}^{+}(\Sigma_{C}, \mathcal{E}_{C})$, or as morphisms of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$  after applying the functor of Theorem~\ref{thm:full-completeness}.
+An e-graph is \emph{canonical} if it directly corresponds to its graphical representation (as shown in~\nameref{sec:introduction}), and \emph{connected} if it contains a single connected component.
 \begin{proposition}
 The data above define a function $\llbracket - \rrbracket : \catname{E}\text{-}\catname{graph} \to \catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$ where the latter has a naturally defined EDPOI rewriting.
 Moreover, we have that the following diagram commutes
@@ -279,10 +289,10 @@ Moreover, we have that the following diagram commutes
 \]
 \end{proposition}
 
-Note that the domain of this function is the set of e-graphs over the same signature and equations which is not a category.
-The arrow $\leadsto$ expresses the fact that e-graph $e_2$ is obtainable from e-graph $e_1$ via the application of equations from $\mathcal{E}$: it includes adding nodes and merging e-classes.
+Note that the domain of this function is the set of e-graphs over the same signature and equations, which is not a category.
+The arrow $\leadsto$ expresses the fact that e-graph $e_2$ is obtainable from e-graph $e_1$ via the application of equations from $\mathcal{E}$; it includes adding nodes and merging e-classes.
 Intuitively, the diagram above implies that we can mimic e-graph transformations by DPO rewrites over e-hypergraphs in a sound and complete manner.
-A more detailed discussion can be found in section~\ref{sec:appendix:e-graph-translation} of the Appendix.
+We defer a more elaborate analysis to Appendix~\ref{sec:appendix:e-graph-translation}.
 % \begin{proof}
 % The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
 % The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.

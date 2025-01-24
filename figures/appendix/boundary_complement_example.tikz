@@ -1,0 +1,382 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=hedge] (12) at (-7, -15.25) {$h$};
+		\node [style=node, label={below:$w_1$}] (13) at (-8, -17) {};
+		\node [style=node, label={below:$w_2$}] (14) at (-6, -17) {};
+		\node [style=node, label={above:$v_1$}] (23) at (0.75, 6.25) {};
+		\node [style=node, label={above:$v_2$}] (24) at (0.75, 4.75) {};
+		\node [style=node, label={above:$v_{12}$}] (25) at (0.75, 1.25) {};
+		\node [style=node, label={above:$v_{13}$}] (26) at (0.75, -0.25) {};
+		\node [style=none] (35) at (0, 7.25) {};
+		\node [style=none] (36) at (1.5, 7.25) {};
+		\node [style=none] (37) at (1.5, -2) {};
+		\node [style=none] (38) at (0, -2) {};
+		\node [style=none] (83) at (-1, 2.75) {};
+		\node [style=none] (84) at (-2, 2.75) {};
+		\node [style=none] (85) at (5.25, 2.75) {};
+		\node [style=none] (86) at (3.25, 2.75) {};
+		\node [style=none] (87) at (-7, -3) {};
+		\node [style=none] (88) at (-7, -4) {};
+		\node [style=none] (89) at (8, -3) {};
+		\node [style=none] (90) at (8, -4) {};
+		\node [style=none] (91) at (0.25, -9.75) {};
+		\node [style=none] (92) at (-0.75, -9.75) {};
+		\node [style=node, label={above:$v_1$}] (93) at (8, 5.75) {};
+		\node [style=node, label={above:$v_2$}] (94) at (8, 4.25) {};
+		\node [style=node, label={above:$v_3$}] (95) at (8, 3) {};
+		\node [style=none] (97) at (7.25, 6.75) {};
+		\node [style=none] (98) at (8.75, 6.75) {};
+		\node [style=none] (99) at (8.75, -1.25) {};
+		\node [style=none] (100) at (7.25, -1.25) {};
+		\node [style=none] (101) at (8, -20) {};
+		\node [style=none] (102) at (8, -19) {};
+		\node [style=none] (103) at (-2, -14.75) {};
+		\node [style=none] (104) at (-1, -16.75) {};
+		\node [style=none] (105) at (3.25, -23) {};
+		\node [style=none] (106) at (5.25, -25) {};
+		\node [style=node, label={above:$v_4$}] (130) at (-9.75, 4.75) {};
+		\node [style=hedge] (131) at (-9.75, 2.75) {$f$};
+		\node [style=node, label={below:$v_8$}] (132) at (-9.75, 0.75) {};
+		\node [style=node, label={above:$v_5$}] (133) at (-8, 4.75) {};
+		\node [style=hedge] (134) at (-8, 2.75) {$g$};
+		\node [style=node, label={below:$v_9$}] (135) at (-8, 0.75) {};
+		\node [style=none] (136) at (-7, 5.75) {};
+		\node [style=none] (137) at (-3, 5.75) {};
+		\node [style=none] (138) at (-7, -0.25) {};
+		\node [style=none] (139) at (-3, -0.25) {};
+		\node [style=none] (140) at (-6, 5.75) {};
+		\node [style=none] (141) at (-6, -0.25) {};
+		\node [style=node, label={above:$v_3$}] (142) at (-6, 7) {};
+		\node [style=node, label={below:$v_{14}$}] (143) at (-6, -1.25) {};
+		\node [style=hedge] (144) at (-5, 2.75) {$a$};
+		\node [style=node, label={above:$v_6$}] (145) at (-5.75, 4.75) {};
+		\node [style=node, label={above:$v_7$}] (146) at (-4.25, 4.75) {};
+		\node [style=node, label={below:$v_{10}$}] (147) at (-6, 0.75) {};
+		\node [style=node, label={below:$v_{11}$}] (148) at (-4, 0.75) {};
+		\node [style=none] (149) at (-11, 5.75) {};
+		\node [style=none] (150) at (-11, -0.25) {};
+		\node [style=none] (151) at (-8, -0.25) {};
+		\node [style=node, label={below:$v_{13}$}] (152) at (-8, -1.25) {};
+		\node [style=none] (153) at (-8, 5.75) {};
+		\node [style=node, label={above:$v_2$}] (154) at (-8, 7) {};
+		\node [style=node, label={above:$v_1$}] (155) at (-13, 2.75) {};
+		\node [style=hedge] (162) at (10, -15.25) {$h$};
+		\node [style=node, label={below:$w_1$}] (163) at (9, -17) {};
+		\node [style=node, label={below:$w_2$}] (164) at (11, -17) {};
+		\node [style=node, label={above:$v_2$}] (171) at (11, -5.5) {};
+		\node [style=node, label={above:$v_{14}$}] (172) at (11, -13.75) {};
+		\node [style=node, label={above:$v_{13}$}] (181) at (9, -13.75) {};
+		\node [style=node, label={above:$v_1$}] (183) at (9, -5.5) {};
+		\node [style=node, label={above:$v_{3}$}] (184) at (4, -8.75) {};
+		\node [style=node, label={above:$v_{12}$}] (185) at (4, -10.75) {};
+		\node [style=none] (192) at (24, 5.75) {};
+		\node [style=none] (193) at (27.75, 5.75) {};
+		\node [style=none] (194) at (24, -0.25) {};
+		\node [style=none] (195) at (27.75, -0.25) {};
+		\node [style=none] (196) at (25, 5.75) {};
+		\node [style=none] (197) at (25, -0.25) {};
+		\node [style=node, label={above:$v_3$}] (198) at (25, 7) {};
+		\node [style=node, label={below:$v_{14}$}] (199) at (25, -1.5) {};
+		\node [style=hedge] (200) at (26, 2.75) {$a$};
+		\node [style=node] (201) at (25.25, 4.75) {};
+		\node [style=node] (202) at (26.75, 4.75) {};
+		\node [style=node] (203) at (25, 0.75) {};
+		\node [style=node] (204) at (27, 0.75) {};
+		\node [style=none] (205) at (19, 5.75) {};
+		\node [style=none] (206) at (19, -0.25) {};
+		\node [style=none] (207) at (23, -0.25) {};
+		\node [style=node, label={below:$v_{12}$}] (208) at (23, -1.5) {};
+		\node [style=none] (209) at (23, 5.75) {};
+		\node [style=node, label={above:$v_1$}] (210) at (23, 7) {};
+		\node [style=node, label={above:$u_{3}$}] (212) at (24.5, 2.75) {};
+		\node [style=node, label={above:$v_4$}] (213) at (-9.75, -7.75) {};
+		\node [style=hedge] (214) at (-9.75, -9.75) {$f$};
+		\node [style=node, label={below:$v_8$}] (215) at (-9.75, -11.75) {};
+		\node [style=node, label={above:$v_5$}] (216) at (-8, -7.75) {};
+		\node [style=hedge] (217) at (-8, -9.75) {$g$};
+		\node [style=node, label={below:$v_9$}] (218) at (-8, -11.75) {};
+		\node [style=none] (219) at (-7, -6.75) {};
+		\node [style=none] (220) at (-3, -6.75) {};
+		\node [style=none] (221) at (-7, -12.75) {};
+		\node [style=none] (222) at (-3, -12.75) {};
+		\node [style=none] (223) at (-6, -6.75) {};
+		\node [style=none] (224) at (-6, -12.75) {};
+		\node [style=node, label={above:$v_3$}] (225) at (-6, -5.5) {};
+		\node [style=node, label={right:$v_{14}$}] (226) at (-6, -13.75) {};
+		\node [style=hedge] (227) at (-5, -9.75) {$a$};
+		\node [style=node, label={above:$v_6$}] (228) at (-5.75, -7.75) {};
+		\node [style=node, label={above:$v_7$}] (229) at (-4.25, -7.75) {};
+		\node [style=node, label={below:$v_{10}$}] (230) at (-6, -11.75) {};
+		\node [style=node, label={below:$v_{11}$}] (231) at (-4, -11.75) {};
+		\node [style=none] (232) at (-11, -6.75) {};
+		\node [style=none] (233) at (-11, -12.75) {};
+		\node [style=none] (234) at (-8, -12.75) {};
+		\node [style=node, label={left:$v_{13}$}] (235) at (-8, -13.75) {};
+		\node [style=none] (236) at (-8, -6.75) {};
+		\node [style=node, label={above:$v_2$}] (237) at (-8, -5.5) {};
+		\node [style=node, label={above:$v_1$}] (238) at (-13, -9.75) {};
+		\node [style=none] (239) at (0.75, 2.75) {$\vdots$};
+		\node [style=node, label={above:$v_{12}$}] (240) at (8, 1.75) {};
+		\node [style=node, label={above:$v_{13}$}] (241) at (8, 0.5) {};
+		\node [style=node, label={below:$v_{12}$}] (242) at (-13, 2.75) {};
+		\node [style=node, label={above:$v_{14}$}] (243) at (0.75, -1.5) {};
+		\node [style=node, label={above:$v_{14}$}] (244) at (8, -0.75) {};
+		\node [style=node, label={above:$v_3$}] (245) at (0.75, 3.5) {};
+		\node [style=node, label={below:$v_{12}$}] (246) at (-13, -9.75) {};
+		\node [style=node, label={above:$v_1$}] (247) at (8, -22) {};
+		\node [style=node, label={above:$v_2$}] (248) at (8, -23.5) {};
+		\node [style=node, label={above:$v_3$}] (249) at (8, -24.75) {};
+		\node [style=none] (251) at (7.25, -21) {};
+		\node [style=none] (252) at (8.75, -21) {};
+		\node [style=none] (253) at (8.75, -29) {};
+		\node [style=none] (254) at (7.25, -29) {};
+		\node [style=node, label={above:$v_{12}$}] (255) at (8, -26) {};
+		\node [style=node, label={above:$w_{1}$}] (256) at (8, -27.25) {};
+		\node [style=node, label={above:$w_{2}$}] (257) at (8, -28.5) {};
+		\node [style=node, label={above:$v_1$}] (258) at (0.75, -17.5) {};
+		\node [style=node, label={above:$v_2$}] (259) at (0.75, -19) {};
+		\node [style=node, label={above:$v_{12}$}] (260) at (0.75, -22.5) {};
+		\node [style=node, label={above:$w_{1}$}] (261) at (0.75, -24) {};
+		\node [style=none] (262) at (0, -16.5) {};
+		\node [style=none] (263) at (1.5, -16.5) {};
+		\node [style=none] (264) at (1.5, -25.75) {};
+		\node [style=none] (265) at (0, -25.75) {};
+		\node [style=none] (266) at (0.75, -21) {$\vdots$};
+		\node [style=node, label={above:$w_{2}$}] (267) at (0.75, -25.25) {};
+		\node [style=node, label={above:$v_3$}] (268) at (0.75, -20.25) {};
+		\node [style=none] (269) at (10, 2.75) {};
+		\node [style=none] (270) at (12, 2.75) {};
+		\node [style=node, label={above:$v_1$}] (271) at (15.25, 6.25) {};
+		\node [style=node, label={above:$v_2$}] (272) at (15.25, 4.75) {};
+		\node [style=node, label={above:$v_{12}$}] (273) at (15.25, 1.25) {};
+		\node [style=node, label={above:$v_{13}$}] (274) at (15.25, -0.25) {};
+		\node [style=none] (275) at (14.5, 7.25) {};
+		\node [style=none] (276) at (16, 7.25) {};
+		\node [style=none] (277) at (16, -2) {};
+		\node [style=none] (278) at (14.5, -2) {};
+		\node [style=none] (279) at (15.25, 2.75) {$\vdots$};
+		\node [style=node, label={above:$v_{14}$}] (280) at (15.25, -1.5) {};
+		\node [style=node, label={above:$v_3$}] (281) at (15.25, 3.5) {};
+		\node [style=node, label={above:$v_2$}] (282) at (24, 7) {};
+		\node [style=node, label={below:$v_{13}$}] (283) at (24, -1.5) {};
+		\node [style=hedge] (284) at (26, 2.75) {$a$};
+		\node [style=node, label={above:$v_6$}] (285) at (25.25, 4.75) {};
+		\node [style=node, label={above:$v_7$}] (286) at (26.75, 4.75) {};
+		\node [style=node, label={below:$v_{10}$}] (287) at (25, 0.75) {};
+		\node [style=node, label={below:$v_{11}$}] (288) at (27, 0.75) {};
+		\node [style=node, label={above:$v_4$}] (289) at (21.25, 4.75) {};
+		\node [style=hedge] (290) at (21.25, 2.75) {$f$};
+		\node [style=node, label={below:$v_8$}] (291) at (21.25, 0.75) {};
+		\node [style=node, label={above:$v_5$}] (292) at (23, 4.75) {};
+		\node [style=hedge] (293) at (23, 2.75) {$g$};
+		\node [style=node, label={below:$v_9$}] (294) at (23, 0.75) {};
+		\node [style=node, label={above:$u_{1}$}] (295) at (20, 2.75) {};
+		\node [style=node, label={below:$u_{2}$}] (296) at (20, 2.75) {};
+		\node [style=node, label={below:$u_{4}$}] (297) at (24.5, 2.75) {};
+		\node [style=hedge] (298) at (25, -15.25) {$h$};
+		\node [style=node, label={below:$w_1$}] (299) at (24, -17) {};
+		\node [style=node, label={below:$w_2$}] (300) at (26, -17) {};
+		\node [style=node, label={right:$v_{14}$}] (302) at (26, -13.75) {};
+		\node [style=node, label={left:$v_{13}$}] (303) at (24, -13.75) {};
+		\node [style=none] (307) at (24, -6.5) {};
+		\node [style=none] (308) at (27.75, -6.5) {};
+		\node [style=none] (309) at (24, -12.5) {};
+		\node [style=none] (310) at (27.75, -12.5) {};
+		\node [style=none] (311) at (25, -6.5) {};
+		\node [style=none] (312) at (26, -12.5) {};
+		\node [style=node, label={above:$v_3$}] (313) at (25, -5.25) {};
+		\node [style=hedge] (315) at (26, -9.5) {$a$};
+		\node [style=node] (316) at (25.25, -7.5) {};
+		\node [style=node] (317) at (26.75, -7.5) {};
+		\node [style=node] (318) at (25, -11.5) {};
+		\node [style=node] (319) at (27, -11.5) {};
+		\node [style=none] (320) at (19, -6.5) {};
+		\node [style=none] (321) at (19, -12.5) {};
+		\node [style=none] (322) at (22, -12.5) {};
+		\node [style=node, label={below:$v_{12}$}] (323) at (22, -13.75) {};
+		\node [style=none] (324) at (23, -6.5) {};
+		\node [style=node, label={above:$v_1$}] (325) at (23, -5.25) {};
+		\node [style=node, label={above:$u_{3}$}] (326) at (24.5, -9.5) {};
+		\node [style=node, label={above:$v_2$}] (327) at (24, -5.25) {};
+		\node [style=hedge] (329) at (26, -9.5) {$a$};
+		\node [style=node, label={above:$v_6$}] (330) at (25.25, -7.5) {};
+		\node [style=node, label={above:$v_7$}] (331) at (26.75, -7.5) {};
+		\node [style=node, label={below:$v_{10}$}] (332) at (25, -11.5) {};
+		\node [style=node, label={below:$v_{11}$}] (333) at (27, -11.5) {};
+		\node [style=node, label={above:$v_4$}] (334) at (21.25, -7.5) {};
+		\node [style=hedge] (335) at (21.25, -9.5) {$f$};
+		\node [style=node, label={below:$v_8$}] (336) at (21.25, -11.5) {};
+		\node [style=node, label={above:$v_5$}] (337) at (23, -7.5) {};
+		\node [style=hedge] (338) at (23, -9.5) {$g$};
+		\node [style=node, label={below:$v_9$}] (339) at (23, -11.5) {};
+		\node [style=node, label={above:$u_{1}$}] (340) at (20, -9.5) {};
+		\node [style=node, label={below:$u_{2}$}] (341) at (20, -9.5) {};
+		\node [style=node, label={below:$u_{4}$}] (342) at (24.5, -9.5) {};
+		\node [style=none] (343) at (17, 2.75) {};
+		\node [style=none] (344) at (18, 2.75) {};
+		\node [style=none] (345) at (15.25, -10) {};
+		\node [style=none] (346) at (16.25, -10) {};
+		\node [style=node, label={above:$v_1$}] (347) at (15, -17.5) {};
+		\node [style=node, label={above:$v_2$}] (348) at (15, -19) {};
+		\node [style=node, label={above:$v_{12}$}] (349) at (15, -22.5) {};
+		\node [style=node, label={above:$w_{1}$}] (350) at (15, -24) {};
+		\node [style=none] (351) at (14.25, -16.5) {};
+		\node [style=none] (352) at (15.75, -16.5) {};
+		\node [style=none] (353) at (15.75, -25.75) {};
+		\node [style=none] (354) at (14.25, -25.75) {};
+		\node [style=none] (355) at (15, -21) {$\vdots$};
+		\node [style=node, label={above:$w_{2}$}] (356) at (15, -25.25) {};
+		\node [style=node, label={above:$v_3$}] (357) at (15, -20.25) {};
+		\node [style=none] (358) at (10.75, -25) {};
+		\node [style=none] (359) at (13, -23) {};
+		\node [style=none] (360) at (16.75, -17) {};
+		\node [style=none] (361) at (17.75, -15) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [in=90, out=-120] (12) to (13);
+		\draw [in=90, out=-60] (12) to (14);
+		\draw [style=boundary frame] (38.center)
+			 to (35.center)
+			 to (36.center)
+			 to (37.center)
+			 to cycle;
+		\draw [style=diredge] (83.center) to (84.center);
+		\draw [style=diredge] (85.center) to (86.center);
+		\draw [style=diredge] (87.center) to (88.center);
+		\draw [style=diredge] (89.center) to (90.center);
+		\draw [style=diredge] (91.center) to (92.center);
+		\draw [style=boundary frame] (100.center)
+			 to (97.center)
+			 to (98.center)
+			 to (99.center)
+			 to cycle;
+		\draw [style=diredge] (101.center) to (102.center);
+		\draw [style=diredge] (104.center) to (103.center);
+		\draw [style=diredge] (106.center) to (105.center);
+		\draw (130) to (131);
+		\draw (131) to (132);
+		\draw (133) to (134);
+		\draw (134) to (135);
+		\draw [style=dashed edge] (138.center)
+			 to (136.center)
+			 to (137.center)
+			 to (139.center)
+			 to cycle;
+		\draw (142) to (140.center);
+		\draw (141.center) to (143);
+		\draw [in=-90, out=105] (144) to (145);
+		\draw [in=75, out=-90] (146) to (144);
+		\draw [in=90, out=-105] (144) to (147);
+		\draw [in=90, out=-75] (144) to (148);
+		\draw [style={e_hyperedge}] (149.center) to (136.center);
+		\draw [style={e_hyperedge}] (149.center) to (150.center);
+		\draw [style={e_hyperedge}] (150.center) to (138.center);
+		\draw (152) to (151.center);
+		\draw (153.center) to (154);
+		\draw [in=90, out=-120] (162) to (163);
+		\draw [in=90, out=-60] (162) to (164);
+		\draw [in=45, out=-90, looseness=0.75] (172) to (162);
+		\draw [in=135, out=-90] (181) to (162);
+		\draw [style=dashed edge] (194.center) to (192.center);
+		\draw [style=dashed edge] (192.center) to (193.center);
+		\draw [style=dashed edge] (193.center) to (195.center);
+		\draw [style=dashed edge] (195.center) to (194.center);
+		\draw (198) to (196.center);
+		\draw (197.center) to (199);
+		\draw [in=-90, out=105] (200) to (201);
+		\draw [in=75, out=-90] (202) to (200);
+		\draw [in=90, out=-105] (200) to (203);
+		\draw [in=90, out=-75] (200) to (204);
+		\draw [style={e_hyperedge}] (205.center) to (192.center);
+		\draw [style={e_hyperedge}] (205.center) to (206.center);
+		\draw [style={e_hyperedge}] (206.center) to (194.center);
+		\draw (208) to (207.center);
+		\draw (209.center) to (210);
+		\draw (213) to (214);
+		\draw (214) to (215);
+		\draw (216) to (217);
+		\draw (217) to (218);
+		\draw [style=dashed edge] (221.center)
+			 to (219.center)
+			 to (220.center)
+			 to (222.center)
+			 to cycle;
+		\draw (225) to (223.center);
+		\draw (224.center) to (226);
+		\draw [in=-90, out=105] (227) to (228);
+		\draw [in=75, out=-90] (229) to (227);
+		\draw [in=90, out=-105] (227) to (230);
+		\draw [in=90, out=-75] (227) to (231);
+		\draw [style={e_hyperedge}] (232.center) to (219.center);
+		\draw [style={e_hyperedge}] (232.center) to (233.center);
+		\draw [style={e_hyperedge}] (233.center) to (221.center);
+		\draw (235) to (234.center);
+		\draw (236.center) to (237);
+		\draw [in=-90, out=120, looseness=0.75] (12) to (235);
+		\draw [in=-90, out=60, looseness=0.75] (12) to (226);
+		\draw [style=boundary frame] (254.center)
+			 to (251.center)
+			 to (252.center)
+			 to (253.center)
+			 to cycle;
+		\draw [style=boundary frame] (265.center)
+			 to (262.center)
+			 to (263.center)
+			 to (264.center)
+			 to cycle;
+		\draw [style=diredge, in=180, out=0] (269.center) to (270.center);
+		\draw [style=boundary frame] (278.center)
+			 to (275.center)
+			 to (276.center)
+			 to (277.center)
+			 to cycle;
+		\draw (192.center) to (282);
+		\draw (194.center) to (283);
+		\draw [in=-90, out=105] (284) to (285);
+		\draw [in=75, out=-90] (286) to (284);
+		\draw [in=90, out=-105] (284) to (287);
+		\draw [in=90, out=-75] (284) to (288);
+		\draw (289) to (290);
+		\draw (290) to (291);
+		\draw (292) to (293);
+		\draw (293) to (294);
+		\draw [in=90, out=-120] (298) to (299);
+		\draw [in=90, out=-60] (298) to (300);
+		\draw [in=45, out=-90, looseness=0.75] (302) to (298);
+		\draw [in=135, out=-90] (303) to (298);
+		\draw [style=dashed edge] (309.center) to (307.center);
+		\draw [style=dashed edge] (307.center) to (308.center);
+		\draw [style=dashed edge] (308.center) to (310.center);
+		\draw [style=dashed edge] (310.center) to (309.center);
+		\draw (313) to (311.center);
+		\draw [in=-90, out=105] (315) to (316);
+		\draw [in=75, out=-90] (317) to (315);
+		\draw [in=90, out=-105] (315) to (318);
+		\draw [in=90, out=-75] (315) to (319);
+		\draw [style={e_hyperedge}] (320.center) to (307.center);
+		\draw [style={e_hyperedge}] (320.center) to (321.center);
+		\draw [style={e_hyperedge}] (321.center) to (309.center);
+		\draw (323) to (322.center);
+		\draw (324.center) to (325);
+		\draw (307.center) to (327);
+		\draw [in=-90, out=105] (329) to (330);
+		\draw [in=75, out=-90] (331) to (329);
+		\draw [in=90, out=-105] (329) to (332);
+		\draw [in=90, out=-75] (329) to (333);
+		\draw (334) to (335);
+		\draw (335) to (336);
+		\draw (337) to (338);
+		\draw (338) to (339);
+		\draw (312.center) to (302);
+		\draw (303) to (309.center);
+		\draw [style=diredge] (343.center) to (344.center);
+		\draw [style=diredge] (345.center) to (346.center);
+		\draw [style=boundary frame] (354.center)
+			 to (351.center)
+			 to (352.center)
+			 to (353.center)
+			 to cycle;
+		\draw [style=diredge] (358.center) to (359.center);
+		\draw [style=diredge] (360.center) to (361.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
