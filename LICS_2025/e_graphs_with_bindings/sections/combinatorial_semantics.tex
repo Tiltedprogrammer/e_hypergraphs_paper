@@ -1,6 +1,6 @@
 \section{String Diagram Rewrite Theory}\label{sec:combinatorial-semantics}
 
-In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
+We recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences.
@@ -30,9 +30,8 @@ A \emph{hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ is given by
     \item $\phi_V^*(s_{\mathcal{F}}(e)) = s_{\mathcal{G}}(\phi_E(e)) \qquad \phi_V^*(t_{\mathcal{F}}(e)) = t_{\mathcal{G}}(\phi_E(e))$
     \item $l_{V,\mathcal{F}}(v) = l_{V,\mathcal{G}}(\phi_V(v)) \qquad\;\; l_{E,\mathcal{F}}(e) = l_{E,\mathcal{G}}(\phi_E(e))$
 \end{enumerate}
-That is, a homomorphism should preserve sources and targets of edges and preserve the labels.
-We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$ and hypergraph homomorphisms.
 \end{definition}
+We denote by $\catname{Hyp(\Sigma)}$ the category of hypergraphs over $\Sigma$ and hypergraph homomorphisms.
 $\catname{Hyp(\Sigma)}$ has all finite colimits and, in particular,  the coproduct is given by the disjoint union of hypergraphs.
 The initial object is given by the empty hypergraph.
 
@@ -68,12 +67,11 @@ Unit is given by the initial object of $\catname{Hyp}(\Sigma)$.
 Symmetry is inherited from coproduct in $\catname{Hyp}(\Sigma)$~\cite{MonoidalCoproduct}.
 
 Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m;m \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} k$ is given by the pushout
-\[
+$
 n \xrightarrow{f} \mathcal{F} +_{g,f'} \mathcal{G} \xleftarrow{g'} k
-\]
-that is computed by identifying vertices in $\mathcal{F} + \mathcal{G}$ that share pre-image in $m$.
+$,
+computed by identifying vertices in $\mathcal{F} + \mathcal{G}$ that share pre-image in $m$.
 As pushout is only defined up to isomorphism, it justifies the morphisms in this category being isomorphism classes of cospans.
-
 To make such cospans complete with respect to representing morphism of $\catname{S}(\Sigma)$, we need to impose some restriction on their form.
 \begin{definition}[Degree,  path,  acyclic] 
 The \emph{in-degree} of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.  
@@ -88,8 +86,8 @@ We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sig
 \begin{enumerate}
     \item $\mathcal{G}$ is a directed acyclic hypergraph;
     \item $f$ and $g$ are monomorphisms;
-    \item the in-degree and out-degree of every vertex is at most $1$;
-    \item vertices with in-degree $0$ are precisely the image of $f$; and
+    \item the in-degree and out-degree of every vertex is at most~$1$;
+    \item vertices with in-degree $0$ are precisely the image of $f$; 
     \item vertices with out-degree $0$ are precisely the image of $g$.
 \end{enumerate}
 We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of MDA cospans.
@@ -189,9 +187,9 @@ and mono $f : \mathcal L \to \mathcal G$, a pushout complement $i + j \to \mathc
         \tikzfig{./figures/DPOI_boundary_complement}
     }\]
 is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to \mathcal{L}^{\bot}$ and $d_2 : m \to \mathcal{L}^{\bot}$ making the above triangle commute and such that
-\[
+$
     n + j \xrightarrow{[d_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[d_2,c_1]} m + i
-\]
+$
 is an MDA cospan. 
 \end{definition}
 
@@ -200,8 +198,8 @@ Intuitively,  requiring boundary complements ensures that inputs are glued exclu
 % To make the DPOI rewriting complete, we need to add a restriction on the image of the match.
 
 \begin{definition}[Convex match]
-We call a subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ a \emph{convex subgraph} if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
-We call a match $f : \mathcal L \to \mathcal G$ a \emph{convex match} if it is mono and its image is a convex subgraph of $\mathcal G$. 
+A subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ is a \emph{convex subgraph} if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
+A match $f : \mathcal L \to \mathcal G$ is a \emph{convex match} if it is mono and its image is a convex subgraph of $\mathcal G$. 
    
 \end{definition}
 
@@ -232,50 +230,50 @@ We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched sym
 
 
 \begin{definition}
-We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{red}{<}, \textcolor{blue}{<},\consistency)$ where
+We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{orange}{<}, \textcolor{blue}{<},\consistency)$ where
 \begin{itemize}
   \item $V$ is a set of vertices.
-  \item $E = \colorbox{yellow}{E} \cup \textcolor{red}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
+  \item $E = \colorbox{yellow}{E} \cup \textcolor{orange}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
   \item $s,t : E \to V^{*}$ are source and target functions.
   \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are \textit{label} functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
-  \item $\textcolor{red}{<} \subseteq \textcolor{red}{E} \times V + E$ and $\textcolor{blue}{<} \subseteq \textcolor{blue}{E} \times V + E $ with $\textcolor{red}{E}, \textcolor{blue} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{red}{<^{\mu}}$ and $\textcolor{blue}{<^{\mu}}$.
-        For $x \in V + E$, the set of predecessors of $x$ is denoted as $[x) = \{x' ~|~ \exists y_{1} = x', \ldots, y_{n} = x,  y_{i} \textcolor{red}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{blue}{<^{\mu}} y_{i+1}\; \}$.
+  \item $\textcolor{orange}{<} \subseteq \textcolor{orange}{E} \times V + E$ and $\textcolor{blue}{<} \subseteq \textcolor{blue}{E} \times V + E $ with $\textcolor{orange}{E}, \textcolor{blue} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{orange}{<^{\mu}}$ and $\textcolor{blue}{<^{\mu}}$.
+        For $x \in V + E$, the set of predecessors of $x$ is denoted as $[x) = \{x' ~|~ \exists y_{1} = x', \ldots, y_{n} = x,  y_{i} \textcolor{orange}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{blue}{<^{\mu}} y_{i+1}\; \}$.
         We call edges $e$ such that $l(e) = \bot$ hierarchical and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \textit{top-level}.
         Each of these relations should satisfy the following
         \begin{enumerate}
           \item each set of predecessors consists exclusively of hierarchical edges;
           \item each $x$ has at most one immediate predecessor;
-          \item edges $e$ such that there is no $x$ such that $e \textcolor{red}{<^{\mu}} x$ or $e \textcolor{red}{<^{\mu}} x$ are labelled;
-          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{red}{<^{\mu}} e$ iff $e' \textcolor{red}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{blue}{<}$.
+          \item edges $e$ such that there is no $x$ such that $e \textcolor{orange}{<^{\mu}} x$ or $e \textcolor{orange}{<^{\mu}} x$ are labelled;
+          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{orange}{<^{\mu}} e$ iff $e' \textcolor{orange}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{blue}{<}$.
         \end{enumerate}
-  \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{red}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{red}{<^{\mu}}(v)$ and $p \textcolor{red}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
-  We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{red}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{red}{<^{\mu}} e\}$.
+  \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{orange}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{orange}{<^{\mu}}(v)$ and $p \textcolor{orange}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
+  We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{orange}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{orange}{<^{\mu}} e\}$.
 \end{itemize} 
-$\textcolor{red}{E}$ and $\textcolor{blue}{E}$ are then induced by the corresponding relations and consist of exclusively hierarchical edges; then we have $\colorbox{yellow}{E} = E \setminus \textcolor{red}{E} \cup \textcolor{blue}{E}$.
-Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $\textcolor{red}{<}, \textcolor{blue}{<}$ and~$\consistency$.
+$\textcolor{orange}{E}$ and $\textcolor{blue}{E}$ are then induced by the corresponding relations and consist of exclusively hierarchical edges, so $\colorbox{yellow}{E} = E \setminus \textcolor{orange}{E} \cup \textcolor{blue}{E}$.
+Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $\textcolor{orange}{<}, \textcolor{blue}{<}$ and~$\consistency$.
 \end{definition}
 
-Intuitively, edges from $\textcolor{red}{E}$ encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{blue}{E}$ encode lambda-abstraction boxes.
+Intuitively, edges from $\textcolor{orange}{E}$ encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{blue}{E}$ encode lambda-abstraction boxes.
 Also note the typing on the $l_{V}$ function.
 We work with freely generated closed semilattice-enriched categories, and to avoid unnecessary complications we limit the labelling of vertices to such a type.
 In particular, it prohibits vertices to be labelled with, \emph{e.g.}, $A \otimes B$, but allows them to be labelled with $A \otimes B \multimap C \otimes D$.
-$\textcolor{blue}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{red}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
+$\textcolor{blue}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{orange}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
 
 Consider an example in the middle part of Figure~\ref{fig:e-cospan-example}.
-The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{red}{E} = \{e_{1}\}$, $\textcolor{blue}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
+The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{orange}{E} = \{e_{1}\}$, $\textcolor{blue}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
 \[
 \vspace{-1ex}
 \begin{array}{cccc}
-  v_{4} \textcolor{red}{<^{\mu}} e_{1} & v_{7} \textcolor{blue}{<^{\mu}} e_{2} & v_{4} \consistency e_{2} & v_{4} \not \consistency v_{10}\\
-  e_{3} \textcolor{red}{<^{\mu}} e_{1} & v_{8} \textcolor{blue}{<^{\mu}} e_{2} &  e_{2} \consistency u_{1} & e_{2} \not \consistency e_{6}\\
-  e_{2} \textcolor{red}{<^{\mu}} e_{1} & e_{5} \textcolor{blue}{<^{\mu}} e_{2} & e_{2} \consistency e_{4} & e_{4} \not \consistency e_{7}\\  
+  v_{4} \textcolor{orange}{<^{\mu}} e_{1} & v_{7} \textcolor{blue}{<^{\mu}} e_{2} & v_{4} \consistency e_{2} & v_{4} \not \consistency v_{10}\\
+  e_{3} \textcolor{orange}{<^{\mu}} e_{1} & v_{8} \textcolor{blue}{<^{\mu}} e_{2} &  e_{2} \consistency u_{1} & e_{2} \not \consistency e_{6}\\
+  e_{2} \textcolor{orange}{<^{\mu}} e_{1} & e_{5} \textcolor{blue}{<^{\mu}} e_{2} & e_{2} \consistency e_{4} & e_{4} \not \consistency e_{7}\\  
   \ldots & \ldots & \ldots & \ldots \\
-  v_{12} \textcolor{red}{<^{\mu}} e_{1} & w_{9} \textcolor{blue}{<^{\mu}} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
+  v_{12} \textcolor{orange}{<^{\mu}} e_{1} & w_{9} \textcolor{blue}{<^{\mu}} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
 \end{array}
 \]
 and, in particular, we have $[e_{5}) = \{e_2, e_1\}$.
 $\consistency_{e_{1}}$ defines a partition on immediate successors of $e_{1}$ which we delimit by a vertical dashed line.
-Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\textcolor{blue}{E}$ --- with a round solid box.
+Edges in $\textcolor{orange}{E}$ are depicted with a dashed box, while edges in $\textcolor{blue}{E}$ --- with a round solid box.
 \begin{figure}
 \[
 \adjustbox{scale=0.6}{
@@ -290,16 +288,16 @@ Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\t
   An \textit{e-hypergraph homomorphism} $\phi:\mathcal{F}\to\mathcal{G}$ between e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
   \begin{enumerate}
       \item $\phi$ is a hypergraph homomorphism;
-      \item $\phi_{E}(\textcolor{red}{E_{\mathcal{F}}}) \subseteq \textcolor{red}{E_{\mathcal{G}}}$ and $\phi_{E}(\textcolor{blue}{E_{\mathcal{F}}}) \subseteq \textcolor{blue}{E_{\mathcal{G}}}$;
+      \item $\phi_{E}(\textcolor{orange}{E_{\mathcal{F}}}) \subseteq \textcolor{orange}{E_{\mathcal{G}}}$ and $\phi_{E}(\textcolor{blue}{E_{\mathcal{F}}}) \subseteq \textcolor{blue}{E_{\mathcal{G}}}$;
       \item for $v \in V_{\mathcal{F}}$ and $e \in E_{\mathcal{F}}$
         \begin{align*}
-          \text{if } e \textcolor{red}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{red}{<_{\mathcal{G}}^{\mu}} \phi(v)
+          \text{if } e \textcolor{orange}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{orange}{<_{\mathcal{G}}^{\mu}} \phi(v)
           \qquad
           \text{if } e \textcolor{blue}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(v)
         \end{align*}
           and for $e_1, e_2 \in E_{\mathcal{F}}$
           \begin{align*}
-          \text{if } e_1 \textcolor{red}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{red}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
+          \text{if } e_1 \textcolor{orange}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{orange}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
           \qquad
           \text{if } e_1 \textcolor{blue}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
           \end{align*}
@@ -315,7 +313,7 @@ Edges in $\textcolor{red}{E}$ are depicted with a dashed box, while edges in $\t
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
 A concrete description of the pushout of two morphisms in this category is given in Appendix~\ref{sec:appendix:pushout}.
 Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but it does when certain technical conditions are satisfied. 
-Most importantly a pushout for the composition of two cospans with discrete feet always exists, as described below.
+However, a pushout for the composition of two cospans with discrete feet always exists, as described below.
   
 As in the case of $\catname{S}(\Sigma)$ and $\MdaCospans$, e-hypergraphs require interfaces in order to model string diagrams with dedicated inputs and outputs.
 Because string diagrams for closed semilattice-enriched symmetric monoidal categories are nested, containing substring diagrams inside e-boxes and lambda abstraction boxes, we need to account for the interfaces in these nested contexts as well.
@@ -344,7 +342,7 @@ All non-black vertices form strictly internal interfaces.
 \begin{definition}[Isomorphic cospans]
 Consider a relation 
 \begin{multline*}
-R = \{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{blue}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{blue}{<}^{\mu} f_{\text{int}}(y)\}
+R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{blue}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{blue}{<}^{\mu} f_{\text{int}}(y)\bigr\}
 \end{multline*}
 for $x, y \in n'$.
 And let $S$ be its reflexive closure.
@@ -388,10 +386,11 @@ but we can not swap
 with each other as it would result in a non-isomorphic cospan.
 
 Composition of two morphisms 
-\begin{align*}
-	n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} &\mathcal{F} \xleftarrow{f'_{int}} m' \xleftarrow{f'_{ext}} m\\
-	m \xrightarrow{g_{ext}} m'\!' \xrightarrow{g_{int}} &\mathcal{G} \xleftarrow{g'_{int}} k' \xleftarrow{g'_{ext}} k
-\end{align*} is computed in two stages.
+$
+	n \xrightarrow{f_{ext}} n' \xrightarrow{f_{int}} \mathcal{F} \xleftarrow{f'_{int}} m' \xleftarrow{f'_{ext}} m
+	$ and $
+	m \xrightarrow{g_{ext}} m'\!' \xrightarrow{g_{int}} \mathcal{G} \xleftarrow{g'_{int}} k' \xleftarrow{g'_{ext}} k
+$ is computed in two stages.
 First, $\mathcal{H}$ is computed as the result of the pushout square shown below: 
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
 \[
@@ -427,9 +426,9 @@ For the same reasons as in the case of $\catname{S}(\Sigma)$ we restrict cospans
 We also need to enforce typing constraints on hierarchical edges so that they represent well-typed closed $\Sigma^{+}$-terms.
 \begin{definition}
   We call a cospan 
-  \[
+  $
 n \xrightarrow{f_{\text{ext}}} n' \xrightarrow{f_{\text{int}}} \mathcal{G} \xleftarrow{g'_{\text{int}}} m' \xleftarrow{g_{\text{ext}}} m
-\]
+$
 monogamous directed acyclic if
 \begin{itemize}
   \item underlying hypergraph of $\mathcal{G}$ is directed acyclic;
@@ -449,7 +448,7 @@ MDA cospans and discrete e-hypergraphs form a category $\MdaEcospans$.
   \]
   \textit{well-typed} if all hierarchical edges of $\mathcal{G}$ are well-typed in the sense below.
   \begin{itemize}
-    \item For each $e \in \textcolor{red}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$.
+    \item For each $e \in \textcolor{orange}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$.
           $e$ is well-typed if for each element $S$ of the partition of $I$ $w(S) = w(s(e))$ and similarly for $O$ and $t(e)$.
     \item For each $e \in \textcolor{blue}{E}$ consider sets $I$ and $O$ of its input and output vertices.
           $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $[w(s(e)), B] = w(I)$ and $B \multimap w(O) = w(t(e))$.
@@ -469,7 +468,6 @@ We then proceed with definition a notion of DPOI rewriting for such e-hypergraph
 
 Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments, defined in this section.
 The construction in this section closely follows the one introduced in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} with some adjustments to account for $\textcolor{blue}{<}$.
-
 We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
 Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows. 
 \[
@@ -477,15 +475,15 @@ Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hyp
 \qquad
     n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m
 \] 
-Analogously to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data:
-\begin{align*}
-    &0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m\\
-    &0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
-\end{align*} 
-allows us to encode rewrite rules as extended cospans of the following form:
-\[
+Analogously to Section \ref{sec:combinatorial-semantics}, observing that  cospan
+$
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m$ expresses the same data as $
+    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
+$
+allows us to encode rewrite rules as extended cospans of the form
+$
 \mathcal{L} \xleftarrow{} n' + m' \xleftarrow{} n + m \xrightarrow{} n'' + m'' \xrightarrow{} \mathcal{R},
-\] 
+$ 
 which fits into the DPO formalism. We make this identification throughout,  without further mention. 
 %We will futher omit the arrows $0 \to 0 \to \mathcal{L}$.
 
@@ -520,11 +518,11 @@ First,  we introduce the  ancillary notion of a \textit{down-closed} graph:
 % https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
 
 For MDA cospans 
-\[
+$
     i \xrightarrow{} i' \xrightarrow{} \mathcal{L} \xleftarrow{} j' \xleftarrow{} j
-\quad\text{ and }\quad
+$ and $
     n \xrightarrow{} n' \xrightarrow{} \mathcal{G} \xleftarrow{} k' \xleftarrow{} k
-\] and mono $m : \mathcal{L} \to \mathcal{G}$ in $\catname{EHyp(\Sigma)}$, a pushout complement $i + j \to \mathcal{L}^{\bot} \to \mathcal{G}$
+$ and mono $m : \mathcal{L} \to \mathcal{G}$ in $\catname{EHyp(\Sigma)}$, a pushout complement $i + j \to \mathcal{L}^{\bot} \to \mathcal{G}$
 as depicted in the square below
 \[
 \scalebox{0.75}{
@@ -544,9 +542,9 @@ is a \textit{boundary complement} if
     \hspace{-2em}n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
     \]
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended MDA cospan
-    \[
-    n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
-    \]
+    \begin{multline*}
+    n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \\ \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
+    \end{multline*}
 \end{enumerate}
 where $f_i$ and $g_i$ are defined as follows.  
  %because the image of $m$ is a convex down-closed e-hypergraph, 
@@ -616,13 +614,13 @@ More precisely, when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$
 Then, when gluing $\mathcal{R}$ into the hole,  the internal interfaces of the resulting e-hypergraph should be modified to \textit{include} the strictly internal interfaces of $\mathcal{R}$ (since new internal interfaces for them to map to have been added).
 \begin{definition}[Convex EDPOI rewriting]\label{def:dpoi-e}
 Given an extended span of morphisms 
-\[
+$
 \mathcal{G} \xleftarrow{} n' + k' \xleftarrow{} n + k \xrightarrow{} n'' + k'' \xrightarrow{} \mathcal{H}
-\]
+$
 in $\catname{EHyp(\Sigma)}$, we say $\mathcal{G}$ \textit{rewrites (convexly) to} $\mathcal{H}$ (\textit{with external interface} $n + k$ and \textit{taking internal interface} $n'+k'$ \textit{to} $n'' + k''$) --- denoted by $\mathcal{G} \Rrightarrow \mathcal H$  --- \textit{via a rewrite rule} 
-\[
+$
 \mathcal{L} \xleftarrow{} i' + j' \xleftarrow{} i + j \xrightarrow{} i'' + j'' \xrightarrow{} \mathcal{R}
-\]
+$
 if there exists an object $\mathcal{C}$ and morphisms which complete the following commutative diagram 
 \[
  \scalebox{0.75}{
@@ -636,9 +634,9 @@ such that the two marked squares are pushouts and the following conditions hold:
         %\item $m(L)$ is a down-closed e-hypergraph;
         \item $i + j \to \mathcal{C} \to \mathcal{G}$ is a boundary complement;
 	\item the internal interfaces of $\mathcal H$ are such that:
-	\[
-		n'' = n' \setminus (i' \setminus i) + (i'' \setminus i) \qquad k'' = k' \setminus (j' \setminus j) +  (j'' \setminus j)\\
-	\]
+	$
+		n'' = n' \setminus (i' \setminus i) + (i'' \setminus i) $ and $ k'' = k' \setminus (j' \setminus j) +  (j'' \setminus j)
+	$
 	\item the map $f_1 = [g_1,h_1]: n'' \to \mathcal H$ in the diagram above consists of $g_1$ as defined in Definition \ref{def:boundary_new} of boundary complement,  and $h_1$ which is the restriction of the composite $i'' \to \mathcal R \to \mathcal H$ to $i'' \setminus i$,  and similarly for the map $f_2: k'' \to \mathcal H$.  
     \end{enumerate}
 % The internal interfaces of the resulting e-hypergraph $\mathcal{H}$ from the cospan

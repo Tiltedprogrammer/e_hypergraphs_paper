@@ -6,24 +6,24 @@ First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
 \begin{definition}
 \label{def:rewrite}
     We say that a $\Sigma$-term $f$ rewrites to a $\Sigma$-term $g$ modulo SMC laws via a rewrite rule $\langle l, r \rangle$ (notation, $\leadsto_{\langle l, r \rangle}$) if they are representable as
-    \[
-    f = c_{1};(id_{k} \otimes l);c_{2} \qquad g = c_{1};(id_{k} \otimes r);c_{2}~.
-    \]
+    $
+    f = c_{1};(id_{k} \otimes l);c_{2} $ and $ g = c_{1};(id_{k} \otimes r);c_{2}
+    $.
 \end{definition}
 This notion generalises to rewriting of closed $\Sigma$-terms
 \begin{definition}
     For closed-$\Sigma$-terms $f,g$, $f \leadsto_{\langle l, r \rangle}$ modulo SMC laws if they are representable as either in Definition~\ref{def:rewrite}, or as 
-    \[
-    f = c_{1};(id_{k} \otimes d);c_{2} \qquad g = c_{1};(id_{k} \otimes e);c_{2}
-    \]
+    $
+    f = c_{1};(id_{k} \otimes d);c_{2} $ and $ g = c_{1};(id_{k} \otimes e);c_{2}
+    $
     and $d \leadsto_{\langle l, r \rangle} e$
 \end{definition}
 \begin{lemma}
 \label{lemma:normal_form}
     Every closed $\Sigma^{+}$ term $f$ can be equivalently represented as
-    \[
+    $
     f_{1} + \ldots + f_{n}
-    \] modulo SMC laws and $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} where none of $f_{i}$ contain the join operator.
+    $ modulo SMC laws and $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} where none of $f_{i}$ contain the join operator.
 \end{lemma}
 % \begin{proof}
 % Such forms are given by orienting $\catname{SLat}$-equations such that $+$ gets propagated to the top, as, for example $f \otimes (g + h) = f \otimes g + g \otimes h$.
@@ -32,9 +32,9 @@ This notion generalises to rewriting of closed $\Sigma$-terms
 This takes us to the following definition of rewriting for closed $\Sigma^{+}$-terms.
 \begin{definition}
     For closed $\Sigma^{+}$-term $f,g$, $f \leadsto_{\langle l, r \rangle}$ SMC laws, $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} if they are representable as
-    \[
-    f = f_{1} + \ldots + f_{i} + \ldots + f_{n} \qquad g = f_{1} + \ldots + f_{j} + \ldots + f_{n}
-    \]
+    $
+    f = f_{1} + \ldots + f_{i} + \ldots + f_{n} $ and $ g = f_{1} + \ldots + f_{j} + \ldots + f_{n}
+    $
     such that there is a permutation $\sigma$ such that there exist indices $i,j$ and $\sigma(f_{i}) \leadsto f_{j}$.
 \end{definition}
 Next, to formulate the correspondence between rewriting systems we first define interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
@@ -74,10 +74,10 @@ For example, the distributivity rule for $\otimes$ is given by the following sch
 We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category $\WellTypedMdaEcospans / \mathcal{S}$ is a closed $\catname{SLat}$ SMC.
 
 \begin{definition}[Quotient by rewrites]  
-    Given a set of DPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the following relation.
-    \[
-        f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g ~ . 
-    \]
+    Given a set of DPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the  relation
+    $
+        f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g 
+    $.
 \end{definition}
     
 This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to Lemma~\ref{lemma:normal_form}, such that carrier of $f_{i}$ does not contain any hierarchical edges from $\textcolor{red}{E}$.
@@ -99,9 +99,9 @@ For two closed $\Sigma$-terms $f$ and $g$ and a $\mathcal{E}$ equation $l = r$  
 \end{proposition}
 \begin{proof}
 By definition, we have 
-\[
-  f = f_{1} + \ldots + f_{n} \quad \text{and} \quad g = f_{1} + \ldots + f_{n},
-\] such that $f_{i} \leadsto f_{j}$ for some $i, j$.
+$
+  f = f_{1} + \ldots + f_{n} $ and $  g = f_{1} + \ldots + f_{n}$,
+such that $f_{i} \leadsto f_{j}$ for some $i, j$.
 This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{red}{E}$, we can apply Proposition~\ref{prop:fscd}.
 \end{proof}
 

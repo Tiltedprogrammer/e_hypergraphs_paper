@@ -119,8 +119,8 @@ In this paper, we extend this technique to e-graphs with bindings, lifting to mo
 
 \subsection{String diagrams}
 
-We build on the technology of string diagrams, which is by now well-developed in a number of areas. 
-String diagrams have the advantage of being a direct bridge from the language of category theory, which in turn can be used to give semantic models to a variety of programming languages and logics, to the concrete language of graphs, which are a fundamental data structure in algorithm design.
+We build on the technology of string diagrams, by now well-developed in a number of areas. 
+String diagrams are a direct bridge from the language of category theory, which in turn can be used to give semantic models to a variety of programming languages and logics, to the concrete language of graphs, which are a fundamental data structure in algorithm design.
 These categorical techniques provide insight in how to solve the problems of binding and capture-avoiding substitution in e-graphs, as we develop in this paper.
 
 The general background literature for string diagrams is summarised in~\cite{piedeleu2023introductionstringdiagramscomputer}.
@@ -147,7 +147,7 @@ The diagrammatic boxes require the introduction of further structure to (hyper)g
 \caption{String-diagrammatic representation of $\lambda f . f ((\lambda x . f x) 2)$.}\label{fig:de-brujin-string}
 \end{figure}
 
-Revisiting the simple earlier example $\lambda f . f ((\lambda x . f x) 2)$, in Figure~\ref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
+Revisiting the simple earlier example $\lambda f . f ((\lambda x . f x) 2)$, in Fig.~\ref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
 $\lambda$-abstraction is represented by a rounded box with the bound variable a dangling wire attached to the frame,
 the application node a half-circle
 \adjustbox{scale=0.15}{\begin{tikzpicture}
@@ -198,7 +198,7 @@ and sharing a \emph{contraction node}
 \subsection{E-graphs}
 
 E-graphs can efficiently simultaneously represent several equivalent terms of an algebraic theory, generalising the \textit{directed acyclic graph} (DAG) representation of terms to include equivalence classes of subterms (or subgraphs).
-The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Figure~\ref{fig:e-graph-example}, where it is shown how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
+The key concepts of e-graphs can be intuitively grasped from some simple (but non-trivial) examples, as shown in Fig.~\ref{fig:e-graph-example}, where it is shown how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
 
 \begin{figure*}[h!]
 \[
@@ -241,10 +241,10 @@ We will see how in the categorical representation these nodes are not necessary 
 \subsection{Conventional vs. categorical e-graphs with binding}
 
 First, let us compare how substitution works in conventional e-graphs as compared to our proposed approach.
-In Figure~\ref{fig:e-graph-substitution} we show successive iterations of a conventional e-graph for $(\lambda x . (y + y) + x) 1$ following $\beta$-reductions.
+In Fig.~\ref{fig:e-graph-substitution} we show successive iterations of a conventional e-graph for $(\lambda x . (y + y) + x) 1$ following $\beta$-reductions.
 A subterm for an explicit substitution must be introduced, which is deemed equivalent to the top-level application term (hence they are inside the same dashed box), to be rewritten using the rules for explicit substitution at the top of each column.
 At the end, all explicit substitution nodes can be removed.
-The same example is then given again in Figure~\ref{fig:e-string-substitution}, this time using string diagrams. 
+The same example is then given again in Fig.~\ref{fig:e-string-substitution}, this time using string diagrams. 
 
 Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram where an application node meets an abstraction, and explicit substitution simplifies into mere composition. 
 This is appears to be simpler just by comparing diagrams, but the technical advantages of using string diagrams run deep. 
