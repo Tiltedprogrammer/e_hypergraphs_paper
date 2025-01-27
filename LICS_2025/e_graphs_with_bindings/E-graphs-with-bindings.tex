@@ -43,6 +43,11 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{lemma}[theorem]{Lemma}
 
+% change red to orange
+\definecolor{e-color}{named}{orange}
+\definecolor{closed-color}{named}{blue}
+
+
 % some macros that maybe should be moved elsewhere
 
 \newcommand\HypI[1]{\textbf{HypI}(#1)}
@@ -111,7 +116,7 @@ As a simple example, consider the term $\lambda f . f ((\lambda x . f x) 2)$ whi
 The two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$, which cannot be shared in an e-graph.
 
 Another distinct challenge is presented by $\beta$-reduction, which is handled using \emph{explicit substitutions}. 
-The implementations of $\beta$-reduction in e-graphs do not go into much detail regarding explicit substitution, and in particular do not include rules like $f[x/1][y/2] = f[y/2][x/1]$ for non-interfering substitutions, while such rules are absorbed by graph equivalence~\cite{accattoli2014nonstandard}.
+The implementations of $\beta$-reduction in e-graphs do not go into much detail regarding explicit substitution, and in particular do not include rules like $[x\!\mapsto\!1][y\!\mapsto\!2]f\!=\![y\!\mapsto\!2][x\!\mapsto\!1]f$ for non-interfering substitutions, while such rules are absorbed by graph equivalence~\cite{accattoli2014nonstandard}.
 
 All these issues can be resolved by the use of \emph{string diagrams} in place of textual syntax.
 \cite{ghica2024equivalencehypergraphsegraphsmonoidal}~shows how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.

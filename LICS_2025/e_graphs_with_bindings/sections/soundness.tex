@@ -39,7 +39,7 @@ This takes us to the following definition of rewriting for closed $\Sigma^{+}$-t
 \end{definition}
 Next, to formulate the correspondence between rewriting systems we first define interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
 It follows by first defining the interpretation of operators by extending the interpretation of plain $\Sigma$ terms as morphisms in $\MdaCospans$ as given in Appendix~\ref{sec:appendix:interpretation}.
-The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in Figure~\ref{fig:ev_and_lambda}.
+The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in Fig.~\ref{fig:ev_and_lambda}.
 
 \begin{figure}
     \begin{subfigure}{0.45\linewidth}
@@ -63,7 +63,7 @@ The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracke
 
 Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing DPOI rewrite rules to satisfy the laws of $\catname{SLat}$ symmetric monoidal category.
 We also add a structural rewrite schema rule corresponding to distributivity law~\ref{law:distributivity}.
-The join of two cospans is defined as in Figure~\ref{fig:f+g} and the quotienting is done through DPOI rewrite schema rules, one for each axiom.
+The join of two cospans is defined as in Fig.~\ref{fig:f+g} and the quotienting is done through DPOI rewrite schema rules, one for each axiom.
 For example, the distributivity rule for $\otimes$ is given by the following schema rule
 \[
 \adjustbox{width=\linewidth}{
@@ -91,7 +91,7 @@ $\llbracket - \rrbracket$ is then induced by its definition on operators by indu
 
 \begin{proposition}[Proposition 26 and Proposition 27~\cite{fscd}]
 \label{prop:fscd}
-For two closed $\Sigma$-terms $f$ and $g$ and a $\mathcal{E}$ equation $l = r$  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ where the latter is defined in a subcategory of $\WellTypedMdaEcospans$ where carriers only contain edges from $\colorbox{yellow}{E} \cup \textcolor{blue}{E}$.
+For two closed $\Sigma$-terms $f$ and $g$ and a $\mathcal{E}$ equation $l = r$  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ where the latter is defined in a subcategory of $\WellTypedMdaEcospans$ where carriers only contain edges from $\colorbox{yellow}{E} \cup \textcolor{closed-color}{E}$.
 \end{proposition}
 
 \begin{proposition}

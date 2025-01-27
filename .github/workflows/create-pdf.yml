@@ -13,13 +13,13 @@ jobs:
     env: 
       MAIN_PATH: 'arxiv/'
       MAIN_NAME: 'E-Hypergraphs-arxiv'
-      EXT_ABSTRACT_PATH: 'extended_abstract/'
-      EXT_ABSTRACT_NAME: 'EGraphsExtendedAbstract'
       SLIDES_PATH: 'slides/'
       SLIDES_NAME: 'slides'
+      EXTENDED_ABSTRACT_PATH: 'extended_abstract/'
+      EXTENDED_ABSTRACT_NAME: 'EGraphsExtendedAbstract'
       CLOSED_MONOIDAL_PATH: 'closed_monoidal/'
       CLOSED_MONOIDAL_NAME: 'closed_monoidal'
-      LICS25_CLOSED_PATH: 'LICS_2025/e_graphs_with_bindings/'
+      LICS25_CLOSED_PATH: 'LICS_2025/e_graphs_with_bindings/sections/'
       LICS25_CLOSED_NAME: 'E-graphs-with-bindings'
     steps:
       - name: Check out the repository
@@ -35,70 +35,22 @@ jobs:
         with:
           release_name: ${{ steps.name.outputs.name }}
           tag_name: ${{ steps.name.outputs.name }}
-# Compile full paper 
-      - name: pdflatex main
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: ${{env.MAIN_NAME}}.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-          working_directory: ${{env.MAIN_PATH}}
-      - name: bibtex main
+# Compile monoidal e-graphs paper 
+      - name: latexmk ${{env.MAIN_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.MAIN_NAME}}.aux
-          compiler: bibtex
-          args:
-          working_directory: ${{env.MAIN_PATH}}
-      - name: pdflatex main
+            root_file: ${{env.MAIN_NAME}}.tex
+            args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
+            working_directory: ${{env.MAIN_PATH}}
+# Compile monoidal e-graphs paper 
+      - name: latexmk ${{env.EXTENDED_ABSTRACT_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-          root_file: ${{env.MAIN_NAME}}.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-          working_directory: ${{env.MAIN_PATH}}
-      - name: pdflatex main
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: ${{env.MAIN_NAME}}.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-          working_directory: ${{env.MAIN_PATH}}
-# Compile Extended Abstract
-      - name: pdflatex ${{env.EXT_ABSTRACT_NAME}}
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: ${{env.EXT_ABSTRACT_NAME}}.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-          working_directory: ${{env.EXT_ABSTRACT_PATH}}
-      - name: bibtex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-            root_file: ${{env.EXT_ABSTRACT_NAME}}.aux
-            compiler: bibtex
-            args:
-            working_directory: ${{env.EXT_ABSTRACT_PATH}}
-      - name: pdflatex ${{env.EXT_ABSTRACT_NAME}}
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-            root_file: ${{env.EXT_ABSTRACT_NAME}}.tex
-            compiler: pdflatex
-            args: -interaction=nonstopmode -shell-escape
-            working_directory: ${{env.EXT_ABSTRACT_PATH}}
-      - name: pdflatex ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}
-        if: always()
-        uses: dante-ev/latex-action@latest
-        with:
-            root_file: ${{env.EXT_ABSTRACT_NAME}}.tex
-            compiler: pdflatex
-            args: -interaction=nonstopmode -shell-escape
-            working_directory: ${{env.EXT_ABSTRACT_PATH}}
+            root_file: ${{env.EXTENDED_ABSTRACT_NAME}}.tex
+            args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
+            working_directory: ${{env.EXTENDED_ABSTRACT_PATH}}
 # Compile slides
       - name: latexmk ${{env.SLIDES_PATH}}${{env.SLIDES_NAME}}
         if: always()
@@ -124,7 +76,7 @@ jobs:
          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
          working_directory: ${{env.LICS25_CLOSED_PATH}}
 # Upload all pdfs
-      - name: Upload main PDF to the release
+      - name: Upload monoidal e-graphs the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:
@@ -134,17 +86,17 @@ jobs:
           asset_path: ${{env.MAIN_PATH}}${{env.MAIN_NAME}}.pdf
           asset_name: arxiv.pdf
           asset_content_type: pdf
-      - name: Upload extended abstract PDF to the release
+      - name: Upload extended abstract the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{env.EXT_ABSTRACT_PATH}}${{env.EXT_ABSTRACT_NAME}}.pdf
-          asset_name: ExtendedAbstract.pdf
-          asset_content_type: pdf
-      - name: Upload the PDF to the release
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ${{env.EXTENDED_ABSTRACT_PATH}}${{env.EXTENDED_ABSTRACT_NAME}}.pdf
+            asset_name: EGraphs2024ExtendedAbstract.pdf
+            asset_content_type: pdf
+      - name: Upload slides to the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:
@@ -164,7 +116,7 @@ jobs:
             asset_path: ${{env.CLOSED_MONOIDAL_PATH}}${{env.CLOSED_MONOIDAL_NAME}}.pdf
             asset_name: closed_monoidal.pdf
             asset_content_type: pdf
-      - name: Upload LICS25 closed PDF to the release
+      - name: Upload e-graphs with bindings PDF to the release
         if: always()
         uses: actions/upload-release-asset@v1
         env:

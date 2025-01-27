@@ -81,9 +81,9 @@ In this section we will define the category of semilattices that we use as a bas
 
 In constructing the pushout the functional versions of e-hypergraph relations will be useful.
 \begin{remark}
-    $\textcolor{red}{<}$, $\textcolor{blue}{<}$ and $\consistency$ can be considered as (partial) functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
+    $\textcolor{e-color}{<}$, $\textcolor{closed-color}{<}$ and $\consistency$ can be considered as (partial) functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
     To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either a vertex or an edge into these functions.
-    For example, an immediate successor of a vertex $x$ can be written functionally as $\textcolor{red}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))$.
+    For example, an immediate successor of a vertex $x$ can be written functionally as $\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))$.
 \end{remark}
 
 \begin{remark}
@@ -96,21 +96,21 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
         \begin{enumerate}
             \item $\phi$ is hypergraph homomorphism.
             
-            \item When $x$ is not a top-level vertex such that $\textcolor{red}{<}(\iota_{V}(x))$ is defined, 
+            \item When $x$ is not a top-level vertex such that $\textcolor{e-color}{<}(\iota_{V}(x))$ is defined, 
                 \[
-                \phi_{E}(\textcolor{red}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{red}{<_{\mathcal{G}}^{\mu}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
+                \phi_{E}(\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{e-color}{<_{\mathcal{G}}^{\mu}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
                 \]
                 and
                 \[
-                \phi_{E}(\textcolor{red}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{red}{<_{\mathcal{G}}^{\mu}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))  
+                \phi_{E}(\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{e-color}{<_{\mathcal{G}}^{\mu}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))  
                 \] when $x$ is a not top-level edge.
-                \item When $x$ is not a top-level vertex such that $\textcolor{blue}{<}(\iota_{V}(x))$ is defined, 
+                \item When $x$ is not a top-level vertex such that $\textcolor{closed-color}{<}(\iota_{V}(x))$ is defined, 
                 \[
-                \phi_{E}(\textcolor{blue}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{blue}{<_{\mathcal{G}}^{\mu}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
+                \phi_{E}(\textcolor{closed-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
                 \]
                 and
                 \[
-                \phi_{E}(\textcolor{blue}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{blue}{<_{\mathcal{G}}^{\mu}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))  
+                \phi_{E}(\textcolor{closed-color}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))  
                 \] when $x$ is a not top-level edge.
                 \item
             When $x \in E_{\mathcal{F}}$
@@ -165,9 +165,9 @@ Consider the diagram below.
     Then, the pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
     First, a coproduct of $X+Y$ is computed which is 
     \[
-        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \consistency_{X+Y}, \textcolor{red}{<_{X+Y}}, \textcolor{blue}{<_{X+Y}}\}
+        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \consistency_{X+Y}, \textcolor{e-color}{<_{X+Y}}, \textcolor{closed-color}{<_{X+Y}}\}
     \]
-    where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X+Y}, \textcolor{red}{<_{X+Y}}, \textcolor{blue}{<_{X+Y}}, \consistency_{X+Y}$.
+    where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X+Y}, \textcolor{e-color}{<_{X+Y}}, \textcolor{closed-color}{<_{X+Y}}, \consistency_{X+Y}$.
     We will omit labels as they are irrelevant to pushout construction.
     Consider relations
     \begin{align*}    
@@ -201,8 +201,8 @@ We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ re
             &\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})},\\
             &\consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}},\\
-            &\textcolor{red}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
-            &\textcolor{blue}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
+            &\textcolor{e-color}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
+            &\textcolor{closed-color}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
         &)    
 \end{align*}
 
@@ -229,24 +229,24 @@ These definitions make $([]_{V},[]_{E})$ automatically a homomorphism with respe
 These maps are also automatically well-defined functions since $[e_1] = [e_2]$ implies $e_1 = e_2$ since the mappings for edges are mono.
 
 
-Recall that $\textcolor{red}{<}$ is essentially a transitive closure of $\textcolor{red}{<^{\mu}}$ and hence we can first define 
-    \[\textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e])
+Recall that $\textcolor{e-color}{<}$ is essentially a transitive closure of $\textcolor{e-color}{<^{\mu}}$ and hence we can first define 
+    \[\textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e])
     \] and 
     \[
-        \textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u])
+        \textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u])
     \] where $\iota_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
     We will consider several cases.
     First, assume that $u$ is an element of $V_{X+Y}$ and
     \begin{enumerate}
-        \item If there exists $v$ such that $\textcolor{red}{<_{X+Y}^{\mu}}(\iota_{V_{X} + V_{Y}}(v))$ is defined and $u \sim v$
+        \item If there exists $v$ such that $\textcolor{e-color}{<_{X+Y}^{\mu}}(\iota_{V_{X} + V_{Y}}(v))$ is defined and $u \sim v$
               we let
               \[
-                \textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])) = [\textcolor{red}{<_{X+Y}^{\mu}}(\iota_{V_{X} + V_{Y}}(v))]
+                \textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])) = [\textcolor{e-color}{<_{X+Y}^{\mu}}(\iota_{V_{X} + V_{Y}}(v))]
               \]
         \item \label{def:child_respects_connectivity} $u$ has no pre-image in $V_{Z}$ and $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))$ is undefined (\textit{i.e.}, $[u) = \varnothing$).
-              If there exists $v$ such that $\textcolor{red}{<_{X+Y}^{\mu}}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an \textit{undirected} path from $[u]$ to $[v]$, then we define
+              If there exists $v$ such that $\textcolor{e-color}{<_{X+Y}^{\mu}}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an \textit{undirected} path from $[u]$ to $[v]$, then we define
               \[ 
-                \textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+                \textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
               \]
     \end{enumerate}
     % Note that the existence of a path in the definition (2) implies that there exists $v' \sim v$ such that there is a path from $u$ to $v'$ and furthermore $v \not = v'$.
@@ -257,26 +257,26 @@ Recall that $\textcolor{red}{<}$ is essentially a transitive closure of $\textco
     % Since $[v) \not = \varnothing$ and $v' \sim v$, $v$ is necessarily in the image of $g_{V};\iota_{2,V}$ and for all $z$ $[g_{V};\iota_{2,V}(z)) \not = \varnothing$ as well as for some $z'$ such that $u'' = g_{V};\iota_{2,V}(z')$ and $u'' \sim_{S} u$ which would mean that the case (1) is applicable to $u$.
     % Similarly, when $u = g_{V};\iota_{2,V}(z)$.
     
-    Otherwise, we leave $\textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))$ undefined.
+    Otherwise, we leave $\textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))$ undefined.
     % \question{In the case when images of $f$ and $g$ are top-level the function is undefined. Shall we introduce bottom?}
     Now, assume that $e$ is an element of $E_{X+Y}$.
     Consider two cases.
     \begin{enumerate}
-    \item  $\textcolor{red}{<_{X+Y}^{\mu}}(\iota_{E_{X} + E_{Y}}(e)) = e'$.
+    \item  $\textcolor{e-color}{<_{X+Y}^{\mu}}(\iota_{E_{X} + E_{Y}}(e)) = e'$.
             Then we define
         \[
-            \textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = [\textcolor{red}{<_{X+Y}^{\mu}}(\iota_{E_{X} + E_{Y}}(e))]
+            \textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = [\textcolor{e-color}{<_{X+Y}^{\mu}}(\iota_{E_{X} + E_{Y}}(e))]
         \]
     \item $[e) = \varnothing$ and there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an undirected path from $[e]$ to $[v]$, we define 
         \[
-            \textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = \textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+            \textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = \textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
         \] 
     \end{enumerate}
-    Otherwise we leave $\textcolor{red}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{E_{X} + E_{Y}}{\sim}([e]))$ undefined.
+    Otherwise we leave $\textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}(\iota_{E_{X} + E_{Y}}{\sim}([e]))$ undefined.
     % We will also build this relation in steps, first we do steps for vertices (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for vertices until fixed point.
     % Essentially, this interleaving means that vertices inherit the relation from incident edges and vice versa.
     Clearly, all the cases above are disjoint.
-    We similarly define $\textcolor{blue}{<_{\sfrac{X+Y}{\sim}}^{\mu}}$.
+    We similarly define $\textcolor{closed-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}$.
 
     Let's now define $\consistency_{\sfrac{X+Y}{\sim}}$.
     We can consider the consistency relation from the coproduct as a function 
@@ -386,9 +386,9 @@ Recall that $\textcolor{red}{<}$ is essentially a transitive closure of $\textco
     \end{itemize}
 
     This construction is analogous to how a pushout was constructed in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} and we refer the reader for more detailed proofs there.
-    The only addition is $\textcolor{blue}{<_{\sfrac{X+Y}{\sim}}}^{\mu}$ that is constructed analogously to $\textcolor{red}{<_{\sfrac{X+Y}{\sim}}}^{\mu}$.
+    The only addition is $\textcolor{closed-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}$ that is constructed analogously to $\textcolor{e-color}{<_{\sfrac{X+Y}{\sim}}^{\mu}}$.
 \end{proof}
-The construction can be illustrated with the example in Figure~\ref{fig:pushout_example}.
+The construction can be illustrated with the example in Fig.~\ref{fig:pushout_example}.
 Vertices and edges that are being identified as they have a common preimage inherit the relations from the vertex or edge that has it defined either directly or via a path.
 In particular, a coproduct of two feet contains\begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
@@ -400,8 +400,8 @@ In particular, a coproduct of two feet contains\begin{tikzpicture}
 		\node [style=node, label={above:$v'_3$}] (5) at (-0.5, 3.5) {};
 	\end{pgfonlayer}
 \end{tikzpicture}
-such that $\textcolor{blue}{<_{X+Y}}$ is only defined for $v_1,v_2,v_3$.
-Therefore, we assign $\textcolor{blue}{<_{\sfrac{X+Y}{\sim}}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) = [\textcolor{blue}{<_{X+Y}}(\iota_{V_{X} + V_{Y}}(v_1))]$ and so on.
+such that $\textcolor{closed-color}{<_{X+Y}}$ is only defined for $v_1,v_2,v_3$.
+Therefore, we assign $\textcolor{closed-color}{<_{\sfrac{X+Y}{\sim}}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) = [\textcolor{closed-color}{<_{X+Y}}(\iota_{V_{X} + V_{Y}}(v_1))]$ and so on.
 This motivates the requirement for conditions (2), (3), and (4) of Theorem~\ref{th:existence_of_pushouts}, otherwise such inheritance would be ambiguous.
 
 \begin{figure}[t]
@@ -428,13 +428,13 @@ This motivates the requirement for conditions (2), (3), and (4) of Theorem~\ref{
   \label{fig:base_cases}
 \end{figure*}
 
-The base cases for interpretation function $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$ is given in the Figure~\ref{fig:base_cases}.
+The base cases for interpretation function $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$ is given in the Fig.~\ref{fig:base_cases}.
 Then it is defined inductively by letting $[f \otimes g] \Coloneqq [f] \otimes [g]$ and $[f;g] \Coloneqq [f];[g]$ and by freeness induces the corresponding functor.
 
 \subsection{DPOI rewriting}
 \label{sec:appendix:dpoi}
 
-Consider an example of DPOI rewriting in Figure~\ref{fig:dpoi-example} as defined in Definition~\ref{def:dpoi-e}.
+Consider an example of DPOI rewriting in Fig.~\ref{fig:dpoi-example} as defined in Definition~\ref{def:dpoi-e}.
 The rule in the top half of the diagram is an instance of a $\beta$-reduction rule as defined for string diagrams~\cite{ghica2024stringdiagramslambdacalculifunctional}.
 Note that the match satisfies all the conditions of the boundary complement as all vertices from the interface have the same parent.
 First, to compute the boundary complement, we remove from the source e-hypergraph everything that has no pre-image in the interface above.

@@ -106,19 +106,19 @@ Term rewriting and hence equality modulo $\mathcal{E}$ is then implemented as DP
 DPO rewriting is a standard technique for formalising graph transformations categorically.
 % In this section we recall standard results of double-pushout (DPO) rewriting of hypergraphs,  as well as the specific notion of DPO rewriting which is sound and complete for arbitrary SMTs,  which is called \textit{convex} rewriting.
 The intuitive notion of (hyper-)graph rewriting is  as expected: given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$,  we expect to find an occurrence of $\mathcal L$ within $\mathcal{G}$,  remove it,  and then plug $\mathcal R$ into the hole to recover the rewritten graph $\mathcal{H}$.  In DPO rewriting,  such a rewrite rule is formalised as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs,  where $\mathcal K$ is some invariant that should be maintained during rewriting.
-A typical DPO square is depicted in Figure~\ref{fig:dpo_dpoi}~(left).
+A typical DPO square is depicted in Fig.~\ref{fig:dpo_dpoi}~(left).
 
 
 The morphism $\mathcal L \to \mathcal G$ is called a \textit{match},  defined whenever there is a corresponding \textit{pushout complement}---the pair of morphisms $\mathcal K \to \mathcal \mathcal{L}^{\bot} \to \mathcal G$ completing the top half of the pushout square defined by $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$. 
 When the morphisms involved in the rewrite rule are monomorphisms,  as is usually required,  constructing $\mathcal{L}^{\bot}$ can be intuitively understood as finding an occurrence of $\mathcal L$ in $\mathcal G$ and removing from this occurrence everything that has no pre-image in $\mathcal K$.  The final graph $\mathcal H$ is then recovered by inserting into the hole everything from $\mathcal R$ that has no pre-image in $\mathcal K$ --- hence the two pushouts: one for deletion and one for insertion.  In this case,  we say that $\mathcal G$ is rewritten into $\mathcal H$ via the rewrite rule $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$.
 
-To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI) as shown in Figure~\ref{fig:dpo_dpoi}~(right).
+To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI) as shown in Fig.~\ref{fig:dpo_dpoi}~(right).
 In the case of $ \catname{Hyp(\Sigma)}$,  we wish for a rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  
 By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  
 We now make this identification throughout without further mention.  
 Thus we reach the following variant of DPO rewriting.
 \begin{definition}[DPOI rewriting]\label{def:dpoi}
-Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the rightmost commutative diagram in Figure~\ref{fig:dpo_dpoi} such that the two marked squares are pushouts.
+Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal C$ and morphisms which complete the rightmost commutative diagram in Fig.~\ref{fig:dpo_dpoi} such that the two marked squares are pushouts.
 
 \begin{figure}[t!]
     \begin{subfigure}[T]{0.35\linewidth}
@@ -230,50 +230,50 @@ We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched sym
 
 
 \begin{definition}
-We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{orange}{<}, \textcolor{blue}{<},\consistency)$ where
+We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency)$ where
 \begin{itemize}
   \item $V$ is a set of vertices.
-  \item $E = \colorbox{yellow}{E} \cup \textcolor{orange}{E} \cup \textcolor{blue}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
+  \item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
   \item $s,t : E \to V^{*}$ are source and target functions.
   \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are \textit{label} functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
-  \item $\textcolor{orange}{<} \subseteq \textcolor{orange}{E} \times V + E$ and $\textcolor{blue}{<} \subseteq \textcolor{blue}{E} \times V + E $ with $\textcolor{orange}{E}, \textcolor{blue} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{orange}{<^{\mu}}$ and $\textcolor{blue}{<^{\mu}}$.
-        For $x \in V + E$, the set of predecessors of $x$ is denoted as $[x) = \{x' ~|~ \exists y_{1} = x', \ldots, y_{n} = x,  y_{i} \textcolor{orange}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{blue}{<^{\mu}} y_{i+1}\; \}$.
+  \item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times V + E$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times V + E $ with $\textcolor{e-color}{E}, \textcolor{closed-color} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{<^{\mu}}$ and $\textcolor{closed-color}{<^{\mu}}$.
+        For $x \in V + E$, the set of predecessors of $x$ is denoted as $[x) = \{x' ~|~ \exists y_{1} = x', \ldots, y_{n} = x,  y_{i} \textcolor{e-color}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{closed-color}{<^{\mu}} y_{i+1}\; \}$.
         We call edges $e$ such that $l(e) = \bot$ hierarchical and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \textit{top-level}.
         Each of these relations should satisfy the following
         \begin{enumerate}
           \item each set of predecessors consists exclusively of hierarchical edges;
           \item each $x$ has at most one immediate predecessor;
-          \item edges $e$ such that there is no $x$ such that $e \textcolor{orange}{<^{\mu}} x$ or $e \textcolor{orange}{<^{\mu}} x$ are labelled;
-          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{orange}{<^{\mu}} e$ iff $e' \textcolor{orange}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{blue}{<}$.
+          \item edges $e$ such that there is no $x$ such that $e \textcolor{e-color}{<^{\mu}} x$ or $e \textcolor{e-color}{<^{\mu}} x$ are labelled;
+          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{e-color}{<^{\mu}} e$ iff $e' \textcolor{e-color}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{closed-color}{<}$.
         \end{enumerate}
-  \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{orange}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{orange}{<^{\mu}}(v)$ and $p \textcolor{orange}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
-  We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{orange}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{orange}{<^{\mu}} e\}$.
+  \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{e-color}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{e-color}{<^{\mu}}(v)$ and $p \textcolor{e-color}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
+  We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{e-color}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{e-color}{<^{\mu}} e\}$.
 \end{itemize} 
-$\textcolor{orange}{E}$ and $\textcolor{blue}{E}$ are then induced by the corresponding relations and consist of exclusively hierarchical edges, so $\colorbox{yellow}{E} = E \setminus \textcolor{orange}{E} \cup \textcolor{blue}{E}$.
-Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $\textcolor{orange}{<}, \textcolor{blue}{<}$ and~$\consistency$.
+$\textcolor{e-color}{E}$ and $\textcolor{closed-color}{E}$ are then induced by the corresponding relations and consist of exclusively hierarchical edges, so $\colorbox{yellow}{E} = E \setminus \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$.
+Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $\textcolor{e-color}{<}, \textcolor{closed-color}{<}$ and~$\consistency$.
 \end{definition}
 
-Intuitively, edges from $\textcolor{orange}{E}$ encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{blue}{E}$ encode lambda-abstraction boxes.
+Intuitively, edges from $\textcolor{e-color}{E}$ encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{closed-color}{E}$ encode lambda-abstraction boxes.
 Also note the typing on the $l_{V}$ function.
 We work with freely generated closed semilattice-enriched categories, and to avoid unnecessary complications we limit the labelling of vertices to such a type.
 In particular, it prohibits vertices to be labelled with, \emph{e.g.}, $A \otimes B$, but allows them to be labelled with $A \otimes B \multimap C \otimes D$.
-$\textcolor{blue}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{orange}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
+$\textcolor{closed-color}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
 
-Consider an example in the middle part of Figure~\ref{fig:e-cospan-example}.
-The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{orange}{E} = \{e_{1}\}$, $\textcolor{blue}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
+Consider an example in the middle part of Fig.~\ref{fig:e-cospan-example}.
+The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{e-color}{E} = \{e_{1}\}$, $\textcolor{closed-color}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
 \[
 \vspace{-1ex}
 \begin{array}{cccc}
-  v_{4} \textcolor{orange}{<^{\mu}} e_{1} & v_{7} \textcolor{blue}{<^{\mu}} e_{2} & v_{4} \consistency e_{2} & v_{4} \not \consistency v_{10}\\
-  e_{3} \textcolor{orange}{<^{\mu}} e_{1} & v_{8} \textcolor{blue}{<^{\mu}} e_{2} &  e_{2} \consistency u_{1} & e_{2} \not \consistency e_{6}\\
-  e_{2} \textcolor{orange}{<^{\mu}} e_{1} & e_{5} \textcolor{blue}{<^{\mu}} e_{2} & e_{2} \consistency e_{4} & e_{4} \not \consistency e_{7}\\  
+  v_{4} \textcolor{e-color}{<^{\mu}} e_{1} & v_{7} \textcolor{closed-color}{<^{\mu}} e_{2} & v_{4} \consistency e_{2} & v_{4} \not \consistency v_{10}\\
+  e_{3} \textcolor{e-color}{<^{\mu}} e_{1} & v_{8} \textcolor{closed-color}{<^{\mu}} e_{2} &  e_{2} \consistency u_{1} & e_{2} \not \consistency e_{6}\\
+  e_{2} \textcolor{e-color}{<^{\mu}} e_{1} & e_{5} \textcolor{closed-color}{<^{\mu}} e_{2} & e_{2} \consistency e_{4} & e_{4} \not \consistency e_{7}\\  
   \ldots & \ldots & \ldots & \ldots \\
-  v_{12} \textcolor{orange}{<^{\mu}} e_{1} & w_{9} \textcolor{blue}{<^{\mu}} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
+  v_{12} \textcolor{e-color}{<^{\mu}} e_{1} & w_{9} \textcolor{closed-color}{<^{\mu}} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
 \end{array}
 \]
 and, in particular, we have $[e_{5}) = \{e_2, e_1\}$.
 $\consistency_{e_{1}}$ defines a partition on immediate successors of $e_{1}$ which we delimit by a vertical dashed line.
-Edges in $\textcolor{orange}{E}$ are depicted with a dashed box, while edges in $\textcolor{blue}{E}$ --- with a round solid box.
+Edges in $\textcolor{e-color}{E}$ are depicted with a dashed box, while edges in $\textcolor{closed-color}{E}$ --- with a round solid box.
 \begin{figure}
 \[
 \adjustbox{scale=0.6}{
@@ -288,18 +288,18 @@ Edges in $\textcolor{orange}{E}$ are depicted with a dashed box, while edges in 
   An \textit{e-hypergraph homomorphism} $\phi:\mathcal{F}\to\mathcal{G}$ between e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
   \begin{enumerate}
       \item $\phi$ is a hypergraph homomorphism;
-      \item $\phi_{E}(\textcolor{orange}{E_{\mathcal{F}}}) \subseteq \textcolor{orange}{E_{\mathcal{G}}}$ and $\phi_{E}(\textcolor{blue}{E_{\mathcal{F}}}) \subseteq \textcolor{blue}{E_{\mathcal{G}}}$;
+      \item $\phi_{E}(\textcolor{e-color}{E_{\mathcal{F}}}) \subseteq \textcolor{e-color}{E_{\mathcal{G}}}$ and $\phi_{E}(\textcolor{closed-color}{E_{\mathcal{F}}}) \subseteq \textcolor{closed-color}{E_{\mathcal{G}}}$;
       \item for $v \in V_{\mathcal{F}}$ and $e \in E_{\mathcal{F}}$
         \begin{align*}
-          \text{if } e \textcolor{orange}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{orange}{<_{\mathcal{G}}^{\mu}} \phi(v)
+          \text{if } e \textcolor{e-color}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{e-color}{<_{\mathcal{G}}^{\mu}} \phi(v)
           \qquad
-          \text{if } e \textcolor{blue}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(v)
+          \text{if } e \textcolor{closed-color}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}} \phi(v)
         \end{align*}
           and for $e_1, e_2 \in E_{\mathcal{F}}$
           \begin{align*}
-          \text{if } e_1 \textcolor{orange}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{orange}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
+          \text{if } e_1 \textcolor{e-color}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{e-color}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
           \qquad
-          \text{if } e_1 \textcolor{blue}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{blue}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
+          \text{if } e_1 \textcolor{closed-color}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}} \phi(e_2)
           \end{align*}
           \item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 ~\consistency_{\mathcal{F}}~ x_2$ implies $\phi(x_1) ~\consistency_{\mathcal{G}}~ \phi(x_2)$.
   \end{enumerate}
@@ -335,14 +335,14 @@ and $n' \setminus f_{ext}(n)$  the \textit{strictly internal input interfaces}.
 We do analogously for the \emph{output interfaces},  with respect to $m$,  $m'$ and $m' \setminus g_{ext}(m)$.  
 We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n'$ and $m'$,  and likewise $m, m, n', m'$ with their images in $\mathcal{G}$. 
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.
-Graphically, we depict such extended cospans as in Figure~\ref{fig:e-cospan-example}: feet of the cospan are depicted within shaded regions.
+Graphically, we depict such extended cospans as in Fig.~\ref{fig:e-cospan-example}: feet of the cospan are depicted within shaded regions.
 All non-black vertices form strictly internal interfaces.
 
 
 \begin{definition}[Isomorphic cospans]
 Consider a relation 
 \begin{multline*}
-R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{blue}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{blue}{<}^{\mu} f_{\text{int}}(y)\bigr\}
+R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{<}^{\mu} f_{\text{int}}(y)\bigr\}
 \end{multline*}
 for $x, y \in n'$.
 And let $S$ be its reflexive closure.
@@ -357,10 +357,10 @@ Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta
 \]
 \end{definition}
 
-In Figure~\ref{fig:e-cospan-example} the partitions for input and output internal interfaces are given with colours.
+In Fig.~\ref{fig:e-cospan-example} the partitions for input and output internal interfaces are given with colours.
 
 Intuitively, such notion of isomorphism makes it possible to freely rearrange interfaces for disjoint components.
-For example, in the input interface of cospan in Figure~\ref{fig:e-cospan-example}, we can swap 
+For example, in the input interface of cospan in Fig.~\ref{fig:e-cospan-example}, we can swap 
 \begin{tikzpicture}
 \begin{pgfonlayer}{nodelayer}
 		\node [style=red node, label={above:$v_{4}$}] (0) at (-0.5, 3.5) {};
@@ -448,9 +448,9 @@ MDA cospans and discrete e-hypergraphs form a category $\MdaEcospans$.
   \]
   \textit{well-typed} if all hierarchical edges of $\mathcal{G}$ are well-typed in the sense below.
   \begin{itemize}
-    \item For each $e \in \textcolor{orange}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$.
+    \item For each $e \in \textcolor{e-color}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$.
           $e$ is well-typed if for each element $S$ of the partition of $I$ $w(S) = w(s(e))$ and similarly for $O$ and $t(e)$.
-    \item For each $e \in \textcolor{blue}{E}$ consider sets $I$ and $O$ of its input and output vertices.
+    \item For each $e \in \textcolor{closed-color}{E}$ consider sets $I$ and $O$ of its input and output vertices.
           $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $[w(s(e)), B] = w(I)$ and $B \multimap w(O) = w(t(e))$.
   \end{itemize}
 
@@ -458,7 +458,7 @@ MDA cospans and discrete e-hypergraphs form a category $\MdaEcospans$.
   \end{definition}
 % This is a proper category as identities, symmetries, and tensor unit are well-typed and composition and tensor product of two well-typed MDA cospans is again a well typed MDA cospan.
 
-Consider, again, Figure ~\ref{fig:e-cospan-example}.
+Consider, again, Fig. ~\ref{fig:e-cospan-example}.
 To make edge $e_{1}$ well-typed, it is necessary that $l_{V}^{*}([v_{4},v_{5},v_{6}]) = l_{V}^{*}([v_{10},v_{11},v_{12}]) = l_{V}^{*}([v_1,v_2,v_3])$ and $l_{V}^{*}([w_{4},w_{5},w_{6}]) = l_{V}^{*}([w_{10},v_{12},v_{11}]) = l_{V}^{*}([w_1,w_2,w_3])$ (note the change of ordering in the output of $e_{1}$).
 To make edge $e_{2}$ well-typed, it is necessary that $l_{V}^{*}([v_4,v_5,v_9]) = l_{V}^{*}([v_7,v_8,v_9])$ and $l_{V}([u_1]) = l_{V}([v_9]) \multimap l_{V}^{*}([v_8,v_7,w_9])$.
 
@@ -467,7 +467,7 @@ We then proceed with definition a notion of DPOI rewriting for such e-hypergraph
 \section{DPOI-Rewriting for E-Hypergraphs}
 
 Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments, defined in this section.
-The construction in this section closely follows the one introduced in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} with some adjustments to account for $\textcolor{blue}{<}$.
+The construction in this section closely follows the one introduced in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} with some adjustments to account for $\textcolor{closed-color}{<}$.
 We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
 Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows. 
 \[
@@ -492,7 +492,7 @@ which fits into the DPO formalism. We make this identification throughout,  with
 % Note that the outermost interfaces are preserved.
 
 % Another concern is when we delete the occurrence of the left-hand side of a rewrite rule from an e-hypergraph we also modify this e-hypergraph's interfaces.
-% Consider a hypothetical DPO square below in Figure~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
+% Consider a hypothetical DPO square below in Fig.~\ref{fig:interface_change_example} where long arrows denote matching between carriers of cospans.
 
 % The first row of the diagram shows the span for a rewrite rule of $\langle f + g, f \rangle$ which is like a projection rule.
 % Note once again the difference between the interfaces of the left-hand and right-hand sides of the rewrite rule.
@@ -534,8 +534,8 @@ is a \textit{boundary complement} if
 \begin{enumerate} 
     \item $m(\mathcal L)$ is a convex down-closed e-hypergraph;
     \item $[c_1,c_2]$ is mono;
-    \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{blue}{E}$ s.t. $v,w \textcolor{blue}{<}^{\mu} e$;
-    \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{blue}{E}$ s.t. $v,w \textcolor{blue}{<}^{\mu} e$;
+    \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<}^{\mu} e$;
+    \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<}^{\mu} e$;
     \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended MDA cospan
     \[
