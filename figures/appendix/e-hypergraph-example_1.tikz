@@ -4,31 +4,17 @@
 		\node [style=none] (57) at (-6.75, 21) {};
 		\node [style=none] (58) at (-6.75, 1) {};
 		\node [style=none] (59) at (-22.75, 1) {};
-		\node [style=hedge] (0) at (-12.5, 18.5) {$/$};
-		\node [style=hedge] (1) at (-17, 3.5) {$a$};
-		\node [style=hedge] (2) at (-18.25, 12.75) {$!$};
-		\node [style=hedge] (3) at (-12.25, 5.5) {$\triangle$};
-		\node [style=hedge] (4) at (-13.5, 7.75) {$1$};
-		\node [style=node, label={below:$w_{1}$}] (5) at (-20.75, 11.25) {};
-		\node [style=hedge] (6) at (-20, 12.75) {$*$};
-		\node [style=hedge] (7) at (-12.25, 2.5) {$2$};
-		\node [style=node, label={below:$w_{2}$}] (9) at (-19.25, 11.25) {};
-		\node [style=node, label={below:$w_{7}$}] (12) at (-11.75, 11.25) {};
-		\node [style=hedge] (13) at (-11, 12.75) {$<\!\!<$};
-		\node [style=node, label={below:$w_{8}$}] (14) at (-10.25, 11.25) {};
-		\node [style=node, label={below:$w_{3}$}] (15) at (-18.25, 11.25) {};
-		\node [style=hedge] (16) at (-16.75, 12.75) {$!$};
-		\node [style=node, label={below:$w_{4}$}] (17) at (-16.75, 11.25) {};
-		\node [style=hedge] (18) at (-14.5, 12.75) {$!$};
-		\node [style=node, label={below:$w_{5}$}] (19) at (-14.5, 11.25) {};
-		\node [style=hedge] (20) at (-13, 12.75) {$!$};
-		\node [style=node, label={below:$w_{6}$}] (21) at (-13, 11.25) {};
 		\node [style=none] (22) at (-15.5, 15) {};
 		\node [style=none] (23) at (-15.5, 10) {};
 		\node [style=none] (24) at (-21.25, 10) {};
 		\node [style=none] (25) at (-21.25, 15) {};
 		\node [style=none] (26) at (-9.75, 15) {};
 		\node [style=none] (27) at (-9.75, 10) {};
+		\node [style=hedge] (0) at (-12.5, 18.5) {$/$};
+		\node [style=hedge] (1) at (-17, 3.5) {$a$};
+		\node [style=hedge] (3) at (-12.25, 5.5) {$\triangle$};
+		\node [style=hedge] (4) at (-13.5, 7.75) {$1$};
+		\node [style=hedge] (7) at (-12.25, 2.5) {$2$};
 		\node [style=node] (28) at (-15.5, 16.5) {};
 		\node [style=node] (29) at (-7.75, 13) {};
 		\node [style=node] (30) at (-12.25, 4) {};
@@ -43,8 +29,6 @@
 		\node [style=hedge] (39) at (-17, 6.5) {$\triangle$};
 		\node [style=node] (40) at (-17, 5) {};
 		\node [style=node, label={above:$v_{1}$}] (41) at (-12.5, 19.75) {};
-		\node [style=node, label={above:$v_{2}$}] (42) at (-20, 14) {};
-		\node [style=node, label={above:$v_{3}$}] (43) at (-11, 14) {};
 		\node [style=node, label={above:$v_{1}$}] (44) at (-12.25, 27) {};
 		\node [style=node, label={above:$v_{1}$}] (45) at (-13.5, 23.5) {};
 		\node [style=node, label={above:$v_{2}$}] (46) at (-12.25, 23.5) {};
@@ -79,12 +63,35 @@
 		\node [style=none] (84) at (-12.25, -1) {};
 		\node [style=none] (85) at (-12.25, -4.25) {};
 		\node [style=none] (86) at (-12.25, -5.25) {};
+		\node [style=hedge] (2) at (-18.25, 12.75) {$!$};
+		\node [style=node, label={below:$w_{1}$}] (5) at (-20.75, 11.25) {};
+		\node [style=hedge] (6) at (-20, 12.75) {$*$};
+		\node [style=node, label={below:$w_{2}$}] (9) at (-19.25, 11.25) {};
+		\node [style=node, label={below:$w_{7}$}] (12) at (-11.75, 11.25) {};
+		\node [style=hedge] (13) at (-11, 12.75) {$<\!\!<$};
+		\node [style=node, label={below:$w_{8}$}] (14) at (-10.25, 11.25) {};
+		\node [style=node, label={below:$w_{3}$}] (15) at (-18.25, 11.25) {};
+		\node [style=hedge] (16) at (-16.75, 12.75) {$!$};
+		\node [style=node, label={below:$w_{4}$}] (17) at (-16.75, 11.25) {};
+		\node [style=hedge] (18) at (-14.5, 12.75) {$!$};
+		\node [style=node, label={below:$w_{5}$}] (19) at (-14.5, 11.25) {};
+		\node [style=hedge] (20) at (-13, 12.75) {$!$};
+		\node [style=node, label={below:$w_{6}$}] (21) at (-13, 11.25) {};
+		\node [style=node, label={above:$v_{2}$}] (42) at (-20, 14) {};
+		\node [style=node, label={above:$v_{3}$}] (43) at (-11, 14) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=graph frame] (57.center)
 			 to (58.center)
 			 to (59.center)
 			 to (56.center)
+			 to cycle;
+		\draw [style={e_hyperedge}] (27.center)
+			 to (23.center)
+			 to (24.center)
+			 to (25.center)
+			 to (22.center)
+			 to (26.center)
 			 to cycle;
 		\draw [in=-120, out=90] (5) to (6);
 		\draw [in=90, out=-60] (6) to (9);
@@ -94,13 +101,6 @@
 		\draw (17) to (16);
 		\draw (19) to (18);
 		\draw (21) to (20);
-		\draw [style=dashed edge] (27.center)
-			 to (23.center)
-			 to (24.center)
-			 to (25.center)
-			 to (22.center)
-			 to (26.center)
-			 to cycle;
 		\draw [style=dashed edge] (22.center) to (23.center);
 		\draw [in=90, out=-150, looseness=0.75] (0) to (28);
 		\draw (28) to (22.center);

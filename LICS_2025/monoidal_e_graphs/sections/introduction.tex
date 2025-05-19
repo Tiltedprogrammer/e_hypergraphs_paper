@@ -20,7 +20,8 @@ Considering programs as represented by terms of an arbitrary algebraic theory, w
 % The morphisms of the latter can also be depicted using \emph{string diagrams}~\cite{Selinger_2010,joyal_geometry_1991, mellies_functorial_2006}: a two-dimensional syntax that encodes equivalence classes of morphism terms.
 % Enriched categories~\cite{Borceux_1994,Kelly2022BASICCO} generalise plain categories by imposing more structure making the categorical language more expressive~\cite{Borceux_1994,Kelly2022BASICCO} which will be useful for modelling equivalence between terms as encountered in e-graphs.
 Our approach is guided by the established methodology of creating a correspondence between string diagrams and graph rewriting, for which there are existing precedents in the literature~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022-3,fscd,ghica-zanassi2023string}.
-The key ingredient of our categorical approach is the semilattice-enrichment\footnote{We could alternatively use the language of idempotent commutative semigroups, which form an equivalent category, but stick to the \enquote{semilattice} terminology for brevity.}.
+The key ingredient of our categorical approach is the semilattice-enrichment.
+% \footnote{We could alternatively use the language of idempotent commutative semigroups, which form an equivalent category, but stick to the \enquote{semilattice} terminology for brevity.}
 By using the binary operator of a given semilattice we can operate with (non-empty) \textit{sets} of terms (string diagrams, morphisms); the rest of the paper is about working out the mathematical implications of introducing this enrichment to string diagrams and their concrete combinatorial representation.
 
 \emph{Monoidal} category theory has seen applications in digital~\cite{ghica_compositional_2023} and quantum circuits~\cite{coecke_interacting_2011,ZX}, functional programs~\cite{ghica-zanassi2023string}, and computational linguistics~\cite{wazni_quantum_2022,coecke_lambek_2013}.
@@ -100,7 +101,7 @@ Explicit discarding (delete) nodes, depicted with black dots with a single wire 
 	\end{tikzpicture}
 }, indicate which of the class-level edges are connected to which nodes inside the class.
 
-The other steps, (c) to (e), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules.
+The other steps, (c) to (d), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rules.
 If we were to apply another rule, $x * 1 \to x$, we would identify the e-class (dashed box) containing $a$ with the e-class containing $a * 1$ (the topmost dashed box) which would require a cycle to be introduced: the left argument of node $*$ would be the same e-class that $*$ belongs to.
 Then, an optimal term $a$ could be extracted from the e-graph by traversing all the e-classes, where its optimality is justified by its minimal size as a graph.
 To support such cycles we need a richer categorical structure for our string diagrams.
@@ -109,7 +110,7 @@ This is obtained by combining this work with the results of~\cite{ghica_rewritin
 Note that while the transformations of the e-graph are guided by the algorithm, the transformations of the string diagrammatic version are guided by the equations of the underlying theory.
 A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively.
 The equations applied are the ones from Figure~\ref{fig:string-equations} along with the naturality of delete and copy.
-Note that the size of the eventual string diagram is comparable to the size of the corresponding e-graph.
+Note that the degree of sharing in the eventual string diagram is comparable to the degree of sharing in the corresponding e-graph.
 % Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
 % From the saturated graph the optimal term consisting of only the node $a$ can be then extracted, discarding everything else. 
 
@@ -150,7 +151,6 @@ Examples of this translation are given in the second row of Figure \ref{fig:e-gr
 \captionsetup{skip=0pt}
 \caption{E-graph e-class translation to string diagram.}
 \label{fig:e-graph-to-string}
-\vspace{-8mm}
 \end{figure}
 % The subfigure on the right is slightly simplified: if we denote the arity of each $c_i$ as $a_{c_{i}}$, then the dashed box on the right should contain $\sum\limits_{i} a_{c_{i}}$ inputs and each component $c_j$ has $\sum\limits_{i \not = j} a_{c_{i}}$ weakening nodes inside.
 % Examples of this translation are given in the second row of Figure \ref{fig:e-graph-example}.
@@ -350,7 +350,7 @@ In particular,  that we do not require semilattices to have a unit for $+$, \tex
 	  \item An object-indexed family of morphisms in $\catname{SLat}$ $F_{A,B} : \mathbb{C}(A,B) \to \mathbb{D}(FA,FB)$
 	\end{enumerate}
 	such that certain coherence diagrams commute~\cite{Borceux_1994}.
-	$F$ being a morphism in $\catname{SLat}$ has a property $F(f + g) = F(f) + F(g)$.
+	$F_{A,B}$ being a morphism in $\catname{SLat}$ has a property $F_{A,B}(f + g) = F_{A,B}(f) + F_{A,B}(g)$.
 	An $\catname{SLat}$-functor $F$ defines an equivalence between two $\catname{SLat}$-categories if it is \textit{full}, \textit{faithful}, and \textit{essentially surjective}~\cite{Kelly2022BASICCO}.
 \end{definition}
 

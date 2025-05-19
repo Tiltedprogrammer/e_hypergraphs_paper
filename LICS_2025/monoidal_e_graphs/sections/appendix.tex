@@ -1,4 +1,9 @@
+\ifdefined\ONECOLUMN
+% \section{}
+\section{$\catname{SLat}$}
+\else
 \subsection{$\catname{SLat}$}
+\fi
 \label{sec:appendix:slat}
 
 In this section we define the category of semilattices that we use as a base for enrichment throughout the paper.
@@ -32,6 +37,7 @@ In this section we define the category of semilattices that we use as a base for
       \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
     \end{itemize}
   
+    Note that this construction does not identify $(s_1,s_2) +_{S_1 \otimes S_2} (s_1',s_2')$ and $(s_1 +_{S_1} s_1', s_2 +_{S_2} s_2')$.
     The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
     Clearly $S \otimes I \cong S$ by mapping $(s,*) \mapsto s$ for all $s \in S$ and vice versa.
     The symmetry, associators and unitors are then obvious morphisms.
@@ -39,7 +45,8 @@ In this section we define the category of semilattices that we use as a base for
     $f + g$ is a homomorphism since $(f + g)(x+y) = f(x+y) + g(x+y) = f(x) + f(y) + g(x) + g(y) = f(x) + g(x) + f(y) + g(y) = f(x+y) + g(x+y)$.
   \end{proof}
   
-  This makes $\catname{SLat}$ a suitable base for enrichment and allows us to take $\mathcal{V} = \catname{SLat}$.
+  This makes $\catname{SLat}$ a suitable base for enrichment.
+%    and allows us to take $\mathcal{V} = \catname{SLat}$.
 
   \begin{definition}
     Forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(I_{\catname{SLat}, -}) : \catname{SLat} \to \catname{Set}$.
@@ -52,14 +59,14 @@ In this section we define the category of semilattices that we use as a base for
     \end{proposition}
     \begin{proof}
       The functor $F$ is defined by letting $F(A) = \coprod_{A} I_{\catname{SLat}}$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
-      The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
+      The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$ and by the necessary equations to turn it into a semilattice.
       The adjunction is then given by the following natural isomorphisms
       \begin{align*}
       \catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) &\cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B))\\
                                                          &\cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B))\\
                                                          &\cong \catname{Set}(A, U(B))
       \end{align*}
-      The fist isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
+      The first isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
       Furthermore, we have, 
       \[
       F(I) \cong I_{\catname{SLat}}
@@ -102,8 +109,8 @@ In this section we define the category of semilattices that we use as a base for
       
       \[\adjustbox{width=\linewidth}{
       \begin{tikzcd}  
-          & {f + g \otimes *} && {\triangle_{A} \otimes ((f+g) \times (f+g))} \\
-          f + g &&&& {\triangle_{A'};((f + g) \times (f+g)) = (f + g);\triangle_{A'};} \\
+          & {f + g \otimes *} && {\triangle_{A} \otimes ((f+g) \times (f+g))}\\
+          f + g &&&& {\triangle_{A'};((f + g) \times (f+g)) = (f + g);\triangle_{A'}}\\
           & {* \otimes f + g} && {f + g \otimes \triangle_{A'}}
           \arrow[from=1-2, to=1-4]
           \arrow[from=1-4, to=2-5]
@@ -118,8 +125,11 @@ In this section we define the category of semilattices that we use as a base for
       
       \end{example}
       
-
+\ifdefined\ONECOLUMN
+\section{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
+\else
 \subsection{Proofs for Section \ref{sec:e-hypergraphs}: E-hypergraphs}
+\fi
 \label{sec:appendix:pushout}
 
 In this section we define the conditions under which the pushout in $\catname{EHyp}(\Sigma)$ exists, and we explicitly construct such a pushout.
@@ -168,7 +178,11 @@ n \arrow[ru, "f_{ext}", bend left] \arrow[rd, "f_{ext}'"', bend right] &        
     Analogously for $\beta^{-1}$ and the right-hand sides of the diagrams.
 \end{proof}
 
+\ifdefined\ONECOLUMN
+\section{Existence of pushout}
+\else
 \subsection{Existence of pushout}
+\fi
 
 In constructing the pushout the functional versions of e-hypergraph relations will be useful.
 \begin{remark}
@@ -268,21 +282,18 @@ then the pushout $X +_{f,g} Y$ exists.
     \end{align*}
     \else 
     \begin{align*}    
-    S_{V} &= \{\\
-          &\;(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+    S_{V} = \{&
+          \;(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
           &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
-          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
-          &\}\\
-          &\cup\\
-          &\{\\
-          &\;(y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\}\\
+          \cup&\\
+          \{&
+          \;(y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
           &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
-          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
-          &\}\\
-          &\cup\\
-          &\{\\
-          &\;(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\\
-          &\}\\
+          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\}\\
+          \cup&\\
+          \{
+          &\;(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\}\\
         \\
     S_{E} &= \{(x,x) \text{ where } x \in E_{X} + E_{Y}\}
     \end{align*}
@@ -306,14 +317,13 @@ We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ re
 \end{align*}
 \else
     \begin{align*}
-        \sfrac{X + Y}{\sim (R_{V},R_{E})} = (&\\
-            &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})},\\
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = (&
+            \sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})},\\
             &\consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}},\\
-            &<_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
-        &)    
+            &<_{\sfrac{X + Y}{\sim (R_{V},R_{E})}})    
     \end{align*}
 \fi
 We will refer to $\sim (R_{V},R_{E})$ just as $\sim$, \textit{e.g.}, by writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and concrete relation will be clear from the context.
@@ -648,7 +658,10 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
                 &(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
               \end{align*}
               \fi
-              by recalling that $[[]_{V}^{\consistency}, []_{E}^{\consistency}] = [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]$.
+              by recalling that 
+              \[
+              [[]_{V}^{\consistency}, []_{E}^{\consistency}] = [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]
+              \].
     \end{enumerate}
 
     The cases for edges are analogous.
@@ -1524,6 +1537,13 @@ The case when $[v] \in t([e])$ is symmetric.
 \end{proof}
 
 
+\begin{lemma}
+$\consistency_{\sfrac{X+Y}{\sim}}^{p}$ is not total.
+\end{lemma}
+\begin{proof}
+The property holds as we require that the arrows of the span for the pushout do not map vertices to different components and therefore they can not be merged into one component.
+\end{proof}
+
 \begin{proposition}[$\sfrac{X+Y}{\sim}$ is an e-hypergraph]
 \label{prop:pushout_is_e_hypergraph}
 For this we need to check that the defined relations --- $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ --- satisfy all the needed properties as per Definition~\ref{def:e-homo}.
@@ -1742,7 +1762,11 @@ Practically, the above proposition means that for any given match $m$ there is o
 % \end{minipage}
 % \end{figure*}
 
+\ifdefined\ONECOLUMN
+\section{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+\else
 \subsection{Proofs for Section \ref{sec:soundness-and-completeness}: Soundness and Completeness}
+\fi
 \label{sec:appendix:detailed_proofs}
 In this section we will elaborate on soundness and completeness of our translation $\llbracket - \rrbracket : \catname{S}^{+}(\Sigma, \mathcal{E}) \to \WellTypedMdaEcospans / \mathcal{S}, \mathcal{E}$.
 First we recite the interpretation function $[]$ on $\Sigma$-terms as defined in~\cite{bonchi_string_2022-2} that induces a functor $\catname{S}(\Sigma) \to \MdaCospans$ and eventually a functor $\catname{S}^{+}(\Sigma) \to \MdaCospans^{+}$.
@@ -1870,6 +1894,35 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
     \begin{itemize}
         \item If $\mathcal{C}$ is empty, then either $f = g$ syntactically and $\llbracket f \rrbracket = \llbracket g \rrbracket$ or $f = l = r = g$ for some $l = r$ or $r = l$.
               The latter trivially yields the EDPO diagram below
+              \ifdefined\ONECOLUMN
+              \[
+              \adjustbox{scale=0.8}{
+                \begin{tikzcd}
+                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    \\
+                    {\mathcal{L}} && {i+j} && {\mathcal{R}} \\
+                    & {i'+j'} && {i''+j''} \\
+                    && {i+j}
+                    \arrow[from=1-1, to=3-1]
+                    \arrow[from=1-2, to=1-1]
+                    \arrow[from=1-3, to=1-2]
+                    \arrow[from=1-3, to=1-4]
+                    \arrow[from=1-3, to=3-3]
+                    \arrow[from=1-4, to=1-5]
+                    \arrow[from=1-5, to=3-5]
+                    \arrow["\lrcorner"{pos=0.05, rotate=90, description}, phantom, from=3-1, to=1-2]
+                    \arrow[from=3-3, to=3-1]
+                    \arrow[from=3-3, to=3-5]
+                    \arrow["\lrcorner"{pos=0.05, rotate=180, description}, phantom, from=3-5, to=1-4]
+                    \arrow[from=4-2, to=3-1]
+                    \arrow[from=4-4, to=3-5]
+                    \arrow[from=5-3, to=3-3]
+                    \arrow[from=5-3, to=4-2]
+                    \arrow[from=5-3, to=4-4]
+                \end{tikzcd}
+              }
+              \]
+              \else
               \[
                 \begin{tikzcd}
                     {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
@@ -1895,6 +1948,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                     \arrow[from=5-3, to=4-4]
                 \end{tikzcd}
               \]
+              \fi
               where $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j = \llbracket l \rrbracket = \llbracket f \rrbracket$ and $i \to i'' \to \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j = \llbracket r \rrbracket = \llbracket g \rrbracket$ and $i + j \to i + j \to \mathcal{L}$ is a boundary complement as per~\ref{def:boundary_new}.
               Hence, $\llbracket f \rrbracket \Rrightarrow{}_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$.
               \item Suppose 
@@ -1903,6 +1957,48 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
               \]
               and by inductive hypothesis $\llbracket \mathcal{C}[l] \rrbracket \Rrightarrow{} \llbracket \mathcal{C}[r] \rrbracket$ which results in the top half of the diagram below.
               
+              \ifdefined\ONECOLUMN
+              \[
+              \adjustbox{width=0.7\linewidth}{
+              \begin{tikzcd}
+                {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                \\
+                {\llbracket \mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket \mathcal{C}[r]\rrbracket} \\
+                & {n_1'+m_1'} & {n_1+m_1} & {n_1''+m_1''} \\
+                {\llbracket f \rrbracket} && {\mathcal{L}_2^{\bot}} && {\llbracket g \rrbracket} \\
+                & {n_2' + m_2'} && {n_2''+m_2''} \\
+                && {n_2 + m_2}
+                \arrow[from=1-1, to=3-1]
+                \arrow[from=1-2, to=1-1]
+                \arrow[from=1-3, to=1-2]
+                \arrow[from=1-3, to=1-4]
+                \arrow[from=1-3, to=3-3]
+                \arrow[from=1-4, to=1-5]
+                \arrow[from=1-5, to=3-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=90, description}, draw=none, from=3-1, to=1-2]
+                \arrow[from=3-1, to=5-1]
+                \arrow[from=3-3, to=3-1]
+                \arrow[from=3-3, to=3-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=180, description}, draw=none, from=3-5, to=1-4]
+                \arrow[from=3-5, to=5-5]
+                \arrow[from=4-2, to=3-1]
+                \arrow[from=4-3, to=3-3]
+                \arrow[from=4-3, to=4-2]
+                \arrow[from=4-3, to=4-4]
+                \arrow[from=4-3, to=5-3]
+                \arrow[from=4-4, to=3-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=90, description}, draw=none, from=5-1, to=4-2]
+                \arrow[from=5-3, to=5-1]
+                \arrow[from=5-3, to=5-5]
+                \arrow["\lrcorner"{pos=0.025, rotate=180, description}, draw=none, from=5-5, to=4-4]
+                \arrow[from=6-2, to=5-1]
+                \arrow[from=6-4, to=5-5]
+                \arrow[from=7-3, to=5-3]
+                \arrow[from=7-3, to=6-2]
+                \arrow[from=7-3, to=6-4]
+            \end{tikzcd}}
+            \]
+              \else
               \[
               \adjustbox{width=\linewidth}{
               \begin{tikzcd}
@@ -1943,6 +2039,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                 \arrow[from=7-3, to=6-4]
             \end{tikzcd}}
             \]
+            \fi
             Clearly the occurrence of $\llbracket \mathcal{C}[l] \rrbracket$ in $\llbracket f \rrbracket$ is convex and down-closed and by following the argument in Theorem 35~\cite{bonchi_string_2022-2}, there exists $n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2$ such that
             \ifdefined \ONECOLUMN
             \begin{align*}
@@ -1973,9 +2070,23 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                 n_2' = n_3 + (n_1' \setminus n_1) \qquad m_2' = m_3 + (m_1' \setminus m_1)
             \]
             and
-            \[
-            n_2 + m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1) + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1) + n_1 \xleftarrow{} m_2 + n_1    
-            \] is an MDA cospan.
+            % fix overflowing
+            % \[
+            % n_2 + m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1) + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1) + n_1 \xleftarrow{} m_2 + n_1    
+            % \]
+            \tikzcdset{row sep/mysizerow/.initial=0.1ex}
+            \tikzcdset{column sep/mysizecol/.initial=0.1ex}
+            \[\
+\begin{tikzcd}[cramped, row sep=mysizerow, column sep = mysizecol]
+                n_2 + m_1 &&&&&&&& m_2 + n_1\\
+                & \hspace{-2em} n_2' \setminus (n_1' \setminus n_1) + m_1 &\; & & \mathcal{L}_{2}^{\bot} &\; && m'_2 \setminus (m_1' \setminus m_1) + n_1\hspace{-2em} &\\
+                \arrow[from=1-1, to=2-2]
+                \arrow[from=1-9, to=2-8]
+                \arrow[from=2-2, to=2-5]
+                \arrow[from=2-8, to=2-5]
+            \end{tikzcd}
+\]
+            is an MDA cospan.
             By denoting the pushout of $\mathcal{L}_1^{\bot} \xleftarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot}$ with $\mathcal{L}_3^{\bot}$,
             one can observe that $\llbracket f \rrbracket$ is the pushout object of $\mathcal{L} \xleftarrow{} i+j \xrightarrow{} \mathcal{L}_{3}^{\bot}$ as per the diagram below
             \[\begin{tikzcd}
@@ -2009,6 +2120,34 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             \scalebox{0.75}{\tikzfig{../figures/appendix/contexts_3}}    
             \]
             By hypothesis, there exists a diagram
+            \ifdefined\ONECOLUMN
+            \[
+                \adjustbox{width=0.7\linewidth}{
+                \begin{tikzcd}
+                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    \\
+                    {\llbracket\mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket\mathcal{C}[r]\rrbracket} \\
+                    & {n'+m'} && {n''+m''} \\
+                    && {n+m}
+                    \arrow[from=1-1, to=3-1]
+                    \arrow[from=1-2, to=1-1]
+                    \arrow[from=1-3, to=1-2]
+                    \arrow[from=1-3, to=1-4]
+                    \arrow[from=1-3, to=3-3]
+                    \arrow[from=1-4, to=1-5]
+                    \arrow[from=1-5, to=3-5]
+                    \arrow[from=3-3, to=3-1]
+                    \arrow[from=3-3, to=3-5]
+                    \arrow[from=4-2, to=3-1]
+                    \arrow[from=4-4, to=3-5]
+                    \arrow[from=5-3, to=3-3]
+                    \arrow[from=5-3, to=4-2]
+                    \arrow[from=5-3, to=4-4]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=90}, draw=none, from=3-1, to=1-2]
+                    \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-4]
+                \end{tikzcd}}
+                \]
+            \else
                 \[
                 \adjustbox{width=\linewidth}{
                 \begin{tikzcd}
@@ -2035,6 +2174,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                     \arrow["\lrcorner"{description, pos=0.025, rotate=180}, draw=none, from=3-5, to=1-4]
                 \end{tikzcd}}
                 \]
+                \fi
                 which implies the existence of the following diagram where both squares are pushouts by construction and the matching is convex and down-closed.
                 % \textcolor{red}{Consider cases when $\mathcal{L}$ has no-input and no-output sub-hypergraph and when it does not. Basically, repeat the above reasoning here as well, but say that if $n+m$ is empty, then there is no pushout.}
                 \ifdefined \ONECOLUMN
@@ -2262,6 +2402,11 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
     % \[
     %     n \to n_{1}' \to \mathcal{C}_{1} \xleftarrow{} m_{1}' + k \xleftarrow{} i + k \to i' + k \to \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n_{2}' + k + j \to \mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m
     % \]
+    \ifdefined\ONECOLUMN
+    \[
+    n \xrightarrow{} n'_{1} \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m'_{1} + i + k \xleftarrow{} i+k \xrightarrow{} i' + k \xrightarrow{} \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n'_2 + k + j \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_2 \xleftarrow{} m
+    \]
+    \else
     \[
     \adjustbox{width=\linewidth}{
     \begin{tikzcd}
@@ -2271,11 +2416,18 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
     \end{tikzcd}
     }
     \]
+    \fi
     The two spans identify precisely those nodes from $\mathcal{G}$ that occur in more than one sub-hypergraph, so this amounts to simply taking the union
+    \ifdefined\ONECOLUMN
+    \begin{align*}
+        n \to n_{1}' \cup n_{2}' \cup i' \to \mathcal{C}_{1} \cup \mathcal{C}_{2} \cup \mathcal{L} \xleftarrow{} m_{1}' \cup m_{2}' \cup j' \xleftarrow{} m  = n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m
+    \end{align*}
+    \else
     \begin{align*}
     &n \to n_{1}' \cup n_{2}' \cup i' \to \mathcal{C}_{1} \cup \mathcal{C}_{2} \cup \mathcal{L} \xleftarrow{} m_{1}' \cup m_{2}' \cup j' \xleftarrow{} m  =\\
     &\;= n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m
     \end{align*}
+    \fi
     If we let $\mathcal{G}' = \mathcal{L}$ we get the decomposition as in~(\ref{fig:decomposition:1}).
     This follows the construction of a similar lemma in~\cite{bonchi_string_2022-1} (Lemma 24). 
     The cospans with $\mathcal{C}_{1}$ and $\mathcal{C}_{2}$ are MDAs because they are closed under successors and predecessors and the cospan with $\mathcal{L}$ is an MDA because it is convex.
@@ -2311,7 +2463,11 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 %     This brings us to a weak normal form $f = f_1 + \ldots + f_n$ where each of $f_i$ does not contain any hierarchical edges and for $i \not = j$, $f_i \not = f_j$, the latter is guaranteed by rule (8).
 % \end{proof}
 
+\ifdefined\ONECOLUMN
+\section{Additional figures for Section~\ref{sec:introduction}:Introduction}
+\else
 \subsection{Additional figures for Section~\ref{sec:introduction}:Introduction}
+\fi
 
 This section contains the figures with more elaborate transformation of e-string diagrams from the Figure~\ref{fig:e-graph-example}.
 
@@ -2367,7 +2523,11 @@ This section contains the figures with more elaborate transformation of e-string
 \end{figure*}
 \fi
 
+\ifdefined\ONECOLUMN
+\section{Additional figures for Section~\ref{sec:e-hypergraphs}: E-hypergraphs}
+\else
 \subsection{Additional figures for Section~\ref{sec:e-hypergraphs}: E-hypergraphs}
+\fi
 \label{sec:appendix:iso}
 
 First we will explore the notion of isomorphism of two extended cospans in more detail.
@@ -2486,7 +2646,11 @@ Then, for the resulting e-hypergraph to form a valid well-typed MDA extended cos
 \end{figure*}
 
 
+\ifdefined\ONECOLUMN
+\section{DPO rewriting for arbitrary signatures}
+\else
 \subsection{DPO rewriting for arbitrary signatures}
+\fi
 \label{sec:dpo-fix}
 Here we will discuss how one can formulate DPO rewrite rules where the left-hand of right-hand sides contain sub-hypergraphs with no inputs and outputs at the outermost level.
 First we will illustrate where the restriction in the original formulation of the DPO rewriting as per the Definition~\ref{def:convex_dpo} comes from via several examples: one for Cartesian equations (which are important to express e-graphs as e-hypergraphs) and two for the structural rules we need for $\WellTypedMdaEcospans / \mathcal{S}$ to be a category enriched over $\catname{SLat}$.
@@ -2526,17 +2690,33 @@ However, we are immediately stuck as there is no matching of the left-hand side 
     \label{fig:dpo-stuck}
 \end{figure*}
 Another problematic rewrite arises when we want to utilise the structural rule of the free enrichment
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.6\linewidth}{
+\tikzfig{../figures/appendix/structural_rewrite_problem}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
 \tikzfig{../figures/appendix/structural_rewrite_problem}
 }
 \]
+\fi
 if we consider the following DPO square
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.8\linewidth}{
+    \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck}
 }
 \]
+\fi
 
 
 
@@ -2560,13 +2740,11 @@ if we consider the following DPO square
 \begin{definition}
 
 We will define the action of $+$ on two cospans where either of the carriers is the empty e-hypergraph as
-
 \begin{align*}
 0 \xrightarrow{} n \xrightarrow{} &\;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
 &\;+ \hspace{6em} \Coloneqq \hspace{2em} 0  \xrightarrow{} n \xrightarrow{} \;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
 0 \xrightarrow{} 0 \xrightarrow{} &\;\varnothing \xleftarrow{} 0 \xleftarrow{} 0.
 \end{align*}
-
 \end{definition}
 
 This is so that we can absorb some equations and to seamlessly introduce what follows.
@@ -2606,25 +2784,60 @@ We will start completing all the above DPO squares by first considering the stru
 We will include special unlabelled edges with no inputs and outputs to the interfaces to be able to impose the hierarchical relation on subgraphs with no inputs and outputs and will not impose any restrictions on labelling preservation when mapping these special edges.
 That is, the previously mentioned structural rule will become
 
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.7\linewidth}{
+    \tikzfig{../figures/appendix/structural_rewrite_problem_fix}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/structural_rewrite_problem_fix}
 }
 \]
+\fi
 
 where the labels show how interface edges are mapped to the edges of the corresponding e-hypergraphs.
 For example, the edge in the interface labelled $a_1$ is mapped to the outermost edge on the right.
 We can now compute the pushout complement and complete the DPO square below
 
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.8\linewidth}{
+    \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
 }
 \]
+\fi
 
 Handling deletion or introduction rewrite rules will require the introduction of auxiliary rules.
 In particular, two rules for introduction and elimination of these special edges
 
+\ifdefined\ONECOLUMN
+\begin{figure}[h!]
+    \begin{subfigure}{0.45\linewidth}
+        \[
+        \adjustbox{scale=0.7}{
+        \tikzfig{../figures/appendix/idI_elimination_hypergraph}
+        }
+        \]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \[
+        \adjustbox{scale=0.7}{
+        \tikzfig{../figures/appendix/idI_introduction_hypergraph}
+        }
+        \]
+    \end{subfigure}
+    \end{figure}
+\else
 \begin{figure}[h!]
 \begin{subfigure}{0.45\linewidth}
     \[
@@ -2642,8 +2855,8 @@ In particular, two rules for introduction and elimination of these special edges
     \]
 \end{subfigure}
 \end{figure}
-
-and similar rules to introduce and eliminate in nested contexts (Figure~\ref{fig:nested_elimination}).
+\fi
+and similar rules to introduce and eliminate in nested contexts (Figure~\ref{fig:nested_elimination});
 
 
 \begin{figure}[h!]
@@ -2669,6 +2882,28 @@ and similar rules to introduce and eliminate in nested contexts (Figure~\ref{fig
 and, finally, the rules to introduce such edges as new consistent components (Figure~\ref{fig:consistent_introduction}).
 Intuitively such edge plays the role of a tensor unit identity that can be inserted in any context.
 
+\ifdefined\ONECOLUMN
+\begin{figure}[h!]
+    \begin{subfigure}{0.6\linewidth}
+        \[
+        \adjustbox{width=\linewidth}{
+        \tikzfig{../figures/appendix/idI_introduction_new_component_hypergraph}
+        }
+        \]
+        \subcaption{}
+    \end{subfigure}
+    \begin{subfigure}{0.6\linewidth}
+        \[
+        \adjustbox{width=\linewidth}{
+        \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
+        }
+        \]
+        \subcaption{}
+    \end{subfigure}
+    \caption{New consistent component introduction (a) and elimination (b) rule}
+    \label{fig:consistent_introduction}
+\end{figure}
+\else
 \begin{figure}[h!]
     \begin{subfigure}{\linewidth}
         \[
@@ -2678,17 +2913,17 @@ Intuitively such edge plays the role of a tensor unit identity that can be inser
         \]
     \end{subfigure}
     \vspace{1em}
-    \begin{subfigure}{\linewidth}
-        \[
-        \adjustbox{width=\linewidth}{
-        \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
-        }
-        \]
-    \end{subfigure}
+        \begin{subfigure}{\linewidth}
+            \[
+            \adjustbox{width=\linewidth}{
+            \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
+            }
+            \]
+        \end{subfigure}
     \caption{New consistent component introduction (top) and elimination (bottom) rule}
     \label{fig:consistent_introduction}
 \end{figure}
-
+\fi
 
 % \[
 % \adjustbox{scale=0.75}{
@@ -2699,28 +2934,49 @@ Intuitively such edge plays the role of a tensor unit identity that can be inser
 % This rule makes sense in any SMT where there is a unique morphism $I \to I$ which is $id_{I}$.
 Then the deletion rule is reconstructed as
 
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.6\linewidth}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_fix}
+}
+\]
+\else
 \[
 \adjustbox{width=0.8\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_fix}
 }
 \]
-
+\fi
 and the full DPO square becomes
 
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.7\linewidth}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix}
 }
 \]
-
+\fi
 The target e-hypergraph is not exactly what we wanted, however, but we can use the auxiliary rule to remove this unlabelled edge.
 
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.7\linewidth}{
+    \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix_2}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix_2}
 }
 \]
-
+\fi
 % and then utilise the idempotence rule for the identity of the tensor unit
 
 % \[
@@ -2738,12 +2994,19 @@ Let $c^{l}_{1,1}, \ldots, c^{l}_{k,n}$ and $c^{r}_{1,1}, \ldots, c^{r}_{p,m}$ wh
 And let the morphism be any valid morphism from $\{^{l}_{1,1}, \ldots, c^{l}_{k,n}\} \to c^{r}_{1,1}, \ldots, c^{r}_{p,m}$ is the former is larger as a set, or the other way around if the latter is larger.
 Graphically, this is expressed as follows
 
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.7\linewidth}{
+    \tikzfig{../figures/appendix/rule_transformation_example}
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/rule_transformation_example}
 }
 \]
-
+\fi
 assuming that $|c^{l}_{1,1}, \ldots, c^{l}_{k,n}| > |c^{r}_{1,1}, \ldots, c^{r}_{p,m}|$ and $f = \{ c^{l}_{1,1} \mapsto c^{l}_{1,1}, \ldots, c^{l}_{k,n} \mapsto c^{l}_{k,n} \}$ and $g$ is any valid mapping of $c^{l}_{1,1}, \ldots, c^{l}_{k,n}$ to $c^{r}_{1,1}, \ldots, c^{r}_{p,m}$.
 
 The Definition~\ref{def:boundary_new} will then need a few additional constraints.
@@ -2754,7 +3017,11 @@ The Definition~\ref{def:boundary_new} will then need a few additional constraint
 \end{itemize}
 Then, when constructing the corresponding extended cospans, such auxiliary edges must be ignored in the interfaces.
 
+\ifdefined\ONECOLUMN
+\section{E-graph interpretation in $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$}
+\else
 \subsection{E-graph interpretation in $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$}
+\fi
 \label{sec:appendix:e-graph-translation}
 
 In this section we will elaborate on the interpretation of e-graphs as morphisms of $\catname{MEHypI}(\Sigma_{C}) / \mathcal{S}, \mathcal{E}_{C}$.

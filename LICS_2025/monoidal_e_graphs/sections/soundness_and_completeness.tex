@@ -56,6 +56,9 @@ Given a set of EDPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEc
 % Recall further that typed $\Sigma^+$-terms are those categorical combinator terms freely constructed from generators $c \in \Sigma$, $\textsf{id}_I$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$,  and $f+g$.  
 % We will write $\Sigma^+(n,m)$ for the set of $\Sigma^+$-terms of type $n \to m$.  
 
+% pag. 11, Def VI.2: it is not clear to me that this relation is closed under composition
+% It is closed under composition since the composition and rewrites are defined in terms of pushouts.
+
 \begin{definition}
 	Let $\mathcal{S}$ be the set of EDPOI rewrite rules (or rather schema rules) that correspond to string diagrammatic equations in Figure~\ref{fig:string-equations}.
 \end{definition}
@@ -208,9 +211,9 @@ We have the following equivalence of $\catname{SLat}$-categories
 	\vspace{-1mm}
 	\]	
 	\end{theorem}
-\begin{proof}
-	The equivalence is given by an $\catname{SLat}$-functor $\llbracket \rrbracket$ that is obtained by composing the functors from Lemma~\ref{lemma:2functor_equiv} and Lemma~\ref{lemma:cospans_plus_equiv}.
-\end{proof}
+% \begin{proof}
+% 	The equivalence is given by an $\catname{SLat}$-functor $\llbracket \rrbracket$ that is obtained by composing the functors from Lemma~\ref{lemma:2functor_equiv} and Lemma~\ref{lemma:cospans_plus_equiv}.
+% \end{proof}
 \vspace{-2mm}
 The benefit of working with the equivalence defined above as compared to the one in Lemma~\ref{lemma:2functor_equiv} is that the former allows us to define EDPOI rewriting more naturally as every morphism is an (extended) cospan.
 Finally, we can state the following result.

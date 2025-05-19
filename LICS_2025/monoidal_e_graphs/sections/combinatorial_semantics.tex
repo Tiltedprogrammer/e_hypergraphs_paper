@@ -2,7 +2,7 @@
 
 In this section,  we recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories,  recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs,  as established in~\cite{bonchi_string_2022-1, bonchi_string_2022-2}.  
 
-First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over \textsf{Set}.  
+First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over $\catname{Set}$.
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences. 
 We will sometimes use functional notation for relations,  so that given $R \subseteq V \times W$ and $v \in V$,  $R(v) \subseteq W$. 
 We elide associativity and unit isomorphisms associated with coproducts $(+)$,  and denote by $\iota_j: X_{j} \rightarrow X_{1} + \ldots X_{j} + \ldots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]: A_1 + A_2 \to B$ the co-pairing of two morphisms $f: A_1 \to B$ and $g:A_2 \to B$. 
@@ -159,8 +159,7 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
 % \end{tikzcd}
 % \]
 \begin{figure}[t!]
-    \vspace{-0.5cm}
-    \begin{subfigure}[T]{0.35\linewidth}
+    \begin{subfigure}[T]{0.35\columnwidth}
     \[
                 % \tikzfig{../figures/combinatorial_semantics/DPO_square}
                 \begin{tikzcd}
@@ -171,17 +170,18 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
                     \arrow[from=1-2, to=1-3]
                     \arrow[from=1-2, to=2-2]
                     \arrow[from=1-3, to=2-3]
-                    \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=2-1, to=1-2]
+                    \arrow["{\lrcorner}"{rotate=90, xshift=-0.25em, yshift=0.9em,font = \Large}, draw=none, from=2-1, to=1-2]
                     \arrow[from=2-2, to=2-1]
                     \arrow[from=2-2, to=2-3]
-                    \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
-                \end{tikzcd}
+                    \arrow["{\lrcorner}"{rotate=180,xshift=-0.5em, yshift=2.35em,font = \Large}, draw=none, from=2-3, to=1-2]
+\end{tikzcd}
     \]
     % \subcaption{DPO square}
-    % \label{fig:dpo}
+     % \label{fig:dpo}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[T]{0.35\linewidth}
+    % \hfill
+    \hspace{0.15\columnwidth}
+    \begin{subfigure}[T]{0.35\columnwidth}
         \[
     % \scalebox{0.8}{
         % \tikzfig{../figures/combinatorial_semantics/DPOI_square_Hyp}
@@ -195,10 +195,10 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
         \arrow[from=1-2, to=1-3]
         \arrow[from=1-2, to=2-2]
         \arrow[from=1-3, to=2-3]
-        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=2-1, to=1-2]
+        \arrow["{\lrcorner}"{rotate=90,xshift=-0.25em, yshift=1em,font = \Large}, draw=none, from=2-1, to=1-2]
         \arrow[from=2-2, to=2-1]
         \arrow[from=2-2, to=2-3]
-        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+        \arrow["{\lrcorner}"{rotate=180,xshift=-0.9em, yshift=2.25em,font = \Large}, draw=none, from=2-3, to=1-2]
         \arrow[from=3-2, to=2-1]
         \arrow[from=3-2, to=2-2]
         \arrow[from=3-2, to=2-3]
@@ -207,11 +207,8 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
     % \subcaption{DPOI square}
     % \label{fig:dpoi}
     \end{subfigure}
-    \hfill
-    \captionsetup{skip=0pt, belowskip=0pt}
     \caption{DPO and DPOI squares}
     \label{fig:dpo_dpoi}
-    \vspace{-7mm}
 \end{figure}
 
 \end{definition}

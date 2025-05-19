@@ -21,18 +21,18 @@ In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.
 \begin{definition}[E-hypergraphs]
 \label{def:e-homo}    
 An \emph{e-hypergraph $\mathcal{G}$ over a signature $\Sigma$} is a tuple $(V,E,s,t,l,<,\consistency)$,  where $(V,E,s,t)$ is an unlabelled hypergraph;  $l :E \to \Sigma + 1$ is a labelling function modified to include an extra value $\bot$ in its codomain; $<$ is a strict partial order on $V + E$ called the \textit{child relation}, for which we introduce the following additional notation.
-For $x \in V + E$,  the set of \emph{parents} of $x$ is denoted as $[x) = \{x' ~|~ x' < x\; \}$.
+For $x \in V + E$,  the set of \emph{parents} (or, \emph{predecessors}) of $x$ is denoted as $[x) = \{x' ~|~ x' < x\; \}$.
 % \[
 % 	[x) = \{x' ~|~ x' <_c x\; \} \qquad (x] = \{x' ~|~  x <_{c} x'\}
 % \]
-We will denote the immediate parent $e$ of $x$ by writing $e <^{\mu} x$.
+We will denote the immediate parent (predecessor) $e$ of $x$ by writing $e <^{\mu} x$, and likewise $x$ is then called an immediate \emph{child} (or, \emph{successor}).
 We call edges $e$ such that $l(e) = \bot$ \textit{hierarchical},  and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \emph{top-level}.
 An edge $e$ is called maximal if $\{x' | e < x'\} = \varnothing$.
 We require that the child relation satisfies the following conditions:
 \begin{enumerate}
 	\item each parent set contains exclusively hierarchical edges;
 	\item each $x$ has at most one immediate parent;
-	\item the maximal edges must be labelled;
+	\item for all $e$ such that $e$ is maximal, $l(e) \not = \bot$;
 	\item if $v \in s(e)$ then $e' <^{\mu} e$ iff $e' <^{\mu} v$ and similarly if $v \in t(e)$.
 \end{enumerate}
 Finally, $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p <^\mu x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p <^{\mu}(v)$ and $p <^{\mu}(e)$ then $v \consistency_{p} e$.
@@ -51,15 +51,15 @@ An example of an e-hypergraph can be seen below in Figure~\ref{fig:e-cospan-exam
 The e-hypergraph is given by $E = \{e_1, e_2\}, V = \{v_1, \ldots, w_4 \}$, $s$,$t$, $l = \{e_1 \mapsto \bot, e_2 \mapsto f\}$ and
 \[
 \begin{array}{ccc}
-    v_3 <^{\mu} e_1 & v_3 \consistency v_4 & v_3 \not \consistency v_5\\
+    e_1 <^{\mu} v_3 & v_3 \consistency v_4 & v_3 \not \consistency v_5\\
     \ldots & \ldots & \ldots\\
-    w_4 <^{\mu} e_1 & w_3 \consistency w_4 & v_4 \not \consistency w_4
+    e_1 <^{\mu} w_4 & w_3 \consistency w_4 & v_4 \not \consistency w_4
 \end{array}
 \]
 A hierarchical edge is depicted with a dashed box.
 The partition induced by $\consistency_{e_1}$ is depicted with a dashed vertical line.
 The condition $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$, in particular, does not allow hierarchical edges with no delimiting lines.
-$e_1$ is the maximal edge and hence labelled.
+Finally, $e_1$ is the maximal edge and hence labelled.
 \begin{definition}[E-hypergraph homomorphism]
 An \textit{e-hypergraph homomorphism} $\phi: \mathcal{F} \to \mathcal{G}$ between e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V : V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E : E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that
 \begin{enumerate}
@@ -275,7 +275,8 @@ Thus,  we wish for a rewrite rule to be a pair of \textit{extended} cospans of e
 Analogously to Section \ref{sec:combinatorial-semantics}, observing that the following extended cospans express the same data:
 \[
     0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' + m'' \xleftarrow{} n + m
-\;
+\]
+\[
     0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' + m' \xleftarrow{} n + m
 \] allows us to encode rewrite rules as extended cospans of the following form:
 \[
@@ -344,9 +345,21 @@ is a \textit{boundary complement} if
     \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same set of parents, and either $v,w$ are top-level or else $v \consistency w$;
     \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended MDA cospan
-    \[
-    \hspace{-2em} n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
-    \]
+    % \[
+    % \hspace{-2em} n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
+    % \]
+\tikzcdset{row sep/mysize/.initial=0.25ex}.
+\[
+\hspace{-2em}
+\begin{tikzcd}[cramped, row sep=mysize, column sep = tiny]
+	{n + j} &&&&&& {k + i} \\
+	& {n' \setminus (i' \setminus i) + j} & \vspace{16em} & {\mathcal{L}^{\bot}} & \vspace{16em} & {k' \setminus (j' \setminus j) + i}
+    \arrow["{f_1 + id_{j}}"{xshift=-0.7ex}, from=1-1, to=2-2]
+	\arrow["{f_2 + id_{i}}"'{xshift=1ex}, from=1-7, to=2-6]
+	\arrow["{[g_1,c_2]}"{yshift=0.5ex}, from=2-2, to=2-4]
+	\arrow["{[g_2,c_1]}"'{yshift=0.5ex}, from=2-6, to=2-4]
+\end{tikzcd}
+\]
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended MDA cospan
     \[
     \hspace{-2em} n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
