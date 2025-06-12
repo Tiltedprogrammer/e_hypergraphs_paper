@@ -1,6 +1,6 @@
 import shutil
 from pathlib import Path
-from pylatexenc.latexwalker import LatexWalker, LatexEnvironmentNode, LatexMacroNode
+from pylatexenc.latexwalker import LatexWalker, LatexEnvironmentNode, LatexMacroNode, LatexSpecialsNode
 from pylatexenc.latex2text import LatexNodes2Text
 import sys
 
@@ -20,7 +20,9 @@ def extract_macros(nodes):
     while True:
         try:
             node = next(nodes_iter)
-            if isinstance(node, LatexMacroNode):
+            if isinstance(node, LatexSpecialsNode):
+                continue
+            elif isinstance(node, LatexMacroNode):
                 if node.macroname in FIGURE_MACROS | INPUT_MACROS | BIB_MACROS:
                     if node.macroname == r'tikzfig':
                         node = next(nodes_iter)

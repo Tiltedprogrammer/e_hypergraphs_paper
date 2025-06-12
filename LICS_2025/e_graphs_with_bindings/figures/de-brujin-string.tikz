@@ -1,25 +1,25 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=none] (0) at (-2, 7) {};
-		\node [style=none] (1) at (-1.75, 7.5) {};
-		\node [style=none] (2) at (-1.25, 7.75) {};
-		\node [style=none] (3) at (-0.75, 7.5) {};
-		\node [style=none] (4) at (-0.5, 7) {};
-		\node [style=none] (5) at (-1.5, 7) {};
-		\node [style=none] (6) at (-1, 7) {};
-		\node [style=none] (7) at (-1.25, 8.75) {};
-		\node [style=none] (8) at (-1.5, 6.75) {};
-		\node [style=none] (9) at (-1, 6.5) {};
-		\node [style=none] (10) at (-2.75, 8.25) {};
-		\node [style=none] (11) at (-2.25, 8.75) {};
-		\node [style=none] (12) at (-0.25, 8.75) {};
-		\node [style=none] (13) at (0.25, 8.25) {};
-		\node [style=none] (14) at (0.25, 5.75) {};
-		\node [style=none] (15) at (-0.25, 5.25) {};
-		\node [style=none] (16) at (-2.25, 5.25) {};
-		\node [style=none] (17) at (-2.75, 5.75) {};
-		\node [style=none] (18) at (-1.5, 5.25) {};
-		\node [style=none] (27) at (2.75, 9.75) {};
+		\node [style=none] (0) at (-0.25, 6.75) {};
+		\node [style=none] (1) at (0, 7.25) {};
+		\node [style=none] (2) at (0.5, 7.5) {};
+		\node [style=none] (3) at (1, 7.25) {};
+		\node [style=none] (4) at (1.25, 6.75) {};
+		\node [style=none] (5) at (0.25, 6.75) {};
+		\node [style=none] (6) at (0.75, 6.75) {};
+		\node [style=none] (7) at (0.5, 8.5) {};
+		\node [style=none] (8) at (0.25, 6.5) {};
+		\node [style=none] (9) at (0.75, 6.25) {};
+		\node [style=none] (10) at (-1, 8) {};
+		\node [style=none] (11) at (-0.5, 8.5) {};
+		\node [style=none] (12) at (1.5, 8.5) {};
+		\node [style=none] (13) at (2, 8) {};
+		\node [style=none] (14) at (2, 5.5) {};
+		\node [style=none] (15) at (1.5, 5) {};
+		\node [style=none] (16) at (-0.5, 5) {};
+		\node [style=none] (17) at (-1, 5.5) {};
+		\node [style=none] (18) at (0.25, 5) {};
+		\node [style=none] (27) at (-2, 10.5) {};
 		\node [style=none] (28) at (2.5, 13.25) {};
 		\node [style=none] (29) at (-3.25, 12.5) {};
 		\node [style=none] (30) at (-2.75, 13.25) {};
@@ -29,18 +29,18 @@
 		\node [style=none] (34) at (3.5, 3.25) {};
 		\node [style=none] (35) at (-2.75, 3.25) {};
 		\node [style=none] (36) at (-3.25, 3.75) {};
-		\node [style=vertex] (37) at (2.75, 4.5) {};
-		\node [style=none] (45) at (0.75, 9.5) {};
-		\node [style=none] (46) at (1.25, 9.5) {};
-		\node [style=round box] (47) at (1.5, 7.75) {$2$};
+		\node [style=vertex] (37) at (-2, 4.5) {};
+		\node [style=none] (45) at (2.5, 9.25) {};
+		\node [style=none] (46) at (3, 9.25) {};
+		\node [style=round box] (47) at (3.25, 7.5) {$2$};
 		\node [style=none] (48) at (2.5, 15) {};
-		\node [style=none] (49) at (0.25, 10.25) {};
-		\node [style=none] (50) at (0.5, 10.75) {};
-		\node [style=none] (51) at (1, 11) {};
-		\node [style=none] (52) at (1.5, 10.75) {};
-		\node [style=none] (53) at (1.75, 10.25) {};
-		\node [style=none] (54) at (0.75, 10.25) {};
-		\node [style=none] (55) at (1.25, 10.25) {};
+		\node [style=none] (49) at (2, 10) {};
+		\node [style=none] (50) at (2.25, 10.5) {};
+		\node [style=none] (51) at (2.75, 10.75) {};
+		\node [style=none] (52) at (3.25, 10.5) {};
+		\node [style=none] (53) at (3.5, 10) {};
+		\node [style=none] (54) at (2.5, 10) {};
+		\node [style=none] (55) at (3, 10) {};
 		\node [style=none] (56) at (1.75, 11.75) {};
 		\node [style=none] (57) at (2, 12.25) {};
 		\node [style=none] (58) at (2.5, 12.5) {};
@@ -48,6 +48,7 @@
 		\node [style=none] (60) at (3.25, 11.75) {};
 		\node [style=none] (61) at (2.25, 11.75) {};
 		\node [style=none] (62) at (2.75, 11.75) {};
+		\node [style=none] (63) at (2.25, 11.25) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style={lambda_unit_string}] (3.center)
@@ -78,7 +79,7 @@
 		\draw [in=0, out=-90, looseness=1.75] (33.center) to (34.center);
 		\draw (34.center) to (35.center);
 		\draw [in=-90, out=180, looseness=0.75] (33.center) to (37);
-		\draw [in=270, out=180, looseness=0.50] (37) to (18.center);
+		\draw [in=270, out=-30, looseness=0.75] (37) to (18.center);
 		\draw [in=90, out=-90, looseness=0.75] (27.center) to (37);
 		\draw [in=90, out=-90] (46.center) to (47);
 		\draw [in=90, out=-90, looseness=0.75] (45.center) to (7.center);
@@ -97,8 +98,9 @@
 			 to [in=135, out=0, looseness=0.75] cycle;
 		\draw (45.center) to (54.center);
 		\draw (46.center) to (55.center);
-		\draw [in=90, out=-90, looseness=0.75] (61.center) to (51.center);
-		\draw [in=90, out=-90] (62.center) to (27.center);
 		\draw (28.center) to (58.center);
+		\draw (62.center) to (51.center);
+		\draw (61.center) to (63.center);
+		\draw [in=-90, out=90, looseness=0.25] (27.center) to (63.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

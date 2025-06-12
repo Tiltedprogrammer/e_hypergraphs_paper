@@ -2074,11 +2074,11 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             % \[
             % n_2 + m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1) + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1) + n_1 \xleftarrow{} m_2 + n_1    
             % \]
-            \tikzcdset{row sep/mysizerow/.initial=0.1ex}
+            \tikzcdset{row sep/mysizerow/.initial=0.3ex}
             \tikzcdset{column sep/mysizecol/.initial=0.1ex}
             \[\
 \begin{tikzcd}[cramped, row sep=mysizerow, column sep = mysizecol]
-                n_2 + m_1 &&&&&&&& m_2 + n_1\\
+                n_2 + m_1\hspace{-2em} &&&&&&&& \hspace{-2em}m_2 + n_1\\
                 & \hspace{-2em} n_2' \setminus (n_1' \setminus n_1) + m_1 &\; & & \mathcal{L}_{2}^{\bot} &\; && m'_2 \setminus (m_1' \setminus m_1) + n_1\hspace{-2em} &\\
                 \arrow[from=1-1, to=2-2]
                 \arrow[from=1-9, to=2-8]
@@ -2117,7 +2117,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             This implies that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L},\mathcal{R} \rangle} \llbracket g \rrbracket$.
             \item Consider the case when
             \[
-            \scalebox{0.75}{\tikzfig{../figures/appendix/contexts_3}}    
+            \hspace{-1em}\scalebox{0.75}{\tikzfig{../figures/appendix/contexts_3}}    
             \]
             By hypothesis, there exists a diagram
             \ifdefined\ONECOLUMN
@@ -2670,7 +2670,7 @@ which becomes the following extended cospan of e-hypergraphs
 Assume we want to perform a rewrite within the e-hypergraph in Figure~\ref{fig:dpo-stuck} (left).
 However, we are immediately stuck as there is no matching of the left-hand side of the rule within the graph as there is no pushout complement: the only way we can impose a constraint that an edge shall have a particular predecessor in the pushout is through its adjacent vertices, but the sub-hypergraph for $a;!$ does not have any as demonstrated in the right subfigure.
 
-\begin{figure*}
+\begin{figure*}[t!]
     \begin{subfigure}{0.4\linewidth}
     \[
     \adjustbox{scale=0.7}{
@@ -2689,6 +2689,61 @@ However, we are immediately stuck as there is no matching of the left-hand side 
     \caption{DPO rewriting stuck}
     \label{fig:dpo-stuck}
 \end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+            \begin{subfigure}{\linewidth}
+                \[
+                \adjustbox{width=0.95\linewidth}{
+                \tikzfig{../figures/appendix/idI_elimination_nested_hypergraph}
+                }
+                \]
+            \end{subfigure}
+            \vspace{1em}
+            \begin{subfigure}{\linewidth}
+                \[
+                \adjustbox{width=0.95\linewidth}{
+                \tikzfig{../figures/appendix/idI_introduction_nested_hypergraph}
+                }
+                \]
+            \end{subfigure}
+            \caption{Special edge nested introduction (top) and elimination (bottom) rules}
+            \label{fig:nested_elimination}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+            \begin{subfigure}{\linewidth}
+                \[
+                \adjustbox{width=0.95\linewidth}{
+                \tikzfig{../figures/appendix/idI_introduction_new_component_hypergraph}
+                }
+                \]
+            \end{subfigure}
+            \vspace{1em}
+                \begin{subfigure}{\linewidth}
+                    \[
+                    \adjustbox{width=0.95\linewidth}{
+                    \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
+                    }
+                    \]
+                \end{subfigure}
+            \caption{New consistent component introduction (top) and elimination (bottom) rules}
+            \label{fig:consistent_introduction}        
+    \end{minipage}
+\end{figure*}
+\begin{figure}[t!]
+\[
+\adjustbox{width=\linewidth}{
+    \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
+}
+\]
+\caption{Complete DPO square for free enrichment structural rule}
+\label{fig:completed_dpo}
+\end{figure}
+
 Another problematic rewrite arises when we want to utilise the structural rule of the free enrichment
 \ifdefined\ONECOLUMN
 \[
@@ -2800,7 +2855,7 @@ That is, the previously mentioned structural rule will become
 
 where the labels show how interface edges are mapped to the edges of the corresponding e-hypergraphs.
 For example, the edge in the interface labelled $a_1$ is mapped to the outermost edge on the right.
-We can now compute the pushout complement and complete the DPO square below
+We can now compute the pushout complement and complete the DPO square \ifdefined\ONECOLUMN below \else in Figure~\ref{fig:completed_dpo}. \fi
 
 \ifdefined\ONECOLUMN
 \[
@@ -2809,16 +2864,15 @@ We can now compute the pushout complement and complete the DPO square below
 }
 \]
 \else
-\[
-\adjustbox{width=\linewidth}{
-    \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
-}
-\]
+% \[
+% \adjustbox{width=\linewidth}{
+%     \tikzfig{../figures/appendix/structural_rewrite_dpo_stuck_fix}
+% }
+% \]
 \fi
 
 Handling deletion or introduction rewrite rules will require the introduction of auxiliary rules.
-In particular, two rules for introduction and elimination of these special edges
-
+In particular, two rules for introduction and elimination of these special edges (Figure~\ref{fig:idI_intro_elim}),
 \ifdefined\ONECOLUMN
 \begin{figure}[h!]
     \begin{subfigure}{0.45\linewidth}
@@ -2854,31 +2908,30 @@ In particular, two rules for introduction and elimination of these special edges
     }
     \]
 \end{subfigure}
+\caption{Special edge flat introduction and elimination}
+\label{fig:idI_intro_elim}
 \end{figure}
 \fi
-and similar rules to introduce and eliminate in nested contexts (Figure~\ref{fig:nested_elimination});
-
-
-\begin{figure}[h!]
-    \begin{subfigure}{\linewidth}
-        \[
-        \adjustbox{scale=0.55}{
-        \tikzfig{../figures/appendix/idI_elimination_nested_hypergraph}
-        }
-        \]
-    \end{subfigure}
-    \vspace{1em}
-    \begin{subfigure}{\linewidth}
-        \[
-        \adjustbox{scale=0.55}{
-        \tikzfig{../figures/appendix/idI_introduction_nested_hypergraph}
-        }
-        \]
-    \end{subfigure}
-    \caption{Special edge nested elimination}
-    \label{fig:nested_elimination}
-\end{figure}
-
+similar rules to introduce and eliminate in nested contexts (Figure~\ref{fig:nested_elimination});
+% \begin{figure}[t!]
+%     \begin{subfigure}{\linewidth}
+%         \[
+%         \adjustbox{scale=0.55}{
+%         \tikzfig{../figures/appendix/idI_elimination_nested_hypergraph}
+%         }
+%         \]
+%     \end{subfigure}
+%     \vspace{1em}
+%     \begin{subfigure}{\linewidth}
+%         \[
+%         \adjustbox{scale=0.55}{
+%         \tikzfig{../figures/appendix/idI_introduction_nested_hypergraph}
+%         }
+%         \]
+%     \end{subfigure}
+%     \caption{Special edge nested elimination}
+%     \label{fig:nested_elimination}
+% \end{figure}
 and, finally, the rules to introduce such edges as new consistent components (Figure~\ref{fig:consistent_introduction}).
 Intuitively such edge plays the role of a tensor unit identity that can be inserted in any context.
 
@@ -2904,25 +2957,25 @@ Intuitively such edge plays the role of a tensor unit identity that can be inser
     \label{fig:consistent_introduction}
 \end{figure}
 \else
-\begin{figure}[h!]
-    \begin{subfigure}{\linewidth}
-        \[
-        \adjustbox{width=\linewidth}{
-        \tikzfig{../figures/appendix/idI_introduction_new_component_hypergraph}
-        }
-        \]
-    \end{subfigure}
-    \vspace{1em}
-        \begin{subfigure}{\linewidth}
-            \[
-            \adjustbox{width=\linewidth}{
-            \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
-            }
-            \]
-        \end{subfigure}
-    \caption{New consistent component introduction (top) and elimination (bottom) rule}
-    \label{fig:consistent_introduction}
-\end{figure}
+% \begin{figure}[t!]
+%     \begin{subfigure}{\linewidth}
+%         \[
+%         \adjustbox{width=\linewidth}{
+%         \tikzfig{../figures/appendix/idI_introduction_new_component_hypergraph}
+%         }
+%         \]
+%     \end{subfigure}
+%     \vspace{1em}
+%         \begin{subfigure}{\linewidth}
+%             \[
+%             \adjustbox{width=\linewidth}{
+%             \tikzfig{../figures/appendix/idI_elimination_new_component_hypergraph}
+%             }
+%             \]
+%         \end{subfigure}
+%     \caption{New consistent component introduction (top) and elimination (bottom) rule}
+%     \label{fig:consistent_introduction}
+% \end{figure}
 \fi
 
 % \[
@@ -2956,11 +3009,15 @@ and the full DPO square becomes
 }
 \]
 \else
+\begin{figure}[h!]
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix}
 }
 \]
+\caption{Complete DPO square for the deletion rule}
+\label{fig:cartesian_deletion_dpo}
+\end{figure}
 \fi
 The target e-hypergraph is not exactly what we wanted, however, but we can use the auxiliary rule to remove this unlabelled edge.
 
@@ -2971,11 +3028,15 @@ The target e-hypergraph is not exactly what we wanted, however, but we can use t
 }
 \]
 \else
+\begin{figure}
 \[
 \adjustbox{width=\linewidth}{
     \tikzfig{../figures/appendix/cartesian_rewrite_dpo_fix_2}
 }
 \]
+\caption{Complete DPO square for the deletion rule (after one more rule applied)}
+\label{fig:cartesian_dpo_fix}
+\end{figure}
 \fi
 % and then utilise the idempotence rule for the identity of the tensor unit
 

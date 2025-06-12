@@ -108,7 +108,7 @@ To support such cycles we need a richer categorical structure for our string dia
 This is obtained by combining this work with the results of~\cite{ghica_rewriting_2023}, and for simplicity we will limit ourselves to the case of acyclic e-graphs, although this is not a limitation of the general theory.
 % While equipping the string diagrams which such structure is straightforward, it is out of the scope of this work, and thus we limit ourselves to acyclic e-graphs and e-string diagrams for the purposes of presentation.
 Note that while the transformations of the e-graph are guided by the algorithm, the transformations of the string diagrammatic version are guided by the equations of the underlying theory.
-A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively.
+A detailed step-by-step application of the equations for the rewrite rules from $(a)$ to $(b)$ and $(b)$ to $(c)$ \ifcameraready{is given in Figures~\ref{fig:e-graph-example-a-b} and~\ref{fig:e-graph-example-b-c}, respectively}{can be found in~\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 The equations applied are the ones from Figure~\ref{fig:string-equations} along with the naturality of delete and copy.
 Note that the degree of sharing in the eventual string diagram is comparable to the degree of sharing in the corresponding e-graph.
 % Note that in the final e-graph, (e), a cycle is introduced, making it the representation of infinitely many terms: $a, a*1, (a*1)*1, \ldots$. 
@@ -231,7 +231,7 @@ Composition in the usual order is written $g \circ f$.
 We denote the tensor product of an SMC $\mathbb{C}$ by $\otimes$,  its unit by $I$, and its symmetry natural transformation as $\sym$ \cite{maclane}.  
 We adopt the convention that $\otimes$ binds more tightly than $(;\!)$.  
 We elide all associativity and unit isomorphisms associated with monoidal categories,  and often omit subscripts on identities and natural transformations where it can be inferred.  
-We denote by $\catname{SLat}$ the closed monoidal category of semilattices which is defined in section~\ref{sec:appendix:slat} of the Appendix.
+We denote by $\catname{SLat}$ the closed monoidal category of semilattices which is defined in \ifcameraready{section~\ref{sec:appendix:slat} of the Appendix}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 Given two adjoint functors $F : \mathbb{A} \to \mathbb{B}$ and $G : \mathbb{B} \to \mathbb{A}$ with $F$ being left-adjoint, we write $F \dashv G : \mathbb{B} \to \mathbb{A}$ for this adjunction.
 
 
@@ -371,7 +371,7 @@ f \otimes (g+h) = f \otimes g + f \otimes h \qquad (f+g) \otimes h = f \otimes h
 Again, we take $\otimes$ to bind more tightly than $+$.
 
 
-\begin{proposition}(A specialized case of Proposition 6.4.3~\cite{Borceux_1994}. See also Appendix~\ref{sec:appendix:slat})
+\begin{proposition}(A specialized case of Proposition 6.4.3~\cite{Borceux_1994}. See also \ifcameraready{Appendix~\ref{sec:appendix:slat}}{\cite{tiurin2025equivalencehypergraphsdporewriting}})
 There is a 2-adjunction 
 % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
 % \[\begin{tikzcd}

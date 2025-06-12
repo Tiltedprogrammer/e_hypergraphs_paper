@@ -16,20 +16,20 @@
 		\node [style=none] (13) at (7.75, 4.5) {};
 		\node [style=node, label={above:$v_1$}] (14) at (5, 5.5) {};
 		\node [style=node, label={below:$w_{1}$}] (15) at (5, -2.5) {};
-		\node [style=node, label={above:$v_1$}] (16) at (4.75, -5.75) {};
-		\node [style=node, label={above:$v_2$}] (17) at (6, -5.75) {};
-		\node [style=node, label={above:$v_3$}] (18) at (7.25, -5.75) {};
-		\node [style=none] (19) at (5.25, -4.75) {};
-		\node [style=none] (20) at (7.75, -4.75) {};
-		\node [style=none] (21) at (7.75, -6) {};
-		\node [style=node, label={above:$w_1$}] (23) at (1, -5.75) {};
-		\node [style=node, label={above:$w_2$}] (24) at (2.25, -5.75) {};
-		\node [style=node, label={above:$w_3$}] (25) at (3.5, -5.75) {};
-		\node [style=none] (26) at (0.25, -4.75) {};
-		\node [style=none] (28) at (4.25, -6) {};
-		\node [style=none] (29) at (0.25, -6) {};
-		\node [style=none] (32) at (4, -3.25) {};
-		\node [style=none] (33) at (4, -4) {};
+		\node [style=node, label={above:$v_1$}] (16) at (5.5, -5.75) {};
+		\node [style=node, label={above:$v_2$}] (17) at (6.75, -5.75) {};
+		\node [style=node, label={above:$v_3$}] (18) at (8, -5.75) {};
+		\node [style=none] (19) at (6, -4.75) {};
+		\node [style=none] (20) at (8.5, -4.75) {};
+		\node [style=none] (21) at (8.5, -6) {};
+		\node [style=node, label={above:$w_1$}] (23) at (1.75, -5.75) {};
+		\node [style=node, label={above:$w_2$}] (24) at (3, -5.75) {};
+		\node [style=node, label={above:$w_3$}] (25) at (4.25, -5.75) {};
+		\node [style=none] (26) at (1, -4.75) {};
+		\node [style=none] (28) at (5, -6) {};
+		\node [style=none] (29) at (1, -6) {};
+		\node [style=none] (32) at (5, -3.25) {};
+		\node [style=none] (33) at (5, -4) {};
 		\node [style=node, label={above:$v_{1}$}] (34) at (12.75, -9.25) {};
 		\node [style=none] (35) at (12, -7) {};
 		\node [style=none] (36) at (12, -5.75) {};
@@ -103,6 +103,8 @@
 		\node [style=none] (109) at (16, -7.25) {};
 		\node [style=none] (110) at (15.5, -7.75) {};
 		\node [style=node] (111) at (4, 1.5) {};
+		\node [style=none] (112) at (20.5, -3.25) {};
+		\node [style=none] (113) at (20.5, -4) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw (0) to (1);
@@ -183,5 +185,6 @@
 		\draw [style=diredge] (110.center) to (109.center);
 		\draw (111) to (3);
 		\draw (111) to (4);
+		\draw [style=diredge] (113.center) to (112.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

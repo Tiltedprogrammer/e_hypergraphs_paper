@@ -12,7 +12,7 @@ First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
 \end{definition}
 This notion generalises to rewriting of closed $\Sigma$-terms
 \begin{definition}
-    For closed-$\Sigma$-terms $f,g$, $f \leadsto_{\langle l, r \rangle}$ modulo SMC laws if they are representable as either in Definition~\ref{def:rewrite}, or as 
+    For closed-$\Sigma$-terms $f,g$, $f \leadsto_{\langle l, r \rangle} g$ modulo SMC laws if they are representable as either in Definition~\ref{def:rewrite}, or as 
     $
     f = c_{1};(id_{k} \otimes d);c_{2} $ and $ g = c_{1};(id_{k} \otimes e);c_{2}
     $
@@ -65,11 +65,19 @@ Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defin
 We also add a structural rewrite schema rule corresponding to distributivity law~\ref{law:distributivity}.
 The join of two cospans is defined as in Fig.~\ref{fig:f+g} and the quotienting is done through DPOI rewrite schema rules, one for each axiom.
 For example, the distributivity rule for $\otimes$ is given by the following schema rule
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.7\linewidth}{
+\tikzfig{./figures/semilattice_rule_1}~.
+}
+\]
+\else
 \[
 \adjustbox{width=\linewidth}{
 \tikzfig{./figures/semilattice_rule_1}~.
 }
 \]
+\fi
 
 We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category $\WellTypedMdaEcospans / \mathcal{S}$ is a closed $\catname{SLat}$ SMC.
 
@@ -80,7 +88,7 @@ We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category
     $.
 \end{definition}
     
-This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to Lemma~\ref{lemma:normal_form}, such that carrier of $f_{i}$ does not contain any hierarchical edges from $\textcolor{red}{E}$.
+This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to Lemma~\ref{lemma:normal_form}, such that carrier of $f_{i}$ does not contain any hierarchical edges from $\textcolor{e-color}{E}$.
 
 $\llbracket - \rrbracket$ is then induced by its definition on operators by induction
 \[
@@ -91,18 +99,18 @@ $\llbracket - \rrbracket$ is then induced by its definition on operators by indu
 
 \begin{proposition}[Proposition 26 and Proposition 27~\cite{fscd}]
 \label{prop:fscd}
-For two closed $\Sigma$-terms $f$ and $g$ and a $\mathcal{E}$ equation $l = r$  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ where the latter is defined in a subcategory of $\WellTypedMdaEcospans$ where carriers only contain edges from $\colorbox{yellow}{E} \cup \textcolor{closed-color}{E}$.
+For two closed $\Sigma$-terms $f$ and $g$ and an $\mathcal{E}$ equation $l = r$,  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$, where the latter is defined in a subcategory of $\WellTypedMdaEcospans$ where carriers only contain edges from $\colorbox{yellow}{E} \cup \textcolor{closed-color}{E}$.
 \end{proposition}
 
 \begin{proposition}
-    For two closed $\Sigma^{+}$-terms $f$ and $g$ and a $\mathcal{E}$ equation $l = r$  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
+    For two closed $\Sigma^{+}$-terms $f$ and $g$ and an $\mathcal{E}$ equation $l = r$,  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
 \end{proposition}
 \begin{proof}
 By definition, we have 
 $
   f = f_{1} + \ldots + f_{n} $ and $  g = f_{1} + \ldots + f_{n}$,
 such that $f_{i} \leadsto f_{j}$ for some $i, j$.
-This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{red}{E}$, we can apply Proposition~\ref{prop:fscd}.
+This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{e-color}{E}$, we can apply Proposition~\ref{prop:fscd}.
 \end{proof}
 
 \begin{figure}

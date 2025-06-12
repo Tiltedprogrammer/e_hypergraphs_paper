@@ -171,21 +171,21 @@ Consider the diagram below.
     We will omit labels as they are irrelevant to pushout construction.
     Consider relations
     \begin{align*}    
-    S_{V} &= \{\\
-          &\;(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+    S_{V} &= \{
+          \;(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
           &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
-          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
-          &\}\\
+          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
+          \}\\
           &\cup\\
-          &\{\\
-          &\;(y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          &\{
+          \;(y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
           &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
-          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\\
-          &\}\\
+          &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
+          \}\\
           &\cup\\
-          &\{\\
-          &\;(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\\
-          &\}\\
+          &\{
+          \;(x,x)\;\text{where}\; x \in V_{X} + V_{Y}
+          \}\\
         \\
     S_{E} &= \{(x,x) \text{ where } x \in E_{X} + E_{Y}\}
     \end{align*}
@@ -195,15 +195,14 @@ and let relations $R_{V},R_{E}$ be their transitive closures respectively.
 We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ respectively.
 
 \begin{align*}
-        \sfrac{X + Y}{\sim (R_{V},R_{E})} = (&\\
-            &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})},\\
+        \sfrac{X + Y}{\sim (R_{V},R_{E})} = &(
+            \sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
             &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})},\\
             &\consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}},\\
             &\textcolor{e-color}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
-            &\textcolor{closed-color}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\\
-        &)    
+            &\textcolor{closed-color}{<}_{\sfrac{X + Y}{\sim (R_{V},R_{E})}})    
 \end{align*}
 
 We will refer to $\sim (R_{V},R_{E})$ just as $\sim$, \textit{e.g.}, by writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and concrete relation will be clear from the context.
@@ -446,11 +445,19 @@ Note how we removed strict internal interfaces of $\mathcal{L}$ from internal in
 After computing the pushout for the second half of the diagram we add strict internal interfaces of $\mathcal{R}$ but since there are none, we are done as per condition (2) of Definition~\ref{def:dpoi-e}.
 
 \begin{figure}
-\[
+    \ifdefined\ONECOLUMN
+    \[
+    \adjustbox{width=0.6\linewidth}{
+    \tikzfig{./figures/dpo_example}
+    }
+    \]
+    \else
+    \[
 \adjustbox{width=\linewidth}{
 \tikzfig{./figures/dpo_example}
 }
 \]
-\caption{$\beta$-rule DPOI example.}
-\label{fig:dpoi-example}
+    \fi
+    \caption{$\beta$-rule DPOI example.}
+    \label{fig:dpoi-example}
 \end{figure}

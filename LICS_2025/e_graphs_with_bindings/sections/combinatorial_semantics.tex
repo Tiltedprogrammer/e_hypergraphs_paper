@@ -72,7 +72,7 @@ n \xrightarrow{f} \mathcal{F} +_{g,f'} \mathcal{G} \xleftarrow{g'} k
 $,
 computed by identifying vertices in $\mathcal{F} + \mathcal{G}$ that share pre-image in $m$.
 As pushout is only defined up to isomorphism, it justifies the morphisms in this category being isomorphism classes of cospans.
-To make such cospans complete with respect to representing morphism of $\catname{S}(\Sigma)$, we need to impose some restriction on their form.
+To make such cospans complete with respect to representing morphisms of $\catname{S}(\Sigma)$, we need to impose some restrictions on their form.
 \begin{definition}[Degree,  path,  acyclic] 
 The \emph{in-degree} of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.  
 Similarly, the out-degree of $v$ is the number of edges $e \in E_\mathcal{G}$ such that $v \in s(e)$.
@@ -98,8 +98,8 @@ Note that $\MdaCospans$ remains a symmetric monoidal category with the same equi
     $\catname{S}(\Sigma) \cong \MdaCospans$
 \end{theorem}
 
-Practical meaning of the above theorem is that two $\Sigma$-terms $f$ and $g$ are equal modulo SMC equations if and only if they are represented as the same hypergraph with interfaces.
-The theorem defines a full and faithful functor that is induced by interpretation function of morphism terms that renders the latter as cospans of hypergraphs and is given in Appendix~\ref{sec:appendix:interpretation}.
+The practical meaning of the above theorem is that two $\Sigma$-terms $f$ and $g$ are equal modulo SMC equations if and only if they are represented as the same hypergraph with interfaces.
+The theorem defines a full and faithful functor that is induced by the interpretation function of morphism terms that renders the latter as cospans of hypergraphs and is given in Appendix~\ref{sec:appendix:interpretation}.
 Term rewriting and hence equality modulo $\mathcal{E}$ is then implemented as DPO rewrites over such hypergraphs with interfaces that we recall next.
 
 \subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
@@ -226,14 +226,14 @@ The first work in \textit{loc. cit.}, in particular, introduced a combinatorial 
 Notably, the laws of a semilattice enrichment in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} and the laws of Definition~\ref{def:closed} in~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
 
 We follow an analogous approach by combining combinatorial representations of~\cite{fscd} and~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
-We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness, and when evoking a term e-hypergraph modify the original definitions as follows.
+We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness, and when evoking a term `e-hypergraph' we will mean the structure defined as follows.
 
 
 \begin{definition}
 We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency)$ where
 \begin{itemize}
   \item $V$ is a set of vertices.
-  \item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that that is formed of three disjoint sets of hyperedges defined below.
+  \item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined below.
   \item $s,t : E \to V^{*}$ are source and target functions.
   \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are \textit{label} functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
   \item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times V + E$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times V + E $ with $\textcolor{e-color}{E}, \textcolor{closed-color} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{<^{\mu}}$ and $\textcolor{closed-color}{<^{\mu}}$.
@@ -340,10 +340,16 @@ All non-black vertices form strictly internal interfaces.
 
 
 \begin{definition}[Isomorphic cospans]
-Consider a relation 
+Consider a relation
+\ifdefined\ONECOLUMN
+\[
+    R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(y)\bigr\}
+\]
+\else 
 \begin{multline*}
-R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{<}^{\mu} f_{\text{int}}(y)\bigr\}
+R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(y)\bigr\}
 \end{multline*}
+\fi
 for $x, y \in n'$.
 And let $S$ be its reflexive closure.
 The latter partitions $n'$ into non-empty subsets $\{p_{j}\}^{k}_{j=1}$.
@@ -534,17 +540,23 @@ is a \textit{boundary complement} if
 \begin{enumerate} 
     \item $m(\mathcal L)$ is a convex down-closed e-hypergraph;
     \item $[c_1,c_2]$ is mono;
-    \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<}^{\mu} e$;
-    \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<}^{\mu} e$;
+    \item for all $v,w$ in $\mathcal{G}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<^{\mu}} e$;
+    \item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i + j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<^{\mu}} e$;
     \item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \textit{well-typed} extended MDA cospan
     \[
     \hspace{-2em}n + j \xrightarrow{f_1 + id_{j}} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2 + id_{i}} k + i
     \]
     \item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of not top-level vertices of $\mathcal{G}$ then there exists a \textit{not necessarily well-typed} extended MDA cospan
+    \ifdefined\ONECOLUMN
+    \[
+        n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
+    \]
+    \else
     \begin{multline*}
     n \xrightarrow{f_1} n' \setminus (i' \setminus i) + j \xrightarrow{[g_1,c_2]} \\ \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k' \setminus (j' \setminus j) + i \xleftarrow{f_2} k
     \end{multline*}
+    \fi
 \end{enumerate}
 where $f_i$ and $g_i$ are defined as follows.  
  %because the image of $m$ is a convex down-closed e-hypergraph, 

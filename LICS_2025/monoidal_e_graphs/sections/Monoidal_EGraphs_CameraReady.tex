@@ -1,0 +1,146 @@
+\documentclass[conference]{IEEEtran}
+% \IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+
+\usepackage{cite}
+\usepackage{csquotes}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{amsthm}
+
+% IEEE class file does not include these for some reason
+\usepackage{proof}
+\usepackage{stmaryrd}
+\usepackage{MnSymbol}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac}
+
+\usepackage[final]{microtype}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+% some macros that maybe should be moved elsewhere
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+
+\input{../../../macros}
+\input{../../../sample.tikzstyles}
+\input{../../../hypergraph.tikzstyles}
+\input{../../../hypergraph.tikzdefs}
+
+% camera-ready
+\newcommand{\cameraready}{}
+
+\makeatletter
+\newcommand{\linebreakand}{%
+  \end{@IEEEauthorhalign}
+  \hfill\mbox{}\par
+  \mbox{}\hfill\begin{@IEEEauthorhalign}
+}
+\makeatother
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+
+
+
+\title{Equivalence Hypergraphs: DPO Rewriting for Monoidal E-Graphs}
+
+% \author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
+% \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+% \textit{name of organization (of Aff.)}\\
+% City, Country \\
+% email address or ORCID}
+% \and
+% }
+
+\author{\IEEEauthorblockN{\href{https://orcid.org/0000-0003-2724-5211}{Aleksei Tiurin}}
+\IEEEauthorblockA{\textit{University of Birmingham}\\
+United Kingdom\\
+axt257@student.bham.ac.uk}
+\and
+\IEEEauthorblockN{\href{https://orcid.org/0000-0003-1708-3554}{Chris Barrett}}
+\IEEEauthorblockA{\textit{University of Birmingham}\\
+United Kingdom\\
+c.r.barrett.1@bham.ac.uk
+}
+\and
+\IEEEauthorblockN{\href{https://orcid.org/0000-0002-4003-8893}{Dan R. Ghica}}
+\IEEEauthorblockA{\textit{Huawei Central Software Institute}\\ 
+\textit{and}\\ 
+\textit{University of Birmingham}\\
+United Kingdom\\
+d.r.ghica@bham.ac.uk}
+\linebreakand 
+\IEEEauthorblockN{\href{https://orcid.org/0000-0002-4783-9757}{Nick Hu}}
+\IEEEauthorblockA{\textit{University of Birmingham}\\
+United Kingdom\\
+n.hu@bham.ac.uk}
+}
+
+\maketitle
+
+\renewcommand{\thefootnote}{}%
+\footnotetext{A longer version of this paper, including full proofs and an appendix, is available on arXiv \cite{tiurin2025equivalencehypergraphsdporewriting}.}%
+\renewcommand{\thefootnote}{\arabic{footnote}}%
+
+\begin{abstract}
+	\input{abstract}   
+\end{abstract}
+
+
+
+\input{introduction}
+\input{combinatorial_semantics}
+\input{e-hypergraphs}
+\input{soundness_and_completeness}
+\input{conclusion}
+\input{acknowledgement}
+
+
+\bibliographystyle{acm}
+\bibliography{../../../bibliography}
+
+
+
+\end{document}

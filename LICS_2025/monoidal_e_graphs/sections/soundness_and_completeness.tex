@@ -1,10 +1,10 @@
 \section{Soundness and Completeness}\label{sec:soundness-and-completeness}
 
 This section contains the main technical results of the paper,  building on those of \cite{bonchi_string_2022-2}.
-We give the interpretation of $\catname{S}(\Sigma)^{+}$ terms in $\WellTypedMdaEcospans$ by extending the interpretation of $\catname{S}(\Sigma)$ in $\MdaCospans$ (see Appendix) by first endowing each hom-set of cospans in $\WellTypedMdaEcospans$ with a semilattice structure turning it into an $\catname{SLat}$-category.
+We give the interpretation of $\catname{S}(\Sigma)^{+}$ terms in $\WellTypedMdaEcospans$ by extending the interpretation of $\catname{S}(\Sigma)$ in $\MdaCospans$ (see \ifcameraready{Appendix}{\cite{tiurin2025equivalencehypergraphsdporewriting}}) by first endowing each hom-set of cospans in $\WellTypedMdaEcospans$ with a semilattice structure turning it into an $\catname{SLat}$-category.
 % To achieve the latter we quotient each hom-set by EDPOI structural rewrite rules that correspond to the axioms of an $\catname{SLat}$-SMC:
 % the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.
-Detailed proofs of the statements in this section can be found in Appendix~\ref{proof:appendix:soundness}.
+Detailed proofs of the statements in this section can be found in \ifcameraready{Appendix~\ref{proof:appendix:soundness}}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 
 % We first construct an interpretation of terms generating $\catname{S}(\Sigma)^{+}$ in $\WellTypedMdaEcospans$.  
 % As expected,  the SMC equations are factored out in our representation of terms in $\WellTypedMdaEcospans$,  but the semilattice equations are not.  
@@ -295,7 +295,7 @@ Moreover, we have that the following diagram commutes
 Note that the domain of this function is the set of e-graphs over the same signature and equations, which is not a category.
 The arrow $\leadsto$ expresses the fact that e-graph $e_2$ is obtainable from e-graph $e_1$ via the application of equations from $\mathcal{E}$; it includes adding nodes and merging e-classes.
 Intuitively, the diagram above implies that we can mimic e-graph transformations by DPO rewrites over e-hypergraphs in a sound and complete manner.
-We defer a more elaborate analysis to Appendix~\ref{sec:appendix:e-graph-translation}.
+\ifcameraready{We defer a more elaborate analysis to Appendix~\ref{sec:appendix:e-graph-translation}}{A more elaborate analysis can be found in~\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 % \begin{proof}
 % The equivalence is given by the functor $\llbracket - \rrbracket_{\mathcal{E}}$.
 % The functor is surjective on objects,  so it suffices to prove the functor is both full and faithful.

@@ -13,7 +13,7 @@ Finally,  we restrict the morphisms under consideration to those satisfying the 
 \begin{remark}
 Here,  and in the rest of the paper,  we will restrict to dealing with signatures $\Sigma$ for which the corresponding family of $\Sigma$-terms does not contain terms of type $0 \to 0$ (apart from the monoidal unit).
 This is a restriction we make in order to avoid complications to the technical development of DPOI rewriting for e-hypergraphs given in the subsequent section.
-A discussion of a general case can be found in section~\ref{sec:dpo-fix} of Appendix.
+A discussion of a general case can be found in \ifcameraready{section~\ref{sec:dpo-fix} of Appendix}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 \end{remark}
 
 In the following,  we elide the obvious injections of $V$ and $E$ into $V+E$.
@@ -82,7 +82,7 @@ The \emph{category of e-hypergraphs},  denoted  $\catname{EHyp(\Sigma)}$,  has e
 \end{definition}
 
 The category of e-hypergraphs has coproducts,  given by the disjoint union of e-hypergraphs,  and an initial object given by the empty e-hypergraph.  
-A concrete description of the pushout of two morphisms in this category is given in Appendix~\ref{sec:appendix:pushout}.
+A concrete description of the pushout of two morphisms in this category is given in \ifcameraready{Appendix~\ref{sec:appendix:pushout}}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 Generally,  the pushout of two e-hypergraph homomorphisms need not exist,  but we prove that it does in all scenarios that we are interested in; most importantly, the pushout for the composition of two cospans with discrete feet always exists.
 
 
@@ -172,7 +172,7 @@ However, we may not swap
 	\end{pgfonlayer}
 \end{tikzpicture}
 with each other --- this would yield a non-isomorphic cospan.
-Further examples of isomorphic and non-isomorphic extended cospans can be found in Appendix~\ref{sec:appendix:iso}.
+Further examples of isomorphic and non-isomorphic extended cospans can be found in \ifcameraready{Appendix~\ref{sec:appendix:iso}}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 
 % \begin{remark}\label{remark:embedding_functor}
 % There is also a faithful identity-on-objects functor $E: \HypI{\Sigma} \to \Ecospans$ which maps a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ to an extended cospan $n \xrightarrow{f_{ext}} n \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m \xleftarrow{g_{ext}} m$ such that $f_{ext};f_{int} = f$ and $g_{ext};g_{int} = g$.
@@ -417,7 +417,7 @@ Note that,  in the above definition,  the extended cospan
     \]
  is not necessarily well-typed.
 This is because its input internal interface may contain vertices that previously were a part of the output internal interface and vice versa.
-Examples and non-examples of a boundary complement can be found in Appendix~\ref{sec:appendix:iso}.
+Examples and non-examples of a boundary complement can be found in \ifcameraready{Appendix~\ref{sec:appendix:iso}}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 % \begin{remark}
 % The boundary complement conditions, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
 % \[
@@ -469,7 +469,7 @@ such that the two marked squares are pushouts and the following conditions hold:
 % \]
 \end{definition}
 Given  a set $\mathfrak{R}$ of EDPOI rewrite rules and e-hypergraphs with extended interfaces $\mathcal G$ and $\mathcal H$,  we write $\mathcal G \Rrightarrow_\mathfrak{R} \mathcal H$ if there exists a EDPOI rewrite in $\mathfrak R$ such that via it $\mathcal G$ rewrites to $\mathcal H$,  and we write $\mathcal G \Rrightarrow^*_\mathfrak{R} \mathcal H$ for reflexive, symmetric, and transitive closure of $\Rrightarrow{}$.
-An example of rewriting of extended cospans can be found in Appendix~\ref{sec:appendix:iso}.
+An example of rewriting of extended cospans can be found in \ifcameraready{Appendix~\ref{sec:appendix:iso}}{\cite{tiurin2025equivalencehypergraphsdporewriting}}.
 % Together, the conditions ensure the result of a rewrite is a well-typed MDA e-hypergraph. 
 
 

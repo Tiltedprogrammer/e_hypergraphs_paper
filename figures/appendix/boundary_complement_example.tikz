@@ -231,6 +231,8 @@
 		\node [style=none] (359) at (13, -23) {};
 		\node [style=none] (360) at (16.75, -17) {};
 		\node [style=none] (361) at (17.75, -15) {};
+		\node [style=none] (362) at (24, -3) {};
+		\node [style=none] (363) at (24, -4) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [in=90, out=-120] (12) to (13);
@@ -378,5 +380,6 @@
 			 to cycle;
 		\draw [style=diredge] (358.center) to (359.center);
 		\draw [style=diredge] (360.center) to (361.center);
+		\draw [style=diredge] (362.center) to (363.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

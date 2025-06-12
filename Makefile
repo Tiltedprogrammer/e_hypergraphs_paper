@@ -24,6 +24,11 @@ SLIDES_PATH="slides"
 SLIDES_SOURCE=$(SLIDES).tex
 
 
+SLOTTED="SlottedNotes"
+SLOTTED_PATH="POPL2026"
+SLOTTED_SOURCE=$(SLOTTED).tex
+
+
 PDFLATEX= pdflatex -file-line-error -shell-escape -interaction=nonstopmode
 XELATEX= xelatex -file-line-error -shell-escape -interaction=nonstopmode -pdf
 
@@ -48,6 +53,9 @@ lics_monoidal_egraph:
 
 slides:
 	cd $(SLIDES_PATH) && $(CLEANALL) && $(XELATEX) $(SLIDES_SOURCE)
+
+slotted:
+	cd $(SLOTTED_PATH) && $(CLEANALL) && $(PDFLATEX) $(SLOTTED_SOURCE) && bibtex $(SLOTTED) && $(PDFLATEX) $(SLOTTED_SOURCE) && $(PDFLATEX) $(SLOTTED_SOURCE)
 
 clean:
 	echo "TODO"
