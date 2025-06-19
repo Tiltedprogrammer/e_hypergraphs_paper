@@ -67,6 +67,8 @@
 \newcommand\update[1]{{\color{americanrose}#1}}
 
 
+\usepackage{minted}
+
 \makeatletter
 \newsavebox{\@brx}
 \newcommand{\llangle}[1][]{\savebox{\@brx}{\(\m@th{#1\langle}\)}%
@@ -239,6 +241,135 @@ An example could be seen in Figure~\ref{fig:f_x_y_string_traced}.
 \end{figure}
 
 
+\subsection{E-matching}
+
+E-matching is a function $match(p,m * a, \beta, m_p)$ that takes in a pattern $p$, an applied-id $m*a$ to match against, a subtitution from variables to applied-ids $\beta$ and a renaming $m_p$ that maps slots of an e-graph to slots of the pattern.
+
+
+\begin{listing}
+\begin{minted}[linenos, fontsize=\small, breaklines]{rust}
+  struct State {
+    // uses egraph slots.
+    partial_subst: Subst, // type Subst = HashMap<String, AppliedId>
+
+    // maps from the pattern slots to the e-graph slots.
+    partial_slotmap: SlotMap, //type SlotMap = HashMap<Slot,Slot>
+  }
+
+  pub fn ematch_all<L: Language, N: Analysis<L>>(
+    eg: &EGraph<L, N>,
+    pattern: &Pattern<L>,
+) -> Vec<Subst> {
+    let mut out = Vec::new();
+    for i in eg.ids() {
+        let i = eg.mk_sem_identity_applied_id(i); // applies identity renaming to an id to turn it into AppliedId
+        out.extend(
+            ematch_impl(pattern, State::default(), i, eg) // this is `match'
+                .into_iter()
+                .map(final_subst),
+        );
+    }
+    out
+}
+
+\end{minted}
+\end{listing}
+
+
+\begin{listing}
+\begin{minted}[linenos, fontsize=\small, breaklines]{rust}
+fn ematch_impl<L: Language, N: Analysis<L>>(
+    pattern: &Pattern<L>,
+    st: State,
+    i: AppliedId,
+    eg: &EGraph<L, N>,
+) -> Vec<State> {
+    match &pattern {
+        Pattern::PVar(v) => {
+            let mut st = st;
+            if let Some(j) = st.partial_subst.get(v) {
+                if !eg.eq(&i, j) {
+                    return Vec::new();
+                }
+            } else {
+                st.partial_subst.insert(v.clone(), i);
+            }
+            vec![st]
+        }
+        Pattern::ENode(n, children) => {
+            let mut out = Vec::new();
+            for nn in eg.enodes_applied(&i) { //traverses e_nodes of the e-class
+                let d = std::mem::discriminant(n);
+                let dd = std::mem::discriminant(&nn);
+                if d != dd {
+                    continue;
+                };
+
+                //takes the e_node that matches 'n'.
+                ematch_node(&st, eg, &n, children, &mut out, &nn);
+            }
+            out
+        }
+        Pattern::Subst(..) => panic!(),
+    }
+}
+
+\end{minted}
+\end{listing}
+
+\begin{listing}
+\begin{minted}[linenos, fontsize=\small, breaklines]{rust}
+fn ematch_node<L: Language, N: Analysis<L>>(
+    st: &State,
+    eg: &EGraph<L, N>,
+    n: &L, // from the pattern
+    children: &[Pattern<L>],
+    out: &mut Vec<State>,
+    nn: &L, //candidate e_node from e-class
+) {
+    'nodeloop: for n2 in eg.get_group_compatible_weak_variants(&nn) {
+        if CHECKS {
+            assert_eq!(&nullify_app_ids(n), n);
+        }
+
+        let clear_n2 = nullify_app_ids(&n2);
+        // We can use weak_shape here, as the inputs are nullified
+        // i.e. they only have id0() without slot args, so there are no permutations possible.
+        let (n_sh, _) = n.weak_shape();
+        let (clear_n2_sh, _) = clear_n2.weak_shape();
+        if n_sh != clear_n2_sh {
+            continue 'nodeloop;
+        } //checks if the shapes are equal, for example lambda x . f and lambda y . f have the same shape
+
+        let mut st = st.clone();
+
+        for (x, y) in clear_n2
+            .all_slot_occurrences()
+            .into_iter()
+            .zip(n.all_slot_occurrences().into_iter())
+        {
+          // checks if mapping m_p is not ambiguous
+            if !try_insert_compatible_slotmap_bij(x, y, &mut st.partial_slotmap) {
+                continue 'nodeloop;
+            }
+        }
+
+        let mut acc = vec![st];
+        // recursively matches children
+        for (sub_id, sub_pat) in n2.applied_id_occurrences().into_iter().zip(children.iter()) {
+            let mut next = Vec::new();
+            for a in acc {
+                next.extend(ematch_impl(sub_pat, a, sub_id.clone(), eg));
+            }
+            acc = next;
+        }
+
+        out.extend(acc);
+    }
+}
+
+\end{minted}
+\end{listing}
 
 \bibliographystyle{acm}
 \bibliography{../bibliography}
