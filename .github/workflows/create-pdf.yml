@@ -52,21 +52,21 @@ jobs:
             args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
             working_directory: ${{env.EXTENDED_ABSTRACT_PATH}}
 # Compile EGRAPH 2024 slides
-      - name: latexmk ${{env.SLIDES_PATH}}/EGRAPHS_2024/${{env.SLIDES_NAME}}
+      - name: latexmk ${{env.SLIDES_PATH}}EGRAPHS_2024/${{env.SLIDES_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
           root_file: ${{env.SLIDES_NAME}}.tex
           args: -xelatex -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape -latexoption=-pdf
-          working_directory: ${{env.SLIDES_PATH}}/EGRAPHS_2024
+          working_directory: ${{env.SLIDES_PATH}}EGRAPHS_2024
 # Compile LICS 2025 slides
-      - name: latexmk ${{env.SLIDES_PATH}}/LICS_2025/${{env.SLIDES_NAME}}
+      - name: latexmk ${{env.SLIDES_PATH}}LICS_2025/${{env.SLIDES_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
           root_file: ${{env.SLIDES_NAME}}.tex
           args: -xelatex -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape -latexoption=-pdf
-          working_directory: ${{env.SLIDES_PATH}}/LICS_2025
+          working_directory: ${{env.SLIDES_PATH}}LICS_2025
 # Compile closed_monoidal
       - name: latexmk ${{env.CLOSED_MONOIDAL_PATH}}${{env.CLOSED_MONOIDAL_NAME}}
         if: always()
@@ -111,7 +111,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ${{env.SLIDES_PATH}}/EGRAPHS_2024/${{env.SLIDES_NAME}}.pdf
+            asset_path: ${{env.SLIDES_PATH}}EGRAPHS_2024/${{env.SLIDES_NAME}}.pdf
             asset_name: egraphs_2024.pdf
             asset_content_type: pdf
       - name: Upload LICS slides to the release
@@ -121,7 +121,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ${{env.SLIDES_PATH}}/LICS_2025/${{env.SLIDES_NAME}}.pdf
+            asset_path: ${{env.SLIDES_PATH}}LICS_2025/${{env.SLIDES_NAME}}.pdf
             asset_name: lics_2025.pdf
             asset_content_type: pdf
       - name: Upload closed monoidal notes PDF to the release
