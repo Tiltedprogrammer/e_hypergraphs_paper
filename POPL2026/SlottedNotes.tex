@@ -371,6 +371,36 @@ fn ematch_node<L: Language, N: Analysis<L>>(
 \end{minted}
 \end{listing}
 
+\section{Explicit substitution}
+
+Lambda calculus with explicit substitution (also $\lambda_{\sigma}$-calculus) made the substitution operator a first-class element of the calculus (rather than a meta-level operation) to bridge the gap between lambda calculus and its concrete implementations~\cite{Abadi_Cardelli_Curien_Lévy_1991}.
+However, the existence of unique normal forms turned out to be a delicate matter and to achieve uniqueness, lambda terms must be quotiented by \textit{graphical} equivalence in addition to $\alpha$-equivalence~\cite{Standardisation}.
+We claim that using e-hypergraphs over e-graphs (or slotted e-graphs) may be more beneficial for doing equational reasoning for lambda calculus with explicit substitution.
+
+The rules can be seen in a table below (plust a standard rule for $(\lambda x . u)v = u[x / v]$)
+
+\begin{tabular}{lcc}
+\texttt{subst\_same\_var} & $x[x / u] = u$ &\\
+\texttt{subst\_diff\_var} & $y[x / u] = y$ & if $x \not \in \mathcal{F}(u)$\\
+\texttt{subst\_application} & $(uu')[x / v] = u[x / v]u'[x / v]$ & \\
+\texttt{subst\_lambda} & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$ & if $x \not \in \mathcal{F}(v)$ \\
+\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$\\
+\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])[x / v[x / v']]$ & if ???\\
+\texttt{subst\_comm} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$ & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)$\\
+\end{tabular}
+
+while such rules are absorbed when using string diagrams (or hypergraphs) akin to proof nets, they are not absorbed by e-graph representation.
+Below one could see the number of e-nodes for different set of equations enabled for saturating an expression \texttt{plus 2 2} using Church encoding.
+
+\begin{tabular}{lcccc}
+  Set of equations & built-in subst & explicit subst & explicit subst & explicit subst\\
+  &&& + interchange&  + interchange\\
+  &&&&  + comm\\
+  \# of e-nodes & 40 & 161 & 289 & 356
+\end{tabular}
+
+String diagrams represent the same equivalence without loss of generality and without handling equations for substitutions explicitly.
+
 \bibliographystyle{acm}
 \bibliography{../bibliography}
 
