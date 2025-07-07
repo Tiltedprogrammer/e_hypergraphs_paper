@@ -1,0 +1,100 @@
+\documentclass[acmsmall,screen, nonacm, review, anonymous, authoryear]{acmart}
+
+
+\usepackage{amsmath,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor,soul}
+
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{stmaryrd}
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac} 
+\usepackage{wrapfig}
+
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{lemma}[theorem]{Lemma}
+
+% change red to orange
+\definecolor{e-color}{named}{orange}
+\definecolor{closed-color}{named}{blue}
+
+
+% some macros that maybe should be moved elsewhere
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{EHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+
+\input{../../macros}
+\input{../../sample.tikzstyles}
+\input{../../hypergraph.tikzstyles}
+\input{../../hypergraph.tikzdefs}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\title{Categorical Foundations of E-Graphs With Binding}
+
+
+\begin{document}
+
+
+\begin{abstract}
+    Equality saturation, a technique for program optimisation and reasoning, has gained attention due to the resurgence of equality graphs (e-graphs). 
+	E-graphs represent equivalence classes of terms under rewrite rules, enabling simultaneous rewriting across a family of terms. 
+	However, they struggle in domains like $\lambda$-calculus that involve variable binding, due to a lack of native support for bindings.
+	Building on recent work interpreting e-graphs categorically as morphisms in semilattice-enriched symmetric monoidal categories, we extend this framework to closed symmetric monoidal categories to handle bindings. 
+	We provide a concrete combinatorial representation using hierarchical hypergraphs and introduce a corresponding double-pushout (DPO) rewriting mechanism. 
+	Finally, we establish the equivalence of term rewriting and DPO rewriting, with the key property that the combinatorial representation absorbs the equations of the symmetric monoidal category.
+\end{abstract}
+
+\maketitle
+
+\input{sections/introduction}
+\input{sections/categorical_semantics}
+\input{sections/combinatorial_semantics}
+\input{sections/soundness}
+
+
+
+\bibliographystyle{acm}
+\bibliography{../../bibliography}
+
+\appendix
+
+% \input{sections/appendix}
+
+
+\end{document}

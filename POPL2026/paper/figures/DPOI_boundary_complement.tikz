@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-3.5, 4.5) {$\mathcal{L}$};
+		\node [style=none] (1) at (-2.5, 4.5) {};
+		\node [style=none] (2) at (-0.5, 4.5) {};
+		\node [style=none] (3) at (0.5, 4.5) {$i + j$};
+		\node [style=none] (7) at (-3.5, 3.5) {};
+		\node [style=none] (8) at (-3.5, 1.5) {};
+		\node [style=none] (9) at (-3.5, 0.5) {$\mathcal{G}$};
+		\node [style=none] (10) at (-0.5, 0.5) {};
+		\node [style=none] (11) at (-2.5, 0.5) {};
+		\node [style=none] (12) at (0.5, 0.5) {$\mathcal{L}^{\bot}$};
+		\node [style=none] (16) at (0.5, 3.5) {};
+		\node [style=none] (17) at (0.5, 1.5) {};
+		\node [style=none] (20) at (-4.25, 2.5) {$f$};
+		\node [style=none] (21) at (-3, 1.5) {};
+		\node [style=none] (22) at (-2.5, 1.5) {};
+		\node [style=none] (23) at (-2.5, 1) {};
+		\node [style=none] (27) at (0.5, -2.5) {$n + m$};
+		\node [style=none] (28) at (-3, 0) {};
+		\node [style=none] (29) at (0, -2) {};
+		\node [style=none] (32) at (0.5, 0) {};
+		\node [style=none] (33) at (0.5, -2) {};
+		\node [style=none] (34) at (-1.5, 5.25) {$[a_1,a_2]$};
+		\node [style=none] (35) at (-2.25, -1.5) {$[b_1,b_2]$};
+		\node [style=none] (36) at (1.75, -1) {$[d_1,d_2]$};
+		\node [style=none] (37) at (1.75, 2.5) {$[c_1,c_2]$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=diredge] (2.center) to (1.center);
+		\draw [style=diredge] (7.center) to (8.center);
+		\draw [style=diredge] (10.center) to (11.center);
+		\draw [style=diredge] (16.center) to (17.center);
+		\draw (21.center) to (22.center);
+		\draw (22.center) to (23.center);
+		\draw [style=diredge] (29.center) to (28.center);
+		\draw [style=diredge] (33.center) to (32.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

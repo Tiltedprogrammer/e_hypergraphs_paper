@@ -1,0 +1,130 @@
+\section{Soundness and completeness}
+
+In this section we explore soundness and completeness of DPOI rewriting introduced in previous section with respect to rewriting of closed $\Sigma^{+}$-terms.
+First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
+
+\begin{definition}
+\label{def:rewrite}
+    We say that a $\Sigma$-term $f$ rewrites to a $\Sigma$-term $g$ modulo SMC laws via a rewrite rule $\langle l, r \rangle$ (notation, $\leadsto_{\langle l, r \rangle}$) if they are representable as
+    $
+    f = c_{1};(id_{k} \otimes l);c_{2} $ and $ g = c_{1};(id_{k} \otimes r);c_{2}
+    $.
+\end{definition}
+This notion generalises to rewriting of closed $\Sigma$-terms
+\begin{definition}
+    For closed-$\Sigma$-terms $f,g$, $f \leadsto_{\langle l, r \rangle} g$ modulo SMC laws if they are representable as either in Definition~\ref{def:rewrite}, or as 
+    $
+    f = c_{1};(id_{k} \otimes d);c_{2} $ and $ g = c_{1};(id_{k} \otimes e);c_{2}
+    $
+    and $d \leadsto_{\langle l, r \rangle} e$
+\end{definition}
+\begin{lemma}
+\label{lemma:normal_form}
+    Every closed $\Sigma^{+}$ term $f$ can be equivalently represented as
+    $
+    f_{1} + \ldots + f_{n}
+    $ modulo SMC laws and $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} where none of $f_{i}$ contain the join operator.
+\end{lemma}
+% \begin{proof}
+% Such forms are given by orienting $\catname{SLat}$-equations such that $+$ gets propagated to the top, as, for example $f \otimes (g + h) = f \otimes g + g \otimes h$.
+% Most notably, we can also escape lambda abstractions by using distributivity law~\ref{law:distributivity}.
+% \end{proof}
+This takes us to the following definition of rewriting for closed $\Sigma^{+}$-terms.
+\begin{definition}
+    For closed $\Sigma^{+}$-term $f,g$, $f \leadsto_{\langle l, r \rangle}$ SMC laws, $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} if they are representable as
+    $
+    f = f_{1} + \ldots + f_{i} + \ldots + f_{n} $ and $ g = f_{1} + \ldots + f_{j} + \ldots + f_{n}
+    $
+    such that there is a permutation $\sigma$ such that there exist indices $i,j$ and $\sigma(f_{i}) \leadsto f_{j}$.
+\end{definition}
+Next, to formulate the correspondence between rewriting systems we first define interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
+It follows by first defining the interpretation of operators by extending the interpretation of plain $\Sigma$ terms as morphisms in $\MdaCospans$ as given in Appendix~\ref{sec:appendix:interpretation}.
+The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in Fig.~\ref{fig:ev_and_lambda}.
+
+\begin{figure}
+    \begin{subfigure}{0.45\linewidth}
+\[
+\adjustbox{scale=0.6}{
+    \tikzfig{./figures/ev_interpretation}
+}
+\]
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\linewidth}
+        \[
+        \adjustbox{scale=0.6}{
+            \tikzfig{./figures/lambda_interpretation}
+        }
+        \]
+    \end{subfigure}
+\caption{$\llbracket \textsf{ev} \rrbracket$ (left) and $\llbracket \Lambda(f) \rrbracket$ (right)}
+\label{fig:ev_and_lambda}
+\end{figure}
+
+Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing DPOI rewrite rules to satisfy the laws of $\catname{SLat}$ symmetric monoidal category.
+We also add a structural rewrite schema rule corresponding to distributivity law~\ref{law:distributivity}.
+The join of two cospans is defined as in Fig.~\ref{fig:f+g} and the quotienting is done through DPOI rewrite schema rules, one for each axiom.
+For example, the distributivity rule for $\otimes$ is given by the following schema rule
+\ifdefined\ONECOLUMN
+\[
+\adjustbox{width=0.7\linewidth}{
+\tikzfig{./figures/semilattice_rule_1}~.
+}
+\]
+\else
+\[
+\adjustbox{width=\linewidth}{
+\tikzfig{./figures/semilattice_rule_1}~.
+}
+\]
+\fi
+
+We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category $\WellTypedMdaEcospans / \mathcal{S}$ is a closed $\catname{SLat}$ SMC.
+
+\begin{definition}[Quotient by rewrites]  
+    Given a set of DPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the  relation
+    $
+        f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g 
+    $.
+\end{definition}
+    
+This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to Lemma~\ref{lemma:normal_form}, such that carrier of $f_{i}$ does not contain any hierarchical edges from $\textcolor{e-color}{E}$.
+
+$\llbracket - \rrbracket$ is then induced by its definition on operators by induction
+\[
+\llbracket f;g \rrbracket = \llbracket f \rrbracket ; \llbracket g \rrbracket \quad
+\llbracket f \otimes g \rrbracket = \llbracket f \rrbracket \otimes \llbracket g \rrbracket \quad
+\llbracket f + g \rrbracket = \llbracket f \rrbracket + \llbracket g \rrbracket
+\]
+
+\begin{proposition}[Proposition 26 and Proposition 27~\cite{fscd}]
+\label{prop:fscd}
+For two closed $\Sigma$-terms $f$ and $g$ and an $\mathcal{E}$ equation $l = r$,  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$, where the latter is defined in a subcategory of $\WellTypedMdaEcospans$ where carriers only contain edges from $\colorbox{yellow}{E} \cup \textcolor{closed-color}{E}$.
+\end{proposition}
+
+\begin{proposition}
+    For two closed $\Sigma^{+}$-terms $f$ and $g$ and an $\mathcal{E}$ equation $l = r$,  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
+\end{proposition}
+\begin{proof}
+By definition, we have 
+$
+  f = f_{1} + \ldots + f_{n} $ and $  g = f_{1} + \ldots + f_{n}$,
+such that $f_{i} \leadsto f_{j}$ for some $i, j$.
+This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{e-color}{E}$, we can apply Proposition~\ref{prop:fscd}.
+\end{proof}
+
+\begin{figure}
+\[
+        \adjustbox{scale=0.5}{
+            \tikzfig{./figures/f_plus_g_new}
+        }
+\]
+\captionsetup{belowskip=-1ex}
+\caption{$+$ of two morphisms in $\WellTypedMdaEcospans$}
+\label{fig:f+g}
+\end{figure}
+
+\section{Conclusion}
+In this work we introduced e-graphs with bindings formalised as morphisms of a closed $\catname{SLat}$-SMC.
+We then provided a combinatorial representation for such morphisms in terms of hierarchical hypergraphs (e-hypergraphs) with a suitable notion of sound and complete DPO rewriting, making it possible for an e-hypergraph to represent equivalences derivable from a set of equations $\mathcal{E}$.
+An important future work is exploring whether such combinatorial structures may lead to better algorithmics for doing equality saturation for $\lambda$-calculus.

@@ -50,11 +50,11 @@
 
 \newcommand*{\ONECOLUMN}{}
 
-\input{../preamble}
-\input{../macros}
-\input{../sample.tikzstyles}
-\input{../hypergraph.tikzstyles}
-\input{../hypergraph.tikzdefs}
+\input{../../preamble}
+\input{../../macros}
+\input{../../sample.tikzstyles}
+\input{../../hypergraph.tikzstyles}
+\input{../../hypergraph.tikzdefs}
 
 
 \definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
@@ -390,18 +390,30 @@ The rules can be seen in a table below (plust a standard rule for $(\lambda x . 
 \end{tabular}
 
 while such rules are absorbed when using string diagrams (or hypergraphs) akin to proof nets, they are not absorbed by e-graph representation.
-Below one could see the number of e-nodes for different set of equations enabled for saturating an expression \texttt{plus 2 2} using Church encoding.
+In Table~\ref{tbl:slotted} one could see the number of e-nodes for different set of equations enabled for saturating an expression \texttt{plus 2 2} using Church encoding.
 
+\begin{table}
 \begin{tabular}{lcccc}
   Set of equations & built-in subst & explicit subst & explicit subst & explicit subst\\
   &&& + interchange&  + interchange\\
   &&&&  + comm\\
   \# of e-nodes & 40 & 161 & 289 & 356
 \end{tabular}
+\caption{Slotted e-graphs benchmarks}
+\label{tbl:slotted}
+\end{table}
 
 String diagrams represent the same equivalence without loss of generality and without handling equations for substitutions explicitly.
 
+Recall that by the virtue of free enrichment we have the equality $\Lambda(f + g) = \Lambda(f) + \Lambda(g)$.
+The intuitive interpretation of this equality is that $f \sim g$ (due to rewrite rules being applied) implies $\Lambda(f) \sim \Lambda(g)$.
+This is exactly one of the equivalences that a slotted e-graph from~\cite{slotted-egraphs} maintains.
+
+\[
+\text{bind}\;\$s_1\; x \cong \text{bind}\;\$s_2\;y \;\; \text{if} (\$s_1 \$f) * x \cong (\$s_2 \$f) * y, \text{where $f$ is fresh}
+\]
+
 \bibliographystyle{acm}
-\bibliography{../bibliography}
+\bibliography{../../bibliography}
 
 \end{document}
