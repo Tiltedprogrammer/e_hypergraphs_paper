@@ -17,6 +17,7 @@
 \usepackage{xspace}
 \usepackage{xargs}
 \usepackage{fontenc}
+\usepackage{csquotes}
 
 \usepackage{subcaption}
 \usepackage{caption}
@@ -86,8 +87,12 @@
 \input{sections/categorical_semantics}
 \input{sections/combinatorial_semantics}
 \input{sections/soundness}
+\input{sections/lambda-calculus}
 
-
+\section{Conclusion}
+In this work we introduced e-graphs with bindings formalised as morphisms of a closed $\catname{SLat}$-SMC.
+We then provided a combinatorial representation for such morphisms in terms of hierarchical hypergraphs (e-hypergraphs) with a suitable notion of sound and complete DPO rewriting, making it possible for an e-hypergraph to represent equivalences derivable from a set of equations $\mathcal{E}$.
+An important future work is exploring whether such combinatorial structures may lead to better algorithmics for doing equality saturation for $\lambda$-calculus.
 
 \bibliographystyle{acm}
 \bibliography{../../bibliography}
@@ -95,6 +100,5 @@
 \appendix
 
 % \input{sections/appendix}
-
 
 \end{document}

@@ -72,5 +72,23 @@
 \newcommand\id{\textsf{id}}
 \newcommand\sym{\textsf{sym}}
 
+% tiny inline string diagrams
+\newcommand{\comonoid}{%
+	\begin{tikzpicture}[baseline=0.4ex, scale=0.4, line width=0.8pt]
+		\path [use as bounding box] (0,0) rectangle (0.6,0.8);
+		\draw (0,0) .. controls (0,0.15) and (0.1,0.35) .. (0.2,0.4);
+		\draw (0.4,0) .. controls (0.4,0.15) and (0.3,0.35) .. (0.2,0.4);
+		\filldraw[black] (0.2,0.4) circle (0.08);
+		\draw (0.2,0.4) -- (0.2,0.8);
+	\end{tikzpicture}%
+}
+\newcommand{\counit}{%
+	\begin{tikzpicture}[baseline=0.4ex, scale=0.4, line width=0.8pt]
+		\path [use as bounding box] (0,0) rectangle (0.4,0.8);
+		\filldraw[black] (0.2,0.4) circle (0.08);
+		\draw (0.2,0.4) -- (0.2,0.8);
+	\end{tikzpicture}%
+}
+
 % camera-ready
 \newcommand{\ifcameraready}[2]{\ifdefined\cameraready #2 \else #1 \fi}
