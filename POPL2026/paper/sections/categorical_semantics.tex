@@ -171,6 +171,17 @@ The following distributivity law can then be derived, forming the basis of encod
 \end{equation}
 \label{law:distributivity}
 
+\begin{remark}
+
+The above distributivity law closely correspond to one of the congruences maintained by a slotted e-graph, namely
+
+\[
+\text{bind}\;s_1\; x \cong \text{bind}\;s_2\;y \;\; \text{if}\; x \cong_{\alpha} y
+\]
+The congruence intuitively says that if $x$ and $y$ are congruent (up to $\alpha$-equivalence), then the enclosing binders are also congruent.
+While this is a \textit{natural} congruence to define when constructing an e-graph with support for binders, in our framework it follows from the free enrichment by a purely categorical argument justifying that it is the \textit{right} congruence to define.
+\end{remark}
+
 Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of closed $\Sigma^{+}$-terms, the latter being defined as follows.
 Every closed $\Sigma$-term is also a $\Sigma^{+}$-term. 
 Given two closed $\Sigma^{+}$-terms $f : A \to B$ and $g : A \to B$, $f + g : A \to B$ is also a closed $\Sigma^{+}$-term.
