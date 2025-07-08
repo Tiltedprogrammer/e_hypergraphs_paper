@@ -28,6 +28,10 @@ SLOTTED="SlottedNotes"
 SLOTTED_PATH="POPL2026/notes"
 SLOTTED_SOURCE=$(SLOTTED).tex
 
+POPL2026="CategoricalFoundationsOfEGraphsWithBinding"
+POPL2026_PATH="POPL2026/paper"
+POPL2026_SOURCE=$(POPL2026).tex
+
 
 PDFLATEX= pdflatex -file-line-error -shell-escape -interaction=nonstopmode
 XELATEX= xelatex -file-line-error -shell-escape -interaction=nonstopmode -pdf
@@ -56,6 +60,9 @@ slides:
 
 slotted:
 	cd $(SLOTTED_PATH) && $(CLEANALL) && $(PDFLATEX) $(SLOTTED_SOURCE) && bibtex $(SLOTTED) && $(PDFLATEX) $(SLOTTED_SOURCE) && $(PDFLATEX) $(SLOTTED_SOURCE)
+
+popl2026:
+	cd $(POPL2026_PATH) && $(CLEANALL) && $(PDFLATEX) $(POPL2026_SOURCE) && bibtex $(POPL2026) && $(PDFLATEX) $(POPL2026_SOURCE) && $(PDFLATEX) $(POPL2026_SOURCE)
 
 clean:
 	echo "TODO"

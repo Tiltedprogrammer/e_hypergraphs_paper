@@ -145,27 +145,62 @@ inside the dashed boxes, indicating which of the class-level edges are connected
 The other steps, (c) to (d), represent further elaborations of the e-graph, or e-hypergraph, via the application of more rewrite rules.
 
 A common way of dealing with $\beta$-reduction for the $\lambda$-calculus in e-graphs is by using special nodes for explicit substitution and associating them with particular rewrite rules~\cite{EggPaper,koehler2022sketchguided}.
-The auxiliary nature of these nodes is revealed by the fact that, after rewriting, they must be removed from the graph. 
+The auxiliary nature of these nodes is revealed by the fact that, after rewriting, they may be removed from the graph. 
 We will see how in the categorical representation these nodes are not necessary because explicit substitution is simply modelled categorically as composition, a significant simplification.
 
 \subsection{Conventional vs. categorical e-graphs with binding}
 
-\textcolor{red}{The paragraph below may not be very relevant anymore considering slotted e-graphs where you can quite flexibly define the substitution (although rewiring is still a very simple concept)}
-
 First, let us compare how substitution works in conventional e-graphs as compared to our proposed approach.
 In Fig.~\ref{fig:e-graph-substitution} we show successive iterations of a conventional e-graph for $(\lambda x . (y + y) + x) 1$ following $\beta$-reductions.
-A subterm for an explicit substitution must be introduced, which is deemed equivalent to the top-level application term (hence they are inside the same dashed box), to be rewritten using the rules for explicit substitution at the top of each column.
+A subterm for an explicit substitution must be introduced, which is deemed equivalent to the top-level application term (hence they are inside the same dashed box).
+The substitution is then propagated through child e-classes using additional rewrite rules (depicted at the top of each column).
 At the end, all explicit substitution nodes can be removed.
-The same example is then given again in Fig.~\ref{fig:e-string-substitution}, this time using string diagrams. 
+The same example is then given again in Fig.~\ref{fig:e-string-substitution}, this time using string diagrams.
 
 Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram where an application node meets an abstraction, and explicit substitution simplifies into mere composition. 
-This is appears to be simpler just by comparing diagrams, but the technical advantages of using string diagrams run deep. 
-The explicit occurrences of variable names in the older approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which makes proving various mathematical properties essentially intractable. 
-Additionally, explicit substitutions need to be propagated recursively throughout the graph, which adds another layer of technical and conceptual overhead. 
+This is appears to be simpler just by comparing diagrams, but the technical advantages of using string diagrams run deep.
+The explicit occurrences of variable names in the older approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which makes proving various mathematical properties essentially intractable.
+Additionally, explicit substitutions need to be propagated recursively throughout the graph, which adds another layer of technical and conceptual overhead.
 Using de Bruijn indices when performing $\beta$-reduction would hardly solve this problem, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
-Notably, a work of~\cite{slotted-egraphs} has emerged recently which introduced a formulation of e-graphs with native support for binding, \textit{i.e.,} where binding is a first-class operation along with a substitution.
-It significantly complicates the formulation of an e-graph and corresponding algorithmics and based on \textit{nominal} techniques~\cite{Pitts_2013} unlike the approach presented in this work.
-We believe the approach used in this work strikes with its simplicity although a more detailed comparison with the work of remains a future work.
+A recent work of~\cite{slotted-egraphs} on so-called \textit{slotted} e-graphs has addressed the sharing issues when representing terms that are equivalent up to renaming of variables (even free ones) by making variables into first-class citizens of an e-graph and made binding a built-in operation for an e-graph.
+An example of a slotted e-graph that represents a term $\lambda x . (a + b) + (x + c)$ can be seen in Figure~\ref{fig:slotted}(left).
+
+\begin{figure}[t!]
+	\begin{subfigure}[t]{0.45\linewidth}
+\[
+\adjustbox{scale=0.8}{
+\tikzfig{figures/slotted-e-graph-example}
+}
+\]
+	\end{subfigure}
+	\hfill
+\begin{subfigure}[t]{0.45\linewidth}
+\[
+\adjustbox{scale=0.6}{
+\tikzfig{figures/slotted-string-2}
+}
+\]
+
+\end{subfigure}
+	\caption{}
+	\label{fig:slotted}
+\end{figure}
+
+A notable feature of a slotted e-graph is that every e-class is parameterised by a set of free variables of the terms represented by this e-class.
+The references then additionally convey the information about how variables are instantiated.
+For example, an e-class containing $+$ that is parameterised by variable names $s_2$ and $s_3$ gets intantiated once with $a,b$ (via $s_4 \mapsto a, s_2 \mapsto s_4$ and $s_5 \mapsto b, s_3 \mapsto s_5$) and once  with $x,c$.
+The fact that the variable $x$ is bound is evident from the corresponding e-class being parameterised by only three variables.
+If we were to add another e-node such as $e + d$, there would be a reference added to an already existing e-class such that $s_1 \mapsto e$, $s_2 \mapsto d$.
+We can achieve the same degree of sharing (in the sense we have the same number of nodes for $+$) using string diagrams by doing a closure conversion of $+$ (Figure~\ref{fig:slotted}(right)).
+However, the addition of these parameters and the corresponding alternations in the algorithmics makes the deeper correspondence between string diagrams and slotted e-graphs obscure.
+Despite this, there are applications where the use of string diagrams may be more beneficial than that of (slotted) e-graphs, for example in the case of lambda calculus with explicit substitution that we will describe next.
+Also, the categorical model that we built can help to explain the congruences maintained by slotted e-graphs which is further elaborated on in Section~\ref{sec:categorical}.
+
+% Notably, a work of~\cite{slotted-egraphs} has emerged recently which introduced a formulation of e-graphs with native support for binding, \textit{i.e.,} where binding is a first-class operation along with a substitution.
+% It significantly complicates the formulation of an e-graph and corresponding algorithmics and based on \textit{nominal} techniques~\cite{Pitts_2013} unlike the approach presented in this work.
+% We believe the approach used in this work strikes with its simplicity although a more detailed comparison with the work of remains a future work.
+
+\subsection{Lambda calculus with explicit substitutions and graphical equivalence of terms}
 
 \begin{figure*}
 	\begin{subfigure}{\linewidth}
