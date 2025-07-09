@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale=2]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (1) at (-0.5, -1.75) {};
+		\node [style=none] (1o) at (-0.5, -0.75) {};
+		\node [style=round box] (2) at (0.5, -1) {$2$};
+		\node [style=none] (2o) at (0.5, -0.75) {};
+		\node [style=round box] (+) at (0, -0) {$\times$};
+		\node [style=none] (+l) at (-0.1, -0.25) {};
+		\node [style=none] (+r) at (0.1, -0.25) {};
+		\node [style=none] (out) at (0, 0.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (1.center) to (1o.center);
+		\draw [out=90, in=-90, looseness=1.75] (1o.center) to (+l.center);
+		\draw [out=90, in=-90, looseness=1.75] (2o.center) to (+r.center);
+		\draw (+.center) to (out.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

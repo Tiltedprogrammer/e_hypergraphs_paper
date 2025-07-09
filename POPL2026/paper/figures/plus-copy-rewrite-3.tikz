@@ -1,0 +1,34 @@
+\begin{tikzpicture}[scale=2]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (in) at (0, -1.75) {};
+		\node [style=vertex] (copy) at (0, -0.75) {};
+		\node [style=round box] (+) at (0, 0) {$+$};
+		\node [style=none] (+l) at (-0.1, -0.25) {};
+		\node [style=none] (+r) at (0.1, -0.25) {};
+		\node [style=none] (out) at (0, 0.75) {};
+		\node [style=none] (1) at (.75, -1.75) {};
+		\node [style=none] (1o) at (.75, -0.75) {};
+		\node [style=round box] (2) at (1.75, -1) {$2$};
+		\node [style=none] (2o) at (1.75, -0.75) {};
+		\node [style=round box] (+') at (1.25, -0) {$\times$};
+		\node [style=none] (+l') at (1.15, -0.25) {};
+		\node [style=none] (+r') at (1.35, -0.25) {};
+		\node [style=none] (out') at (1.25, 0.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [out=120, in=-90] (copy.center) to (+l.center);
+		\draw [out=60, in=-90] (copy.center) to (+r.center);
+		\draw (+.center) to (out.center);
+		\draw (in.center) to (copy.center);
+		\draw (1.center) to (1o.center);
+		\draw [out=90, in=-90, looseness=1.75] (1o.center) to (+l'.center);
+		\draw [out=90, in=-90, looseness=1.75] (2o.center) to (+r'.center);
+		\draw (+'.center) to (out'.center);
+		\draw [style=dashed edge] (-.5,.75)
+		to (2.25,.75)
+		to (2.25,-1.75)
+		to (-.5,-1.75)
+		to cycle;
+		\draw [style=dashed edge] (.5,.75) to (.5,-1.75);
+	\end{pgfonlayer}
+\end{tikzpicture}

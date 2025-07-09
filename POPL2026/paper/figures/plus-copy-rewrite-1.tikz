@@ -1,0 +1,21 @@
+\begin{tikzpicture}[scale=2]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (in) at (0, -1.25) {};
+		\node [style=vertex] (copy) at (0, -0.75) {};
+		\node [style=round box] (+) at (0, 0) {$+$};
+		\node [style=none] (+l) at (-0.1, -0.25) {};
+		\node [style=none] (+r) at (0.1, -0.25) {};
+		\node [style=none] (out) at (0, 0.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [out=120, in=-90] (copy.center) to (+l.center);
+		\draw [out=60, in=-90] (copy.center) to (+r.center);
+		\draw (+.center) to (out.center);
+		\draw (in.center) to (copy.center);
+		\draw [style=dashed edge] (-.5,.75)
+		to (.5,.75)
+		to (.5,-1.25)
+		to (-.5,-1.25)
+		to cycle;
+	\end{pgfonlayer}
+\end{tikzpicture}
