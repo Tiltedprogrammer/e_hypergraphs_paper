@@ -1,4 +1,4 @@
-\section{Application --- $\lambda^\sim_{\text{lsub}}$-calculus}
+\section{Application --- $\lambda^\approx_{\text{lsub}}$-calculus}
 \label{sec:application}
 
 In this section, we show the utility of our theory by demonstrating how it can accommodate the \emph{linear substitution calculus} $\lambda_{\text{lsub}}$ of~\citet[§ 2]{accattoli2014nonstandard}.
@@ -13,9 +13,9 @@ The notions of context $C[-]$, bound and free variable are as usual, with the ad
 Write $C \llbracket t \rrbracket$ for the term given by substitution of the hole in the context $C[-]$ for the term $t$, under the additional restriction that the free variables of $t$ are not captured (via abstraction or explicit substitution) by $C$.
 In addition to the $\beta$- and $\eta$-reduction rules of standard $\lambda$-calculus, there are reduction rules to account for this explicit substitution which \enquote{perform} the substitution or commute it with $\beta$-reduction:
 \begin{align*}
-	(\lambda x. t) L u              \quad & \leadsto \quad t[x/u] L,                                                    \\
-	C \llbracket x \rrbracket [x/t] \quad & \leadsto \quad C \llbracket u \rrbracket [x/t],                             \\
-	t [x/u]                         \quad & \leadsto \quad t,                               & x \notin \textsf{fv} (t),
+	(\lambda x. t) L u              \quad & \to_{d\beta} \quad t[x/u] L,                                                \\
+	C \llbracket x \rrbracket [x/t] \quad & \to_{ls} \quad C \llbracket u \rrbracket [x/t],                             \\
+	t [x/u]                         \quad & \to_{gc} \quad t,                               & x \notin \textsf{fv} (t),
 \end{align*}
 where $L$ is a finite list of substitutions of the form $[x/u] [y/v] \ldots$.
 
@@ -24,17 +24,19 @@ For instance, the ML-style term $\textbf{let} \; x = 1 \; \textbf{in} \; \text{p
 In this case, the variable $x$ is valued in the constant $1$, but one could imagine instead that $x$ is to be substituted for the result of some expensive computation which we do not desire to repeat twice unnecessarily --- in this sense, the sharing of both operands of the operation $\text{plus}$ is captured by the explicit substitution.
 
 \emph{Graphical equivalence} $\sim$ of $\lambda_{\text{lsub}}$-terms is augmentation of $\alpha$-equivalence of terms with the additional stipulations that
-\begin{align*}
-	t [x/u] [y/v] \quad        & \sim \quad t [y/v] [x/u],        & x \notin \textsf{fv} (v) \land y \notin \textsf{fv} (u), \\
-	(\lambda y. t) [x/u] \quad & \sim \quad \lambda y. (t [x/u]), & y \notin \textsf{fv} (u),                                \\
-	(t v) [x/u] \quad          & \sim \quad t [x/u] v,            & x \notin \textsf{fv} (v),
-\end{align*}
+\begin{align}
+	t [x/u] [y/v] \quad        & \sim \quad t [y/v] [x/u],        & x \notin \textsf{fv} (v) \land y \notin \textsf{fv} (u), \nonumber \\
+	\label{eq:subst-lambda}
+	(\lambda y. t) [x/u] \quad & \sim \quad \lambda y. (t [x/u]), & y \notin \textsf{fv} (u), \tag{$\ast$}                             \\
+	(t v) [x/u] \quad          & \sim \quad t [x/u] v,            & x \notin \textsf{fv} (v), \nonumber
+\end{align}
 closed under contexts, transitivity, symmetry, and reflexivity.
 Put simply, it is the stipulation that \textbf{let}-bindings may be freely reordered without changing the meaning of the term\footnote{Recall that our setting is \emph{pure}, in the sense that no sequencing of effects is meaningful.}.
 The $\lambda^\sim_{\text{lsub}}$-calculus is given by these graphical equivalence classes of terms with the reduction relation defined by that of the $\lambda_{\text{lsub}}$-calculus modulo graphical equivalence.
 
 This calculus is explicitly designed to capture the representation of terms as proof nets: for two terms $t, u$ in the $\lambda_{\text{lsub}}$-calculus, $t \sim u$ if and only if both map to the same proof net~\cite{?}.
-It turns out that the same fact is true for the representation of terms as string diagrams~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} instead of proof nets, and in this fact we can exploit the string diagram setting of e-hypergraphs to absorb the reductions arising due to graphical equivalence into our representation rather than explicitly providing them as equations attached to a closed symmetric monoidal theory presenting the $\lambda^\sim_{\text{lsub}}$-calculus.
+By further extending the equivalence relation $\sim$, taking the symmetric closure by $\to_{ls}$ and $\to_{gc}$ and thus identifying terms under elimination of explicit substitution, we determine a \emph{string diagram equivalence} $\approx$ of $\lambda_{\text{lsub}}$-terms, determining a $\lambda^\approx_{\text{lsub}}$-calculus.
+Predictably, $t \approx u$ if and only if both map to the same string diagram~\cite[§ 5.1.1]{ghica2024stringdiagramslambdacalculifunctional}; this allows us to exploit the string diagram setting of e-hypergraphs to absorb many\footnote{The reason this is not \emph{all} reductions is because e-hypergraphs quotient away only the \emph{structural} isomorphisms of symmetric monoidal closed $\catname{SLat}$-categories (e.g.\ associators, unitors, etc.) which generate the \enquote{isotopy of string diagrams}; even in the graphical equivalence relation $\sim$, while~\autoref{eq:subst-lambda} is validated in every symmetric monoidal closed $\catname{SLat}$-category, it is not so by isotopy, but rather the adjunction $A \multimap - \dashv - \otimes A$. In other words, terms floating freely through the boundaries of rounded boxes is validated by our semantics, but produces concretely different e-hypergraphs --- this is the purpose of rectification by quotienting along $\mathcal{S}$ in~\autoref{prop:quotient-structural}, and manifests as additional DPO rewrites to be imposed.} of the reductions arising due to the equivalence $\approx$ into our representation rather than explicitly providing them as equations attached to a closed symmetric monoidal theory presenting the $\lambda^\approx_{\text{lsub}}$-calculus.
 
 Before we proceed to demonstrate this, we first wish to discuss the relevance of this calculus in the domain of e-graphs.
 E-graphs excel as a toolkit for compiler optimisation, facilitating the rewriting of programs into more efficient forms by equality saturation.
@@ -42,10 +44,10 @@ The theoretical study of this is the field of term rewriting, where programs are
 However, in a modern optimising compiler (e.g.\ LLVM~\cite{lattnerLLVMCompilationFramework2004}, GNU Compiler Collection~\cite{merrillGenericGimpleNew2003}), programs are represented as some sort of graph-based intermediate representation (IR) rather than a syntax tree.
 Here, basic blocks of instructions\footnote{Maximal sequences of instructions which are unconditionally executed together determined by program control flow.} form the nodes, and terminator instructions (e.g.\ jumps, branches, and other control flow operations) form the edges.
 This allows for optimisations and analyses based on graphical structure, e.g.\ reachability analysis to perform dead-code elimination, or data-flow analysis to perform constant folding.
-In essence, this is much closer to $\lambda^\sim_{\text{lsub}}$-calculus: the graphical equivalence there is abstracting away from the particular syntax of a term, in much the same way that LLVM IR abstracts away from the raw syntax of the source program.
+In essence, this is much closer to $\lambda^\approx_{\text{lsub}}$-calculus: the string diagram equivalence there is abstracting away from the particular syntax of a term, in much the same way that LLVM IR abstracts away from the raw syntax of the source program.
 Thus, an understanding of e-graphs in this context is valuable for the applicability of equality saturation techniques with respect to graph-based IRs which dominate the landscape of modern compiler design.
 
-We will define a monoidal signature whose closed symmetric monoidal theory is the $\lambda^\sim_{\text{lsub}}$-calculus extended by tupling of terms and flat natural numbers equipped with basic arithmetic operations.
+We will define a monoidal signature whose closed symmetric monoidal theory is the $\lambda^\approx_{\text{lsub}}$-calculus extended by tupling of terms and flat natural numbers equipped with basic arithmetic operations.
 Let $\Sigma \coloneq (\{ \mathbf{N} \}, \{ \comonoid, \counit \} \cup \mathbb{N} \cup \{ \text{plus}, \text{mult} \}, t)$ where
 \begin{align*}
 	t\colon \{ \comonoid, \counit \} \cup \mathbb{N} \cup \{ \text{plus}, \text{mult} \} & \to {\{ \mathbf{N} \}}^* \times {\{ \mathbf{N} \}}^*                                                    \\
@@ -86,11 +88,11 @@ plus(1, 2)
 	\hspace{2em}
 	\begin{subfigure}{0.2\linewidth}
 		\begin{align*}
-			     & \text{plus}(x, y)[y/2][x/1] \\
-			\sim &                             \\
-			     & \text{plus}(x, y)[x/1][y/2] \\
-			\sim &                             \\
-			     & \text{plus}(1, 2)
+			        & \text{plus}(x, y)[y/2][x/1] \\
+			\approx &                             \\
+			        & \text{plus}(x, y)[x/1][y/2] \\
+			\approx &                             \\
+			        & \text{plus}(1, 2)
 		\end{align*}
 		\caption{As terms in $\lambda_{\text{lsub}}$}%
 		\label{fig:plus-1-2-terms}
@@ -102,50 +104,48 @@ plus(1, 2)
 		\caption{String diagrammatic representation}%
 		\label{fig:plus-1-2-string-diagram}
 	\end{subfigure}
-	\caption{Graphically equivalent terms}%
+	\caption{$\approx$-equivalent terms}%
 	\label{fig:plus-1-2}
 \end{figure}
 
-\autoref{fig:plus-1-2-programs} shows some programs which are graphically and semantically equivalent but syntactically distinct.
-As alluded to in~\autoref{sec:vs-e-graphs-with-binding}, the traditional (slotted) e-graph approach to modelling the graphical equivalence of these terms (\autoref{fig:plus-1-2-terms}) relies on explicitly encoding substitution operations as e-graph nodes, and their behaviour (the graphical equivalence relation $\sim$) as rewrite rules, as in~\autoref{fig:e-graph-substitution} --- not only is this more complicated, but it also leads to a blow-up in the state space required to perform equality saturation in any extension of the $\lambda^\sim_{\text{lsub}}$-calculus, because we are really rewriting $\lambda_{\text{lsub}}$-terms and computational resources are spent rewriting between graphically equivalent terms.
+\autoref{fig:plus-1-2-programs} shows some programs which are semantically equivalent but syntactically distinct.
+As alluded to in~\autoref{sec:vs-e-graphs-with-binding}, the traditional (slotted) e-graph approach to modelling the equivalence of these terms (\autoref{fig:plus-1-2-terms}) relies on explicitly encoding substitution operations as e-graph nodes, and their behaviour (the string diagram equivalence relation $\approx$) as rewrite rules, as in~\autoref{fig:e-graph-substitution} --- not only is this more complicated, but it also leads to a blow-up in the state space required to perform equality saturation in any extension of the $\lambda^\approx_{\text{lsub}}$-calculus, because we are really rewriting $\lambda_{\text{lsub}}$-terms and computational resources are spent rewriting between equivalent terms.
 \textcolor{cyan}{To illustrate this, let's consider the following equations induced by the graphical equivalence and the $\lambda_{\text{lsub}}$ reduction rules}
 
 \begin{tabular}{lcc}
-	\texttt{beta} & $(\lambda x . t) u = t[x / u]$&\\
-	\texttt{subst\_same\_var} & $x[x / u] = u$ &\\
-	\texttt{subst\_diff\_var} & $y[x / u] = y$ & if $x \not \in \mathcal{F}(u)$\\
-	\texttt{subst\_application} & $(uu')[x / v] = u[x / v]u'[x / v]$ & \\
-	\texttt{subst\_lambda} & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$ & if $x \not \in \mathcal{F}(v)$ \\
-	\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x' / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$\\
-	\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])$ & if $x' \not \in \mathcal{F}(u)$\\
-	\texttt{subst\_comm} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$ & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)~.$\\
+	\texttt{beta}                  & $(\lambda x . t) u = t[x / u]$                       &                                                                    \\
+	\texttt{subst\_same\_var}      & $x[x / u] = u$                                       &                                                                    \\
+	\texttt{subst\_diff\_var}      & $y[x / u] = y$                                       & if $x \not \in \mathcal{F}(u)$                                     \\
+	\texttt{subst\_application}    & $(uu')[x / v] = u[x / v]u'[x / v]$                   &                                                                    \\
+	\texttt{subst\_lambda}         & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$    & if $x \not \in \mathcal{F}(v)$                                     \\
+	\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x' / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$             \\
+	\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])$          & if $x' \not \in \mathcal{F}(u)$                                    \\
+	\texttt{subst\_comm}           & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$          & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)~.$ \\
 \end{tabular}
-	
+
 \textcolor{cyan}{These can be encoded in a framework of slotted e-graphs.
-To demonstrate the effect that a particular set of rewrites has on the number of e-nodes of an e-graph, we saturate the lambda term $plus 2 2$ where $plus$ and $2$ are encoded using Church encoding.
-The numbers of e-nodes after the e-graph is saturated for each set of rewrite rules are presented in \autoref{tbl:slotted}.
+	To demonstrate the effect that a particular set of rewrites has on the number of e-nodes of an e-graph, we saturate the lambda term $plus 2 2$ where $plus$ and $2$ are encoded using Church encoding.
+	The numbers of e-nodes after the e-graph is saturated for each set of rewrite rules are presented in \autoref{tbl:slotted}.
 }
 
 \begin{table}
 	\begin{tabular}{lcccc}
-	  Set of equations & explicit subst & explicit subst & explicit subst & explicit subst\\
-	  && + comm& + interchange&  + interchange\\
-	  &&&&  + comm\\
-	  \# of e-nodes & 161 & 288 & 289 & 356
+		Set of equations & explicit subst & explicit subst & explicit subst & explicit subst \\
+		                 &                & + comm         & + interchange  & + interchange  \\
+		                 &                &                &                & + comm         \\
+		\# of e-nodes    & 161            & 288            & 289            & 356
 	\end{tabular}
 	\caption{Slotted e-graphs benchmarks}
 	\label{tbl:slotted}
 \end{table}
 
 \textcolor{cyan}{The \texttt{explicit subst} set of rewrite rules consist of the first five rules above.
-We can see that additionally saturating the e-graph with respect to interchange and commutativity rules increases the number of e-nodes by a factor of 2.
-These are the exact equations that are absorbed by using string-diagrammatic representation of $\lambda$-terms.
-Notably, string diagrams (and (e-)hypergraphs) do not absorb the equation \texttt{subst\_lambda} but we believe it is practically feasible to do rewriting modulo this rule by traversing through the boxes when searching for a redex.
-Furthermore, (cospans of) e-hypergraphs, as presented in \autoref{sec:closed-e-hyp}, do not absorb the equations for associativity, commutativity and unitality for $\comonoid$ and $\counit$, but the constraints on the cospans and the boundary complement may be relaxed to absorb those as well by following the work of~\cite{zanassi_comonoid} with which our approach is completely compatible.}
-	
+	We can see that additionally saturating the e-graph with respect to interchange and commutativity rules increases the number of e-nodes by a factor of 2.
+	These are the exact equations that are absorbed by using string-diagrammatic representation of $\lambda$-terms.
+	Notably, string diagrams (and (e-)hypergraphs) do not absorb the equation \texttt{subst\_lambda} but we believe it is practically feasible to do rewriting modulo this rule by traversing through the boxes when searching for a redex.
+	Furthermore, (cospans of) e-hypergraphs, as presented in \autoref{sec:closed-e-hyp}, do not absorb the equations for associativity, commutativity and unitality for $\comonoid$ and $\counit$, but the constraints on the cospans and the boundary complement may be relaxed to absorb those as well by following the work of~\cite{zanassi_comonoid} with which our approach is completely compatible.}
 
-\textcolor{red}{Aleksei, can you say something quantitative here if you ran some tests?}
-In contrast, in our framework, $\lambda^\sim_{\text{lsub}}$-terms are directly modelled as string diagrams (\autoref{fig:plus-1-2-string-diagram}\footnote{Note that dashed boxes are elided for convenience here because no rewriting has occurred.}).
+In contrast, in our framework, $\lambda^\approx_{\text{lsub}}$-terms are directly modelled as string diagrams (\autoref{fig:plus-1-2-string-diagram}\footnote{Note that dashed boxes are elided for convenience here because no rewriting has occurred.}).
 We do however note that the traditional approach is more flexible, in the sense that it may model more theories with binders (e.g.\ $\pi$-calculus), whereas our approach is essentially specialised to $\lambda$-calculus, relying heavily on the metatheoretic internal language of the ambient setting.
 
 As a second example, we may wish to incorporate the optimisation ${\text{plus} (x, x) \leadsto \text{mult} (x, 2)}$ in our toy theory.
@@ -176,11 +176,11 @@ Now, in our semantic model, this rewrite can be non-destructively applied to mod
 Here, $\equiv$ is a definitional equality arising from the idempotence in the Hom semilattice, and $\to$ is an application of DPO rewriting using the previous equation along the right branch.
 In isolation, this isn't particularly interesting, but the important observation is that this rewriting all happens \emph{locally} in the context of a bigger diagram.
 
-From a practical perspective, the encoding of string diagrams as (e-)hypergraphs provides a normal form for graphical equivalence classes of terms.
+From a practical perspective, the encoding of string diagrams as (e-)hypergraphs provides a normal form for string diagram equivalence classes of terms.
 As a data structure, this provides an efficient representation upon which to build an implementation of this theory as a fully fledged \enquote{e-graphs for string diagram rewriting}, using DPO rewriting as a primitive to implement the standard e-graph operations.
-We leave this as future work, noting its applications to not only $\lambda^\sim_{\text{lsub}}$-calculus, but also other monoidal theories where there are two levels of rewriting:
+We leave this as future work, noting its applications to not only $\lambda^\approx_{\text{lsub}}$-calculus, but also other monoidal theories where there are two levels of rewriting:
 \begin{enumerate}
-	\item \enquote{bureaucratic} reassociation and reparenthesisation, absorbed into isotopy of string diagrams (here, graphical equivalence of $\lambda_{\text{lsub}}$-terms);
+	\item \enquote{bureaucratic} reassociation and reparenthesisation, absorbed into isotopy of string diagrams (here, a fragment of string diagram equivalence of $\lambda_{\text{lsub}}$-terms);
 	\item algebraic identities arising from the semantics of the theory (e.g. ${\text{plus} (x, x) \leadsto \text{mult} (x, 2)}$ for arithmetic).
 \end{enumerate}
 One such theory is the ZX calculus~\cite{coeckeInteractingQuantumObservables2011}.
