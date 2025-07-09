@@ -20,7 +20,7 @@ ARXIV_PATH="arxiv"
 ARXIV_SOURCE=$(ARXIV).tex
 
 SLIDES="slides"
-SLIDES_PATH="slides"
+SLIDES_PATH="slides/LICS_2025"
 SLIDES_SOURCE=$(SLIDES).tex
 
 

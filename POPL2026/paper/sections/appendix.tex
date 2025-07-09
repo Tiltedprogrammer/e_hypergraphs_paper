@@ -390,14 +390,16 @@ Recall that $\textcolor{e-color}{<}$ is essentially a transitive closure of $\te
 The construction can be illustrated with the example in Fig.~\ref{fig:pushout_example}.
 Vertices and edges that are being identified as they have a common preimage inherit the relations from the vertex or edge that has it defined either directly or via a path.
 In particular, a coproduct of two feet contains\begin{tikzpicture}
+    \adjustbox{scale=0.8}{
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=node, label={above:$v_1$}] (0) at (-5.5, 3.5) {};
+		\node [style=node, label={above:$v_1$}] (0) at (-5, 3.5) {};
 		\node [style=node, label={above:$v_2$}] (1) at (-4.5, 3.5) {};
-		\node [style=node, label={above:$v_3$}] (2) at (-3.5, 3.5) {};
-		\node [style=node, label={above:$v'_1$}] (3) at (-2.5, 3.5) {};
-		\node [style=node, label={above:$v'_2$}] (4) at (-1.5, 3.5) {};
-		\node [style=node, label={above:$v'_3$}] (5) at (-0.5, 3.5) {};
+		\node [style=node, label={above:$v_3$}] (2) at (-4, 3.5) {};
+		\node [style=node, label={above:$v'_1$}] (3) at (-3.5, 3.5) {};
+		\node [style=node, label={above:$v'_2$}] (4) at (-3, 3.5) {};
+		\node [style=node, label={above:$v'_3$}] (5) at (-2.5, 3.5) {};
 	\end{pgfonlayer}
+    }
 \end{tikzpicture}
 such that $\textcolor{closed-color}{<_{X+Y}}$ is only defined for $v_1,v_2,v_3$.
 Therefore, we assign $\textcolor{closed-color}{<_{\sfrac{X+Y}{\sim}}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) = [\textcolor{closed-color}{<_{X+Y}}(\iota_{V_{X} + V_{Y}}(v_1))]$ and so on.

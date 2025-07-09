@@ -68,18 +68,21 @@ For example, the distributivity rule for $\otimes$ is given by the following sch
 \ifdefined\ONECOLUMN
 \[
 \adjustbox{width=0.7\linewidth}{
-\tikzfig{./figures/semilattice_rule_1}~.
+\tikzfig{./figures/semilattice_rule_1_2}~.
 }
 \]
 \else
 \[
 \adjustbox{width=\linewidth}{
-\tikzfig{./figures/semilattice_rule_1}~.
+\tikzfig{./figures/semilattice_rule_1_2}~.
 }
 \]
 \fi
 
-We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category $\WellTypedMdaEcospans / \mathcal{S}$ is a closed $\catname{SLat}$ SMC.
+We collect all such rewrite schemas into a set $\mathcal{S}$ and then a category $\WellTypedMdaEcospans / \mathcal{S}$ is an $\catname{SLat}$ SMC.
+Note that it is not a \textit{closed} $\catname{SLat}$ SMC.
+To turn it into a \textit{closed} $\catname{SLat}$ SMC, we would need to also quotient by the DPO rewrites that arise from the equations in Def~\ref{def:closed}.
+We do not perform such quotienting as these equations bear operational meaning, \textit{e.g.}, they model $\beta$-reduction when interpreting $\lambda$-calculus.
 
 \begin{definition}[Quotient by rewrites]  
     Given a set of DPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the category $\WellTypedMdaEcospans$ quotiented by the  relation
@@ -116,7 +119,7 @@ This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llb
 \begin{figure}
 \[
         \adjustbox{scale=0.5}{
-            \tikzfig{./figures/f_plus_g_new}
+            \tikzfig{./figures/f_plus_g_new_2}
         }
 \]
 \captionsetup{belowskip=-1ex}

@@ -218,6 +218,7 @@ We then proceed with building a combinatorial representation for closed $\Sigma^
 
 
 \section{Closed E-hypergraphs}
+\label{sec:closed-e-hyp}
 Prior work of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} introduced a notion of \textit{e-hypergraph} --- a combinatorial representation of morphism terms for free semilattice-enriched symmetric monoidal category with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
 The semilattice enrichment structure was encoded using hierarchical edges in a hypergraph following the approach of a well-established body of literature on hierarchical hypergraphs~\cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical, fscd}.
 The first work in \textit{loc. cit.}, in particular, introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
@@ -234,21 +235,23 @@ We define an e-hypergraph $\mathcal{G}$ over a closed symmetric monoidal signatu
   \item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined below.
   \item $s,t : E \to V^{*}$ are source and target functions.
   \item $l_{E} : E \to \Sigma_{M} + 1$, $l_{V} : V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are \textit{label} functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
-  \item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times V + E$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times V + E $ with $\textcolor{e-color}{E}, \textcolor{closed-color} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{<^{\mu}}$ and $\textcolor{closed-color}{<^{\mu}}$.
+  \item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times (V + E)$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times (V + E)$ with $\textcolor{e-color}{E}, \textcolor{closed-color}{E} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{<^{\mu}}$ and $\textcolor{closed-color}{<^{\mu}}$.
         For $x \in V + E$, the set of predecessors of $x$ is denoted as $[x) = \{x' ~|~ \exists y_{1} = x', \ldots, y_{n} = x,  y_{i} \textcolor{e-color}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{closed-color}{<^{\mu}} y_{i+1}\; \}$.
         We call edges $e$ such that $l(e) = \bot$ hierarchical and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ \textit{top-level}.
         Each of these relations should satisfy the following
         \begin{enumerate}
           \item each set of predecessors consists exclusively of hierarchical edges;
           \item each $x$ has at most one immediate predecessor;
-          \item edges $e$ such that there is no $x$ such that $e \textcolor{e-color}{<^{\mu}} x$ or $e \textcolor{e-color}{<^{\mu}} x$ are labelled;
-          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{e-color}{<^{\mu}} e$ iff $e' \textcolor{e-color}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{closed-color}{<}$.
+          \item edges $e$ such that there is no $x$ such that $e \textcolor{e-color}{<^{\mu}} x$ or $e \textcolor{closed-color}{<^{\mu}} x$ are labelled;
+          \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e' \textcolor{e-color}{<^{\mu}} e$ iff $e' \textcolor{e-color}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{closed-color}{<^{\mu}}$.
         \end{enumerate}
   \item $\consistency$ is a \textit{consistency relation} which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V + E ~|~ p \textcolor{e-color}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, \textit{i.e.}, if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{e-color}{<^{\mu}}(v)$ and $p \textcolor{e-color}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
   We require that $\consistency_{p} \not = (E_{p} + V_{p}) \times (E_{p} + V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{e-color}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{e-color}{<^{\mu}} e\}$.
 \end{itemize} 
 $\textcolor{e-color}{E}$ and $\textcolor{closed-color}{E}$ are then induced by the corresponding relations and consist of exclusively hierarchical edges, so $\colorbox{yellow}{E} = E \setminus \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$.
-Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $\textcolor{e-color}{<}, \textcolor{closed-color}{<}$ and~$\consistency$.
+When writing $x \textcolor{closed-color}{<} y$ (or $x \textcolor{e-color}{<} y$) we may refer to $x$ as a predecessor of $y$ and refer to $y$ as a successor of $x$.
+% we do not use this
+% Given an e-hypergraph $\mathcal{G}$ we can consider a corresponding \textit{underlying} hypergraph $\mathcal{G}'$ by forgetting $\textcolor{e-color}{<}, \textcolor{closed-color}{<}$ and~$\consistency$.
 \end{definition}
 
 Intuitively, edges from $\textcolor{e-color}{E}$ encode equivalence classes, \emph{i.e.}, e-boxes, while edges from $\textcolor{closed-color}{E}$ encode lambda-abstraction boxes.
@@ -335,6 +338,7 @@ We occasionally conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from 
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \textit{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.
 Graphically, we depict such extended cospans as in Fig.~\ref{fig:e-cospan-example}: feet of the cospan are depicted within shaded regions.
 All non-black vertices form strictly internal interfaces.
+We follow the same orientation that we chose for string diagrams --- the input interface of the cospan is at the bottom and the output interface is at the top.
 
 
 \begin{definition}[Isomorphic cospans]

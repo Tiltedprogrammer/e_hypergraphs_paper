@@ -108,6 +108,42 @@ plus(1, 2)
 
 \autoref{fig:plus-1-2-programs} shows some programs which are graphically and semantically equivalent but syntactically distinct.
 As alluded to in~\autoref{sec:vs-e-graphs-with-binding}, the traditional (slotted) e-graph approach to modelling the graphical equivalence of these terms (\autoref{fig:plus-1-2-terms}) relies on explicitly encoding substitution operations as e-graph nodes, and their behaviour (the graphical equivalence relation $\sim$) as rewrite rules, as in~\autoref{fig:e-graph-substitution} --- not only is this more complicated, but it also leads to a blow-up in the state space required to perform equality saturation in any extension of the $\lambda^\sim_{\text{lsub}}$-calculus, because we are really rewriting $\lambda_{\text{lsub}}$-terms and computational resources are spent rewriting between graphically equivalent terms.
+\textcolor{cyan}{To illustrate this, let's consider the following equations induced by the graphical equivalence and the $\lambda_{\text{lsub}}$ reduction rules}
+
+\begin{tabular}{lcc}
+	\texttt{beta} & $(\lambda x . t) u = t[x / u]$&\\
+	\texttt{subst\_same\_var} & $x[x / u] = u$ &\\
+	\texttt{subst\_diff\_var} & $y[x / u] = y$ & if $x \not \in \mathcal{F}(u)$\\
+	\texttt{subst\_application} & $(uu')[x / v] = u[x / v]u'[x / v]$ & \\
+	\texttt{subst\_lambda} & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$ & if $x \not \in \mathcal{F}(v)$ \\
+	\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x' / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$\\
+	\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])$ & if $x' \not \in \mathcal{F}(u)$\\
+	\texttt{subst\_comm} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$ & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)~.$\\
+\end{tabular}
+	
+\textcolor{cyan}{These can be encoded in a framework of slotted e-graphs.
+To demonstrate the effect that a particular set of rewrites has on the number of e-nodes of an e-graph, we saturate the lambda term $plus 2 2$ where $plus$ and $2$ are encoded using Church encoding.
+The numbers of e-nodes after the e-graph is saturated for each set of rewrite rules are presented in \autoref{tbl:slotted}.
+}
+
+\begin{table}
+	\begin{tabular}{lcccc}
+	  Set of equations & explicit subst & explicit subst & explicit subst & explicit subst\\
+	  && + comm& + interchange&  + interchange\\
+	  &&&&  + comm\\
+	  \# of e-nodes & 161 & 288 & 289 & 356
+	\end{tabular}
+	\caption{Slotted e-graphs benchmarks}
+	\label{tbl:slotted}
+\end{table}
+
+\textcolor{cyan}{The \texttt{explicit subst} set of rewrite rules consist of the first five rules above.
+We can see that additionally saturating the e-graph with respect to interchange and commutativity rules increases the number of e-nodes by a factor of 2.
+These are the exact equations that are absorbed by using string-diagrammatic representation of $\lambda$-terms.
+Notably, string diagrams (and (e-)hypergraphs) do not absorb the equation \texttt{subst\_lambda} but we believe it is practically feasible to do rewriting modulo this rule by traversing through the boxes when searching for a redex.
+Furthermore, (cospans of) e-hypergraphs, as presented in \autoref{sec:closed-e-hyp}, do not absorb the equations for associativity, commutativity and unitality for $\comonoid$ and $\counit$, but the constraints on the cospans and the boundary complement may be relaxed to absorb those as well by following the work of~\cite{zanassi_comonoid} with which our approach is completely compatible.}
+	
+
 \textcolor{red}{Aleksei, can you say something quantitative here if you ran some tests?}
 In contrast, in our framework, $\lambda^\sim_{\text{lsub}}$-terms are directly modelled as string diagrams (\autoref{fig:plus-1-2-string-diagram}\footnote{Note that dashed boxes are elided for convenience here because no rewriting has occurred.}).
 We do however note that the traditional approach is more flexible, in the sense that it may model more theories with binders (e.g.\ $\pi$-calculus), whereas our approach is essentially specialised to $\lambda$-calculus, relying heavily on the metatheoretic internal language of the ambient setting.
