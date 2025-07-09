@@ -393,11 +393,11 @@ while such rules are absorbed when using string diagrams (or hypergraphs) akin t
 In Table~\ref{tbl:slotted} one could see the number of e-nodes for different set of equations enabled for saturating an expression \texttt{plus 2 2} using Church encoding.
 
 \begin{table}
-\begin{tabular}{lcccc}
-  Set of equations & built-in subst & explicit subst & explicit subst & explicit subst\\
-  &&& + interchange&  + interchange\\
-  &&&&  + comm\\
-  \# of e-nodes & 40 & 161 & 289 & 356
+\begin{tabular}{lccccc}
+  Set of equations & built-in subst & explicit subst & explicit subst & explicit subst & explicit subst\\
+  &&& + comm& + interchange&  + interchange\\
+  &&&&&  + comm\\
+  \# of e-nodes & 40 & 161 & 288 & 289 & 356
 \end{tabular}
 \caption{Slotted e-graphs benchmarks}
 \label{tbl:slotted}
@@ -412,6 +412,26 @@ This is exactly one of the equivalences that a slotted e-graph from~\cite{slotte
 \[
 \text{bind}\;\$s_1\; x \cong \text{bind}\;\$s_2\;y \;\; \text{if} (\$s_1 \$f) * x \cong (\$s_2 \$f) * y, \text{where $f$ is fresh}
 \]
+
+\begin{remark}
+
+The rules arise from linear substitution lambda calculus which is as follows
+
+\begin{align*}
+(\lambda\;x\;t)\;L\;u \mapsto_{db} t[x / u]L\\
+C\llbracket x \rrbracket [x / u] \mapsto_{ls} C \llbracket u \rrbracket [x / u]\\
+t[x/u] \mapsto t, \text{if } x \not \in fv(t)
+\end{align*}
+
+The contexts $C$ are defined as
+
+\[
+C \Coloneqq \square \;|\; \lambda x . C \; | \; C\;t \;|\; t\;C\;|\;C[x / t]\;|\;t[x / C]
+\]
+
+and in particular in $\lambda x . C$ and $C[x/t]$ $x$ is bound.
+
+\end{remark}
 
 \bibliographystyle{acm}
 \bibliography{../../bibliography}

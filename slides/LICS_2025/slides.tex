@@ -9,6 +9,13 @@
 \usepackage{subcaption}
 \usepackage{minted}
 \usepackage{mathtools}
+\usepackage{stmaryrd}
+\newcommand{\consistency}{{\smile}}
+\usepackage{adjustbox}
+\usepackage{appendixnumberbeamer}
+
+\usepackage[style=authoryear,backend=bibtex]{biblatex} % or backend=biber
+\addbibresource{../../bibliography.bib}
 
 % \hypersetup{
 %     colorlinks=true,
@@ -55,7 +62,7 @@
 \newcommand{\bsubsection}[1]{\subsection{$\bullet$ #1}}
 
 \title{Equivalence Hypergraphs: DPO Rewriting for Monoidal E-Graphs} 
-\date{June 24, 2025} % Use metropolis theme 
+\date{LICS, 2025} % Use metropolis theme 
 \author[Aleksei Tiurin]{$\textbf{Aleksei Tiurin}^{\dagger}$,$\text{Chris Barrett}^{\dagger}$,$\text{Dan R. Ghica}^{\dagger,\ddagger}$, $\text{Nick Hu}^{\dagger}$}
 \institute{$^{\dagger}$University of Birmingham, $^{\ddagger}$Huawei Central Software Institute}
 \begin{document} 
@@ -94,13 +101,23 @@
 \bsubsection{E-graphs}
 
 \begin{frame}{E-graphs}
-    Data structure to \alert{efficiently} represent an equivalence relation on a set of terms over an \alert{algebraic} signature
+    Data structure to \alert{efficiently} represent an equivalence relation on a set of terms over an \alert{algebraic} signature $\Sigma$
+    \pause
+    \begin{itemize}
+        \item $\Sigma_{\mathbf{Mon}} = \{\mathbb{S},\mu : 2 \to 1, i: 0 \to 1\}$
+        \item $i$, $\mu(s_1,s_2), s_i \in \mathbb{S}$, $\ldots$
+    \end{itemize}
     \pause
     \vfill
-    \pause
     The relation is refined by applying equations \alert{non-destructively}, \alert{saturating} the e-graph
+    \begin{itemize}
+        \item Solves \emph{phase ordering} problem
+        \item $\mu(x,i) \equiv x$, $\mu(x,y) \equiv \mu(y,x)$, $\ldots$
+    \end{itemize}
     \vfill
-    \pause
+\end{frame}
+\begin{frame}{E-graphs}
+    \vfill
     Once saturated, the \alert{best} candidate can be extracted from the set
     \vfill
     \pause
@@ -112,6 +129,14 @@
         \item $\ldots$
     \end{itemize}
     \vfill
+    \pause
+    Or, the saturated e-graph can be used to check if two terms are equivalent
+    \begin{itemize}
+        \item Tactics for proof assistants
+    \end{itemize}
+    \pause
+    \vfill\
+    Many more applications are proposed at EGRAPHS workshop annually
     % However, there are more general theories that describe the interaction of processes, \textit{e.g.}, quantum
 \end{frame}
 
@@ -121,7 +146,7 @@
 \begin{minipage}{0.45\linewidth}
 E-classes $\scalebox{0.4}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag red] (0) at (0, 0) {};\end{pgfonlayer}\end{tikzpicture}}$,$\scalebox{0.4}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag yellow] (0) at (0, 0) {};\end{pgfonlayer}\end{tikzpicture}}$,$\scalebox{0.4}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag blue] (0) at (0, 0) {};\end{pgfonlayer}\end{tikzpicture}}$,$\scalebox{0.4}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag green] (0) at (0, 0) {};\end{pgfonlayer}\end{tikzpicture}}$,$\scalebox{0.4}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {};\end{pgfonlayer}\end{tikzpicture}}$,$\ldots$ 
 \begin{itemize}
-    \item Set of equivalent terms rooted at this particular e-class
+    \item Set of equivalent terms represented by enodes rooted at this particular e-class
 \end{itemize}
 \vfill
 E-nodes $\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=round box] (0) at (0, 0) {$f_1$};\node [style=none] (1) at (-0.5, -0.5) {};\node [style=none] (2) at (0.5, -0.5) {};\node [style=none] (3) at (0, -0.5) {$\small\ldots$};\end{pgfonlayer}\begin{pgfonlayer}{edgelayer}\draw [style=new edge style 1] (0.center) to (1.center);\draw [style=new edge style 1] (0.center) to (2.center);\end{pgfonlayer}\end{tikzpicture}$, $\ldots$, $\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=round box] (0) at (0, 0) {$f_n$};\node [style=none] (1) at (-0.5, -0.5) {};\node [style=none] (2) at (0.5, -0.5) {};\node [style=none] (3) at (0, -0.5) {$\small\ldots$};\end{pgfonlayer}\begin{pgfonlayer}{edgelayer}\draw [style=new edge style 1] (0.center) to (1.center);\draw [style=new edge style 1] (0.center) to (2.center);\end{pgfonlayer}\end{tikzpicture}$
@@ -288,8 +313,9 @@ Machinery to maintain \alert{sharing} and \alert{congruence} ($t_1 \cong t_2 \im
 
 \begin{frame}{E-graphs}
     \begin{example}[$x * 1 \to x$]
-        \hspace{-2.5em}
-        \begin{minipage}{0.25\linewidth}
+        \hspace{-2em}
+        % \hfill
+        \begin{minipage}{0.2\linewidth}
         \[
         \scalebox{0.8}{
         \tikzfig{./figures/e-graph-example-d-merged}
@@ -297,36 +323,34 @@ Machinery to maintain \alert{sharing} and \alert{congruence} ($t_1 \cong t_2 \im
         \]    
         \end{minipage}
         \pause
-        \hfill
-        \begin{minipage}{0.075\linewidth}
+        \hspace{2em}
+        \begin{minipage}{0.1\linewidth}
         \[
         \xRightarrow{\texttt{add}(a)}
         \]
         \end{minipage}
-        \hfill
-        \begin{minipage}{0.25\linewidth}
+        \begin{minipage}{0.2\linewidth}
             \[
             \scalebox{0.8}{
             \tikzfig{./figures/e-graph-example-d-merged}
             }
             \]    
         \end{minipage}
-        \hfill
+        \hspace{1em}
         \pause
-        \begin{minipage}{0.1\linewidth}
+        \begin{minipage}{0.25\linewidth}
             \[
             \xRightarrow{\texttt{merge}(\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {/\;,*};\end{pgfonlayer}\end{tikzpicture}},\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {a};\end{pgfonlayer}\end{tikzpicture}})}
             \]
         \end{minipage}
-        \hfill
-        \begin{minipage}{0.25\linewidth}
+        \hspace{-2em}
+        \begin{minipage}{0.2\linewidth}
             \[
             \scalebox{0.8}{
             \tikzfig{./figures/e-graph-example-e-merged}
             }
             \]
         \end{minipage}
-        \hfill
     \end{example}
 \end{frame}
 
@@ -341,17 +365,24 @@ We introduce \alert{categorical semantics} for e-graphs which has the following 
 
 \begin{frame}{Categorical semantics}
 
-We generalise from \alert{algebraic} signatures to arbitrary \alert{monoidal signatures} (denoted $\Sigma$) and consider corresponding syntactic categories $\mathbf{S}(\Sigma)$ (\textbf{PROP}s)
+We generalise from \alert{algebraic} signatures to arbitrary \alert{monoidal signatures}
 \begin{itemize}
-    \item Morphisms are given by terms freely constructed using functional symbols from $\Sigma$ and $\otimes,\; ;, \text{sym}, I$ quotiented by the axioms of symmetric monoidal categories
+    \item $\Sigma_{\mathbf{CMon}} = \{\mathbb{S},\mu : 1 \to 2, i : 1 \to 0\}$
+\end{itemize}
+These induce corresponding syntactic categories $\mathbf{S}(\Sigma)$ (\textbf{PROP}s)
+\begin{itemize}
+    \item Morphisms are given by terms freely constructed using functional symbols from $\Sigma$ and $\otimes,\; ;, \textsf{sym}, id$ quotiented by the axioms of symmetric monoidal categories
 \end{itemize}
 
-We also consider equations between $\Sigma$-terms $\mathcal{E}$, i.e. pairs of morphisms $(l,r)$ with matching arities and co-arities (types), which gives rise to $\mathbf{SMT}(\Sigma,\mathcal{E})$ where morphisms are additionally quotiented by $\mathcal{E}$
+We can also consider equations between $\Sigma$-terms $\mathcal{E}$, i.e. pairs of morphisms $(l,r)$ with matching arities and co-arities (types), which gives rise to $\mathbf{SMT}(\Sigma,\mathcal{E})$ and the corresponding syntactic category $\mathbf{S}(\Sigma, \mathcal{E})$, where morphisms are additionally quotiented by $\mathcal{E}$
+\begin{itemize}
+    \item $\mathcal{E} = \{(\mu(x);id \otimes i \equiv x), \ldots\}$
+\end{itemize}
 
 \end{frame}
 
 \begin{frame}{Categorical semantics}
-Such constructions crop up in many domains and makes it possible to perform reasoning syntactically
+Such constructions crop up in many domains and make it possible to perform reasoning syntactically
 \begin{itemize}
     \item Quantum circuits
     \item Digital circuits
@@ -367,9 +398,12 @@ To capture the notion of equivalence between subterms we freely enrich a given \
 \item Endows each hom-set with an idempotent binary operation $+$
 \item Preserves naturality, monoidal structure, adjunctions etc. 
 \end{itemize}
-
-The above gives rise to $\mathbf{S}^{+}(\Sigma)$ and $\mathbf{SMT}^{+}(\Sigma,\mathcal{E})$, respectively
-
+\vfill
+\pause
+The above gives rise to $\mathbf{S}^{+}(\Sigma)$ and $\mathbf{S}^{+}(\Sigma,\mathcal{E})$, respectively
+\vfill
+\pause
+\vfill
 Which can also be constructed syntactically from $\Sigma^{+}$-terms (terms with additional constructor $+$)
 \[
 \scalebox{0.8}{
@@ -395,34 +429,299 @@ Appropriately quotiented $\ldots$
 
 \begin{frame}{Combinatorial semantics}
 
-Syntactic reasoning for $\mathbf{SMT}(\Sigma, \mathcal{E})$ is performed by term (or, string diagram) rewriting
+Syntactic reasoning for $\mathbf{S}(\Sigma, \mathcal{E})$ is performed by term (or, string diagram) rewriting
 \vfill
-String diagram rewriting has been formalised as DPO rewriting in a particular category of hypergraphs by a series of works
+\pause
+String diagram rewriting has been formalised as DPO rewriting in a particular category of \alert{hypergraphs} by a series of works by~\cite{bonchi_string_2022-1}
 \vfill
-We built on the results of (...) and formalise string diagram rewriting for $\mathbf{SMT}^{+}(\Sigma, \mathcal{E})$ as DPO rewriting in a particular category of \alert{e-hypergraphs}
+\pause
+We built on these results and formalise string diagram rewriting for $\mathbf{S}^{+}(\Sigma, \mathcal{E})$ as DPO rewriting in a particular category of \alert{e-hypergraphs}
+\end{frame}
+
+\begin{frame}{Hypergraphs vs E-Hypergraphs}
+\vspace{-1em}
+\begin{minipage}{0.3\linewidth}
+    \centering
+    $\llbracket - \rrbracket : \mathbf{S}(\Sigma) \to \mathbf{HypI}(\Sigma)$
+    \[
+    \scalebox{0.7}{
+    \tikzfig{./figures/cospan_hypergraphs_example}
+    }
+    \]
+    $\textsf{sym};e_1\otimes e_2 \equiv e_2 \otimes e_1;\textsf{sym}$
+\end{minipage}
+\hfill
+\begin{minipage}{0.3\linewidth}
+    \begin{itemize}
+    \item Additional relations $\leq$ and $\smile$ to make the dashed edges well-defined
+\end{itemize}
+    \[
+    \begin{array}{ccc}
+        e_1 <^{\mu} v_3 & v_3 \consistency v_4 & v_3 \not \consistency v_5\\
+        \ldots & \ldots & \ldots\\
+        e_1 <^{\mu} w_4 & w_3 \consistency w_4 & v_4 \not \consistency w_4
+    \end{array}
+    \]
+\begin{itemize}
+    \item Additional interfaces
+    \item Pushouts that we need to exist \alert{exist} (Theorem A.13)
+\end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}{0.35\linewidth}
+    \centering
+    $\llbracket - \rrbracket : \mathbf{S}^{+}(\Sigma) \to \mathbf{EHypI}(\Sigma)$
+    \vspace{-1em}
+    \[
+    \scalebox{0.5}{
+        \tikzfig{./figures/extended_cospan_example}
+    }    
+    \]
+    \vspace{-1em}
+    $\textsf{sym} + f \equiv f + \textsf{sym}$
+\end{minipage}
+% Compare definitions side by side highlighting what is new
+\end{frame}
+
+\begin{frame}{Combinatorial semantics}
+Double pushout (DPO) rewriting
+\vfill
+\begin{minipage}{0.45\linewidth}
+    \[
+    \scalebox{0.8}{
+    \begin{tikzcd}[ampersand replacement=\&]
+        {\mathcal{L}} \& {i+j} \& {\mathcal{R}} \\
+        {\mathcal{G}} \& {\mathcal{L}^{\bot}} \& {\mathcal{H}} \\
+        \& {n+m}
+        \arrow["f"', from=1-1, to=2-1]
+        \arrow[from=1-2, to=1-1]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-3, to=2-3]
+        \arrow["{\lrcorner}"{rotate=90,xshift=-0.25em, yshift=1em,font = \Large}, draw=none, from=2-1, to=1-2]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=2-2, to=2-3]
+        \arrow["{\lrcorner}"{rotate=180,xshift=-0.9em, yshift=2.25em,font = \Large}, draw=none, from=2-3, to=1-2]
+        \arrow[from=3-2, to=2-1]
+        \arrow[from=3-2, to=2-2]
+        \arrow[from=3-2, to=2-3]
+    \end{tikzcd}
+    }
+\]
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+\[
+ \scalebox{0.7}{
+    \tikzfig{../../figures/combinatorial_semantics/DPOI_square}
+ }
+\]
+\end{minipage}
+\end{frame}
+
+\begin{frame}{Combinatorial semantics}
+\begin{minipage}{0.45\linewidth}
+    \[
+    \scalebox{0.8}{
+    \begin{tikzcd}[ampersand replacement=\&]
+        {\mathcal{L}} \& {i+j} \& {\mathcal{R}} \\
+        {\mathcal{G}} \& {\mathcal{L}^{\bot}} \& {\mathcal{H}} \\
+        \& {n+m}
+        \arrow["f"', from=1-1, to=2-1]
+        \arrow[from=1-2, to=1-1]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-3, to=2-3]
+        \arrow["{\lrcorner}"{rotate=90,xshift=-0.25em, yshift=1em,font = \Large}, draw=none, from=2-1, to=1-2]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=2-2, to=2-3]
+        \arrow["{\lrcorner}"{rotate=180,xshift=-0.9em, yshift=1.7em,font = \Large}, draw=none, from=2-3, to=1-2]
+        \arrow[from=3-2, to=2-1]
+        \arrow[from=3-2, to=2-2]
+        \arrow[from=3-2, to=2-3]
+    \end{tikzcd}
+    }
+\]
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+    \[
+ \scalebox{0.7}{
+    \tikzfig{./figures/DPOI_square_colored}
+ }
+\]
+\end{minipage}
 \end{frame}
 
 \begin{frame}
-Compare definitions side by side highlighting what is new
+    \begin{example}
+\[
+    \adjustbox{width=0.65\linewidth}{
+        \tikzfig{../../figures/appendix/boundary_complement_example}
+    }
+    \]
+    \end{example}
+\end{frame}
+
+\begin{frame}{Soundness and completeness}
+    \[\mathbf{S}(\Sigma) \cong \mathbf{HypI}(\Sigma)\qquad \text{(\cite{bonchi_string_2022-1})}\]
+    \vfill
+    To make $\textbf{EHypI}(\Sigma)$ sound and complete for $\textbf{S}^{+}(\Sigma)$ we need to turn it into a semilattice-enriched category
+    \vfill
+    We define $+$ on cospans of e-hypergraphs
+    \vfill
+    Introduce DPO rewrite rules so that it behaves like a semilattice $+$
+    \vfill
+    Quotient morphisms of $\textbf{EHypI}(\Sigma)$ by these rules
+    \vfill
+    \[\mathbf{S}^{+}(\Sigma) \cong \textbf{EHypI}(\Sigma) / \mathcal{S} \qquad \mathbf{S}^{+}(\Sigma, \mathcal{E}) \cong \textbf{EHypI}(\Sigma) / \mathcal{S},\mathcal{E}\]
 \end{frame}
 
 \begin{frame}
-    Soundness and completeness with a caveat that we quotient by structural rewrites
+    \vfill
+    We can then interpret e-graphs as cospans of e-hypergraphs for a free PROP presented by Cartesian $\textbf{SMT}(\Sigma,\mathcal{E})$ $\scalebox{0.3}{
+        \begin{tikzpicture}
+            \begin{pgfonlayer}{nodelayer}
+                \node [style=vertex] (0) at (1.5, 3.5) {};
+                \node [style=none] (1) at (1.5, 3) {};
+                \node [style=none] (2) at (1, 4) {};
+                \node [style=none] (3) at (2, 4) {};
+            \end{pgfonlayer}
+            \begin{pgfonlayer}{edgelayer}
+                \draw (0) to (1.center);
+                \draw [bend right=45] (0) to (3.center);
+                \draw [bend left=45] (0) to (2.center);
+            \end{pgfonlayer}
+        \end{tikzpicture}
+    } : 1 \to 2$
+    $\scalebox{0.4}{
+        \begin{tikzpicture}
+            \begin{pgfonlayer}{nodelayer}
+                \node [style=vertex] (0) at (1.5, 3.5) {};
+                \node [style=none] (1) at (1.5, 3) {};
+            \end{pgfonlayer}
+            \begin{pgfonlayer}{edgelayer}
+                \draw (0) to (1.center);
+            \end{pgfonlayer}
+        \end{tikzpicture}
+    } : 1 \to 0$
+    \vfill
+    E-graph operations are then interpreted as DPO rewrites
+    \vfill
 \end{frame}
 
 \begin{frame}
-Example for string diagrammatic companion to e-graph before
+    \begin{example}[$(a * 2) / 2$]
+        \[
+        \tikzfig{./figures/e-string-example-a}
+        \]
+    \end{example}
 \end{frame}
 
 \begin{frame}
-New avenues ...
+\begin{example}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{../../figures/categorical-semantics/egraph-translation-step-by-step-a-b}
+    }
+    \]
+\end{example}
 \end{frame}
 
+\begin{frame}
+
+\begin{example}
+    \begin{minipage}{0.25\linewidth}
+\[
+\adjustbox{width=\linewidth}{
+\tikzfig{./figures/e-string-example-b}
+}
+\]
+    \end{minipage}
+\hfill
+\begin{minipage}{0.05\linewidth}
+    \[
+    \xRightarrow{}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\linewidth}
+\[
+\adjustbox{width=\linewidth}{
+    \tikzfig{./figures/e-string-example-c}
+}
+\]
+\end{minipage}
+\hfill
+\begin{minipage}{0.05\linewidth}
+    \[
+    \xRightarrow{}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\linewidth}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{./figures/e-string-example-d}
+    }
+    \]
+    \end{minipage}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\begin{example}
+\begin{minipage}{0.35\linewidth}
+        \[
+        \adjustbox{width=\linewidth}{
+        \tikzfig{./figures/e-string-example-d}
+        }
+        \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.2\linewidth}
+    \[
+    \xRightarrow{}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.35\linewidth}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{./figures/e-string-example-e}
+    }
+    \]
+\end{minipage}
+\end{example}
+\end{frame}
+
+\begin{frame}{New avenues}
+\vfill
+E-graphs struggle with monoidal theories
+\begin{itemize}
+\item Saturating with respect to the axioms of SMC leads to a blow-up in the number of e-nodes
+\end{itemize}
+\vfill
+E-hypergraphs absorb these axioms 
+\vfill
+Handling binding/variables in e-graphs is also not straightforward 
+\vfill
+Variables are just wires of string diagrams
+\vfill
+\end{frame}
+
+\begin{frame}{Conclusion}
+We introduced a generalisation of e-graphs for symmetric monoidal theories
+\vfill
+Future work includes pursuing the avenues for applications, in particular support for binding, e.g., in a context of lambda calculus with explicit substitution
+\end{frame}
+
+\appendix
 \bsubsection{Why e-graphs struggle with monoidal theories}
 
 \begin{frame}[containsverbatim]{}
 
-It is possible to encode such theories using e-graphs, for example as
+It is possible to encode such monoidal theories using e-graphs, for example as
 
 \begin{minted}{c++}
     enum CommutativeComonoids {
@@ -431,12 +730,8 @@ It is possible to encode such theories using e-graphs, for example as
         ";" = Compose([Id;2]),
         "parallel" = Parallel([Id;2]),
         "id" = Identity1,
-        "id_2" = Identity2,
         "I" = Unit,
         "sym_1_1" = Sym1_1,
-        "sym_2_2" = Sym2_2,
-        "sym_2_1" = Sym2_1,
-        "sym_1_2" = Sym1_2,
         Symbol(egg::Symbol),
     }
 \end{minted}

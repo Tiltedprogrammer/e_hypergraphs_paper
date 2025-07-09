@@ -132,7 +132,7 @@ $.
 
     Then, the axioms of $\catname{SLat}$-SMC consist of equations in Definitions~\ref{def:enriched-prop}~\ref{def:slat-cat} and associativity, commutativity, and idempotence equations for $+$.
     
-    \begin{proposition}(A specialised case of Proposition 6.4.7~\cite{Borceux_1994})
+    \begin{proposition}(A specialised case of Proposition 6.4.7~\cite{Borceux_1994} and Theorem 5.7.1~\cite{cruttwell2008normed})
         There is a 2-adjunction 
         % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
         % \[\begin{tikzcd}
@@ -144,7 +144,7 @@ $.
         \mathcal{F} \dashv \mathcal{U} : \catname{SLat}\text{--}\catname{Cat} \to \catname{Cat}
         \vspace{-1mm}
         \]
-        that is induced by the usual free-forgetful adjunction 
+        that is induced by the usual (symmetric monoidal) free-forgetful adjunction 
         
         % \[\begin{tikzcd}
         % 	\catname{SLatt} \arrow[rr, "U", bend left] & \top & \catname{Set} \arrow[ll, "F", bend left]
@@ -152,13 +152,14 @@ $.
         % \]
         \vspace{-1mm}
         \[
-        F \dashv U : \catname{SLat} \to \catname{Set}
+        F \dashv U : \catname{SLat} \to \catname{Set}.
         \vspace{-1mm}
-        \]        
+        \]
+        Moreover, every symmetric monoidal category $\mathbb{C}$ in $\catname{Cat}$ (respectively, $\catname{SLat}\text{--}\catname{Cat}$) is taken to a symmetric monoidal category $\mathbb{C}'$ in $\catname{SLat}\text{--}\catname{Cat}$ (respectively, $\catname{Cat}$) by a 2-functor $\mathcal{F}$ (respectively, $\mathcal{U}$).
     \end{proposition}
 In particular, 2-functor $\mathcal{F}$ turns every category $\mathbb{C'} \in \catname{Cat}$ into a free semilattice enriched $\mathbb{C} \in \catname{SLat}\text{--}\catname{Cat}$ by making every hom-set of $\mathbb{C'}$ into a free semilattice on this set.
-Being a 2-functor, it also lifts an adjunction in $\catname{Cat}$ $F \dashv G$ into an $\catname{Slat}$-adjunction.
-Thus, applying the functor to $\catname{CS}(\Sigma)$ we get a closed symmetric monoidal $\catname{Slat}$-category $\catname{CS}(\Sigma)^{+}$ by lifting the adjunction $(- \otimes B, B \multimap{} -, \eta, \varepsilon)$.
+Being a 2-functor, it also lifts an adjunction in $\catname{Cat}$ $F \dashv G$ into an $\catname{SLat}$-adjunction.
+Thus, applying the 2-functor to $\catname{CS}(\Sigma)$ we get a closed symmetric monoidal $\catname{SLat}$-category $\catname{CS}(\Sigma)^{+}$ by lifting the adjunction $(- \otimes B, B \multimap{} -, \eta, \varepsilon)$.
 We can similarly derive $\catname{SLat}$-enriched versions of  $\Lambda_{A,B,C}$ and $\textbf{ev}_{A,B}$ morphisms using the lifted adjunction as $\textbf{ev}_{A,B} = \varepsilon_{A}$ and $\Lambda_{A,B,C}(f) = \eta; (B \multimap{} f)$.
 The following distributivity law can then be derived, forming the basis of encoding equivalences inside abstractions.
 \begin{equation}
@@ -171,17 +172,6 @@ The following distributivity law can then be derived, forming the basis of encod
 \end{equation}
 \label{law:distributivity}
 
-\begin{remark}
-
-The above distributivity law closely correspond to one of the congruences maintained by a slotted e-graph, namely
-
-\[
-\text{bind}\;s_1\; x \cong \text{bind}\;s_2\;y \;\; \text{if}\; x \cong_{\alpha} y
-\]
-The congruence intuitively says that if $x$ and $y$ are congruent (up to $\alpha$-equivalence), then the enclosing binders are also congruent.
-While this is a \textit{natural} congruence to define when constructing an e-graph with support for binders, in our framework it follows from the free enrichment by a purely categorical argument justifying that it is the \textit{right} congruence to define.
-\end{remark}
-
 Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of closed $\Sigma^{+}$-terms, the latter being defined as follows.
 Every closed $\Sigma$-term is also a $\Sigma^{+}$-term. 
 Given two closed $\Sigma^{+}$-terms $f : A \to B$ and $g : A \to B$, $f + g : A \to B$ is also a closed $\Sigma^{+}$-term.
@@ -191,7 +181,10 @@ Terms of $\catname{CS}(\Sigma)^{+}$ are quotiented by the laws of closed $\catna
 To aid reasoning, we introduce a new language of string diagrams for closed $\catname{SLat}$-SMCs, using a hierarchical ``box'' structure to capture the join operation on morphisms as well as another hierarchical ``box'' for lambda abstraction.
 It was already discussed in the introduction how this is  used in the translation of equivalence classes from the e-graph to the string diagrammatic setting and in interpreting $\lambda$-terms.
 Fig. \ref{fig:egraph-strings} displays the generators of this language which is the usual string diagrammatic syntax~\cite{Selinger_2010} plus the syntax for lambda abstraction as established in~\cite{ghica2024stringdiagramslambdacalculifunctional} and syntax for semilattice-enrichment as introduced in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}; the first component denotes an empty diagram.
-Note the orientation of string diagrams are now from top to bottom as opposed to what was used in~\nameref{sec:introduction}: the latter was mimicking the orientation of e-graphs, \textit{i.e.}, traditional orientation for expression trees.
+
+% rotated the diagrams
+% Note the orientation of string diagrams are now from top to bottom as opposed to what was used in~\nameref{sec:introduction}: the latter was mimicking the orientation of e-graphs, \textit{i.e.}, traditional orientation for expression trees.
+
 % Fig. \ref{fig:string-equations} displays the additional equations which these diagrams satisfy, in addition to the standard SMC equations. 
 % The first four equations are those displayed in Definition \ref{def:enriched-prop},  while the final four axiomatize $+$ as an \textit{n-ary} associative, commutative and idempotent operation.  We overload the binary notation $+$ for our $n$-ary notation.  
 % We will later prove the intuitive fact that these diagrams are sound and complete with respect to their intended categorical semantics, noting that similar diagrammatic languages using boxes to express choice have been used before~\cite{duncan_generalised_2009}. 
@@ -204,10 +197,61 @@ Note the orientation of string diagrams are now from top to bottom as opposed to
 \begin{figure*}
 \[
 \adjustbox{scale=0.65}{
-\tikzfig{./figures/egraph-strings}
+\tikzfig{./figures/egraph-strings-2}
 }
 \]
 \captionsetup{skip=0pt, belowskip=-2ex}
 \caption{String diagrams for closed semilattice-enriched symmetric monoidal categories.}
 \label{fig:egraph-strings}
 \end{figure*}
+
+
+\subsection{Categorical foundations for slotted e-graphs}
+
+Slotted e-graphs~\cite{slotted-egraphs} extended the traditional signature employed by e-graphs by an explicit construct for binding ($\text{bind}\; \$x\; tc$) and variables (slots).
+\begin{align*}
+&\text{functional symbols}\; f, g, \ldots\\
+&\text{slots}\;  \$x, \$y, \ldots\\
+&\text{term children}\; tc  \Coloneqq t \;|\; tc_{1}, \ldots, tc_{n} \;|\; \text{bind}\; \$x\; tc \;|\; \$x\\ 
+&\text{terms}\;  \Coloneqq f \;|\; f(tc)
+\end{align*}
+
+The traditional congruence relation maintained be e-graphs for a set of equations $E$ that are given below (plus obvious rules for transitivity, symmetry and reflexivity of $\cong$)
+
+\begin{mathpar}
+\inferrule*[right=start]
+    {a = b \in E}
+    {E \vdash a \cong b}
+    \inferrule*[right=cong. (variadic)]
+      {E \vdash tc_i \cong tc'_i,\; i = 1, \ldots, k}
+      {E \vdash tc_1, \ldots, tc_k \cong tc'_1, \ldots, tc'_k}
+    \inferrule*[right=cong. (f)]
+    {E \vdash tc \cong tc'}
+    {E \vdash f(tc_1) \cong f(tc')}
+\end{mathpar}
+
+\noindent
+are extended by the rule 
+
+\begin{mathpar}
+
+\inferrule*[right=cong. (bind)]
+    {E \vdash tc \cong tc'}
+    {E \vdash \text{bind}\; \$x\; tc \cong \text{bind}\; \$x\; tc'},
+\end{mathpar}
+
+\noindent
+plus the rules for equivalence of terms up to renaming of slots.
+Recalling that we use $+$ to encode this congruence of terms, the first three rules (plus reflexivity, symmetry, and transitivity) correspond to idempotence, commutativity and associativity of $+$ and the fact that $+$ respect the composition $(;)$.
+%  and tensoring $\otimes$ (traditional e-graphs do not have tensoring as they are defined for algebraic signatures).
+While the other rule is \textit{natural} to enforce when developing e-graphs with binding, we see that it is indeed the \textit{right} rule to enforce as we can see it follow by a purely categorical argument by the free enrichment as per the law \ref{law:distributivity}.
+We do not enforce any rules for renaming as string diagrams are essentially a nameless representation of terms.
+Moreover, some renaming rules are not consistent with string diagrams, as slotted e-graph try to represent, \textit{e.g.}, terms $(a + b)$ and $(c + d)$ as a single entity (up to renaming of free variables), which is not the case for string diagrams (unless we do closure conversion).
+
+% The above distributivity law closely correspond to one of the congruences maintained by a slotted e-graph, namely
+
+% \[
+% \text{bind}\;s_1\; x \cong \text{bind}\;s_2\;y \;\; \text{if}\; x \cong_{\alpha} y
+% \]
+% The congruence intuitively says that if $x$ and $y$ are congruent (up to $\alpha$-equivalence), then the enclosing binders are also congruent.
+% While this is a \textit{natural} congruence to define when constructing an e-graph with support for binders, in our framework it follows from the free enrichment by a purely categorical argument justifying that it is the \textit{right} congruence to define.

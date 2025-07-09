@@ -164,8 +164,8 @@ The explicit occurrences of variable names in the older approach raise obvious q
 Additionally, explicit substitutions need to be propagated recursively throughout the graph, which adds another layer of technical and conceptual overhead.
 Using de Bruijn indices when performing $\beta$-reduction would hardly solve this problem, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
 A recent work of~\cite{slotted-egraphs} on so-called \textit{slotted} e-graphs has addressed the sharing issues when representing terms that are equivalent up to renaming of variables (even free ones) by making variables into first-class citizens of an e-graph and made binding a built-in operation for an e-graph.
-They also solved the problem of explicit variable names guaranteeing freshness inside binders.
-An example of a slotted e-graph that represents a term $\lambda x . (a + b) + (x + c)$ can be seen in Figure~\ref{fig:slotted}(left).
+They also solved the problem of explicit variable names guaranteeing freshness inside binders explicitly differentiating between bound and free variables.
+An example of a slotted e-graph that represents a term $\lambda x . (a + b) + (x + c)$ can be seen in Figure~\ref{fig:slotted} (left).
 
 \begin{figure}[t!]
 	\begin{subfigure}[t]{0.45\linewidth}
@@ -193,16 +193,19 @@ The references then additionally convey the information about how variables are 
 For example, an e-class containing $+$ that is parameterised by variable names $s_2$ and $s_3$ gets intantiated once with $a,b$ (via $s_4 \mapsto a, s_2 \mapsto s_4$ and $s_5 \mapsto b, s_3 \mapsto s_5$) and once  with $x,c$.
 The fact that the variable $x$ is bound is evident from the corresponding e-class being parameterised by only three variables.
 If we were to add another e-node such as $e + d$, there would be a reference added to an already existing e-class such that $s_1 \mapsto e$, $s_2 \mapsto d$.
-We can achieve the same degree of sharing (in the sense we have the same number of nodes for $+$) using string diagrams by doing a closure conversion of $+$ (Figure~\ref{fig:slotted}(right)).
-However, the addition of these parameters and the corresponding alternations in the algorithmics makes the deeper correspondence between string diagrams and slotted e-graphs obscure.
-Despite this, there are applications where the use of string diagrams may be more beneficial than that of (slotted) e-graphs, for example in the case of lambda calculus with explicit substitution that we will describe next \textcolor{red}{Or in Applications section?}.
-Also, the categorical model that we built can help to explain the congruences maintained by slotted e-graphs which is further elaborated on in Section~\ref{sec:categorical}.
+We can achieve the same degree of sharing (in the sense that we have the same number of nodes for $+$) using string diagrams by performing a closure conversion of $+$ (Figure~\ref{fig:slotted} (right)).
+However, the addition of these parameters and the corresponding alterations in the algorithmics makes the deeper correspondence between string diagrams and slotted e-graphs obscure.
+In fact, slotted e-graph appears to be a more general construction in a sense that it supports equality saturation for any signature with binders, such as, for example, the $\pi$-calculus, while our approach is tailored towards structures that arise from (Cartesian) closed symmetric monoidal categories.
+Therefore, the use of string diagrams may be more advantageous than that of (slotted) e-graphs in the case of the latter.
+We defer a case study to Section~\ref{sec:application}.
+Finally, the categorical model that we develop can help justify the congruences maintained by slotted e-graphs which is further elaborated on in Section~\ref{sec:categorical}.
 
 % Notably, a work of~\cite{slotted-egraphs} has emerged recently which introduced a formulation of e-graphs with native support for binding, \textit{i.e.,} where binding is a first-class operation along with a substitution.
 % It significantly complicates the formulation of an e-graph and corresponding algorithmics and based on \textit{nominal} techniques~\cite{Pitts_2013} unlike the approach presented in this work.
 % We believe the approach used in this work strikes with its simplicity although a more detailed comparison with the work of remains a future work.
 
-\subsection{Lambda calculus with explicit substitutions and graphical equivalence of terms}
+% Do we need this section?
+% \subsection{Lambda calculus with explicit substitutions and graphical equivalence of terms}
 
 \begin{figure*}
 	\begin{subfigure}{\linewidth}
