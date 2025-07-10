@@ -2,22 +2,21 @@
 
 In this section we will elaborate on how using e-hypergraphs for lambda calculus with explicit substitution may be more beneficial than (slotted) e-graphs.
 
-
 While the work of~\cite{slotted-egraphs} has made the variables and binders into first class citizens of an e-graph, substitution and $\beta$-reduction in the context of $\lambda$-calculus remain challenging.
 The issue with substitution is that despite it acting on a small part of the term, it results in duplication of large portions of an e-graph which is practically undesirable.
 While it is possible to define substitution as a built-in operation in a slotted e-graph, in practice, using explicit substitution is more appropriate as it allows for a finer grained control over the duplication.
 Even more so, explicit substitution becomes mandatory if we want to encode lambda calculus with explicit substitution in an e-graph.
-Below is the Table~\ref{tbl:slotted} that features the number of e-nodes when performing equality saturation for a $\beta$-reduction using a lambda term $plus 2 2$ using Church encoding of arithmetic.
+Below is the~\autoref{tbl:slotted} that features the number of e-nodes when performing equality saturation for a $\beta$-reduction using a lambda term $plus 2 2$ using Church encoding of arithmetic.
 
 \begin{table}
-    \begin{tabular}{lcccc}
-      Set of equations & built-in subst & explicit subst & explicit subst & explicit subst\\
-      &&& + interchange&  + interchange\\
-      &&&&  + comm\\
-      \# of e-nodes & 40 & 161 & 289 & 356
-    \end{tabular}
-    \caption{Slotted e-graphs benchmarks}
-    \label{tbl:slotted}
+	\begin{tabular}{lcccc}
+		Set of equations & built-in subst & explicit subst & explicit subst & explicit subst \\
+		                 &                &                & + interchange  & + interchange  \\
+		                 &                &                &                & + comm         \\
+		\# of e-nodes    & 40             & 161            & 289            & 356
+	\end{tabular}
+	\caption{Slotted e-graphs benchmarks}
+	\label{tbl:slotted}
 \end{table}
 
 The first row shows which rewrite rules were enabled, and the second row features the number of e-nodes after the e-graph is saturated (the initial term contained 16 e-nodes).

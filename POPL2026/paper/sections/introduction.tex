@@ -90,7 +90,7 @@ and sharing a \emph{copy node} \comonoid.
 
 \subsection{E-graphs}
 
-E-graphs can efficiently simultaneously represent several equivalent terms of an algebraic theory, generalising the \textit{directed acyclic graph} (DAG) representation of terms to include equivalence classes of subterms (or subgraphs).
+E-graphs can efficiently simultaneously represent several equivalent terms of an algebraic theory, generalising the \emph{directed acyclic graph} (DAG) representation of terms to include equivalence classes of subterms (or subgraphs).
 The key concepts of e-graphs can be intuitively grasped from some simple examples: \autoref{fig:e-graph-example} shows how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
 
 \begin{figure*}[h!]
@@ -148,7 +148,7 @@ Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram 
 The explicit occurrences of variable names in the conventional approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which makes proving various mathematical properties essentially intractable.
 Additionally, explicit substitutions need to be propagated recursively throughout the graph, which adds another layer of technical and conceptual overhead.
 Using de Bruijn indices instead when performing $\beta$-reduction would only push the problem elsewhere, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
-Recent work on \textit{slotted} e-graphs~\cite{slotted-egraphs} uses nominal techniques to address the sharing issues when representing terms that are equivalent up to renaming of variables (even free ones) by incorporating variables as first-class data of an e-graph and making binding a built-in operation.
+Recent work on \emph{slotted} e-graphs~\cite{slotted-egraphs} uses nominal techniques to address the sharing issues when representing terms that are equivalent up to renaming of variables (even free ones) by incorporating variables as first-class data of an e-graph and making binding a built-in operation.
 They also solved the problem of explicit variable names, guaranteeing freshness inside binders, explicitly differentiating between bound and free variables.
 An example of a slotted e-graph is given in~\autoref{fig:slotted}.
 
