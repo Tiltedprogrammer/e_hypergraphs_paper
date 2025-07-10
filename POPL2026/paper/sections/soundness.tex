@@ -3,6 +3,11 @@
 In this section we explore soundness and completeness of DPOI rewriting introduced in previous section with respect to rewriting of closed $\Sigma^{+}$-terms.
 First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
 
+\begin{definition}[(Closed) $\Sigma$-term rewrite rule]
+A $\Sigma$-term rewrite rules is a pair $\langle l, r \rangle$ where $l$ and $r$ are $\Sigma$ terms with matching inputs and outputs (as lists of input and output types).
+When $l$ and $r$ are closed $\Sigma$-terms, we call such a rewrite rule closed.
+\end{definition}
+
 \begin{definition}
 	\label{def:rewrite}
 	We say that a $\Sigma$-term $f$ rewrites to a $\Sigma$-term $g$ modulo SMC laws via a rewrite rule $\langle l, r \rangle$ (notation, $\leadsto_{\langle l, r \rangle}$) if they are representable as
@@ -10,9 +15,11 @@ First we recall the rewriting of $\Sigma$-terms modulo SMC laws.
 		f = c_{1};(id_{k} \otimes l);c_{2} $ and $ g = c_{1};(id_{k} \otimes r);c_{2}
 	$.
 \end{definition}
-This notion generalises to rewriting of closed $\Sigma$-terms
+This notion generalises to rewriting of closed $\Sigma$-terms.
+
+    
 \begin{definition}
-	For closed-$\Sigma$-terms $f,g$, $f \leadsto_{\langle l, r \rangle} g$ modulo SMC laws if they are representable as either in Definition~\ref{def:rewrite}, or as
+	For closed-$\Sigma$-terms $f,g$, and a closed rewrite rule $\langle l, r \rangle$, $f \leadsto_{\langle l, r \rangle} g$ modulo SMC laws if they are representable as either in Definition~\ref{def:rewrite}, or as
 	$
 		f = c_{1};(id_{k} \otimes d);c_{2} $ and $ g = c_{1};(id_{k} \otimes e);c_{2}
 	$
@@ -31,12 +38,15 @@ This notion generalises to rewriting of closed $\Sigma$-terms
 % \end{proof}
 This takes us to the following definition of rewriting for closed $\Sigma^{+}$-terms.
 \begin{definition}
-	For closed $\Sigma^{+}$-term $f,g$, $f \leadsto_{\langle l, r \rangle}$ SMC laws, $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} if they are representable as
+	For closed $\Sigma^{+}$-term $f,g$, and a closed $\Sigma$-term rewrite rule $\langle l, r \rangle$ $f \leadsto_{\langle l, r \rangle}$ modulo SMC laws, $\catname{SLat}$-equations and distributivity law~\ref{law:distributivity} if they are representable as
 	$
 		f = f_{1} + \ldots + f_{i} + \ldots + f_{n} $ and $ g = f_{1} + \ldots + f_{j} + \ldots + f_{n}
 	$
 	such that there is a permutation $\sigma$ such that there exist indices $i,j$ and $\sigma(f_{i}) \leadsto f_{j}$.
 \end{definition}
+Note that the rewrite rule consist of closed $\Sigma$-terms and not closed $\Sigma^{+}$-terms, i.e. neither $l$ nor $r$ contain any $+$.
+This is intentional as there rewrite rules are supposed to be domain-specific (like a rule $\langle 2 \otimes id;times, id \otimes 1; <\;\;< \rangle$) and not related to the free enrichment.
+
 Next, to formulate the correspondence between rewriting systems we first define interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
 It follows by first defining the interpretation of operators by extending the interpretation of plain $\Sigma$ terms as morphisms in $\MdaCospans$ as given in Appendix~\ref{sec:appendix:interpretation}.
 The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in Fig.~\ref{fig:ev_and_lambda}.
@@ -116,6 +126,9 @@ $\llbracket - \rrbracket$ is then induced by its definition on operators by indu
 	such that $f_{i} \leadsto f_{j}$ for some $i, j$.
 	This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{e-color}{E}$, we can apply Proposition~\ref{prop:fscd}.
 \end{proof}
+
+Practically, this quotienting means that we perform DPO rewrites modulo the equations of SMC and modulo the law~\ref{law:distributivity}.
+We can either rewrite the normal forms as mentioned above that contain all possible redexes, or we can genuinely search for redexes modulo these laws by traversing the e-hypergraph through both types of boxes when searching for a redex, which makes this representation practically viable even though it does not absorb all the possible equations.
 
 \begin{figure}
 	\[

@@ -429,13 +429,13 @@ This motivates the requirement for conditions (2), (3), and (4) of Theorem~\ref{
   \label{fig:base_cases}
 \end{figure*}
 
-The base cases for interpretation function $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$ is given in the Fig.~\ref{fig:base_cases}.
+The base cases for interpretation function $[-] : \textbf{SMT}(\Sigma) \to \MdaCospans$ are given in \autoref{fig:base_cases}.
 Then it is defined inductively by letting $[f \otimes g] \Coloneqq [f] \otimes [g]$ and $[f;g] \Coloneqq [f];[g]$ and by freeness induces the corresponding functor.
 
 \section{DPOI rewriting}
 \label{sec:appendix:dpoi}
 
-Consider an example of DPOI rewriting in Fig.~\ref{fig:dpoi-example} as defined in Definition~\ref{def:dpoi-e}.
+Consider an example of DPOI rewriting in \autoref{fig:dpoi-example} as defined in Definition~\ref{def:dpoi-e}.
 The rule in the top half of the diagram is an instance of a $\beta$-reduction rule as defined for string diagrams~\cite{ghica2024stringdiagramslambdacalculifunctional}.
 Note that the match satisfies all the conditions of the boundary complement as all vertices from the interface have the same parent.
 First, to compute the boundary complement, we remove from the source e-hypergraph everything that has no pre-image in the interface above.
@@ -444,7 +444,7 @@ The mda-cospan for the complement then will be
 [u_1] \to [u_1, v_1, v_2] + [v_3] \to \mathcal{L}^{\bot} \xleftarrow{} [v_3] + [v_1,v_2] \xleftarrow{} [u_2] ~.
 \]
 Note how we removed strict internal interfaces of $\mathcal{L}$ from internal interfaces of $\mathcal{G}$, yielding $[u_1,v_1,v_2]$ and similarly for output interfaces.
-After computing the pushout for the second half of the diagram we add strict internal interfaces of $\mathcal{R}$ but since there are none, we are done as per condition (2) of Definition~\ref{def:dpoi-e}.
+After computing the pushout for the second half of the diagram we add strict internal interfaces of $\mathcal{R}$ but since there are none, we are done as per condition (2) of \autoref{def:dpoi-e}.
 
 \begin{figure}
     \ifdefined\ONECOLUMN
