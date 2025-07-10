@@ -238,11 +238,14 @@ Slotted e-graphs~\cite{slotted-egraphs} extended the traditional signature emplo
 
 	\noindent
 	plus the rules for equivalence of terms up to renaming of slots.
-	Recalling that we use $+$ to encode this congruence of terms, the first three rules (plus reflexivity, symmetry, and transitivity) correspond to idempotence, commutativity and associativity of $+$ and the fact that $+$ respect the composition $(;)$.
+	The earlier work of~\citet{ghica2024equivalencehypergraphsegraphsmonoidal} that introduced free semilattice enrichment to describe e-graphs using morphism terms used the $+$ of a semilattice to denote the equivalence of morphism subterms.
+	For example, the e-graph (b) from \autoref{fig:e-graph-example} can be written as a term as 
+	\[(a \otimes ((2;\comonoid) \otimes (1;id));\sym);((* \otimes \counit + (id \otimes \counit \otimes id);<\!\!<) \otimes id);/~,\] where $+$ encodes the equivalence of $*$ and $<\!\!<$
+	We can see that the first three rules (plus reflexivity, symmetry, and transitivity) above correspond to idempotence, commutativity and associativity of $+$ and the fact that $+$ respect the composition $(;)$.
 	%  and tensoring $\otimes$ (traditional e-graphs do not have tensoring as they are defined for algebraic signatures).
-	While the other rule is \textit{natural} to enforce when developing e-graphs with binding, we see that it is indeed the \textit{right} rule to enforce as we can see it follow by a purely categorical argument by the free enrichment as per the law \ref{law:distributivity}.
+	Then, while the binding congruence rule is \textit{natural} to enforce when developing e-graphs with binding, we see that it is indeed the \textit{right} rule to enforce as we can see it follow by a purely categorical argument by the free enrichment as per the law \ref{law:distributivity}.
 	We do not enforce any rules for renaming as string diagrams are essentially a nameless representation of terms.
-	Moreover, some renaming rules are not consistent with string diagrams, as slotted e-graph try to represent, \textit{e.g.}, terms $(a + b)$ and $(c + d)$ as a single entity (up to renaming of free variables), which is not the case for string diagrams (unless we do closure conversion).
+	Moreover, some renaming rules are not consistent with string diagrams, as slotted e-graph try to represent, \textit{e.g.}, terms $(a + b)$ and $(c + d)$ as a single entity (up to renaming of free variables), which in the case for string diagrams require an additional step of closure conversion.
 
 % The above distributivity law closely correspond to one of the congruences maintained by a slotted e-graph, namely
 

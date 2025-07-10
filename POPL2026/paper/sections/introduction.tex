@@ -8,7 +8,7 @@ They mitigate the \emph{phase-ordering problem} of term rewriting: the way rewri
 This is achieved by making rewrites on e-graphs non-destructive: an application of a rewrite rule, instead of replacing the left-hand side by the right-hand side, adds the latter to the e-graph so that all pre-existing redexes are protected and new ones are introduced.
 Explosive growth of the e-graph is avoided by the clever use of sharing of vertices.
 
-E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{10.1145/1594834.1480915, griggio_proceedings_2022, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
+E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{10.1145/1594834.1480915, flatt2022_small, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
 The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 We are interested in using e-graphs in the context of functional programming languages, which builds upon an internal representation of the $\lambda$-calculus.
 Pioneering work in this direction has been done by~\citet{koehler2022sketchguided}, where the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
@@ -96,7 +96,7 @@ The key concepts of e-graphs can be intuitively grasped from some simple example
 \begin{figure*}[h!]
 	\[
 		\adjustbox{scale=0.6}{
-			\tikzfig{figures/e-graph-example}
+			\tikzfig{figures/e-graph-example-2}
 		}
 	\]
 	\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}}
