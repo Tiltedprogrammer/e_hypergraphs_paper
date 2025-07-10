@@ -24,7 +24,7 @@ Another distinct challenge is presented by $\beta$-reduction, which is handled u
 The implementations of $\beta$-reduction in e-graphs do not go into much detail regarding explicit substitution, and in particular do not include rules like $[x\!\mapsto\!1][y\!\mapsto\!2]f\!=\![y\!\mapsto\!2][x\!\mapsto\!1]f$ for non-interfering substitutions, while such rules are absorbed by graph equivalence~\cite{accattoli2014nonstandard}.
 
 All these issues can be resolved by the use of \emph{string diagrams} in place of textual syntax.
-\cite{ghica2024equivalencehypergraphsegraphsmonoidal}~shows how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.
+\cite{tiurin2025equivalencehypergraphsdporewriting}~shows how e-graphs (without binding) can be given a categorical semantics using semilattice-enriched symmetric monoidal categories, which allows e-graphs to be reconstructed as string diagrams.
 In this paper, we extend this technique to e-graphs with bindings, lifting to monoidal \emph{closed} categories.
 
 \subsection{String diagrams}
@@ -34,7 +34,7 @@ String diagrams are a direct bridge from the language of category theory, which 
 These categorical techniques provide insight in how to solve the problems of binding and capture-avoiding substitution in e-graphs, as we develop in this paper.
 
 The general background literature for string diagrams is summarised in~\cite{piedeleu2023introductionstringdiagramscomputer}.
-The particular context of string diagrams with bindings is given in~\cite{ghica2024stringdiagramslambdacalculifunctional}, while string diagrams for e-graphs without bindings are defined in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
+The particular context of string diagrams with bindings is given in~\cite{ghica2024stringdiagramslambdacalculifunctional}, while string diagrams for e-graphs without bindings are defined in~\cite{tiurin2025equivalencehypergraphsdporewriting}.
 
 String diagrams provide a topological framework for understanding monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out. 
 Key structures in monoidal categories---such as the monoidal product, tensor unit, braiding, and dualities---are represented graphically, through operations like juxtaposing, weaving, or bending strings. 
@@ -116,11 +116,11 @@ The key concepts of e-graphs can be intuitively grasped from some simple (but no
 \tikzfig{figures/e-graph-example}
 }
 \]
-\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}}
+\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{tiurin2025equivalencehypergraphsdporewriting}}
 \label{fig:e-graph-example}
 \end{figure*}
 
-Each column represents a term (or term rewrite rule), its conventional e-graph, and the equivalent string diagram representation using the approach in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}. 
+Each column represents a term (or term rewrite rule), its conventional e-graph, and the equivalent string diagram representation using the approach in~\cite{tiurin2025equivalencehypergraphsdporewriting}. 
 Note that for the initial term, $(a*2)/2$ (subfigure (a)), which is already represented efficiently in the e-graph by sharing the node `2', the string diagram version shares this node explicitly, using a contraction node.
 
 Nodes of an e-graph are encapsulated in dashed boxes indicating equivalence classes of nodes, or, more generally, of subgraphs rooted at these boxes.

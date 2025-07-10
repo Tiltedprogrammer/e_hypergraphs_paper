@@ -220,13 +220,13 @@ We then proceed with building a combinatorial representation for closed $\Sigma^
 
 
 \section{Closed E-hypergraphs}
-Prior work of~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} introduced a notion of \textit{e-hypergraph} --- a combinatorial representation of morphism terms for free semilattice-enriched symmetric monoidal category with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
+Prior work of~\cite{tiurin2025equivalencehypergraphsdporewriting} introduced a notion of \textit{e-hypergraph} --- a combinatorial representation of morphism terms for free semilattice-enriched symmetric monoidal category with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
 The semilattice enrichment structure was encoded using hierarchical edges in a hypergraph following the approach of a well-established body of literature on hierarchical hypergraphs~\cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical, fscd}.
 The first work in \textit{loc. cit.}, in particular, introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
-Notably, the laws of a semilattice enrichment in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} and the laws of Definition~\ref{def:closed} in~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
+Notably, the laws of a semilattice enrichment in~\cite{tiurin2025equivalencehypergraphsdporewriting} and the laws of Definition~\ref{def:closed} in~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
 
-We follow an analogous approach by combining combinatorial representations of~\cite{fscd} and~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
-We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} to accommodate new structure brought by closedness, and when evoking a term `e-hypergraph' we will mean the structure defined as follows.
+We follow an analogous approach by combining combinatorial representations of~\cite{fscd} and~\cite{tiurin2025equivalencehypergraphsdporewriting}.
+We next extend the definition of e-hypergraphs for $\catname{SLat}$-enriched symmetric monoidal categories~\cite{tiurin2025equivalencehypergraphsdporewriting} to accommodate new structure brought by closedness, and when evoking a term `e-hypergraph' we will mean the structure defined as follows.
 
 
 \begin{definition}
@@ -257,7 +257,7 @@ Intuitively, edges from $\textcolor{e-color}{E}$ encode equivalence classes, \em
 Also note the typing on the $l_{V}$ function.
 We work with freely generated closed semilattice-enriched categories, and to avoid unnecessary complications we limit the labelling of vertices to such a type.
 In particular, it prohibits vertices to be labelled with, \emph{e.g.}, $A \otimes B$, but allows them to be labelled with $A \otimes B \multimap C \otimes D$.
-$\textcolor{closed-color}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{ghica2024equivalencehypergraphsegraphsmonoidal}.
+$\textcolor{closed-color}{<}$ defines closed monoidal structure as defined in~\cite{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\cite{tiurin2025equivalencehypergraphsdporewriting}.
 
 Consider an example in the middle part of Fig.~\ref{fig:e-cospan-example}.
 The e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{e-color}{E} = \{e_{1}\}$, $\textcolor{closed-color}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
@@ -473,7 +473,7 @@ We then proceed with definition a notion of DPOI rewriting for such e-hypergraph
 \section{DPOI-Rewriting for E-Hypergraphs}
 
 Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in Section \ref{sec:combinatorial-semantics} needs some adjustments, defined in this section.
-The construction in this section closely follows the one introduced in~\cite{ghica2024equivalencehypergraphsegraphsmonoidal} with some adjustments to account for $\textcolor{closed-color}{<}$.
+The construction in this section closely follows the one introduced in~\cite{tiurin2025equivalencehypergraphsdporewriting} with some adjustments to account for $\textcolor{closed-color}{<}$.
 We do not expect internal interfaces to be preserved during rewriting: for example,  when the semilattice equations are considered as rewrites. 
 Thus,  we wish a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows. 
 \[
