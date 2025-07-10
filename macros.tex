@@ -36,12 +36,12 @@
 \newcommand{\eggtodo}[1]{\textcolor{Red}{\textbf{[CITE: #1]}}}
 
 \newcommand{\defTodo}[2]{%
-  \expandafter\newcommand\csname #1\endcsname[1]{%
-    \todo[linecolor=#2,backgroundcolor=#2!25,bordercolor=#2,inline,size=\tiny]{\textbf{#1}: ##1}}}
+	\expandafter\newcommand\csname #1\endcsname[1]{%
+		\todo[linecolor=#2,backgroundcolor=#2!25,bordercolor=#2,inline,size=\tiny]{\textbf{#1}: ##1}}}
 
 \newcommand{\defTODO}[2]{%
-  \expandafter\newcommand\csname #1\endcsname[1]{%
-    \todo[linecolor=#2,backgroundcolor=#2!25,bordercolor=#2,inline,size=\tiny,caption={\textbf{(#1 LONG TODO)}}]{##1}}}
+	\expandafter\newcommand\csname #1\endcsname[1]{%
+		\todo[linecolor=#2,backgroundcolor=#2!25,bordercolor=#2,inline,size=\tiny,caption={\textbf{(#1 LONG TODO)}}]{##1}}}
 
 \newcommand{\AlekseiColor}{RoyalBlue}
 
@@ -54,13 +54,11 @@
 % \newcommand{\BenColor}{Orchid}
 % \newcommand{\JamesColor}{Salmon}
 
-
 \defTodo{Aleksei}{\AlekseiColor}
 % \defTodo{Max}{\MaxColor}
 
 \defTODO{ALEKSEI}{\AlekseiColor}
 % \defTODO{MAX}{\MaxColor}
-
 
 % categorical stuff
 
