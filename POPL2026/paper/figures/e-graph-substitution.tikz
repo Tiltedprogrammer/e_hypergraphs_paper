@@ -420,31 +420,31 @@
 		\node [style=none] (449) at (14.25, -3.75) {};
 		\node [style=none] (450) at (1.5, -3.75) {};
 		\node [style=none] (569) at (0.5, 8.5) {\Large $(\lambda\; x .  (y + y) + x)\;1$};
-		\node [style=none] (570) at (14.25, 8.5) {\Large $[x \mapsto 1] (y + y) + x$};
-		\node [style=none] (572) at (45, 9.75) {\Large $[x \mapsto 1] x = 1$};
-		\node [style=none] (573) at (45, 8.5) {\Large $[x \mapsto 1] y + [x \mapsto 1] y$};
-		\node [style=none] (574) at (45, 7.25) {\Large $[x \mapsto 1] y = y$};
-		\node [style=none] (575) at (29, 8.5) {\Large$[x\mapsto1](y+y) + [x\mapsto 1] x$};
+		\node [style=none] (570) at (14.25, 8.5) {\Large $\left((y + y) + x\right)[x/1]$};
+		\node [style=none] (572) at (45, 9.75) {\Large $x[x/1] = 1$};
+		\node [style=none] (573) at (45, 8.5) {\Large $y[x/1] + y[x/1]$};
+		\node [style=none] (574) at (45, 7.25) {\Large $y[x/1] = y$};
+		\node [style=none] (575) at (29, 8.5) {\Large$(y+y)[x/1] + x[x/1]$};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=black dash] (3.center)
-			 to (13.center)
-			 to [bend left=45, looseness=2.00] (12.center)
-			 to (10.center)
-			 to [bend left=45, looseness=1.75] (11.center)
-			 to (9.center)
-			 to [bend right=315, looseness=1.75] (8.center)
-			 to (7.center)
-			 to [bend left=45, looseness=2.00] cycle;
+		to (13.center)
+		to [bend left=45, looseness=2.00] (12.center)
+		to (10.center)
+		to [bend left=45, looseness=1.75] (11.center)
+		to (9.center)
+		to [bend right=315, looseness=1.75] (8.center)
+		to (7.center)
+		to [bend left=45, looseness=2.00] cycle;
 		\draw [style=black dash] (19.center)
-			 to (26.center)
-			 to [bend left=45, looseness=2.00] (25.center)
-			 to (23.center)
-			 to [bend left=45, looseness=1.75] (24.center)
-			 to (22.center)
-			 to [bend right=315, looseness=1.75] (21.center)
-			 to (20.center)
-			 to [bend left=45, looseness=2.00] cycle;
+		to (26.center)
+		to [bend left=45, looseness=2.00] (25.center)
+		to (23.center)
+		to [bend left=45, looseness=1.75] (24.center)
+		to (22.center)
+		to [bend right=315, looseness=1.75] (21.center)
+		to (20.center)
+		to [bend left=45, looseness=2.00] cycle;
 		\draw [in=0, out=-90] (1.center) to (28.center);
 		\draw [style=new edge style 1, in=90, out=-180, looseness=0.75] (28.center) to (27.center);
 		\draw [style=black dash] (32.center) to (39.center);
@@ -494,14 +494,14 @@
 		\draw [style=new edge style 1] (56.center) to (89.center);
 		\draw [style=new edge style 1, in=180, out=15] (80.center) to (93.center);
 		\draw [style=black dash] (97.center)
-			 to (104.center)
-			 to [bend left=45, looseness=2.00] (103.center)
-			 to (101.center)
-			 to [bend left=45, looseness=1.75] (102.center)
-			 to (100.center)
-			 to [bend right=315, looseness=1.75] (99.center)
-			 to (98.center)
-			 to [bend left=45, looseness=2.00] cycle;
+		to (104.center)
+		to [bend left=45, looseness=2.00] (103.center)
+		to (101.center)
+		to [bend left=45, looseness=1.75] (102.center)
+		to (100.center)
+		to [bend right=315, looseness=1.75] (99.center)
+		to (98.center)
+		to [bend left=45, looseness=2.00] cycle;
 		\draw [style=black dash] (107.center) to (114.center);
 		\draw [style=black dash, bend left=45, looseness=2.00] (114.center) to (113.center);
 		\draw [style=black dash] (113.center) to (111.center);
