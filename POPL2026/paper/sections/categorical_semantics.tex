@@ -110,7 +110,7 @@ $\catname{SLat}$ is sufficiently close to $\catname{Set}$ that Hom semilattices 
 \end{definition}
 As before, this is like an ordinary functor, except with an additional requirement that its action on morphisms respects the join: $F(f + g) = F(f) + F(g)$.
 
-The collection of $\catname{SLat}$-categories and $\catname{SLat}$-functors form an $\catname{SLat}$-category $\catname{SLat}--\catname{Cat}$\footnote{More generally, if we were to define $\catname{SLat}$-natural transformations, we could view $\catname{SLat}--\catname{Cat}$ as a symmetric monoidal 2-category~\cite{Kelly2022BASICCO}.}, and for any pair of $\catname{SLat}$-categories $\mathbb{C}$ and $\mathbb{D}$, the product $\catname{SLat}$-category $\mathbb{C} \times \mathbb{D}$ is defined analogously to categories.
+The collection of $\catname{SLat}$-categories and $\catname{SLat}$-functors form an $\catname{SLat}$-category $\catname{SLat}\text{--}\catname{Cat}$\footnote{More generally, if we were to define $\catname{SLat}$-natural transformations, we could view $\catname{SLat}\text{--}\catname{Cat}$ as a symmetric monoidal 2-category~\cite{Kelly2022BASICCO}.}, and for any pair of $\catname{SLat}$-categories $\mathbb{C}$ and $\mathbb{D}$, the product $\catname{SLat}$-category $\mathbb{C} \times \mathbb{D}$ is defined analogously to categories.
 
 \begin{definition}[Symmetric monoidal $\catname{SLat}$-category]%
 	\label{def:enriched-prop}
@@ -169,6 +169,7 @@ Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely gene
 Every closed $\Sigma$-term is also a $\Sigma^{+}$-term.
 Given two closed $\Sigma^{+}$-terms $f\colon A \to B$ and $g\colon A \to B$, $f + g\colon A \to B$ is also a closed $\Sigma^{+}$-term.
 Terms of $\catname{CS}(\Sigma)^{+}$ are quotiented by the laws of closed symmetric monoidal $\catname{SLat}$-categories, including the distributivity law (\autoref{law:distributivity}).
+The same applies in the presence of equations for $\catname{CS}(\Sigma,\mathcal{E})^{+}$.
 
 To aid reasoning, we introduce a new language of string diagrams for closed symmetric monoidal $\catname{SLat}$-categories, using a hierarchical \enquote{dashed box} structure to capture the join operation on morphisms (as was done by~\citet{tiurin2025equivalencehypergraphsdporewriting}) as well as another hierarchical \enquote{rounded box} for $\lambda$-abstraction.
 \autoref{fig:egraph-strings} displays the generators of this language, which is the usual string diagrammatic syntax~\cite{Selinger_2010} plus the syntax for $\lambda$-abstraction as established by~\citet{ghica2024stringdiagramslambdacalculifunctional} and syntax for semilattice enrichment as introduced by~\citet{tiurin2025equivalencehypergraphsdporewriting}; the first component denotes an empty diagram.

@@ -61,7 +61,7 @@ We interpret the $\Sigma$-terms $\llbracket \tau \rrbracket$ as follows: operati
 Note that, in contrast to conventional presentations of the $\lambda$-calculus as a language of (slotted~\cite[Example 1]{slotted-egraphs}) e-graphs~\cite[Figure 10]{EggPaper}, here there is no encoding of the term formers for application, abstraction, and explicit substitution.
 Instead, these constructs are handled ambiently by our semantic setting: any closed symmetric monoidal category (and in particular, $\catname{CS}(\Sigma, \mathcal{E})$ for any set of equations $\mathcal{E}$) admits an internal language in the multiplicative fragment of intuitionistic linear logic (a particular type of linear $\lambda$-calculus)~\cite[§ 1.7.3]{abramskyIntroductionCategoriesCategorical2010}.
 In other words, with respect to~\autoref{fig:egraph-strings}, this allows us to \emph{natively} represent abstraction by the rounded boxes of ($\Lambda(f)$), and application by the $\textsf{ev}$ operation with $\beta$- and $\eta$-conversion arising via equality of morphisms in the category (that is, without having to provide them as data in the form of equations in $\mathcal{E}$).
-For explicit substitution, we note that the linearity is not desirable; this is why the copy-delete comonoid $(\comonoid, \counit)$ is present: by Fox's theorem~\cite{foxCoalgebrasCartesianCategories1976}, a cartesian category is precisely a monoidal one admitting such a \emph{natural} copy-delete structure.
+For explicit substitution, we note that the linearity is not desirable; this is why the copy-delete comonoid $(\comonoid, \counit)$ is present: by Fox's theorem~\cite{foxCoalgebrasCartesianCategories1976}, a Cartesian category is precisely a monoidal one admitting such a \emph{natural} copy-delete structure.
 Thus, we must endow $\mathcal{E}$ with equations stating that $(\comonoid, \counit)$ forms a comonoid, and moreover that it is natural: $\comonoid$ behaves uniformly as a copy map, and $\counit$ behaves as deletion.
 
 \begin{figure}
@@ -125,16 +125,21 @@ This corresponds to endowing $\mathcal{E}$ with the equation of string diagrams:
 	.
 \]
 Now, in our semantic model, this rewrite can be non-destructively applied to model one step of e-graph saturation:
-\[
-	\tikzfig{figures/plus-copy-rewrite-1}
+\[\adjustbox{scale=0.8}{
+	\tikzfig{figures/plus-copy-rewrite-1-2}
+}
 	\quad
 	\equiv
 	\quad
-	\tikzfig{figures/plus-copy-rewrite-2}
+	\adjustbox{scale=0.8}{
+	\tikzfig{figures/plus-copy-rewrite-2-2}
+	}
 	\quad
 	\to
 	\quad
-	\tikzfig{figures/plus-copy-rewrite-3}
+	\adjustbox{scale=0.8}{
+	\tikzfig{figures/plus-copy-rewrite-3-2}
+	}
 	\;
 	.
 \]

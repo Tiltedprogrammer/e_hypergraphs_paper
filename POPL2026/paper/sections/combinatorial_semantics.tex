@@ -98,74 +98,34 @@ In order to rectify this, we impose additional constraints on the hypergraphs un
 	We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of monogamous directed acyclic (MDA) cospans.
 \end{definition}
 
-\autoref{fig:hypergraph-with-interfaces} gives an example of an MDA cospan, which is such because it \enquote{looks like} the string diagram \comonoid.
-Analogously, we can see that~\autoref{fig:hypergraph} (equipped with the interfaces choosing $\{ v_1 \}$ and $\{ v_4, v_5, v_6, v_7 \}$) fails to form an MDA cospan --- it is not monogamous for many reasons: $v_1$ has out-degree 0, $v_1, v_5, v_7$ have in-degree 2, and $v_3$ has in-degree 0; additionally, it fails be be directed acyclic due to the path along $e_4$ from $v_7$ to itself\footnote{Recall that loops are not part of the syntax of string diagrams for symmetric monoidal categories in the absence of a trace --- a relaxation of monogamy to allow for this is explored by~\citet{ghica_rewriting_2023}.}.
+An example and a non-example of an MDA cospan can be found in~\autoref{sec:appendix:hyp}.
+% \autoref{fig:hypergraph-with-interfaces} gives an example of an MDA cospan, which is such because it \enquote{looks like} the string diagram \comonoid.
+% Analogously, we can see that~\autoref{fig:hypergraph} (equipped with the interfaces choosing $\{ v_1 \}$ and $\{ v_4, v_5, v_6, v_7 \}$) fails to form an MDA cospan --- it is not monogamous for many reasons: $v_1$ has out-degree 0, $v_1, v_5, v_7$ have in-degree 2, and $v_3$ has in-degree 0; additionally, it fails be be directed acyclic due to the path along $e_4$ from $v_7$ to itself\footnote{Recall that loops are not part of the syntax of string diagrams for symmetric monoidal categories in the absence of a trace --- a relaxation of monogamy to allow for this is explored by~\citet{ghica_rewriting_2023}.}.
 
-\begin{figure}
-	\begin{subfigure}[c]{0.3\linewidth}
-		\centering
-		\begin{tikzpicture}[
-				vertex/.style={draw, circle, fill, inner sep=1.5pt},
-				hyperedge/.style={draw, rectangle}
-			]
-			\node[vertex, label=left:{$v_4$}] (v1) at (0,0) {};
-			\node[vertex, label=left:{$v_5$}] (v2) at (1,0) {};
-			\node[vertex, label=left:{$v_6$}] (v3) at (2,0) {};
-			\node[vertex, label=left:{$v_7$}] (v4) at (3,0) {};
-			\node[vertex, label=left:{$v_2$}] (v5) at (0.5,-2) {};
-			\node[vertex, label=left:{$v_3$}] (v6) at (2,-2) {};
-			\node[vertex, label=left:{$v_1$}] (v7) at (2,-3) {};
-
-			\node[hyperedge] (e1) at (0.5,-1) {$e_3$};
-			\node[hyperedge] (e2) at (2,-1) {$e_4$};
-			\node[hyperedge] (e3) at (0.5,-3) {$e_1$};
-			\node[hyperedge] (e4) at (2,-2.5) {$e_2$};
-
-			\draw (v1) -- (e1);
-			\draw (v2) -- (e1);
-			\draw (v5) -- (e1);
-			\draw (v5) edge[bend right] (e3);
-			\draw (v5) edge[bend left] (e3);
-			\draw (v2) edge[in=130,out=-90] (e2);
-			\draw (v3) -- (e2);
-			\draw (v4) edge[in=50,out=-90] (e2);
-			\draw (v4) edge[in=-50,out=-90] (e2);
-			\draw (v6) -- (e2);
-		\end{tikzpicture}
-		\caption{Hypergraph with 7 vertices and 4 hyperedges, all directed bottom-to-top; source/target vertices are ordered left-to-right.}%
-		\label{fig:hypergraph}
-	\end{subfigure}
-	\begin{subfigure}[c]{0.3\linewidth}
-		\centering
-		\begin{tikzpicture}[
-				vertex/.style={draw, circle, fill, inner sep=1.5pt},
-				hyperedge/.style={draw, rectangle}
-			]
-			\node[vertex, label=left:{$v_3$}] (v1) at (0,0) {};
-			\node[vertex, label=left:{$v_3$}] (v1') at (0,1.5) {};
-			\node[vertex, label=left:{$v_2$}] (v2) at (1,0) {};
-			\node[vertex, label=left:{$v_2$}] (v2') at (1,1.5) {};
-			\node[vertex, label=left:{$v_1$}] (v3) at (0.5,-2) {};
-			\node[vertex, label=left:{$v_1$}] (v3') at (0.5,-3.5) {};
-
-			\node[hyperedge] (e1) at (0.5,-1) {$e_1$};
-
-			\draw (v1) -- (e1);
-			\draw (v2) -- (e1);
-			\draw (v3) -- (e1);
-
-			\node[draw, rounded corners, fit={(v1'.west) (v2'.west)}, inner sep=12pt] (S) {};
-			\node[draw, rounded corners, fit={(v3'.west)}, inner sep=12pt] (T) {};
-			\node[draw, rounded corners, fit={(v1.west) (v2.west) (v3.west)}, inner sep=12pt] (H) {};
-			\draw[commutative diagrams/hookrightarrow,shorten >=2pt,shorten <=2pt] (S) -- node[left] {$g$} (H);
-			\draw[commutative diagrams/hookrightarrow,shorten >=2pt,shorten <=2pt] (T) -- node[left] {$f$} (H);
-		\end{tikzpicture}
-		\caption{Hypergraph with interfaces}%
-		\label{fig:hypergraph-with-interfaces}
-	\end{subfigure}
-	\caption{Example hypergraphs}%
-	\label{fig:hypergraph-examples}
-\end{figure}
+% \begin{figure}
+% 	\begin{subfigure}[c]{0.3\linewidth}
+% 		\centering
+%         \[
+%         \adjustbox{scale=0.8}{
+%         \tikzfig{figures/hypergraph_example}
+%         }
+%         \]
+% 		\caption{Hypergraph with 7 vertices and 4 hyperedges, all directed bottom-to-top; source/target vertices are ordered left-to-right.}%
+% 		\label{fig:hypergraph}
+% 	\end{subfigure}
+% 	\begin{subfigure}[c]{0.3\linewidth}
+% 		\centering
+%         \[
+%         \adjustbox{scale=0.8}{
+%         \tikzfig{figures/cospan_hypergraph_example}
+%         }
+%         \]
+% 		\caption{Hypergraph with interfaces}%
+% 		\label{fig:hypergraph-with-interfaces}
+% 	\end{subfigure}
+% 	\caption{Example hypergraphs}%
+% 	\label{fig:hypergraph-examples}
+% \end{figure}
 
 Note that $\MdaCospans$ remains a symmetric monoidal category with the same structure as before.
 We now recall the following theorem~\cite{bonchi_string_2022-2}, which says there is a symmetric monoidal equivalence which witnesses that MDA hypergraphs with interfaces are precisely string diagrams.
@@ -308,21 +268,21 @@ We next extend the definition of e-hypergraphs for symmetric monoidal $\catname{
 		\item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined as follows.
 		\item $s,t\colon E \to V^{*}$ are source and target functions.
 		\item $l_{E}\colon E \to \Sigma_{M} \sqcup 1$, $l_{V}\colon V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are label functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
-		\item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times (V \sqcup E)$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times (V \sqcup E)$ with $\textcolor{e-color}{E}, \textcolor{closed-color}{E} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{<^{\mu}}$ and $\textcolor{closed-color}{<^{\mu}}$.
-		      For $x \in V \sqcup E$, the set of predecessors of $x$ is denoted as $[x) \coloneq \{x^\prime ~|~ \exists y_{1} = x^\prime, \ldots, y_{n} = x,  y_{i} \textcolor{e-color}{<^{\mu}} y_{i + 1} \text{ or } y_{i} \textcolor{closed-color}{<^{\mu}} y_{i + 1}\; \}$.
+		\item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times (V \sqcup E)$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times (V \sqcup E)$ with $\textcolor{e-color}{E}, \textcolor{closed-color}{E} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{\;<^{\mu}\;}$ and $\textcolor{closed-color}{\;<^{\mu}\;}$.
+		      For $x \in V \sqcup E$, the set of predecessors of $x$ is denoted as $[x) \coloneq \{x^\prime ~|~ \exists y_{1} = x^\prime, \ldots, y_{n} = x,  y_{i} \textcolor{e-color}{\;<^{\mu}\;} y_{i + 1} \text{ or } y_{i} \textcolor{closed-color}{\;<^{\mu}\;} y_{i + 1}\; \}$.
 		      We call edges $e$ such that $l(e) = \bot$ hierarchical and edges $e$ and vertices $v$ such that $[e) = \varnothing$ and $[v) = \varnothing$ top-level.
 		      Each of these relations should satisfy the following:
 		      \begin{enumerate}
 			      \item each set of predecessors consists exclusively of hierarchical edges;
 			      \item each $x$ has at most one immediate predecessor;
-			      \item edges $e$ such that there is no $x$ such that $e \textcolor{e-color}{<^{\mu}} x$ or $e \textcolor{closed-color}{<^{\mu}} x$ are labelled;
-			      \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e^\prime \textcolor{e-color}{<^{\mu}} e$ if and only if $e^\prime \textcolor{e-color}{<^{\mu}} v$, similarly for $v \in t(e)$ and $\textcolor{closed-color}{<^{\mu}}$.
+			      \item edges $e$ such that there is no $x$ such that $e \textcolor{e-color}{\;<^{\mu}\;} x$ or $e \textcolor{closed-color}{\;<^{\mu}\;} x$ are labelled;
+			      \item the relations are closed under connectivity, \emph{i.e.}, if $v \in s(e)$ then $e^\prime \textcolor{e-color}{\;<^{\mu}\;} e$ if and only if $e^\prime \textcolor{e-color}{\;<^{\mu}\;} v$, similarly for $v \in t(e)$ and $\textcolor{closed-color}{\;<^{\mu}\;}$.
 		      \end{enumerate}
-		\item $\consistency$ is a consistency relation which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V \sqcup E ~|~ p \textcolor{e-color}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, i.e.\ if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{e-color}{<^{\mu}}(v)$ and $p \textcolor{e-color}{<^{\mu}}(e)$ then $v \consistency_{p} e$.
-		      We require that $\consistency_{p} \not = (E_{p} \sqcup V_{p}) \times (E_{p} \sqcup V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{e-color}{<^{\mu}} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{e-color}{<^{\mu}} e\}$.
+		\item $\consistency$ is a consistency relation which is given by the union of a family of equivalence relations $\consistency_p$ on each set $\{x \in V \sqcup E ~|~ p \textcolor{e-color}{<^\mu} x\}$ of elements which share the same parent where each relation is also closed under connectivity, i.e.\ if $v \in s(e)$ or $v \in t(e)$ such that $p \textcolor{e-color}{\;<^{\mu}\;}(v)$ and $p \textcolor{e-color}{\;<^{\mu}\;}(e)$ then $v \consistency_{p} e$.
+		      We require that $\consistency_{p} \not = (E_{p} \sqcup V_{p}) \times (E_{p} \sqcup V_{p})$ where $V_{p} = \{ v ~ | ~ p \textcolor{e-color}{\;<^{\mu}\;} v\}$ and $E_{p} = \{ e ~ | ~ p \textcolor{e-color}{\;<^{\mu}\;} e\}$.
 	\end{itemize}
 	$\textcolor{e-color}{E}$ and $\textcolor{closed-color}{E}$ are then induced by the corresponding relations and consist of exclusively hierarchical edges, so $\colorbox{yellow}{E} = E \setminus \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$.
-	When writing $x \textcolor{closed-color}{<} y$ (or $x \textcolor{e-color}{<} y$) we may refer to $x$ as the predecessor of $y$ and refer to $y$ as a successor of $x$.
+	When writing $x \textcolor{closed-color}{\;<\;} y$ (or $x \textcolor{e-color}{\;<\;} y$) we may refer to $x$ as the predecessor of $y$ and refer to $y$ as a successor of $x$.
 	% we do not use this
 	% Given a closed e-hypergraph $\mathcal{G}$ we can consider a corresponding \emph{underlying} hypergraph $\mathcal{G}^\prime$ by forgetting $\textcolor{e-color}{<}, \textcolor{closed-color}{<}$ and~$\consistency$.
 \end{definition}
@@ -337,11 +297,11 @@ Consider an example in the middle part of~\autoref{fig:e-cospan-example}.
 The closed e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{e-color}{E} = \{e_{1}\}$, $\textcolor{closed-color}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$ and then we have
 \[
 	\begin{array}{cccc}
-		v_{4} \textcolor{e-color}{<^{\mu}} e_{1}  & v_{7} \textcolor{closed-color}{<^{\mu}} e_{2} & v_{4} \consistency e_{2}   & v_{4} \not \consistency v_{10} \\
-		e_{3} \textcolor{e-color}{<^{\mu}} e_{1}  & v_{8} \textcolor{closed-color}{<^{\mu}} e_{2} & e_{2} \consistency u_{1}   & e_{2} \not \consistency e_{6}  \\
-		e_{2} \textcolor{e-color}{<^{\mu}} e_{1}  & e_{5} \textcolor{closed-color}{<^{\mu}} e_{2} & e_{2} \consistency e_{4}   & e_{4} \not \consistency e_{7}  \\
+		v_{4} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & v_{7} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & v_{4} \consistency e_{2}   & v_{4} \not \consistency v_{10} \\
+		e_{3} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & v_{8} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & e_{2} \consistency u_{1}   & e_{2} \not \consistency e_{6}  \\
+		e_{2} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & e_{5} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & e_{2} \consistency e_{4}   & e_{4} \not \consistency e_{7}  \\
 		\ldots                                    & \ldots                                        & \ldots                     & \ldots                         \\
-		v_{12} \textcolor{e-color}{<^{\mu}} e_{1} & w_{9} \textcolor{closed-color}{<^{\mu}} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
+		v_{12} \textcolor{e-color}{\;<^{\mu}\;} e_{1} & w_{9} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
 	\end{array}
 \]
 
@@ -365,15 +325,15 @@ We depict edges in $\textcolor{e-color}{E}$ with a dashed box, and edges in $\te
 		\item $\phi_{E}(\textcolor{e-color}{E_{\mathcal{F}}}) \subseteq \textcolor{e-color}{E_{\mathcal{G}}}$ and $\phi_{E}(\textcolor{closed-color}{E_{\mathcal{F}}}) \subseteq \textcolor{closed-color}{E_{\mathcal{G}}}$;
 		\item for $v \in V_{\mathcal{F}}$ and $e \in E_{\mathcal{F}}$
 		      \begin{equation*}
-			      \text{if } e \textcolor{e-color}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{e-color}{<_{\mathcal{G}}^{\mu}} \phi(v),
+			      \text{if } e \textcolor{e-color}{\;<_{\mathcal{F}}^{\mu}\;} v \text{ then } \phi(e) \textcolor{e-color}{\;<_{\mathcal{G}}^{\mu}\;} \phi(v),
 			      \qquad
-			      \text{if } e \textcolor{closed-color}{<_{\mathcal{F}}^{\mu}} v \text{ then } \phi(e) \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}} \phi(v),
+			      \text{if } e \textcolor{closed-color}{\;<_{\mathcal{F}}^{\mu}\;} v \text{ then } \phi(e) \textcolor{closed-color}{\;<_{\mathcal{G}}^{\mu}\;} \phi(v),
 		      \end{equation*}
 		      and for $e_1, e_2 \in E_{\mathcal{F}}$
 		      \begin{equation*}
-			      \text{if } e_1 \textcolor{e-color}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{e-color}{<_{\mathcal{G}}^{\mu}} \phi(e_2),
+			      \text{if } e_1 \textcolor{e-color}{\;<_{\mathcal{F}}^{\mu}\;} e_2 \text{ then } \phi(e_1) \textcolor{e-color}{\;<_{\mathcal{G}}^{\mu}\;} \phi(e_2),
 			      \qquad
-			      \text{if } e_1 \textcolor{closed-color}{<_{\mathcal{F}}^{\mu}} e_2 \text{ then } \phi(e_1) \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}} \phi(e_2);
+			      \text{if } e_1 \textcolor{closed-color}{\;<_{\mathcal{F}}^{\mu}\;} e_2 \text{ then } \phi(e_1) \textcolor{closed-color}{\;<_{\mathcal{G}}^{\mu}\;} \phi(e_2);
 		      \end{equation*}
 		\item for all $x_1, x_2 \in \mathcal{F}$,  $x_1 ~\consistency_{\mathcal{F}}~ x_2$ implies $\phi(x_1) ~\consistency_{\mathcal{G}}~ \phi(x_2)$.
 	\end{enumerate}
@@ -417,11 +377,11 @@ We follow the same orientation that we chose for string diagrams --- the input i
 	Consider a relation
 	\ifdefined\ONECOLUMN
 		\[
-			R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(y)\bigr\}
+			R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(y)\bigr\}
 		\]
 	\else
 		\begin{multline*}
-			R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{<^{\mu}} f_{\text{int}}(y)\bigr\}
+			R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(y)\bigr\}
 		\end{multline*}
 	\fi
 	for $x, y \in n^\prime$.
@@ -609,8 +569,8 @@ First,  we introduce the  ancillary notion of a \emph{down-closed} graph:
 	\begin{enumerate}
 		\item $m(\mathcal L)$ is a convex down-closed closed e-hypergraph;
 		\item $[c_1,c_2]$ is a monomorphism;
-		\item for all $v,w$ in $\mathcal{G}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<^{\mu}} e$;
-		\item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{<^{\mu}} e$;
+		\item for all $v,w$ in $\mathcal{G}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{\;<^{\mu}\;} e$;
+		\item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{\;<^{\mu}\;} e$;
 		\item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
 		\item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \emph{well-typed} extended MDA cospan
 		      \[
