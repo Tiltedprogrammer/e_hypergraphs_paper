@@ -115,12 +115,12 @@
 	% Building on recent work interpreting e-graphs categorically as morphisms in symmetric monoidal semilattice-enriched categories, we extend this framework to closed symmetric monoidal semilattice-enriched categories to handle bindings.
 	% We provide a concrete combinatorial representation using an extension of hierarchical hypergraphs and introduce a corresponding double-pushout (DPO) rewriting mechanism.
 	% Finally, we establish the equivalence of term rewriting and DPO rewriting, with the key property that the combinatorial representation absorbs the equations of the symmetric monoidal structure.
-    Equality saturation is a powerful technique for program optimisation and reasoning, driven by the use of equivalence classes of terms under rewrite rules called equality graphs (e-graphs). 
-    Despite their numerous advantages, until recently e-graphs lacked native support for variable binding, limiting their applicability to programming languages. 
-    We propose to address this problem from a categorical perspective, interpreting e-graphs as string diagrams, namely morphisms in symmetric monoidal semilattice-enriched categories with a monoidal closed structure. 
-    We further define a concrete representation using extended hierarchical hypergraphs, and introduce a corresponding double-pushout (DPO) rewriting system. 
-    Finally, we establish the equivalence between term rewriting and DPO rewriting, with the combinatorial model inherently absorbing the equations of the symmetric monoidal structure. 
-    Our approach, specifically designed for lambda calculi, is compared and contrasted with slotted e-graphs—a recent, more generic method for incorporating variable binding.
+	Equality saturation is a powerful technique for program optimisation and reasoning, driven by the use of equivalence classes of terms under rewrite rules called equality graphs (e-graphs).
+	Despite their numerous advantages, until recently e-graphs lacked native support for variable binding, limiting their applicability to programming languages.
+	We propose to address this problem from a categorical perspective, interpreting e-graphs as string diagrams, namely morphisms in symmetric monoidal semilattice-enriched categories with a monoidal closed structure.
+	We further define a concrete representation using extended hierarchical hypergraphs, and introduce a corresponding double-pushout (DPO) rewriting system.
+	Finally, we establish the equivalence between term rewriting and DPO rewriting, with the combinatorial model inherently absorbing the equations of the symmetric monoidal structure.
+	Our approach, specifically designed for lambda calculi, is compared and contrasted with slotted e-graphs—a recent, more generic method for incorporating variable binding.
 \end{abstract}
 
 \maketitle
@@ -132,11 +132,11 @@
 \input{sections/lambda-calculus}
 
 \section{Conclusion}
-In this work we introduced e-graphs with bindings formalised as morphisms of a closed symmetric monoidal $\catname{SLat}$-category.
+In this work we introduced e-graphs with bindings derived as morphisms of a closed symmetric monoidal $\catname{SLat}$-category.
 In doing so, we are able to leverage its internal language to provide variable binding in $\lambda$-calculus-like languages by metatheoretic $\lambda$-abstraction.
 We then provided a combinatorial representation for such morphisms in terms of closed e-hypergraphs with a suitable notion of sound and complete DPO rewriting, making it possible for a closed e-hypergraph to represent equivalences derivable from a set of equations $\mathcal{E}$.
-We argued for the utility of our techniques in the representation of programming languages (which inherently require variable binding) as e-graphs, contrasting with the more general-purpose slotted e-graphs, and advocating for the benefits of string-diagrammatic syntax.
-In future, we hope to implement an efficient version of e-graphs for hypergraphs as a data structure using DPO rewriting as its foundation to implement e-graph operations, with the theory we have developed here acting as a roadmap.
+We argued for the utility of our techniques in the representation of programming languages (which inherently require variable binding) as e-graphs, contrasting with the more general-purpose slotted e-graphs, and advocating for the benefits of string-diagrammatic syntax, in particular in the context of programming languages.
+In the future, we hope to implement an efficient version of e-graphs for hypergraphs as a data structure using DPO rewriting as its foundation to implement e-graph operations, with the theory we have developed here acting as a roadmap.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../../bibliography}

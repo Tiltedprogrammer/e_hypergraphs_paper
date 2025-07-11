@@ -40,7 +40,7 @@ String diagrams provide a topological framework for understanding monoidal categ
 In this article, our string diagrams are oriented left-to-right, bottom-to-top to make the pictures look more similar to those commonly drawn for e-graphs.
 The structure of symmetric monoidal categories is absorbed into the graphical syntax, with the composition and tensoring represented by juxtaposition, and symmetries as weaving of strings.
 This visual approach hides the bureacracy in complex operations and reveals insights sometimes obscured by traditional one-dimensional symbolic notation.
-Originating from notations by~\citet{hotzsd} (for automata) and~\citet{penrose1984spinors} (for tensor networks), extensions of string diagrammatic calculi exist for various forms of monoidal categories and even bicategories~\cite{Selinger_2010}, and provide a mathematically rigorous reasoning toolkit~\cite{joyal_geometry_1991}.
+Originating from notations by~\citet{hotzsd} (for automata) and~\citet{penrose1984spinors} (for tensor networks), extensions of string-diagrammatic calculi exist for various forms of monoidal categories and even bicategories~\cite{Selinger_2010}, and provide a mathematically rigorous reasoning toolkit~\cite{joyal_geometry_1991}.
 
 Commonly, string diagrams are used informally to provide a two-dimensional syntax for the internal language of a category, but for our purposes we must be more formal.
 Specifically, we require a concrete encoding of string diagrams, analogous to the de Bruijn index representation of $\lambda$-terms.
@@ -148,6 +148,7 @@ Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram 
 The explicit occurrences of variable names in the conventional approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which makes proving various mathematical properties essentially intractable.
 Additionally, explicit substitutions need to be propagated recursively throughout the graph, which adds another layer of technical and conceptual overhead.
 Using de Bruijn indices instead when performing $\beta$-reduction would only push the problem elsewhere, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
+
 Recent work on \emph{slotted} e-graphs~\cite{slotted-egraphs} uses nominal techniques to address the sharing issues when representing terms that are equivalent up to renaming of variables (even free ones) by incorporating variables as first-class data of an e-graph and making binding a built-in operation.
 They also solved the problem of explicit variable names, guaranteeing freshness inside binders, explicitly differentiating between bound and free variables.
 An example of a slotted e-graph is given in~\autoref{fig:slotted}.
@@ -209,8 +210,9 @@ We also note that there is also a difference in the scopes of these related work
 				\tikzfig{figures/e-string-substitution-2}
 			}
 		\]
-		\subcaption{String diagrammatic substitution example.}\label{fig:e-string-substitution}
+		\subcaption{String-diagrammatic substitution example.}\label{fig:e-string-substitution}
 	\end{subfigure}
+	\caption{Conventional e-graphs vs.\ categorical e-graphs with binding.}
 \end{figure*}
 %   \begin{figure*}
 %     \[
@@ -220,12 +222,14 @@ We also note that there is also a difference in the scopes of these related work
 %         }
 %     \]
 % 	\captionsetup{skip=0pt}
-%     \caption{String diagrammatic substitution example.}
+%     \caption{String-diagrammatic substitution example.}
 %     \label{fig:e-string-substitution}
 %   \end{figure*}
 
 \subsection{Contributions}
 
+Our contribution is the construction of a form of e-graphs that support binding, developed through a principled categorical approach.
+Specifically, we extend a prior categorical semantics for e-graphs without binding by incorporating a monoidal closed structure.
 \citet{tiurin2025equivalencehypergraphsdporewriting} shows that e-graphs over signature $\Sigma$ can be represented as morphisms of a free Cartesian symmetric monoidal semilattice-enriched category over the same signature.
 We argue that restricting the categorical domain to free \textbf{closed} symmetric monoidal semilattice-enriched categories gives rise to structures that naturally support binding and equivalence classes of morphisms.
 That is, morphisms (string diagrams) of such category can both encode variable binding (using the closed structure) and equivalence (using the semilattice enrichment) between subterms (sub-diagrams).
