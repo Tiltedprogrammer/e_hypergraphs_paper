@@ -459,3 +459,43 @@ After computing the pushout for the second half of the diagram we add strict int
 	\caption{$\beta$-rule EDPOI example.}
 	\label{fig:dpoi-example}
 \end{figure}
+
+\section{Modelling $\lambda_{\text{lsub}}$-calculus in slotted e-graphs}%
+\label{sec:e-graph-explicit-subst}
+
+\begin{table}
+	\begin{tabular}{lcc}
+		\texttt{beta}                  & $(\lambda x . t) u = t[x / u]$                       &                                                                    \\
+		\texttt{subst\_same\_var}      & $x[x / u] = u$                                       &                                                                    \\
+		\texttt{subst\_diff\_var}      & $y[x / u] = y$                                       & if $x \not \in \mathcal{F}(u)$                                     \\
+		\texttt{subst\_application}    & $(uu')[x / v] = u[x / v]u'[x / v]$                   &                                                                    \\
+		\texttt{subst\_lambda}         & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$    & if $x \not \in \mathcal{F}(v)$                                     \\
+		\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x' / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$             \\
+		\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])$          & if $x' \not \in \mathcal{F}(u)$                                    \\
+		\texttt{subst\_comm}           & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$          & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)~.$ \\
+	\end{tabular}
+	\caption{Encoding of string diagram equivalence and explicit substitution for $\lambda_{\text{lsub}}$}
+	\label{tbl:e-graph-subst-rules}
+\end{table}
+
+Consider the equational presentation of string diagram equivalence and the $\lambda_{\text{lsub}}$ reduction rules given by~\autoref{tbl:e-graph-subst-rules}.
+These can be encoded in the framework of slotted e-graphs.
+To demonstrate the effect that a particular set of rewrites has on the number of e-nodes of an e-graph, we saturate the lambda term $\text{plus}(2, 2)$ where $\text{plus}$ and $2$ are encoded using Church encoding.
+The numbers of e-nodes after the e-graph is saturated for each set of rewrite rules are presented in~\autoref{tbl:slotted}.
+
+\begin{table}
+	\begin{tabular}{lcccc}
+		Set of equations & explicit subst & explicit subst & explicit subst & explicit subst \\
+		                 &                & + comm         & + interchange  & + interchange  \\
+		                 &                &                &                & + comm         \\
+		\# of e-nodes    & 161            & 288            & 289            & 356
+	\end{tabular}
+	\caption{Slotted e-graphs benchmarks}
+	\label{tbl:slotted}
+\end{table}
+
+The \enquote{explicit subst} set of rewrite rules consist of the first five rules of~\autoref{tbl:e-graph-subst-rules}.
+We can see that additionally saturating the e-graph with respect to interchange and commutativity rules increases the number of e-nodes by a factor of 2.
+These are the exact equations that are absorbed by using string-diagrammatic representation of $\lambda_{\text{lsub}}$-terms.
+Notably, string diagrams (and (closed e-)hypergraphs) do not absorb the equation \texttt{subst\_lambda} but we believe it is practically feasible to do rewriting modulo this rule by traversing through the boxes when searching for a redex.
+Furthermore, (cospans of) closed e-hypergraphs, as presented in~\autoref{sec:closed-e-hyp}, do not absorb the equations for associativity, commutativity and unitality for $\comonoid$ and $\counit$, but the constraints on the cospans and the boundary complement may be relaxed to absorb those as well by following the work of~\cite{zanassi_comonoid} with which our approach is completely compatible.

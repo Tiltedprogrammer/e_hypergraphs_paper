@@ -6,9 +6,9 @@
 E-graphs (short for \emph{equality graphs})~\cite{EggPaper} are an efficient data structure for non-destructive rewriting, incorporating equivalence representation, used in automated theorem proving, compiler optimisation, and program analysis.
 They mitigate the \emph{phase-ordering problem} of term rewriting: the way rewrites are scheduled may enable or block further rewrites due to introduction or elimination or redexes, resulting in a suboptimal result.
 This is achieved by making rewrites on e-graphs non-destructive: an application of a rewrite rule, instead of replacing the left-hand side by the right-hand side, adds the latter to the e-graph so that all pre-existing redexes are protected and new ones are introduced.
-Explosive growth of the e-graph is avoided by the clever use of sharing of vertices.
+Exponential growth of the e-graph is avoided by the clever use of sharing of vertices.
 
-E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{10.1145/1594834.1480915, flatt2022_small, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
+E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{10.1145/1594834.1480915, flatt_small_2022, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
 The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 We are interested in using e-graphs in the context of functional programming languages, which builds upon an internal representation of the $\lambda$-calculus.
 Pioneering work in this direction has been done by~\citet{koehler2022sketchguided}, where the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
@@ -132,7 +132,7 @@ The other steps represent further elaborations of the e-graph, or e-hypergraph, 
 \subsection{Conventional vs.\ slotted vs.\ categorical e-graphs with binding}%
 \label{sec:vs-e-graphs-with-binding}
 
-First, let us compare how substitution works in conventional e-graphs as compared to our proposed approach.
+First, let us compare how substitution works in conventional e-graphs, which lack specialised support for binding, as compared to our proposed approach.
 
 A common way of dealing with $\beta$-reduction for the $\lambda$-calculus in e-graphs is by representing the rules of $\lambda$-calculus explicitly, using special nodes for explicit substitution and associating them with particular rewrite rules~\cite{EggPaper,koehler2022sketchguided}.
 The auxiliary nature of these nodes is evident in that, after rewriting, they may be removed from the graph.
