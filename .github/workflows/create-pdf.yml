@@ -21,6 +21,8 @@ jobs:
       CLOSED_MONOIDAL_NAME: 'closed_monoidal'
       LICS25_CLOSED_PATH: 'LICS_2025/e_graphs_with_bindings/'
       LICS25_CLOSED_NAME: 'E-graphs-with-bindings'
+      CATEGORICAL_LOGIC_PATH: 'term-calculus'
+      CATEGORICAL_LOGIC_NAME: 'cat_logic_notes'
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -83,6 +85,14 @@ jobs:
          root_file: ${{env.LICS25_CLOSED_NAME}}.tex
          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
          working_directory: ${{env.LICS25_CLOSED_PATH}}
+# Compile notes on categorical logic
+      - name: latexmk ${{env.CATEGORICAL_LOGIC_NAME}}.tex
+        if : always()
+        uses: dante-ev/latex-action@latest
+        with:
+         root_file: ${{env.CATEGORICAL_LOGIC_NAME}}.tex
+         args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
+         working_directory: ${{env.CATEGORICAL_LOGIC_PATH}}
 # Upload all pdfs
       - name: Upload monoidal e-graphs the release
         if: always()
@@ -143,6 +153,16 @@ jobs:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: ${{env.LICS25_CLOSED_PATH}}${{env.LICS25_CLOSED_NAME}}.pdf
             asset_name: LICS25Closed.pdf
+            asset_content_type: pdf
+      - name: Upload cat logic PDF to the release
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ${{env.CATEGORICAL_LOGIC_PATH}}${{env.CATEGORICAL_LOGIC_NAME}}.pdf
+            asset_name: cat_logic_notes.pdf
             asset_content_type: pdf
       - name: Delete older releases
         if: always()

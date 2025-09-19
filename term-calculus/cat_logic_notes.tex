@@ -1,0 +1,655 @@
+%%
+%% This is file `sample-sigconf.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% samples.dtx  (with options: `sigconf')
+%%
+%% IMPORTANT NOTICE:
+%%
+%% For the copyright see the source file.
+%%
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from sample-sigconf.tex.
+%%
+%% For distribution of the original source see the terms
+%% for copying and modification in the file samples.dtx.
+%%
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%%
+%% Commands for TeXCount
+%TC:macro \cite [option:text,text]
+%TC:macro \citep [option:text,text]
+%TC:macro \citet [option:text,text]
+%TC:envir table 0 1
+%TC:envir table* 0 1
+%TC:envir tabular [ignore] word
+%TC:envir displaymath 0 word
+%TC:envir math 0 word
+%TC:envir comment 0 0
+%%
+%%
+%% The first command in your LaTeX source must be the \documentclass
+%% command.
+%%
+%% For submission and review of your manuscript please change the
+%% command to \documentclass[manuscript, screen, review]{acmart}.
+%%
+%% When submitting camera ready or to TAPS, please change the command
+%% to \documentclass[sigconf]{acmart} or whichever template is required
+%% for your publication.
+%%
+
+\documentclass[acmsmall,screen, nonacm, anonymous]{acmart}
+
+\usepackage{stmaryrd}
+\newcommand{\parr}{\mathbin{\bindnasrepma}}
+% \usepackage{amssymb}
+\usepackage{mathpartir}
+
+\newcommand*{\ONECOLUMN}{}
+
+\input{../preamble}
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+% These are for comments
+\newcommand\question[1]{{\color{azure}#1}}
+\newcommand\update[1]{{\color{americanrose}#1}}
+
+
+\usepackage{minted}
+\usepackage{csquotes}
+
+% type derivations
+\usepackage{mathpartir}
+
+
+\makeatletter
+\newsavebox{\@brx}
+\newcommand{\llangle}[1][]{\savebox{\@brx}{\(\m@th{#1\langle}\)}%
+  \mathopen{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\newcommand{\rrangle}[1][]{\savebox{\@brx}{\(\m@th{#1\rangle}\)}%
+  \mathclose{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\makeatother
+
+
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+
+\settopmatter{printacmref=false}
+\authorsaddresses{}
+
+\begin{document}
+
+\title{Notes on categorical logic and term calculi}
+
+\author{Anonymous}
+
+
+\maketitle
+
+\section{Linear logic}
+
+
+\textit{Linear logic} frequently pops up in the context of term calculus and categorical semantics and in fact is an internal logic of closed symmetric monoidal categories (with varied additional structures).
+This section will briefly introduce what linear logic is and sketch its categorical semantics.
+The corresponding term calculus is system L or $\overline{\lambda}\mu\widetilde{\mu}$-calculus.
+
+Semantics is given by a symmetric monoidal category with enough tensors to support logical connectives.
+
+\begin{center}
+\begin{tabular}{c|cc}
+{}& conjunction & disjunction\\
+\hline
+multiplicative & $\otimes$ & $\parr$\\
+additive & $\&$ & $\oplus$\\
+\end{tabular}
+\end{center}
+
+The difference between additive and multiplicative connectives is in how they treat contexts, \textit{e.g.}, multiplicative connectives split context into disjoint bits.
+Additive conjunction is modelled by a Cartesian product and the multiplicative one is given by a tensor.
+The modality $\!$ is interpreted by a comonad. 
+Then we need to require that the comonad interacts with the tensor.
+
+
+\section{Differential lambda calculus by ~\citet{DiffLambdaCalc}}
+
+This is the calculus such that the model of the lambda terms are differentiable functions between vectors spaces.
+The calculus is closely related to the notion of linearity and linear substitution.
+In ordinary $\lambda$-calculus, application $(s) t$ substitutes $t$ into $s$.
+In differential $\lambda$-calculus, we have two kinds of application:
+\begin{itemize}
+
+\item Nonlinear application (ordinary application) --- can duplicate arguments.
+
+\item Linear application --- written as $D_{k} t \cdot u$ (term $t$ differentiated with respect to its k-th argument linearly applied to $u$)
+
+\end{itemize}
+The derivative $D t \cdot u$ says: \enquote{The linear effect on the result of $s$ when we change its input in the direction $u$.}
+This is analogous to a directional derivative in calculus --- except `change' is in a syntactic/linear resource sense.
+
+\begin{example}
+Consider a term $(x) x$.
+Its derivative (applied to $u$) $D (x) x \cdot u$ is $(u) x + x (u)$ (if we ignore linearity issues) where $+$ is a nondeterministic choice.
+That is, the change is either propagated to the first $x$ or to the second.
+\end{example}
+
+The paper then proceeds to formally define $D$, $\partial x$ and the interaction of these with the $\beta$-reduction.
+The calculus along with the reduction rules is shown to be strongly normalizing and confluent --- that is, equality of terms is straightforwardly decidable.
+
+\section{Categorical Type Theory}
+
+This is the study of the relation between \textit{algebraic type theory} and categories with finite products.
+
+\begin{definition}
+
+An algebraic signature $\Sigma$ is given by:
+\begin{itemize}
+
+\item a collection of types;
+\item a collection of functional symbols with given arity (possibly 0) but the co-arity is 1
+\item a typing for each functional symbol $f$ which is a list of types $[\alpha_1, \ldots, \alpha_n, \alpha]$ such that $f : \alpha_1, \ldots, \alpha_{n} \to \alpha$
+\end{itemize}
+
+The raw terms are then given by
+\[
+ M \Coloneqq x \;|\; k \;|\; f(M_1, \ldots, M_{n})
+\]
+where $x$ is a variable from a countably infinite set of variables and $k$ is a functional symbol of arity 0.
+\end{definition}
+
+Given an algebraic theory $\Sigma$, an \textit{equation-in-context} is $\Gamma \vdash M = M' : \alpha$.
+
+\begin{definition}
+
+An algebraic theory is a pair $(\Sigma, \mathcal{A})$ where $\Sigma$ is a signature and $\mathcal{A}$ is a set of equations in context called the set of axioms.
+\end{definition}
+
+The theorems of a theory can then be derived from the axioms using reflexivity, symmetry, transitivity, substitution and context operations.
+Categorical semantics then assigns objects to types and morphisms to type judgements.
+In particular, substitution becomes morphism composition as (in the case of one variable)
+\[
+\inferrule*[right=Subst]
+  { x : \alpha \vdash M : \beta  \\ y : \beta \vdash N : \gamma }
+  { x : \alpha \vdash N[M / y] : \gamma }
+\]
+
+\[
+\llbracket x : \alpha \vdash N[M / y] : \beta \rrbracket =  \llbracket y : \beta \vdash N : \gamma \rrbracket \circ \llbracket x : \alpha \vdash M : \beta \rrbracket
+\]
+
+Formally, letting 
+\begin{align*}
+\llbracket \alpha \rrbracket \in \text{obj}(C)\\
+\llbracket k : \alpha \rrbracket = 1 \to \llbracket \alpha \rrbracket\\
+\llbracket f : \alpha_1, \ldots, \alpha_n \to \alpha  \rrbracket = \llbracket \alpha_1 \rrbracket \otimes \ldots \llbracket \alpha_n \rrbracket \to \llbracket \alpha \rrbracket
+\end{align*}
+
+we get the lemma 
+
+\begin{lemma}
+\[
+\llbracket \Gamma \vdash N[\vec{M} / \vec{x}] : \beta \rrbracket = \llbracket \Gamma \vdash N : \beta \rrbracket \circ \langle \llbracket \Gamma \vdash M_{1} : \alpha_{1} \rrbracket, \ldots, \llbracket \Gamma \vdash M_{n} : \alpha_{n} \rrbracket \rangle
+\]
+
+\end{lemma}
+
+The assignment of $\llbracket - \rrbracket$ above is called a structure.
+A structure is then \textit{models} the theory if all equations-in-context are equal morphisms.
+The interpretation is sound if the structure also satisfies all the theorems.
+
+\begin{definition}
+  Given two models of a theory $Th$ in a category $\catname{C}$ we can define a homomorphism between two models such that diagrams for the interpretations commute.
+  This gives rise to a category $Mod(Th,\catname{C})$.  
+\end{definition}
+
+\begin{definition}
+  $\mathcal{FP}(C,D)$ for categories with products $C,D$ has as objects product-preserving functors and as morphisms it has natural transformations.
+\end{definition}
+
+The following claim is then can be made that for a given algebraic theory $Th$ we can find a category $Cl(Th)$ such that
+\[
+\mathcal{FP}(Cl(Th),D) \cong Mod(Th,D)
+\]
+That is, a model can be regarded as a functor. 
+The equivalence above means there are functors between the two categories such that the composition of the functors are naturally isomorphic to identity functor.
+
+Given a product preserving functor $F : C \to D$ we can lift it to $F_{*} : Mod(Th, C) \to Mod(Th,D)$.
+Let $M$ be an object of $Mod(Th,C)$.
+$F_{*}(M)$ is defined by putting $\llbracket \alpha \rrbracket_{F_{*}, M} = F\llbracket \alpha \rrbracket_{M}$ where $\alpha$ is the type of $Th$ and letting
+$\llbracket f \rrbracket_{F_{*},M}$ to be given by composition
+\[
+  \llbracket \alpha_{1} \rrbracket_{F_{*}, M} \times \ldots \times \llbracket \alpha_{n} \rrbracket_{F_{*}, M} \cong F(\llbracket \alpha_{1} \rrbracket \times \ldots \times \llbracket \alpha_{n} \rrbracket) \xrightarrow{F(\llbracket f \rrbracket_{M})} F(\llbracket \beta \rrbracket_{M})
+\]
+For a morphism $h : M \to N$ in $Mod(Th,C)$, $F_{*}(h) = Fh$.
+
+If $\phi : F \to G$ is a natural transformation between product preserving functors, we can define a homomorphism
+\[
+\phi_{*}M : FM \to GM\\
+\phi_{\llbracket \alpha \rrbracket}M : F\llbracket \alpha \rrbracket \to G\llbracket \alpha \rrbracket_{M}
+\]
+of models.
+Then we will define a family of modelling functors
+\[
+\mathcal{A}_{p_{M}} : \mathcal{FP}(C,D) \to Mod(Th,D)
+\]
+by setting $\mathcal{A}_{p_{M}}(F) = F_{*}(M)$ and $\mathcal{A}_{p_{M}}(\phi) = \phi_{*}M$.
+A category (with finite products) $Cl(Th)$ is called a \emph{classifying} category of $Th$ if there is a model $G$ of $Th$ in $Cl(Th)$ such that for any other category $D$ the modelling functor
+\[
+\mathcal{A}_{p_{G}} : \mathcal{FP}(Cl(Th),D) \to Mod(Th,D)
+\]
+is an equivalence.
+Any such $Cl(Th)$ is unique up to isomorphism.
+
+
+\section{Categorical logic (as per Michael Shulman)}
+
+The idea is to construct a free structure (with some nice syntactic properties, not every free structure will do) and then prove properties about non-free structures using the free structure and the homomorphism from this free structure.
+For example, one could show that a property that holds for all groups by showing that it holds for a free group.
+
+\begin{example}
+
+Let a conjugation of $h$ by $g$, $h^{g}$ by $ghg^{-1}$.
+For any $h,g,k$ we have $(hk)^{g} = h^{g}k^{g}$.
+
+This statement can be proved by constructing a free group over a set of 3 elements $F_{3}$ and then by tracing homomorphisms to any other group.
+\end{example}
+
+
+\begin{example}
+
+Another example is a type theory of posets (of pre-orders actually) that is a syntactical representation of morphisms in $\mathbf{Poset}$.
+We can formulate the following question, is it true that for any objects $A,B,C,D,E$ satisfying
+
+\[
+A \leq B \qquad A \leq C \qquad D \leq A \qquad B \leq E \qquad D \leq C~,
+\]
+it is the case that $D \leq E$.
+
+This can be answered by consulting the adjunction $\mathcal{F} \vdash U : \mathbf{Poset} \to \mathbf{RelGr}$ where the latter is a category of sets with binary relations.
+Given a set $X$ in $\mathbf{RelGr}$, $\mathcal{F}X$ is a free poset on this set (i.e. its reflexive and transitive closure).
+We can then say that $\mathcal{F}X$ has the same objects as $X$ and the morphisms are the judgements derivable from $X$ in a type theory of posets.
+That is, given any other poset $A$ and a morphism $P : X \to UA$ there is a morphism $\mathcal{F}X \to A$ whose action on objects is given by $P$ and we can show by induction on the structure of the derivation that such morphism preserves the order.
+\end{example}
+
+\begin{example}
+
+Another example stems from the adjunction $\mathcal{F} \vdash U : \mathbf{Cat} \to \mathbf{Graph}$ where the latter is the category of directed graphs.
+To relate morphisms and derivations we will need to label the derivations.
+For example, given two edges $f$ and $g$ in $\catname{Graph}(A,B)$, we get two primitive derivations
+
+\[
+\inferrule*[right=$f$]{\hspace{1em}}{A \vdash B} \qquad \inferrule*[right=$g$]{\hspace{1em}}{A \vdash B}
+\]
+
+Then we will need rules for composition, \textit{e.g.},
+
+\[
+\inferrule*[right=$\circ$]{
+  \inferrule*{}{
+    \inferrule*[right=$h$]{\;}{B \vdash C}
+  }{
+    \inferrule*[right=$g$]{\;}{A \vdash B}
+  }
+}{A \vdash C}
+\]
+
+Then, to make these derivations into proper categorical morphisms we need to quotient them by $\equiv$ (that is by associativity of $\circ$ and unitality of identity morphisms).
+The claim is then that these data define a free category $\mathcal{F}G$ on a directed graph $G$.
+The approach above (with quotienting) is being referred to as \textbf{cut-ful type theory}.
+
+Another approach is to build the composition into axioms, \textit{i.e.}, for each $f \in \catname{Graph}(A,B)$ we have
+\[
+\inferrule*[right=$f$]{X \vdash A}{X \vdash B}
+\]
+Intuitively, the above rule is a post-composition with $f$.
+This approach is called \textbf{cut-free type theory}.
+We then can have a theorem that
+\begin{theorem}
+  Given a derivation $A \vdash B$ and $B \vdash C$ we can construct a derivation $A \vdash C$.
+\end{theorem}
+The theorem essentially states that cut-rule is admissible in this type theory.
+The inference rules can be labelled with terms as follows (for $f : A \to B$)
+\[
+\inferrule*[right=$id$]{\;}{id_{A} : A \vdash A} \qquad \inferrule*[right=$f$]{\phi : X \vdash A}{f \circ \phi : A \vdash B}
+\]
+and we can identify terms with type derivations
+\[
+\inferrule*[right=$h$]{
+\inferrule*[right=$g$]{
+  \inferrule*[right=$f$]{
+    \inferrule*[right=$id$]{\;}{id_{A} : A \vdash A}
+  }{f \circ (id_{A}) : A \vdash B}
+}{g \circ (f \circ id_{A}) : A \vdash C}
+}{h \circ (g \circ (f \circ id_{A})) : A \vdash D}
+\]
+
+The syntax can be improved by introducing \textit{formal} variables for the left-hand sides of $\vdash$, so that the above term can be written as
+\[
+x : A \vdash h(g(f(x))) : D
+\]
+The identity and generator rules can now be written as
+\[
+\inferrule*[right=$id$]{\;}{x : A \vdash x : A} \qquad \inferrule*[right=$f$]{x : X \vdash M : A \hspace{2em} f \in \mathcal{G}(A,B)}{x : X \vdash f(M) : B}
+\]
+We can prove the cut admissibility using this notation as follows.
+Given $x : A \vdash M : B$ and $y : B \vdash N : C$ we need to construct $x : A \vdash K : C$.
+\begin{itemize}
+  \item if $N = y$, then $C = B$ and $x : A \vdash M : B$ is the required term.
+  \item if $N = f(N')$ for $N' : D$ and $f : D \to C$ we get a term $A \to D$ using the inductive hypothesis and after applying $f$ to it we get the required $A \to C$.
+\end{itemize}
+
+We can then say that a free category $\mathcal{F}(G)$ for a directed graph $G$ has the same objects and the morphisms are given by derivations in the type theory with composition given by substitution.
+Substitution being associative and having unitality implies this is indeed a category and we can then define a functor $\mathcal{F}(G) \to \mathcal{A}$ for any category $\mathcal{A}$ by induction on the derivation using the morphism $G \to \mathcal{A}$.
+This way no quotienting is required.
+\end{example}
+
+When we move to more complex theories, \textit{e.g.} the ones that have more complicated objects, such as meets in semilattices, we need to utilize categories with products.
+Then, for the derivations we have two options (just like we had for a composition) regarding the projections $A \times B \to A$ and $A \times B \to B$.
+\[
+\inferrule*{A \vdash C}{A \times B \vdash C} \qquad \inferrule*{C \vdash A \times B}{C \vdash A}
+\]
+
+where the first is essentially precomposing a projection $\pi_1$ to $f: A \to C$ : $A \times B \xrightarrow{\pi_1} A \xrightarrow{f} C$.
+The other one is postcomposition for $g : C \to A \times B$: $C \xrightarrow{g} A \times B \xrightarrow{\pi_1} A$.
+Utilizing the first rule gives rise to \textit{sequent calculus} style type theories while the second one gives rise to \textit{natural deduction}.
+
+In the case of a meet semilattice these rules get instantiated like this
+
+\[
+\inferrule*[right=$\land L_{1}$]{A \vdash C \quad \vdash B\;\text{type}}{A \land B \vdash C} \qquad \inferrule*[right=$\land L_{2}$]{B \vdash C \quad \vdash A\;\text{type}}{A \land B \vdash C} \qquad \inferrule*[right=$\land R$]{A \vdash B \quad A \vdash C}{A \vdash B \land C}
+\]
+
+and 
+
+\[
+\inferrule*[right=$E_{1}$]{X \vdash A \land B}{X \vdash A} \qquad \inferrule*[right=$E_{2}$]{X \vdash A \land B}{X \vdash B} \qquad \inferrule*[right=$\land I$]{X \vdash B \quad X \vdash C}{X \vdash B \land C}
+\]
+
+Such construction applies to (unary) type theories for categories with products and co-products where the version with variables is more naturally presented in natural deduction style.
+
+\begin{example}
+
+An unary type theory for a category with coproducts has the following inference rules.
+For objects
+
+\[
+\inferrule*[]{X \in \mathcal{G}}{\vdash X\;\text{type}} \quad \inferrule*[]{\;}{\vdash \mathbf{0}\; \text{type}} \quad \inferrule*[]{\vdash A\;\text{type} \quad \vdash B\;\text{type}}{\vdash A + B\;\text{type}}
+\]
+
+For morphisms
+\[
+\inferrule*[right=$id$]{\vdash X\;\text{type}}{x : X \vdash x : X} \quad \inferrule*[right=$fI$]{f \in \mathcal{G}(A,B) \quad x : X \vdash M : A}{x : X \vdash f(M) : B}
+\]
+\[
+\inferrule*[right=$\mathbf{0}E$]{x : X \vdash M : \mathbf{0} \quad \vdash C\;\text{type}}{x : X \vdash \text{match}_{0}(M) : C}
+\]
+\[
+\inferrule*[right=$+I1$]{x : X \vdash M : A}{x : X \vdash inl(M) : A + B} \quad \inferrule*[right=$+I2$]{x : X \vdash M : B}{x : X \vdash inr(M) : A + B}
+\]
+\[
+\inferrule*[right=$+E$]{x : X \vdash M : A + B \quad u : A \vdash P : C \quad v : B \vdash Q : C}{x : X \vdash \text{match}_{A+B}(M,u.P,v.Q) : C}
+\]
+noting that in the very last rule $v$ and $u$ are bound in $u.P$ and $v.Q$.
+\end{example}
+
+To enforce the universal property of the coproduct we need to introduce the following equations
+\[
+\text{match}(inl(y), u.P, v.Q) \equiv P[inl(y) / u]
+\]
+\[
+\text{match}(inr(y), u.P, v.Q) \equiv Q[inl(y) / v]
+\]
+and
+\[
+\text{match}(y, u.P[inl(u)/y], v.P[inr(v)/y]) \equiv P
+\]
+where $P : A + B \to C$ and the rule basically says that pattern matching is redundant here.
+And finally the rule (uniqueness of the arrow from the initial object)
+\[
+\text{match}_{\mathbf{0}}(y) \equiv P, \forall P
+\]
+\textcolor{red}{I am not sure what the process of coming up with such rules should be. Do I start with introduction/elimination rules and then try and fix the issues that break universal properties?}
+
+\subsection{Simple Type Theories}
+To reason about operations with multiple inputs we need to have multiple entities in the antecedent.
+The right categorical setting to do this is \textit{multicategories}.
+
+\begin{definition}
+
+A multigraph $\mathcal{G}$ consists of a set of objects $\mathcal{G}_{0}$ together with for each object $B$ and every list of objects $(A_1,\ldots,A_n)$ a set of arrows $\mathcal{G}(A_1,\ldots,A_n;B)$.
+\end{definition}
+
+\begin{definition}
+A multicategory $\mathcal{M}$ is a multigraph with the following structure and properties
+\begin{itemize}
+  \item For each object $A$, an identify arrow $id_{A} \in \mathcal{M}(A,A)$
+  \item For any object $C$ and a list of objects $(B_1, \ldots, B_m)$ and $(A_{i1}, \ldots, A_{i n_{i}})$ for $1 \leq i \leq m$, a composition operation
+  \begin{align*}
+    \mathcal{M}(B_1, \ldots, B_m; C) \times \prod_{i=1}^{m}\mathcal{M}(A_{i1}, \ldots, A_{in_{i}};B_{i}) &\to \mathcal{M}(A_{11}, \ldots, A_{m n_{m}};C)\\
+    (g, (f_1, \ldots, f_m)) &\mapsto g \circ (f_1, \ldots, f_m)
+  \end{align*}
+  \item For any $f \in \mathcal{M}(A_1, \ldots, A_n; B)$ we have
+    \[
+      id_{B} \circ (f) = f \qquad f \circ (id_{A_1}, \ldots, id_{A_n}) = f
+    \] 
+  \item For any $h, g_i, f_{ij}$ we have
+    \[
+      (h \circ (g_1, \ldots, g_m)) \circ (f_{11}, \ldots, f_{mn_m}) = h \circ (g_1 \circ (f_{11}, \ldots, f_{1 n_{1}}), \ldots, g_{m} \circ (f_{m 1}, \ldots, f_{m n_{m}}))
+    \]
+\end{itemize}
+\end{definition}
+
+A good example is the category of vector spaces and multilinear maps.
+We can also introduce an indexed composition $g \circ_i f_i$ as a surag for $g \circ (f_1, \ldots, f_n)$ when all $f_j$ for $i \not = j$ are identities and $g \in \mathcal{M}(A_1, \ldots, A_n; B)$.
+A bit more formally we have
+\[
+\circ_{i} : \mathcal{M}(B_1, \ldots, B_n; C) \times \mathcal{M}(A_1, \ldots, A_m) \to \mathcal{M}(B_1, \ldots, B_{i-1}, A_{1}, \ldots, A_{m}, B_{i + 1}, \ldots, B_n; C)
+\]
+\[
+\tikzfig{./figures/single_comp}
+\]
+that satisfy the following properties
+\begin{itemize}
+  \item $id_{B} \circ_{1} f = f$
+  \item $f \circ_{i} id_{B_{i}} = f$
+  \item If $h$ is $n$-ary, $g$ is $m$-ary, and $f$ is $k$-ary, then
+  \[
+    (h \circ_i g) \circ_j f = 
+  \begin{cases}
+    (h \circ_j f) \circ_{i + k - 1} g \qquad &\text{if}\; j < i\\
+    (h \circ_i (g \circ_{j - i + 1} f)) \qquad &\text{if}\; i \leq j < i + m\\
+    (h \circ_{j-m+1} f) \circ_i g \qquad &j \geq i + m
+  \end{cases}
+  \]
+\end{itemize}
+
+\begin{definition}
+
+A tensor product in $\mathcal{M}$ is an object $\bigotimes_{i}A_{i}$ together with a morphism $\chi \in \mathcal{M}(A_1,\ldots,A_n; \bigotimes_{i}A_{i})$ such that all $(- \circ_{i} \chi_{i})$ are bijections.
+\[
+\mathcal{M}(B_{1},\ldots,B_{n},A_1,\ldots,A_m,C_{1},\ldots,C_{k};D) \xrightarrow{\sim} \mathcal{M}(B_{1},\ldots,B_{n},\bigotimes_{i}A_i,C_{1},\ldots,C_{k};D)
+\]
+\end{definition}
+
+Here are some extensions with additional structures
+
+\paragraph*{Symmetric monoidal structure} If $\mathcal{C}$ is a symmetric monoidal category, we have symmetry isomorphisms $A_1 \otimes \ldots \otimes A_n \xrightarrow{\sim} A_{\sigma 1} \otimes \ldots \otimes A_{\sigma n}$ for any permutation $\sigma \in S_{n}$.
+Thus, by precomposing with these isomorphisms, we obtain functions between multicategorical hom-sets
+\[
+\sigma^* : \mathcal{C}(A_{\sigma 1}, \ldots, A_{\sigma n}; B) \to \mathcal{C}(A_1,\ldots,A_n;B)
+\]
+That is, suppose we have a multimorphism $f : A_{\sigma 1}, \ldots, A_{\sigma n} \to B$. We can precompose it with the isomorphism above to get
+\[
+\sigma^{*}(f) : A_1 \otimes \ldots \otimes A_n \xrightarrow{\sim} A_{\sigma 1} \otimes \ldots \otimes A_{\sigma n} \xrightarrow{f} B
+\]
+\textcolor{red}{I do not really see what is the point of these multicategories}
+\textcolor{cyan}{My take on this is that is more general as it does not impose any structure on the list in the antecedent and one could make it into a tensor if they want but it also works if the multicategory is not representable.
+It also does not require to invoke any associativity as the antecedent is a literal list.
+Additional structure is imposed by universal properties.
+}
+\paragraph*{Cartesian structure} If $\mathcal{C}$ is a cartesian monoidal category, we have symmetries in addition to dual maps $A \to A \times A$ and projections $A \times B \to B$.
+In general for any function $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ we have a unique morphism
+\[
+A_1 \times \ldots \times A_n \to A_{\sigma 1} \times \ldots A_{\sigma m}
+\]
+whose component $A_1 \times \ldots \times A_n \to A_{\sigma k}$ is $\sigma k$-th projection.
+Precomposition with those gives
+\[
+\sigma^{*} : \mathcal{C}(A_{\sigma 1}, \ldots, A_{\sigma m}; B) \to \mathcal{C}(A_{1}, \ldots, A_n; B)
+\] 
+
+\begin{definition}
+  Let $\mathfrak{N}$ be a full subcategory of $\catname{Set}$ whose objects are sets ${1, \ldots, n}$ for all integers $n \geq 0$.
+  We regard it as a cocartesian strict monoidal category, under the disjoint union operation $\{1, \ldots, n\} \sqcup \{1,\ldots,m\} = \{1, \ldots, n + m\}$.
+  Moreover, for any $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ and $k_1, \ldots, k_n$, let $\sigma \wr (k_1, \ldots, k_n)$ denote the composite function
+  \[
+  \{1, \ldots, \sum_{i=1}^{m}k_{\sigma i}\} \xrightarrow{\sim} \bigsqcup_{i=1}^{m}\{1, \ldots, k_{\sigma i}\} \xrightarrow{\hat{\sigma}} \bigsqcup_{j=1}^{n}\{1, \ldots, k_j\} \xrightarrow{\sim} \{1, \ldots, \sum_{j=1}^{n} k_j\}
+  \]
+  where $\hat{\sigma}$ acts as an identity from the $i$-th summand to the $(\sigma i)^{\text{th}}$ summand.
+  A \textbf{faithful cartesian club} is a category $\mathfrak{S} \subseteq \mathfrak{N}$ such that 
+  \begin{enumerate}
+    \item $\mathfrak{S}$ contains all the objects of $\mathfrak{N}$.
+    \item $\mathfrak{S}$ is closed under the cocartesian structure, i.e. if $\sigma$ and $\tau$ are morphisms of $\mathfrak{S}$ then so is $\sigma \sqcup \tau$.
+    \item $\mathfrak{S}$ is closed under $\wr$, i.e. whenever it contains $\sigma$ it also contains $\sigma \wr (k_1, \ldots, k_n)$
+  \end{enumerate}
+\end{definition}
+
+The strange-looking $\sigma \wr (k_1, \ldots, k_n)$. 
+Here's what's happening: Start with a function $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ which says that each $i$ gets assigned one of the $n$ slots.
+Now, instead of just $n$ slots, suppose each slot $j$ is \enquote{blown up} into $k_j$ copies.
+The construction $\sigma \wr (k_1, \ldots, k_n)$ gives a new function
+\[
+\{1, \ldots, \sum_{i=1}^{m}k_{\sigma i}\} \to \{1, \ldots, \sum_{j=1}^{n}k_j\}
+\]
+which is what you get when you first group the inputs according to $\sigma$, and then send them into the right block of the \enquote{expanded} target.
+
+
+We get symmetric monoidal category when $\mathfrak{S}$ consists of all bijections and cartesian structure when it consists of all functions.
+
+\begin{definition}
+  Let $\mathfrak{S}$ be a faithful cartesian club. An $\mathfrak{S}$-multicategory is a multicategory $\mathcal{M}$ together with operations
+  \[
+  \mathcal{M}(A_{\sigma 1}, \ldots, A_{\sigma m};B) \to \mathcal{M}(A_1, \ldots, A_n;B)
+  \]
+  \[
+  f \mapsto f \circ \sigma^{*}
+  \]
+  for all functions $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ in $\mathfrak{S}$, satisfying the following axioms:
+  \begin{enumerate}
+    \item $f\sigma^{*}\tau^{*} = f(\tau \sigma)^{*}$
+    \item $f(id_n) = f$
+    \item $g \circ (f_1\sigma^{*}_{1}, \ldots, f_{n}\sigma^{*}_n) = (g \circ (f_1, \ldots, f_n))(\sigma_1 \sqcup \ldots \sqcup)^{*}$
+    \item $g \sigma^{*} \circ (f_1, \ldots, f_n) = (g \circ (f_{\sigma 1}, \ldots, f_{\sigma_m}))(\sigma \wr (k_1, \ldots, k_n))^{*}$, where $k_i$ is arity of $f_i$.
+  \end{enumerate}
+\end{definition}
+
+Finally, we observe that closedness can be naturally characterized multicategorically.
+Suppose for simplicity that $\mathfrak{S}$ contains at least all bijections. 
+Then we say an $\mathfrak{S}$-multicategory is closed if for each pair of objects $A$ and $B$ there is a
+specified object $A \multimap B$ and a morphism $\chi : A \multimap B \to B $ postcomposition
+with which defines bijections
+\[
+(\chi \circ -) \mathcal{M}(C_1, \ldots, C_n; A \multimap B) \to \mathcal{M}(C_1, \ldots, C_n, A; B)
+\]
+
+With all of this in hand we can define type theory for symmetric monoidal closed categories (in natural deduction style)
+
+\[
+\inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A \vdash x: A}
+\]
+\[
+\inferrule*[right=$fI$]{f \in \mathcal{G}(A_1, \ldots, A_n; B)\;\Gamma_1 \vdash A_1, \ldots, \Gamma_n \vdash A_n\;\text{Shuf}(\Gamma_1,\ldots,\Gamma_n;\Phi)}{\Phi \vdash f(M_1, \ldots, M_n) : B}
+\]
+\[
+\inferrule*[right=$\otimes I$]{\Gamma \vdash A \qquad \Delta \vdash B \qquad \text{Shuf}(\Gamma,\Delta;\Phi)}{\Phi \vdash \{A \otimes B\}}
+\]
+\textcolor{red}{The rule above seems to imply the tensor is not strict.}
+\textcolor{red}{Can the below rule be made admissible? It looks like a composition.}
+\[
+\inferrule*[right=$\otimes E$]{\Psi \vdash M : A \otimes B \quad \Gamma, x : A, y : B \vdash N : C \quad \text{Shuf}(\Gamma,\Psi;\Phi)}{\Phi \vdash \text{match}_{A \otimes B}(M, xy.N) : C}
+\]
+\[
+\inferrule*[right=$\multimap I$]{\Gamma, x : A \vdash M : B}{\Gamma \vdash \lambda x . M : A \multimap B}
+\]
+\textcolor{red}{Should there be a symmetry involved in the rule above?}
+\[
+\inferrule*[right=$\multimap E$]{\Gamma \vdash M : A \multimap B \quad \Delta \vdash N : A \quad \text{Shuf}(\Gamma, \Delta; \Phi)}{\Phi \vdash M N : B}
+\]
+
+To implement the universal properties, we need the following equations for the tensor
+\[
+\text{match}_{\otimes}(\{M,N\}, xy.P) \equiv P[M / x, N /y]
+\]
+\[
+\text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) \equiv N[M / u]
+\]
+
+The above rules enjoy the properties of exchange being admissible, substitution being admissible, terms representing derivations.
+In particular, substitution is associative and has an interchange property.
+The initiality theorem is then that a free closed symmetric monoidal category on a multigraph is given by this type theory.
+\textcolor{cyan}{What we might want to do is augment the above rules for the type theory to generate a semilattice enriched symmetric monoidal category and formulate the corresponding initiality theorem.
+Terms calculus may provide an interesting angle on the differences between cartesian and non-cartesian case, for example in the former we may disregard some inputs inside one of the components of $f_1 + \ldots + f_n$ while in non-cartesian case we can not and therefore all the variables used by $f_i$ must be used by $f_j$ for $i \not = j$.}
+
+\begin{remark}
+  A term uniquely determines a derivation only when paired with its context.
+  For example, below are two different derivations (in the presence of weakening).
+  \[
+  \inferrule*[]{
+    \inferrule*[]{
+      \vdash A\;\text{type}\;(x : A) \in \Gamma
+      }
+      {x : A, z : C, y : B \vdash x : A
+      }
+     \quad 
+      \inferrule*[]{
+        \vdash B\;\text{type}\;(y : B) \in \Gamma
+        }
+        {x : A, z : C, y : B \vdash y : B
+        }
+        }
+      {x : A, z : C, y : B \vdash \{x,y\} : A \otimes B}
+  \]
+
+  \[
+  \inferrule*[]{
+    \inferrule*[]{
+      \vdash A\;\text{type}\;(x : A) \in \Gamma
+      }
+      {x : A, y : B \vdash x : A
+      }
+     \quad 
+      \inferrule*[]{
+        \vdash B\;\text{type}\;(y : B) \in \Gamma
+        }
+        {x : A, y : B \vdash y : B
+        }
+        }
+        {x : A, y : B \vdash \{x,y\} : A \otimes B}
+  \]
+\end{remark}
+
+So far we can say that the context correspond to the input interface of our hypergraphs and the pushout along the interfaces correspond to a substitution.
+It is unclear how to make a claim that a subgraph correspond to a term as they are defined using different structure.
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../bibliography}
+
+\end{document}
