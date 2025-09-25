@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=vertex, label={above:$A$}] (0) at (-4.5, 5.5) {};
+		\node [style=vertex, label={above:$B$}] (1) at (-2.5, 5.5) {};
+		\node [style=vertex, label={above:$C$}] (2) at (0.5, 5.5) {};
+		\node [style=round box] (3) at (-3.5, 3.5) {$f$};
+		\node [style=round box] (4) at (0.5, 3.5) {$g$};
+		\node [style=round box] (5) at (-1.5, -0.5) {$h$};
+		\node [style=vertex, label={left:$D$}] (6) at (-2.5, 1) {};
+		\node [style=vertex, label={right:$E$}] (7) at (-0.5, 1) {};
+		\node [style=vertex, label={below:$F$}] (8) at (-1.5, -2) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [in=120, out=-90, looseness=0.75] (0) to (3);
+		\draw [in=60, out=-90] (1) to (3);
+		\draw (2) to (4);
+		\draw [in=150, out=-90, looseness=1.25] (6) to (5);
+		\draw [in=30, out=-90] (7) to (5);
+		\draw (5) to (8);
+		\draw [in=135, out=-90, looseness=0.75] (3) to (7);
+		\draw [in=45, out=-90, looseness=0.75] (4) to (6);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -155,6 +155,56 @@ That is, the change is either propagated to the first $x$ or to the second.
 The paper then proceeds to formally define $D$, $\partial x$ and the interaction of these with the $\beta$-reduction.
 The calculus along with the reduction rules is shown to be strongly normalizing and confluent --- that is, equality of terms is straightforwardly decidable.
 
+\section{Term graphs}
+
+\textit{Term graphs} are essentially abstract syntax trees with sharing.
+The consequence of this is that unlike our hypergraphs, they have to be rooted.
+They share the same vocabulary with hypergraphs with some minor tweaks.
+\begin{definition}
+  A path between vertices $v_0$ and $v_n$ is a sequence $\langle v_0, i_1, v_1, \ldots, i_n, v_n \rangle$ of nodes and positive integers such that for $j = 1 \ldots n$, if $e$ is the unique edge such that $res(e) = v_{j-1}$, then $v_j$ is $i^{\text{th}}_j$ input to $e$.
+\end{definition}
+
+\begin{definition}
+  A (hyper-) graph $G$ is a \textit{term graph} if
+  \begin{enumerate}
+    \item there is a vertex $root_{G}$
+    \item $G$ is acyclic
+    \item each node is the result of a unique edge (i.e. every edge represents a functional symbol with co-artity of 1)
+  \end{enumerate}
+\end{definition}
+
+There is a canonical representative of an isomorphism class of term graphs given by a particular numbering of the vertices.
+Given a vertex $v$ an \textit{access} path to $v$ is a sequence $\langle i_1, \ldots, i_n \rangle$ such that there is a path $\langle v_0, i_1, v_1, \ldots, i_n, v_n \rangle$ where $v_0 = root_G$ and $v_n = v$.
+The set of access paths of $v$ is $Acc(v)$.
+The numbering is then given by
+\begin{enumerate}
+  \item $v = Acc(v)$
+  \item $e = res(e)$
+\end{enumerate}
+
+\textcolor{cyan}{We can do the same canonicalization for our (e-) hypergraphs by topologically sorting them. 
+This gives a simple procedure for deciding equality modulo SMC equations.}
+
+\[
+\tikzfig{./figures/canonical_term_graph_example}
+\]
+
+\begin{remark}
+  Several canonicalized term graphs can represent the same term (these differ in sharing/de-sharing of subtrees).
+  Graphs ordered by sharing/de-sharing relation form a lattice where the least element (with no sharing) is denoted $\Delta G$ and the maximal element (with everything shared) is denoted by $\nabla G$.
+\end{remark}
+
+People then study the relation between term rewriting and term-graph rewriting.
+For example, they answer the question of if term rewriting is confluent is the corresponding term-graph rewriting confluent?
+What is interesting is that soundness and completeness are formulated the other way around.
+Soundness is a statement of the form
+\begin{proposition}
+  For all term graphs $G$ and $H$, $G \xRightarrow{} H$ implies $term(G) \xrightarrow{+} term(H)$.
+\end{proposition}
+
+The other direction is then completeness.
+To get completeness we need to rewrite term-graphs modulo bisimilarity (collapsing and copying).
+
 \section{Categorical Type Theory}
 
 This is the study of the relation between \textit{algebraic type theory} and categories with finite products.
@@ -488,7 +538,10 @@ A tensor product in $\mathcal{M}$ is an object $\bigotimes_{i}A_{i}$ together wi
 \[
 \mathcal{M}(B_{1},\ldots,B_{n},A_1,\ldots,A_m,C_{1},\ldots,C_{k};D) \xrightarrow{\sim} \mathcal{M}(B_{1},\ldots,B_{n},\bigotimes_{i}A_i,C_{1},\ldots,C_{k};D)
 \]
+A unit $\mathbf{1}$ is given by a nullary tensor product.
 \end{definition}
+
+We call a multicategory representable if it is equipped with a chosed unit object and for every pair of objects with their tensor.
 
 Here are some extensions with additional structures
 
@@ -571,21 +624,28 @@ with which defines bijections
 (\chi \circ -) \mathcal{M}(C_1, \ldots, C_n; A \multimap B) \to \mathcal{M}(C_1, \ldots, C_n, A; B)
 \]
 
-With all of this in hand we can define type theory for symmetric monoidal closed categories (in natural deduction style)
+\subsection{Type theory for (closed) symmetric monoidal categories}
+
+With all of this in hand we can define type theory for symmetric monoidal closed categories (in natural deduction style).
+Below $\text{Shuf}(\Gamma_1, \ldots, \Gamma_n; \Phi)$ says that $\Phi$ is a shuffle of $\Gamma_1, \ldots, \Gamma_n$, i.e. $\Phi$ is obtained by rifle-shuffling.
+
 
 \[
 \inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A \vdash x: A}
 \]
 \[
-\inferrule*[right=$fI$]{f \in \mathcal{G}(A_1, \ldots, A_n; B)\;\Gamma_1 \vdash A_1, \ldots, \Gamma_n \vdash A_n\;\text{Shuf}(\Gamma_1,\ldots,\Gamma_n;\Phi)}{\Phi \vdash f(M_1, \ldots, M_n) : B}
+\inferrule*[right=$fI$]{f \in \mathcal{G}(A_1, \ldots, A_n; B)\;\Gamma_1 \vdash M_1 : A_1, \ldots, \Gamma_n \vdash M_n : A_n\;\text{Shuf}(\Gamma_1,\ldots,\Gamma_n;\Phi)}{\Phi \vdash f(M_1, \ldots, M_n) : B}
 \]
 \[
-\inferrule*[right=$\otimes I$]{\Gamma \vdash A \qquad \Delta \vdash B \qquad \text{Shuf}(\Gamma,\Delta;\Phi)}{\Phi \vdash \{A \otimes B\}}
+\inferrule*[right=$\otimes I$]{\Gamma \vdash N : A \qquad \Delta \vdash M : B \qquad \text{Shuf}(\Gamma,\Delta;\Phi)}{\Phi \vdash \{N \otimes M\} : A \otimes B}
 \]
 \textcolor{red}{The rule above seems to imply the tensor is not strict.}
 \textcolor{red}{Can the below rule be made admissible? It looks like a composition.}
 \[
 \inferrule*[right=$\otimes E$]{\Psi \vdash M : A \otimes B \quad \Gamma, x : A, y : B \vdash N : C \quad \text{Shuf}(\Gamma,\Psi;\Phi)}{\Phi \vdash \text{match}_{A \otimes B}(M, xy.N) : C}
+\]
+\[
+\inferrule*[right=$\mathbf{1}I$]{\;}{() \vdash \star : \mathbf{1}} \qquad \inferrule*[right=$\mathbf{1}E$]{\Psi \vdash M : \mathbf{1} \qquad \Gamma,\Delta \vdash N : A}{\Gamma, \Psi. \Delta \vdash \text{match}_{\mathbf{1}}(M,N) : A}
 \]
 \[
 \inferrule*[right=$\multimap I$]{\Gamma, x : A \vdash M : B}{\Gamma \vdash \lambda x . M : A \multimap B}
@@ -595,12 +655,16 @@ With all of this in hand we can define type theory for symmetric monoidal closed
 \inferrule*[right=$\multimap E$]{\Gamma \vdash M : A \multimap B \quad \Delta \vdash N : A \quad \text{Shuf}(\Gamma, \Delta; \Phi)}{\Phi \vdash M N : B}
 \]
 
-To implement the universal properties, we need the following equations for the tensor
+To implement the universal properties, we need the following equations for the tensor ($\beta$ and $\eta$ laws)
 \[
 \text{match}_{\otimes}(\{M,N\}, xy.P) \equiv P[M / x, N /y]
 \]
 \[
 \text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) \equiv N[M / u]
+\]
+
+\[
+\text{match}_{\mathbf{1}}(\star, N) \equiv N \qquad \text{match}_{\mathbf{1}}(M,N[\star / u]) \equiv N[M / u]
 \]
 
 The above rules enjoy the properties of exchange being admissible, substitution being admissible, terms representing derivations.
@@ -649,6 +713,176 @@ Terms calculus may provide an interesting angle on the differences between carte
 
 So far we can say that the context correspond to the input interface of our hypergraphs and the pushout along the interfaces correspond to a substitution.
 It is unclear how to make a claim that a subgraph correspond to a term as they are defined using different structure.
+
+The bottom line is that the above syntax is a \enquote{nice} syntax for morphisms in symmetric monoidal categories.
+For example, consider the below morphism, first represented as a string diagram, then represented as a raw term and finally represented using the syntax above.
+
+\[
+\tikzfig{./figures/string-diagram-example}
+\]
+
+\[
+(f \otimes g);\sigma_{D,E};h
+\]
+which is not unique as it is equal e.g. to the following term
+\[
+(f;id_{D} \otimes g);\sigma_{D,E};\sigma_{E,D};\sigma_{D,E};h
+\]
+
+\[
+\inferrule*{
+  \inferrule*{
+    \inferrule*{f \in \mathcal{G} \quad x : A \vdash x : A \quad y : B \vdash y : B}{x : A, y : B \vdash f(x,y) : D}
+    \qquad
+    \inferrule*{g \in \mathcal{G} \quad z : C \vdash z : C}{z : C \vdash g(z) : E}
+  }{x : A, y : B, z : C \vdash \{f(x,y), g(z)\} : D \otimes E}
+  \qquad
+  \inferrule*{h \in \mathcal{G} \quad v : E \vdash v : E \quad u : D \vdash u : D}
+  {u : D, v : E \vdash h(v,u)}
+}{x : A, y : B, z : C \vdash \text{match}(\{f(x,y), g(z)\},uv.h(v,u))}
+\]
+
+
+\begin{figure}
+\begin{align*}
+x[M/x] &= M\\
+y[M/x] &= y\\
+f(N_1, \ldots, N_n)[M/x] &= f(N_1, \ldots, N_i[M/x], \ldots, N_n) \quad \text{if $x$ occurs in $N_i$}\\
+\{N_1 \otimes N_2\}[M/x] &= \{N_1[M/x] \otimes N_2\} \quad \text{if $x$ occurs in $N_1$}\\
+\{N_1 \otimes N_2\}[M/x] &= \{N_1 \otimes N_2[M/x]\} \quad \text{if $x$ occurs in $N_2$}\\
+\text{match}(N_1,xy.N_2)[M/x] &= \text{match}(N_1[M/x], xy.N_2) \quad \text{if $x$ occurs in $N_1$}\\
+\text{match}(N_1,xy.N_2)[M/x] &= \text{match}(N_1, xy.N_2[M/x]) \quad \text{if $x$ occurs in $N_2$}\\
+(\lambda y . N)[M / x] &= \lambda y . N[M/x]\\
+(N_1 N_2)[M / x] &= (N_1[M/x])N_2 \quad \text{if $x$ occurs in $N_1$}\\
+(N_1 N_2)[M / x] &= (N_1)N_2[M/x] \quad \text{if $x$ occurs in $N_2$}
+\end{align*}
+\caption{Substitution definition}
+\label{fig:sub-def}
+\end{figure}
+
+\begin{lemma}[Substitution (Cut rule) is admissible]
+  Given derivations $\Gamma \vdash M : A$ and $\Delta, x : A, \Phi \vdash N : B$ we can derive
+  \[
+  \Gamma, \Delta, \Phi \vdash N[M / x]
+  \]
+  Substitution is defined in \cref{fig:sub-def}.
+  Note, in particular, that since contexts are disjoint (every variable is used once) we only recurse in a single subterm.
+\end{lemma}
+\begin{proof}
+  We will induct on the derivation of $\Delta, x : A, \Phi \vdash N : B$.
+  \begin{itemize}
+    \item If it is the $id$ rule then $\Delta = \varnothing = \Phi$ and $N : B = x : A$ and $B = A$. Then we have $M[x/x] = M$.
+    \item  
+    \[
+    \inferrule*{f \in \mathcal{G} \quad \Gamma_1 \vdash N_1, \ldots, \Gamma_n \vdash N_n}{\Delta , x : A, \Phi \vdash f(N_1, \ldots, N_n) : B = N : B}
+    \]
+    Then it must be that there exists $1 \leq i \leq n$ such that $x \in \Gamma_i$ and we can apply inductive hypothesis to $\Gamma \vdash M : A$ and $\Gamma', x : A, \Gamma'' \vdash N_i : A_i$ to obtain $N_i[M/x] : A_i$.
+    By applying the same derivation rule again we get $f(N_1, \ldots, N_i[M/x], \ldots, N_n)$.
+    \item The other rules are analogous.
+  \end{itemize}
+\end{proof}
+
+With the lemma above we can prove, for example, that $A \otimes \mathbf{1}$ is isomorphic to $A$.
+For this we need to construct two morphisms $A \otimes \mathbf{1} \to A$ and $A \to A \otimes \mathbf{1}$ and show that their composition is identity.
+First, let's build a morphism from $A \to A \otimes \mathbf{1}$
+
+\[
+\inferrule*{
+  x : A \vdash x : A \qquad () \vdash \star : \mathbf{1}
+}{x : A \vdash \{x,\star\} : A \otimes \mathbf{1}}
+\]
+the morphism $A \otimes \mathbf{1} \to A$ is then
+\[
+\inferrule*{
+\inferrule*{}{z : A \otimes \mathbf{1} \vdash z : A \otimes \mathbf{1}}
+\qquad
+\inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
+}{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
+\]
+Then we have
+\begin{itemize}
+  \item \[
+  \inferrule*{
+  \inferrule*{
+  \inferrule*{        
+  \inferrule*{
+            \inferrule*{
+  w : A \vdash w : A \qquad () \vdash \star : \mathbf{1}
+}{w : A \vdash \{w,\star\} : A \otimes \mathbf{1}}
+\qquad
+\inferrule*{
+\inferrule*{}{z : A \otimes \mathbf{1} \vdash z : A \otimes \mathbf{1}}
+\qquad
+\inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
+}{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
+}{w : A \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z]}}{
+w : A \vdash \text{match}_{A \otimes \mathbf{1}}(\{w, \star\}, xy.\text{match}_{\mathbf{1}}(y,x))}}{
+w : A \vdash \text{match}_{\mathbf{1}}(y,x)[w / x,  \star / y]}}{
+w : A \vdash \text{match}_{\mathbf{1}}(\star,w) \equiv w
+}
+      \]
+  \item The other direction is substitution 
+  \[
+  \inferrule*{
+  \inferrule*{z : A \otimes \mathbf{1} \vdash \{w, \star\}[\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) / w]}
+{z : A \otimes \mathbf{1} \vdash \{\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}}
+{z : A \otimes \mathbf{1} \vdash \text{\textcolor{red}{What's next?}}}
+  \]
+  
+\end{itemize}
+
+\begin{lemma}[Substitution is associative and interchanging]
+  \begin{enumerate}
+  \item If $\Gamma \vdash M : A$ and $\Delta, x : A, \Delta' \vdash N : B$ and $\Psi, y : B, \Psi' \vdash P : C$, then
+  \[
+  (P[M/x])[N/y] = P[M[N/y]/x]
+  \]
+  \item If $\Gamma \vdash M : A$ and $\Delta \vdash N : B$ and $\Psi, x : A, \Psi', y : B, \Psi'' \vdash P : C$, then
+  \[
+  (P[M/x][N/y]) = P[N/y][M/x]
+  \]
+  \end{enumerate}
+\end{lemma}
+
+\begin{proposition}
+  A free (closed) symmetric monoidal category on a (hyper-) multigraph $\mathcal{G}$ is given by the type theory above.
+  The objects are types and the morphisms are derivations (terms).
+\end{proposition}
+
+\subsection{Semilattice-enriched symmetric monoidal categories}
+
+We want to extend the rules of the previous section with
+
+\[
+\inferrule*{\Gamma \vdash M_1 : A, \ldots, \Gamma \vdash M_n : A}{
+  \Gamma \vdash M_1 + \ldots + M_n
+}
+\]
+
+$M_1, \ldots, M_n$ look different depending on what structural rules we have.
+In the most general case they all should use the same variables, but in a cartesian case they can ignore some of them.
+
+and prove the analogous statements, i.e. admissibility of substitution, associativity of substitution etc.
+Then we can say that a free semilattice-enriched symmetric monoidal category is given by appropriate type theory.
+
+\begin{example}
+  Recall the raw morphism representation for our e-graph example
+  \[(a \otimes ((2;\comonoid) \otimes (1;id));\sym);((* \otimes \counit + (id \otimes \counit \otimes id);<\!\!<) \otimes id);/~,\]
+  We can render it using the  \enquote{enhanced} term syntax.
+  \[
+  \inferrule*{
+  \inferrule*{
+  \inferrule*{\vdash a : Int \quad \vdash 2 : Int}{\vdash a * 2}
+  \quad
+  \inferrule*{\vdash a : Int \quad \vdash 1 : Int}{\vdash a <\!\!< 1}
+  }{\vdash (a * 2) + (a <\!\!< 1)}
+  \quad
+  \inferrule*{}{\vdash 1 : Int}
+  }
+  {((a * 2) + (a <\!\!< 1)) / 2}
+  \]
+\end{example}
+
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../bibliography}
 
