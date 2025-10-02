@@ -639,8 +639,8 @@ Below $\text{Shuf}(\Gamma_1, \ldots, \Gamma_n; \Phi)$ says that $\Phi$ is a shuf
 \[
 \inferrule*[right=$\otimes I$]{\Gamma \vdash N : A \qquad \Delta \vdash M : B \qquad \text{Shuf}(\Gamma,\Delta;\Phi)}{\Phi \vdash \{N \otimes M\} : A \otimes B}
 \]
-\textcolor{red}{The rule above seems to imply the tensor is not strict.}
-\textcolor{red}{Can the below rule be made admissible? It looks like a composition.}
+% \textcolor{red}{The rule above seems to imply the tensor is not strict.}
+% \textcolor{red}{Can the below rule be made admissible? It looks like a composition.}
 \[
 \inferrule*[right=$\otimes E$]{\Psi \vdash M : A \otimes B \quad \Gamma, x : A, y : B \vdash N : C \quad \text{Shuf}(\Gamma,\Psi;\Phi)}{\Phi \vdash \text{match}_{A \otimes B}(M, xy.N) : C}
 \]
@@ -650,21 +650,21 @@ Below $\text{Shuf}(\Gamma_1, \ldots, \Gamma_n; \Phi)$ says that $\Phi$ is a shuf
 \[
 \inferrule*[right=$\multimap I$]{\Gamma, x : A \vdash M : B}{\Gamma \vdash \lambda x . M : A \multimap B}
 \]
-\textcolor{red}{Should there be a symmetry involved in the rule above?}
+% \textcolor{red}{Should there be a symmetry involved in the rule above?}
 \[
 \inferrule*[right=$\multimap E$]{\Gamma \vdash M : A \multimap B \quad \Delta \vdash N : A \quad \text{Shuf}(\Gamma, \Delta; \Phi)}{\Phi \vdash M N : B}
 \]
 
 To implement the universal properties, we need the following equations for the tensor ($\beta$ and $\eta$ laws)
 \[
-\text{match}_{\otimes}(\{M,N\}, xy.P) \equiv P[M / x, N /y]
+\text{match}_{\otimes}(\{M,N\}, xy.P) \equiv_{\beta_{\otimes}} P[M / x, N /y]
 \]
 \[
-\text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) \equiv N[M / u]
+\text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) \equiv_{\eta_{\otimes}} N[M / u]
 \]
 
 \[
-\text{match}_{\mathbf{1}}(\star, N) \equiv N \qquad \text{match}_{\mathbf{1}}(M,N[\star / u]) \equiv N[M / u]
+\text{match}_{\mathbf{1}}(\star, N) \equiv_{\beta_{\mathbf{1}}} N \qquad \text{match}_{\mathbf{1}}(M,N[\star / u]) \equiv_{\eta_{\mathbf{1}}} N[M / u]
 \]
 
 The above rules enjoy the properties of exchange being admissible, substitution being admissible, terms representing derivations.
@@ -760,6 +760,28 @@ f(N_1, \ldots, N_n)[M/x] &= f(N_1, \ldots, N_i[M/x], \ldots, N_n) \quad \text{if
 \label{fig:sub-def}
 \end{figure}
 
+\begin{lemma}
+
+Each term paired with its context uniquely determines the derivation.
+\end{lemma}
+
+\begin{example}
+Let's show that the term $f(g(h(x)))$ has a unique derivation.
+
+\[
+\inferrule*{
+  \inferrule*{h \in \mathcal{G} \quad x : A \vdash x : A}{
+  \inferrule*{g \in \mathcal{G} \quad x : A \vdash h(x) : B}{f \in \mathcal{G} \quad x : A \vdash g(h(x)) : C}}}
+{x : A \vdash f(g(h(x))) : D}
+\]
+
+it might be tempting to write down another derivation like
+\[
+\inferrule*{f \in \mathcal{G} \quad y : B \vdash g(y) : C}{y : B \vdash f(g(y)) : D}
+\]
+but then you get stuck since the only way to apply this to $h(x)$ is by unraveling $f(g(y))$.
+\end{example}
+
 \begin{lemma}[Substitution (Cut rule) is admissible]
   Given derivations $\Gamma \vdash M : A$ and $\Delta, x : A, \Phi \vdash N : B$ we can derive
   \[
@@ -803,9 +825,6 @@ Then we have
 \begin{itemize}
   \item \[
   \inferrule*{
-  \inferrule*{
-  \inferrule*{        
-  \inferrule*{
             \inferrule*{
   w : A \vdash w : A \qquad () \vdash \star : \mathbf{1}
 }{w : A \vdash \{w,\star\} : A \otimes \mathbf{1}}
@@ -815,20 +834,39 @@ Then we have
 \qquad
 \inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
 }{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
-}{w : A \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z]}}{
-w : A \vdash \text{match}_{A \otimes \mathbf{1}}(\{w, \star\}, xy.\text{match}_{\mathbf{1}}(y,x))}}{
-w : A \vdash \text{match}_{\mathbf{1}}(y,x)[w / x,  \star / y]}}{
-w : A \vdash \text{match}_{\mathbf{1}}(\star,w) \equiv w
-}
-      \]
+}{w : A \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z]}
+\]
+
+\begin{align*}
+  \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z] &\equiv \text{match}_{A \otimes \mathbf{1}}(\{w, \star\}, xy.\text{match}_{\mathbf{1}}(y,x))\\
+  &\equiv_{\beta_{\otimes}} \text{match}_{\mathbf{1}}(\star,w)\\
+  &\equiv_{\beta_{\mathbf{1}}} w
+\end{align*}
+
   \item The other direction is substitution 
   \[
-  \inferrule*{
   \inferrule*{z : A \otimes \mathbf{1} \vdash \{w, \star\}[\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) / w]}
-{z : A \otimes \mathbf{1} \vdash \{\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}}
-{z : A \otimes \mathbf{1} \vdash \text{\textcolor{red}{What's next?}}}
+{z : A \otimes \mathbf{1} \vdash \{\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}
   \]
+
+\begin{align*}
+  \underbrace{\{\text{match}_{A \otimes \mathbf{1}}(\underbrace{z}_{M}, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}_{N} &\equiv_{\eta_{\otimes}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\{\text{match}_{A \otimes \mathbf{1}}(\{x,y\}, x'y'.\text{match}_{\mathbf{1}}(y',x')), \star\})\\ 
+  &\equiv_{\beta_{\otimes}} \text{match}_{A \otimes \mathbf{1}}(z,xy.\{{\text{match}_{\mathbf{1}}(y,x), \star}\})\\
+  &\equiv_{\eta_{\mathbf{1}}}\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,\{\text{match}_{\mathbf{1}}(\star,x), \star\}))\\
+  &\equiv_{\beta_{\mathbf{1}}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(\underbrace{y}_{M},\underbrace{\{x, \star\}}_{N[\star / u]}))\\
+  &\equiv_{\beta_{\mathbf{1}}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\{x, y\})\\
+  &\equiv_{\eta_{\otimes}} z\\
+\end{align*}
   
+The above proof uses a more general statement that 
+\begin{align*}
+\{\text{match}_{\otimes}(M, xy.N), P\} &\equiv_{\eta_{\otimes}} \text{match}_{\otimes}(M,xy.\{\text{match}_{\otimes}(\{x,y\}, x'y'.N), P\})\\
+&\equiv_{\beta_{\otimes}} \text{match}(M,xy.\{N[x/x',y/y'], P\})\\
+&\equiv_{\alpha} \text{match}_{\otimes}(M,xy.\{N,P\})
+\end{align*}
+
+\textcolor{red}{What's the intuition behind these rules?}
+
 \end{itemize}
 
 \begin{lemma}[Substitution is associative and interchanging]
@@ -862,8 +900,60 @@ We want to extend the rules of the previous section with
 $M_1, \ldots, M_n$ look different depending on what structural rules we have.
 In the most general case they all should use the same variables, but in a cartesian case they can ignore some of them.
 
-and prove the analogous statements, i.e. admissibility of substitution, associativity of substitution etc.
+We can then aim to prove the analogous statements, i.e. admissibility of substitution, associativity of substitution etc.
 Then we can say that a free semilattice-enriched symmetric monoidal category is given by appropriate type theory.
+
+We will have the following equations
+\begin{align*}
+  \{N_1 + \ldots + N_n, M\} &\equiv \{N_1, M\} + \ldots + \{N_n, M\}\\
+  \{M, N_1, \ldots, N_n\} &\equiv \{M, N_1\} + \ldots + \{M, N_n\}\\
+  N_1 + \ldots + (M_1 + \ldots + M_m)  + \ldots + N_n &\equiv N_1 + \ldots + M_1 + \ldots + M_m + \ldots + N_n\\
+  M + N &\equiv N + M\\
+  N &\equiv N + N
+\end{align*}
+
+and the substitution is (it should follow from admissibility)
+\begin{align*}
+(N_1 + \ldots + N_n)[M/x] &= (N_1[M/x] + \ldots + N_n[M/x])\\
+N[(M_1 + \ldots + M_n)/x] &= N[M_1/x] + \ldots + N[M_n/x]
+\end{align*}
+
+\begin{lemma}[Substitution is admissible]
+  If $\Gamma \vdash M : A$ and $\Delta, x : A, \Phi \vdash N$ are derivable, then $\Delta, \Gamma, \Phi \vdash N[M/x]$ is derivable.
+\end{lemma}
+\begin{proof}
+  Since the substitution is admissible in the original type theory, we only need to consider the extra rule that we introduced.
+  Suppose $N \Coloneqq N_1 + \ldots + N_n$ and therefore comes from the rule
+  \[
+  \inferrule[]{\inferrule[]{\vdots}{\Gamma \vdash M} \quad \inferrule[]{\Delta, x : A, \Phi \vdash N_1, \ldots, \Delta, x : A, \Phi \vdash N_n}{\Delta, x : A, \Phi \vdash N}}{\;}
+  \]
+  By IH we have derivations
+  \[
+    \Delta, \Gamma, \Phi \vdash N_1[M/x], \ldots, \Delta, \Gamma, \Phi \vdash N_n[M/x]
+  \]
+  and therefore can get a derivation 
+  \[
+  \Delta, \Gamma, \Phi \vdash N_1[M/x] + \ldots + N_n[M/x]
+  \]
+
+  The second rule is actually is not given by the lemma above, so we need to build it into the rules \textcolor{red}{How? I think if I extend every rule with a $+$ in the premise, it will absorb the rules above.}
+  % \[
+  % \inferrule[]{\Gamma \vdash N_1 + \ldots + N_n \quad f \in \mathcal{G}}{f(N_1) + \ldots + f(N_n)}
+  % \]
+  % then we have the following case.
+
+\end{proof}
+
+Consider the revised rules
+\begin{align*}
+  \inferrule[]{\vdash A\;\text{type}}{x : A \vdash x + \ldots + x : A}\\
+  \inferrule[]{f \in G \quad \Gamma_1 \vdash M_{11} + \ldots + M_{1 i_1} \ldots \Gamma_n \vdash M_{n 1} + \ldots + M_{n i_n}}{\Phi \vdash f(M_{1 1}, \ldots M_{n 1}) + \ldots + f(M_{1 i_1}, \ldots, M_{n i_n})}
+\end{align*}
+
+Then we can merge the substitution rules into a single rule
+\[
+(N_1 + \ldots + N_n)[M_1 + \ldots + M_m / x] = N_1[M_1 / x] + \ldots + N_n[M_1 / x] + \ldots + N_1[M_m / x] + \ldots + N_n[M_m / x]
+\]
 
 \begin{example}
   Recall the raw morphism representation for our e-graph example
@@ -877,10 +967,21 @@ Then we can say that a free semilattice-enriched symmetric monoidal category is 
   \inferrule*{\vdash a : Int \quad \vdash 1 : Int}{\vdash a <\!\!< 1}
   }{\vdash (a * 2) + (a <\!\!< 1)}
   \quad
-  \inferrule*{}{\vdash 1 : Int}
+  \inferrule*{}{\vdash 2 : Int}
   }
-  {((a * 2) + (a <\!\!< 1)) / 2}
+  {\vdash ((a * 2) + (a <\!\!< 1)) / 2}
   \]
+  Recall the string diagram
+  \[
+  \tikzfig{./figures/e-graph-example-string}
+  \]
+  We can linerise it as
+  \begin{minted}{haskell}
+    let (x_1, x_2, x_3) = (a, 2, 1) in
+      let y_1 = {(x_1 * x_2), (x_1 << x_3)} in
+        y1 / x_2
+  \end{minted}
+  \textcolor{red}{Why would one be preferable over the other? One syntax provides a reasoning framework about monoidal e-graphs while the other is just a linearisation of hypergraphs? Equality procedure for hypergraphs?}
 \end{example}
 
 \bibliographystyle{ACM-Reference-Format}
