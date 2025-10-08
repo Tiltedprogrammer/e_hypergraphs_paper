@@ -746,7 +746,7 @@ which is not unique as it is equal e.g. to the following term
 \begin{figure}
 \begin{align*}
 x[M/x] &= M\\
-y[M/x] &= y\\
+% y[M/x] &= y\\
 f(N_1, \ldots, N_n)[M/x] &= f(N_1, \ldots, N_i[M/x], \ldots, N_n) \quad \text{if $x$ occurs in $N_i$}\\
 \{N_1 \otimes N_2\}[M/x] &= \{N_1[M/x] \otimes N_2\} \quad \text{if $x$ occurs in $N_1$}\\
 \{N_1 \otimes N_2\}[M/x] &= \{N_1 \otimes N_2[M/x]\} \quad \text{if $x$ occurs in $N_2$}\\
@@ -903,7 +903,7 @@ In the most general case they all should use the same variables, but in a cartes
 We can then aim to prove the analogous statements, i.e. admissibility of substitution, associativity of substitution etc.
 Then we can say that a free semilattice-enriched symmetric monoidal category is given by appropriate type theory.
 
-We will have the following equations
+We will have the following equations (plus the usual $\beta/\eta$ for $\otimes$) 
 \begin{align*}
   \{N_1 + \ldots + N_n, M\} &\equiv \{N_1, M\} + \ldots + \{N_n, M\}\\
   \{M, N_1, \ldots, N_n\} &\equiv \{M, N_1\} + \ldots + \{M, N_n\}\\
@@ -919,7 +919,7 @@ N[(M_1 + \ldots + M_n)/x] &= N[M_1/x] + \ldots + N[M_n/x]
 \end{align*}
 
 \begin{lemma}[Substitution is admissible]
-  If $\Gamma \vdash M : A$ and $\Delta, x : A, \Phi \vdash N$ are derivable, then $\Delta, \Gamma, \Phi \vdash N[M/x]$ is derivable.
+  If $\Gamma \vdash M_1 + \ldots + M_m : A$ and $\Delta, x : A, \Phi \vdash N$ are derivable, then $\Delta, \Gamma, \Phi \vdash N[M/x]$ is derivable.
 \end{lemma}
 \begin{proof}
   Since the substitution is admissible in the original type theory, we only need to consider the extra rule that we introduced.
@@ -929,31 +929,128 @@ N[(M_1 + \ldots + M_n)/x] &= N[M_1/x] + \ldots + N[M_n/x]
   \]
   By IH we have derivations
   \[
-    \Delta, \Gamma, \Phi \vdash N_1[M/x], \ldots, \Delta, \Gamma, \Phi \vdash N_n[M/x]
+    \Delta, \Gamma, \Phi \vdash N_1[M_1 + \ldots + M_m /x], \ldots, \Delta, \Gamma, \Phi \vdash N_n[M_1 + \ldots + M_m /x]
   \]
-  and therefore can get a derivation 
+  or,
   \[
-  \Delta, \Gamma, \Phi \vdash N_1[M/x] + \ldots + N_n[M/x]
+    \Delta, \Gamma, \Phi \vdash N_1[M_1/ x] + \ldots + N_1[M_m /x], \ldots, \Delta, \Gamma, \Phi \vdash N_n[M_1 / x] + \ldots + N_n[M_m /x]
+  \]
+  and therefore we can get a derivation 
+  \[
+  \Delta, \Gamma, \Phi \vdash (N_1[M_1/ x] + \ldots + N_1[M_m /x]) + \ldots + (N_n[M_1/ x] + \ldots + N_n[M_m /x])
   \]
 
-  The second rule is actually is not given by the lemma above, so we need to build it into the rules \textcolor{red}{How? I think if I extend every rule with a $+$ in the premise, it will absorb the rules above.}
-  % \[
-  % \inferrule[]{\Gamma \vdash N_1 + \ldots + N_n \quad f \in \mathcal{G}}{f(N_1) + \ldots + f(N_n)}
-  % \]
-  % then we have the following case.
+  Now consider the case of
 
+  \[
+  \inferrule*{f \in \mathcal{G} \quad \Gamma_1 \vdash N_1, \ldots, \Gamma_n \vdash N_n}{\Delta , x : A, \Phi \vdash f(N_1, \ldots, N_n) : B}
+  \]
+
+  and there exists $1 \leq j \leq n$ such that $\Gamma_j = \Gamma'_j, x : A, \Gamma''_j \vdash N_j$.
+  Then, by IH we have a derivation $\Gamma'_j,\Gamma,\Gamma''_j \vdash N_j[M_1 + \ldots + M_m / x] = N_j[M_1 / x] + \ldots N_j[M_m / x]$.
+  By applying the same rule we only get 
+  \[
+  f(N_1, \ldots, (N_j[M_1/x] + \ldots + N_j[M_m / x]), \ldots, N_n)
+  \]
+  \textcolor{red}{which is not enough.}
+  The second rule is actually is not given by the lemma above, so we need to build it into the rules \textcolor{red}{How? I think if I extend every rule with a $+$ in the premise, it will absorb the rules above.}
 \end{proof}
 
-Consider the revised rules
-\begin{align*}
-  \inferrule[]{\vdash A\;\text{type}}{x : A \vdash x + \ldots + x : A}\\
-  \inferrule[]{f \in G \quad \Gamma_1 \vdash M_{11} + \ldots + M_{1 i_1} \ldots \Gamma_n \vdash M_{n 1} + \ldots + M_{n i_n}}{\Phi \vdash f(M_{1 1}, \ldots M_{n 1}) + \ldots + f(M_{1 i_1}, \ldots, M_{n i_n})}
-\end{align*}
+Consider the revised rules (forget about the symmetry for a moment) in \autoref{fig:slat-typetheory}.
+\begin{figure}
+\begin{gather*}
+  % \inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A \vdash x + \ldots + x : A}\\
+  \inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A}\\
+  \inferrule*[right=$f$]{f \in \mathcal{G}(A_1,\ldots,A_n;B) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n} M_{nj} : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1 = 1}^{j_1} \ldots \sum_{k_n=1}^{i_n} f(M_{1 k_1}, \ldots, M_{n k_n}) : B}\\
+  \inferrule*[right=$\otimes I$]{\Gamma \vdash \sum_{i=1}^{m}M_i : A \quad \Delta \vdash \sum_{i=1}^{n} N_i : B}{\Gamma, \Delta \vdash \sum_{i=1}^{m}\sum_{j=1}^{n}\{M_i, M_j\} : A \otimes B}\\
+  \inferrule*[right=$\otimes E$]{\Gamma \vdash \sum_{i=1}^{m}M_i : A \otimes B \qquad \Delta_1, x : A, y : B, \Delta_2 \vdash \sum_{i=1}^{n}N_i : C}{\Delta_1, \Gamma, \Delta_2 \vdash \sum_{1}^{i=m}\sum_{j=1}^{n}\text{match}_{A \otimes B}(M_i, xy. N_j) : C}\\
+  \inferrule*[right=$\mathbf{1}I$]{\;}{() \vdash \star : \mathbf{1}}\\
+  \inferrule*[right=$\mathbf{1}E$]{\Gamma \vdash \sum_{i=1}^{m} M_i : \mathbf{1} \qquad \Delta_1,\Delta_2 \vdash \sum_{i=1}^{n} N_i : A}{\Delta_1,\Gamma,\Delta_2 \vdash \sum_{i=1}^{m}\sum_{j=1}^{n} \text{match}_{\mathbf{1}}(M_i,N_j) : A}\\
+  \inferrule*[right=$+I$]{\Gamma \vdash \sum_{i=1}^{i_1} M_{1i} \quad \ldots \quad \Gamma \vdash \sum_{i=1}^{i_m} M_{mi}}{\Gamma \vdash \sum_{i=1}^{m}\sum_{j=1}^{i_j} M_{ij}}
+\end{gather*}
+\caption{Type theory for semilattice-enriched monoidal categories}
+\label{fig:slat-typetheory}
+\end{figure}
 
 Then we can merge the substitution rules into a single rule
 \[
 (N_1 + \ldots + N_n)[M_1 + \ldots + M_m / x] = N_1[M_1 / x] + \ldots + N_n[M_1 / x] + \ldots + N_1[M_m / x] + \ldots + N_n[M_m / x]
 \]
+or, using a sum notation,
+\[
+(\sum_{i=1}^{n}N_i)[M_1 + \ldots + M_m / x] = \sum_{i=1}^{n}\sum_{j=1}^{m}N_i[M_j / x]
+\]
+the rest substitution rules are as in \autoref{fig:sub-def}.
+
+\begin{remark}
+  With this type theory we lose the property of the uniqueness of derivation. For example, the following term can be derived in two ways.
+  \[
+  \inferrule*[right=$fI$]{f \in \mathcal{G}(A;B) \qquad \inferrule*[right=$+I$]{x : A \vdash x : A \quad x : A \vdash x : A}{x : A \vdash x + x : A}}{x : A \vdash f(x) + f(x) : B}
+  \]
+  \[
+  \inferrule*[right=$+I$]{\inferrule*[right=$fI$]{f \in \mathcal{G}(A;B) \quad x : A \vdash x : A}{x : A \vdash f(x)} \qquad \inferrule*[right=$fI$]{f \in \mathcal{G}(A;B) \quad x : A \vdash x : A}{x : A \vdash f(x)}}{x : A \vdash f(x) + f(x) : B}
+  \]
+\end{remark}
+
+\begin{lemma}[Substitution is admissible]
+  If $\Gamma \vdash M_1 + \ldots + M_m : A$ and $\Delta, x : A, \Phi \vdash N : B$ are derivable, then $\Delta, \Gamma, \Phi \vdash N[M/x]$ is derivable.
+\end{lemma}
+\begin{proof}
+  \begin{enumerate}
+    \item Suppose $N \Coloneqq x : A \vdash x : A$, then $A = B$ and we can just use $M_1 + \ldots + M_m$ which is $x[M_1 + \ldots + M_n / x] = x[M_1/x] + \ldots + x[M_m / x] = M_1 + \ldots + M_m$
+    \item Suppose $N$ is the conclusion of the rule
+    \[
+      \inferrule*[right=$fI$]{f \in \mathcal{G}(A_1,\ldots,A_n;B) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n} M_{nj} : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1 = 1}^{j_1} \ldots \sum_{k_n=1}^{i_n} f(M_{1 k_1}, \ldots, M_{n k_n}) : B}
+    \] 
+    then there exists $1 \leq j \leq n$ such that $x : A \in \Gamma_j$ and $\Gamma'_j, x : A, \Gamma''_j \vdash \sum_{i=1}^{i_j}N_{ji}$ and by IH we have a derivation
+    \[
+    (\sum_{i=1}^{i_j}N_{ji})[M_1 + \ldots + M_m / x] = \sum_{i=1}^{i_j}\sum_{k=1}^{m}N_{ji}[M_k / x]
+    \]
+    \begin{gather*}
+    \Gamma'_j,\Gamma,\Gamma''_j \vdash (N_{j 1} + \ldots + N_{j i_j})[M_1 + \ldots + M_m / x] =\\
+      = N_{j 1}[M_1 / x] + \ldots + N_{j 1}[M_m /x] + \ldots + N_{j i_j}[M_1 / x] + \ldots + N_{j i_j}[M_m /x]
+    \end{gather*}
+    and by applying the rule above we have
+    \begin{gather*}
+     \Gamma_1, \ldots, \Gamma'_j,\Gamma,\Gamma''_j, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{i_1} \ldots \sum_{k_j=1}^{i_j}\sum_{l=1}^{m} \ldots \sum_{k_n=1}^{i_n} f(N_{1k_1}, \ldots, N_{jk_j}[M_{l} / x], \ldots, N_{nk_n}) =\\
+     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{j,k_j}[M_1 + \ldots + M_m], \ldots, N_{nk_n})\\
+     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{nk_n})[M_1 + \ldots + M_m]
+    \end{gather*}
+  \item Suppose $N$ is the conclusion of the rule
+  \[
+    \inferrule*[right=$\otimes I$]{\Delta_1 \vdash \sum_{i=1}^{p}P_i : A \quad \Delta_2 \vdash \sum_{i=1}^{n} N_i : B}{\Delta_1, \Delta_2 \vdash \sum_{i=1}^{p}\sum_{j=1}^{n}\{P_i, M_j\} : A \otimes B}
+  \]
+  and w.l.o.g suppose $x : A \in \Delta_1$, then by IH we have a derivation 
+  \[
+    \Delta'_1, \Gamma, \Delta''_1 \vdash (\sum_{i=1}^{p}P_i)[M_1 + \ldots + M_m] = (\sum_{i=1}^{p} \sum_{j=1}^{m}P_i[M_j / x]) : A
+  \]
+  and by applying the same rule we get
+  \begin{gather*}
+    \Delta'_1,\Gamma,\Delta''_1,\Delta_2 \vdash \sum_{i=1}^{p}\sum_{k=1}^{m}\sum_{j=1}^{n}\{P_i[M_j / x],N_j\} = \sum_{i=1}^{p}\sum_{j=1}^{n}\{P_i[M_1 + \ldots + M_m / x],N_j\} = \\
+    = \sum_{i=1}^{p}\sum_{j=1}^{n}\{P_i,N_j\}[M_1 + \ldots + M_m / x]
+  \end{gather*}
+  \item Suppose $N$ is the conclusion of the rule
+  \[
+    \inferrule*[right=$+I$]{\Delta', x : A, \Delta'' \vdash \sum_{i=1}^{i_1} N_{1i} \quad \ldots \quad \Delta', x : A, \Delta'' \vdash \sum_{i=1}^{i_n} N_{ni}}{\Delta', x : A, \Delta'' \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j} N_{ij}}
+  \]
+  then by IH we have 
+  \begin{gather*}
+  \Delta',\Gamma,\Delta'' \vdash (\sum_{i=1}^{i_1}N_{1i})[M_1 + \ldots + M_m] = (\sum_{i=1}^{i_1}N_{1i}[M_1 + \ldots + M_m]) = (\sum_{i=1}^{i_1}\sum_{j=1}^{m}N_{1i}[M_j / x])\\
+  \vdots\\
+  \Delta',\Gamma,\Delta'' \vdash (\sum_{i=1}^{i_n}N_{ni})[M_1 + \ldots + M_m] = (\sum_{i=1}^{i_1}N_{ni}[M_1 + \ldots + M_m]) = (\sum_{i=1}^{i_1}\sum_{j=1}^{m}N_{ni}[M_j / x])\\
+  \end{gather*}
+  and again by applying the same rule we get
+  \begin{gather*}
+    \sum_{k=1}^{n}\sum_{i=1}^{i_k}\sum_{j=1}^{m}(N_{ki}[M_j / x]) = \sum_{k=1}^{n}\sum_{i=1}^{i_k}(N_{ki}[M_1 + \ldots + M_m / x]) = \sum_{k=1}^{n}\sum_{i=1}^{i_k}(N_{ki})[M_1 + \ldots + M_m / x]
+  \end{gather*}
+  \end{enumerate}
+  The rest of the cases are analogous.
+  \textcolor{red}{Some metastatement that substitution is robust with respect to the ambiguity in derivations?}
+\end{proof}
+
+\begin{lemma}[Substitution is associative and interchanging]
+  TODO
+\end{lemma}
 
 \begin{example}
   Recall the raw morphism representation for our e-graph example
