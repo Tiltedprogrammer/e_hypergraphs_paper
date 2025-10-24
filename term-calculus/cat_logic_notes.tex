@@ -49,8 +49,6 @@
 
 \usepackage{stmaryrd}
 \newcommand{\parr}{\mathbin{\bindnasrepma}}
-% \usepackage{amssymb}
-\usepackage{mathpartir}
 
 \newcommand*{\ONECOLUMN}{}
 
@@ -59,7 +57,7 @@
 \input{../sample.tikzstyles}
 \input{../hypergraph.tikzstyles}
 \input{../hypergraph.tikzdefs}
-
+\renewcommand*{\itemautorefname}{}
 
 \definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
 \definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
@@ -129,6 +127,134 @@ Additive conjunction is modelled by a Cartesian product and the multiplicative o
 The modality $\!$ is interpreted by a comonad. 
 Then we need to require that the comonad interacts with the tensor.
 
+In more detail, below is two different flavours of conjunction rules in a logic where all structural rules are allowed.
+
+\[
+\inferrule*[right=$\land L$]{\Gamma, A \vdash \Delta}{\Gamma, A \land B \vdash \Delta} \qquad \inferrule*[right=$\land R$]{\Gamma, B \vdash \Delta}{\Gamma, A \land B \vdash \Delta} \qquad \inferrule*[]{\Gamma \vdash A, \Delta \quad \Gamma \vdash B, \Delta}{\Gamma \vdash A \land B, \Delta}
+\]
+which is an \textit{additive} version, and
+\[
+\inferrule*[right=$\land$]{\Gamma, A, B \vdash \Delta}{\Gamma, A \land B \vdash \Delta} \qquad \inferrule*[]{\Gamma_1 \vdash A, \Delta_1 \quad \Gamma_2 \vdash B, \Delta_2}{\Gamma_1, \Gamma_2 \vdash A \land B, \Delta_1, \Delta_2}
+\]
+which is a \textit{multiplicative} version.
+
+These presentations are equivalent in the presence of structural rules. For example, we can derive multiplicative $\land$ using the additive $\land L$ and $\land R$:
+
+\[
+  \inferrule{\Gamma, A, B \vdash \Delta}
+  {\inferrule{\Gamma, B, A \land B \vdash \Delta}
+    {\inferrule{
+      \Gamma, A \land B, A \land B \vdash \Delta
+      }{
+        \Gamma, A \land B \vdash \Delta
+        }}}
+\]
+and the other direction
+\[
+\inferrule[]{\Gamma, A \vdash \Delta}{
+  \inferrule{\Gamma, A, B \vdash \Delta}{\Gamma, A \land B \vdash \Delta}}
+\]
+
+If we remove contraction and weakening, then the presentations are no longer equivalent and hence define different connectives, $\otimes$ and $\&$, respectively called \enquote{tensor} and \enquote{with} and also two connectives for multiplicative and additive disjunction $\parr$ and $\oplus$.
+
+\[
+\begin{array}{cc}
+\textbf{Identity rules} & \inferrule*[right=$id$]{\;}{A, A^{\bot}} \qquad \inferrule*[right=cut]{\Gamma,A \quad A^{\bot},\Delta}{\Gamma, \Delta}\\
+\textbf{Multiplicative rules} &  \inferrule*[right=$\parr$]{\Gamma, A, B}{\Gamma, A \parr B} \qquad \inferrule*[right=$\otimes$]{\Gamma,A \quad \Delta,B}{\Gamma,\Delta,A \otimes B}\\
+\textbf{Additive rules} & \inferrule*[right=$\oplus_0$]{\Gamma,A}{\Gamma, A \oplus B} \qquad \inferrule*[right=$\oplus_1$]{\Gamma,B}{\Gamma, A \oplus B} \qquad \inferrule*[right=$\&$]{\Gamma,A \quad \Gamma, B}{\Gamma, A \& B}
+\end{array}
+\]  
+Here's a useful intuition behind $\otimes$ and $\parr$. Suppose you are given two resources, a \textit{saw} and a \textit{hammer}, then you can construct $\text{saw} \otimes \text{hammer}$ which is a set of a saw and a hammer and you can give a saw to one person and the hammer to another.
+In contrast, $\text{saw} \parr \text{hammer}$ is like a multitool, you can give it to a single person only.
+The difference between $\&$ and $\oplus$ is a bit more subtle. 
+Consider the menu below
+
+\begin{minipage}{0.45\linewidth}
+  \begin{tabular}{c}
+    \textbf{Menu (price 17 Euros)}\\
+    \textit{Quiche or Salad}\\
+    \textit{Chicken or Fish}\\
+    \textit{Banana or \enquote{Surprise du Chef}}\textsubscript{*}\\
+    {}\\
+    \textit{(*) either \enquote{Profiteroles} or \enquote{Tarte Tatin}}
+
+
+  \end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+  \[
+  \begin{aligned}
+  17E \vdash 
+  \left\{ \begin{array}{c}
+    (Q \& S)\\
+    \otimes\\
+    (C \& F)\\
+    \otimes\\
+    (B \& (P \oplus T))
+  \end{array}
+  \right.
+\end{aligned}
+  \]
+\end{minipage}
+
+So let us start again from the beginning, considering a play between the restaurant manager (the Player) and the customer (the Opponent). 
+It is the Player's responsibility to split the $17E$ into three parts, corresponding to the cost of the three parts of the meal. 
+May be, this is done as follows:
+\[
+\inferrule*{5E \vdash Q \& S \quad 8E \vdash C \& F \quad 4E \vdash B \& (P \oplus T)}{17E \vdash (Q \& S) \otimes (C \& F) \otimes (B \& (P \oplus T))}
+\]
+Now let the Opponent challenge $5E \vdash Q \& S$:
+\[
+\inferrule*[]{5E \vdash Q \qquad 5E \vdash S}{5E \vdash Q \& S}
+\]
+
+which reads as: both Quiche and Salad are available to the customer, but he can get only one, and it is his choice of picking one of the antecedents and to order, say, a Quiche. 
+Thus the additive conjunction can be understood as a $\ldots$ disjunction embodying a notion of external choice (remember that in our example the customer is the Opponent, or the context, or the environment). 
+Let us now analyse a proof of $4E \vdash B \& (P \otimes T)$:
+
+\[
+\inferrule*{4E \vdash B  \qquad \inferrule*[]{4E \vdash T}{4E \vdash P \oplus T}}{4E \vdash B \& (P \oplus T)}
+\]
+
+Suppose that the Opponent chooses the Surprise. 
+Then it is the Player's turn, who justifies $4E \vdash O \oplus T$ using the right $\oplus$ rule. 
+So, the Opponent will get a Tarte Tatin, but the choice was in the Player's hands. 
+Thus $\oplus$ has an associated meaning of internal choice. 
+In summary, two forms of choice, external and internal, are modelled by N and $\oplus$, respectively. 
+In the case of $\oplus$, whether $A$ or $B$ is chosen is controlled by the rule, that is, by the Player. 
+In the case of $\&$, the choice between $A$ or $B$ is a choice of one of the antecedents of the rule, and is in the hands of the Opponent.
+
+All these oppositions confirm a fundamental polarity: by convention, we shall term $\&$ and $\parr$ as negative, and $\otimes$ and $\oplus$ as positive.
+
+\begin{remark}
+
+Linear logic does not have the property that terms uniquely determine derivations.
+Consider the following two derivations for example
+\[
+\inferrule*[right=$id$]{\;}{A \oplus B, A^{\bot} \;\&\; B^{\bot}} \qquad \inferrule*[]{\inferrule*[]{\inferrule*[right=$id$]{\;}{A,A^{\bot}}}{A \oplus B, A^{\bot}} \quad \inferrule*[]{\inferrule*[right=$id$]{\;}{B,B^{\bot}}}{A \oplus B, B^{\bot}}}{A \oplus B, A^{\bot} \;\&\; B^{\bot}}
+\]
+
+as negation is defined as
+\begin{gather*}
+(A \;\&\; B)^{\bot} = A^{\bot} \oplus B^{\bot}\\
+(A \otimes B)^{\bot} = A^{\bot} \parr B^{\bot}
+\end{gather*}
+
+Therefore, such derivations need to be identified.
+Quotienting by the identity above and a bunch of others defines $\equiv_{\eta}$.
+Quotienting by \texttt{cut}  defines $\equiv_\beta$.
+\end{remark}
+
+\begin{remark}
+We also have that some rules $r_1,r_2$ commute in the sense that they can be applied in any order without loss of provability.
+For example,
+\[
+\inferrule*[right=$\&$]{\inferrule*[right=$\parr$]{\Gamma, A, B, C \quad \Gamma, A, B, D}{\Gamma, A, B, C \;\&\; D}}{\Gamma, A \parr B, C \;\&\; D} 
+\qquad
+\inferrule*[right=$\&$]{\inferrule*[right=$\parr$]{\Gamma, A, B, C}{\Gamma, A \parr B, C} \quad \inferrule*[right=$\parr$]{\Gamma, A, B, D}{\Gamma, A \parr B, D}}{\Gamma, A \parr B, C \;\&\;D}
+\]
+\end{remark}
 
 \section{Differential lambda calculus by ~\citet{DiffLambdaCalc}}
 
@@ -870,6 +996,7 @@ The above proof uses a more general statement that
 \end{itemize}
 
 \begin{lemma}[Substitution is associative and interchanging]
+
   \begin{enumerate}
   \item If $\Gamma \vdash M : A$ and $\Delta, x : A, \Delta' \vdash N : B$ and $\Psi, y : B, \Psi' \vdash P : C$, then
   \[
@@ -918,7 +1045,8 @@ and the substitution is (it should follow from admissibility)
 N[(M_1 + \ldots + M_n)/x] &= N[M_1/x] + \ldots + N[M_n/x]
 \end{align*}
 
-\begin{lemma}[Substitution is admissible]
+
+\begin{lemma}[Substitution]
   If $\Gamma \vdash M_1 + \ldots + M_m : A$ and $\Delta, x : A, \Phi \vdash N$ are derivable, then $\Delta, \Gamma, \Phi \vdash N[M/x]$ is derivable.
 \end{lemma}
 \begin{proof}
@@ -966,7 +1094,7 @@ Consider the revised rules (forget about the symmetry for a moment) in \autoref{
   \inferrule*[right=$\otimes E$]{\Gamma \vdash \sum_{i=1}^{m}M_i : A \otimes B \qquad \Delta_1, x : A, y : B, \Delta_2 \vdash \sum_{i=1}^{n}N_i : C}{\Delta_1, \Gamma, \Delta_2 \vdash \sum_{1}^{i=m}\sum_{j=1}^{n}\text{match}_{A \otimes B}(M_i, xy. N_j) : C}\\
   \inferrule*[right=$\mathbf{1}I$]{\;}{() \vdash \star : \mathbf{1}}\\
   \inferrule*[right=$\mathbf{1}E$]{\Gamma \vdash \sum_{i=1}^{m} M_i : \mathbf{1} \qquad \Delta_1,\Delta_2 \vdash \sum_{i=1}^{n} N_i : A}{\Delta_1,\Gamma,\Delta_2 \vdash \sum_{i=1}^{m}\sum_{j=1}^{n} \text{match}_{\mathbf{1}}(M_i,N_j) : A}\\
-  \inferrule*[right=$+I$]{\Gamma \vdash \sum_{i=1}^{i_1} M_{1i} \quad \ldots \quad \Gamma \vdash \sum_{i=1}^{i_m} M_{mi}}{\Gamma \vdash \sum_{i=1}^{m}\sum_{j=1}^{i_j} M_{ij}}
+  \inferrule*[right=$+I$]{\Gamma \vdash \sum_{i=1}^{i_1} M_{1i} : A \quad \ldots \quad \Gamma \vdash \sum_{i=1}^{i_m} M_{mi} : A}{\Gamma \vdash \sum_{i=1}^{m}\sum_{j=1}^{i_j} M_{ij} : A}
 \end{gather*}
 \caption{Type theory for semilattice-enriched monoidal categories}
 \label{fig:slat-typetheory}
@@ -992,12 +1120,12 @@ the rest substitution rules are as in \autoref{fig:sub-def}.
   \]
 \end{remark}
 
-\begin{lemma}[Substitution is admissible]
-  If $\Gamma \vdash M_1 + \ldots + M_m : A$ and $\Delta, x : A, \Phi \vdash N : B$ are derivable, then $\Delta, \Gamma, \Phi \vdash N[M/x]$ is derivable.
-\end{lemma}
-\begin{proof}
+\begin{definition}[Substitution]
+  Given derivations $\Gamma \vdash M_1 + \ldots + M_m : A$ and $\Delta_1, x : A, \Delta_2 \vdash N$,
+  we define $\Delta_1, \Gamma, \Delta_2 \vdash N[M_1 + \ldots + M_m / x]$ by induction on derivation of $N$.
+  Moreover, we have the property that $(N_1 + \ldots + N_n)[M_1 + \ldots + M_m / x] = \sum_{i=1}^{n}\sum_{j=1}^{m}N_i[M_j / x]$.
   \begin{enumerate}
-    \item Suppose $N \Coloneqq x : A \vdash x : A$, then $A = B$ and we can just use $M_1 + \ldots + M_m$ which is $x[M_1 + \ldots + M_n / x] = x[M_1/x] + \ldots + x[M_m / x] = M_1 + \ldots + M_m$
+    \item Suppose $N \Coloneqq x : A \vdash x : A$, then $A = B$ and we can just use $M_1 + \ldots + M_m$ and define $\Gamma \vdash x[M_1 + \ldots + M_m / x] = x[M_1 / x] + \ldots + x[M_m / x] = M_1 + \ldots + M_m$.
     \item Suppose $N$ is the conclusion of the rule
     \[
       \inferrule*[right=$fI$]{f \in \mathcal{G}(A_1,\ldots,A_n;B) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n} M_{nj} : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1 = 1}^{j_1} \ldots \sum_{k_n=1}^{i_n} f(M_{1 k_1}, \ldots, M_{n k_n}) : B}
@@ -1045,12 +1173,122 @@ the rest substitution rules are as in \autoref{fig:sub-def}.
   \end{gather*}
   \end{enumerate}
   The rest of the cases are analogous.
-  \textcolor{red}{Some metastatement that substitution is robust with respect to the ambiguity in derivations?}
+\end{definition}
+
+Then the admissibility follows from the above construction.
+\begin{lemma}
+  If we have derivations $\Gamma \vdash M_1 + \ldots + M_n : A$ and $\Delta_1, x : A, \Delta_2 \vdash N : B$, then we can derive $\Delta_1, \Gamma, \Delta_2 \vdash N[M_1 + \ldots + M_m / x]$.
+\end{lemma}
+
+The ambiguity technically means that we can not recursively define the action of a substitution on terms, however, we can see that applying the substitution to different derivations produces the same result
+\[
+  \inferrule*[right=$fI$]{f \in \mathcal{G}(A;B) \qquad \inferrule*[right=$+I$]{x : A \vdash x[M_1 + M_2 / x] = M_1 + M_2 : A \quad x : A \vdash x[M_1 + M_2 / x] = M_1 + M_2 : A}{x : A \vdash (x + x)[M_1 + M_2 / x] = (M_1 + M_2) + (M_1 + M_2) \equiv M_1 + M_2 + M_1 + M_2 : A}}{x : A \vdash (f(x) + f(x))[M_1 + M_2 / x] = f(M_1 + M_2) + f(M_1 + M_2) \equiv f(M_1) + f(M_2) + f(M_1) + f(M_2) : B}
+\]
+\[
+  \inferrule*[right=$+I$]{\inferrule*[right=$fI$]{f \in \mathcal{G}(A;B) \quad x : A \vdash x[M_1 + M_2 / x] = M_1 + M_2 : A}{x : A \vdash f(x)[M_1 + M_2 / x] = f(M_1) + f(M_2)} \quad \inferrule*[right=$fI$]{f \in \mathcal{G}(A;B) \quad x : A \vdash x[M_1 + M_2 / x] = M_1 + M_2 : A}{x : A \vdash f(x)[M_1 + M_2 / x] = f(M_1) + f(M_2)}}{x : A \vdash (f(x) + f(x))[M_1 + M_2 / x] = f(M_1) + f(M_2) + f(M_1) + f(M_2) : B}
+\]
+\begin{lemma}[Substitution is associative and interchanging]
+  We have the following properties for the substitution.
+  \begin{enumerate}[label=(\alph*)]
+    \item\label{subst_prop:a} $(N_1 + \ldots + N_n)[M_1 + \ldots + M_m / x] = \sum_{i=1}^{n}\sum_{j=1}^{m}N_i[M_j / x]$ (shown above)
+    \item\label{subst_prop:b} If $\Gamma \vdash N : B$ and $\Delta, y : B, \Delta' \vdash M : A$ and $\Psi, x : A, \Psi' \vdash P : C$, then
+      \[
+      (P[M/x])[N/y] = P[M[N/y]/x]
+      \]
+    \item\label{subst_prop:c} If $\Gamma \vdash M : A$ and $\Delta \vdash N : B$ and $\Psi, x : A, \Psi', y : B, \Psi'' \vdash P : C$, then
+      \[
+      (P[M/x][N/y]) = P[N/y][M/x]
+      \]
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \leavevmode\\
+  We will first prove~\autoref{subst_prop:b}.
+  \begin{itemize}
+    \item Suppose $P \Coloneqq x : A \vdash x : A$, then the result of $P[M/x] = M$ and therefore $(P[M/x])[N / y] = P[M[N/y]/x] = M[N/y]$
+    \item Suppose 
+    \begin{gather*}
+      P \Coloneqq \inferrule[]{
+        f \in \mathcal{G}(A_1, \ldots, A_n;C) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n}M_{nj} : A_n
+        }{
+          \Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots,M_{nk_{n}}): C
+        }
+    \end{gather*}
+    then 
+    \[
+    \Psi, \Delta, y : B, \Delta', \Psi' \vdash P[M/x] = \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots, M_{ik_i}[M/x] ,\ldots,M_{nk_{n}})
+    \]
+    and then 
+    \[
+    \Psi,\Delta,\Gamma,\Delta',\Psi' \vdash (P[M/x])[N/y] = \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots, (M_{ik_i}[M/x])[N/y] ,\ldots,M_{nk_{n}})
+    \]
+    by IH we have that
+    \[
+      (M_{i,k_i}[M/x])[N/y] = M_{i,k_i}[M[N/y]/x]
+    \]
+    and
+    \[
+      \Psi,\Delta,\Gamma,\Delta',\Psi' \vdash (P[M[N/y]/x]) = \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots, (M_{ik_i}[M[N/y] / x]) ,\ldots,M_{nk_{n}})
+    \]
+    \item Suppose 
+    \begin{gather*}
+    P \Coloneqq \inferrule[]{\Gamma \vdash \sum_{i=1}^{i_1}P_{1i} : C \ldots \Gamma \vdash \sum_{i=1}^{i_n}P_{ni} : C}{\Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij} : C}
+    \end{gather*}
+    and $\Gamma \Coloneqq \Psi, x : A, \Psi'$.
+    We have that 
+    \[
+    (P[M/x])[N/y] = \sum_{i=1}^{n}\sum_{j=1}^{j_i}(P_{ij}[M/x])[N/y]
+    \] 
+    and by IH we have that $(P_{ij}[M/x])[N/y] = P_{ij}[M[N/y]/x]$ and
+    \[
+      (P[M/x])[N/y] = \sum_{i=1}^{n}\sum_{j=1}^{j_i}(P_{ij}[M[N/y]/x]) = P[M[N/y]/x]
+    \]
+    \item The other cases are analogous
+  \end{itemize}
+  Now for the~\autoref{subst_prop:c}.
+  \begin{itemize}
+    \item Suppose
+      \begin{gather*}
+        P \Coloneqq \inferrule[]{
+          f \in \mathcal{G}(A_1, \ldots, A_n;C) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} P_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n}P_{nj} : A_n
+          }{
+            \Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(P_{1k_1},\ldots,P_{nk_{n}}): C
+          }
+      \end{gather*}
+      It must be that $x : A$ appears in $\Gamma_w$ and $y : B$ appears in $\Gamma_u$. If $w = u$ we simply apply IH to $\Gamma_w \vdash \sum_{j=1}^{i_w}P_{wj}$.
+      Otherwise, we have
+      \begin{align*}
+      P[M/x][N/y] &= \Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(P_{1k_1},\ldots, P_{wk_w}[M/x],\ldots, P_{uk_{w}}[N/y] ,\ldots,P_{nk_{n}}): C\\
+                  &= P[N/y][M/x]
+      \end{align*}
+    \item Suppose
+    \begin{gather*}
+      P \Coloneqq \inferrule[]{\Gamma \vdash \sum_{i=1}^{i_1}P_{1i} : C \ldots \Gamma \vdash \sum_{i=1}^{i_n}P_{ni} : C}{\Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij} : C}
+    \end{gather*}
+    and we have that 
+    \begin{gather*}
+      P[M/x][N/y] \Coloneqq \inferrule[]{\Gamma \vdash \sum_{i=1}^{i_1}P_{1i}[M/x][N/y] : C \ldots \Gamma \vdash \sum_{i=1}^{i_n}P_{ni}[M/x][N/y] : C}{\Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij}[M/x][N/y] : C}
+    \end{gather*}
+    and by IH we have that $P_{ji}[M/x][N/y] = P_{ji}[N/y][M/x]$ and 
+    \[
+      \Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij}[M/x][N/y] = \Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij}[N/y][M/x]
+    \] 
+    \item The rest are analogous.
+  \end{itemize}
 \end{proof}
 
-\begin{lemma}[Substitution is associative and interchanging]
-  TODO
-\end{lemma}
+% $M_1 + M_2 $ $N$
+% ------------------------
+% $\{M_1, N\} + \{M_2, N\}$
+% -------------------------
+% $\{M_1,N\}$, $\{M_2,N\}$
+% -----------------------
+% $\{M_1,N\} + \{M_2,N\}$
+
+\textcolor{red}{TODO: The same issue with non-unique derivations also occurs in linear logic where such rules are said to commute.
+While this does not pose any problems to substitution, we would need to make sure that in the proof of initiality theorem the equivalence between derivations is respected.
+Prove that substitution respects $\equiv$ (This is because substitution does not alter the order of derivation rules).
+}
 
 \begin{example}
   Recall the raw morphism representation for our e-graph example
@@ -1072,7 +1310,7 @@ the rest substitution rules are as in \autoref{fig:sub-def}.
   \[
   \tikzfig{./figures/e-graph-example-string}
   \]
-  We can linerise it as
+  We can linearise it as
   \begin{minted}{haskell}
     let (x_1, x_2, x_3) = (a, 2, 1) in
       let y_1 = {(x_1 * x_2), (x_1 << x_3)} in
