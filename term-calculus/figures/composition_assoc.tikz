@@ -1,0 +1,41 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=vertex, label={above:$C_1$}] (0) at (-1.5, 5.5) {};
+		\node [style=vertex, label={above:$C_k$}] (1) at (-1.5, -2.5) {};
+		\node [style=none] (2) at (-1.5, -0.5) {$\vdots$};
+		\node [style=vertex, label={above:$D$}] (3) at (2.5, 1.5) {};
+		\node [style=none] (4) at (-1, 5.25) {};
+		\node [style=none] (5) at (2, 1.75) {};
+		\node [style=none] (6) at (-0.75, -2.5) {};
+		\node [style=none] (7) at (2, 1) {};
+		\node [style=none] (8) at (1.25, 4) {$h$};
+		\node [style=vertex, label={above:$B_1$}] (9) at (-9.5, 5.5) {};
+		\node [style=vertex, label={above:$B_m$}] (10) at (-9.5, -2.5) {};
+		\node [style=none] (11) at (-9.5, 3.5) {$\vdots$};
+		\node [style=vertex, label={above:$C_i$}] (12) at (-1.5, 1.5) {};
+		\node [style=none] (13) at (-8.5, 5.5) {};
+		\node [style=none] (14) at (-2, 2) {};
+		\node [style=none] (15) at (-8.5, -2.5) {};
+		\node [style=none] (16) at (-2, 1.25) {};
+		\node [style=none] (17) at (-4.25, 4.25) {$g$};
+		\node [style=none] (18) at (-1.5, 3.5) {$\vdots$};
+		\node [style=vertex, label={above:$A_1$}] (19) at (-17.5, 3.5) {};
+		\node [style=vertex, label={above:$A_k$}] (20) at (-17.5, -0.5) {};
+		\node [style=none] (21) at (-17.5, 1.5) {$\vdots$};
+		\node [style=vertex, label={above:$B_j$}] (22) at (-9.5, 1.5) {};
+		\node [style=none] (23) at (-16.5, 3.5) {};
+		\node [style=none] (24) at (-10, 2) {};
+		\node [style=none] (25) at (-16.5, -0.5) {};
+		\node [style=none] (26) at (-10, 1.25) {};
+		\node [style=none] (27) at (-13.5, 3.5) {$f$};
+		\node [style=none] (28) at (-9.5, -0.5) {$\vdots$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new edge style 1] (4.center) to (5.center);
+		\draw [style=new edge style 1] (6.center) to (7.center);
+		\draw [style=new edge style 1] (13.center) to (14.center);
+		\draw [style=new edge style 1] (15.center) to (16.center);
+		\draw [style=new edge style 1] (23.center) to (24.center);
+		\draw [style=new edge style 1] (25.center) to (26.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

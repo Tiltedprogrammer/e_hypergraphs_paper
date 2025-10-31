@@ -658,6 +658,16 @@ that satisfy the following properties
   \]
 \end{itemize}
 
+Pictorially these properties can be displayed as
+\[
+\tikzfig{./figures/composition_assoc}
+\]
+
+and therefore we have that $1 \leq i \leq k$ and $1 \leq j \leq k + m$.
+Suppose, $j < i$ in which case we insert $f$ into $h$ avoiding $g$ and get $(h \circ_j f) \circ_{i + k - 1} g$.
+If $i \leq j \leq i + m$, we have the same diagram just with different parentheses $h \circ_i (g \circ_{j - i + 1} f)$.
+Similarly, we have that when $j \geq i + m$ then $(h \circ_{j - m + 1} f) \circ_{i} g$.
+When we phrase the composition in terms of a substitution, these become the associativity and the interchange properties.
 \begin{definition}
 
 A tensor product in $\mathcal{M}$ is an object $\bigotimes_{i}A_{i}$ together with a morphism $\chi \in \mathcal{M}(A_1,\ldots,A_n; \bigotimes_{i}A_{i})$ such that all $(- \circ_{i} \chi_{i})$ are bijections.
@@ -667,7 +677,7 @@ A tensor product in $\mathcal{M}$ is an object $\bigotimes_{i}A_{i}$ together wi
 A unit $\mathbf{1}$ is given by a nullary tensor product.
 \end{definition}
 
-We call a multicategory representable if it is equipped with a chosed unit object and for every pair of objects with their tensor.
+We call a multicategory representable if it is equipped with a chosen unit object and for every pair of objects with their tensor.
 
 Here are some extensions with additional structures
 
@@ -1289,6 +1299,35 @@ The ambiguity technically means that we can not recursively define the action of
 While this does not pose any problems to substitution, we would need to make sure that in the proof of initiality theorem the equivalence between derivations is respected.
 Prove that substitution respects $\equiv$ (This is because substitution does not alter the order of derivation rules).
 }
+
+\begin{theorem}
+There is an equivalence $\catname{RepMCat} \simeq \catname{MonCat}$.
+\textcolor{red}{Can I define \textit{semilattice-enriched} $\catname{RepMCat}$ and restate the theorem above?}
+\end{theorem}  
+\begin{remark}
+  We will eventually need to show that the type theory above defines a suitable multicategory and that this multicategory is representable (and therefore is equivalent to some monoidal category).
+  The latter follows by the following argument. 
+  We have a unit given by $\star$ and for each pair of objects we have their tensor product given by $\{-,-\}$.
+  For the latter to be a tensor we need to make sure that we have a morphism $\chi : (A_1, \ldots, A_n) \to \otimes_i A_i$.
+  It is given by the following derivation
+  \[
+  \inferrule*[right=$\chi$]{x_1 : A_1 \vdash x_1 : A_1 \ldots x_n : A_n \vdash x_n : A_n}{x_1 : A_1, \ldots, x_n : A_n \vdash \{x_1,\ldots,x_n\} : A_1 \otimes \ldots \otimes A_n}
+  \]
+  We need to show that
+  \[
+  \mathcal{M}(B_1,\ldots,B_k, \otimes_i A_i, C_1, \ldots, C_m; D) \xrightarrow{\sim} \mathcal{M}(B_1, \ldots, B_k,A_1, \ldots, A_n,C_1,\ldots, C_m ; D)
+  \]
+  Suppose we have a morphism from the left-hand side that is given by the derivation
+  \[
+  \inferrule*[right=$f$]{\ldots}{B_1, \ldots, B_k, z : \otimes_i A_i, C_1, \ldots, C_m} \vdash D
+  \]
+  and we do $f[\chi / z] : B_1, \ldots, B_k, A_1, \ldots, A_n, C_1, \ldots, C_m \vdash D$.
+  In the other direction we do
+  \[
+  \inferrule*[]{\ldots}{B_1,\ldots,B_k, \otimes_i A_i, C_1, \ldots, C_m \vdash \text{match}(z, x_1\;\ldots\;x_n . D(x_1, \ldots, x_n))}
+  \]
+  These are inverses by $\beta/\eta$ laws.
+\end{remark}
 
 \begin{example}
   Recall the raw morphism representation for our e-graph example
