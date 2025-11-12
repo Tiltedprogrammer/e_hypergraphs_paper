@@ -215,6 +215,69 @@ This e-graph contains an infinite family of terms: $(\lambda\; x\; .\; f\;x)\; y
 To fully support this, we need a trace.
 An example could be seen in Figure~\ref{fig:f_x_y_string_traced}.
 
+\subsection{Shape}
+
+A \textit{shape} is a pair $(e, \sigma)$ where $e$ is an e-node and $\sigma$ is a slot map for this particular e-node.
+The e-node $e$ can be thought of a canonicalized version of the e-node $\sigma(e)$ (i.e. slot map applied to $e$). The \textit{hashcons} data structure maps such canonicalized e-nodes to e-class ids.
+This is how non-duplication is maintained.
+Below is the code for computing the shape.
+In plain words, it takes an e-node $c$ and replaces all the slots in $c$ with canonical numerical slots $\$1, \$2$ etc..
+For example, given an e-node \mintinline{rust}{Var(Slot::named("x"))} (a code for $\texttt{var \$x}$ e-node), the canonicalized version will be $\texttt{var \$1}$ (or, \mintinline{rust}{Var(Slot::numeric(1))}).
+Now, to give a more complex example, suppose we were to add $\lambda x . x$ and $\lambda y . y$ expressions to a slotted e-graph.
+In code this would be 
+\begin{minted}{rust}
+  Lambda::Lam(Bind { 
+    slot: Slot::named("x"),
+    elem: AppliedId { id: Id(0), m: {"f0" -> "x"}}
+  })
+\end{minted}
+
+Where \mintinline{rust}{AppliedId { id: Id(0), m: {"f0" -> "x"}}} is the e-class id for the variable $x$ inside $\lambda x . x$.
+We get the same e-node for the $\lambda y . y$ with "x" replaced by "y".
+The slots of this e-node are the two occurrences of slot $x$ (one for the binder and another one from the values of the \mintinline{rust}{AppliedId}).
+Therefore, the first component of the shape will be
+
+\begin{minted}{rust}
+  Lambda::Lam(Bind { 
+    slot: Slot::numeric(1),
+    elem: AppliedId { id: Id(0), m: {"f0" -> 1}}
+  })
+\end{minted}
+
+and we get the same shape for $\lambda y . y$.
+
+
+\begin{listing}
+  \begin{minted}[linenos, fontsize=\small, breaklines]{rust}
+    fn weak_shape(&self) -> (Self, Bijection) {
+      let mut c = self.clone();
+      let mut m = SlotMap::new();
+      let mut i = 0;
+
+      for x in c.all_slot_occurrences_mut() {
+          let x_val = *x;
+          if !m.contains_key(x_val) {
+              let new_slot = Slot::numeric(i);
+              i += 1;
+
+              m.insert(x_val, new_slot);
+          }
+
+          *x = m[x_val];
+      }
+
+      let m = m.inverse();
+
+      let public = c.slots();
+      let m: SlotMap = m.iter().filter(|(x, _)| public.contains(x)).collect();
+
+      (c, m)
+  }
+  \end{minted}
+\end{listing}
+  
+
+
 
 \begin{figure}
   \includegraphics[width=0.5\linewidth]{figures/slotted_a_b_c_d_string_1_2}

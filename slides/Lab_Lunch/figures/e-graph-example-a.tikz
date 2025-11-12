@@ -1,0 +1,60 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=round box] (0) at (-1, 5.25) {$*$};
+		\node [style=none] (1) at (-2, 6.25) {};
+		\node [style=none] (2) at (0, 6.25) {};
+		\node [style=none] (3) at (0, 4.25) {};
+		\node [style=none] (4) at (-2, 4.25) {};
+		\node [style=round box] (5) at (-1, 8.25) {$/$};
+		\node [style=none] (6) at (-2, 9.25) {};
+		\node [style=none] (7) at (0, 9.25) {};
+		\node [style=none] (8) at (0, 7.25) {};
+		\node [style=none] (9) at (-2, 7.25) {};
+		\node [style=round box] (10) at (-2.5, 2.25) {$a$};
+		\node [style=none] (11) at (-3.5, 3.25) {};
+		\node [style=none] (12) at (-1.5, 3.25) {};
+		\node [style=none] (13) at (-1.5, 1.25) {};
+		\node [style=none] (14) at (-3.5, 1.25) {};
+		\node [style=round box] (15) at (0.5, 2.25) {$2$};
+		\node [style=none] (16) at (-0.5, 3.25) {};
+		\node [style=none] (17) at (1.5, 3.25) {};
+		\node [style=none] (18) at (1.5, 1.25) {};
+		\node [style=none] (19) at (-0.5, 1.25) {};
+		\node [style=none] (20) at (-1.25, 7.75) {};
+		\node [style=none] (21) at (-0.75, 7.75) {};
+		\node [style=none] (22) at (0, 3.25) {};
+		\node [style=none] (23) at (-0.75, 7.25) {};
+		\node [style=none] (24) at (-1.25, 6.25) {};
+		\node [style=none] (25) at (-1.25, 4.75) {};
+		\node [style=none] (26) at (-0.75, 4.75) {};
+		\node [style=none] (27) at (-2.25, 3.25) {};
+		\node [style=none] (28) at (0.5, 6.25) {};
+		\node [style=none] (29) at (0.5, 3.25) {};
+		\node [style=none] (30) at (-1, 11.25) {$(a*2)/2$};
+		\node [style=none] (31) at (-1, 10.25) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=black dash] (1.center) to (2.center);
+		\draw [style=black dash] (2.center) to (3.center);
+		\draw [style=black dash] (3.center) to (4.center);
+		\draw [style=black dash] (4.center) to (1.center);
+		\draw [style=black dash] (6.center) to (7.center);
+		\draw [style=black dash] (7.center) to (8.center);
+		\draw [style=black dash] (8.center) to (9.center);
+		\draw [style=black dash] (9.center) to (6.center);
+		\draw [style=black dash] (11.center) to (12.center);
+		\draw [style=black dash] (12.center) to (13.center);
+		\draw [style=black dash] (13.center) to (14.center);
+		\draw [style=black dash] (14.center) to (11.center);
+		\draw [style=black dash] (16.center) to (17.center);
+		\draw [style=black dash] (17.center) to (18.center);
+		\draw [style=black dash] (18.center) to (19.center);
+		\draw [style=black dash] (19.center) to (16.center);
+		\draw [style=new edge style 1] (20.center) to (24.center);
+		\draw [style=new edge style 1] (25.center) to (27.center);
+		\draw [style=new edge style 1] (26.center) to (22.center);
+		\draw (21.center) to (23.center);
+		\draw [in=90, out=-90, looseness=0.75] (23.center) to (28.center);
+		\draw [style=new edge style 1] (28.center) to (29.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

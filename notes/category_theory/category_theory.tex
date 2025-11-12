@@ -1,0 +1,383 @@
+%%
+%% This is file `sample-sigconf.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% samples.dtx  (with options: `sigconf')
+%%
+%% IMPORTANT NOTICE:
+%%
+%% For the copyright see the source file.
+%%
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from sample-sigconf.tex.
+%%
+%% For distribution of the original source see the terms
+%% for copying and modification in the file samples.dtx.
+%%
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%%
+%% Commands for TeXCount
+%TC:macro \cite [option:text,text]
+%TC:macro \citep [option:text,text]
+%TC:macro \citet [option:text,text]
+%TC:envir table 0 1
+%TC:envir table* 0 1
+%TC:envir tabular [ignore] word
+%TC:envir displaymath 0 word
+%TC:envir math 0 word
+%TC:envir comment 0 0
+%%
+%%
+%% The first command in your LaTeX source must be the \documentclass
+%% command.
+%%
+%% For submission and review of your manuscript please change the
+%% command to \documentclass[manuscript, screen, review]{acmart}.
+%%
+%% When submitting camera ready or to TAPS, please change the command
+%% to \documentclass[sigconf]{acmart} or whichever template is required
+%% for your publication.
+%%
+
+\documentclass[acmsmall,screen, nonacm, anonymous]{acmart}
+
+
+\newcommand*{\ONECOLUMN}{}
+
+\input{../../preamble}
+\input{../../macros}
+\input{../../sample.tikzstyles}
+\input{../../hypergraph.tikzstyles}
+\input{../../hypergraph.tikzdefs}
+
+
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
+\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+% These are for comments
+\newcommand\question[1]{{\color{azure}#1}}
+\newcommand\update[1]{{\color{americanrose}#1}}
+
+
+\usepackage{minted}
+\usepackage{csquotes}
+
+% type derivations
+\usepackage{mathpartir}
+
+
+\makeatletter
+\newsavebox{\@brx}
+\newcommand{\llangle}[1][]{\savebox{\@brx}{\(\m@th{#1\langle}\)}%
+  \mathopen{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\newcommand{\rrangle}[1][]{\savebox{\@brx}{\(\m@th{#1\rangle}\)}%
+  \mathclose{\copy\@brx\kern-0.5\wd\@brx\usebox{\@brx}}}
+\makeatother
+
+
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+
+\settopmatter{printacmref=false}
+\authorsaddresses{}
+
+\begin{document}
+
+\title{Notes on category theory}
+
+\author{Anonymous}
+
+
+\maketitle
+
+\section{Yoneda Lemma}
+
+The lemma~\cite{maclane} sometimes pops up in various proofs of category theory statements.
+
+\begin{remark}
+
+The following notation can be used for a set of natural transformations between two functors
+\[
+F,G : \mathbf{C} \to \mathbf{D}
+\]
+
+\[
+\alpha : \Pi_{A : |\mathbf{C}|} \mathbf{D}(FA,GA)
+\]
+or,
+\[
+\int_{A : \catname{C}} \catname{D}(FA,GA)
+\]
+
+\end{remark}
+
+\begin{lemma}[Yoneda]
+
+Let $F : \catname{C}^{\text{op}} \to \catname{Set}$ be a contravariant functor to $\catname{Set}$ (i.e. a \textit{presheaf}).
+Recalling that $\catname{C}(-, A)$ is a contravariant functor:
+\begin{itemize}
+\item $\catname{C}(-,A)B = \catname{C}(A,B)$
+\item $\catname{C}(-,A)f : \catname{C}(D,A) \to \catname{C}(C,A) = g \circ f$ for $f : \catname{C}(C,D)$ and $g : \catname{C}(D,A)$
+\end{itemize}
+
+We can define a functor $Y : \catname{C} \to \catname{PShC}$ by letting
+\begin{itemize}
+\item $YA \coloneq \catname{C}(-,A)$
+\item $Yf : \catname{C}(-,A) \to \catname{C}(-,B) \coloneq \int_{X : \catname{C}}\catname{C}(X,A) \to \catname{C}(X,B)$ for $f : \catname{C}(A,B)$, $(Yf)_{X}g = f \circ g$
+\end{itemize}
+
+Then we have for every contravariant functor $F : \catname{C}^{\text{op}} \to \catname{Set}$
+\[
+\int_{Y : \catname{C}}(YX)Y \to FY \cong FX
+\]
+or,
+\[
+\int_{Y : \catname{C}}\catname{C}(Y,X) \to FY \cong FX
+\]
+\end{lemma}
+
+\begin{proof}
+
+First let's define 
+\[
+\psi_{X} : (\int_{Y : \catname{C}}\catname{C}(Y,X) \to FY\;) \to FX
+\]
+
+as
+\[
+\psi_{X} \alpha \coloneq \alpha_{X} \circ id_{X}\;,
+\]
+i.e. each natural transformation $\alpha$ is mapped to $\alpha_X \circ id_{X}$ (into its component in $X$ applied to $id_{X}$)
+
+and then
+\[
+\phi_{X} : FX \to (\int_{Y : \catname{C}}\catname{C}(Y,X) \to FY \;)
+\]
+as
+\[
+\phi_{X}\; x \coloneq \lambda f : Y \to X . (Ff x)\;.
+\]
+Let's check if these are the inverses of each other.
+\begin{align*}
+(\phi_{X};\psi_{X}) x &= \psi_{X}(\phi_{X} x)\\ 
+ &= (F\;id_{X}) x\\
+ &= id_{F_{X}} x\\
+ &= x
+\end{align*}
+
+\begin{align*}
+ (\psi_{X};\phi_{X}) \alpha &= \lambda f . (Ff) (\alpha_{X} \circ id_{X})\\
+  &\overset{\text{naturality of } \alpha}{=} \lambda f . \alpha_{Y} \circ (\catname{C}(f,X) \circ id_{X})\\
+  &= \lambda f . \alpha_{Y} \circ (id_{X} \circ f)\\
+  &= \lambda f . \alpha_{Y} \circ f\\
+  &= \alpha
+\end{align*}
+\end{proof}
+
+\begin{corollary}
+    The functor $Y : \catname{C} \to \catname{PShC}$ is full and faithful.
+\end{corollary}
+\begin{proof}
+
+Using the lemma by plugging $Y$:
+\[
+\int_{Z : |\catname{C}|} \catname{C}(Z,X) \to YAZ \cong YAX
+\]
+or
+\[
+    \int_{Z : |\catname{C}|} \catname{C}(Z,X) \to \catname{C}(Z,A) \cong \catname{C}(X,A)
+\]
+We can note that the left-hand side is the action of $Y$ on morphisms of $\catname{C}$.
+\end{proof}
+
+To show that $f : \catname{C}(A,B)$ is an isomorphism we can check if $YA \cong YB$, \textit{i.e.}, if $\catname{C}(-,A) \cong \catname{C}(-,B)$ in a sense $\int_{X : |\catname{C}|} \catname{C}(X,A) \cong \catname{C}(X,B)$.
+
+\begin{remark}
+    The above is the contravariant version of the lemma.
+\end{remark}
+
+Recall the free-forgetful adjunction between $\catname{Mon}$ and $\catname{Set}$ where the free functor $F$ maps a set $X$ to a monoid $FX$ consisting of strings $x_1,x_2,\ldots,x_n$ and the monoidal multiplication is given by string concatenation.
+Functor $U$ is then maps any given monoid $M$ to the set of its underlying elements $UM$.
+We then have that for every set-morphism $X \to UM$ there is a unique monoid-morphism $FX \to M$.
+\[
+\catname{Mon}(FX, M) \cong \catname{Set}(X, UM)
+\]
+For example, let's take a monoid of natural numbers $\mathbb{N}$ and a set $X = \{a,b,c\}$.
+We can define a function $f : \{a,b,c\} \to \mathbb{N}$ by $\{a \mapsto 1, b \mapsto 2, c \mapsto 3 \}$.
+A free monoid over $\{a,b,c\}$ is $FX = \{\varepsilon,a,b,c,aa,bb,cc,\ldots\}$.
+This induces a function $g : FX \to M$ by defining its action on generators $\{a \mapsto 1, b \mapsto 2, c \mapsto 3, \varepsilon \mapsto \varepsilon\}$ and then $g(aa) = g(a)\cdot g(a)$ and so on.
+
+We can analogously define a similar adjunction between $\catname{Cat}$ and $\catname{Graph}$ (a directed graph is given by a set of vertices and edges such that for every edge we have a source and a target vertex).
+Every category $\catname{C}$ defines a graph $U\catname{C}$ with the same objects and arrows forgetting which are composites and which are identities.
+Let an $O$-graph be a graph over a set of vertices $O$.
+A morphism of two $O$-graphs is a function that is identity on vertices.
+Any $O$-graph can be used to generate a category $C$ on the same set of objects where the morphisms are all `strings' of composable arrows of the graph.
+
+\begin{theorem}
+
+Given a small graph $G = \{A \rightrightarrows O\}$.
+There is a small category $\catname{C}$ with objects $O$ and a morphism $P : G \to U\catname{C}$ of graphs with the following property.
+Given a category $\catname{B}$  and any morphism $D : G \to U\catname{B}$ there is a unique functor $D' : \catname{C} \to \catname{B}$ with $(U D') \circ P = D$.
+In that sense $P$ is `universal' among the morphisms $G \to U\catname{C}$.
+\end{theorem}
+\begin{proof}
+
+Let the objects of $\catname{C}$ be the ones of $\catname{G}$ and the arrows be the finite paths $a_1 \xrightarrow{f_1} a_2 \xrightarrow{} \ldots \xrightarrow{f_{n-1}} a_{n}$.
+The desired morphism $P : G \to U\catname{C}$ is identity on objects and sends an arrow $a_1 \xrightarrow{f_{1}} a_2$ of $G$ to $\langle a_1, f_1, a_{2} \rangle$ of $U\catname{C}$.
+That is, $\catname{C}$ is a free category over $G$.
+Now, consider any other morphism $D : G \to U\catname{B}$ for a category $\catname{B}$, such that there is a functor $D' : \catname{C} \to \catname{B}$.
+If $(UD') \circ P = D$, then $D_{O}(G) = D'_{O}(C)$ and $D'\langle a_{1}, f_{1}, a_{2} \rangle = Df_{1}$. 
+\end{proof}
+\begin{example}
+    \item When a graph $G$ is given by a single vertex $a$ and a single arrow $a \xrightarrow{f} a$, the morphisms of $FG = \catname{C}$ are $1, f, f^2, \ldots$ (i.e. $\langle a \rangle, \langle a , f, a \rangle, \langle a f a f a \rangle, \ldots$)
+\end{example}
+
+\begin{definition}
+
+If $S : \catname{D} \to \catname{C}$ is a functor and $c$ is an object of $\catname{C}$, a \textit{universal} arrow from $c$ to $S$ is a pair $\langle r, u \rangle$ consisting of an object $r$ of $\catname{D}$ and an arrow $u : c \to Sr$ of $\catname{C}$ such that to every pair $\langle d, f \rangle$ with $d$ an object of $\catname{D}$ and $f : c \to Sd$ there is a unique arrow $f' : r \to d$ such that $Sf' \circ u = f$.
+That is, every arrow $f'$ is factorized uniquely through $u$.
+\end{definition}
+\begin{example}
+
+Take $U : \catname{Cat} \to \catname{Graph}$ and let $c$ be an object of $\catname{Graph}$.
+The universal morphism is then $\langle r, u \rangle$ where $r = Fc$ and $u : c \to U(Fc)$.
+Then, given any other $\langle d, f \rangle$, where $f : c \to Ud$, we have that there exists $j : Fc \to d$ such that $f = u \circ Uj$
+\end{example}
+
+\begin{definition}[$T$-algebra]
+
+Given a monad $\langle T : X \to X, \eta : I \to T, \mu : T \circ T \to T \rangle$, a $T$-algebra is given by a pair $\langle x, h \rangle$ where $h : Tx \to x$ and $x \in X$, such that
+\[
+    \begin{tikzcd}
+        T^2x \arrow[r, "Th"] \arrow[d, "\mu_{x}"'] & Tx \arrow[d, "h"] & x \arrow[r, "\eta_{x}"] \arrow[rd, no head, Rightarrow] & Tx \arrow[d, "h"] \\
+        Tx \arrow[r, "h"]                          & x                 &                                                         & x                
+    \end{tikzcd}
+\]
+A morphism between two $T$-algebras $\langle x , h \rangle$ and $\langle y, h' \rangle$ is given by a morphism $f : x \to y$ such that $h' \circ Tf = f \circ h$.
+\end{definition}
+
+\begin{theorem}[Every monad is defined by its $T$-algebra]
+If $\langle T, \mu, \eta \rangle$ is a monad on $X$, then the set of $T$-algebras and their morphisms forms a category $X^T$ and there is an adjunction
+\[
+\langle F^T, G^T, \eta^{T}, \varepsilon^{T} \rangle : X \to X^{T}
+\], where the functors are given by
+\[
+    \begin{tikzcd}
+        {\langle x, h \rangle} \arrow[r, "{G^{T}\langle x, h \rangle}"] \arrow[d, "f"] & x \arrow[d, "G^{T}f"] & x \arrow[r, "F^{T}x"] \arrow[d, "f"'] & {\langle Tx, \mu_{x} \rangle} \arrow[d, "F^{T}f"] \\
+        {\langle y, h' \rangle} \arrow[r, "{G^{T}\langle y, h \rangle}"]               & y                     & y \arrow[r, "F^{T}y"]                 & {\langle Ty, \mu_{y} \rangle}                   
+    \end{tikzcd}
+\]
+and $\eta^{T} = \eta : I \to G^{T} \circ F^{T}$ and $\varepsilon^{T}\langle x, h \rangle = h$.
+Recall the typing $\varepsilon : F^{T} \circ G^{T} \to I$, or, component-wise $\varepsilon \;\langle F^T \circ G^T \rangle \langle x,h \rangle = \langle x,h \rangle$, $\varepsilon \;\langle Tx, \mu_{x}\rangle = \langle x,h \rangle$.
+That is, the co-unit is the morphism between $T$-algebras $\langle Tx, \mu_{x} \rangle$ and $\langle x, h \rangle$.
+That is, this is just the morphism between the carriers $Tx \to x$, i.e. $h$.
+The monad defined by this adjunction is the given monad $T$.
+First, let's check if the triangle equations hold
+\[
+    \begin{tikzcd}
+        F \arrow[r, "F\eta"] \arrow[rd, no head, Rightarrow] & F \circ G \circ F \arrow[d, "\varepsilon_{F}"] &  & G \arrow[r, "\eta_{G}"] \arrow[rd, no head, Rightarrow] & G \circ F \circ G \arrow[d, "G\varepsilon"] \\
+                                                             & F                                              &  &                                                         & G                                          
+    \end{tikzcd}
+\]
+We get
+\[
+\begin{tikzcd}
+        {Fx = \langle Tx, \mu_{x} \rangle} \arrow[rr, "F\eta"] \arrow[rd, no head, Rightarrow] &                               & {F(Tx) = \langle TTx, \mu_{Tx} \rangle} \arrow[ld, "\varepsilon_{F}"] &  & {G\langle x, h \rangle = x} \arrow[r, "\eta_{G}"] \arrow[rd, no head, Rightarrow] & Tx \arrow[d, "G_{\varepsilon}"] \\
+                                                                                               & {\langle Tx, \mu_{x} \rangle} &                                                                       &  &                                                                                   & x                              
+\end{tikzcd}
+\]
+The right-most arrow of the right-hand diagram is given by $\varepsilon_{\langle x, h \rangle} = h : Tx \to x$, i.e. the morphism $\langle Tx, \mu_{x} \rangle \to \langle x, h \rangle$ and $G\varepsilon : Tx \to x$.
+The endofunctor $(G^{T} \circ F^{T})x = G^{T}(\langle Tx, \mu_{x} \rangle) = Tx$ defines the original monad $T$.
+The unit of the monad is $\eta$ and the join $\mu\;x : TTx \to Tx$ is given by $G^{T}\varepsilon F^{T}\;x = G^{T}\varepsilon(\langle Tx, \mu_{x}\rangle) = G^{T}\mu_{x} = \mu_{x}$ ($G^{T}$ just `lifts' $\mu_{x}$ from homomorphism of $T$-algebras to a plain morphism in $X$).
+\end{theorem}
+
+\begin{theorem}[Comparison of adjunctions with algebras]
+
+Given an adjunction $X \to A$, $\langle F, G, \eta, \epsilon \rangle$ and a monad on $X$ given by $\langle G \circ F, \eta, G\varepsilon F \rangle$.
+Then there is a unique functor $K : A \to X^{T}$ such that $G^{T}K = G$ and $KF = F^{T}$, that is the following diagram commutes
+\[
+\begin{tikzcd}
+        A \arrow[r, "K", dashed] \arrow[d, "G", shift left=2] & X^{T} \arrow[d, "G^{T}", shift left] \\
+        X \arrow[u, "F"] \arrow[r, no head, Rightarrow]       & X \arrow[u, "F^{T}", shift left]    
+\end{tikzcd}
+\]
+\end{theorem}
+\begin{proof}
+ The co-unit of the adjunction gives us the morphism $G\varepsilon_{a} : GFGa \to Ga$ and the arrow may be considered as the evaluation map of the corresponding $T$-algebra $\langle Ga, G\varepsilon_{a} \rangle$.
+ This is a valid $T$-algebra by checking that the necessary diagrams commute.
+ We define $Ka = \langle Ga, G\varepsilon_{a} \rangle$ and $Kf : \langle Ga, G\varepsilon_{a} \rangle \to \langle Gb, G\varepsilon_{b} \rangle$.
+ Now we can check, \textit{e.g.}, that $KF = F^{T}$, $KFa = \langle GFa, G\varepsilon_{Fa} \rangle$, $F^{T}a = \langle GFa, \mu_{a}\rangle$. Recalling that $\mu_{a} = G\varepsilon_{Fa}$ we get the equality.
+\end{proof}
+
+\begin{definition}
+
+When the functor $K$ is an isomorphism, we say that $G$ is \textit{monadic}.
+\end{definition}
+
+\begin{example}
+
+Consider a free-forgetful adjunction $\langle F,G,\eta,\varepsilon \rangle : \catname{Set} \to \catname{SmGrp}$.
+$FX$ is defined by turning a set $X$ into a free semigroup, i.e. $x \mapsto \langle x \rangle$ where the multiplication is given by words juxtaposition.
+The forgetful functor simply forgets the multiplication and maps $\langle x \rangle \mapsto x$.
+$\eta : X \to GFX$ sends each $x$ to one-letter word $x$.
+The co-unit $\varepsilon : FGS \to S$, the composite $G\varepsilon \circ \eta_{G}(S) : GS \to GFGS \to GS$ is then the identity, in other words $\varepsilon$ maps generators.
+For example, let $X = \{a,b,c\}$, $FX$ is then $\{\langle a \rangle, \langle b \rangle, \langle c \rangle, \langle aa \rangle, \ldots\}$.
+$GFX = \{a,b,c,aa,\ldots\}$ and $\eta$ maps $a \mapsto a, b \mapsto b, c \mapsto c$.
+Given $S = \{\langle s \rangle, \langle ss \rangle, \langle sss \rangle, \ldots\}$, $GS = \{s, ss, sss, \ldots\}$, $FGS = \{\langle s \rangle, \langle ss \rangle, \langle sss \rangle, \ldots\}$ and $\varepsilon$ just maps $\langle s \rangle \mapsto \langle s \rangle$ etc.
+In other words $\varepsilon(\langle s_1 \rangle \ldots \langle s_n \rangle) = s_1 \cdot \ldots \cdot s_n$.
+
+The induced monad $T = GF$ such that $TX = \coprod_{n=1}^{\inf}X^{n}$, $\eta_{x} = \langle x \rangle$, 
+\[
+\mu = G\varepsilon_{F}(\langle \langle x_{11} \rangle, \ldots, \langle x_{1,n_1} \rangle, \ldots, \langle \langle x_{k,1}\rangle, \ldots, \langle x_{k,n_{k}} \rangle \rangle) = \langle x_{1,1}\rangle \ldots \langle x_{k,n_{k}} \rangle~.
+\]
+
+For the above monad the algebras are $\langle S, v \rangle$ where $v : TS \to S$ i.e. $v : \coprod S^{n} \to S$ which is given by $\coprod_{1}^{\inf} v^{n}$.
+The law $v\eta_{x} = id$ implies that $v_{1} = id$.
+We also have that $v_{k}(v_{n_1} \times \ldots \times v_{n_k}) = v_{n_{1} + \ldots n_{k}} : S^{n_{1} + \ldots + n_{k}} \to S$, i.e. applying $k$ operations to a list of length $k$ that consists of lists of lengths $n_1$ to $n_k$ is the same as applying the operation to a list of length $n_1 + \ldots + n_{k}$.
+
+The isomorphism $K : \catname{SmGrp} \to \catname{Set}^{T}$ is then given by $\langle S, v \rangle \mapsto \langle S, v_1, v_2, \ldots \rangle$ where $v_n$ is the iterated version of $v$.
+\end{example}
+
+\begin{example}
+
+Consider now the adjunction $\langle F, G, \eta, \varepsilon \rangle : \catname{Graph} \to \catname{Cat}$.
+The corresponding $T$-algebra for a monad $GF$ is $\langle Tx, \mu_{x}$ where $T$ adds identity paths and all other finite paths to a graph via designated edges.
+The functor $K : \catname{Cat} \to \catname{Graph}^{T}$ maps a category $\catname{C}$ to $\langle G\catname{C}, h : GFG\catname{C} \to G\catname{C} = G\varepsilon_{C}\rangle$.
+Given a category $\catname{C}$, $G\catname{C}$ is a graph with edges generated by morphisms of $\catname{C}$, then, $FG\catname{C}$ is a category where morphisms are all the finite paths of $G\catname{C}$ where each edge in the path is induced by a morphism in $\catname{C}$ and the whole path is given by the composition of morphisms, therefore we can map each path to a composition of the morphisms.
+This defines the action of $\varepsilon$.
+This is carried to the morphism of the respective underlying graphs and defines the structural map $h$.
+Note that not any graph can be a component of a $T$-algebra.
+In particular, it should be such graph $X$ that $TX \to X$ is definable, i.e. there must be an edge in $X$ for every finite path in $X$.
+This means that there is a corresponding category for $X$ in $\catname{Cat}$ that has the same objects and morphisms are edges.
+Since a graph has an edge for every path, it means that there is a composite morphism for any other two morphisms and the composition is associative.
+\end{example}
+
+
+\begin{definition}[Exponentials]
+    In a category $\catname{C}$ with binary products we say there are \textit{exponentials} if for all objects $A$ $B$ there exist an object $A \multimap B$ and a map $ev_{A,B} : A \multimap B \times A \to B$ such that for any $g : C \times A \to B$ there is a unique morphism $\Lambda(g) : C \to (A \multimap B)$ such that the following diagram commutes
+    \[
+    \begin{tikzcd}
+        A \multimap B \times A \arrow[r, "{ev_{A,B}}"]               & B \\
+        C \times A \arrow[u, "\Lambda(g) \times id"] \arrow[ru, "g"] &  
+    \end{tikzcd}
+    \]
+    We also have $\Lambda(ev_{A,B} \circ h \times id_{A}) = h$ for $h : C \to (A \multimap B)$.
+    $h \times id_{A} : C \times A \to (A \multimap B) \times A$, $ev_{A,V} \circ h \times id_{A} : C \times A \to B$ and $\Lambda(ev_{A,B} \circ h \times id_{A}) : C \to A \multimap B = h$ by uniqueness.
+\end{definition}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../../bibliography}
+
+\end{document}
