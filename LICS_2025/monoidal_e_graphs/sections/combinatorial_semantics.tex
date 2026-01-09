@@ -5,8 +5,8 @@ In this section,  we recall the fundamental definitions and results of string di
 First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over $\catname{Set}$.
 We extend this to the case of relations $R \subseteq V \times V$,  so that we denote by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences. 
 We will sometimes use functional notation for relations,  so that given $R \subseteq V \times W$ and $v \in V$,  $R(v) \subseteq W$. 
-We elide associativity and unit isomorphisms associated with coproducts $(+)$,  and denote by $\iota_j: X_{j} \rightarrow X_{1} + \ldots X_{j} + \ldots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]: A_1 + A_2 \to B$ the co-pairing of two morphisms $f: A_1 \to B$ and $g:A_2 \to B$. 
-We denote by $A +_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightarrow{g} B$.
+We elide associativity and unit isomorphisms associated with coproducts $\sqcup$,  and denote by $\iota_j: X_{j} \rightarrow X_{1} \sqcup \ldots X_{j} \sqcup \ldots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]: A_1 \sqcup A_2 \to B$ the co-pairing of two morphisms $f: A_1 \to B$ and $g:A_2 \to B$. 
+We denote by $A \sqcup_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightarrow{g} B$.
 We will also refer to $A,B$ as \textit{feet} of the cospan, and to $C$ as \textit{carrier}.
 
 \subsection{Hypergraphs}
@@ -55,16 +55,16 @@ Let $\mathbb{C}$ be a category with all finite colimits.  A cospan from $X$ to $
 %\end{tikzcd}
 %\]
 %For $X \in \mathbb{C}$ an $id$-cospan is $X \xrightarrow{id_X} X \xleftarrow{id_X} X$.
-Composition of cospans $X \xrightarrow{f} A \xleftarrow{g} Y$ and $Y \xrightarrow{h} B \xleftarrow{i} Z$ is given by pushout: $X \xrightarrow{f} A +_{g,h} B \xleftarrow{i} Z$,  with identity given by the cospan of identities.  
+Composition of cospans $X \xrightarrow{f} A \xleftarrow{g} Y$ and $Y \xrightarrow{h} B \xleftarrow{i} Z$ is given by pushout: $X \xrightarrow{f} A \sqcup_{g,h} B \xleftarrow{i} Z$,  with identity given by the cospan of identities.  
 Its monoidal product is given by the coproduct of $\mathbb{C}$ as follows: 
 \ifdefined \ONECOLUMN
 \[
-    (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) \otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq A + A' \xrightarrow{f+f'} \mathcal{G} + \mathcal{G'} \xleftarrow{g+g'} B + B'  ,
+    (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) \otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq A \sqcup A' \xrightarrow{f \sqcup f'} \mathcal{G} \sqcup \mathcal{G'} \xleftarrow{g \sqcup g'} B \sqcup B'  ,
 \]
 \else
 \vspace{-2mm}
 \begin{multline*}
-    (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) \otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq\\ A + A' \xrightarrow{f+f'} \mathcal{G} + \mathcal{G'} \xleftarrow{g+g'} B + B'  , 
+    (A \xrightarrow{f} \mathcal{G} \xleftarrow{g} B) \otimes (A' \xrightarrow{f'} \mathcal{G'} \xleftarrow{g'} B') \coloneq\\ A \sqcup A' \xrightarrow{f \sqcup f'} \mathcal{G} \sqcup \mathcal{G'} \xleftarrow{g \sqcup g'} B \sqcup B'  , 
     \vspace{-1.25cm}
 \end{multline*}
 \fi
@@ -146,11 +146,11 @@ Thus, we say that $\mathcal G$ is rewritten into $\mathcal H$ via $\mathcal L \x
 
 To express the rewriting of (hyper-)graphs with interfaces,  \textit{i.e.},  the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \textit{interfaces}  (DPOI) as shown in Figure~\ref{fig:dpo_dpoi}~(right).
 In the case of $ \catname{Hyp}(\Sigma)$,  we wish rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal L \xleftarrow{} m$, $n \xrightarrow{} \mathcal R \xleftarrow{} m$.  
-By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n + m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n+m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  
+By noting that a cospan $0 \xrightarrow{} \mathcal L \xleftarrow{[f,g]} n \sqcup m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ (Remark 3.14~\cite{bonchi_string_2022-1}) we can formulate a rewrite rule as a single span $\mathcal L \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal R$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal G$ and $\mathcal H$.  
 We now make this identification throughout without further mention.  
 Thus, we reach the following variant of DPO rewriting.
 \begin{definition}[DPOI rewriting]\label{def:dpoi}
-Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n+m$ via rewrite rule $\mathcal L \xleftarrow{} i+j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal{L}^{\bot}$ and morphisms which complete the right commutative diagram in Figure~\ref{fig:dpo_dpoi} such that the two marked squares are pushouts.
+Given a span of morphisms $\mathcal G \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal H$ in $\textbf{Hyp}(\Sigma)$,  we say \textit{$\mathcal G$ rewrites to $\mathcal H$ with interface $n \sqcup m$ via rewrite rule $\mathcal L \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal R$} if there exists an object $\mathcal{L}^{\bot}$ and morphisms which complete the right commutative diagram in Figure~\ref{fig:dpo_dpoi} such that the two marked squares are pushouts.
 % \[
 % \begin{tikzcd}
 % \mathcal L \arrow[d, "m"'] & i+j \arrow[d] \arrow[l] \arrow[r] & \mathcal R \arrow[d]   \\
@@ -187,9 +187,9 @@ Given a span of morphisms $\mathcal G \xleftarrow{} n+m \xrightarrow{} \mathcal 
         % \tikzfig{../figures/combinatorial_semantics/DPOI_square_Hyp}
     % }
     \begin{tikzcd}
-        {\mathcal{L}} & {i+j} & {\mathcal{R}} \\
+        {\mathcal{L}} & {i \sqcup j} & {\mathcal{R}} \\
         {\mathcal{G}} & {\mathcal{L}^{\bot}} & {\mathcal{H}} \\
-        & {n+m}
+        & {n \sqcup m}
         \arrow["f"', from=1-1, to=2-1]
         \arrow[from=1-2, to=1-1]
         \arrow[from=1-2, to=1-3]
@@ -218,7 +218,7 @@ We need to restrict the notions of pushout complement and of match in order to p
 \begin{definition}[Boundary complement]
 \label{def:boundary_original}
 For MDA cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} \mathcal G \xleftarrow{b_2} m$
-and mono $f : \mathcal L \to \mathcal G$, a pushout complement $i + j \to \mathcal{L}^\bot \to \mathcal G$ as depicted in the square below
+and mono $f : \mathcal L \to \mathcal G$, a pushout complement $i \sqcup j \to \mathcal{L}^\bot \to \mathcal G$ as depicted in the square below
 % \begin{figure}[h!]
 %     \centering
 %     \includegraphics[width=0.4\linewidth]{figures/combinatorial_semantics/boundary_complement.png}
@@ -244,7 +244,7 @@ and mono $f : \mathcal L \to \mathcal G$, a pushout complement $i + j \to \mathc
 \]
 is called a boundary complement if $[c_1, c_2]$ is mono and there exist $d_1 : n \to \mathcal{L}^{\bot}$ and $d_2 : m \to \mathcal{L}^{\bot}$ making the above triangle commute and such that
 \[
-    n + j \xrightarrow{[d_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[d_2,c_1]} m + i
+    n \sqcup j \xrightarrow{[d_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[d_2,c_1]} m \sqcup i
 \]
 is an MDA cospan. 
 \end{definition}
@@ -264,11 +264,11 @@ We call a match $f : \mathcal L \to \mathcal G$ a \emph{convex match} if it is m
 \begin{definition}[Convex DPOI rewriting]
 \label{def:convex_dpo}
 Let $\mathfrak{R}$ be a set of DPOI rewrite rules. 
-Then, given $\mathcal G \xleftarrow{} n+m$ and $\mathcal H \xleftarrow{} n + m$ in $\catname{Hyp(\Sigma)}$, $\mathcal G$ rewrites convexly into $\mathcal H$ with interface $n + m$ --- notation $(\mathcal G \xleftarrow{} n + m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n + m )$ --- if there exist rule $\mathcal L \xleftarrow{} i + j \xrightarrow{} \mathcal R$ in $\mathfrak{R}$ and object $\mathcal{L}^{\bot}$ and cospan arrows $i+j \xrightarrow{} \mathcal{L}^{\bot} \xleftarrow{} n+m$ such that the DPOI diagram of Definition \ref{def:dpoi} commutes and its marked squares are pushouts 
+Then, given $\mathcal G \xleftarrow{} n \sqcup m$ and $\mathcal H \xleftarrow{} n \sqcup m$ in $\catname{Hyp(\Sigma)}$, $\mathcal G$ rewrites convexly into $\mathcal H$ with interface $n \sqcup m$ --- notation $(\mathcal G \xleftarrow{} n \sqcup m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n \sqcup m )$ --- if there exist rule $\mathcal L \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal R$ in $\mathfrak{R}$ and object $\mathcal{L}^{\bot}$ and cospan arrows $i \sqcup j \xrightarrow{} \mathcal{L}^{\bot} \xleftarrow{} n \sqcup m$ such that the DPOI diagram of Definition \ref{def:dpoi} commutes and its marked squares are pushouts 
 and the following conditions hold
 \begin{itemize}
     \item $f : L \to \mathcal G$ is a convex match;
-    \item $i + j \to \mathcal{L}^{\bot} \to \mathcal G$ is a boundary complement in the leftmost pushout.
+    \item $i \sqcup j \to \mathcal{L}^{\bot} \to \mathcal G$ is a boundary complement in the leftmost pushout.
 \end{itemize}
 \end{definition}
 %By requiring convex matching and boundary complements we ensure that the original cospans above are monogamous, e.g., $n \xrightarrow{} G \xleftarrow{} m$.

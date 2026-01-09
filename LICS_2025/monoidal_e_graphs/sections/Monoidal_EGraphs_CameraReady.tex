@@ -1,4 +1,4 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[conference, a4paper, final]{IEEEtran}
 % \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 %Template version as of 6/27/2024
@@ -42,6 +42,7 @@
 \usepackage{xfrac}
 
 \usepackage[final]{microtype}
+\usepackage{cleveref}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}[theorem]{Definition}
@@ -68,6 +69,9 @@
 
 % camera-ready
 \newcommand{\cameraready}{}
+
+% to enable thanks
+\IEEEoverridecommandlockouts
 
 \makeatletter
 \newcommand{\linebreakand}{%
@@ -116,13 +120,15 @@ d.r.ghica@bham.ac.uk}
 \IEEEauthorblockA{\textit{University of Birmingham}\\
 United Kingdom\\
 n.hu@bham.ac.uk}
+\thanks{This work was supported by EPSRC grants EP/V001612/1 and EP/Y010035/1.}
+\thanks{An extended version of this paper, including full proofs and an appendix, is available on arXiv \cite{tiurin2025equivalencehypergraphsdporewriting}}
 }
 
 \maketitle
 
-\renewcommand{\thefootnote}{}%
-\footnotetext{A longer version of this paper, including full proofs and an appendix, is available on arXiv \cite{tiurin2025equivalencehypergraphsdporewriting}.}%
-\renewcommand{\thefootnote}{\arabic{footnote}}%
+% \renewcommand{\thefootnote}{}%
+% \footnotetext{A longer version of this paper, including full proofs and an appendix, is available on arXiv \cite{tiurin2025equivalencehypergraphsdporewriting}.}%
+% \renewcommand{\thefootnote}{\arabic{footnote}}%
 
 \begin{abstract}
 	\input{abstract}   
@@ -138,9 +144,9 @@ n.hu@bham.ac.uk}
 \input{acknowledgement}
 
 
-\bibliographystyle{acm}
+\IEEEtriggeratref{29}
+\bibliographystyle{IEEEtran}
 \bibliography{../../../bibliography}
-
 
 
 \end{document}

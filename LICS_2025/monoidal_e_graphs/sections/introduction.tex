@@ -297,7 +297,7 @@ By Fox's Theorem~\cite{fox},  $\textbf{S}(\Sigma_C, \mathcal{E}_C)$ is equivalen
 
 \subsection{Free Semilattice Enrichment: Formal Joins}
 
-We will use enrichment to axiomatize the e-box (e-class) structure as the ``join" of two morphisms $f,g: A \to B$ as $f + g: A \to B$. 
+We will use enrichment to axiomatize the e-box (e-class) structure as the \enquote{join} of two morphisms $f,g: A \to B$ as $f + g: A \to B$. 
 More precisely our hom-sets will be given the structure of a semilattice.
 % Note, in particular,  that we do not require semilattices to have a unit for $+$. 
 % This is important, since, in any commutative monoid enriched category,  if there exists a categorical product, then it must be a categorical biproduct \cite{maclane}---a degeneracy we wish to avoid.  
@@ -371,30 +371,36 @@ f \otimes (g+h) = f \otimes g + f \otimes h \qquad (f+g) \otimes h = f \otimes h
 Again, we take $\otimes$ to bind more tightly than $+$.
 
 
-\begin{proposition}(A specialized case of Proposition 6.4.3~\cite{Borceux_1994}. See also \ifcameraready{Appendix~\ref{sec:appendix:slat}}{\cite{tiurin2025equivalencehypergraphsdporewriting}})
-There is a 2-adjunction 
-% https://q.uiver.app/#q=WzAsMixbMCwwLCJcXGNhdG5hbWV7U0xhdHR9LVxcY2F0bmFtZXtDYXR9Il0sWzIsMCwiXFxjYXRuYW1le0NhdH0iXSxbMSwwLCJGIiwyLHsiY3VydmUiOjR9XSxbMCwxLCJHIiwyLHsiY3VydmUiOjR9XSxbMiwzLCIiLDAseyJsZXZlbCI6MSwic3R5bGUiOnsibmFtZSI6ImFkanVuY3Rpb24ifX1dXQ==
-% \[\begin{tikzcd}
-% 	\catname{SLatt}\text{--}\catname{Cat}\arrow[rr, "\mathcal{U}", bend left] & \hspace{-1em}\top & \catname{Cat} \arrow[ll, "\mathcal{F}", bend left]
-% 	\end{tikzcd}
-% \]
-\vspace{-1mm}
-\[
-\mathcal{F} \dashv \mathcal{U} : \catname{SLat}\text{--}\catname{Cat} \to \catname{Cat}
-\vspace{-1mm}
-\]
-that is induced by a usual free-forgetful adjunction 
-
-% \[\begin{tikzcd}
-% 	\catname{SLatt} \arrow[rr, "U", bend left] & \top & \catname{Set} \arrow[ll, "F", bend left]
-% 	\end{tikzcd}
-% \]
-\vspace{-1mm}
-\[
-F \dashv U : \catname{SLat} \to \catname{Set}
-\vspace{-1mm}
-\]
+\begin{proposition}(A specialised case of Proposition 6.4.7~\cite{Borceux_1994} and Theorem 5.7.1~\cite{cruttwell2008normed}. See also \ifcameraready{Appendix~\ref{sec:appendix:slat}}{\cite{tiurin2025equivalencehypergraphsdporewriting}})
+	There is a 2-adjunction
+	\vspace{-1mm}
+	\[
+		\mathcal{F} \dashv \mathcal{U} : \catname{SLat}\text{--}\catname{Cat} \to \catname{Cat}
+		\vspace{-1mm}
+	\]
+	that is induced by the usual (symmetric monoidal) free-forgetful adjunction
+	\vspace{-1mm}
+	\[
+		F \dashv U : \catname{SLat} \to \catname{Set}.
+		\vspace{-1mm}
+	\]
+	Moreover, $\mathcal{F}$ and $\mathcal{U}$ preserve symmetric monoidal structure, sending symmetric monoidal categories to symmetric monoidal $\catname{SLat}$-categories and vice versa.
 \end{proposition}
+% \begin{proposition}(A specialized case of Proposition 6.4.3~\cite{Borceux_1994}. See also \ifcameraready{Appendix~\ref{sec:appendix:slat}}{\cite{tiurin2025equivalencehypergraphsdporewriting}})
+% There is a 2-adjunction 
+% \vspace{-1mm}
+% \[
+% \mathcal{F} \dashv \mathcal{U} : \catname{SLat}\text{--}\catname{Cat} \to \catname{Cat}
+% \vspace{-1mm}
+% \]
+% that is induced by a usual free-forgetful adjunction 
+
+% \vspace{-1mm}
+% \[
+% F \dashv U : \catname{SLat} \to \catname{Set}
+% \vspace{-1mm}
+% \]
+% \end{proposition}
 In particular, 2-functor $\mathcal{F}$ turns every category $\mathbb{C'} \in \catname{Cat}$ into a free $\catname{SLat}$-category $\mathbb{C} \in \catname{SLat}\text{--}\catname{Cat}$ by making every hom-set of $\mathbb{C'}$ into a free semilattice on this set.
 % SMC $(\mathbb{C}, \otimes, 1,+)$ where every hom-set additionally has the structure of a semilattice $(\mathbb{C}(A,B), +)$ -- that is,  a set equipped with an associative,  commutative,  and idempotent operation -- which respects the composition and tensor product in the following ways,  for all appropriately typed morphisms.
 % \begin{align*}

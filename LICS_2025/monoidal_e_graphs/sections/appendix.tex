@@ -37,16 +37,24 @@ In this section we define the category of semilattices that we use as a base for
       \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
     \end{itemize}
   
-    Note that this construction does not identify $(s_1,s_2) +_{S_1 \otimes S_2} (s_1',s_2')$ and $(s_1 +_{S_1} s_1', s_2 +_{S_2} s_2')$.
     The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
     Clearly $S \otimes I \cong S$ by mapping $(s,*) \mapsto s$ for all $s \in S$ and vice versa.
     The symmetry, associators and unitors are then obvious morphisms.
-    Finally, the category is closed since the set of homomorpisms between two semilattices is a semilattice by defining $(f + g)(x)$ as $f(x) + g(x)$.
+    Finally, the category is closed since the set of homomorphisms between two semilattices is a semilattice by defining $(f + g)(x)$ as $f(x) + g(x)$.
     $f + g$ is a homomorphism since $(f + g)(x+y) = f(x+y) + g(x+y) = f(x) + f(y) + g(x) + g(y) = f(x) + g(x) + f(y) + g(y) = f(x+y) + g(x+y)$.
   \end{proof}
   
   This makes $\catname{SLat}$ a suitable base for enrichment.
 %    and allows us to take $\mathcal{V} = \catname{SLat}$.
+
+\begin{remark}
+    The above definition of a tensor product should not be confused with a tensor given by $\times$, which is constructed in the same vein as the tensor product above with the additional quotienting
+    \[
+        (s_1,s_2) +_{S_1 \times S_2} (s_1',s_2') \equiv (s_1 +_{S_1} s_1', s_2 +_{S_2} s_2')~.
+    \]
+    The reason for using the former construction is that it has better theoretical properties, in particular, the free semilattice functor (defined below) is a monoidal functor.
+\end{remark}
+
 
   \begin{definition}
     Forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(I_{\catname{SLat}, -}) : \catname{SLat} \to \catname{Set}$.
@@ -82,6 +90,25 @@ In this section we define the category of semilattices that we use as a base for
       \end{align*}
     In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
     \end{proof}
+
+    \begin{remark}
+        One could think about this free construction in the following way.
+        Given a set $X$ a free (unbounded) semilattice over $X$ is a set of all non-empty subsets of $X$.
+        The $+$ is then given by a union of sets.
+
+        We will next illustrate the difference between $\otimes$ and $\times$ when it comes to the free construction.
+        Consider two sets $X$ and $Y$ and their tensor product $X \times Y$
+        
+        \begin{align*}
+        X &\Coloneqq \{1,2,3\}\\
+        Y &\Coloneqq \{a,b\}\\
+        X \times Y &= \{(1,a), (2,a), (3,a), (1,b),(2,b),(3,b)\}~.
+        \end{align*}
+        The isomorphism between $F(X) \otimes F(Y)$ and $F(X \times Y)$ is constructed as follows.
+        Given a set of subsets of $X \times Y$, e.g., $\{(1,b),(2,b),(3,a)\}$ we map it to $\{\{1,2\},b\} + \{3,a\}$, essentially grouping by the components of the pairs.
+        Different ways to group things are then identified.
+        If we were to use $\times$ as the tensor, we would face a problem when mapping, \textit{e.g.}, $\{(1,a), (2,a), (1,b), (2,b)\}$ and $\{(1,a),(2,b)\}$ as both would be identified as $\{\{1,2\},\{a,b\}\}$.
+    \end{remark}
 
     \begin{definition}
         Given two $\catname{SLat}$-functors $F,G : \mathbb{C} \to \mathbb{D}$ a $\catname{SLat}$-natural transformation is family of morphisms indexed by objects in $\mathbb{C}$, $\alpha_{A} : I_{\catname{SLat}} \to \mathbb{D}(FA,GA)$ in $\catname{SLat}$ such that the following diagram commutes
@@ -186,8 +213,8 @@ n \arrow[ru, "f_{ext}", bend left] \arrow[rd, "f_{ext}'"', bend right] &        
 
 In constructing the pushout the functional versions of e-hypergraph relations will be useful.
 \begin{remark}
-    Both $<$ and $\consistency$ can be considered as (partial) functions defined on $V_{\mathcal{F}} + E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
-    To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}} + E_{\mathcal{F}}$ when passing either a vertex or an edge into these functions.
+    Both $<$ and $\consistency$ can be considered as (partial) functions defined on $V_{\mathcal{F}}  \sqcup  E_{\mathcal{F}}$, \textit{i.e.}, on the coproduct of vertices and edges.
+    To make things well-typed, we will use corresponding coproduct injections $\iota_{V} : {V_{\mathcal{F}}} \to V_{\mathcal{F}}  \sqcup  E_{\mathcal{F}}$ and $\iota_{E} : {E_{\mathcal{F}}} \to V_{\mathcal{F}}  \sqcup  E_{\mathcal{F}}$ when passing either a vertex or an edge into these functions.
     For example, an immediate successor of a vertex $x$ can be written functionally as $<_{\mathcal{F}}^{\mu}(\iota_{V_{\mathcal{F}}}(x))$.
 \end{remark}
 
@@ -216,7 +243,7 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
                 \subseteq
                 \consistency_{\mathcal{G}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))
             \]
-            where $\phi_{V};\iota_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} + E_{\mathcal{G}}$, and similarly for $\phi_{E};\iota_{E_\mathcal{G}}$ so that $[\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}] : V_{\mathcal{F}} + E_{\mathcal{F}} \to  V_{\mathcal{G}} + E_{\mathcal{G}}$.
+            where $\phi_{V};\iota_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}}  \sqcup  E_{\mathcal{G}}$, and similarly for $\phi_{E};\iota_{E_\mathcal{G}}$ so that $[\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}] : V_{\mathcal{F}}  \sqcup  E_{\mathcal{F}} \to  V_{\mathcal{G}}  \sqcup  E_{\mathcal{G}}$.
             \item When $x \in V_{\mathcal{F}}$
             \[
                 [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{F}}(\iota_{V_{\mathcal{F}}}(x)))
@@ -245,7 +272,7 @@ such that
     \item \label{assumption:non_ambiguous_predecessors} If $[f_{V}(v)) \not = \varnothing$ then $[g_{V}(v)) = \varnothing$ and if $[g_{V}(v)) \not = \varnothing$ then $[f_{V}(v)) = \varnothing$.
     \item $\consistency(f_{V}(v_i)) = \consistency(f_{V}(v_j))$ and $\consistency(g_{V}(v_i)) = \consistency(g_{V}(v_j))$ for all $v_i,v_j$ in $V_{Z}$.
 \end{enumerate}    
-then the pushout $X +_{f,g} Y$ exists.
+then the pushout $X  \sqcup _{f,g} Y$ exists.
 \end{theorem}
 \begin{proof}
     Consider the diagram below.
@@ -253,54 +280,54 @@ then the pushout $X +_{f,g} Y$ exists.
         \adjustbox{scale=1.25}{
             \begin{tikzcd}
             Z \arrow[r, "f"] \arrow[d, "g"']                                   & X \arrow[d, "\sfrac{\iota_1}{\sim R}"] \arrow[rdd, "j_1", bend left] &   \\
-            Y \arrow[r, "\sfrac{\iota_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X+Y}{\sim R} \arrow[rd, "u"]                              &   \\
+            Y \arrow[r, "\sfrac{\iota_2}{\sim R}"] \arrow[rrd, "j_2"', bend right] & \sfrac{X \sqcup Y}{\sim R} \arrow[rd, "u"]                              &   \\
                                                                             &                                                                  & Q
             \end{tikzcd}}
     \]
     Then, the pushout of e-hypergraphs $X$ and $Y$ is computed in two steps.
-    First, a coproduct of $X+Y$ is computed which is 
+    First, a coproduct of $X \sqcup Y$ is computed which is 
     \[
-        X + Y = \{V_{X} + V_{Y}, E_{X} + E_{Y}, s_{X+Y}, t_{X+Y}, \consistency_{X+Y}, <_{X+Y} \}
+        X  \sqcup  Y = \{V_{X}  \sqcup  V_{Y}, E_{X}  \sqcup  E_{Y}, s_{X \sqcup Y}, t_{X \sqcup Y}, \consistency_{X \sqcup Y}, <_{X \sqcup Y} \}
     \]
-    where $s_{X+Y} : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} + E_{Y} \to (V_{X} + V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} + V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} + V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X+Y}, <_{X+Y}, \consistency_{X+Y}$.
+    where $s_{X \sqcup Y} : E_{X}  \sqcup  E_{Y} \to (V_{X}  \sqcup  V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X}  \sqcup  E_{Y} \to (V_{X}  \sqcup  V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X}  \sqcup  V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X}  \sqcup  V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X \sqcup Y}, <_{X \sqcup Y}, \consistency_{X \sqcup Y}$.
     We will omit labels as they are irrelevant to pushout construction.
     Consider relations
     \ifdefined\ONECOLUMN
     \begin{align*}
             S_{V} &= \;\{
-            (x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; |
+            (x_i,y_j) \in (V_{X}  \sqcup  V_{Y}) \times (V_{X}  \sqcup  V_{Y})\; |
             \exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and }\\
             &\qquad y_j = g_{V};\iota_{2,V}(z) \text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
             \}\\
             &\cup \;\{
-                (y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; |
+                (y_j,x_j) \in (V_{X}  \sqcup  V_{Y}) \times (V_{X}  \sqcup  V_{Y})\; |
           \exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and }\\
           &\qquad y_j = g_{V};\iota_{2,V}(z) \text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
         \}\\
-        &\cup \;\{(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\}\\
-        S_{E} &= \;\{(x,x) \text{ where } x \in E_{X} + E_{Y}\}
+        &\cup \;\{(x,x)\;\text{where}\; x \in V_{X}  \sqcup  V_{Y}\}\\
+        S_{E} &= \;\{(x,x) \text{ where } x \in E_{X}  \sqcup  E_{Y}\}
     \end{align*}
     \else 
     \begin{align*}    
     S_{V} = \{&
-          \;(x_i,y_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          \;(x_i,y_j) \in (V_{X}  \sqcup  V_{Y}) \times (V_{X}  \sqcup  V_{Y})\; | \\
           &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
           &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\}\\
           \cup&\\
           \{&
-          \;(y_j,x_j) \in (V_{X} + V_{Y}) \times (V_{X} + V_{Y})\; | \\
+          \;(y_j,x_j) \in (V_{X}  \sqcup  V_{Y}) \times (V_{X}  \sqcup  V_{Y})\; | \\
           &\;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z)\\
           &\;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }\}\\
           \cup&\\
           \{
-          &\;(x,x)\;\text{where}\; x \in V_{X} + V_{Y}\}\\
+          &\;(x,x)\;\text{where}\; x \in V_{X}  \sqcup  V_{Y}\}\\
         \\
-    S_{E} &= \{(x,x) \text{ where } x \in E_{X} + E_{Y}\}
+    S_{E} &= \{(x,x) \text{ where } x \in E_{X}  \sqcup  E_{Y}\}
     \end{align*}
     \fi
     % \begin{align*}
     % S_{E} &= \{\\
-    % &(x_i,y_j) \in (E_{X} + E_{Y}) \times (E_{X} + E_{Y})\; |\\
+    % &(x_i,y_j) \in (E_{X}  \sqcup  E_{Y}) \times (E_{X}  \sqcup  E_{Y})\; |\\
     % &\exists z \in E_{Z} \; . \; x_i = f_{E};\iota_{1,E}(z) \text{ and } y_j = g_{E};\iota_{2,E}(z)\\
     % &\text{ where $x_i \in E_{X}$ and $y_j \in E_{Y}$}\\
     % &\}
@@ -308,99 +335,99 @@ then the pushout $X +_{f,g} Y$ exists.
 and let relations $R_{V},R_{E}$ be their transitive closures respectively.
 
 
-We then quotient the set vertices and edges in $X + Y$ by $R_{V}$ and $R_{E}$ respectively.
+We then quotient the set vertices and edges in $X  \sqcup  Y$ by $R_{V}$ and $R_{E}$ respectively.
 \ifdefined \ONECOLUMN
 \begin{align*}
-    \sfrac{X + Y}{\sim (R_{V},R_{E})} = \{
-        &\sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})}, \sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})}, \sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
-        &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})}, \consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}}, <_{\sfrac{X + Y}{\sim (R_{V},R_{E})}}\}    
+    \sfrac{X  \sqcup  Y}{\sim (R_{V},R_{E})} = \{
+        &\sfrac{V_{X}  \sqcup  V_{Y}}{\sim (R_{V},R_{E})}, \sfrac{E_{X}  \sqcup  E_{Y}}{\sim (R_{V},R_{E})}, \sfrac{s_{X \sqcup Y}}{\sim (R_{V},R_{E})},\\
+        &\sfrac{t_{X \sqcup Y}}{\sim (R_{V},R_{E})}, \consistency_{\sfrac{X \sqcup Y}{\sim (R_{V},R_{E})}}, <_{\sfrac{X  \sqcup  Y}{\sim (R_{V},R_{E})}}\}    
 \end{align*}
 \else
     \begin{align*}
-        \sfrac{X + Y}{\sim (R_{V},R_{E})} = (&
-            \sfrac{V_{X} + V_{Y}}{\sim (R_{V},R_{E})},\\
-            &\sfrac{E_{X} + E_{Y}}{\sim (R_{V},R_{E})},\\
-            &\sfrac{s_{X+Y}}{\sim (R_{V},R_{E})},\\
-            &\sfrac{t_{X,Y}}{\sim (R_{V},R_{E})},\\
-            &\consistency_{\sfrac{X+Y}{\sim (R_{V},R_{E})}},\\
-            &<_{\sfrac{X + Y}{\sim (R_{V},R_{E})}})    
+        \sfrac{X  \sqcup  Y}{\sim (R_{V},R_{E})} = (&
+            \sfrac{V_{X}  \sqcup  V_{Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{E_{X}  \sqcup  E_{Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{s_{X \sqcup Y}}{\sim (R_{V},R_{E})},\\
+            &\sfrac{t_{X \sqcup Y}}{\sim (R_{V},R_{E})},\\
+            &\consistency_{\sfrac{X \sqcup Y}{\sim (R_{V},R_{E})}},\\
+            &<_{\sfrac{X  \sqcup  Y}{\sim (R_{V},R_{E})}})    
     \end{align*}
 \fi
-We will refer to $\sim (R_{V},R_{E})$ just as $\sim$, \textit{e.g.}, by writing $\sfrac{V_{X} + V_{Y}}{\sim}$ and concrete relation will be clear from the context.
+We will refer to $\sim (R_{V},R_{E})$ just as $\sim$, \textit{e.g.}, by writing $\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}$ and concrete relation will be clear from the context.
 Where necessary we will refer to $S_{V}$ and $S_{R}$ as $\sim_{S}$.
 We have 
 \[
-    \sfrac{s_{X+Y}}{\sim} : \sfrac{E_{X} + E_{Y}}{\sim} \to (\sfrac{V_{X} + V_{Y}}{\sim})^{*}
+    \sfrac{s_{X \sqcup Y}}{\sim} : \sfrac{E_{X}  \sqcup  E_{Y}}{\sim} \to (\sfrac{V_{X}  \sqcup  V_{Y}}{\sim})^{*}
 \]
-and there is an obvious surjective function $[]_{V} : (V_{X} + V_{Y}) \to (\sfrac{V_{X} + V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[]_{V}^{*}$ is its extension to sequences.
-There is also $[] : E_{X} + E_{Y} \to \sfrac{E_{X} + E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
+and there is an obvious surjective function $[]_{V} : (V_{X}  \sqcup  V_{Y}) \to (\sfrac{V_{X}  \sqcup  V_{Y}}{\sim})$ that maps elements to their equivalence classes and $[]_{V}^{*}$ is its extension to sequences.
+There is also $[] : E_{X}  \sqcup  E_{Y} \to \sfrac{E_{X}  \sqcup  E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
 We then define 
 \[
-    \sfrac{s_{X+Y}}{\sim}([e]) = s_{X+Y};[]^{*}(e) = [s_{X+Y}(e)]^{*}
+    \sfrac{s_{X \sqcup Y}}{\sim}([e]) = s_{X \sqcup Y};[]^{*}(e) = [s_{X \sqcup Y}(e)]^{*}
 \]
-We will also use subscripts when it is important to tell if an element of $E_{X} + E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
+We will also use subscripts when it is important to tell if an element of $E_{X}  \sqcup  E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
 Similarly, we will write $v_{x}$ to refer to a vertex with a pre-image in $V_{X}$.
 Likewise, 
 \[
-    t_{\sfrac{X+Y}{\sim}}([e]) = [t_{X+Y}(e)]^{*}
+    t_{\sfrac{X \sqcup Y}{\sim}}([e]) = [t_{X \sqcup Y}(e)]^{*}
 \]
 
 These definitions make $([]_{V},[]_{E})$ automatically a homomorphism with respect to source and target maps.
 These maps are also automatically well-defined functions since $[e_1] = [e_2]$ implies $e_1 = e_2$ since the mappings for edges are mono.
 
-% So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X+Y}{\sim}}$ and $t_{\sfrac{X+Y}{\sim}}$ are well-defined and $[]$ is a homomorphism with respect to sources and targets and therefore $\sfrac{\iota_1}{\sim}$ and $\sfrac{\iota_{2}}{\sim}$ are.
+% So far, the construction matches the construction of the pushout in $\catname{Hyp_{\Sigma}}$ which can be found in~\cite{bonchi_string_2022-1} and hence $s_{\sfrac{X \sqcup Y}{\sim}}$ and $t_{\sfrac{X \sqcup Y}{\sim}}$ are well-defined and $[]$ is a homomorphism with respect to sources and targets and therefore $\sfrac{\iota_1}{\sim}$ and $\sfrac{\iota_{2}}{\sim}$ are.
 
 Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we can first define 
-    \[<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e])
+    \[<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}[e])
     \] and 
     \[
-        <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u])
-    \] where $\iota_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
+        <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[u])
+    \] where $\iota_*$ are injections into $\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}  \sqcup  \sfrac{E_{X}  \sqcup  E_{Y}}{\sim}$.
     We will consider several cases.
-    First, assume that $u$ is an element of $V_{X+Y}$ and
+    First, assume that $u$ is an element of $V_{X \sqcup Y}$ and
     \begin{enumerate}
-        \item If there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ is defined and $u \sim v$
+        \item If there exists $v$ such that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))$ is defined and $u \sim v$
               we let
               \[
-                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]
+                <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u])) = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))]
               \]
-        \item \label{def:child_respects_connectivity} $u$ has no pre-image in $V_{Z}$ and $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))$ is undefined (\textit{i.e.}, $[u) = \varnothing$).
-              If there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an \textit{undirected} path from $[u]$ to $[v]$, then we define
+        \item \label{def:child_respects_connectivity} $u$ has no pre-image in $V_{Z}$ and $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(u))$ is undefined (\textit{i.e.}, $[u) = \varnothing$).
+              If there exists $v$ such that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) = e'$ and such that there is an \textit{undirected} path from $[u]$ to $[v]$, then we define
               \[ 
-                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[u]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+                <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[u]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v])
               \]
     \end{enumerate}
     Note that the existence of a path in the definition (2) implies that there exists $v' \sim v$ such that there is a path from $u$ to $v'$ and furthermore $v \not = v'$.
     If $v' = v$ then it would mean that $[u) \not = \varnothing$ since $[v) \not = \varnothing$ and there is a path from $u$ to $v$.
-    There is no case when $u$ has a pre-image in $V_{Z}$ and yet $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))$ is undefined and there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e$ and there is a path from $[u]$ to $[v]$.
+    There is no case when $u$ has a pre-image in $V_{Z}$ and yet $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(u))$ is undefined and there exists $v$ such that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) = e$ and there is a path from $[u]$ to $[v]$.
     The existence of a path would mean that there is $u' \sim u$ and $v' \sim v$ such that there is a path from $u'$ to $v'$ and since $u$ has a pre-image in $V_{Z}$, $u = f_{V};\iota_{1,V}(z_1)$.
     $v' \sim v$ means that both $v'$ and $v$ have a pre-image in $V_{Z}$ (unless $v' = v$ in which case $[u') \not = \varnothing$ as there is a path from $u'$ to $v'$) and since $u = f_{V};\iota_{1,V}(z_1)$ and $[u) = \varnothing$ $f_{V};\iota_{1,V}(z) = \varnothing$ for all $z$.
     Since $[v) \not = \varnothing$ and $v' \sim v$, $v$ is necessarily in the image of $g_{V};\iota_{2,V}$ and for all $z$ $[g_{V};\iota_{2,V}(z)) \not = \varnothing$ as well as for some $z'$ such that $u'' = g_{V};\iota_{2,V}(z')$ and $u'' \sim_{S} u$ which would mean that the case (1) is applicable to $u$.
     Similarly, when $u = g_{V};\iota_{2,V}(z)$.
     
-    Otherwise, we leave $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))$ undefined.
+    Otherwise, we leave $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]))$ undefined.
     % \question{In the case when images of $f$ and $g$ are top-level the function is undefined. Shall we introduce bottom?}
-    Now, assume that $e$ is an element of $E_{X+Y}$.
+    Now, assume that $e$ is an element of $E_{X \sqcup Y}$.
     Consider two cases.
     \begin{enumerate}
-    \item  $<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e)) = e'$.
+    \item  $<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e)) = e'$.
             Then we define
         \[
-            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e))]
+            <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}[e]) = [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e))]
         \]
-    \item $[e) = \varnothing$ and there exists $v$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) = e'$ and such that there is an undirected path from $[e]$ to $[v]$, we define 
+    \item $[e) = \varnothing$ and there exists $v$ such that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) = e'$ and such that there is an undirected path from $[e]$ to $[v]$, we define 
         \[
-            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])
+            <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}[e]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v])
         \] 
     \end{enumerate}
-    Otherwise we leave $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{E_{X} + E_{Y}}{\sim}([e]))$ undefined.
+    Otherwise we leave $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}{\sim}([e]))$ undefined.
     % We will also build this relation in steps, first we do steps for vertices (1) - (3), then step (1) for edges and finally, we will interleave step (2) for edges and step (4) for vertices until fixed point.
     % Essentially, this interleaving means that vertices inherit the relation from incident edges and vice versa.
     Clearly, all the cases above are disjoint.
 
     Let's show that the definition does not depend on a particular choice of $v$ in (1).
     Suppose there exist $v_1$ and $v_2$ such that $v_1 \not = v_2$ and $[v_1) \not = \varnothing$ and $[v_2) \not = \varnothing$ and such that $u \sim v_1$ and $u \sim v_2$.
-    Then, it must be the case that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1)) = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))$.
+    Then, it must be the case that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)) = <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_2))$.
     Consider cases.
     \begin{itemize}
         \item $u = v_1$ and $u \sim_{S} v_2$. Then there exists $z \in V_{Z}$ such that $u = f_{V};\iota_{1,V}(z) = v_1$ and $v_2 = g_{V};\iota_{2,V}(z)$.
@@ -414,7 +441,7 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     \end{itemize}
 
     Let's show that the definition does not depend on a particular choice of $v$ in (2).
-    Suppose, $[u) = \varnothing$ and there exist $v_1$ and $v_2$ such that $<_{X+Y}^{\mu}(v_1) = e_1$ and $<_{X+Y}^{\mu}(v_2) = e_2$ and $e_1 \not = e_2$ and such that there is a path from $[u]$ to $[v_1]$ and from $[u]$ to $[v_2]$.
+    Suppose, $[u) = \varnothing$ and there exist $v_1$ and $v_2$ such that $<_{X \sqcup Y}^{\mu}(v_1) = e_1$ and $<_{X \sqcup Y}^{\mu}(v_2) = e_2$ and $e_1 \not = e_2$ and such that there is a path from $[u]$ to $[v_1]$ and from $[u]$ to $[v_2]$.
     The existence of a path from $[u]$ to $[v_1]$ means that there is $v_1' \sim v_1$ such that there is a path from $u'$ to $v_1'$ and similarly for $v_2$ and $v_2'$.
     We will proceed by case analysis.
     \begin{itemize}
@@ -422,12 +449,12 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
             \item Suppose $v_1 \sim_{S} v_1'$ which means there exists $z_1 \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z_1)$ and $v_1' = g_{V};\iota_{2,V}(z_1)$ and suppose $v_2 \sim_{S} v_2'$ which further means there exists $z_2 \in V_{Z}$ such that $v_2 = f_{V};\iota_{1,V}(z_2)$ and $v_2' = g_{V};\iota_{2,V}(z_2)$.
                   Then we have
                   \begin{align*}
-                    <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1)) &= <_{X+Y}^{\mu}(f_{V};\iota_{1,V};\iota_{V_{X} + V_{Y}}(z_1))\\
+                    <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)) &= <_{X \sqcup Y}^{\mu}(f_{V};\iota_{1,V};\iota_{V_{X}  \sqcup  V_{Y}}(z_1))\\
                                                               &= \iota_{1,E}(<_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_1)))
                 \end{align*}
                   and
                   \begin{align*}
-                    <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2)) &= <_{X+Y}^{\mu}(f_{V};\iota_{1,V};\iota_{V_{X} + V_{Y}}(z_2))\\
+                    <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_2)) &= <_{X \sqcup Y}^{\mu}(f_{V};\iota_{1,V};\iota_{V_{X}  \sqcup  V_{Y}}(z_2))\\
                                                               &= \iota_{1,E}(<_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_2)))
                 \end{align*}
                 and $e_1 \not = e_2$ implies $<_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_1)) \not = <_{X}^{\mu}(f_{V};\iota_{V_{X}}(z_2))$ which contradicts the assumption \ref{assumption:equal_predecessors}.
@@ -442,31 +469,31 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
                 The cases when $v_1 = g_{V};\iota_{2,V}(z_1)$ and $v_2 = f_{V};\iota_{1,V}(z_2)$, and $v_1 = g_{V};\iota_{2,V}(z_1)$ and $v_2 = g_{V};\iota_{2,V}(z_2)$ are analogous.
             \item Suppose $v_1 \sim_{S} v_1'$ and $v_2 \sim v_2'$ via $w = (x_1, \ldots, x_n)$ such that there is a path from $u$ to $v_1'$ and from $u$ to $x_n = v_2'$.
                   The mere fact that $v_2 \sim v_2'$ implies that $v_2$ should have a pre-image in $V_{Z}$ and the same holds for $v_1$.
-                  By the same reasoning as above it must be the case that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1)) = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))$.
+                  By the same reasoning as above it must be the case that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)) = <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_2))$.
             \item The case $v_1 \sim v_1'$ via $w = (x_1, \ldots, x_n)$ and $v_2 \sim_{S} v_1$ is symmetric to the above.
             \item The case when $v_1 \sim v_1'$ and $v_2 \sim v_2'$ is analogous.
     \end{itemize}
 
     Let's check that this is a well-defined function.
-    Suppose $v_1, v_2$ are vertices and $v_1 \sim v_2$, then $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])$.
+    Suppose $v_1, v_2$ are vertices and $v_1 \sim v_2$, then $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_2])$.
     \begin{itemize}
         \item If $[v_2) \not = \varnothing$, then, by definition we have
                 \begin{align*}
-                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))]\\
+                    <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_1]) &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_2))]\\
                      &= \text{ as $v_2 \sim v_2$ and $[v_2) \not = \varnothing$ }\\
-                     &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_2])
+                     &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_2])
                 \end{align*}
         \item The case when $[v_1) \not = \varnothing$ is symmetric.
         \item If both $[v_2) = \varnothing$ and $[v_1) = \varnothing$ but there exists $[v_3) \not = \varnothing$ such that $v_1 \sim v_3$, then
         \begin{align*}
-            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_3))]\\
+            <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_1]) &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_3))]\\
              &= \text{ as $v_3 \sim v_3$ and $[v_3) \not = \varnothing$ }\\
-             &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_3])\\
+             &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_3])\\
              &= \text{ as $v_2 \sim v_1 \sim v_3$}\\
-             &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_2])
+             &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_2])
         \end{align*}
     \end{itemize}
-    % $v_1 \sim v_2$ implies that either $v_1 = v_2$ and the well-definedness is trivial, or there exists a sequence $w = (x_1, \ldots, x_n)$ such that $v_1 = x_1$, $v_2 = x_n$ and $x_i \sim_{S} x_{i+1}$ for $i < n$.
+    % $v_1 \sim v_2$ implies that either $v_1 = v_2$ and the well-definedness is trivial, or there exists a sequence $w = (x_1, \ldots, x_n)$ such that $v_1 = x_1$, $v_2 = x_n$ and $x_i \sim_{S} x_{i \sqcup 1}$ for $i < n$.
     % We will proceed by induction on the length of $w$.
     % \begin{itemize}
     %     \item $|w|$ and then $v_1 \sim_{S} v_2$ which means there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z)$ and $v_{2} = g_{V};\iota_{2,V}(z)$.
@@ -475,143 +502,143 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     %             \item $[f_{V}(z)) \not = \varnothing$ and $g_{V}(z) = \varnothing$.
     %                   Then, 
     %                   \[
-    %                     <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [f_{V};\iota_{V_{X}};<_{X}^{\mu};\iota_{1,E}(z)]
+    %                     <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = [f_{V};\iota_{V_{X}};<_{X}^{\mu};\iota_{1,E}(z)]
     %                   \]
     %                   and
     %                   \[
-    %                     <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2])) = [f_{V};\iota_{V_{X}};<_{X}^{\mu};\iota_{1,E}(z)]
+    %                     <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_2])) = [f_{V};\iota_{V_{X}};<_{X}^{\mu};\iota_{1,E}(z)]
     %                   \]
     %                   and we have well-definedness by definition.
     %             \item $f_{V}(z) = \varnothing$ and $g_{V}(z) \not = \varnothing$ is symmetric to the above.
     %           \end{itemize}
-    %     \item Assume that if $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n)$ then $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])$.
-    %     \item Now suppose $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n, x_{n+1})$.
+    %     \item Assume that if $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n)$ then $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_2])$.
+    %     \item Now suppose $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n, x_{n \sqcup 1})$.
     %           We know that 
     %           \[
-    %             <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[x_n])
+    %             <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[x_n])
     %           \]
     %           and that
     %           \[
-    %             <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[x_n]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])
+    %             <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[x_n]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_2])
     %           \]
     %           by the same argument as in the base case,
     %           which implies
     %           \[
-    %             <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}+V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_2])
+    %             <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} \sqcup V_{Y}}{\sim}}[v_1]) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_2])
     %           \]
     % \end{itemize}
     We do not need to check well-defined-ness for edges as $e_1 \sim e_2$ just implies $e_1 = e_2$ for edges.
 
     We also need to make sure that $([]_{V},[]_{E})$ is homomorphic with respect to $<^{\mu}$.
-    That is, we need to check if $[v) \not = \varnothing$, then $[<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$.
+    That is, we need to check if $[v) \not = \varnothing$, then $[<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))$.
     Since $v \sim v$ this is homomorphic by definition.
     Similarly for edges.
     
-    Then $<_{\sfrac{X+Y}{\sim}} : V_{\sfrac{X+Y}{\sim}} + E_{\sfrac{X+Y}{\sim}} \to (E_{\sfrac{X+Y}{\sim}})^{*}$ is defined as a transitive closure of $<_{\sfrac{X+Y}{\sim}}^{\mu}$.
+    Then $<_{\sfrac{X \sqcup Y}{\sim}} : V_{\sfrac{X \sqcup Y}{\sim}}  \sqcup  E_{\sfrac{X \sqcup Y}{\sim}} \to (E_{\sfrac{X \sqcup Y}{\sim}})^{*}$ is defined as a transitive closure of $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}$.
         
-    Let's now define $\consistency_{\sfrac{X+Y}{\sim}}$.
+    Let's now define $\consistency_{\sfrac{X \sqcup Y}{\sim}}$.
     We can consider the consistency relation from the coproduct as a function 
     \[
-        \consistency_{X+Y} : (V_{X} + V_{Y}) + (E_{X} + E_{Y}) \to 2^{(V_{X} + V_{Y}) + (E_{X} + E_{Y})}
+        \consistency_{X \sqcup Y} : (V_{X}  \sqcup  V_{Y})  \sqcup  (E_{X}  \sqcup  E_{Y}) \to 2^{(V_{X}  \sqcup  V_{Y})  \sqcup  (E_{X}  \sqcup  E_{Y})}
     \]
     Quotienting the values of the function gives us 
     \[
-        \consistency_{X+Y}' : V_{X} + V_{Y} + E_{X} + E_{Y} \to 2^{(\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{(E_{X} + E_{Y})}{\sim})}
+        \consistency_{X \sqcup Y}' : V_{X}  \sqcup  V_{Y}  \sqcup  E_{X}  \sqcup  E_{Y} \to 2^{(\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}  \sqcup  \sfrac{(E_{X}  \sqcup  E_{Y})}{\sim})}
      \]
-    which is essentially $[ []_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}$ (a copairing extended to sequences that we will further denote as $[ []_{V}^{\consistency} []_{E}^{\consistency}]$) applied to the return value of $\consistency_{X+Y}$.
-    We then first define an auxiliary relation $\consistency^{\hashtag}$ similarly to how $<^{\mu}_{\sfrac{X+Y}{\sim}}$ was defined. We begin with defining $\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}$ for vertices.
+    which is essentially $[ []_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}$ (a copairing extended to sequences that we will further denote as $[ []_{V}^{\consistency} []_{E}^{\consistency}]$) applied to the return value of $\consistency_{X \sqcup Y}$.
+    We then first define an auxiliary relation $\consistency^{\hashtag}$ similarly to how $<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}$ was defined. We begin with defining $\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}$ for vertices.
 
     \begin{enumerate}
-        \item If there exists $v$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$ and $u \sim v$, we let
+        \item If there exists $v$ such that $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) \not = \varnothing$ and $u \sim v$, we let
               \ifdefined \ONECOLUMN
               \[
-                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))
+                \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]))
                 =
-                [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))
+                [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)))
               \]
               \else
               \begin{align*}
-                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))\\
+                &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]))\\
                 &=\\
-                &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))
+                &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)))
             \end{align*}
             \fi
-        \item $u$ has no pre-image in $V_{Z}$ and $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(u)) = \varnothing$ and there exists $v$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$ and such that there is an undirected path from $[u]$ to $[v]$.
+        \item $u$ has no pre-image in $V_{Z}$ and $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(u)) = \varnothing$ and there exists $v$ such that $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) \not = \varnothing$ and such that there is an undirected path from $[u]$ to $[v]$.
         Then we let
         \[
-            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+            \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
         \]
     \end{enumerate}
 
-    Next we define $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}$ for edges.
+    Next we define $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}$ for edges.
 
     \begin{enumerate}
-        \item If $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)) \not = \varnothing$, then
+        \item If $\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e)) \not = \varnothing$, then
                 \begin{align*}
-                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) =
-                    [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)))
+                    \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e]_{E})) =
+                    [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e)))
                 \end{align*}
-        \item $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e)) = \varnothing$ and there exists $v$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$ and such that there is an undirected path from $[e]$ to $[v]$
+        \item $\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e)) = \varnothing$ and there exists $v$ such that $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) \not = \varnothing$ and such that there is an undirected path from $[e]$ to $[v]$
         then
         \[
-            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]_{E})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{V_{X} + V_{Y}}([v]))
+            \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e]_{E})) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{V_{X}  \sqcup  V_{Y}}([v]))
         \]
     \end{enumerate}
     
-    The well-definedness of this construction follows by the same argument as the well-definedness of $<_{\sfrac{X+Y}{\sim}}^{\mu}$.
+    The well-definedness of this construction follows by the same argument as the well-definedness of $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}$.
     Then we define
     \ifdefined \ONECOLUMN
     \[
-        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \qquad \text{and} \qquad \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))
+        \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) \qquad \text{and} \qquad \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e]))
     \]
     \else
     \[
-        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+        \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
     \]
     and
     \[
-        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))
+        \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e]))
     \]
     \fi
 
-    as closures of $\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}$ as below.
+    as closures of $\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}$ as below.
     \[
-      (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])))^{c}
+      (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])))^{c}
     \]
-    where $c$ denotes a closure and $\iota_{\sfrac{*}{\sim}}$ is $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}$ or $\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}$ depending on whether $[x_i]$ comes from $V_{X} + V_{Y}$ or $E_{X} + E_{Y}$, is the smallest set such that
+    where $c$ denotes a closure and $\iota_{\sfrac{*}{\sim}}$ is $\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}$ or $\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}$ depending on whether $[x_i]$ comes from $V_{X}  \sqcup  V_{Y}$ or $E_{X}  \sqcup  E_{Y}$, is the smallest set such that
     \begin{itemize}
-        \item $[x] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])))^{c}$ if $\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$
-        \item if $[y] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x]))$ then 
+        \item $[x] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])))^{c}$ if $\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$
+        \item if $[y] \in \consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x]))$ then 
         \[
-            [x] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([y])))^{c}
+            [x] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([y])))^{c}
         \]
-        % \item if $[e] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then 
+        % \item if $[e] \in \consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))$ then 
         % \[
-        %     [v] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))^{c}
+        %     [v] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e])))^{c}
         % \]
         \item for any sequence $([x_1], \ldots, [x_n])$ such that
         \ifdefined \ONECOLUMN
-        \[[x_i] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i+1}])) \qquad \text{or} \qquad [x_{i+1}] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))\]
+        \[[x_i] \in \consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i \sqcup 1}])) \qquad \text{or} \qquad [x_{i \sqcup 1}] \in \consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))\]
         \else
         \[
-            [x_i] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i+1}]))
+            [x_i] \in \consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i \sqcup 1}]))
         \] or 
         \[
-            [x_{i+1}] \in \consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))
+            [x_{i \sqcup 1}] \in \consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))
         \]
         \fi
          for $i < n$ both
         \ifdefined \ONECOLUMN
         \[
-            [x_1] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{n}])))^{c} \qquad \text{and} \qquad [x_n] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{1}])))^{c}
+            [x_1] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{n}])))^{c} \qquad \text{and} \qquad [x_n] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{1}])))^{c}
         \]
         \else
          \[
-            [x_1] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{n}])))^{c}
+            [x_1] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{n}])))^{c}
         \]
         and
         \[
-            [x_n] \in (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{1}])))^{c}
+            [x_n] \in (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{1}])))^{c}
         \]
         \fi
     \end{itemize}
@@ -619,48 +646,48 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     We need to check, if
     \ifdefined \ONECOLUMN
     \[
-        [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))
+        [[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)))
         \subseteq
-        \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+        \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
     \]
     \else
     \begin{align*}
-        &[[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)))\\
+        &[[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)))\\
         &\subseteq\\
-        &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+        &\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
     \end{align*}
     \fi
 
     \begin{enumerate}
-        \item The first case is when $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) = \varnothing$.
+        \item The first case is when $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) = \varnothing$.
               Then the property trivially holds as the empty set is a subset of any set.
-        \item Suppose $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$.
+        \item Suppose $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) \not = \varnothing$.
               Then, 
               \[
-                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}})(v))
+                \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}})(v))
               \]
               since $v \sim v$,
               and hence
               \ifdefined \ONECOLUMN
               \begin{align*}
-                [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}})(v))
+                [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}})(v))
                 &\subseteq
-                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
                 &\subseteq
-                (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                (\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
               \end{align*}
               \else
               \begin{align*}
-                &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}})(v))\\
+                &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}})(v))\\
                 &\subseteq\\
-                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
                 &\subseteq\\
-                &(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                &(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))^{c} = \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
               \end{align*}
               \fi
               by recalling that 
               \[
-              [[]_{V}^{\consistency}, []_{E}^{\consistency}] = [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]
+              [[]_{V}^{\consistency}, []_{E}^{\consistency}] = [[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]
               \].
     \end{enumerate}
 
@@ -669,25 +696,25 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     % and for vertices
     % \begin{enumerate}
 
-    % \item If there exists $v' \in V_{X+Y}$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$, then
+    % \item If there exists $v' \in V_{X \sqcup Y}$ such that $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v')) \not = \varnothing$ and $v' \sim v$, then
     % \begin{align*}
-    %     &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V}))\\
-    %     &= [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v' \in V_{X} + V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')))
+    %     &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]_{V}))\\
+    %     &= [[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v' \in V_{X}  \sqcup  V_{Y} | [v']_{V} = [v]_{V}} \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v')))
     % \end{align*}
-    % \item If for all $v' \in V_{X+Y}$ such that $v' \sim v$, $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v')) = \varnothing$ and there exists $[u]$ such that there is an undirected path from $[v]$ to $[u]$ and $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([u])) \not = \varnothing$, then
+    % \item If for all $v' \in V_{X \sqcup Y}$ such that $v' \sim v$, $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v')) = \varnothing$ and there exists $[u]$ such that there is an undirected path from $[v]$ to $[u]$ and $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([u])) \not = \varnothing$, then
     % \[
-    %     \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]_{V})) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{E_{X} + E_{Y}}([u]_{V}))
+    %     \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]_{V})) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{E_{X}  \sqcup  E_{Y}}([u]_{V}))
     % \]
     % \end{enumerate}
-    % where $\iota_*$ are injections into $\sfrac{V_{X} + V_{Y}}{\sim} + \sfrac{E_{X} + E_{Y}}{\sim}$.
+    % where $\iota_*$ are injections into $\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}  \sqcup  \sfrac{E_{X}  \sqcup  E_{Y}}{\sim}$.
     % % We also build this relation step by step as the relation above: first steps (1) for nodes and edges and then we interleave steps for edges and for nodes. 
 
     % We then define
     % \[
-    %   \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c}
+    %   \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = (\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))^{c}
     % \]
     % \[
-    %   \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = (\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))^{c}  
+    %   \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e])) = (\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e])))^{c}  
     % \]
     % where $c$ is a reflexive, symmetric and transitive closure.
 
@@ -698,62 +725,62 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     %     \item Let us show well-definedness.
     %     \begin{itemize}
 
-    %         \item  Assume that $v_1, v_2 \in V_{X+Y}$ and $v_1 \sim v_2$ then we need to show that
+    %         \item  Assume that $v_1, v_2 \in V_{X \sqcup Y}$ and $v_1 \sim v_2$ then we need to show that
     %         \[
-    %             \consistency_{\sfrac{X+Y}{\sim}}(\iota_{E_{X} + E_{Y}}[v_1]) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{E_{X} + E_{Y}}[v_2])
+    %             \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{E_{X}  \sqcup  E_{Y}}[v_1]) = \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{E_{X}  \sqcup  E_{Y}}[v_2])
     %         \]
-    %           $v_1 \sim v_2$ implies there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z)$ and $v_2 = g_{V};\iota_{2,V}(z)$ and supposing that for any of $v_i$ $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i)) \not = \varnothing$, then
+    %           $v_1 \sim v_2$ implies there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V}(z)$ and $v_2 = g_{V};\iota_{2,V}(z)$ and supposing that for any of $v_i$ $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_i)) \not = \varnothing$, then
     %           \begin{align*}
-    %             &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
-    %             & = ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
+    %             &\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1]))\\
+    %             & = ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_i))))^{c}
     %           \end{align*}
     %           Similarly,
     %           \begin{align*}
-    %             &\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))\\
-    %             &= ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_i))))^{c}
+    %             &\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_2]))\\
+    %             &= ([[]_{V}^{\consistency}, []_{E}^{\consistency}]^{*}(\bigcup_{v_i \in \{v_1, v_2\}} \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_i))))^{c}
     %         \end{align*}
     %           and we get well-definedness on the nose.
     %           We do not need to check well-definedness for edges as $e_1 \sim e_2$ implies $e_1 = e_2$.
     %         \item Now suppose that both 
-    %         \[\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)) = \varnothing
+    %         \[\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)) = \varnothing
     %         \quad 
     %         \text{and} 
-    %         \quad\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_2)) = \varnothing
+    %         \quad\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_2)) = \varnothing
     %         \]
     %         This would mean that for all $z \in V_{Z}$, $\consistency(f_{V}(z)) = \varnothing$ and $\consistency(g_{V}(z)) = \varnothing$ and automatically
     %               \[
-    %                 \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))
+    %                 \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_2]))
     %               \]
     %         \end{itemize}
     %     \item Putting $\phi = ([]_{V},[]_{E})$ into the definition of a homomorphism gives us
     %         \begin{align*}
-    %          &[[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)))\\
+    %          &[[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(x)))\\
     %          &\subseteq
-    %          \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x]))
+    %          \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x]))
     %         \end{align*}
     %         By definition, 
     %         \begin{align*}
-    %             &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x])) =\\
-    %              [[]_{V}^{\consistency}, []_{E}^{\consistency} ]^{*} &(\bigcup_{x' \in V_{X} + V_{Y} | [x']_{V} = [x]_{V}} \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)))
+    %             &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x])) =\\
+    %              [[]_{V}^{\consistency}, []_{E}^{\consistency} ]^{*} &(\bigcup_{x' \in V_{X}  \sqcup  V_{Y} | [x']_{V} = [x]_{V}} \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(x)))
     %         \end{align*}
-    %         and by recalling that $[]_V^{\consistency} = []_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}$ and similarly for $[]_{E}^{\consistency}$ we get the inclusion 
+    %         and by recalling that $[]_V^{\consistency} = []_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}$ and similarly for $[]_{E}^{\consistency}$ we get the inclusion 
     %         \begin{align*}
-    %             &[[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)))\\
-    %             &\subseteq \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x]))
+    %             &[[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(x)))\\
+    %             &\subseteq \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x]))
     %         \end{align*}
-    %          and the latter is the subset of $\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x]))$ because it is a closure.
-    %         If $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(x)) = \varnothing$ then homomorphismness holds because empty set is a subset of any set.
+    %          and the latter is the subset of $\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x]))$ because it is a closure.
+    %         If $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(x)) = \varnothing$ then homomorphismness holds because empty set is a subset of any set.
     %         Similarly for edges.
     % \end{itemize}
 
-    So far we have shown that relations $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ are well-defined and $([]_{V},[]_{E})$ is a homomorphism.
-    By the Proposition~\ref{prop:pushout_is_e_hypergraph} the constructed $\sfrac{X+Y}{\sim}$ is an e-hypergraph.
+    So far we have shown that relations $<_{\sfrac{X \sqcup Y}{\sim}}$ and $\consistency_{\sfrac{X \sqcup Y}{\sim}}$ are well-defined and $([]_{V},[]_{E})$ is a homomorphism.
+    By the Proposition~\ref{prop:pushout_is_e_hypergraph} the constructed $\sfrac{X \sqcup Y}{\sim}$ is an e-hypergraph.
     To show that it is a pushout we need to check the universal property.
     Let $u_{V}([\iota_{1,V}(x)]) = j_{1,V}(x)$ and $u_{V}([\iota_{2,V}(y)]) = j_2(y)$.
     We will need to check that this a well-defined function as well as that it is indeed a homomorphism.
 
     Let's say that $v_1 \sim v_2$ then we need to show that $u_{V}([v_1]) = u_{V}([v_2])$.
-    $v_1 \sim v_2$ means there is a sequence $w = (x_1, \ldots, x_n)$ such that $v_1 = x_1$, $v_2 = x_n$ and for all $i < n$ $x_i \sim_{S} x_{i+1}$. We will proceed by induction on the length of $w$.
+    $v_1 \sim v_2$ means there is a sequence $w = (x_1, \ldots, x_n)$ such that $v_1 = x_1$, $v_2 = x_n$ and for all $i < n$ $x_i \sim_{S} x_{i \sqcup 1}$. We will proceed by induction on the length of $w$.
     \begin{itemize}
         \item $|w| = 2$, then $v_1 \sim_{S} v_2$ and there exists $z \in V_{Z}$ such that $v_1 = f_{V};\iota_{1,V})(z)$ and $v_2 = g_{V};\iota_{2,V}(z)$ and we have
         \[
@@ -765,8 +792,8 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         \] 
         which are equal by commutativity.
         \item Assume if $v_1 \sim v_2$ via $w : |w| \leq n$ then $u_{V}([v_1]) = u_{V}([v_2])$.
-        \item Suppose $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n, x_{n+1})$.
-              By hypothesis, we know that $u_{V}([v_1]) = u_{V}([x_1]) = u_{V}([x_n])$ and that $u_{V}([x_n]) = u_{V}([x_{n+1}]) = u_{V}([v_2])$ and hence $u_{V}([v_1]) = u_{V}([v_2])$.
+        \item Suppose $v_1 \sim v_2$ via $w = (x_1, \ldots, x_n, x_{n \sqcup 1})$.
+              By hypothesis, we know that $u_{V}([v_1]) = u_{V}([x_1]) = u_{V}([x_n])$ and that $u_{V}([x_n]) = u_{V}([x_{n \sqcup 1}]) = u_{V}([v_2])$ and hence $u_{V}([v_1]) = u_{V}([v_2])$.
     \end{itemize}
     Because $v_1 \sim t_2$, it means that there exists $z \in V_{Z}$ such that $t_1 = f_{V};\iota_{1,V}(z)$ and $t_2 = g_{V};\iota_{2,V}(z)$.
     Then, we have
@@ -784,14 +811,14 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
 
     Let's now check if $u = (u_{V},u_{E})$ is a homomorphism.
     \begin{enumerate}
-        \item The first condition to check is if $u_{V}^{*}(s_{\sfrac{X+Y}{\sim}}([e])) = s_{Q}(u_{E}([e]))$. 
-              By construction of $s_{\sfrac{X+Y}{\sim}}$ we have
+        \item The first condition to check is if $u_{V}^{*}(s_{\sfrac{X \sqcup Y}{\sim}}([e])) = s_{Q}(u_{E}([e]))$. 
+              By construction of $s_{\sfrac{X \sqcup Y}{\sim}}$ we have
               \[
-                u_{V}^{*}(s_{\sfrac{X+Y}{\sim}}([e])) = u_{V}^{*}([s_{X+Y}(e)]^{*})
+                u_{V}^{*}(s_{\sfrac{X \sqcup Y}{\sim}}([e])) = u_{V}^{*}([s_{X \sqcup Y}(e)]^{*})
               \]
               Suppose $e = \iota_{E_{X}}(e')$ and then
               \begin{align*}
-                u_{V}^{*}([s_{X+Y}(e)]^{*}) &= u_{V}^{*}([s_{X+Y}(\iota_{1,E}(e'))]^{*})\\
+                u_{V}^{*}([s_{X \sqcup Y}(e)]^{*}) &= u_{V}^{*}([s_{X \sqcup Y}(\iota_{1,E}(e'))]^{*})\\
                                             &= u_{V}^{*}([(\iota_{1,V}^{*}(s_{X}(e')))]^{*})
               \end{align*}
               Since $j_1$ and $j_2$ are homomorphisms, it must be the case that $s_{Q}(j_{1,E}(e')) = j_{1,V}^{*}(s_{X}(e'))$.
@@ -806,14 +833,14 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         \item The case for targets is analogous.
         \item The next condition to check is if $[[v]) \not = \varnothing$ then 
     \[
-        <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+        <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v]))
     \]
     We need to consider a few cases.
     \begin{itemize}
-        \item Suppose $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))]$ for $u \sim v$.
+        \item Suppose $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(u))]$ for $u \sim v$.
               Then assume $u = \iota_{1,V}(u_{x})$ and then 
               \begin{align*}
-                [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(u))] &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(\iota_{1,V}(u_{x})))]\\
+                [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(u))] &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(\iota_{1,V}(u_{x})))]\\
                 &= [\iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(u_{x})))]
             \end{align*}
             and
@@ -825,17 +852,17 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
             \end{align*}
             and we have
             \[
-                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v]))
             \]
             The case when $u = \iota_{2,V}(u_{y})$ is symmetric.
-        \item Suppose $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))$ such that there is a path from $[v]$ to $[v']$ and $v$ has no pre-image in $V_{Z}$.
+        \item Suppose $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v']))$ such that there is a path from $[v]$ to $[v']$ and $v$ has no pre-image in $V_{Z}$.
               By the argument above, we know that
               \[
-                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v']))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v']))
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v']))) = u_{E}(<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v']))
               \]
               and by definition
               \[
-                u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v'])) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+                u_{E}(<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v'])) = u_{E}(<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v]))
               \]
               since $(u_{V},u_{E})$ preserves sources and targets and there is a path from $[v]$ to $[v']$, there is a path from $u_{V}([v])$ to $u_{V}([v'])$ and because $Q$ is an e-hypergraph
               \[
@@ -843,50 +870,50 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
               \]
               and finally
               \[
-                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v]))
+                <^{\mu}_{Q}(\iota_{V_{Q}}(u_{V}([v]))) = u_{E}(<^{\mu}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v]))
               \]
         \end{itemize}
     The cases for edges are analogous.
     \item The last condition to check is if
     \begin{align*}
-    &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+    &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))\\
     &\;\subseteq\\
     &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
     \end{align*}
     Recall that
     \[
-      \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = (\consistency^{\hashtag}_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))^{c}
+      \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = (\consistency^{\hashtag}_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))^{c}
     \]
     and first we will check if
     \begin{align*}
-      &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+      &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))\\
       &\;\subseteq\\
       &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
     \end{align*}
     Consider cases
     \begin{itemize}
-        \item If $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \varnothing$ then the inclusion is trivial and hence we assume that
+        \item If $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = \varnothing$ then the inclusion is trivial and hence we assume that
         \[
-            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) \not = \varnothing
+            \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) \not = \varnothing
         \]
-        \item Suppose $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(u)) \not = \varnothing$ and $v \sim u$ and then
+        \item Suppose $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(u)) \not = \varnothing$ and $v \sim u$ and then
         \[
-            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(u)))
+            \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X} \sqcup V_{Y}}(u)))
         \]
         Assume $u = \iota_{1,V}(u_{x})$, then
         \ifdefined \ONECOLUMN
         \begin{align*}
-            [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(u)))
+            [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X} \sqcup V_{Y}}(u)))
             &=
-            [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(\iota_{1,V}(u_{x}))))\\
+            [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X} \sqcup V_{Y}}(\iota_{1,V}(u_{x}))))\\
             &=
             [\iota_{1,V};[]_{V}^{\consistency},\iota_{1,E};[]_{E}^{\consistency}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))
         \end{align*}
         \else
         \begin{align*}
-            &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(u)))\\
+            &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X} \sqcup V_{Y}}(u)))\\
             &=\\
-            &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X}+V_{Y}}(\iota_{1,V}(u_{x}))))\\
+            &[[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X} \sqcup V_{Y}}(\iota_{1,V}(u_{x}))))\\
             &=\\
             &[\iota_{1,V};[]_{V}^{\consistency},\iota_{1,E};[]_{E}^{\consistency}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))
         \end{align*}
@@ -895,7 +922,7 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         and
         \ifdefined \ONECOLUMN
         \begin{align*}
-            [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))
+            [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))
             &=
             [\iota_{1,V};[]_{V};u_{V};\iota_{V_{Q}},\iota_{1,E};[]_{E};u_{E};\iota_{Q_{E}}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))\\
             &=
@@ -911,7 +938,7 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         \end{align*}
         \else
         \begin{align*}
-            &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+            &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))\\
             &=\\
             &[\iota_{1,V};[]_{V};u_{V};\iota_{V_{Q}},\iota_{1,E};[]_{E};u_{E};\iota_{Q_{E}}]^{*}(\consistency_{X}(\iota_{V_{X}}(u_{x})))\\
             &=\\
@@ -927,13 +954,13 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
         \end{align*}
         \fi
         The case when $u = \iota_{2,V}(u_{y})$ is symmetric.
-        \item Suppose that $v$ has no pre-image in $V_{Z}$ and $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) = \varnothing$ and there exists $u$ such that $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(u)) \not = \varnothing$ and such that there is an undirected path from $[v]$ to $[u]$ and then
+        \item Suppose that $v$ has no pre-image in $V_{Z}$ and $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) = \varnothing$ and there exists $u$ such that $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(u)) \not = \varnothing$ and such that there is an undirected path from $[v]$ to $[u]$ and then
         \[
-            \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))    
+            \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]))    
         \]
         By the argument above it follows that
         \begin{align*}
-            &[u_{V};\iota_{Q_{V}},u_{E};\iota_{Q_{E}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u])))\\
+            &[u_{V};\iota_{Q_{V}},u_{E};\iota_{Q_{E}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u])))\\
             &\;\subseteq\\
             &\consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))
         \end{align*}
@@ -941,9 +968,9 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
        Since $(u_{V},u_{E})$ preserves paths, there is a path from $u_{V}([u])$ to $u_{V}([v])$ and since $Q$ is an e-hypergraph
        \ifdefined \ONECOLUMN
        \begin{align*}
-        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+        \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
         &=
-        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))\\
+        \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]))\\
         &\subseteq
         \consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))\\
         &=
@@ -951,9 +978,9 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
        \end{align*}
        \else
        \begin{align*}
-        &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+        &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
         &=\\
-        &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]))\\
+        &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]))\\
         &\subseteq\\
         &\consistency_{Q}(\iota_{V_{Q}}(u_{V}([u])))\\
         &=\\
@@ -962,19 +989,19 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
     \fi
        So far we have shown that
        \begin{align*}
-        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))\\
         &\;\subseteq\\
         & \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
        \end{align*}
        and
        \begin{align*}
-        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])))\\
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e])))\\
         &\;\subseteq\\
         &\consistency_{Q}(u_{E};\iota_{E_{Q}}([e]))
        \end{align*} follows by the same argument.
        Then, to check if
        \begin{align*}
-        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))\\
         &\; \subseteq\\
         &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
        \end{align*}
@@ -982,45 +1009,45 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
        \begin{itemize}
         \item $[u_{V};\iota_{V_{Q}},u_{E};\iota_{E_{Q}}]^{*}(\{[v]\}) \subseteq \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))$.
               This holds because $\consistency_{Q}$ is reflexive.
-        \item $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([u]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then 
+        \item $\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([u]) \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))$ then 
         \[
             [u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\{[v]\}) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([u]))
         \]
               The first bit implies that $u_{V};\iota_{V_{Q}}([u]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))$ and since $\consistency_{Q}$ is symmetric it must be the case that $u_{V_{Q}};\iota_{V_{Q}}[v] \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([u]))$
         \item There exists a sequence $w = (x_1, \ldots, x_n)$ such that 
         \[
-            \iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_i]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{i+1}]))
+            \iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_i]) \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_{i \sqcup 1}]))
         \] 
         
         or 
         \[
-            \iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{i+1}]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{i}]))
+            \iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_{i \sqcup 1}]) \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_{i}]))
         \]
         for $i < n$ (or similarly for edges), then $u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_n]))$.
         \begin{itemize}
             \item Base case is when $w = (x_1,x_2)$.
                   Then the statement is trivial as 
                   \begin{align*}
-                  &[u_{V};\iota_{V_{Q}},u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_2])))\\
+                  &[u_{V};\iota_{V_{Q}},u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_2])))\\
                   &\subseteq\\
                   &\consistency_{Q}(u_{V};\iota_{V_{Q}}([x_2]))
                   \end{align*}
             \item Suppose the statement is true for all $w$ such that $|w| \leq n$.
-            \item Consider a sequence $w = (x_1, \ldots, x_{n}, x_{n+1})$.
+            \item Consider a sequence $w = (x_1, \ldots, x_{n}, x_{n \sqcup 1})$.
                   By assumption, we know that $u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_n]))$.
-                  The fact that $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{n}]) \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([x_{n+1}]))$ (or its symmetric counterpart) implies that $u_{V};\iota_{V_{Q}}([x_{n}]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{n+1}]))$ and by the transitivity and symmetry of $\consistency_{Q}$ it follows that
+                  The fact that $\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_{n}]) \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([x_{n \sqcup 1}]))$ (or its symmetric counterpart) implies that $u_{V};\iota_{V_{Q}}([x_{n}]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{n \sqcup 1}]))$ and by the transitivity and symmetry of $\consistency_{Q}$ it follows that
                 \[
-                    u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{n+1}]))
+                    u_{V};\iota_{V_{Q}}([x_1]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{n \sqcup 1}]))
                 \]
                 and
                 \[
-                    u_{V};\iota_{V_{Q}}([x_{n+1}]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{1}]))
+                    u_{V};\iota_{V_{Q}}([x_{n \sqcup 1}]) \in \consistency_{Q}(u_{V};\iota_{V_{Q}}([x_{1}]))
                 \]
         \end{itemize}
        \end{itemize}
        Therefore, we have
        \begin{align*}
-        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])))\\
+        &[u_{V};\iota_{V_{Q}}, u_{E};\iota_{E_{Q}}]^{*}(\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])))\\
         &\;\subseteq\\
         &\consistency_{Q}(u_{V};\iota_{V_{Q}}([v]))
        \end{align*}
@@ -1039,7 +1066,7 @@ Recall that $<$ is essentially a transitive closure of $<^{\mu}$ and hence we ca
 \end{remark}
 
 \begin{remark}
-    If in a span $Y \xleftarrow{g} Z \xrightarrow{f} X$ of morphisms in $\catname{EHyp}(\Sigma)$ the morphisms $f$ and $g$ are monos, then the arrows $f'$ and $g'$ of the pushout $Y \xrightarrow{g'} X +_{f,g} Y \xleftarrow{f'} X$ are also monos.
+    If in a span $Y \xleftarrow{g} Z \xrightarrow{f} X$ of morphisms in $\catname{EHyp}(\Sigma)$ the morphisms $f$ and $g$ are monos, then the arrows $f'$ and $g'$ of the pushout $Y \xrightarrow{g'} X  \sqcup _{f,g} Y \xleftarrow{f'} X$ are also monos.
 \end{remark}
 This is because $[]_{V}$ identifies two vertices $v_1$ and $v_2$ only if there exists a vertex $z$ in $V_{Z}$ such that $f_{V};\iota_{1,V}(z) = v_1$ and $g_{V};\iota_{2,V}(z) = v_2$ and therefore $f' = \iota_{1};[]$ and $g' = \iota_{2};[]$ are monos.
 Similarly for edges.
@@ -1085,43 +1112,43 @@ Similarly for edges.
     \end{align*}
 \end{example}
 
-% So far we have shown that the constructed $\sfrac{X+Y}{\sim}$ is a pushout but we are yet to show that it is an e-hypergraph.
+% So far we have shown that the constructed $\sfrac{X \sqcup Y}{\sim}$ is a pushout but we are yet to show that it is an e-hypergraph.
 % The proof of the latter will follow below and the following corollaries will come in handy.
 % We will then proceed by showing that both relations satisfy the properties as defined in Definition~\ref{def:e-homo}.
 
 
-% By construction we have the following corollaries for $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$.
+% By construction we have the following corollaries for $<_{\sfrac{X \sqcup Y}{\sim}}$ and $\consistency_{\sfrac{X \sqcup Y}{\sim}}$.
 
 \begin{lemma}
 \label{lemma:child_irreflexive}
-    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ is irreflexive.
+    $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}$ is irreflexive.
 \end{lemma}
 \begin{proof}
-    Suppose there exist $[e]$ such that $[e] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e]))$.
+    Suppose there exist $[e]$ such that $[e] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e]))$.
     Then we have two cases.
     \begin{itemize}
-      \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e))] = [e]$
-      This would mean that $<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e)) = e$ as $[]_{E}$ is injective, which would mean that the relation $<_{X+Y}^{\mu}$ is not irreflexive because $e$ is the predecessor of $e$.
-      \item Suppose $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]$ such that $<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ is defined and there is a path from $[e]$ to $[v]$.
+      \item $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e])) = [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e))] = [e]$
+      This would mean that $<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e)) = e$ as $[]_{E}$ is injective, which would mean that the relation $<_{X \sqcup Y}^{\mu}$ is not irreflexive because $e$ is the predecessor of $e$.
+      \item Suppose $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e])) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))]$ such that $<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))$ is defined and there is a path from $[e]$ to $[v]$.
             This implies
             \[
-                [e] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]
+                [e] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))]
             \]
             and
             \[
-               e = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))
+               e = <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))
             \]
             The existence of a path from $[e]$ to $[v]$ means there is a path from $e$ to $v'$ such that $v' \sim v$.
             \begin{itemize}
-                \item If $v' = v$, then there is a path from $e$ to $v$ which contradicts $e = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$
+                \item If $v' = v$, then there is a path from $e$ to $v$ which contradicts $e = <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))$
                 \item Consider the case when $v' \sim v$.
-                      $e = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ implies that both $e$ and $v$ are in the image of $(\iota_{1,V},\iota_{1,E})$ or $(\iota_{2,V},\iota_{2,E})$.
+                      $e = <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))$ implies that both $e$ and $v$ are in the image of $(\iota_{1,V},\iota_{1,E})$ or $(\iota_{2,V},\iota_{2,E})$.
                       Suppose $e = \iota_{1,E}(e_{x})$ and $v = \iota_{1,V}(v_{x})$.
                       Since $v' \sim v$, $v_{x} = f_{V}(z_1)$. 
                       And since there is a path from $v'$ to $e$, $v' = \iota_{1,V}(v'_{x})$ and $v'_{x} = f_{V}(z_2)$.
                       This further implies
                       \begin{align*}
-                        <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x})))\\
+                        <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x})))\\
                                                                 &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_1))))\\
                                                                 &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_2))))\\
                                                                 &= \iota_{1,E}(e_{x})
@@ -1139,24 +1166,24 @@ Similarly for edges.
 
 \begin{lemma}
 \label{lemma:child_assymetric}
-    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ is asymmetric.
+    $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}$ is asymmetric.
 \end{lemma}
 \begin{proof}
     Let $e_1,e_2$ be edges. 
-    Then, if $[e_1] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))$ it must not be the case that $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
-    For $[e_1] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_2]))$ we have two cases.
+    Then, if $[e_1] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_2]))$ it must not be the case that $[e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))$.
+    For $[e_1] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_2]))$ we have two cases.
     \begin{itemize}
       \item 
       \[
-        [e_1] = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_2))]
+        [e_1] = [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_2))]
       \]
-      which implies $e_1 = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_2))$.
-      Having at the same time $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$ gives us also two cases.
+      which implies $e_1 = <_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_2))$.
+      Having at the same time $[e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))$ gives us also two cases.
       \begin{itemize}
-        \item $[e_2] = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))]$ and $e_2 = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))$ which implies that $e_1$ is the predecessor of $e_2$ and vice versa which contradicts e-hypergraphness of $X+Y$.
+        \item $[e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))]$ and $e_2 = <_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))$ which implies that $e_1$ is the predecessor of $e_2$ and vice versa which contradicts e-hypergraphness of $X \sqcup Y$.
         \item
             \[
-                [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]
+                [e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))]
             \]
             such that $[e_1) = \varnothing$ and there is a path from $[e_1]$ to $[v]$, i.e. a path from $e_1$ to $v'$ such that $v' \sim v$.
             \begin{itemize}
@@ -1166,40 +1193,40 @@ Similarly for edges.
                 $v' \sim v$ implies $v_{x} = f_{V}(z_1)$ and $v'_{x} = f_{V}(z_2)$.
                 Then,
                 \begin{align*}
-                    <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v)) &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x})))\\
+                    <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x})))\\
                                                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_1))))\\
                                                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_2))))\\
                                                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{x}')))\\
-                                                            &= <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v'))\\
-                                                            &= <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))
+                                                            &= <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v'))\\
+                                                            &= <_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))
                 \end{align*}
-                which contradicts $e_1 = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_2))$.
+                which contradicts $e_1 = <_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_2))$.
                 The case when $e_2 = \iota_{2,E}(e_{2,y})$ and $v = \iota_{2,V}(v_{y})$ is symmetric.
             \end{itemize}
         \end{itemize}
             \item The other case is when          
             \[
-                [e_1] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))]
+                [e_1] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1))]
             \]
             such that there is a path from $e_2$ to $v'_1$ and $v_1 \sim v'_1$ and $[e_2) = \varnothing$.
             \begin{itemize}
-                \item The case when $[e_2] = [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))]$ is analogous to the last case above.
+                \item The case when $[e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))]$ is analogous to the last case above.
                 \item Suppose 
                 \[
-                    [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_2))]
+                    [e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_2))]
                 \] such that there is a path from $e_1$ to $v'_2$ and $v_2 \sim v'_2$ and $[e_1) = \varnothing$.
                     Suppose $e_1 = \iota_{1,E}(e_{1,x})$ and $v_1 = \iota_{1,V}(v_{1,x})$ which implies $v'_2 = \iota_{1,V}(v'_{2,x})$.
                     Since $v_1 \sim v_1'$, $v_{1,x} = f_{V}(z_1)$ and similarly $v'_{2,x} = f_{V}(z_2)$.
                     \begin{align*}
-                        e_1 &= <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))\\
+                        e_1 &= <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1))\\
                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v_{1,x})))\\
                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_1))))\\
                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(f_{V}(z_2))))\\
                             &= \iota_{1,E}(<_{X}^{\mu}(\iota_{V_{X}}(v'_{2,x})))\\
-                            &= <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v'_2))\\
-                            &= <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))
+                            &= <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v'_2))\\
+                            &= <_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))
                     \end{align*}
-                    And we get a contradiction to irreflexivity of $<_{X+Y}^{\mu}$.
+                    And we get a contradiction to irreflexivity of $<_{X \sqcup Y}^{\mu}$.
             \end{itemize}
       \end{itemize} 
     Once again, we do not need to check for vertices as a vertex can not be on the left-hand side of the relation.
@@ -1208,68 +1235,68 @@ Similarly for edges.
 
 \begin{lemma}
 \label{lemma:child_respect}
-    $<_{\sfrac{X+Y}{\sim}}^{\mu}$ respects connectivity.
+    $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}$ respects connectivity.
 \end{lemma}
 \begin{proof}
-        We need to show that if $[v] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ and $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$ then $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v])$.
+        We need to show that if $[v] \in s_{\sfrac{X \sqcup Y}{\sim}}([e_1])$ and $[e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))$ then $[e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v])$.
         We have two cases.
         \begin{itemize}
             \item \[
-            [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(e_1))]
+            [e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(e_1))]
             \]
-            By definition, $s_{\sfrac{X+Y}{\sim}}([e_1]) = [s_{X+Y}(e_1)]^{*}$ and $[v] \in [s_{X+Y}(e_1)]^{*}$ means there exists $v' \sim v$ such that $v' \in s_{X+Y}(e_1)$.
+            By definition, $s_{\sfrac{X \sqcup Y}{\sim}}([e_1]) = [s_{X \sqcup Y}(e_1)]^{*}$ and $[v] \in [s_{X \sqcup Y}(e_1)]^{*}$ means there exists $v' \sim v$ such that $v' \in s_{X \sqcup Y}(e_1)$.
             \begin{itemize}
-                \item $v' = v$ and then $v \in s_{X+Y}(e_1)$ and therefore $e_2 = <_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))$ and $[e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v))]$.
+                \item $v' = v$ and then $v \in s_{X \sqcup Y}(e_1)$ and therefore $e_2 = <_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))$ and $[e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v))]$.
                 \item $v' \sim v$ and then 
                 \begin{align*}
-                    [e_2] &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v'))]\\
-                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v']))\\
-                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+                    [e_2] &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v'))]\\
+                          &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v']))\\
+                          &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
                 \end{align*}
             \end{itemize}
             \item \[
-                [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))]    
+                [e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1))]    
             \]
             such that there is $v_1' \sim v_1$ and there is a path from $e_1$ to $v_1'$ and $[e_1) = \varnothing$.
-            $[v] \in [s_{X+Y}(e_1)]^{*}$ means there exists $v' \sim v$ such that $v' \in s_{X+Y}(e_1)$.
+            $[v] \in [s_{X \sqcup Y}(e_1)]^{*}$ means there exists $v' \sim v$ such that $v' \in s_{X \sqcup Y}(e_1)$.
             \begin{itemize}
-                \item $v' = v$ and then $v \in s_{X+Y}(e_1)$. Since there is a path from $e_1$ to $v_1'$, there is also a path from $v'$ to $v_1'$ and by definition
+                \item $v' = v$ and then $v \in s_{X \sqcup Y}(e_1)$. Since there is a path from $e_1$ to $v_1'$, there is also a path from $v'$ to $v_1'$ and by definition
                 \[
-                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [e_2]
+                    <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v])) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = [e_2]
                 \]
                 \item $v' \sim v$ and then there is a path from $v'_1$ to $v'$. 
-                Suppose $v_1 = f_{V};\iota_{1,V}(z_1)$ and since $v_1' \in s_{X+Y}(e_1)$, $[e_1) = \varnothing$, both $v_1'$ and $v'$ should be in the image of $g_{V};\iota_{2,V}$.
+                Suppose $v_1 = f_{V};\iota_{1,V}(z_1)$ and since $v_1' \in s_{X \sqcup Y}(e_1)$, $[e_1) = \varnothing$, both $v_1'$ and $v'$ should be in the image of $g_{V};\iota_{2,V}$.
                 Since $[v_1) \not = \varnothing$ it must be the case that for all $z$ $[f_{V}(z)) \not = \varnothing$ as well as for some $v'' \sim v'$ such that $v'' = f_{V};\iota_{1,V}(z'')$.
                 Clearly such $v''$ exists.
                 It is either $v$, if $v = f_{V};\iota_{1,V}(z'')$, or some $x_i$ in $(x_1, \ldots, x_n)$ such that $x_1 = v'$ and $x_n = v$.
                 \begin{align*}
-                    [e_2] &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1))]\\
+                    [e_2] &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1))]\\
                           &= [\iota_{1,E}(<_{X}(\iota_{V_{X}}(f_{V}(z_1))))]\\
                           &= [\iota_{1,E}(<_{X}(\iota_{V_{X}}(f_{V}(z''))))]\\
-                          &= [<_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z'')))]\\
-                          &= [<_{X+Y}(\iota_{V_{X} + V_{Y}}(v''))]\\
-                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
-                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))
+                          &= [<_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(f_{V};\iota_{1,V}(z'')))]\\
+                          &= [<_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v''))]\\
+                          &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v'']))\\
+                          &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))
                 \end{align*}
                 The case when $v_1 = g_{V};\iota_{2,V}(z_1)$ is symmetric.
             \end{itemize}
             \end{itemize}
-            \item Finally, we need to check that if $[v] \in s([e_1])$ and $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ then $[e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))$.
-            Once again, $[v] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ means that there exists $v' \in s_{X+Y}(e_1)$ such that $v' \sim v$.
+            \item Finally, we need to check that if $[v] \in s([e_1])$ and $[e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))$ then $[e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))$.
+            Once again, $[v] \in s_{\sfrac{X \sqcup Y}{\sim}}([e_1])$ means that there exists $v' \in s_{X \sqcup Y}(e_1)$ such that $v' \sim v$.
             \begin{itemize}
                 \item \[
-                [e_2] = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v''))]
+                [e_2] = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v''))]
                 \] such that $v'' \sim v$ and $[v'') \not = \varnothing$.
                 \begin{itemize}
-                    \item If $v' = v$ and $v'' = v$ then $v \in s_{X+Y}(e_1)$ and since $[v'') = [v) \not = \varnothing$ and $v \in s_{X+Y}(e_1)$, it must be the case that
-                    $<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1)) = <_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(v))$ and further
+                    \item If $v' = v$ and $v'' = v$ then $v \in s_{X \sqcup Y}(e_1)$ and since $[v'') = [v) \not = \varnothing$ and $v \in s_{X \sqcup Y}(e_1)$, it must be the case that
+                    $<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1)) = <_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(v))$ and further
                     \begin{align*}
-                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(e_1))]\\
-                                                                                            &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}}(v))]\\
-                                                                                            &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
+                    <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))]\\
+                                                                                            &= [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}}(v))]\\
+                                                                                            &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
                                                                                             &= [e_2]
                     \end{align*}
-                    \item If $v' = v $ and $v'' \sim v$ then $v \in s_{X+Y}(e_1)$.
+                    \item If $v' = v $ and $v'' \sim v$ then $v \in s_{X \sqcup Y}(e_1)$.
                           Suppose $v'' = f_{V};\iota_{1,V}(z'')$.
                           Consider cases.
                           \begin{itemize}
@@ -1277,43 +1304,43 @@ Similarly for edges.
                             \item $v = g_{V};\iota_{2,V}(z)$, then $g_{V}(z) = \varnothing$ and $[e_1) = \varnothing$.
                                   Since there is a path from $v$ to $e_1$ and $[v'') \not = \varnothing$ and $v'' \sim v$, by definition,
                                   \begin{align*}
-                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                                    <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v'']))\\
                                     &= [e_2]
                                   \end{align*}
                           \end{itemize}
                           Case when $v'' = g_{V};\iota_{2,V}(z'')$ is symmetric.
-                    \item If $v' \sim v$ and $v'' = v$ then $v' \in s_{X+Y}(e_1)$. This implies that $[v) \not = \varnothing$
+                    \item If $v' \sim v$ and $v'' = v$ then $v' \in s_{X \sqcup Y}(e_1)$. This implies that $[v) \not = \varnothing$
                           \begin{itemize}
                             \item If $v = f_{V};\iota_{1,V}(z)$ and $v' = f_{V};\iota_{1,V}(z')$ then $[e_1) = [v') = [v) \not = \varnothing $ since $[f_{V}(z')) = [f_{V}(z))$.
                                   That is,
                                   \begin{align*}
-                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}})(e_1)]\\
-                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v)]\\
-                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v'')]\\
+                                    <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}})(e_1)]\\
+                                                                                                    &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}})(v)]\\
+                                                                                                    &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}})(v'')]\\
                                                                                                     &= [e_2]
                                   \end{align*}
                             \item $v = f_{V};\iota_{1,V}(z)$ and $v' = g_{V};\iota_{2,V}(z')$ and then $[g_{V}(z')) = \varnothing$ and $[e_1) = \varnothing$.
                                   By definition,
                                   \begin{align*}
-                                  <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))\\
-                                                                                                          &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                                  <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))\\
+                                                                                                          &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v'']))\\
                                                                                                           &= [e_2]
                                   \end{align*}
                           \end{itemize}
                           The case when $v = g_{V};\iota_{1,V}(z)$ is symmetric.
-                    \item If $v' \sim v$ and $v'' \sim v$ then $v' \in s_{X+Y}{e_1}$, $[v'') \not = \varnothing$ and $v'' \sim v'$.
+                    \item If $v' \sim v$ and $v'' \sim v$ then $v' \in s_{X \sqcup Y}{e_1}$, $[v'') \not = \varnothing$ and $v'' \sim v'$.
                     \begin{itemize}
                         \item If $v'' = f_{V};\iota_{1,V}(z'')$ and $v' = f_{V};\iota_{2,V}(z')$ then $[e_1) = [v') = [v'')$ and
                             \begin{align*}
-                                    <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= [<_{X+Y}^{\mu}(\iota_{E_{X} + E_{Y}})(e_1)]\\
-                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v')]\\
-                                                                                                    &= [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}})(v'')]\\
+                                    <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= [<_{X \sqcup Y}^{\mu}(\iota_{E_{X}  \sqcup  E_{Y}})(e_1)]\\
+                                                                                                    &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}})(v')]\\
+                                                                                                    &= [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}})(v'')]\\
                                                                                                     &= [e_2]
                                   \end{align*}
                         \item If $v'' = f_{V};\iota_{1,V}(z'')$ and $v' = g_{V};\iota_{2,V}(z')$ then $[g_{V}(z')) = \varnothing$ and $[e_1) = \varnothing$. 
                         Then
                         \begin{align*}
-                            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                            <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v'']))\\
                                                                                                     &= [e_2]
                         \end{align*}
                         The case when $v'' = g_{V};\iota_{2,V}(z'')$ is symmetric.
@@ -1321,15 +1348,15 @@ Similarly for edges.
                 \end{itemize}
                 \item Now suppose that 
                 \[
-                [e_2] = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))
+                [e_2] = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v'']))
                 \]
                 such that $[v'') \not = \varnothing$, $[v) = \varnothing$ and there is a path from $[v]$ to $[v'']$, i.e. there is a path from $v$ to $v'$ and $v' \sim v''$.
-                In its turn $[v] \in s_{\sfrac{X + Y}{\sim}}([e_1])$ implies $v_1 \in s_{X+Y}(e_1)$ and $v \sim v_1$.
+                In its turn $[v] \in s_{\sfrac{X  \sqcup  Y}{\sim}}([e_1])$ implies $v_1 \in s_{X \sqcup Y}(e_1)$ and $v \sim v_1$.
                 As per the comment below~\ref{def:child_respects_connectivity}, necessarily $v = v_1$ as $v$ should not have a pre-image in $V_{Z}$.
-                This implies that $v \in s_{X+Y}(e_1)$ and that $[e_1) = \varnothing$.
+                This implies that $v \in s_{X \sqcup Y}(e_1)$ and that $[e_1) = \varnothing$.
                 As there is a path from $v$ to $v'$, there is a path from $e_1$ to $v'$ and by definition, since $v'' \sim v'$ and $[v'') \not = \varnothing$,
                 \begin{align*}
-                <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v'']))\\
+                <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v'']))\\
                  &\;= [e_2]
                 \end{align*}
             \end{itemize}    
@@ -1340,175 +1367,175 @@ Similarly for edges.
 \label{lemma:closures_of_equal_sets_are_equal}
 If
 \[
-\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
 \]
-where $\iota_{\sfrac{*}{\sim}}$ is either $\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}$ or $\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}$ depending on whether $[x_i]$ is in $V_{X} + V_{Y}$ or $E_{X} + E_{Y}$.
+where $\iota_{\sfrac{*}{\sim}}$ is either $\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}$ or $\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}$ depending on whether $[x_i]$ is in $V_{X}  \sqcup  V_{Y}$ or $E_{X}  \sqcup  E_{Y}$.
 Then
 \[
-\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))
+\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))
 \]
 That is, closures of both sides are equal.
 \end{lemma}
 
 \begin{proof}
     To check that the sets after closures are equal, we need to check if every element of the set on the left is also in the set on the right and vice versa.
-    Apart from $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))$ the set on the left also contains
+    Apart from $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))$ the set on the left also contains
     \begin{itemize}
         \item $[x_1]$ as per the reflexivity.
-        So we need to check if $[x_1] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+        So we need to check if $[x_1] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
               Because 
               \[
-              \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+              \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
               \]
               there exists some $[y]$ such that 
               \[
-              [y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))
+              [y] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))
               \]
                and
             \[
-                [y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+                [y] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
             \]
             that is, we have a sequence $([x_1],[y],[x_2])$ and by transitivity
                \[
-               [x_1] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))
+               [x_1] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))
                \]
                 and
             \[
-            [x_2] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1]))
+            [x_2] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1]))
             \]
-        \item $[y]$ for all $[y]$ such that $[x_1] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([y]))$.
-              Let's check if $[y] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+        \item $[y]$ for all $[y]$ such that $[x_1] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([y]))$.
+              Let's check if $[y] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
               As above, there exists $[z]$ such that
               \[
-              [z] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))
+              [z] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))
               \]
                and
               \[
-                [z] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+                [z] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
               \]
               By a sequence $([y],[x_1],[z],[x_2])$ we get that
               \[
-                [y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
+                [y] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))
               \]
-              Similarly for $[y]$ such that $[x_2] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([y]))$.
-        \item For any sequence $([x_1],\ldots,[x_n])$ such that $[x_i] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_{i+1}]))$ or $[x_{i+1}] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))$ for $i < n$ the set on the left contains $[x_n]$.
-              Let's check if $[x_n] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
-              Since there exists $[y]$ such that $[y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))$ and $[y] \in \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))$ we can extend the sequence to $([x_2],[y],[x_1],\ldots,[x_n])$ and hence $[x_n] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
-              Similarly, given a sequence $([x_2],\ldots, [x_n])$ and extending it to $([x_1],[y],[x_2],\ldots,[x_n])$ we get $[x_n] \in \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1]))$.
+              Similarly for $[y]$ such that $[x_2] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([y]))$.
+        \item For any sequence $([x_1],\ldots,[x_n])$ such that $[x_i] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_{i \sqcup 1}]))$ or $[x_{i \sqcup 1}] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_{i}]))$ for $i < n$ the set on the left contains $[x_n]$.
+              Let's check if $[x_n] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+              Since there exists $[y]$ such that $[y] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_1]))$ and $[y] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x_2]))$ we can extend the sequence to $([x_2],[y],[x_1],\ldots,[x_n])$ and hence $[x_n] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_2]))$.
+              Similarly, given a sequence $([x_2],\ldots, [x_n])$ and extending it to $([x_1],[y],[x_2],\ldots,[x_n])$ we get $[x_n] \in \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x_1]))$.
     \end{itemize}
 \end{proof}
 
 
 \begin{lemma}
 \label{lemma:consistency_respect}
-$\consistency_{\sfrac{X+Y}{\sim}}$ respects connectivity.
+$\consistency_{\sfrac{X \sqcup Y}{\sim}}$ respects connectivity.
 \end{lemma}
 \begin{proof}
-    Suppose $[v_1] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ and $[[v_1]) = [[e_1]) \not = \varnothing$, then it must be the case that 
+    Suppose $[v_1] \in s_{\sfrac{X \sqcup Y}{\sim}}([e_1])$ and $[[v_1]) = [[e_1]) \not = \varnothing$, then it must be the case that 
     \[
-    \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+    \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))
     \]
     By the lemma above, to prove this, it is sufficient to show that
 
     \[
-    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+    \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))
     \]
 
-    $[v_1] \in s_{\sfrac{X+Y}{\sim}}([e_1])$ means there exists $v_1' \in s_{X+Y}(e_1)$ such that $v_1 \sim v_1'$.
+    $[v_1] \in s_{\sfrac{X \sqcup Y}{\sim}}([e_1])$ means there exists $v_1' \in s_{X \sqcup Y}(e_1)$ such that $v_1 \sim v_1'$.
     We then have two cases.
     \begin{itemize}
-      \item $v_1 = v_1'$ and then $v_1 \in s_{X+Y}(e_1)$.
+      \item $v_1 = v_1'$ and then $v_1 \in s_{X \sqcup Y}(e_1)$.
       \begin{itemize}
-         \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1''))]$ such that $v_1'' \sim v_1$ and $[v_1'') \not = \varnothing$.
+         \item $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1''))]$ such that $v_1'' \sim v_1$ and $[v_1'') \not = \varnothing$.
             \begin{itemize}
                 \item $v_1'' = v_1$ and then $[v_1) \not = \varnothing$ and $[e_1) \not = \varnothing$.
-                      Furthermore, necessarily $\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1))$.
+                      Furthermore, necessarily $\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1)) = \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1))$.
                       By applying $([]_{V},[]_{E})$ we get
                       \ifdefined \ONECOLUMN
                       \begin{align*}
                         \text{by functionality}\\
-                          [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1))) &=
-                          [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))\\
+                          [[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))) &=
+                          [[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)))\\
                           \text{by unfolding the definition}\\
-                          \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))\\
+                          \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1]))\\
                           \end{align*} 
                       \else
                       \begin{align*}
                       \text{by functionality}\\
-                        [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1))) &=\\
-                        [[]_{V};\iota_{\sfrac{V_{X} + V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1))) &\\
+                        [[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1))) &=\\
+                        [[]_{V};\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}},[]_{E};\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1))) &\\
                         \text{by unfolding the definition}\\
-                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &=\\
-                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))&
+                        \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &=\\
+                        \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1]))&
                         \end{align*} 
                       \fi
                 \item $v_1'' \sim v_1$. If $v_1'' = f_{V};\iota_{1,V}(z_1'')$ and $v_1 = f_{V};\iota_{1,V}(z_1)$ we get
                     \begin{align*}
-                        \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) =\\
-                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v'')))\\
-                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z_1''))))\\
-                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(f_{V};\iota_{1,V}(z_1))))\\
-                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
-                                                                                                                &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+                        \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) =\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v'')))\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(f_{V};\iota_{1,V}(z_1''))))\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(f_{V};\iota_{1,V}(z_1))))\\
+                                                                                                                &= [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1)))\\
+                                                                                                                &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))
                     \end{align*}
                     If $v_1'' = f_{V};\iota_{1,V}(z_1'')$ and $v_1 = g_{V};\iota_{1,V}(z_1)$ then $[v_1) = [e_1) = \varnothing$ and 
                     \[
-                        \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)) = \consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \varnothing
+                        \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)) = \consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1)) = \varnothing
                     \]
                     \begin{align*}
-                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'']))\\
-                                                                                                            &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))
+                    \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1'']))\\
+                                                                                                            &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1]))
                     \end{align*}
                 \end{itemize}
-                \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))$ such that $[v_2) \not = \varnothing$ and there is a path from $[v_1]$ to $[v_2]$. 
+                \item $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_2]))$ such that $[v_2) \not = \varnothing$ and there is a path from $[v_1]$ to $[v_2]$. 
                 By definition, this implies $[v_1) = \varnothing$ and $[e_1) = \varnothing$.
                 Again, by definition, we have
                 \begin{align*}
-                    \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_2]))\\
-                                                                                                    &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))
+                    \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_2]))\\
+                                                                                                    &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))
                 \end{align*}
                 \end{itemize}
-                \item $v_1 \sim v_1'$ and then $v_1' \in s_{X+Y}(e_1)$.
+                \item $v_1 \sim v_1'$ and then $v_1' \in s_{X \sqcup Y}(e_1)$.
                 \begin{itemize}
-                    \item $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1])) = [<_{X+Y}^{\mu}(\iota_{V_{X} + V_{Y}}(v_1''))]$ such that $v_1 \sim v_1''$ and $[v_1'') \not = \varnothing$.
+                    \item $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1])) = [<_{X \sqcup Y}^{\mu}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1''))]$ such that $v_1 \sim v_1''$ and $[v_1'') \not = \varnothing$.
                     \begin{itemize}
                         \item $v_1 = v_1''$ and then $[v_1) \not = \varnothing$.
                               Suppose $v_1 = f_{V};\iota_{1,V}(z_1)$ and $v_1' = f_{V};\iota_{1,V}(z_1')$. Then $[v_1') = [e_1) \not = \varnothing$ and 
                             \begin{align*}
-                              \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) =\\
-                              &\;= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')))\\
-                                                                                                                     &\;= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)))\\
-                                                                                                                     &\;= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1]))\\
-                                                                                                                     &\;= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1])
+                              \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_1']) =\\
+                              &\;= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1')))\\
+                                                                                                                     &\;= [[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1)))\\
+                                                                                                                     &\;= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1]))\\
+                                                                                                                     &\;= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_1])
                             \end{align*}
                             Suppose $v_1' = g_{V};\iota_{2,V}(z_1')$ and then $[v_1') = [e_1) = \varnothing$.
                             By definition,
                             \begin{align*}
-                                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1']) =\\
-                                &\;[[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
+                                &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_1']) =\\
+                                &\;[[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)))
                             \end{align*}
                             and since there is a path from $e_1$ to $v_1'$ and $v_1' \sim v_1$
                             \begin{align*}
-                                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e_1]) =\\
-                                &\;[[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1)))
+                                &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}[e_1]) =\\
+                                &\;[[]_{V}^{\hashtag},[]_{E}^{\hashtag}]^{*}(\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1)))
                             \end{align*}
                             The cases when $v_1 = g_{V};\iota_{2,V}(z_1)$ is symmetric.
                         \item $v_1 \sim v_1''$ and then $v_1' \sim v_1''$. Suppose $v_1'' = f_{V};\iota_{1,V}(z_1'')$.
                               If $v_1'$ is in the image of $f_{V};\iota_{1,V}$, then
                               \begin{align*}
-                                \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')) &= \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1''))\\ 
-                                                                               &= \consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(e_1'))
+                                \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1')) &= \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1''))\\ 
+                                                                               &= \consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(e_1'))
                               \end{align*}
                               and
                               \begin{align*}
-                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1]) &=
-                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}[v_1'])\\ &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}[e_1])
+                                \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_1]) &=
+                                \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}[v_1'])\\ &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}[e_1])
                               \end{align*}
-                              If $v_1'$ is in the image of $g_{V};\iota_{2,V}$, then $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v_1')) = \consistency_{X+Y}(\iota_{E_{X} + E_{Y}}(e_1)) = \varnothing$ and by definition as there is a path from $[e_1]$ to $[v_1'']$
+                              If $v_1'$ is in the image of $g_{V};\iota_{2,V}$, then $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v_1')) = \consistency_{X \sqcup Y}(\iota_{E_{X}  \sqcup  E_{Y}}(e_1)) = \varnothing$ and by definition as there is a path from $[e_1]$ to $[v_1'']$
                               \begin{align*}
-                                \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{E_{X} + E_{Y}}{\sim}}([e_1])) =\\
-                                &\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1'']))\\ 
-                                                                                                                        &= \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v_1]))
+                                \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}&(\iota_{\sfrac{E_{X}  \sqcup  E_{Y}}{\sim}}([e_1])) =\\
+                                &\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1'']))\\ 
+                                                                                                                        &= \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v_1]))
                               \end{align*}
                               The cases when $v_1'' = g_{V};\iota_{2,V}(z_1'')$ are symmetric.
                     \end{itemize}
@@ -1519,18 +1546,18 @@ The case when $[v] \in t([e])$ is symmetric.
 
 \begin{lemma}
 \label{lemma:consistency_child}
-    $\consistency_{\sfrac{X+Y}{\sim}}$ is defined only for vertices and edges that are not top-level.
+    $\consistency_{\sfrac{X \sqcup Y}{\sim}}$ is defined only for vertices and edges that are not top-level.
 \end{lemma}
 \begin{proof}
-  $\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$ if and only if $<_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([x]))$ is defined.
-  Let's first show from left to right. $\consistency_{\sfrac{X+Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$ implies $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$.
+  $\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$ if and only if $<_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([x]))$ is defined.
+  Let's first show from left to right. $\consistency_{\sfrac{X \sqcup Y}{\sim}}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$ implies $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) \not = \varnothing$.
   \begin{itemize}
-    \item $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\iota_{*}{\sim}(x'))$ such that $x \sim x'$.
-          By e-hypergraph-ness of $X+Y$ this implies that $[x') \not = \varnothing$ and hence $<_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x'])) = <_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = [<_{X+Y}^{\mu}(\iota_{*}(x))]$
-    \item $\consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = \consistency_{\sfrac{X+Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X} + V_{Y}}{\sim}}([v]))$ such that there is a path from $[x]$ to $[v]$ and
-          $\consistency_{X+Y}(\iota_{V_{X} + V_{Y}}(v)) \not = \varnothing$. This implies that $[v) \not = \varnothing$ and by definition
+    \item $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = [[]_{V}^{\consistency},[]_{E}^{\consistency}]^{*}(\iota_{*}{\sim}(x'))$ such that $x \sim x'$.
+          By e-hypergraph-ness of $X \sqcup Y$ this implies that $[x') \not = \varnothing$ and hence $<_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x'])) = <_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = [<_{X \sqcup Y}^{\mu}(\iota_{*}(x))]$
+    \item $\consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{*}{\sim}}([x])) = \consistency_{\sfrac{X \sqcup Y}{\sim}}^{\hashtag}(\iota_{\sfrac{V_{X}  \sqcup  V_{Y}}{\sim}}([v]))$ such that there is a path from $[x]$ to $[v]$ and
+          $\consistency_{X \sqcup Y}(\iota_{V_{X}  \sqcup  V_{Y}}(v)) \not = \varnothing$. This implies that $[v) \not = \varnothing$ and by definition
           \[
-            <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([x])) = <_{\sfrac{X+Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([v]))  
+            <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([x])) = <_{\sfrac{X \sqcup Y}{\sim}}^{\mu}(\iota_{\sfrac{*}{\sim}}([v]))  
           \]
   \end{itemize}
   The right-to-left direction is analogous.
@@ -1538,15 +1565,15 @@ The case when $[v] \in t([e])$ is symmetric.
 
 
 \begin{lemma}
-$\consistency_{\sfrac{X+Y}{\sim}}^{p}$ is not total.
+$\consistency_{\sfrac{X \sqcup Y}{\sim}}^{p}$ is not total.
 \end{lemma}
 \begin{proof}
 The property holds as we require that the arrows of the span for the pushout do not map vertices to different components and therefore they can not be merged into one component.
 \end{proof}
 
-\begin{proposition}[$\sfrac{X+Y}{\sim}$ is an e-hypergraph]
+\begin{proposition}[$\sfrac{X \sqcup Y}{\sim}$ is an e-hypergraph]
 \label{prop:pushout_is_e_hypergraph}
-For this we need to check that the defined relations --- $<_{\sfrac{X+Y}{\sim}}$ and $\consistency_{\sfrac{X+Y}{\sim}}$ --- satisfy all the needed properties as per Definition~\ref{def:e-homo}.
+For this we need to check that the defined relations --- $<_{\sfrac{X \sqcup Y}{\sim}}$ and $\consistency_{\sfrac{X \sqcup Y}{\sim}}$ --- satisfy all the needed properties as per Definition~\ref{def:e-homo}.
 \end{proposition}
 \begin{proof}
     This proposition then follows by applying the lemmas above.
@@ -1588,24 +1615,24 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     The boundary complement in~\ref{def:boundary_new} when exists is unique.
 \end{proposition}
 \begin{proof}
-        The pushout in~\ref{def:boundary_new} satisfies the assumptions in Definition~\ref{pushout:assumptions} (note that since $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j$ is an MDA cospan, the image of $i + j$ in $\mathcal{L}$ consists of top-level vertices only) and therefore is isomorphic to the pushout constructed in~\ref{pushout:assumptions} and by construction should also be a pushout on the underlying sets of vertices and hyperedges.
+        The pushout in~\ref{def:boundary_new} satisfies the assumptions in Definition~\ref{pushout:assumptions} (note that since $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j$ is an MDA cospan, the image of $i  \sqcup  j$ in $\mathcal{L}$ consists of top-level vertices only) and therefore is isomorphic to the pushout constructed in~\ref{pushout:assumptions} and by construction should also be a pushout on the underlying sets of vertices and hyperedges.
     % I think the above sufficies, but it can also be shown formally that every pushout in $\catname{EHyp_{\Sigma}}$ is a pushout on the underlying sets of edges and vertices by constructing an e-hyperghraph from the set of vertices and same for the set of edges and checking if the morphisms are well-defined.
     %     Consider diagrams below,
     %     \[
     %         \begin{tikzcd}
-    %             & \mathcal{L} \arrow[d] \arrow[ldd, bend right] & i+j \arrow[l, "h"'] \arrow[d, "c"]           &                 & V_{\mathcal{L}} \arrow[d] \arrow[ldd, bend right] & i+j \arrow[l, "h_{V}"] \arrow[d, "c_{V}"]      \\
+    %             & \mathcal{L} \arrow[d] \arrow[ldd, bend right] & i \sqcup j \arrow[l, "h"'] \arrow[d, "c"]           &                 & V_{\mathcal{L}} \arrow[d] \arrow[ldd, bend right] & i \sqcup j \arrow[l, "h_{V}"] \arrow[d, "c_{V}"]      \\
     %             & \mathcal{G} \arrow[ld, "u"']                  & \mathcal{C} \arrow[l] \arrow[lld, bend left] &                 & V_{\mathcal{G}} \arrow[ld, "u_{V}"]               & V_\mathcal{C} \arrow[l] \arrow[lld, bend left] \\
     % \mathcal{Q} &                                               &                                              & V_{\mathcal{Q}} &                                                   &                                               
     % \end{tikzcd}  
     %     \]
     %     If $\mathcal{L} \xrightarrow{} \mathcal{G} \xleftarrow{} C$ is a pushout in $\catname{EHyp}_{\Sigma}$ then $V_{\mathcal{L}} \xrightarrow{} V_{\mathcal{G}} \xleftarrow{} V_{\mathcal{C}}$ is a pushout in $\catname{Set}$.
     %     The small square on the right commutes because the square on the left commutes, so we only need to check the universal property.
-    %     Suppose there exist $i+j \to V_{\mathcal{L}} \to V_{Q} = i+j \to V_{\mathcal{C}} \to V_{Q}$ and we need to check that there exists a unique $u_{V}$ such that these morphisms factors out through $u_{V}$.
+    %     Suppose there exist $i \sqcup j \to V_{\mathcal{L}} \to V_{Q} = i \sqcup j \to V_{\mathcal{C}} \to V_{Q}$ and we need to check that there exists a unique $u_{V}$ such that these morphisms factors out through $u_{V}$.
     %     % Hence, pushout complement should yield pushout complements for the corresponding sets.
     %     Construct an e-hypergraph $\mathcal{Q} = (V,E,s,t,<,\consistency)$ such that
     %     \begin{itemize}
     %         \item $V = V_{Q}$
-    %         \item $E = \sfrac{E_{\mathcal{L}} + E_{\mathcal{C}}}{\mathcal{R}}$ where $e_1 \mathcal{R} e_2$ if there exists $v \in V_{Q}$ such that $v = i_{V}(v_1)$ and $v = i_{V}(v_2)$ and $e_1 = <^{\mu}_{\mathcal{L}}(\iota_{V_{\mathcal{L}}}(v_1)), e_2 = <^{\mu}_{\mathcal{C}}(\iota_{V_{\mathcal{C}}}(v_2))$
+    %         \item $E = \sfrac{E_{\mathcal{L}}  \sqcup  E_{\mathcal{C}}}{\mathcal{R}}$ where $e_1 \mathcal{R} e_2$ if there exists $v \in V_{Q}$ such that $v = i_{V}(v_1)$ and $v = i_{V}(v_2)$ and $e_1 = <^{\mu}_{\mathcal{L}}(\iota_{V_{\mathcal{L}}}(v_1)), e_2 = <^{\mu}_{\mathcal{C}}(\iota_{V_{\mathcal{C}}}(v_2))$
     %     \end{itemize}
         In particular,
     \[
@@ -1615,24 +1642,24 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
         \tikzfig{../figures/appendix/pushout_edges}
     \]
     where $V$s and $E$s are sets of vertices and hyperedges respectively, marked squares are pushouts and $\mathcal{L}^{\bot}$s are pushout complements and where $E_{0}$ is either empty or contains edges with no inputs and outputs only.
-    % Because $i+j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
+    % Because $i \sqcup j$ is discrete, $E_{\mathcal{G}}$ is the disjoint union of $E_{\mathcal{L}}$ and $E_{\mathcal{L}^{\bot}}$ and hence $E_{\mathcal{L}^{\bot}} = E_{\mathcal{G}} \setminus E_{\mathcal{L}}$.
     Since $m$ and $[c_1,c_2]$ are monos, the first square can be rewritten as follows.
 % https://q.uiver.app/#q=WzAsNSxbMCwwLCJpICsgaiArIHggKyB5Il0sWzIsMCwiaStqICsgeCJdLFs0LDAsImkraiJdLFswLDIsImkgKyBqICsgeCArIHkgKyB6Il0sWzQsMiwiaSArIGogKyB3XFxcXFxcY29uZ1xcXFwgaSArIGogKyB6Il0sWzIsMSwiaF97VixleHR9IiwyXSxbMSwwLCJoX3tWLGludH0iLDJdLFswLDMsIm1fe1Z9IiwyXSxbNCwzLCJnX3tWfSJdLFsyLDQsImMiLDJdXQ==
 \[\begin{tikzcd}
-	{a + y} && {i + j + x} && {i+j} \\
+	{a  \sqcup  y} && {i  \sqcup  j  \sqcup  x} && {i \sqcup j} \\
 	\\
-	{a + y + z} &&&& {\begin{matrix} i + j + w \\ \cong \\ i + j + z \end{matrix}}
+	{a  \sqcup  y  \sqcup  z} &&&& {\begin{matrix} i  \sqcup  j  \sqcup  w \\ \cong \\ i  \sqcup  j  \sqcup  z \end{matrix}}
 	\arrow["{h_{V,ext}}"', from=1-5, to=1-3]
 	\arrow["{h_{V,int}}"', from=1-3, to=1-1]
 	\arrow["{m_{V}}"', from=1-1, to=3-1]
 	\arrow["{g_{V}}", from=3-5, to=3-1]
 	\arrow["c"', from=1-5, to=3-5]
 \end{tikzcd}\]
-    Where $y$ is the image of $i + j$. Clearly, $i + j + z$ is a pushout complement, as computing the pushout identifies $i + j$ with its image within $y$ and leaves $z$ as is.
-    Suppose there is another pushout complement $i + j + w$.
-    Because $a + y + w$ also yields a pushout it must be the case that $a + y + w \cong a + y + z$ and therefore $w \cong z$ and pushout complement for vertices is $i + j + z$ up to isomorphism.
+    Where $y$ is the image of $i  \sqcup  j$. Clearly, $i  \sqcup  j  \sqcup  z$ is a pushout complement, as computing the pushout identifies $i  \sqcup  j$ with its image within $y$ and leaves $z$ as is.
+    Suppose there is another pushout complement $i  \sqcup  j  \sqcup  w$.
+    Because $a  \sqcup  y  \sqcup  w$ also yields a pushout it must be the case that $a  \sqcup  y  \sqcup  w \cong a  \sqcup  y  \sqcup  z$ and therefore $w \cong z$ and pushout complement for vertices is $i  \sqcup  j  \sqcup  z$ up to isomorphism.
     The same reasoning applies to show that $E_{\mathcal{L}^{\bot}}$ is unique and hence the sets of edges and vertices are uniquely determined in the pushout complement.
-    One can observe that $g_{V} = h_{V,ext};h_{V,int} + id_{n}$ and that $h_{V,ext}$ is mono and $h_{V,int} = [h_1,h_2]$ where $h_1,h_2$ are mono.
+    One can observe that $g_{V} = h_{V,ext};h_{V,int}  \sqcup  id_{n}$ and that $h_{V,ext}$ is mono and $h_{V,int} = [h_1,h_2]$ where $h_1,h_2$ are mono.
     To show that pushout complement is unique we next need to show that source and target maps are unique.
     Suppose, on contrary, that there exist
     \[
@@ -1641,14 +1668,14 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
 
     such that there is $e \in E_{\mathcal{L}^{\bot}}$ and $s_{1}(e) \not = s_{2}(e)$.
     As $g$ is a homomorphism, it must be the case that $g^{*}_{V}(s_{1}(e)) = g^{*}_{V}(s_{2}(e)) = s_{\mathcal{G}}(g(e))$, or
-    $(h_{V,ext};[h_{1},h_{2}] + id_{n})(s_{1}(e)) = (h_{V,ext};[h_{1},h_{2}] + id_{n})(s_{2}(e))$.
+    $(h_{V,ext};[h_{1},h_{2}]  \sqcup  id_{n})(s_{1}(e)) = (h_{V,ext};[h_{1},h_{2}]  \sqcup  id_{n})(s_{2}(e))$.
     For the latter to hold when $s_{1}(e) \not = s_{2}(e)$ it must be the case that $h_{V,ext};[h_{1},h_{2}]$ identifies $v_{1} \in s_{1}(e)$ with $v_{2} \in s_{2}(e)$ and necessarily $v_{1}$ and $v_{2}$ are in the image of $c$.
     This can only happen if $v_1 \in i$ and $v_2 \in j$, \textit{i.e.} they belong to input and output interfaces respectively.
     However, this contradicts the fact that $v_2 \in s_2(e)$ as a vertex which is a source of some edge can not be in the output interface as per the (6) and (7) conditions of the boundary complement~\ref{def:boundary_new} the image of $j$ in $\mathcal{L}^{\bot}$ should consist of vertices of in-degree 0.
     Similarly for $t_{\mathcal{L}^{\bot}}$.
 
     % Because $g$ is a homomorphism, it must be the case that $g_{V}^{*}(s_{\mathcal{L^{\bot}}}(e)) = s_{\mathcal{G}}(g_{E}(e))$ and $s_{\mathcal{L^{\bot}}}(e) \subseteq (g_{V}^{-1})^{*}(s_{\mathcal{G}}(g_{E}(e)))$.
-    % Since $g_{V} = h_{V,ext};[h_1,h_2] + id_{n}$ the inverse image of $g_{V}$ contains at most two elements: one with the pre-image in $i$ and another with the pre-image in $j$.
+    % Since $g_{V} = h_{V,ext};[h_1,h_2]  \sqcup  id_{n}$ the inverse image of $g_{V}$ contains at most two elements: one with the pre-image in $i$ and another with the pre-image in $j$.
     % If $g_{V}$ identified more than two vertices it would mean that $[h_1,h_2]$ identified more than two vertices which would mean that two of them come both either from $i$ or $j$ which would imply that either $h_1$ or $h_2$ is not mono.
     % If the inverse image contains exactly one vertex then the $s_{\mathcal{L^{\bot}}}(e)$ is uniquely fixed, otherwise suppose it contains $\{v_1,v_2\}$ such that $v_1 \in i$ and $v_2 \in j$.
     % However, $v_1$ can not be in $s_{\mathcal{L^{\bot}}}(e)$ as per the (6) and (7) conditions of the boundary complement~\ref{def:boundary_new} the image of $j$ in $\mathcal{L}^{\bot}$ should consist of vertices of in-degree 0.
@@ -1684,14 +1711,14 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
     Consider $\mathcal{G'}$ which is obtained from $\mathcal{G}$ by making $[g_{V}(v')) = [g_{E}(e')) = \varnothing$ for $v', e'$ above.
     Clearly there is a morphism from $\mathcal{L}^{\bot}$ to $\mathcal{G}'$, i.e. the morphism $g' = (g_{V},g_{E})$ that has the same action on edges and vertices as the morphism $g$ does, because $v'$ such that $[v') = \varnothing$ can be mapped to $g_{V}(v')$ such that $[g_{V}(v')) \not = \varnothing$.
     The only case when such a morphism may not exist is when $[v'') \not = \varnothing$, $[v') = \varnothing$ and $g_{V}(v'') = g_{V}(v')$.
-    This implies that both $v''$ and $v'$ have a pre-image in $i + j$ and according to the definition of a boundary complement it must be $[[c_1,c_2](z_1)) = [[c_1,c_2](z_2))$ for all $z_1, z_2 \in V_{i + j}$.
+    This implies that both $v''$ and $v'$ have a pre-image in $i  \sqcup  j$ and according to the definition of a boundary complement it must be $[[c_1,c_2](z_1)) = [[c_1,c_2](z_2))$ for all $z_1, z_2 \in V_{i  \sqcup  j}$.
     For the same reason there is also a morphism from $\mathcal{L}$ to $\mathcal{G}'$.
-    The only case when such a morphism may not exist is when $v'' \in V_{\mathcal{L}}$ such that $[v'') \not = \varnothing$ is mapped to $m_{V}(v'') = g_{V}(v')$ such that $[v') = \varnothing$ which implies $v'$ and $v''$ share a pre-image in $i + j$.
-    This leads to a contradiction as the image of $i + j$ in $\mathcal{L}$ should consist of top-level vertices exclusively.
+    The only case when such a morphism may not exist is when $v'' \in V_{\mathcal{L}}$ such that $[v'') \not = \varnothing$ is mapped to $m_{V}(v'') = g_{V}(v')$ such that $[v') = \varnothing$ which implies $v'$ and $v''$ share a pre-image in $i  \sqcup  j$.
+    This leads to a contradiction as the image of $i  \sqcup  j$ in $\mathcal{L}$ should consist of top-level vertices exclusively.
     This construction results in a commutative diagram below
     \[
         \begin{tikzcd}
-            & \mathcal{L} \arrow[d, "m"'] \arrow[ldd, "m'"', bend right=49] & i'+j' \arrow[l] & i+j \arrow[d] \arrow[l]                                           \\
+            & \mathcal{L} \arrow[d, "m"'] \arrow[ldd, "m'"', bend right=49] & i' \sqcup j' \arrow[l] & i \sqcup j \arrow[d] \arrow[l]                                           \\
             & \mathcal{G}                                                   &                 & \mathcal{L}^{\bot} \arrow[ll, "g"'] \arrow[llld, "g'", bend left] \\
 \mathcal{G}' &                                                               &                 &                                                                  
 \end{tikzcd}
@@ -1722,9 +1749,9 @@ We will then discuss the uniqueness of the corresponding boundary pushout comple
               Then there are connected components $C_1, C_2$ in $\mathcal{L}_{2}^{\bot}$ such that for all $x \in C_1$ and $y \in C_2$ $x \not \consistency_{2} y$ and $v \in C_1$, $v' \in C_2$.
               Consider $g_2 = (g_{V},g_{E}) : \mathcal{L}_2^{\bot} \to \mathcal{G}$ and construct $\mathcal{G'}$ that is obtained from $\mathcal{G}$ by making $g(x) \not \consistency g(y)$ for $x \in C_1$ and $y \in C_2$.
               There is a morphism $g_2' = g_2 : \mathcal{L}_2^{\bot} \to \mathcal{G}'$. Like above, the only case when such morphism may not exist is when for $v' \not \consistency v$ $g_{V}(v) = g_{V}(v')$.
-              This implies $v, v'$ have a pre-image in $i + j$ and by definition it must be $v' \consistency v$.
+              This implies $v, v'$ have a pre-image in $i  \sqcup  j$ and by definition it must be $v' \consistency v$.
               Similarly, there is a morphism $m' : \mathcal{L} \to \mathcal{G}'$. The only case when it may not exist is when for $v_1, v_1' \in \mathcal{L}$ such that $v_1 \consistency v_1'$, $m_{V}(v_1) = g_{V}(v_2)$ and $m_{V}(v_1') = g_{V}(v_2')$ where $v_2 \in C_1$ and $v_2' \in C_2$.
-              It implies $v_1, v_1'$ have pre-image in $i + j$ and by definition of a boundary-complement the image of $i + j$ should consist of top-level vertices exclusively.
+              It implies $v_1, v_1'$ have pre-image in $i  \sqcup  j$ and by definition of a boundary-complement the image of $i  \sqcup  j$ should consist of top-level vertices exclusively.
               This results in the diagram below there is no morphism $u : G \to G'$, as the existence of such a morphism implies $u(g(x)) = u(g'(x))$, $u(g(y)) = u(g'(y))$ for $x \in C_1$ and $y \in C_2$ and $u(g(x)) \consistency u(g(y))$ and $u(g'(x)) \not \consistency u(g'(y))$.
               This contradicts the fact that $\mathcal{G}$ is a pushout.
               Hence, $\consistency_{1} = \consistency_{2}$ and $\mathcal{L}_{2}^{\bot} = \mathcal{L}_{1}^{\bot}$.
@@ -1737,9 +1764,9 @@ Practically, the above proposition means that for any given match $m$ there is o
 
 
 % \begin{remark}
-%     Consider morphisms $i + j \xrightarrow{[f_{ext},g_{ext}];[f_{int},g_{int}]} \mathcal{L} \xrightarrow{m} \mathcal{G}$.
+%     Consider morphisms $i  \sqcup  j \xrightarrow{[f_{ext},g_{ext}];[f_{int},g_{int}]} \mathcal{L} \xrightarrow{m} \mathcal{G}$.
 %     If both of these morphisms are mono, then the boundary complement exists. 
-%     Intuitively, it exists for the same reason the corresponding boundary complement for plain hypergraphs exists: it is constructed by removing from $\mathcal{G}$ everything that has no pre-image in $i + j$.
+%     Intuitively, it exists for the same reason the corresponding boundary complement for plain hypergraphs exists: it is constructed by removing from $\mathcal{G}$ everything that has no pre-image in $i  \sqcup  j$.
 % \end{remark}
 
 % \begin{figure*}[t!]
@@ -1853,9 +1880,8 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
     \end{align*}
     we will denote the carrier of the resulting cospan as
     \[
-    \mathcal{F}_1 \; \hat{+}\; \ldots\; \hat{+}\; \mathcal{F}_{k}
-    \]
-    to distinguish it from the coproduct.
+    \mathcal{F}_1 \; +\; \ldots\; +\; \mathcal{F}_{k}~.
+    \]    
 \end{remark}
 
 \begin{remark}
@@ -1874,7 +1900,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
 \begin{proof}
     The statement boils down to showing that the $\catname{SLat}$ functor defining the equivalence is well-defined, full and faithful as it is obviously surjective.
     Proof of fullness follows the same argument as in the case of $\llbracket - \rrbracket: \catname{S}^{+}(\Sigma) \to \WellTypedMdaEcospans / \mathcal{S}$, so we proceed with showing well-definedness and faithfulness.     
-    The former is equivalent to showing that if $f = g$ in $\catname{S}^{+}(\Sigma)$ modulo $\mathcal{E}$ then $\llbracket f\rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S,E}~.$ or, equivalently, $\llbracket f \rrbracket \Rrightarrow_{\mathcal{E}}^{*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
+    The former is equivalent to showing that if $f = g$ in $\catname{S}^{+}(\Sigma)$ modulo $\mathcal{E}$ then $\llbracket f\rrbracket = \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S,E}$ or, equivalently, $\llbracket f \rrbracket \Rrightarrow_{\mathcal{E}}^{*} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
     $f = g$ implies that either
     \begin{itemize}
         \item $f = \mathcal{C}[l] = g$ for some morphism $l \in \catname{S}^{+}(\Sigma)$;
@@ -1898,11 +1924,11 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
               \[
               \adjustbox{scale=0.8}{
                 \begin{tikzcd}
-                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                     \\
-                    {\mathcal{L}} && {i+j} && {\mathcal{R}} \\
-                    & {i'+j'} && {i''+j''} \\
-                    && {i+j}
+                    {\mathcal{L}} && {i \sqcup j} && {\mathcal{R}} \\
+                    & {i' \sqcup j'} && {i'' \sqcup j''} \\
+                    && {i \sqcup j}
                     \arrow[from=1-1, to=3-1]
                     \arrow[from=1-2, to=1-1]
                     \arrow[from=1-3, to=1-2]
@@ -1925,11 +1951,11 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
               \else
               \[
                 \begin{tikzcd}
-                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                     \\
-                    {\mathcal{L}} && {i+j} && {\mathcal{R}} \\
-                    & {i'+j'} && {i''+j''} \\
-                    && {i+j}
+                    {\mathcal{L}} && {i \sqcup j} && {\mathcal{R}} \\
+                    & {i' \sqcup j'} && {i'' \sqcup j''} \\
+                    && {i \sqcup j}
                     \arrow[from=1-1, to=3-1]
                     \arrow[from=1-2, to=1-1]
                     \arrow[from=1-3, to=1-2]
@@ -1949,7 +1975,7 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                 \end{tikzcd}
               \]
               \fi
-              where $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j = \llbracket l \rrbracket = \llbracket f \rrbracket$ and $i \to i'' \to \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j = \llbracket r \rrbracket = \llbracket g \rrbracket$ and $i + j \to i + j \to \mathcal{L}$ is a boundary complement as per~\ref{def:boundary_new}.
+              where $i \to i' \to \mathcal{L} \xleftarrow{} j' \xleftarrow{} j = \llbracket l \rrbracket = \llbracket f \rrbracket$ and $i \to i'' \to \mathcal{R} \xleftarrow{} j'' \xleftarrow{} j = \llbracket r \rrbracket = \llbracket g \rrbracket$ and $i  \sqcup  j \to i  \sqcup  j \to \mathcal{L}$ is a boundary complement as per~\ref{def:boundary_new}.
               Hence, $\llbracket f \rrbracket \Rrightarrow{}_{\langle \mathcal{L}, \mathcal{R} \rangle} \llbracket g \rrbracket$.
               \item Suppose 
               \[
@@ -1961,13 +1987,13 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
               \[
               \adjustbox{width=0.7\linewidth}{
               \begin{tikzcd}
-                {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                 \\
                 {\llbracket \mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket \mathcal{C}[r]\rrbracket} \\
-                & {n_1'+m_1'} & {n_1+m_1} & {n_1''+m_1''} \\
+                & {n_1' \sqcup m_1'} & {n_1 \sqcup m_1} & {n_1'' \sqcup m_1''} \\
                 {\llbracket f \rrbracket} && {\mathcal{L}_2^{\bot}} && {\llbracket g \rrbracket} \\
-                & {n_2' + m_2'} && {n_2''+m_2''} \\
-                && {n_2 + m_2}
+                & {n_2'  \sqcup  m_2'} && {n_2'' \sqcup m_2''} \\
+                && {n_2  \sqcup  m_2}
                 \arrow[from=1-1, to=3-1]
                 \arrow[from=1-2, to=1-1]
                 \arrow[from=1-3, to=1-2]
@@ -2002,13 +2028,13 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
               \[
               \adjustbox{width=\linewidth}{
               \begin{tikzcd}
-                {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                 \\
                 {\llbracket \mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket \mathcal{C}[r]\rrbracket} \\
-                & {n_1'+m_1'} & {n_1+m_1} & {n_1''+m_1''} \\
+                & {n_1' \sqcup m_1'} & {n_1 \sqcup m_1} & {n_1'' \sqcup m_1''} \\
                 {\llbracket f \rrbracket} && {\mathcal{L}_2^{\bot}} && {\llbracket g \rrbracket} \\
-                & {n_2' + m_2'} && {n_2''+m_2''} \\
-                && {n_2 + m_2}
+                & {n_2'  \sqcup  m_2'} && {n_2'' \sqcup m_2''} \\
+                && {n_2  \sqcup  m_2}
                 \arrow[from=1-1, to=3-1]
                 \arrow[from=1-2, to=1-1]
                 \arrow[from=1-3, to=1-2]
@@ -2040,46 +2066,46 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             \end{tikzcd}}
             \]
             \fi
-            Clearly the occurrence of $\llbracket \mathcal{C}[l] \rrbracket$ in $\llbracket f \rrbracket$ is convex and down-closed and by following the argument in Theorem 35~\cite{bonchi_string_2022-2}, there exists $n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2$ such that
+            Clearly the occurrence of $\llbracket \mathcal{C}[l] \rrbracket$ in $\llbracket f \rrbracket$ is convex and down-closed and by following the argument in Theorem 35~\cite{bonchi_string_2022-2}, there exists $n_1  \sqcup  m_1 \xrightarrow{} n_1  \sqcup  m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3  \sqcup  m_3 \xleftarrow{} n_2  \sqcup  m_2$ such that
             \ifdefined \ONECOLUMN
             \begin{align*}
                 \llbracket f \rrbracket &= \;
-                (0 \to 0 \to \llbracket C[l] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)
+                (0 \to 0 \to \llbracket C[l] \rrbracket \xleftarrow{} n_1'  \sqcup  m_1' \xleftarrow{} n_1  \sqcup  m_1)
                 ;
-                (n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)\\
+                (n_1  \sqcup  m_1 \xrightarrow{} n_1  \sqcup  m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3  \sqcup  m_3 \xleftarrow{} n_2  \sqcup  m_2)\\
                 \llbracket g \rrbracket &= \;
-                (0 \to 0 \to \llbracket C[r] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)
+                (0 \to 0 \to \llbracket C[r] \rrbracket \xleftarrow{} n_1'  \sqcup  m_1' \xleftarrow{} n_1  \sqcup  m_1)
                 ;
-                (n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)
+                (n_1  \sqcup  m_1 \xrightarrow{} n_1  \sqcup  m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3  \sqcup  m_3 \xleftarrow{} n_2  \sqcup  m_2)
                 \end{align*}
             \else
             \begin{align*}
             \llbracket f \rrbracket = \;
-            &(0 \to 0 \to \llbracket C[l] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)\\
+            &(0 \to 0 \to \llbracket C[l] \rrbracket \xleftarrow{} n_1'  \sqcup  m_1' \xleftarrow{} n_1  \sqcup  m_1)\\
             &;\\
-            &(n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)\\
+            &(n_1  \sqcup  m_1 \xrightarrow{} n_1  \sqcup  m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3  \sqcup  m_3 \xleftarrow{} n_2  \sqcup  m_2)\\
             \llbracket g \rrbracket = \;
-            &(0 \to 0 \to \llbracket C[r] \rrbracket \xleftarrow{} n_1' + m_1' \xleftarrow{} n_1 + m_1)\\
+            &(0 \to 0 \to \llbracket C[r] \rrbracket \xleftarrow{} n_1'  \sqcup  m_1' \xleftarrow{} n_1  \sqcup  m_1)\\
             &;\\
-            &(n_1 + m_1 \xrightarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3 + m_3 \xleftarrow{} n_2 + m_2)
+            &(n_1  \sqcup  m_1 \xrightarrow{} n_1  \sqcup  m_1 \xrightarrow{} \mathcal{L}_2^{\bot} \xleftarrow{} n_3  \sqcup  m_3 \xleftarrow{} n_2  \sqcup  m_2)
             \end{align*}
             \fi
             and
-            % $n'_2 + m'_2 = n_3 + m_3 + (n_1' + m_1' \setminus (n_1 + m_1))$
+            % $n'_2  \sqcup  m'_2 = n_3  \sqcup  m_3  \sqcup  (n_1'  \sqcup  m_1' \setminus (n_1  \sqcup  m_1))$
             \[
-                n_2' = n_3 + (n_1' \setminus n_1) \qquad m_2' = m_3 + (m_1' \setminus m_1)
+                n_2' = n_3  \sqcup  (n_1' \setminus n_1) \qquad m_2' = m_3  \sqcup  (m_1' \setminus m_1)
             \]
             and
             % fix overflowing
             % \[
-            % n_2 + m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1) + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1) + n_1 \xleftarrow{} m_2 + n_1    
+            % n_2  \sqcup  m_1 \xrightarrow{} n_2' \setminus (n_1' \setminus n_1)  \sqcup  m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot} \xleftarrow{} m'_2 \setminus (m_1' \setminus m_1)  \sqcup  n_1 \xleftarrow{} m_2  \sqcup  n_1    
             % \]
             \tikzcdset{row sep/mysizerow/.initial=0.3ex}
             \tikzcdset{column sep/mysizecol/.initial=0.1ex}
             \[\
 \begin{tikzcd}[cramped, row sep=mysizerow, column sep = mysizecol]
-                n_2 + m_1\hspace{-2em} &&&&&&&& \hspace{-2em}m_2 + n_1\\
-                & \hspace{-2em} n_2' \setminus (n_1' \setminus n_1) + m_1 &\; & & \mathcal{L}_{2}^{\bot} &\; && m'_2 \setminus (m_1' \setminus m_1) + n_1\hspace{-2em} &\\
+                n_2  \sqcup  m_1\hspace{-2em} &&&&&&&& \hspace{-2em}m_2  \sqcup  n_1\\
+                & \hspace{-2em} n_2' \setminus (n_1' \setminus n_1)  \sqcup  m_1 &\; & & \mathcal{L}_{2}^{\bot} &\; && m'_2 \setminus (m_1' \setminus m_1)  \sqcup  n_1\hspace{-2em} &\\
                 \arrow[from=1-1, to=2-2]
                 \arrow[from=1-9, to=2-8]
                 \arrow[from=2-2, to=2-5]
@@ -2087,12 +2113,12 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             \end{tikzcd}
 \]
             is an MDA cospan.
-            By denoting the pushout of $\mathcal{L}_1^{\bot} \xleftarrow{} n_1 + m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot}$ with $\mathcal{L}_3^{\bot}$,
-            one can observe that $\llbracket f \rrbracket$ is the pushout object of $\mathcal{L} \xleftarrow{} i+j \xrightarrow{} \mathcal{L}_{3}^{\bot}$ as per the diagram below
+            By denoting the pushout of $\mathcal{L}_1^{\bot} \xleftarrow{} n_1  \sqcup  m_1 \xrightarrow{} \mathcal{L}_{2}^{\bot}$ with $\mathcal{L}_3^{\bot}$,
+            one can observe that $\llbracket f \rrbracket$ is the pushout object of $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{L}_{3}^{\bot}$ as per the diagram below
             \[\begin{tikzcd}
-                && {n_1+m_1} && {\mathcal{L}^{\bot}_2} \\
+                && {n_1 \sqcup m_1} && {\mathcal{L}^{\bot}_2} \\
                 \\
-                {i+j} && {\mathcal{L}^{\bot}_1} && {\mathcal{L}^{\bot}_3} \\
+                {i \sqcup j} && {\mathcal{L}^{\bot}_1} && {\mathcal{L}^{\bot}_3} \\
                 \\
                 {\mathcal{L}} && {\mathcal{C}[l]} && {\llbracket f \rrbracket}
                 \arrow[from=1-3, to=1-5]
@@ -2112,8 +2138,8 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             \end{tikzcd}
             \]
             where the square marked with $\dagger$ is a pushout because of pushout pasting law.
-            The corestriction of $n_1 + m_1 \xrightarrow{[f_1,f_2]} \mathcal{L}_1^{\bot}$ to the image of $i + j \xrightarrow{[g_1,g_2]} \mathcal{L}_{1}^{\bot}$ is mono: suppose it is not mono, then there exist $z_1$, $z_2$, $z_3$ such that $f_1(z_1) = f_2(z_2) = g_1(z_3)$, then $[f_2,g_1]$ would not be mono, similarly if $f_1(z_1) = f_2(z_2) = g_2(z_3)$.\
-            By construction of the pushout the restriction of $\mathcal{L}_{1}^{\bot} \to \mathcal{L}_{3}^{\bot}$ is mono and hence the arrow $i + j \to \mathcal{L}_{3}^{\bot}$ is mono.
+            The corestriction of $n_1  \sqcup  m_1 \xrightarrow{[f_1,f_2]} \mathcal{L}_1^{\bot}$ to the image of $i  \sqcup  j \xrightarrow{[g_1,g_2]} \mathcal{L}_{1}^{\bot}$ is mono: suppose it is not mono, then there exist $z_1$, $z_2$, $z_3$ such that $f_1(z_1) = f_2(z_2) = g_1(z_3)$, then $[f_2,g_1]$ would not be mono, similarly if $f_1(z_1) = f_2(z_2) = g_2(z_3)$.\
+            By construction of the pushout the restriction of $\mathcal{L}_{1}^{\bot} \to \mathcal{L}_{3}^{\bot}$ is mono and hence the arrow $i  \sqcup  j \to \mathcal{L}_{3}^{\bot}$ is mono.
             This implies that $\llbracket f \rrbracket \Rrightarrow_{\langle \mathcal{L},\mathcal{R} \rangle} \llbracket g \rrbracket$.
             \item Consider the case when
             \[
@@ -2124,11 +2150,11 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
             \[
                 \adjustbox{width=0.7\linewidth}{
                 \begin{tikzcd}
-                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                     \\
                     {\llbracket\mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket\mathcal{C}[r]\rrbracket} \\
-                    & {n'+m'} && {n''+m''} \\
-                    && {n+m}
+                    & {n' \sqcup m'} && {n'' \sqcup m''} \\
+                    && {n \sqcup m}
                     \arrow[from=1-1, to=3-1]
                     \arrow[from=1-2, to=1-1]
                     \arrow[from=1-3, to=1-2]
@@ -2151,11 +2177,11 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                 \[
                 \adjustbox{width=\linewidth}{
                 \begin{tikzcd}
-                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                     \\
                     {\llbracket\mathcal{C}[l]\rrbracket} && {\mathcal{L}_1^{\bot}} && {\llbracket\mathcal{C}[r]\rrbracket} \\
-                    & {n'+m'} && {n''+m''} \\
-                    && {n+m}
+                    & {n' \sqcup m'} && {n'' \sqcup m''} \\
+                    && {n \sqcup m}
                     \arrow[from=1-1, to=3-1]
                     \arrow[from=1-2, to=1-1]
                     \arrow[from=1-3, to=1-2]
@@ -2176,15 +2202,15 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                 \]
                 \fi
                 which implies the existence of the following diagram where both squares are pushouts by construction and the matching is convex and down-closed.
-                % \textcolor{red}{Consider cases when $\mathcal{L}$ has no-input and no-output sub-hypergraph and when it does not. Basically, repeat the above reasoning here as well, but say that if $n+m$ is empty, then there is no pushout.}
+                % \textcolor{red}{Consider cases when $\mathcal{L}$ has no-input and no-output sub-hypergraph and when it does not. Basically, repeat the above reasoning here as well, but say that if $n \sqcup m$ is empty, then there is no pushout.}
                 \ifdefined \ONECOLUMN
                 \[\adjustbox{width=0.95\linewidth}{
                     \begin{tikzcd}
-                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                     \\
-                    {\llbracket f_1 \rrbracket \; \hat{+}\; \ldots \hat{+} \; \llbracket\mathcal{C}[l]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \mathcal{L}_{1}^{\bot} \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket\mathcal{C}[r]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} \\
-                    & {n_1' + m_1'} && {n_1'' + m_1''} \\
-                    && {n + m}
+                    {\llbracket f_1 \rrbracket \;  + \; \ldots  +  \; \llbracket\mathcal{C}[l]\rrbracket \;  +  \; \ldots \;  +  \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \;  +  \; \ldots \;  +  \; \mathcal{L}_{1}^{\bot} \;  +  \; \ldots \;  +  \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \;  +  \; \ldots \;  +  \; \llbracket\mathcal{C}[r]\rrbracket \;  +  \; \ldots \;  +  \; \llbracket f_n \rrbracket} \\
+                    & {n_1'  \sqcup  m_1'} && {n_1''  \sqcup  m_1''} \\
+                    && {n  \sqcup  m}
                     \arrow[from=1-1, to=3-1]
                     \arrow[from=1-2, to=1-1]
                     \arrow[from=1-3, to=1-2]
@@ -2208,11 +2234,11 @@ For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \texti
                 \begin{figure*}[hbt!]
                 \[\adjustbox{width=\linewidth}{
                     \begin{tikzcd}
-                    {\mathcal{L}} & {i'+j'} & {i+j} & {i''+j''} & {\mathcal{R}} \\
+                    {\mathcal{L}} & {i' \sqcup j'} & {i \sqcup j} & {i'' \sqcup j''} & {\mathcal{R}} \\
                     \\
-                    {\llbracket f_1 \rrbracket \; \hat{+}\; \ldots \hat{+} \; \llbracket\mathcal{C}[l]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \mathcal{L}_{1}^{\bot} \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket\mathcal{C}[r]\rrbracket \; \hat{+} \; \ldots \; \hat{+} \; \llbracket f_n \rrbracket} \\
-                    & {n_1' + m_1'} && {n_1'' + m_1''} \\
-                    && {n + m}
+                    {\llbracket f_1 \rrbracket \;  + \; \ldots  +  \; \llbracket\mathcal{C}[l]\rrbracket \;  +  \; \ldots \;  +  \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \;  +  \; \ldots \;  +  \; \mathcal{L}_{1}^{\bot} \;  +  \; \ldots \;  +  \; \llbracket f_n \rrbracket} && {\llbracket f_1 \rrbracket \;  +  \; \ldots \;  +  \; \llbracket\mathcal{C}[r]\rrbracket \;  +  \; \ldots \;  +  \; \llbracket f_n \rrbracket} \\
+                    & {n_1'  \sqcup  m_1'} && {n_1''  \sqcup  m_1''} \\
+                    && {n  \sqcup  m}
                     \arrow[from=1-1, to=3-1]
                     \arrow[from=1-2, to=1-1]
                     \arrow[from=1-3, to=1-2]
@@ -2250,7 +2276,7 @@ Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracke
     \begin{subfigure}{\linewidth}
 \begin{align*}
     (k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-    n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+    n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  i  \sqcup  k \xleftarrow{} i  \sqcup  k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j  \sqcup  k \xrightarrow{} j  \sqcup  k  \sqcup  n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
     (i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
 \end{align*}
 \subcaption{\;}
@@ -2259,7 +2285,7 @@ Consider a rewrite rule $\langle \llbracket l \rrbracket, \llbracket r \rrbracke
 \begin{subfigure}{\linewidth}
     \begin{align*}
         (k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-        n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+        n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  i  \sqcup  k \xleftarrow{} i  \sqcup  k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j  \sqcup  k \xrightarrow{} j  \sqcup  k  \sqcup  n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
         (i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
     \end{align*}
 \subcaption{\;}
@@ -2277,13 +2303,13 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 
 		% \begin{align*}
 		% 	(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  i  \sqcup  k \xleftarrow{} i  \sqcup  k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j  \sqcup  k \xrightarrow{} j  \sqcup  k  \sqcup  n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
 		% 	(i \xrightarrow{} i' \xrightarrow{} &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j)
 		% \end{align*}
 		By fullness of $\llbracket - \rrbracket$ (from Theorem~\ref{thm:completeness_simple}) there exist $c_{1}$ and $c_{2}$ such that 
 		\begin{align*}
-		&\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k\\
-        &\llbracket c_{2} \rrbracket = j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
+		&\llbracket c_{1} \rrbracket = n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  i  \sqcup  k \xleftarrow{} i  \sqcup  k\\
+        &\llbracket c_{2} \rrbracket = j  \sqcup  k \xrightarrow{} j  \sqcup  k  \sqcup  n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m
         \end{align*}
 		By functoriality, $\llbracket f \rrbracket = \llbracket c_{1};(id \otimes l);c_{2} \rrbracket$ and by faithfulness we have that $f = c_{1};(id \otimes l);c_{2}$ to which we can apply $\langle l, r \rangle$ and get $g' = c_{1};(id \otimes r);c_{2}$.
 		We then have $\llbracket g' \rrbracket = \llbracket c_{1};(id \otimes r);c_{2} \rrbracket =  \llbracket g \rrbracket$ since the boundary complement is unique (Proposition ~\ref{prop:boundary_unique}) and $g' = g$ by faithfulness.
@@ -2291,7 +2317,7 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 		\item If the image of $\mathcal{L}$ is not top-level, then either $\llbracket f \rrbracket$ is decomposable as in Figure~\ref{fig:decomposition_2}
 		% \begin{align*}
 		% 	(k \xrightarrow{id_{k}} k \xrightarrow{id_{k}} &k \xleftarrow{id_{k}} k \xleftarrow{id_{k}} k)\\
-		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}' + i + k \xleftarrow{} i + k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j + k \xrightarrow{} j + k + n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
+		% 	n \xrightarrow{} n_{1}' \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  i  \sqcup  k \xleftarrow{} i  \sqcup  k; \qquad\qquad\qquad &\otimes \qquad\qquad\qquad ; j  \sqcup  k \xrightarrow{} j  \sqcup  k  \sqcup  n'_{2} \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_{2} \xleftarrow{} m\\
 		% 	(i \xrightarrow{} i' \xrightarrow{} &\mathcal{F'} \xleftarrow{} j' \xleftarrow{} j)
 		% \end{align*}
 		such that $\mathcal{L}$ is a convex down-closed sub-e-hypergraph of $F'$.
@@ -2317,19 +2343,19 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 		\item or, $\llbracket f \rrbracket$ is decomposable as
 		\begin{align*}
 			n_1 \xrightarrow{} n_1' \xrightarrow{} &\mathcal{F}_1 \xleftarrow{} m_1' \xleftarrow{} m_1\\
-			&\;+\\
+			&\; + \\
 			&\vdotswithin{+}\\
-			&\;+\\
+			&\; + \\
 			n_p \xrightarrow{} n_p' \xrightarrow{} &\mathcal{F}_p \xleftarrow{} m_p' \xleftarrow{} m_p\\
-			&\;+\\
+			&\; + \\
 			&\vdotswithin{+}\\
-			&\;+\\
+			&\; + \\
 			n_k \xrightarrow{} n_k' \xrightarrow{} &\mathcal{F}_k \xleftarrow{} m_k' \xleftarrow{} m_k
 		\end{align*}
 		such that the image of $\mathcal{L}$ lies within $\mathcal{F}_{p}$.
 		By inductive hypothesis we have that $\llbracket f_{p} \rrbracket = n_p \xrightarrow{} n_{p}' \xrightarrow{} \mathcal{F}_{p} \xleftarrow{} m_{p}' \xleftarrow{} m_{p}$ rewrites into $\llbracket g_{p} \rrbracket = n_p \xrightarrow{} n_{p}'' \xrightarrow{} \mathcal{G}_{p} \xleftarrow{} m_{p}'' \xleftarrow{} m_{p}$ such that $f_{p} = g_{p}$.
-		By fullness and the fact that $\llbracket - \rrbracket$ is $\catname{SLat}$-enriched, there exist $\llbracket f_1 + \ldots + f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket + \ldots + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
-		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1} + \ldots + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
+		By fullness and the fact that $\llbracket - \rrbracket$ is $\catname{SLat}$-enriched, there exist $\llbracket f_1  +  \ldots  +  f_{p} + \ldots + f_{k} \rrbracket = \llbracket f_{1} \rrbracket  + \ldots  + \llbracket f_{p} \rrbracket + \ldots + \llbracket f_{k} \rrbracket = \llbracket f \rrbracket$.
+		By applying $f_{p} = g_{p}$ we get $f = g''$ and $\llbracket g'' \rrbracket = \llbracket f_{1}  +  \ldots  + g_{p} + \ldots f_{k} \rrbracket = \llbracket g \rrbracket$ and $f = g'' = g$.
 \end{itemize}
     % there is a sequence of SMC and enrichment equations such that when applied to $f$ it is turned into $g$.
     % As SMC laws are subsumed by e-hypergraph representation we need to show that for each enrichment equation $l = r$ that turns $g$ into $h$ there is a pushout complement $\mathcal{C}$ such that $\llbracket g \rrbracket = \mathcal{C}[\llbracket l \rrbracket]$ and such that $\llbracket h \rrbracket = \mathcal{C}[\llbracket r \rrbracket]$, where $\mathcal{C}[]$ is defined by computing the pushout along the common interfaces.
@@ -2350,8 +2376,8 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
     % This satisfies conditions (1)-(2) in Proposition~\ref{prop:complement_existence}.
     % The no-dangling condition is satisfied because we consider only mda-cospans.
     % Therefore, there exists a unique pushout complement $\mathcal{C}$ which is $\llbracket g \rrbracket$ with $\llbracket l \rrbracket$ removed.
-    % Then necessarily vertices in $\mathcal{C}$ in the image of $i+j$ share the same set of parents and are pairwise consistent as they do so in $\mathcal{G}$.
-    % The same is true for the image of $i + j$ in $\mathcal{R}$ and therefore the necessary pushout exists which is $\mathcal{C}$ with $\mathcal{R} = \llbracket r \rrbracket$ glued in and it is equal to $\llbracket h \rrbracket$.
+    % Then necessarily vertices in $\mathcal{C}$ in the image of $i \sqcup j$ share the same set of parents and are pairwise consistent as they do so in $\mathcal{G}$.
+    % The same is true for the image of $i  \sqcup  j$ in $\mathcal{R}$ and therefore the necessary pushout exists which is $\mathcal{C}$ with $\mathcal{R} = \llbracket r \rrbracket$ glued in and it is equal to $\llbracket h \rrbracket$.
     % Hence, $\llbracket g \rrbracket \Rrightarrow{} \llbracket h \rrbracket$.
     % The rest follows by induction on the number of applied equations.
     % Similar argument then applies to other rules in $\mathcal{S}$ as well.
@@ -2394,25 +2420,25 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
     Similarly, for $m_{1}'$ and $m_{2}'$ with regard to $g'$.
     Then there are cospans
     \begin{align*}
-        n \to n_{1}' \to &\mathcal{C}_{1} \xleftarrow{} m_{1}' + k + i \xleftarrow{} k + i\\
+        n \to n_{1}' \to &\mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  k  \sqcup  i \xleftarrow{} k  \sqcup  i\\
         i \to i' \to &\mathcal{L} \xleftarrow{} j' \xleftarrow{} j\\
-        k + j \to n_{2}' + k + j \to &\mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m\\
+        k  \sqcup  j \to n_{2}'  \sqcup  k  \sqcup  j \to &\mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m\\
     \end{align*}
     and $n \xrightarrow{f} n' \xrightarrow{f'} \mathcal{G} \xleftarrow{g'} m' \xleftarrow{g} m$ is the co-limit of the following diagram
     % \[
-    %     n \to n_{1}' \to \mathcal{C}_{1} \xleftarrow{} m_{1}' + k \xleftarrow{} i + k \to i' + k \to \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n_{2}' + k + j \to \mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m
+    %     n \to n_{1}' \to \mathcal{C}_{1} \xleftarrow{} m_{1}'  \sqcup  k \xleftarrow{} i  \sqcup  k \to i'  \sqcup  k \to \mathcal{L} \xleftarrow{} k  \sqcup  j' \xleftarrow{} k  \sqcup  j \xrightarrow{} n_{2}'  \sqcup  k  \sqcup  j \to \mathcal{C}_{2} \xleftarrow{} m_{2}' \xleftarrow{} m
     % \]
     \ifdefined\ONECOLUMN
     \[
-    n \xrightarrow{} n'_{1} \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m'_{1} + i + k \xleftarrow{} i+k \xrightarrow{} i' + k \xrightarrow{} \mathcal{L} \xleftarrow{} k + j' \xleftarrow{} k + j \xrightarrow{} n'_2 + k + j \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_2 \xleftarrow{} m
+    n \xrightarrow{} n'_{1} \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} m'_{1}  \sqcup  i  \sqcup  k \xleftarrow{} i \sqcup k \xrightarrow{} i'  \sqcup  k \xrightarrow{} \mathcal{L} \xleftarrow{} k  \sqcup  j' \xleftarrow{} k  \sqcup  j \xrightarrow{} n'_2  \sqcup  k  \sqcup  j \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} m'_2 \xleftarrow{} m
     \]
     \else
     \[
     \adjustbox{width=\linewidth}{
     \begin{tikzcd}
-        n \arrow[r] & n'_{1} \arrow[r] & \mathcal{C}_{1} & m'_{1} + i + k \arrow[l]     & i+k \arrow[l] \arrow[r] & i'+k \arrow[rd] &             \\
+        n \arrow[r] & n'_{1} \arrow[r] & \mathcal{C}_{1} & m'_{1}  \sqcup  i  \sqcup  k \arrow[l]     & i \sqcup k \arrow[l] \arrow[r] & i' \sqcup k \arrow[rd] &             \\
                     &                  &                 &                          &                         &                 & \mathcal{L} \\
-        m \arrow[r] & m'_{2} \arrow[r] & \mathcal{C}_{2} & n'_{2} + k + j \arrow[l] & k+j \arrow[r] \arrow[l] & k+j' \arrow[ru] &            
+        m \arrow[r] & m'_{2} \arrow[r] & \mathcal{C}_{2} & n'_{2}  \sqcup  k  \sqcup  j \arrow[l] & k \sqcup j \arrow[r] \arrow[l] & k \sqcup j' \arrow[ru] &            
     \end{tikzcd}
     }
     \]
@@ -2446,21 +2472,21 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 % \begin{proposition}[Proposition~\ref{prop:wnormal_form} restatement]
 %     For each cospan $f$ in ${\WellTypedMdaEcospans}/{\mathcal{S}}$ there is a \textit{weak normal form} such that 
 %     \[
-%         f = f_1 + \ldots + f_n
+%         f = f_1  \sqcup  \ldots  \sqcup  f_n
 %     \]
 %      such that each $f_i$ contains no hierarchical edges,  and for all $i \neq j$ we have $f_i \neq f_j$.
 % \end{proposition}
 % \begin{proof}
 %     We will define the depth of an edge $e$ as the number of parents it has, \textit{i.e.}, by $|[e)|$.
-%     Then we will build the required weak normal form in steps and first will build a form $f = f_1 + \ldots + f_n$ such that every of $f_i$ is also of the form $g_1 + \ldots + g_k$ and so on and we will assume that $f$ has at least one hierarchical edge (otherwise is is already a weak normal form).
+%     Then we will build the required weak normal form in steps and first will build a form $f = f_1  \sqcup  \ldots  \sqcup  f_n$ such that every of $f_i$ is also of the form $g_1  \sqcup  \ldots  \sqcup  g_k$ and so on and we will assume that $f$ has at least one hierarchical edge (otherwise is is already a weak normal form).
 %     In order to achieve the latter we will apply rewrite rules that correspond to equations (1)-(4) from Figure~\ref{fig:string-equations}.
 %     At step 1 we search for matches among the edges with depth 0 and then note that each such rewrite reduces the number of such edges until there is only one edge of depth 0, and it is necessarily a hierarchical one: because we have a finite number of edges of each depth, this process terminates.
 %     At step $k$ we similarly search for matches among the edges with depth $k-1$ noting that this process terminates when we end up with $l$ groups of edges of depth $k-1$ such that edges within a group are pair-wise not consistent.
-%     Because we do not increase the maximum depth in $f$ we will eventually reach a maximum value of $k$ and stop because there will be no hierarchical edges of depth $max(k)$ (otherwise their children would have depth $max(k) + 1$).
+%     Because we do not increase the maximum depth in $f$ we will eventually reach a maximum value of $k$ and stop because there will be no hierarchical edges of depth $max(k)$ (otherwise their children would have depth $max(k)  \sqcup  1$).
     
 %     Then we will apply rules (5), from right to left, (6) and (8), from right to left.
 %     Note that each of these rules decreases the number of hierarchical edges, so we apply them until there is only one hierarchical edge of depth 0, \textit{i.e.}, the top-level one.
-%     This brings us to a weak normal form $f = f_1 + \ldots + f_n$ where each of $f_i$ does not contain any hierarchical edges and for $i \not = j$, $f_i \not = f_j$, the latter is guaranteed by rule (8).
+%     This brings us to a weak normal form $f = f_1  \sqcup  \ldots  \sqcup  f_n$ where each of $f_i$ does not contain any hierarchical edges and for $i \not = j$, $f_i \not = f_j$, the latter is guaranteed by rule (8).
 % \end{proof}
 
 \ifdefined\ONECOLUMN
@@ -2470,6 +2496,7 @@ We will proceed by induction on the level of the occurrence of $\mathcal{L}$ wit
 \fi
 
 This section contains the figures with more elaborate transformation of e-string diagrams from the Figure~\ref{fig:e-graph-example}.
+See Figures~\ref{fig:e-graph-example-a-b},\ref{fig:e-graph-example-b-c}.
 
 \ifdefined\ONECOLUMN
 \begin{figure}[htb!]
@@ -2792,17 +2819,18 @@ if we consider the following DPO square
 % }
 % \]
 
-\begin{definition}
+% NOTE This definition means that tensor identity is the unit for the semilattice, which is not necessarily the case
+% \begin{definition}
 
-We will define the action of $+$ on two cospans where either of the carriers is the empty e-hypergraph as
-\begin{align*}
-0 \xrightarrow{} n \xrightarrow{} &\;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
-&\;+ \hspace{6em} \Coloneqq \hspace{2em} 0  \xrightarrow{} n \xrightarrow{} \;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
-0 \xrightarrow{} 0 \xrightarrow{} &\;\varnothing \xleftarrow{} 0 \xleftarrow{} 0.
-\end{align*}
-\end{definition}
+% We will define the action of $+$ on two cospans where either of the carriers is the empty e-hypergraph as
+% \begin{align*}
+% 0 \xrightarrow{} n \xrightarrow{} &\;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
+% &\;+ \hspace{6em} \Coloneqq \hspace{2em} 0  \xrightarrow{} n \xrightarrow{} \;\mathcal{F} \xleftarrow{} m \xleftarrow{} 0\\
+% 0 \xrightarrow{} 0 \xrightarrow{} &\;\varnothing \xleftarrow{} 0 \xleftarrow{} 0.
+% \end{align*}
+% \end{definition}
 
-This is so that we can absorb some equations and to seamlessly introduce what follows.
+% This is so that we can absorb some equations and to seamlessly introduce what follows.
 
 % \begin{remark}
 % By putting no restrictions on the signature we need to enforce some restrictions on the equations in $\mathcal{E}$.
