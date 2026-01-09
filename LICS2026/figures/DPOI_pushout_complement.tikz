@@ -1,0 +1,51 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-4.25, 4) {};
+		\node [style=none] (1) at (3, 4) {$i \sqcup j$};
+		\node [style=none] (2) at (2, 4) {};
+		\node [style=none] (3) at (-4.75, 4) {$\mathcal{L}$};
+		\node [style=none] (5) at (-0.5, 4) {$i^\prime \sqcup j^\prime$};
+		\node [style=none] (9) at (-4.75, 3.5) {};
+		\node [style=none] (11) at (-4.75, -0.5) {};
+		\node [style=none] (12) at (-4.75, -1) {$\mathcal{G}$};
+		\node [style=none] (13) at (3, -1) {$\mathcal{L}^{\bot}$};
+		\node [style=none] (14) at (3, -0.5) {};
+		\node [style=none] (15) at (3, 3.5) {};
+		\node [style=none] (16) at (2.5, -1) {};
+		\node [style=none] (17) at (-4.25, -1) {};
+		\node [style=none] (23) at (3.5, -1) {};
+		\node [style=none] (31) at (-4.25, -1.5) {};
+		\node [style=none] (32) at (-2.75, -2.25) {};
+		\node [style=none] (33) at (-1.75, -2.75) {$n^\prime \sqcup k^\prime$};
+		\node [style=none] (34) at (3, -6) {$n \sqcup k$};
+		\node [style=none] (37) at (3, -5.5) {};
+		\node [style=none] (39) at (3, -1.5) {};
+		\node [style=none] (40) at (2.5, -5.25) {};
+		\node [style=none] (41) at (-1, -3.25) {};
+		\node [style=none] (44) at (-1.5, 4) {};
+		\node [style=none] (45) at (0.5, 4) {};
+		\node [style=none] (48) at (-4.25, 0) {};
+		\node [style=none] (49) at (-3.75, 0) {};
+		\node [style=none] (50) at (-3.75, -0.5) {};
+		\node [style=none] (54) at (-5.25, 1.5) {$m$};
+		\node [style=none] (55) at (4, 1.5) {$[c_1, c_2]$};
+		\node [style=none] (56) at (4.25, -3.5) {$[d_1,d_2]$};
+		\node [style=none] (57) at (-4.75, -2.25) {$[g_{int},h_{int}]$};
+		\node [style=none] (58) at (0, -5) {$[g_{ext},h_{ext}]$};
+		\node [style=none] (59) at (-2.75, 4.75) {$[f^\prime_{int},g^\prime_{int}]$};
+		\node [style=none] (60) at (1.25, 4.75) {$[f^\prime_{ext},g^\prime_{ext}]$};
+		\node [style=none] (61) at (-0.75, -0.5) {$l$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=diredge] (9.center) to (11.center);
+		\draw [style=diredge] (15.center) to (14.center);
+		\draw [style=diredge] (16.center) to (17.center);
+		\draw [style=diredge] (32.center) to (31.center);
+		\draw [style=diredge] (37.center) to (39.center);
+		\draw [style=diredge] (40.center) to (41.center);
+		\draw [style=diredge] (2.center) to (45.center);
+		\draw [style=diredge] (44.center) to (0.center);
+		\draw (48.center) to (49.center);
+		\draw (49.center) to (50.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
