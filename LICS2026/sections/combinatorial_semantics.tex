@@ -19,7 +19,7 @@ Moreover, they develop the use of hypergraphs as combinatorial representations o
 We briefly present this correspondence, but the interested reader should consult the work of~\citet{bonchi_string_2022-1,bonchi_string_2022-2}.
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
-	Over a monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$, a hypergraph $\mathcal{G}$ is a tuple $(V,E,s,t,l)$, where $V$ is a finite set of vertices, $E$ is a finite set of hyperedges, $s\colon E \to V^{*}$ is a source function, $t\colon E \to V^{*}$ is a target function,  and $l = (l_{V}\colon V \to \Sigma_{O},l_{E}\colon E \to \Sigma_{M})$ is a pair of labelling functions that assigns each hyperedge and vertex an operator and a type from monoidal signature $\Sigma$ respectively.
+	A hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ is a tuple $(V,E,s,t,l)$, where $V$ is a finite set of vertices, $E$ is a finite set of hyperedges, $s\colon E \to V^{*}$ is a source function, $t\colon E \to V^{*}$ is a target function,  and $l = (l_{V}\colon V \to \Sigma_{O},l_{E}\colon E \to \Sigma_{M})$ is a pair of labelling functions that assigns each hyperedge and vertex an operator and a type from monoidal signature $\Sigma$ respectively.
 
 	The labelling function must respect the typing of the operator:
 	\[
@@ -57,7 +57,7 @@ This gives rise to the definition of a hypergraph with interfaces via a construc
 \begin{definition}[Hypergraphs with interfaces]%
 	\label{def:cspd}
 	A hypergraph with interfaces is a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\catname{Hyp}(\Sigma)$ where $n$, $m$ are discrete hypergraphs denoting input and output interfaces.
-	Write $\catname{HypI}(\Sigma)$ for the full subcategory of the quotient category of cospans\footnote{This is the 1-categorical version of the bicategory of cospans: for a bicategory, its quotient category is given by the same objects but by taking \emph{isomorphism classes} of morphisms instead.} of $\catname{Hyp}(\Sigma)$ whose objects are discrete hypergraphs and morphisms are isomorphism classes of cospans of hypergraphs\footnote{By abuse of notation, we ignore the distinction between a cospan and its isomorphism class --- this is validated by replacing \enquote{pushout} (which is only determined up to unique isomorphism) by \enquote{chosen pushouts}, which any concrete setting (e.g.\ an implementation of DPO rewriting) would satisfy.}.
+	We write $\catname{HypI}(\Sigma)$ for the full subcategory of the quotient category of cospans\footnote{This is the 1-categorical version of the bicategory of cospans: for a bicategory, its quotient category is given by the same objects but by taking \emph{isomorphism classes} of morphisms instead.} of $\catname{Hyp}(\Sigma)$ whose objects are discrete hypergraphs and morphisms are isomorphism classes of cospans of hypergraphs\footnote{By abuse of notation, we ignore the distinction between a cospan and its isomorphism class --- this is validated by replacing \enquote{pushout} (which is only determined up to unique isomorphism) by \enquote{chosen pushouts}, which any concrete setting (e.g.\ an implementation of DPO rewriting) would satisfy.}.
 \end{definition}
 $\HypI{\Sigma}$ is a symmetric monoidal category:
 \begin{enumerate}
@@ -499,7 +499,7 @@ We also need to enforce typing constraints on hierarchical edges so that they re
 Again, considering~\autoref{fig:e-cospan-example}, to make edge $e_{1}$ well-typed, it is necessary that $l_{V}^{*}([v_{4},v_{5},v_{6}]) = l_{V}^{*}([v_{10},v_{11},v_{12}]) = l_{V}^{*}([v_1,v_2,v_3])$ and $l_{V}^{*}([w_{4},w_{5},w_{6}]) = l_{V}^{*}([w_{10},v_{12},v_{11}]) = l_{V}^{*}([w_1,w_2,w_3])$ (note the change of ordering in the output of $e_{1}$).
 To make edge $e_{2}$ well-typed, it is necessary that $l_{V}^{*}([v_4,v_5,v_9]) = l_{V}^{*}([v_7,v_8,v_9])$ and $l_{V}([u_1]) = l_{V}([v_9]) \multimap l_{V}^{*}([v_8,v_7,w_9])$.
 
-~Wepautoroceed with defining a notion of DPOI rewriting for such closed e-hypergraphs.
+We proceed with defining a notion of DPOI rewriting for such closed e-hypergraphs.
 
 \section{DPOI-Rewriting for Closed E-Hypergraphs}
 

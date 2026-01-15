@@ -553,39 +553,268 @@ After computing the pushout for the second half of the diagram we add strict int
 \section{Modelling $\lambda_{\text{lsub}}$-calculus in slotted e-graphs}%
 \label{sec:e-graph-explicit-subst}
 
-\begin{table}
-	\begin{tabular}{lcc}
-		\texttt{beta}                  & $(\lambda x . t) u = t[x / u]$                       &                                                                    \\
-		\texttt{subst\_same\_var}      & $x[x / u] = u$                                       &                                                                    \\
-		\texttt{subst\_diff\_var}      & $y[x / u] = y$                                       & if $x \not \in \mathcal{F}(u)$                                     \\
-		\texttt{subst\_application}    & $(uu')[x / v] = u[x / v]u'[x / v]$                   &                                                                    \\
-		\texttt{subst\_lambda}         & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$    & if $x \not \in \mathcal{F}(v)$                                     \\
-		\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x' / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$             \\
-		\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])$          & if $x' \not \in \mathcal{F}(u)$                                    \\
-		\texttt{subst\_comm}           & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$          & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)~.$ \\
-	\end{tabular}
-	\caption{Encoding of string diagram equivalence and explicit substitution for $\lambda_{\text{lsub}}$}
-	\label{tbl:e-graph-subst-rules}
-\end{table}
+% \begin{table*}
+% 	\begin{tabular}{lcc}
+% 		\texttt{beta}                  & $(\lambda x . t) u = t[x / u]$                       &                                                                    \\
+% 		\texttt{subst\_same\_var}      & $x[x / u] = u$                                       &                                                                    \\
+% 		\texttt{subst\_diff\_var}      & $y[x / u] = y$                                       & if $x \not \in \mathcal{F}(u)$                                     \\
+% 		\texttt{subst\_application}    & $(uu')[x / v] = u[x / v]u'[x / v]$                   &                                                                    \\
+% 		\texttt{subst\_lambda}         & $(\lambda x . u)[y / v] = \lambda x . (u[y / v])$    & if $x \not \in \mathcal{F}(v)$                                     \\
+% 		\texttt{subst\_interchange\_1} & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v[x' / v']]$ & if $x' \in \mathcal{F}(v)$ and $x \in \mathcal{F}(v')$             \\
+% 		\texttt{subst\_interchange\_2} & $(u[x / v])[x' / v'] = (u[x / v[x' / v']])$          & if $x' \not \in \mathcal{F}(u)$                                    \\
+% 		\texttt{subst\_comm}           & $(u[x / v])[x' / v'] = (u[x' / v'])[x / v]$          & if $x \not \in \mathcal{F}(v')$ and $x' \not \in \mathcal{F}(v)~.$ \\
+% 	\end{tabular}
+% 	\caption{Encoding of string diagram equivalence and explicit substitution for $\lambda_{\text{lsub}}$}
+% 	\label{tbl:e-graph-subst-rules}
+% \end{table*}
 
-Consider the equational presentation of string diagram equivalence and the $\lambda_{\text{lsub}}$ reduction rules given by~\autoref{tbl:e-graph-subst-rules}.
-These can be encoded in the framework of slotted e-graphs.
-To demonstrate the effect that a particular set of rewrites has on the number of e-nodes of an e-graph, we saturate the lambda term $\text{plus}(2, 2)$ where $\text{plus}$ and $2$ are encoded using Church encoding.
-The numbers of e-nodes after the e-graph is saturated for each set of rewrite rules are presented in~\autoref{tbl:slotted}.
+\begin{listing}
+	\begin{minted}{rust}
+pub enum Lambda {
+   Lam(Bind<AppliedId>) = "lam",
+   App(AppliedId, AppliedId) = "app",
+   // subst $x t u := t[x / u]
+   Subst(Bind<AppliedId>, AppliedId) = "subst",
+   Var(Slot) = "var",
+}
+	\end{minted}
+	\caption{$\lambda_{\text{lsub}}$ syntax definition in slotted e-graphs}
+	\label{listing:define_language}
+\end{listing}
 
-\begin{table}
+
+\begin{listing}
+	\begin{minted}{rust}
+fn beta() -> Rewrite<Lambda> {
+    let pat = "(app (lam $1 ?b) ?t)";
+    let outpat = "(subst $1 ?b ?t)";
+    Rewrite::new("beta", pat, outpat)
+}
+	\end{minted}
+	\caption{$\lambda_{\text{lsub}}$ $d\beta$-rule}
+	\label{listing:lsub_beta_rule}
+\end{listing}
+
+
+Recall the grammar, the reduction rules and the equational theory of $\lambda_{\text{lsub}}$ from~\autoref{sec:application}.
+These can be directly encoded in the framework of slotted e-graphs of ~\citet{slotted-egraphs} as can be seen in \autoref{listing:define_language}, \autoref{listing:lsub_beta_rule}, \autoref{listing:lsub_ls_rules}, \autoref{listing:gc_rule}, and \autoref{listing:graphical_equivalence}.
+We use \mintinline{rust}{"subst"} to denote explicit substitution and use the built-in substitution mechanism provided by slotted e-graphs to encode $C\llbracket x \rrbracket[x / u] \to C\llbracket u \rrbracket[x/u]$ rules.
+Notably, since equivalence is symmetric, the corresponding rules have two versions --- \textit{left} and \textit{right}.
+We check for the side conditions using conditional rewrites provided by the slotted e-graphs framework.
+
+To show the effect of those particular sets of rewrites when performing equality saturation for $\lambda_{\text{lsub}}$ we apply certain subsets of these rewrites to a simple term that encodes $2 + 2$ using Church encoding.
+When doing so, we keep track of the number of e-nodes in the saturated e-graph as well as the number of times each rewrite was applied during saturation (we count only the applications that change the e-graph).
+We also note whether a particular rewrite is absorbed by using string-diagrammatic (e-hypergraph) representation of $\lambda_{\text{lsub}}$-terms.
+The idea is to show how much workload can be absorbed by using the above-mentioned representation that represents certain equivalences on the nose.
+\autoref{tbl:slotted} shows the number of e-nodes after saturation with different sets of rewrite rules associated with $\lambda_{\text{lsub}}$ enabled.
+\texttt{lambda\_subst} is the distributivity of substitution over lambda abstraction (encoded using two rewrite rules) which is the middle equation of graphical equivalence from~\autoref{sec:application}, \texttt{subst\_comm} is the commutativity of substitutions which corresponds to the first equation and \texttt{app\_subst} is the third equation.
+We can see that enabling all those rules --- that is truly performing rewriting modulo graphical equivalence --- significantly increases the number of e-nodes in the e-graph.
+Since \texttt{subst\_comm} and \texttt{app\_subst} are absorbed by the e-hypegraph representation we theoretically can get away with fewer nodes if we used this representation.
+
+Another metric that we use is the number of times each rewrite was applied during saturation which is shown in \autoref{tbl:slotted-rewrite-applications}.
+$gc$ rule is encoded using \texttt{subst\_no\_var} rewrite rule.
+We can see that the rules that are absorbed by the e-hypergraph representation (highlighted in grey) comprise more than half of all the rewrite applications during saturation when all the rules are enabled.
+So again, using a more suitable representation can significantly reduce the workload of the equality saturation in this case.
+
+\begin{remark}
+Even though $gc$ rule is not absorbed by the e-hypergraph representation (despite being a part of string diagram equivalence), we can argue that this rule can be disregarded when using e-hypergraphs.
+Consider a substitution $y[x / v]$ which corresponds to the following composition in the internal language
+\[
+\inferrule*{\Gamma_1,y : T, \Gamma_2 \vdash v : T' \qquad \Gamma_1, x : T', y : T, \Gamma_2 \vdash y : T}{
+	\Gamma_1, y : T, \Gamma_2 \vdash y[x / v] : T \equiv y
+}
+\]
+This composition is represented using the string diagram in~\autoref{fig:subst_no_var_string}.
+While string diagrammatically this composition equals the string diagram for just $y$ since we are working modulo the equations for copy and delete, they are not isomorphic as e-hypergraphs.
+However, since the output of $v$ gets deleted anyway, we can ignore any rewrites that involve $v$ and its inputs.
+The deletion morphisms for $\Gamma_1, \Gamma_2$ that follow the copy can be absorbed by the e-hypergraph representation by following the approach of~\citet{zanassi_comonoid}.
+\end{remark}
+
+\begin{figure}
+	\tikzfig{./figures/subst_no_var_string}
+	\caption{String diagram for $y[x/v]$}
+	\label{fig:subst_no_var_string}
+\end{figure}
+
+\begin{table*}
 	\begin{tabular}{lcccc}
-		Set of equations & explicit subst & explicit subst & explicit subst & explicit subst \\
-		                 &                & + comm         & + interchange  & + interchange  \\
-		                 &                &                &                & + comm         \\
-		\# of e-nodes    & 161            & 288            & 289            & 356
+		Set of equations & $d\beta$ + $ls$ + $gc$ & $d\beta$ + $ls$ + $gc$    & $d\beta$ + $ls$ + $gc$     & $d\beta$ + $ls$ + $gc$\\
+		                 &                        & + \texttt{lambda\_subst}  & + \texttt{lambda\_subst}   & + \texttt{lambda\_subst}\\
+		                 &                        &                           & + \texttt{subst\_comm}     & + \texttt{subst\_comm}\\
+						 &                        &                           &                            & + \texttt{subst\_app}\\						 
+		\# of e-nodes    & 88                     & 185                       & 244                        & 846
 	\end{tabular}
-	\caption{Slotted e-graphs benchmarks}
+	\caption{Number of e-nodes after saturating the e-graph for $2 + 2$ with different sets of rewrite rules from~\autoref{tbl:e-graph-subst-rules}}
 	\label{tbl:slotted}
-\end{table}
+\end{table*}
 
-The \enquote{explicit subst} set of rewrite rules consist of the first five rules of~\autoref{tbl:e-graph-subst-rules}.
-We can see that additionally saturating the e-graph with respect to interchange and commutativity rules increases the number of e-nodes by a factor of 2.
-These are the exact equations that are absorbed by using string-diagrammatic representation of $\lambda_{\text{lsub}}$-terms.
-Notably, string diagrams (and (closed e-)hypergraphs) do not absorb the equation \texttt{subst\_lambda} but we believe it is practically feasible to do rewriting modulo this rule by traversing through the boxes when searching for a redex.
-Furthermore, (cospans of) closed e-hypergraphs, as presented in~\autoref{sec:closed-e-hyp}, do not absorb the equations for associativity, commutativity and unitality for $\comonoid$ and $\counit$, but the constraints on the cospans and the boundary complement may be relaxed to absorb those as well by following the work of~\cite{zanassi_comonoid} with which our approach is completely compatible.
+\begin{table*}
+	\begin{tabular}{l|ccccc}
+		Rewrite rule & \# of applications     & \# of applications         & \# of applications      & \# of applications       & Absorbed?\\
+		             &($d\beta$ + $ls$ + $gc$)&($d\beta$ + $ls$ + $gc$     &($d\beta$ + $ls$ + $gc$  &($d\beta$ + $ls$ + $gc$   &\\
+		             &                        & + \texttt{lambda\_subst})  & + \texttt{lambda\_subst}& + \texttt{lambda\_subst} &\\
+		             &                        &                            & + \texttt{subst\_comm}) & + \texttt{subst\_comm}   &\\
+		             &                        &                            &                         & + \texttt{subst\_app})   &\\
+		\hline
+		\texttt{beta} & 14 & 57 & 49 & 80 & No\\
+		\texttt{subst\_no\_var} & 35 & 113 & 118 & 197 & No\\
+		\rowcolor{gray!30}
+		\texttt{ls\_rule\_*} & 48 & 141 & 140 & 302 & Yes\\
+		\texttt{subst\_lambda} & --- & 76 & 109 & 336 & No\\
+		\rowcolor{gray!30}
+		\texttt{subst\_comm} & --- & --- & 104 & 321 & Yes\\
+		\rowcolor{gray!30}
+		\texttt{subst\_app} & --- & --- & --- & 263 & Yes\\
+	\end{tabular}
+	\caption{Number each rewrite rule was applied during saturation of the e-graph for $2 + 2$}
+	\label{tbl:slotted-rewrite-applications}
+\end{table*}
+
+% The \enquote{explicit subst} set of rewrite rules consist of the first five rules of~\autoref{tbl:e-graph-subst-rules}.
+% We can see that additionally saturating the e-graph with respect to interchange and commutativity rules increases the number of e-nodes by a factor of 2.
+% These are the exact equations that are absorbed by using string-diagrammatic representation of $\lambda_{\text{lsub}}$-terms.
+% Notably, string diagrams (and (closed e-)hypergraphs) do not absorb the equation \texttt{subst\_lambda} but we believe it is practically feasible to do rewriting modulo this rule by traversing through the boxes when searching for a redex.
+% Furthermore, (cospans of) closed e-hypergraphs, as presented in~\autoref{sec:closed-e-hyp}, do not absorb the equations for associativity, commutativity and unitality for $\comonoid$ and $\counit$, but the constraints on the cospans and the boundary complement may be relaxed to absorb those as well by following the work of~\cite{zanassi_comonoid} with which our approach is completely compatible.
+
+
+\begin{listing}[H]
+	\begin{minted}{rust}
+fn ls_rule_var() -> Rewrite<Lambda> {
+   let pat = "(subst $x (var $x) ?t)";
+   let outpat = "(subst $x (var $x)[(var $x) := ?t] ?t)";
+   Rewrite::new("ls_var", pat, outpat)
+}
+
+fn ls_rule_app_l() -> Rewrite<Lambda> {
+   let pat = "(subst $x (app ?u ?v) ?t)";
+   let outpat = "(subst $x (app ?u[(var $x) := ?t] ?v) ?t)";
+   Rewrite::new_if("ls_app_l", pat, outpat, |subst, _| {
+      subst["u"].slots().contains(&Slot::named("x")) 
+	  && !subst["v"].slots().contains(&Slot::named("x"))
+    })
+}
+
+fn ls_rule_app_r() -> Rewrite<Lambda> {
+   let pat = "(subst $x (app ?u ?v) ?t)";
+   let outpat = "(subst $x (app ?u ?v[(var $x) := ?t]) ?t)";
+   Rewrite::new_if("ls_app_r", pat, outpat, |subst, _| {
+      !subst["u"].slots().contains(&Slot::named("x")) 
+	  && subst["v"].slots().contains(&Slot::named("x"))
+   })
+}
+
+fn ls_rule_lam() -> Rewrite<Lambda> {
+   let pat = "(subst $x (lam $y ?b) ?t)";
+   let outpat = "(subst $x (lam $y ?b[(var $x) := ?t]) ?t)";
+   Rewrite::new_if("ls_lam", pat, outpat, |subst, _| {
+      subst["b"].slots().contains(&Slot::named("x"))
+   })
+}
+
+fn ls_rule_subst_l() -> Rewrite<Lambda> {
+   let pat = "(subst $x (subst $y ?u ?t1) ?t2)";
+   let outpat = "(subst $x (subst $y ?u ?t1[(var $x) := ?t2]) ?t2)";
+   Rewrite::new_if("ls_subst_l", pat, outpat, |subst, _| {
+      subst["t1"].slots().contains(&Slot::named("x"))
+   })
+}
+
+fn ls_rule_subst_r() -> Rewrite<Lambda> {
+    let pat = "(subst $x (subst $y ?u ?t1) ?t2)";
+    let outpat = "(subst $x (subst $y ?u[(var $x) := ?t2] ?t1) ?t2)";
+    Rewrite::new_if("ls_subst_r", pat, outpat, |subst, _| {
+          subst["u"].slots().contains(&Slot::named("x"))
+    })
+}
+	\end{minted}
+	\caption{$\lambda_{\text{lsub}}$ $ls$-rules}
+	\label{listing:lsub_ls_rules}
+\end{listing}
+
+\begin{listing}
+	\begin{minted}{rust}
+fn subst_no_var() -> Rewrite<Lambda> {
+   let pat = "(subst $x ?t1 ?t2)";
+   let outpat = "?t1";
+   Rewrite::new_if("subst_no_var", pat, outpat, |subst, _ | {
+      !subst["t1"].slots().contains(&Slot::named("x"))
+   })
+}
+	\end{minted}
+	\caption{$\lambda_{\text{lsub}}$ $gc$-rule}
+	\label{listing:gc_rule}
+\end{listing}
+
+
+\begin{listing}
+	\begin{minted}{rust}
+fn subst_comm() -> Rewrite<Lambda> {
+   let pat = "(subst $y (subst $x ?u ?t1) ?t2)";
+   let outpat = "(subst $x (subst $y ?u ?t2) ?t1)";
+   Rewrite::new_if("subst_comm", pat, outpat, |subst,_| {
+      !subst["t2"].slots().contains(&Slot::named("x")) 
+      && !subst["t1"].slots().contains(&Slot::named("y"))
+   })
+}
+
+fn lambda_subst_l() -> Rewrite<Lambda> {
+   let pat = "(subst $x (lam $y ?b) ?t)";
+   let outpat = "(lam $y (subst $x ?b ?t))";
+   Rewrite::new("lambda_subst_l", pat, outpat)
+}
+
+fn lambda_subst_r() -> Rewrite<Lambda> {
+   let pat = "(lam $y (subst $x ?b ?t))";
+   let outpat = "(subst $x (lam $y ?b) ?t)";
+   Rewrite::new_("lambda_subst_r", pat, outpat, |subst, _| {
+      !subst["t"].slots().contains(&Slot::named("y"))
+   })
+}
+
+fn subst_app_l() -> Rewrite<Lambda> {
+   let pat = "(subst $x (app ?t1 ?t2) ?t3)";
+   let outpat = "(app (subst $x ?t1 ?t3) ?t2)";
+   Rewrite::new_if("subst_app_2", pat, outpat, |subst,_| {
+      !subst["t2"].slots().contains(&Slot::named("x"))
+   })
+}
+fn subst_app_r() -> Rewrite<Lambda> {
+   let pat = "(app (subst $x ?t1 ?t3) ?t2)";
+   let outpat = "(subst $x (app ?t1 ?t2) ?t3)";
+   Rewrite::new_if("subst_app_2_2", pat, outpat, |subst,_| {
+      !subst["t2"].slots().contains(&Slot::named("x"))
+   })
+}
+	\end{minted}
+	\caption{Graphical equivalence rules for $\lambda_{\text{lsub}}$}
+	\label{listing:graphical_equivalence}
+\end{listing}
+
+% \begin{listing}
+% 	\begin{minted}{rust}
+% let succ = "(lam $n (lam $f (lam $x (app (var $f) (app (app (var $n) (var $f)) (var $x))))))";
+% let two = "(lam $f (lam $x (app (var $f) (app (var $f) (var $x)))))";
+% let plus = format!("(lam $n (lam $m (app (app (var $m) {succ}) (var $n))))");
+% let two_plus_two = format!("(app (app {plus} {two}) {two})");
+% 	\end{minted}
+% 	\caption{Encoding of $2+2$}
+% 	\label{listing:two-plus-two}
+% \end{listing}
+
+% DATA
+
+% explicit subst
+% Enodes: 88
+% Rewrite applications: {"beta": 14, "ls_app_l": 1, "subst_no_var": 35, "ls_subst_l": 13, "ls_subst_r": 19, "ls_app_r": 6, "ls_lam": 9}
+
+% explicit subst + \lambda subst
+% Enodes: 185
+% Rewrite applications: {"ls_subst_l": 35, "ls_app_r": 11, "ls_subst_r": 63, "ls_lam": 26, "beta": 57, "lambda_subst_l": 66, "ls_app_l": 6, "subst_no_var": 113, "lambda_subst_r": 10}
+
+% explicit subst + \lambda + comm
+% Enodes: 244
+% Rewrite applications: {"ls_subst_r": 64, "lambda_subst_r": 35, "ls_lam": 29, "subst_no_var": 118, "ls_app_r": 14, "lambda_subst_l": 74, "ls_subst_l": 26, "ls_app_l": 7, "subst_comm": 104, "beta": 49}
+
+% explicit subst + \lamnbda + comm + app
+% Enodes: 846
+% Rewrite applications: {"ls_subst_l": 23, "ls_app_r": 29, "subst_app_2_2": 204, "subst_app_2": 59, "lambda_subst_l": 74, "beta": 80, "ls_lam": 60, "subst_comm": 321, "ls_subst_r": 155, "ls_var": 1, "subst_no_var": 197, "ls_app_l": 34, "lambda_subst_r": 262}

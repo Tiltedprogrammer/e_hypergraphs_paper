@@ -5,7 +5,8 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{textcomp}
-\usepackage{xcolor,soul}
+\usepackage{soul}
+\usepackage{xcolor}
 
 \usepackage{amsthm}
 \usepackage{hyperref}
@@ -41,6 +42,13 @@
 \usepackage{mathpartir}
 
 \usepackage{aliascnt}
+
+% for tables
+\usepackage{multirow}
+\usepackage{bigdelim}
+\usepackage{colortbl}
+% code
+\usepackage{minted}
 
 % space saving
 \usepackage[moderate,bibbreaks=normal,bibnotes=normal,bibliography=normal,leading=normal]{savetrees}
@@ -91,6 +99,10 @@
 \newcommand{\hashtag}{{\#}}
 \newcommand{\consistency}{{\smile}}
 
+% listings for autoref
+\providecommand*{\listingautorefname}{Listing}
+
+
 \input{../macros}
 \input{../sample.tikzstyles}
 \input{../hypergraph.tikzstyles}
@@ -101,24 +113,19 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 
-\title{Categorical EGraphs for Lambda Calculi}
+\title{Categorical E-Graphs for Lambda Calculi}
 
 
 \begin{document}
 
 \begin{abstract}
-	% Equality saturation, a technique for program optimisation and reasoning, has gained attention due to the resurgence of equality graphs (e-graphs).
-	% E-graphs represent equivalence classes of terms under rewrite rules, enabling simultaneous rewriting across a family of terms.
-	% However, they struggle in domains like $\lambda$-calculus that involve variable binding, due to a lack of native support for bindings.
-	% Building on recent work interpreting e-graphs categorically as morphisms in symmetric monoidal semilattice-enriched categories, we extend this framework to closed symmetric monoidal semilattice-enriched categories to handle bindings.
-	% We provide a concrete combinatorial representation using an extension of hierarchical hypergraphs and introduce a corresponding double-pushout (DPO) rewriting mechanism.
-	% Finally, we establish the equivalence of term rewriting and DPO rewriting, with the key property that the combinatorial representation absorbs the equations of the symmetric monoidal structure.
-	Equality saturation is a powerful technique for program optimisation and reasoning, driven by the use of equivalence classes of terms under rewrite rules called equality graphs (e-graphs).
+	Equality saturation is a powerful technique for program optimisation and reasoning, driven by the use of equivalence classes of terms under rewrite rules.
+	These equivalence classes lie at the root of data structures called equality graphs (e-graphs).
 	Despite their numerous advantages, until recently e-graphs lacked native support for variable binding, limiting their applicability to programming languages.
-	We propose to address this problem from a categorical perspective, interpreting e-graphs as string diagrams, namely morphisms in symmetric monoidal semilattice-enriched categories with a monoidal closed structure.
-	We further define a concrete representation using extended hierarchical hypergraphs, and introduce a corresponding double-pushout (DPO) rewriting system.
+	We propose to address this problem from a categorical perspective by extending the interpretation of e-graphs as string diagrams, namely morphisms in symmetric monoidal semilattice-enriched categories which we additionally equip with a monoidal closed structure.
+	We further define a concrete representation using hierarchical hypergraphs, and introduce a corresponding double-pushout (DPO) rewriting system.
 	Finally, we establish the equivalence between term rewriting and DPO rewriting, with the combinatorial model inherently absorbing the equations of the symmetric monoidal structure.
-	Our approach, specifically designed for lambda calculi, is compared and contrasted with slotted e-graphs —- a recent, more generic method for incorporating variable binding.
+	Our approach, specifically designed for lambda calculi, is compared and contrasted with slotted e-graphs — a recent, more generic method for incorporating variable binding within e-graphs.
 \end{abstract}
 
 \maketitle

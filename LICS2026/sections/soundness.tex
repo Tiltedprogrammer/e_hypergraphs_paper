@@ -24,7 +24,7 @@ This notion generalises to rewriting of closed $\Sigma$-terms.
 	$
 		f = c_{1};(id_{k} \otimes d);c_{2} $ and $ g = c_{1};(id_{k} \otimes e);c_{2}
 	$
-	and $d \leadsto_{\langle l, r \rangle} e$
+	and $d = C[l]$, $e = C[r]$.
 \end{definition}
 \begin{lemma}
 	\label{lemma:normal_form}
@@ -39,7 +39,7 @@ This notion generalises to rewriting of closed $\Sigma$-terms.
 % \end{proof}
 This takes us to the following definition of rewriting for closed $\Sigma^{+}$-terms.
 \begin{definition}
-	For closed $\Sigma^{+}$-term $f,g$, and a closed $\Sigma$-term rewrite rule $\langle l, r \rangle$ $f \leadsto_{\langle l, r \rangle}$ modulo the laws of symmetric monoidal $\catname{SLat}$-categories and distributivity law (\autoref{law:distributivity}) if they are representable as
+	For closed $\Sigma^{+}$-term $f,g$, and a closed $\Sigma$-term rewrite rule $\langle l, r \rangle$ $f \leadsto_{\langle l, r \rangle} g$ modulo the laws of symmetric monoidal $\catname{SLat}$-categories and distributivity law (\autoref{law:distributivity}) if they are representable as
 	$
 		f = f_{1} + \ldots + f_{i} + \ldots + f_{n} $ and $ g = f_{1} + \ldots + f_{j} + \ldots + f_{n}
 	$

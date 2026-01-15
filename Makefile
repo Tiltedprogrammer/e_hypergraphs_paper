@@ -32,13 +32,16 @@ POPL2026="CategoricalFoundationsOfEGraphsWithBinding"
 POPL2026_PATH="POPL2026/paper"
 POPL2026_SOURCE=$(POPL2026).tex
 
+LICS_2026="CategoricalEgraphsForLambdaCalculi"
+LICS_2026_PATH="LICS2026/"
+LICS_2026_SOURCE=$(LICS_2026).tex
 
 PDFLATEX= pdflatex -file-line-error -shell-escape -interaction=nonstopmode
 XELATEX= xelatex -file-line-error -shell-escape -interaction=nonstopmode -pdf
 
 CLEANALL= rm -rf auto _* *.aux *.log *.nav *.out *.snm *.toc *~ *.blg *.bbl *.cut *.dvi *.xcp *.fdb_latexmk *.fls *.synctex.gz *.pdf
 
-.PHONY: arxiv closed lics slides
+.PHONY: arxiv closed lics slides lics2026
 
 arxiv:
 	cd $(ARXIV_PATH) && $(CLEANALL) && $(PDFLATEX) $(ARXIV_SOURCE) && bibtex $(ARXIV) && $(PDFLATEX) $(ARXIV_SOURCE) && $(PDFLATEX) $(ARXIV_SOURCE)
@@ -63,6 +66,10 @@ slotted:
 
 popl2026:
 	cd $(POPL2026_PATH) && $(CLEANALL) && $(PDFLATEX) $(POPL2026_SOURCE) && bibtex $(POPL2026) && $(PDFLATEX) $(POPL2026_SOURCE) && $(PDFLATEX) $(POPL2026_SOURCE)
+
+lics2026:
+	cd $(LICS_2026_PATH) && $(CLEANALL) && $(PDFLATEX) $(LICS_2026_SOURCE) && bibtex $(LICS_2026) && $(PDFLATEX) $(LICS_2026_SOURCE) && $(PDFLATEX) $(LICS_2026_SOURCE)
+
 
 clean:
 	echo "TODO"
