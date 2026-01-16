@@ -19,8 +19,8 @@ jobs:
       EXTENDED_ABSTRACT_NAME: 'EGraphsExtendedAbstract'
       CLOSED_MONOIDAL_PATH: 'closed_monoidal/'
       CLOSED_MONOIDAL_NAME: 'closed_monoidal'
-      LICS25_CLOSED_PATH: 'LICS_2025/e_graphs_with_bindings/'
-      LICS25_CLOSED_NAME: 'E-graphs-with-bindings'
+      LICS26_PATH: 'LICS_2026/'
+      LICS26_NAME: 'CategoricalEgraphsForLambdaCalculi'
       CATEGORICAL_LOGIC_PATH: 'notes/term-calculus/'
       CATEGORICAL_LOGIC_NAME: 'cat_logic_notes'
     steps:
@@ -77,14 +77,14 @@ jobs:
           root_file: ${{env.CLOSED_MONOIDAL_NAME}}.tex
           args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
           working_directory: ${{env.CLOSED_MONOIDAL_PATH}}
-# Compile lics closed 
-      - name: latexmk ${{env.LICS25_CLOSED_PATH}}${{env.LICS25_CLOSED_NAME}}
+# Compile lics 2026 
+      - name: latexmk ${{env.LICS26_PATH}}${{env.LICS26_NAME}}
         if: always()
         uses: dante-ev/latex-action@latest
         with:
-         root_file: ${{env.LICS25_CLOSED_NAME}}.tex
+         root_file: ${{env.LICS26_NAME}}.tex
          args: -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode -latexoption=-shell-escape
-         working_directory: ${{env.LICS25_CLOSED_PATH}}
+         working_directory: ${{env.LICS26_PATH}}
 # Compile notes on categorical logic
       - name: latexmk ${{env.CATEGORICAL_LOGIC_NAME}}.tex
         if : always()
@@ -151,8 +151,8 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ${{env.LICS25_CLOSED_PATH}}${{env.LICS25_CLOSED_NAME}}.pdf
-            asset_name: LICS25Closed.pdf
+            asset_path: ${{env.LICS26_PATH}}${{env.LICS26_NAME}}.pdf
+            asset_name: LICS26Closed.pdf
             asset_content_type: pdf
       - name: Upload cat logic PDF to the release
         if: always()
