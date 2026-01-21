@@ -24,7 +24,7 @@ This notion generalises to rewriting of closed $\Sigma$-terms.
 	$
 		f = c_{1};(id_{k} \otimes d);c_{2} $ and $ g = c_{1};(id_{k} \otimes e);c_{2}
 	$
-	and $d = C[l]$, $e = C[r]$.
+	and $d = \Lambda(f')$, $e = \Lambda(g')$ and $f' \leadsto_{\langle l, r \rangle} g'$.
 \end{definition}
 \begin{lemma}
 	\label{lemma:normal_form}
@@ -49,32 +49,34 @@ Note that the rewrite rule consist of closed $\Sigma$-terms and not closed $\Sig
 This is intentional as there rewrite rules are supposed to be domain-specific (like a rule $\langle 2 \otimes id;*, id \otimes 1; <\!\!< \rangle$) and not related to the free enrichment.
 
 Next, to formulate the correspondence between rewriting systems we first define interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
-It follows by first defining the interpretation of operators by extending the interpretation of plain $\Sigma$ terms as morphisms in $\MdaCospans$ as given in~\autoref{sec:appendix:interpretation}.
-The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in~\autoref{fig:ev_and_lambda}.
+It follows by first defining the interpretation of operators by extending the interpretation of plain $\Sigma$ terms as morphisms in $\MdaCospans$ as given in~\autoref{sec:appendix:interpretation} with the interpretation of $\llbracket \text{ev}_{A,B}\rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$ by following the work of~\citet{fscd} (given in~\autoref{sec:appendix:interpretation}).
+% The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in~\autoref{fig:ev_and_lambda}.
 
-\begin{figure}
-	\begin{subfigure}[c]{0.45\linewidth}
-		\[
-			\adjustbox{scale=0.6}{
-				\tikzfig{./figures/ev_interpretation_2}
-			}
-		\]
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.45\linewidth}
-		\[
-			\adjustbox{scale=0.6}{
-				\tikzfig{./figures/lambda_interpretation_2}
-			}
-		\]
-	\end{subfigure}
-	\caption{$\llbracket \textsf{ev} \rrbracket$ (left) and $\llbracket \Lambda(f) \rrbracket$ (right)}
-	\label{fig:ev_and_lambda}
-\end{figure}
+% \begin{figure}
+% 	\begin{subfigure}[c]{0.45\linewidth}
+% 		\[
+% 			\adjustbox{scale=0.6}{
+% 				\tikzfig{./figures/ev_interpretation_2}
+% 			}
+% 		\]
+% 	\end{subfigure}
+% 	\hfill
+% 	\begin{subfigure}[c]{0.45\linewidth}
+% 		\[
+% 			\adjustbox{scale=0.6}{
+% 				\tikzfig{./figures/lambda_interpretation_2}
+% 			}
+% 		\]
+% 	\end{subfigure}
+% 	\caption{$\llbracket \textsf{ev} \rrbracket$ (left) and $\llbracket \Lambda(f) \rrbracket$ (right)}
+% 	\label{fig:ev_and_lambda}
+% \end{figure}
 
-Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing EDPOI rewrite rules to satisfy the laws of symmetric monoidal $\catname{SLat}$-categories.
-We also add a structural rewrite schema rule corresponding to the distributivity law (\autoref{law:distributivity}).
-The join of two cospans is defined as in~\autoref{fig:f+g} and the quotienting is done through EDPOI rewrite schema rules, one for each axiom.
+Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing EDPOI rewrite rules to satisfy the laws of symmetric monoidal $\catname{SLat}$-categories as was done by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+Under this interpretation, the cospan from~\autoref{fig:e-cospan-example} corresponds to the following closed $\Sigma^{+}$-term $(g;f) + (((\Lambda(id \otimes id \otimes f)) \otimes g);\text{ev})$.
+
+Finally, we add a structural rewrite schema rule corresponding to the distributivity law (\autoref{law:distributivity}).
+The join of two cospans is given in~\autoref{sec:appendix:interpretation} and the quotienting is done through EDPOI rewrite schema rules, one for each axiom.
 For example, the distributivity rule for $\otimes$ is given by the following schema rule
 \ifdefined\ONECOLUMN
 	\[
@@ -125,18 +127,18 @@ $\llbracket - \rrbracket$ is then induced by its definition on operators by indu
 	This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{e-color}{E}$, we can apply~\autoref{prop:fscd}.
 \end{proof}
 
-Practically, this quotienting means that we perform DPO rewrites modulo the equations of SMC and modulo the law~\ref{law:distributivity}.
+Practically, this quotienting means that we perform DPO rewrites modulo the equations of $\catname{SLat}$-SMC and modulo the distributivity law (\autoref{law:distributivity}).
 We can either rewrite the normal forms as mentioned above that contain all possible redexes, or we can genuinely search for redexes modulo these laws by traversing the e-hypergraph through both types of boxes when searching for a redex, which makes this representation practically viable even though it does not absorb all the possible equations.
 
 The proposition above allows us to reason about theories of closed $\Sigma^{+}$-terms $\catname{CS}(\Sigma,\mathcal{E})^{+}$.
 Given a set of equations $\mathcal{E}$ of closed $\Sigma$-terms, we construct $\llbracket \mathcal{E} \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \;|\; l = r \;\in\; \mathcal{E}\}$ and then we can perform DPO rewriting in $\WellTypedMdaEcospans / \mathcal{S}$ which formalises, \textit{e.g.}, the example in~\autoref{fig:e-string-substitution}.
-\begin{figure}
-	\[
-		\adjustbox{scale=0.5}{
-			\tikzfig{./figures/f_plus_g_new_2}
-		}
-	\]
-	\captionsetup{belowskip=-1ex}
-	\caption{$+$ of two morphisms in $\WellTypedMdaEcospans$}
-	\label{fig:f+g}
-\end{figure}
+% \begin{figure}
+% 	\[
+% 		\adjustbox{scale=0.5}{
+% 			\tikzfig{./figures/f_plus_g_new_2}
+% 		}
+% 	\]
+% 	\captionsetup{belowskip=-1ex}
+% 	\caption{$+$ of two morphisms in $\WellTypedMdaEcospans$}
+% 	\label{fig:f+g}
+% \end{figure}
