@@ -40,7 +40,7 @@ We briefly present this correspondence, but the interested reader should consult
 % As such, it has all finite colimits; the initial object is given by the empty hypergraph, and coproducts are given by the disjoint union of hypergraphs.
 
 % For this to represent morphisms of a symmetric monoidal category, we need to specify which vertices are to be considered as \emph{input} and \emph{outputs} to the diagram as a whole, corresponding to the dangling wires exiting at the top and bottom of a string diagram.
-String diagrams have dangling wires exiting at their top and bottom boundaries, which correspond to special \emph{inputs} and \emph{outputs} vertices.
+String diagrams also have dangling wires exiting at their top and bottom boundaries, which correspond to special \emph{input} and \emph{output} vertices.
 % This gives rise to the definition of a hypergraph with interfaces via a construction on cospans.
 
 % \begin{definition}[Symmetric monoidal category of cospans]
@@ -90,9 +90,8 @@ String diagrams have dangling wires exiting at their top and bottom boundaries, 
 % This is because we did not impose any restrictions on how many hyperedges can share a single vertex and what vertices should appear in the interfaces.
 % Hypergraphs without these restrictions correspond to morphisms in symmetric monoidal categories with additional structure (Frobenius algebra structure~\cite{bonchi_string_2022-1}, for example) that we do not necessarily have.
 % In order to rectify this, we impose additional constraints on the hypergraphs under consideration.
-Additional constraints on hypergraphs are needed to put them in bijective correspondence with string diagrams in a symmetric monoidal category.
-Namely, we require two conditions of \emph{monogamy}, which enforces that $\mathsf{in}$ and $\mathsf{out}$ are injective and constrain the in-degree and out-degree of vertices in $\mathcal{G}$, and \emph{acyclicity}, which states that there are no loops in the hypergraph.
-Together, these ensure that a hypergraph-with-interfaces \enquote{looks like} a string diagram, and determines a subcategory $\catname{MHypI}(\Sigma) \hookrightarrow{MHypI}$ --- a category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
+Additional constraints on hypergraphs are needed to put them in bijective correspondence with string diagrams in a symmetric monoidal category: \emph{monogamy}, which enforces that $\mathsf{in}$ and $\mathsf{out}$ are injective and constrain the in-degree and out-degree of vertices in $\mathcal{G}$, and \emph{acyclicity}, which states that there are no loops in the hypergraph.
+Together, these ensure that a hypergraph-with-interfaces \enquote{looks like} a string diagram, and determines a subcategory $\catname{MHypI}(\Sigma) \hookrightarrow \catname{HypI}(\Sigma)$ --- a category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
 % \begin{definition}[Degree]
 % 	The in-degree of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.
 % 	Similarly, the out-degree of $v$ is the number of hyperedges $e \in E_\mathcal{G}$ such that $v \in s(e)$.
@@ -150,7 +149,7 @@ There is a symmetric monoidal equivalence which witnesses that MDA hypergraphs w
 \end{theorem}
 
 The practical meaning of this is that two $\Sigma$-terms $f$ and $g$ are equal modulo symmetric monoidal category equations if and only if they are represented as the same hypergraph with interfaces.
-The theorem defines a fully faithful functor that is induced by the interpretation function of morphism terms that renders the latter as cospans of hypergraphs and is given in~\autoref{sec:appendix:interpretation}.
+\autoref{sec:appendix:interpretation} explains the functor underlying this equivalence explicitly.
 Term rewriting and hence equality modulo $\mathcal{E}$ is then implemented as DPO rewriting over such hypergraphs with interfaces, which we recall next.
 
 \subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
@@ -376,7 +375,7 @@ We thus propose \emph{extended} cospans of discrete closed e-hypergraphs and use
 with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub closed e-hypergraph of $n$.
 
 \begin{definition}[Category of closed e-hypergraphs with interfaces]
-	The category of closed e-hypergraphs with extended interfaces $\Ecospans$ has discrete \emph{ordered} closed e-hypergraphs as objects,  with Hom sets $\Ecospans(n,m)$ consisting of isomorphism classes (defined below) of extended cospans, defined as follows:
+	The category of closed e-hypergraphs with extended interfaces $\Ecospans$ has discrete \emph{ordered} closed e-hypergraphs as objects,  with Hom sets $\Ecospans(n,m)$ consisting of isomorphism classes (\autoref{def:cospan-isomorphism}) of extended cospans, defined as follows:
 	\[
 		n \xrightarrow{f_{ext}} n^\prime \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m^\prime \xleftarrow{g_{ext}} m,
 	\]
@@ -393,7 +392,7 @@ Graphically, we depict such extended cospans as in~\autoref{fig:e-cospan-example
 All non-black vertices form strictly internal interfaces.
 We follow the same orientation that we chose for string diagrams --- the input interface of the cospan is at the bottom and the output interface is at the top.
 
-\begin{definition}[Isomorphic cospans]
+\begin{definition}[Isomorphic cospans]\label{def:cospan-isomorphism}
 	Consider a relation
 	\[
 		R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(y)\bigr\}
@@ -473,7 +472,7 @@ where $h_i$ are defined as follows,  using $|$ to denote the restriction of a fu
 % where $g^\prime$ is the restriction of $g$ to ${Y^\prime \setminus Y_{ext}}$ and $f^\prime$ the restriction of $f$ to $Y \setminus Y_{ext}$. 
 The identity of composition is given by the obvious extended cospan of identities.
 $\Ecospans$ inherits a symmetric monoidal structure from the coproduct (and initial object) structure of $\catname{CEHyp({\Sigma}})$,  analogously to~\autoref{def:cspd}.
-As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism).
+% As in the standard cospan construction,  it is necessary to consider isomorphism classes of cospans since composition (defined by pushout) is associative only up-to isomorphism (since pushouts are unique only up-to isomorphism).
 
 For the same reasons as in the case of $\catname{S}(\Sigma)$ we restrict cospans to MDA cospans.
 We also need to enforce typing constraints on hierarchical edges so that they represent well-typed closed $\Sigma^{+}$-terms.
