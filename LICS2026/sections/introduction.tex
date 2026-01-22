@@ -41,7 +41,7 @@ These categorical techniques provide methodological guidance in how to solve the
 % The general background literature for string diagrams and their relationship to formal languages is summarised by~\citet{piedeleu2023introductionstringdiagramscomputer}.
 The particular context of string diagrams for $\lambda$-calculi is given in~\citet{ghica2024stringdiagramslambdacalculifunctional}, while string diagrams for e-graphs without bindings are defined in~\citet{tiurin2025equivalencehypergraphsdporewriting}.
 
-String diagrams provide a topological framework for understanding monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out.
+String diagrams provide a topological calculus for monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out.
 In this article, our string diagrams are oriented left-to-right, bottom-to-top to make the pictures look more similar to those commonly drawn for e-graphs.
 The structure of symmetric monoidal categories is absorbed into the graphical syntax, with the composition and tensoring represented by juxtaposition, and symmetries as weaving of strings.
 % This visual approach hides the bureacracy of complex operations and reveals insights sometimes obscured by traditional one-dimensional (textual) syntax.
@@ -52,7 +52,7 @@ Specifically, we require a concrete encoding of string diagrams, analogous to th
 For this, we use \emph{hypergraphs}~\cite{bonchi_string_2022-1}, which have suitable theoretical properties.
 For instance, hypergraph isomorphism rigorously expresses what it means for string diagrams to \enquote{look the same} --- topologically, that one may be deformed continuously into the other without obstruction\footnote{This is the informal notion of the \enquote{isomorphism of string diagrams}.}; secondly, string-diagrammatic equational reasoning can be formalised as (categorical) graph rewriting over these hypergraphs using the technique of double-pushout rewriting (DPO)~\cite{bonchi_string_2022-1}.
 Finally, for the diagrammatic representation of two concepts essential to both programming languages (variable binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{10.1007/11874683_1}.
-The diagrammatic boxes require the introduction of further structure to hypergraphs in the form of a hierarchical layering of the graphs (\emph{hierarchical hypergraphs})~\cite{fscd}.
+These boxes require extra structure in their hypergraph representation in the form of a layering of graphs (\emph{hierarchical hypergraphs})~\cite{fscd}.
 
 Revisiting the earlier example $\lambda f . f ((\lambda x . f x) 2)$, in~\autoref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
 The scope of a $\lambda$-abstraction is represented by a rounded box with the bound variable represented as a wire attached to the frame, the application node a half-circle
@@ -140,7 +140,7 @@ The other steps represent further elaborations of the e-graph, or e-hypergraph, 
 \subsection{Conventional vs.\ slotted vs.\ categorical e-graphs with binding}%
 \label{sec:vs-e-graphs-with-binding}
 
-First, let us compare how substitution works in conventional e-graphs, which lack specialised support for binding, as compared to our proposed approach.
+Let us compare our proposal with how substitution works in conventional e-graphs, which lack specialised support for binding.
 
 A common way of dealing with $\beta$-reduction for the $\lambda$-calculus in e-graphs is by representing the rules of $\lambda$-calculus explicitly, using special nodes for explicit substitution and associating them with particular rewrite rules~\cite{EggPaper,koehler2022sketchguided}.
 The auxiliary nature of these nodes is evident in that, after rewriting, they may be removed from the graph.
@@ -150,7 +150,7 @@ In~\autoref{fig:e-graph-substitution} we show successive iterations of a convent
 A subterm for an explicit substitution must be introduced, which is deemed equivalent to the top-level application term (hence they are inside the same dashed box).
 The substitution is then propagated through child e-classes using additional rewrite rules (depicted at the top of each column).
 At the end, all explicit substitution nodes can be removed.
-The same example is then given again in~\autoref{fig:e-string-substitution}, this time using string diagrams.
+The same example is then given again with string diagrams in~\autoref{fig:e-string-substitution}.
 
 Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram where an application node meets an abstraction, and explicit substitution simplifies into mere composition.
 The explicit occurrences of variable names in the conventional approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which adds significant complexity to proving various mathematical properties.
