@@ -25,7 +25,7 @@ A simple but theoretically~\cite{AbadiExplicitSubst} and practically~\cite{anf} 
 Terms are identified up to permutations of non-interacting substitutions, which is called \enquote{graph equivalence}~\cite{accattoli2014nonstandard} since such identification becomes obvious in certain diagrammatic representations.
 % This imposes a \emph{graphical equivalence}~\cite{accattoli2014nonstandard} of terms.
 Modelling this in the conventional language of e-graphs requires the introduction of additional nodes to represent the explicit substitutions, and additional rewrite rules which capture graphical equivalence.
-This pollutes the state space of equality saturation for these languages: the interesting rewriting is that of the user-specified algebraic theory one wishes to model, 
+This pollutes the state space of equality saturation for these languages: the interesting rewriting is that of the user-specified algebraic theory one wishes to model,
 % not between semantically equivalent but syntactically distinct forms in the language.
 not the bureaucracy of managing the congruences of semantically equivalent yet syntactically distinct forms in the language.
 
@@ -53,7 +53,6 @@ For this, we use \emph{hypergraphs}~\cite{bonchi_string_2022-1}, which have suit
 For instance, hypergraph isomorphism rigorously expresses what it means for string diagrams to \enquote{look the same} --- topologically, that one may be deformed continuously into the other without obstruction\footnote{This is the informal notion of the \enquote{isomorphism of string diagrams}.}; secondly, string-diagrammatic equational reasoning can be formalised as (categorical) graph rewriting over these hypergraphs using the technique of double-pushout rewriting (DPO)~\cite{bonchi_string_2022-1}.
 Finally, for the diagrammatic representation of two concepts essential to both programming languages (variable binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{10.1007/11874683_1}.
 The diagrammatic boxes require the introduction of further structure to hypergraphs in the form of a hierarchical layering of the graphs (\emph{hierarchical hypergraphs})~\cite{fscd}.
-
 
 Revisiting the earlier example $\lambda f . f ((\lambda x . f x) 2)$, in~\autoref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
 The scope of a $\lambda$-abstraction is represented by a rounded box with the bound variable represented as a wire attached to the frame, the application node a half-circle
@@ -91,24 +90,24 @@ E-graphs can efficiently simultaneously represent several equivalent terms of an
 The key concepts of e-graphs can be intuitively grasped from some simple examples: \autoref{fig:e-graph-example} shows how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
 
 \begin{figure*}[t!]
-\begin{minipage}{0.18\textwidth}
-	\centering
-	\adjustbox{scale=0.6}{
-		\tikzfig{figures/de-brujin-string}
-	}
-	\caption{String-dia\-gram\-matic representation of $\lambda f . f ((\lambda x . f x) 2)$.}
-	\label{fig:de-brujin-string}
-\end{minipage}
-\hfill
-\begin{minipage}{0.8\textwidth}
-	\begin{center}
+	\begin{minipage}{0.18\textwidth}
+		\centering
 		\adjustbox{scale=0.6}{
-			\tikzfig{figures/e-graph-example-2}
+			\tikzfig{figures/de-brujin-string}
 		}
-	\end{center}
-	\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{tiurin2025equivalencehypergraphsdporewriting}}
-	\label{fig:e-graph-example}
-\end{minipage}
+		\caption{String-dia\-gram\-matic representation of $\lambda f . f ((\lambda x . f x) 2)$.}
+		\label{fig:de-brujin-string}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.8\textwidth}
+		\begin{center}
+			\adjustbox{scale=0.6}{
+				\tikzfig{figures/e-graph-example-2}
+			}
+		\end{center}
+		\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{tiurin2025equivalencehypergraphsdporewriting}}
+		\label{fig:e-graph-example}
+	\end{minipage}
 \end{figure*}
 
 Each column represents a term (or term rewrite rule), its conventional e-graph, and the equivalent string diagram (for Cartesian symmetric monoidal categories) representation using the \emph{e-hypergraphs} used by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
@@ -165,17 +164,19 @@ An example of a slotted e-graph is given in~\autoref{fig:slotted}.
 \begin{figure}[t!]
 	\captionsetup{skip=0pt}
 	\begin{subfigure}[b]{0.45\linewidth}
-			\adjustbox{scale=0.8}{
-				\tikzfig{figures/slotted-e-graph-example}
-			}
+		\centering
+		\adjustbox{scale=0.6}{
+			\tikzfig{figures/slotted-e-graph-example}
+		}
 		\caption{Slotted e-graph}%
 		\label{fig:slotted}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\linewidth}
-			\adjustbox{scale=0.6}{
-				\tikzfig{figures/slotted-string-2}
-			}
+		\centering
+		\adjustbox{scale=0.5}{
+			\tikzfig{figures/slotted-string-2}
+		}
 		\caption{Closed e-hypergraph}%
 		\label{fig:closed}
 	\end{subfigure}
@@ -204,19 +205,19 @@ We hope that our work might serve as a foundation for semantics of e-graphs with
 \begin{figure*}
 	\captionsetup{skip=0pt}
 	\begin{subfigure}{\linewidth}
-			% \hspace{1.3cm}
-			\adjustbox{width=\textwidth}{
-				\tikzfig{figures/e-graph-substitution}
-			}
+		% \hspace{1.3cm}
+		\adjustbox{width=\textwidth}{
+			\tikzfig{figures/e-graph-substitution}
+		}
 		% \captionsetup{skip=0pt}
 		\subcaption{E-graph explicit substitution example.}
 		\label{fig:e-graph-substitution}
 	\end{subfigure}
 	\begin{subfigure}{\linewidth}
-			% \hspace{1.3cm}
-			\adjustbox{width=\textwidth}{
-				\tikzfig{figures/e-string-substitution-2}
-			}
+		% \hspace{1.3cm}
+		\adjustbox{width=\textwidth}{
+			\tikzfig{figures/e-string-substitution-2}
+		}
 		\subcaption{String-diagrammatic substitution example.}\label{fig:e-string-substitution}
 	\end{subfigure}
 	\caption{Conventional e-graphs vs.\ categorical e-graphs with binding.}
