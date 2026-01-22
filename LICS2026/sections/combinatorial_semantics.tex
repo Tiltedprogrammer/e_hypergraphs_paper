@@ -78,25 +78,25 @@ This gives rise to the definition of a hypergraph with interfaces via a construc
 % 	\item symmetry is inherited from coproduct in $\catname{Hyp}(\Sigma)$~\cite{MonoidalCoproduct}.
 % \end{enumerate}
 
-Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m;m \xrightarrow{f^\prime} \mathcal{G} \xleftarrow{g^\prime} k$ is given by the pushout
-$
-	n \xrightarrow{f} \mathcal{F} \sqcup_{g,f^\prime} \mathcal{G} \xleftarrow{g^\prime} k
-$,
-computed by identifying vertices in $\mathcal{F} \sqcup \mathcal{G}$ that share pre-image in $m$.
-The latter is a pushout in $\catname{Hyp}(\Sigma)$ and always exists since $\catname{Hyp}(\Sigma)$ has all finite colimits.
+% Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m;m \xrightarrow{f^\prime} \mathcal{G} \xleftarrow{g^\prime} k$ is given by the pushout
+% $
+% 	n \xrightarrow{f} \mathcal{F} \sqcup_{g,f^\prime} \mathcal{G} \xleftarrow{g^\prime} k
+% $,
+% computed by identifying vertices in $\mathcal{F} \sqcup \mathcal{G}$ that share pre-image in $m$.
+% The latter is a pushout in $\catname{Hyp}(\Sigma)$ and always exists since $\catname{Hyp}(\Sigma)$ has all finite colimits.
 
 As it stands, every string diagram in a symmetric monoidal category can be represented by a hypergraph with interfaces, but the converse is not true.
 This is because we did not impose any restrictions on how many hyperedges can share a single vertex and what vertices should appear in the interfaces.
 Hypergraphs without these restrictions correspond to morphisms in symmetric monoidal categories with additional structure (Frobenius algebra structure~\cite{bonchi_string_2022-1}, for example) that we do not necessarily have.
 In order to rectify this, we impose additional constraints on the hypergraphs under consideration.
-\begin{definition}[Degree,  path,  acyclic]
+\begin{definition}[Degree]
 	The in-degree of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.
 	Similarly, the out-degree of $v$ is the number of hyperedges $e \in E_\mathcal{G}$ such that $v \in s(e)$.
-	A path from $e_0$ to $e_{n-1}$ of length $n$ in a hypergraph $\mathcal{G}$ is an ordered sequence of hyperedges $[e_0, e_1, \ldots, e_{n-1}] \in E_\mathcal{G}^*$ such that for all $i < n - 1$ some vertex $v \in t(e_i)$ is also in $s(e_{i+1})$.
-	A hypergraph is directed acyclic if it contains no paths of length $n > 0$ that start and end in the same hyperedge.
+	% A path from $e_0$ to $e_{n-1}$ of length $n$ in a hypergraph $\mathcal{G}$ is an ordered sequence of hyperedges $[e_0, e_1, \ldots, e_{n-1}] \in E_\mathcal{G}^*$ such that for all $i < n - 1$ some vertex $v \in t(e_i)$ is also in $s(e_{i+1})$.
+	% A hypergraph is directed acyclic if it contains no paths of length $n > 0$ that start and end in the same hyperedge.
 \end{definition}
 
-By requiring the carrier of the cospan to be a directed acyclic hypergraph, the embeddings of the interfaces to be monomorphisms, restricting the in-degree and out-degree of vertices to be at most 1, and ensuring that only interface vertices have in-degree or out-degree 0, we obtain a subcategory of hypergraphs with interfaces which we denote $\catname{MHypI}(\Sigma)$ --- a category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
+By requiring the carrier of the cospan to be a \emph{directed acyclic hypergraph}, the embeddings of the interfaces to be monomorphisms, restricting the in-degree and out-degree of vertices to be at most 1, and ensuring that only interface vertices have in-degree or out-degree 0, we obtain a subcategory of hypergraphs with interfaces which we denote $\catname{MHypI}(\Sigma)$ --- a category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
 An example and a non-example of an MDA cospan can be found in~\autoref{sec:appendix:hyp}.
 
 
@@ -174,6 +174,9 @@ Thus, we reach the following variant of DPO rewriting.
 	Given a span of morphisms $\mathcal{G} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{H}$ in $\catname{Hyp}(\Sigma)$,  we say $\mathcal{G}$ rewrites to $\mathcal{H}$ with interface $n \sqcup m$ via rewrite rule $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{R}$ if there exists an object $\mathcal{L}^{\bot}$ and morphisms which complete the rightmost commutative diagram in~\autoref{fig:dpo_dpoi} such that the two marked squares are pushouts.
 
 	\begin{figure}[t!]
+		\captionsetup{
+			skip=0pt
+		}
 		\begin{subfigure}[T]{0.35\linewidth}
 			\[
 				% \tikzfig{../figures/combinatorial_semantics/DPO_square}
@@ -328,7 +331,7 @@ We depict edges in $\textcolor{e-color}{E}$ with a dashed box, and edges in $\te
 			\tikzfig{./figures/closed_iso_example_2_2}
 		}
 	\]
-	\captionsetup{skip=0pt, belowskip=-1ex}
+	\captionsetup{skip=0pt}
 	\caption{Cospan of closed e-hypergraphs example}
 	\label{fig:e-cospan-example}
 \end{figure}
@@ -389,15 +392,9 @@ We follow the same orientation that we chose for string diagrams --- the input i
 
 \begin{definition}[Isomorphic cospans]
 	Consider a relation
-	\ifdefined\ONECOLUMN
 		\[
 			R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y) \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(y)\bigr\}
 		\]
-	\else
-		\begin{multline*}
-			R = \bigl\{ x R y \text{ if } f_{\text{int}}(x) \consistency f_{\text{int}}(y)\\ \;\text{or}\; \exists z \;\text{s.t.}\; z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(x) \text{ and } z \textcolor{closed-color}{\;<^{\mu}\;} f_{\text{int}}(y)\bigr\}
-		\end{multline*}
-	\fi
 	for $x, y \in n^\prime$.
 	And let $S$ be its reflexive closure.
 	The latter partitions $n^\prime$ into non-empty subsets $\{p_{j}\}^{k}_{j=1}$.

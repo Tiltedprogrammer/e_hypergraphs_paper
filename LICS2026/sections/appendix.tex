@@ -98,6 +98,12 @@ As such, it has all finite colimits; the initial object is given by the empty hy
 	$\HypI{\Sigma}$ is a symmetric monoidal category.
 \end{proposition}
 \begin{proof}
+Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m;m \xrightarrow{f^\prime} \mathcal{G} \xleftarrow{g^\prime} k$ is given by the pushout
+$
+	n \xrightarrow{f} \mathcal{F} \sqcup_{g,f^\prime} \mathcal{G} \xleftarrow{g^\prime} k
+$,
+computed by identifying vertices in $\mathcal{F} \sqcup \mathcal{G}$ that share pre-image in $m$.
+The latter is a pushout in $\catname{Hyp}(\Sigma)$ and always exists since $\catname{Hyp}(\Sigma)$ has all finite colimits.
 	\begin{enumerate}
 	\item the tensor product given by coproduct in $\catname{Hyp}(\Sigma)$:
 	      \begin{align*}

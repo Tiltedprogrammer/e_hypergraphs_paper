@@ -90,7 +90,16 @@ and sharing a \emph{copy node} \comonoid.
 E-graphs can efficiently simultaneously represent several equivalent terms of an algebraic theory, generalising the \emph{term graph} representation of terms to include equivalence classes of subterms (or subgraphs).
 The key concepts of e-graphs can be intuitively grasped from some simple examples: \autoref{fig:e-graph-example} shows how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
 
-\begin{figure*}[h!]
+\begin{figure*}[t!]
+\begin{minipage}{0.18\textwidth}
+	\centering
+	\adjustbox{scale=0.6}{
+		\tikzfig{figures/de-brujin-string}
+	}
+	\caption{String-dia\-gram\-matic representation of $\lambda f . f ((\lambda x . f x) 2)$.}
+	\label{fig:de-brujin-string}
+\end{minipage}
+\hfill
 \begin{minipage}{0.8\textwidth}
 	\begin{center}
 		\adjustbox{scale=0.6}{
@@ -99,15 +108,6 @@ The key concepts of e-graphs can be intuitively grasped from some simple example
 	\end{center}
 	\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{tiurin2025equivalencehypergraphsdporewriting}}
 	\label{fig:e-graph-example}
-\end{minipage}
-\hfill
-\begin{minipage}{0.18\textwidth}
-	\centering
-	\adjustbox{scale=0.6}{
-		\tikzfig{figures/de-brujin-string}
-	}
-	\caption{String-dia\-gram\-matic representation of $\lambda f . f ((\lambda x . f x) 2)$.}
-	\label{fig:de-brujin-string}
 \end{minipage}
 \end{figure*}
 
@@ -163,6 +163,7 @@ They also solved the problem of explicit variable names, guaranteeing freshness 
 An example of a slotted e-graph is given in~\autoref{fig:slotted}.
 
 \begin{figure}[t!]
+	\captionsetup{skip=0pt}
 	\begin{subfigure}[b]{0.45\linewidth}
 			\adjustbox{scale=0.8}{
 				\tikzfig{figures/slotted-e-graph-example}
@@ -201,6 +202,7 @@ We hope that our work might serve as a foundation for semantics of e-graphs with
 % \subsection{Lambda calculus with explicit substitutions and graphical equivalence of terms}
 
 \begin{figure*}
+	\captionsetup{skip=0pt}
 	\begin{subfigure}{\linewidth}
 			% \hspace{1.3cm}
 			\adjustbox{width=\textwidth}{

@@ -71,62 +71,53 @@ It follows by first defining the interpretation of operators by extending the in
 % 	\caption{$\llbracket \textsf{ev} \rrbracket$ (left) and $\llbracket \Lambda(f) \rrbracket$ (right)}
 % 	\label{fig:ev_and_lambda}
 % \end{figure}
-
-Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing EDPOI rewrite rules to satisfy the laws of symmetric monoidal $\catname{SLat}$-categories as was done by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing EDPOI rewrite rules to satisfy the laws of symmetric monoidal $\catname{SLat}$-categories --- one EDPOI rewrite rule for each axiom instance --- as was done by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
 Under this interpretation, the cospan from~\autoref{fig:e-cospan-example} corresponds to the following closed $\Sigma^{+}$-term $(g;f) + (((\Lambda(id \otimes id \otimes f)) \otimes g);\text{ev})$.
-
 Finally, we add a structural rewrite schema rule corresponding to the distributivity law (\autoref{law:distributivity}).
-The join of two cospans is given in~\autoref{sec:appendix:interpretation} and the quotienting is done through EDPOI rewrite schema rules, one for each axiom.
-For example, the distributivity rule for $\otimes$ is given by the following schema rule
-\ifdefined\ONECOLUMN
-	\[
-		\adjustbox{width=0.7\linewidth}{
-			\tikzfig{./figures/semilattice_rule_1_2}~.
-		}
-	\]
-\else
-	\[
-		\adjustbox{width=\linewidth}{
-			\tikzfig{./figures/semilattice_rule_1_2}~.
-		}
-	\]
-\fi
+% The join of two cospans is given in~\autoref{sec:appendix:interpretation} and the quotienting is done through EDPOI rewrite schema rules, one for each axiom.
+% For example, the distributivity rule for $\otimes$ is given by the following schema rule
+% \ifdefined\ONECOLUMN
+% 	\[
+% 		\adjustbox{width=0.7\linewidth}{
+% 			\tikzfig{./figures/semilattice_rule_1_2}~.
+% 		}
+% 	\]
+% \else
+% 	\[
+% 		\adjustbox{width=\linewidth}{
+% 			\tikzfig{./figures/semilattice_rule_1_2}~.
+% 		}
+% 	\]
+% \fi
 
 We collect all such rewrite schemas into a set $\mathcal{S}$ and then determine a symmetric monoidal $\catname{SLat}$-category $\WellTypedMdaEcospans / \mathcal{S}$ by this quotienting.
 Note that it is not a \emph{closed} symmetric monoidal $\catname{SLat}$-category.
 To make it so, we would need to also quotient by the DPO rewrites that arise from the equations in~\autoref{def:closed}.
 We do not perform such quotienting as these equations bear operational meaning, i.e.\ they model $\beta$-reduction when interpreting $\lambda$-calculus.
-
 \begin{definition}[Quotient by rewrites]
 	Given a set of EDPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the $\catname{SLat}$-category $\WellTypedMdaEcospans$ quotiented by the relation $f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g$.
 \end{definition}
-
 This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to~\autoref{lemma:normal_form}, such that carrier of $f_{i}$ does not contain any hierarchical edges from $\textcolor{e-color}{E}$.
-
-$\llbracket - \rrbracket$ is then induced by its definition on operators by induction
-\[
-	\llbracket f;g \rrbracket = \llbracket f \rrbracket ; \llbracket g \rrbracket \quad
-	\llbracket f \otimes g \rrbracket = \llbracket f \rrbracket \otimes \llbracket g \rrbracket \quad
-	\llbracket f + g \rrbracket = \llbracket f \rrbracket + \llbracket g \rrbracket
-\]
-
+% $\llbracket - \rrbracket$ is then induced by its definition on operators by induction
+% \[
+% 	\llbracket f;g \rrbracket = \llbracket f \rrbracket ; \llbracket g \rrbracket \quad
+% 	\llbracket f \otimes g \rrbracket = \llbracket f \rrbracket \otimes \llbracket g \rrbracket \quad
+% 	\llbracket f + g \rrbracket = \llbracket f \rrbracket + \llbracket g \rrbracket
+% \]
 \begin{proposition}[Proposition 26 and Proposition 27~\cite{fscd}]
 	\label{prop:fscd}
 	For two closed $\Sigma$-terms $f$ and $g$ and a closed rewrite rule $\langle l, r \rangle$,  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$, where the latter is defined in a sub-category of $\WellTypedMdaEcospans$ where carriers only contain edges from $\colorbox{yellow}{E} \cup \textcolor{closed-color}{E}$.
 \end{proposition}
-
 \begin{proposition}%
 	\label{prop:quotient-structural}
 	For two closed $\Sigma^{+}$-terms $f$ and $g$ and a closed rewrite rule $\langle l, r \rangle$,  $f \leadsto_{\langle l, r \rangle} g$ if and only if $\llbracket f \rrbracket \Rrightarrow_{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle} \llbracket g \rrbracket$ in $\WellTypedMdaEcospans / \mathcal{S}$.
 \end{proposition}
 \begin{proof}
 	By definition, we have
-	$
-		f = f_{1} + \ldots + f_{n} $ and $  g = f_{1} + \ldots + f_{n}$,
+	$f = f_{1} + \ldots + f_{n} $ and $  g = f_{1} + \ldots + f_{n}$,
 	such that $f_{i} \leadsto f_{j}$ for some $i, j$.
 	This yields two cospans of the form $\llbracket f_{1} \rrbracket + \ldots + \llbracket f_{n} \rrbracket$ for $\llbracket f \rrbracket$ and $\llbracket g \rrbracket$ and, by noting that every $f_{i}$ is a $\Sigma$-term, and carriers in every $\llbracket f_{i} \rrbracket$ have no edges from $\textcolor{e-color}{E}$, we can apply~\autoref{prop:fscd}.
 \end{proof}
-
 Practically, this quotienting means that we perform DPO rewrites modulo the equations of $\catname{SLat}$-SMC and modulo the distributivity law (\autoref{law:distributivity}).
 We can either rewrite the normal forms as mentioned above that contain all possible redexes, or we can genuinely search for redexes modulo these laws by traversing the e-hypergraph through both types of boxes when searching for a redex, which makes this representation practically viable even though it does not absorb all the possible equations.
 

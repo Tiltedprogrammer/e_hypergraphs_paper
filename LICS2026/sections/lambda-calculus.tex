@@ -36,13 +36,11 @@ The $\lambda^\sim_{\text{lsub}}$-calculus is given by these graphical equivalenc
 
 This calculus is explicitly designed to capture the representation of terms as proof nets: for two terms $t, u$ in the $\lambda_{\text{lsub}}$-calculus, $t \sim u$ if and only if both map to the same proof net~\cite{accattoliJumpingBoxGraphical2011}.
 % By further extending the equivalence relation $\sim$, taking the symmetric closure by $\to_{ls}$ and $\to_{gc}$ and thus identifying terms under elimination of explicit substitution, we determine a \emph{string diagram equivalence} $\approx$ of $\lambda_{\text{lsub}}$-terms, determining a $\lambda^\approx_{\text{lsub}}$-calculus.
-
 \begin{proposition}{\cite[§ 5.1.1]{ghica2024stringdiagramslambdacalculifunctional}}
 Let \emph{string diagram equivalence} $\approx$ of $\lambda_{\text{lsub}}$-terms be the extension of graph equivalence $\sim$ by taking the symmetric closure by $\to_{ls}$ and $\to_{gc}$, thus identifying terms under elimination of explicit substitution. 
 It defines the corresponding $\lambda^\approx_{\text{lsub}}$-calculus.
 We then have that $t \approx u$ if and only if both map to the same string diagram. 
 \end{proposition}
-
 This allows us to exploit the string diagram setting of e-hypergraphs to absorb many\footnote{The reason this is not \emph{all} reductions is because e-hypergraphs quotient away only the \emph{structural} isomorphisms of symmetric monoidal closed $\catname{SLat}$-categories (e.g.\ associators, unitors, etc.) which generate the \enquote{isotopy of string diagrams}; even in the graphical equivalence relation $\sim$, while~\autoref{eq:subst-lambda} is validated in every symmetric monoidal closed $\catname{SLat}$-category, it is not so by isotopy, but rather the adjunction $ - \otimes A \dashv A \multimap -$. In other words, terms floating freely through the boundaries of rounded boxes is validated by our semantics, but produces concretely different e-hypergraphs --- this is the purpose of rectification by quotienting along $\mathcal{S}$ in~\autoref{prop:quotient-structural}, and manifests as additional DPO rewrites to be imposed.} of the reductions arising due to the equivalence $\approx$ into our representation rather than explicitly providing them as equations attached to a closed symmetric monoidal theory presenting the $\lambda^\approx_{\text{lsub}}$-calculus.
 
 Before we proceed to demonstrate this, we first wish to discuss the relevance of this calculus in the domain of e-graphs.

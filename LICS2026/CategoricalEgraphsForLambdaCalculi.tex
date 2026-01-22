@@ -1,5 +1,9 @@
 \documentclass[sigconf, nonacm, anonymous, review]{acmart}
 
+% space saving
+\usepackage[moderate,bibbreaks=normal,bibnotes=normal,bibliography=normal,leading=normal]{savetrees}
+
+
 \usepackage{amsmath,amsfonts}
 \usepackage{algorithmic}
 \usepackage{listings}
@@ -50,8 +54,17 @@
 % code
 \usepackage{minted}
 
-% space saving
-\usepackage[moderate,bibbreaks=normal,bibnotes=normal,bibliography=normal,leading=normal]{savetrees}
+\newtheoremstyle{tight}
+  {0pt}   % Space above
+  {1pt}   % Space below
+  {}      % Body font
+  {}      % Indent
+  {\bfseries\scshape} % Head font
+  {.}     % Punctuation after head
+  {.5em}  % Space after head
+  {}      % Head spec
+
+\theoremstyle{tight}
 
 
 \newtheorem{theorem}{Theorem}[section]
@@ -112,6 +125,12 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
+
+% hacks that reduce space around floats
+\AtBeginDocument{
+  \setlength{\textfloatsep}{1pt}
+  \setlength{\intextsep}{1pt}
+}
 
 \title{Categorical E-Graphs for Lambda Calculi}
 
