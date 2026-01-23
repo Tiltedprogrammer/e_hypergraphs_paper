@@ -72,7 +72,7 @@ It follows by first defining the interpretation of operators by extending the in
 % 	\label{fig:ev_and_lambda}
 % \end{figure}
 Then we can make $\WellTypedMdaEcospans$ into $\catname{SLat}$-category by defining a join of two cospans and introducing EDPOI rewrite rules to satisfy the laws of symmetric monoidal $\catname{SLat}$-categories --- one EDPOI rewrite rule for each axiom instance --- as was done by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
-Under this interpretation, the cospan from~\autoref{fig:e-cospan-example} corresponds to the following closed $\Sigma^{+}$-term $(g;f) + (((\Lambda(id \otimes id \otimes f)) \otimes g);\text{ev})$.
+Under this interpretation, the cospan from~\autoref{fig:e-cospan-example} corresponds to the following closed $\Sigma^{+}$-term $(g;f) + (((\Lambda((id \otimes id;\sym) \otimes f)) \otimes g);\textbf{ev})$.
 Finally, we add a structural rewrite schema rule corresponding to the distributivity law (\autoref{law:distributivity}).
 % The join of two cospans is given in~\autoref{sec:appendix:interpretation} and the quotienting is done through EDPOI rewrite schema rules, one for each axiom.
 % For example, the distributivity rule for $\otimes$ is given by the following schema rule

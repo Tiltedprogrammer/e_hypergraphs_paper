@@ -52,8 +52,6 @@ We can similarly consider \emph{closed} terms that give rise to a free \emph{clo
 		\\
 		\Lambda_{Z,B,C}(g \otimes \id_{B}; f) = g;\Lambda_{A,B,C}(f).
 	\end{gather*}
-	\begin{itemize}
-	\end{itemize}
 \end{definition}
 
 This is equivalent to defining a (right) closed monoidal category as one admitting an adjunction $- \otimes B \dashv B \multimap{} -$ for every object $B$.
@@ -67,12 +65,12 @@ If the tensor is symmetric, then the monoidal category is \emph{closed}.
 	\end{itemize}
 	A family of closed $\Sigma$ terms is then defined by:
 	\begin{itemize}
-		\item $\phi : A \to B \in \Sigma_{M}$ is a closed $\Sigma$-term;
+		\item $\phi \colon A \to B \in \Sigma_{M}$ is a closed $\Sigma$-term;
 		\item if $A$ and $B$ are $obj_{\Sigma_{O}}$, then $\id_{A}$ and $\sym_{A,B}$ are closed $\Sigma$-terms;
-		\item if $f : A \to B$ and $g : B \to C$ are closed $\Sigma$-terms, then so is $f;g : A \to C$;
-		\item if $f : A \to B$ and $g : C \to D$ are closed $\Sigma$-terms, then so is $f \otimes g : A \otimes C \to B \otimes D$;
-		\item if $A$ and $B$ are $obj_{\Sigma_{O}}$, then $\textbf{ev}_{A,B} : A \multimap B \otimes A \to B$ is a closed $\Sigma$-term;
-		\item if $h : X \otimes A \to B$ is a closed $\Sigma$-term, then $\Lambda_{X,A,B}(h) : X \to (A \multimap B)$ is a closed $\Sigma$-term.
+		\item if $f \colon A \to B$ and $g : B \to C$ are closed $\Sigma$-terms, then so is $f;\;g : A \to C$;
+		\item if $f \colon A \to B$ and $g : C \to D$ are closed $\Sigma$-terms, then so is $f \otimes g \colon A \otimes C \to B \otimes D$;
+		\item if $A$ and $B$ are $obj_{\Sigma_{O}}$, then $\textbf{ev}_{A,B} \colon A \multimap B \otimes A \to B$ is a closed $\Sigma$-term;
+		\item if $h \colon X \otimes A \to B$ is a closed $\Sigma$-term, then $\Lambda_{X,A,B}(h) \colon X \to (A \multimap B)$ is a closed $\Sigma$-term.
 	\end{itemize}
 \end{definition}
 
@@ -97,7 +95,7 @@ This is modelled by enrichment in semilattices, yielding $\catname{SLat}$-catego
 	\end{itemize}
 	such that particular coherence diagrams enforcing that composition is associative and unital commute.
 \end{definition}
-$\catname{SLat}$ is sufficiently close to $\catname{Set}$ that Hom semilattices can be thought of as the ordinary notion of Hom sets with additional semilattice structure; unit morphisms are as usual, and composition works similarly to composition in categories with an extra condition of respecting the join: as it is a semilattice homomorphism, we require that $(f + g); h = f;h + g;h$ and $f;(g+h) = f;g + f;h$.
+$\catname{SLat}$ is sufficiently close to $\catname{Set}$ that Hom semilattices can be thought of as the ordinary notion of Hom sets with additional semilattice structure; unit morphisms are as usual, and composition works similarly to composition in categories with an extra condition of respecting the join: as it is a semilattice homomorphism, we require that $(f + g);\; h = f;\;h + g;\;h$ and $f;\;(g+h) = f;\;g + f;\;h$.
 
 \begin{definition}[$\catname{SLat}$-functor]
 	Let $\mathbb{C}$ and $\mathbb{D}$ be two $\catname{SLat}$-categories.

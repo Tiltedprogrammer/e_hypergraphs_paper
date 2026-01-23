@@ -232,7 +232,7 @@ Thus, we reach the following variant of DPO rewriting.
 
 \end{definition}
 To make DPOI rewriting sound and complete with respect to rewriting of $\Sigma$-terms modulo the laws of symmetric monoidal categories, the notion of both pushout complement and match must be restricted: otherwise, there might be DPO rewrites that do not correspond to rewriting of morphisms just modulo SMC equations.
-This gives rise to the notions of a \emph{boundary complement} and \emph{convex} DPOI rewriting, which we adapt to our setting later.
+This gives rise to the notions of a \emph{boundary complement} and \emph{convex} DPOI rewriting, which we adapt to our setting later (also see~\autoref{sec:appendix:hyp}).
 
 % \begin{definition}[Boundary complement]%
 % 	\label{def:boundary_original}
@@ -280,7 +280,8 @@ We follow an analogous approach by combining combinatorial representations of~\c
 We next extend the definition of e-hypergraphs for symmetric monoidal $\catname{SLat}$-categories~\cite{tiurin2025equivalencehypergraphsdporewriting} to accommodate new structure brought by closure.
 
 \begin{definition}
-	Over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$, we define a closed e-hypergraph $\mathcal{G}$ as a tuple $(V,E,s,t, l_{V}, l_{E} \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency)$ where
+	Over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$, we define a closed e-hypergraph $\mathcal{G}$ as a tuple 
+	\[(V,E,s,t, l_{V}, l_{E} \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency), \text{ where}\]
 	\begin{itemize}
 		\item $V$ is a set of vertices.
 		\item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined as follows.

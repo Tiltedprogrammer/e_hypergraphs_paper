@@ -18,17 +18,23 @@
 		\node [style=vertex] (15) at (-4.5, 4.5) {};
 		\node [style=none] (16) at (-3.25, 3.5) {};
 		\node [style=vertex] (17) at (-3.25, 4.5) {};
+		\node [style=none] (18) at (-3.5, 2) {};
+		\node [style=none] (19) at (-3.25, 2) {};
+		\node [style=none] (20) at (-3, 2) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw (1) to (0.center);
 		\draw (4) to (3.center);
 		\draw (7) to (6.center);
-		\draw [in=45, out=-90] (12.center) to (7);
-		\draw [in=-90, out=60] (4) to (11.center);
-		\draw [in=-90, out=60] (1) to (10.center);
 		\draw [in=-90, out=120, looseness=0.75] (1) to (13);
 		\draw [in=-90, out=120, looseness=0.75] (4) to (14.center);
 		\draw [in=-90, out=120, looseness=0.75] (7) to (15);
 		\draw (16.center) to (17);
+		\draw (10.center) to (18.center);
+		\draw (11.center) to (19.center);
+		\draw (12.center) to (20.center);
+		\draw [bend left=15] (20.center) to (7);
+		\draw [bend left=45, looseness=0.75] (19.center) to (4);
+		\draw [in=-90, out=30, looseness=0.75] (1) to (18.center);
 	\end{pgfonlayer}
 \end{tikzpicture}

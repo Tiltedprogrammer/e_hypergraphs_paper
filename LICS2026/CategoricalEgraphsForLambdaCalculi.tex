@@ -54,6 +54,19 @@
 % code
 \usepackage{minted}
 
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+  \par\pushQED{\qed}%
+  \normalfont
+  % tighten vertical space around the proof block:
+  \topsep=2pt\partopsep=2pt\parsep=0pt\itemsep=0pt
+  \trivlist
+  \item[\hskip\labelsep\itshape #1\@addpunct{.}]%
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
 \newtheoremstyle{tight}
   {0pt}   % Space above
   {1pt}   % Space below
