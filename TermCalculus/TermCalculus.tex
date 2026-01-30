@@ -1,0 +1,384 @@
+\documentclass[manuscript, nonacm, anonymous]{acmart}
+
+
+\usepackage{amsmath,amsfonts}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{soul}
+\usepackage{xcolor}
+
+\usepackage{amsthm}
+\usepackage{hyperref}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Subsection}
+
+\usepackage{cleveref}
+\usepackage{stmaryrd}
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+\usepackage{csquotes}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac} 
+\usepackage{wrapfig}
+
+\usepackage{microtype}
+
+% inference rules
+\usepackage{mathpartir}
+
+\usepackage{aliascnt}
+
+% for tables
+\usepackage{multirow}
+\usepackage{bigdelim}
+\usepackage{colortbl}
+% code
+\usepackage{minted}
+\usepackage{subcaption}
+\DeclareCaptionSubType{listing}
+
+
+\newtheorem{theorem}{Theorem}[section]
+
+% definition
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\providecommand*{\definitionautorefname}{Definition}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\providecommand*{\exampleautorefname}{Example}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\providecommand*{\propositionautorefname}{Proposition}
+
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\providecommand*{\remarkautorefname}{Remark}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\providecommand*{\lemmaautorefname}{Lemma}
+
+
+% listings for autoref
+\providecommand*{\listingautorefname}{Listing}
+
+
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\title{Type Theory for E-Graphs}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\emph{Equality saturation} is a procedure that mitigates the phase ordering problem in term rewriting --- when the application of one rewrite rule enables or disables the application of another rewrite rule --- which can drastically affect the outcome when some metric on terms is considered.
+The key property of equality saturation is that rewrite rules are applied non-destructively --- thus not disabling other rewrite rules from happening --- until a fixed point (or a timeout) is reached.
+This procedure is powered by a data structure called \emph{e-graph}~\cite{10.1145/1594834.1480915}, and in fact these terms are almost synonymous in the literature.
+The data structure efficiently represents a congruence relation over terms by grouping them into equivalence classes utilising sharing to avoid redundant duplication of common sub-terms.
+
+The literature on e-graphs typically goes into algorithms or applications with few works focusing on semantics aspects.
+The latter is usually understood as a fixed point of some algorithm~\cite{EggPaper}, as a semantics of a Datalog program~\cite{zhang_relational_2022} or as a fixed point of some operation defined on tree automata~\cite{tree_automata_e_graphs}.
+Recently, there has been a categorical account of e-graphs introduced by~\citet{tiurin2025equivalencehypergraphsdporewriting} that interpreted e-graphs as string diagrams for semilattice enriched Cartesian categories.
+This interpretation allowed viewing equality saturation as a double-pushout graph rewriting procedure and provided a data structure that absorbed certain representational bureaucracies.
+
+One can view a type theory as a formal syntactic language for, or calculus, for a category theory.
+The particular type of type theory depends on the structure of the category and vice versa.
+A classical example is of simply typed lambda calculus being the internal language for Cartesian closed categories~\cite{LambekLambda}.
+The benefit of this view is that one can prove categorical facts by building syntactic derivations in the type theory instead of chasing commutative diagrams.
+
+\begin{example}
+We can prove, for example, that $A \otimes \mathbf{1}$ is isomorphic to $A$.
+For this we need to construct two morphisms $A \otimes \mathbf{1} \to A$ and $A \to A \otimes \mathbf{1}$ and show that their composition is identity.
+First, let's build a morphism from $A \to A \otimes \mathbf{1}$
+
+\[
+\inferrule*{
+  x : A \vdash x : A \qquad () \vdash \star : \mathbf{1}
+}{x : A \vdash \{x,\star\} : A \otimes \mathbf{1}}
+\]
+the morphism $A \otimes \mathbf{1} \to A$ is then
+\[
+\inferrule*{
+\inferrule*{}{z : A \otimes \mathbf{1} \vdash z : A \otimes \mathbf{1}}
+\qquad
+\inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
+}{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
+\]
+Then we have
+\begin{itemize}
+  \item \[
+  \inferrule*{
+            \inferrule*{
+  w : A \vdash w : A \qquad () \vdash \star : \mathbf{1}
+}{w : A \vdash \{w,\star\} : A \otimes \mathbf{1}}
+\qquad
+\inferrule*{
+\inferrule*{}{z : A \otimes \mathbf{1} \vdash z : A \otimes \mathbf{1}}
+\qquad
+\inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
+}{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
+}{w : A \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z]}
+\]
+
+\begin{align*}
+  \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z] &\equiv \text{match}_{A \otimes \mathbf{1}}(\{w, \star\}, xy.\text{match}_{\mathbf{1}}(y,x))\\
+  &\equiv_{\beta_{\otimes}} \text{match}_{\mathbf{1}}(\star,w)\\
+  &\equiv_{\beta_{\mathbf{1}}} w
+\end{align*}
+
+  \item The other direction is substitution 
+  \[
+  \inferrule*{z : A \otimes \mathbf{1} \vdash \{w, \star\}[\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) / w]}
+{z : A \otimes \mathbf{1} \vdash \{\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}
+  \]
+
+\begin{align*}
+  \underbrace{\{\text{match}_{A \otimes \mathbf{1}}(\underbrace{z}_{M}, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}_{N} &\equiv_{\eta_{\otimes}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\{\text{match}_{A \otimes \mathbf{1}}(\{x,y\}, x'y'.\text{match}_{\mathbf{1}}(y',x')), \star\})\\ 
+  &\equiv_{\beta_{\otimes}} \text{match}_{A \otimes \mathbf{1}}(z,xy.\{{\text{match}_{\mathbf{1}}(y,x), \star}\})\\
+  &\equiv_{\eta_{\mathbf{1}}}\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,\{\text{match}_{\mathbf{1}}(\star,x), \star\}))\\
+  &\equiv_{\beta_{\mathbf{1}}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(\underbrace{y}_{M},\underbrace{\{x, \star\}}_{N[\star / u]}))\\
+  &\equiv_{\beta_{\mathbf{1}}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\{x, y\})\\
+  &\equiv_{\eta_{\otimes}} z\\
+\end{align*}
+\end{itemize}
+\end{example}
+
+Just like with string diagrams, the key property of this perspective is that certain categorical axioms are absorbed by the syntax.
+In this work we develop a type theoretic counterpart to the categorical framework of~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+This perspective allows us to formulate equality saturation as a term rewriting problem.
+String diagrams can be rendered as concrete data structures such as hypergraphs with interfaces which can be thought of as generalisation of e-graphs for symmetric monoidal theories.
+This hypergraph representation while being theoretically elegant --- since it absorbs the axioms of symmetric monoidal categories thus already implicitly saturating a given term with these axioms --- requires the tensor to be symmetric.
+The type theory we present can be viewed as syntax for e-graphs for theories with more flexible structure, \textit{e.g.}, those with non-symmetric tensor.
+
+The key concepts of e-graphs can be intuitively grasped from some simple examples: \autoref{fig:e-graph-example} shows how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
+
+\begin{figure*}[t!]
+	\centering
+  \adjustbox{width=\textwidth}{
+    \tikzfig{./figures/e-graph-example-2}
+  }
+  \caption{E-graphs and corresponding string diagrams~\cite{tiurin2025equivalencehypergraphsdporewriting}}
+  \label{fig:e-graph-example}
+\end{figure*}
+
+Each column represents a term (or term rewrite rule), its conventional e-graph, and the equivalent string diagram (for traced Cartesian categories) representation using the \emph{e-hypergraphs} used by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+For the initial term, $(a*2)/2$, which is already represented efficiently in the e-graph by sharing the node $2$, the string diagram version shares this node explicitly, using a copy node.
+
+E-graphs consist of two types of nodes: \emph{e-classes}, representing equivalence classes of terms and denoted by dashed boxes, containing \emph{e-nodes}, representing equivalent terms that share the same root.
+E-nodes reference e-classes instead of other e-nodes, in contrast to a traditional term graph.
+By making a sequence of choices for e-nodes in e-classes, we can extract terms from the graph; intuitively, a different sequence of choices results in an equivalent term.
+A term graph is embedded by an e-graph where each e-class has a single e-node.
+
+The first rewrite rule, replacing multiplication by \emph{shift-left} creates the first non-singleton e-class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) nodes, now sharing the node $a$.
+This second e-graph illustrates the other representational difference\footnote{Despite the \enquote{difference}, these representations are isomorphic in the sense that there is a non-ambiguous translation from one representation to the other and vice versa.}, besides sharing, between conventional e-graphs and e-hypergraphs.
+In the former, edges connect directly to e-nodes inside the e-class, whereas in the latter edges connect to the equivalence class itself.
+Explicit deletion nodes are depicted with black dots with a single incoming wire
+\scalebox{0.4}{
+	\begin{tikzpicture}
+		\begin{pgfonlayer}{nodelayer}
+			\node [style=vertex] (0) at (1.5, 3.5) {};
+			\node [style=none] (1) at (1.5, 3) {};
+		\end{pgfonlayer}
+		\begin{pgfonlayer}{edgelayer}
+			\draw (0) to (1.center);
+		\end{pgfonlayer}
+	\end{tikzpicture}
+}
+inside the dashed boxes, indicating which of the equivalence-class-level edges are connected to which nodes inside the equivalence class.
+Notably, the step $(d) \to (e)$ introduces a cycle in the e-graph as it merges the e-classes containing $*$ and $a$ and matching the left-hand side of the rule is with the enode $a * 1$.
+This cycle allows the e-graph to represent infinitely many equivalent terms: $a$, $a * 1$, $((a * 2) / 2) * 1$, and so on.
+String diagrammatically this cycle is modelled using a trace --- picking the right-hand side component of the topmost box results in the following term:
+\[
+\adjustbox{scale=0.6}{
+\tikzfig{./figures/e-to-d-example-1}
+}
+\]
+
+Picking $*$ and then $a$ results in the following diagram:
+
+\[
+\adjustbox{width=\textwidth}{
+\tikzfig{./figures/e-to-d-example-2}
+}
+\]
+
+Using the type theory, we can associate a term for each of these e-graph or string diagrams.
+These are presented in.
+The paper is about formalising this type theory.
+
+% \begin{figure*}
+% \begin{minipage}{0.45\textwidth}
+%   \begin{minted}{haskell}
+%     let x = 2 in
+%        (a * x) / x
+%   \end{minted}
+%   \subcaption{(a)}
+% \end{minipage}
+% \hfill
+% \begin{minipage}{0.45\textwidth}
+%   \begin{minted}{haskell}
+%     let x = 2
+%     let e arg_1 arg_2 arg_3 = 
+%      arg_1 * arg_2 + arg_3 << 1 in
+%         (e a x 0) / x
+%   \end{minted}
+%   \caption{(b)}
+% \end{minipage}
+% \hfill
+% \vspace{1em}
+% \begin{minipage}{0.45\textwidth}
+%   \begin{minted}{haskell}
+%     let x = 2
+%     let y = a
+%     let e arg_1 arg_2 arg_3 = 
+%      arg_1 * arg_2 + arg_3 << 1
+%     let z arg_1 arg_2 arg_3 arg_4 = 
+%      arg_1 / arg_2 + arg_3 * arg_4 in
+%     z (e y x y) x y (x / x)
+%   \end{minted}
+%   \caption{(c)}
+% \end{minipage}
+% \hfill
+% \begin{minipage}{0.45\textwidth}
+%   \begin{minted}{haskell}
+%     let x = 2
+%     let y = a
+%     let e arg_1 arg_2 arg_3 = 
+%      arg_1 * arg_2 + arg_3 << 1
+%     let z arg_1 arg_2 arg_3 arg_4 = 
+%      arg_1 / arg_2 + arg_3 * arg_4
+%     let w arg_1 arg_2 = arg_1 / arg_2 + 1 in
+%     z (e y x y) x y (w x x)
+%   \end{minted}
+%   \caption{(d)}
+% \end{minipage}
+% \hfill
+% \vspace{1em}
+% \begin{minipage}{0.45\textwidth}
+%   \begin{minted}{haskell}
+%     let x = 2
+%     let e arg_1 arg_2 arg_3 = 
+%      arg_1 * arg_2 + arg_3 << 1
+%     let z arg_1 arg_2 arg_4 = 
+%      arg_1 / arg_2 + (z arg_1 arg_2 arg_4) * arg_4 + a
+%     let w arg_1 arg_2 = arg_1 / arg_2 + 1 in
+%     let y = z (e y x y) x (w x x) in y
+%   \end{minted}
+%   \caption{(e)}
+% \end{minipage}
+% \label{fig:terms-e-graph}
+% \caption{Terms corresponding to e-graphs in \autoref{fig:e-graph-example-2}}
+% \end{figure*}
+
+\begin{listing*}[t]
+\captionsetup[sub]{labelformat=parens}
+\centering
+% If needed (usually not in acmart):
+% \captionsetup{type=listing}
+
+\begin{minipage}[t]{0.45\textwidth}
+  \begin{minted}{haskell}
+let x = 2 in
+   (a * x) / x
+  \end{minted}
+  \subcaption{}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+  \begin{minted}{haskell}
+let x = 2
+let e arg_1 arg_2 arg_3 =
+  arg_1 * arg_2 + arg_3 << 1 in
+  (e a x 0) / x
+  \end{minted}
+  \subcaption{}
+\end{minipage}
+
+\vspace{1em}
+
+\begin{minipage}[t]{0.45\textwidth}
+  \begin{minted}{haskell}
+let x = 2
+let y = a
+let e arg_1 arg_2 arg_3 =
+  arg_1 * arg_2 + arg_3 << 1
+let z arg_1 arg_2 arg_3 arg_4 =
+  arg_1 / arg_2 + arg_3 * arg_4 in
+z (e y x y) x y (x / x)
+  \end{minted}
+  \subcaption{}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+  \begin{minted}{haskell}
+let x = 2
+let y = a
+let e arg_1 arg_2 arg_3 =
+  arg_1 * arg_2 + arg_3 << 1
+let z arg_1 arg_2 arg_3 arg_4 =
+  arg_1 / arg_2 + arg_3 * arg_4
+let w arg_1 arg_2 = arg_1 / arg_2 + 1 in
+z (e y x y) x y (w x x)
+  \end{minted}
+  \subcaption{}
+\end{minipage}
+
+\vspace{1em}
+
+\begin{minipage}[t]{0.45\textwidth}
+  \begin{minted}{haskell}
+let x = 2
+let e arg_1 arg_2 arg_3 =
+  arg_1 * arg_2 + arg_3 << 1
+let z arg_1 arg_2 arg_4 =
+  arg_1 / arg_2 + (z arg_1 arg_2 arg_4) * arg_4 + a
+let w arg_1 arg_2 = arg_1 / arg_2 + 1 in
+let y = z (e y x y) x (w x x) in y
+  \end{minted}
+  \subcaption{}
+\end{minipage}
+
+\caption{Terms corresponding to e-graphs in \autoref{fig:e-graph-example}}
+\label{fig:terms-e-graph}
+\end{listing*}
+
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../bibliography}
+
+\end{document}
