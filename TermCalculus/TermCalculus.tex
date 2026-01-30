@@ -238,7 +238,7 @@ Picking $*$ and then $a$ results in the following diagram:
 \]
 
 Using the type theory, we can associate a term for each of these e-graph or string diagrams.
-These are presented in.
+These are presented in~\autoref{lst:terms-e-graph}.
 The paper is about formalising this type theory.
 
 % \begin{figure*}
@@ -374,9 +374,24 @@ let y = z (e y x y) x (w x x) in y
 \end{minipage}
 
 \caption{Terms corresponding to e-graphs in \autoref{fig:e-graph-example}}
-\label{fig:terms-e-graph}
+\label{lst:terms-e-graph}
 \end{listing*}
 
+
+\section{Categorical semantics of e-graphs}
+Recap of $\catname{SLat}$ categories.
+
+\section{Type theory}
+Recap of categorical type theory as per Mike Shulman, introduction of $\catname{SLat}$-enriched type theory.
+Propositions that substitution is admissible, associative etc. 
+Terms uniquely determine derivation trees up to commutativity.
+
+\section{Soundness}
+A theorem about type theory defining a free $\catname{SLat}$-enriched category.
+
+\section{Term rewriting}
+Formulate equality saturation in terms of a fixed point of term rewriting.
+Not sure I can say more than that.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../bibliography}
