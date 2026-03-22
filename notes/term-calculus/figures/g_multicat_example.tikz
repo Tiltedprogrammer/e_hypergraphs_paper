@@ -1,0 +1,46 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=node] (9) at (0.25, 12.75) {};
+		\node [style=node] (10) at (0.25, 12.25) {};
+		\node [style=node] (11) at (0.25, 11.75) {};
+		\node [style=medium box] (12) at (1.75, 12.5) {$g$};
+		\node [style=node] (13) at (3.25, 12.5) {};
+		\node [style=none] (14) at (1.25, 12.75) {};
+		\node [style=none] (15) at (1.25, 12.25) {};
+		\node [style=none] (16) at (1.25, 11.75) {};
+		\node [style=none] (17) at (2.25, 12.5) {};
+		\node [style=node] (18) at (-7.75, 13.5) {};
+		\node [style=node] (19) at (-7.75, 12.75) {};
+		\node [style=node] (20) at (-7.75, 12) {};
+		\node [style=node] (21) at (-7.75, 11.25) {};
+		\node [style=node] (22) at (-5.75, 13.5) {};
+		\node [style=node] (23) at (-5.75, 12.75) {};
+		\node [style=node] (24) at (-5.75, 12) {};
+		\node [style=node] (25) at (-5.75, 11.25) {};
+		\node [style=node] (26) at (0.25, 13.25) {};
+		\node [style=none] (27) at (1.25, 13.25) {};
+		\node [style=node] (28) at (-1.75, 13.25) {};
+		\node [style=node] (29) at (-1.75, 12.75) {};
+		\node [style=node] (30) at (-1.75, 12.25) {};
+		\node [style=node] (31) at (-1.75, 11.75) {};
+		\node [style=node] (32) at (0.25, 13.25) {};
+		\node [style=node] (33) at (0.25, 12.75) {};
+		\node [style=node] (34) at (0.25, 12.25) {};
+		\node [style=node] (35) at (0.25, 11.75) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (9) to (14.center);
+		\draw (15.center) to (10);
+		\draw (11) to (16.center);
+		\draw (17.center) to (13);
+		\draw (18) to (23);
+		\draw (19) to (22);
+		\draw (20) to (25);
+		\draw (21) to (25);
+		\draw (26) to (27.center);
+		\draw (28) to (33);
+		\draw (29) to (32);
+		\draw (31) to (35);
+		\draw (31) to (34);
+	\end{pgfonlayer}
+\end{tikzpicture}

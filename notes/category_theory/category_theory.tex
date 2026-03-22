@@ -377,6 +377,26 @@ Since a graph has an edge for every path, it means that there is a composite mor
     $h \times id_{A} : C \times A \to (A \multimap B) \times A$, $ev_{A,V} \circ h \times id_{A} : C \times A \to B$ and $\Lambda(ev_{A,B} \circ h \times id_{A}) : C \to A \multimap B = h$ by uniqueness.
 \end{definition}
 
+
+\section{Fox's theorem}
+
+Let $\catname{Mon}$ and $\catname{Cart}$ be a category of symmetric monoidal categories and a category of cartesian categories respectively.
+Both of them are monadic over $\catname{Cat}$, i.e. there are adjunctions $\catname{Mon} \to \catname{Cat}$ and $\catname{Cart} \to \catname{Cat}$ such that the corresponding comparison functors are isomorphisms.
+Furthermore, there's an inclusion $\catname{Cart} \to \catname{Mon}$ that goes through $\catname{Cat}$ and that inclusion has a left adjoint $\catname{Mon} \to \catname{Cart}$.
+Fox's theorem says that this inclusion has a right adjoint.
+
+Let $\catname{X}$ be a symmetric monoidal category.
+A triple $\langle C, \delta, \varepsilon \rangle$ is an $\catname{X}$-coalgebra, where $C$ is an object in $\catname{X}$, $\delta : C \to C \otimes C$ and $\varepsilon : C \to I$ such that $\delta$ is associative, commutative, and unital with respect to $\varepsilon$.
+Given two $\catname{X}$-coalgebras $\langle C, \delta, \varepsilon \rangle$ and $\langle D, \delta', \varepsilon' \rangle$, a morphism of coalgebras $f : C \to D$ is a morphism in $\catname{X}$ such that 
+\[
+f;\delta' = \delta; (f \otimes f) \quad f;\varepsilon' = \varepsilon
+\]
+
+The category of $\catname{X}$-coalgebras is denoted by $\catname{Coalg}(\catname{X})$.
+There's a forgetful functor $\catname{Coalg}(\catname{X}) \to \catname{X}$ that maps $\langle C, \delta, \varepsilon \rangle$ to $C$ and a morphism of coalgebras to the underlying morphism in $\catname{X}$.
+In fact, $\catname{Coalg}(X)$ is a Cartesian category with the product of $\langle C, \delta, \varepsilon \rangle$ and $\langle D, \delta', \varepsilon' \rangle$ given by $\langle C \otimes D, \delta'', \varepsilon'' \rangle$ where $\delta'' = (C \otimes D) \to (C \otimes C) \otimes (D \otimes D) = (\delta \otimes \delta');(id_{C} \otimes \sym \otimes id_{D}) $ and $\varepsilon'' : C \otimes D \to I = \varepsilon \otimes \varepsilon'$.
+Projections are given by $\pi_{1} : C \otimes D \to C = (id_{C} \otimes \varepsilon)$ and $\pi_{2} : C \otimes D \to D = (\varepsilon \otimes id_{D})$.
+
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../../bibliography}
 

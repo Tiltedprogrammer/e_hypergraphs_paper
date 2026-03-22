@@ -1,0 +1,77 @@
+\section{Categorical logic}
+
+In this section we will give a brief introduction to the categorical logic and will introduce the logic for $\catname{SLat}$-categories.
+
+\emph{Categorical logic} started with the work of Lawvere~[CITE] which introduced the interpretation of \emph{algebraic theories} in categories with finite products.
+Since then, the field has expanded to include a wide variety of logics and corresponding categorical semantics offering a more general and simple alternative to \emph{set}-based semantics.
+This way one could prove meta-results about the logic using categorical constructions.
+Interestingly, such interpretation often defines an equivalence between the logic and the category allowing to also use the logic to reason about the category.
+This enables the use of richer and more familiar forms of expression to establish results about the category.
+In the case of \emph{toposes} one might use higher-order intuitionistic logic to reason about the objects and morphisms as if they were sets and functions --- as opposed to the traditional reasoning by chasing commutative diagrams.
+The logic in this case is called an \emph{internal language} (or a \emph{type theory}) of the topos.
+Below we will treat the internal language as a particularly nice syntax to represent free objects --- by doing a computation in a free structure, we can then map it anywhere else by using the universal property of that free structure.
+However, not every syntax is equally good.
+Consider a type theory induced by a directed graph $G$ and its associated free category $\catname{Free}(G)$.
+A type judgement 
+\[
+\inferrule*[]{}{A \vdash B}
+\]
+will represent a morphism $A \to B$ of $\catname{Free}(G)$, and to differentiate between different morphisms $A \to B$ we can annotate such judgements so that distinct edges $f, g \in G(A,B)$ may be regarded as the rules
+\[
+\inferrule*[right=$f$]{\;}{A \vdash B} \qquad \inferrule*[right=$g$]{\;}{A \vdash B}
+\]
+Of course, we need to be able to compose morphisms, so we have the following rule:
+\[
+\inferrule*[right=$\circ$]{
+    \inferrule*[right=$h$]{\;}{B \vdash C} \qquad \inferrule*[right=$f$]{\;}{A \vdash B}
+}{A \vdash C} ~.
+\]
+And the following rule for identities for each $A \in G$:
+\[
+\inferrule*[right=$id_{A}$]{}{A \vdash A} ~.
+\]
+
+So far, the type theory defines only a free-like structure.
+Composition must be associative and unital, so we need to identify certain derivations.
+For example,
+\[
+\begin{aligned}
+  \vcenter{\hbox{$
+    \inferrule*[]{
+      \inferrule*[right=$id_{A}$]{\;}{A \vdash A}
+      \qquad
+      \inferrule*[right=$f$]{\;}{A \vdash B}
+    }{A \vdash B}
+  $}}
+  &\;\equiv\;
+  \vcenter{\hbox{$
+    \inferrule*[right=$f$]{\;}{A \vdash B}
+  $}}
+  \,,
+\end{aligned}
+\]
+plus rules that say that such identification is preserved by all contexts.
+This approach results in a \emph{cut-ful type theory for categories under $G$}.
+Another approach is to remove the composition rule and instead add an axiom for each $f \in G$:
+\[
+\inferrule*[right=$f$]{X \vdash A}{X \vdash B} ~,
+\]
+which together with the identity rule can be equivalently written using terms and variables 
+\[
+\inferrule*[]{\;}{x : A \vdash x : A} \qquad \inferrule*[]{x : X \vdash M : A \quad f \in G(A,B)}{x : X \vdash f(M) : B}~.
+\]
+A nice feature of using terms and variables as they uniquely determine the whole derivation tree and are much more compact to use.
+The following theorem then states that we can compose arbitrary terms in this type theory.
+\begin{theorem}
+    Given derivations $x : A \vdash M : B$ and $y : B \vdash N : C$, we can build a derivation $x : A \vdash N[M/y] : C$.
+\end{theorem}
+
+The substitution operation $N[M / y]$ is inductively defined on the derivation of $N$.
+At this point this syntax starts to pay off as it for example absorbs the unitality of composition --- given $x : A \vdash x : A$ and $x : A \vdash M : B$, we have that $M[x / x] = M$ which before we had to identify explicitly by introducing equivalences.
+This approach is dubbed a \emph{cut-free type theory for categories under $G$} and the following theorem can be formulated.
+\begin{theorem}
+    The free category on the graph $G$ has the same objects as $G$ and morphisms $A \to B$ are given by terms (derivations) $x : A \vdash M : B$ in the cut-free type theory for categories under $G$.
+\end{theorem}
+
+We will then proceed to define a type theory for more interesting (monoidal) categories and finally for $\catname{SLat}$-enriched (monoidal) categories.
+

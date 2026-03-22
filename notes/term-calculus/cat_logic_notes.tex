@@ -2,6 +2,7 @@
 
 \usepackage{stmaryrd}
 \newcommand{\parr}{\mathbin{\bindnasrepma}}
+\newcommand\rotpi{\rotatebox[origin=c]{180}{$\pi$}}
 
 \newcommand*{\ONECOLUMN}{}
 
@@ -389,6 +390,216 @@ is an equivalence.
 Any such $Cl(Th)$ is unique up to isomorphism.
 
 
+\section{Some notes on term rewriting}
+
+\begin{definition}[Confluence]
+A rewriting system is said to be confluent, if for all $a,b,c$ such that  $ c \xleftarrow{*} a \xrightarrow{*} b$ there exists $d$ such that $c \xrightarrow{*} d \xleftarrow{*} b$.
+In other words, all divergent paths may be joined.
+\end{definition}
+
+\begin{definition}
+  A rewriting system is said to be \textit{locally} confluent, if for all $a,b,c$ such that  $ c \xleftarrow{} a \xrightarrow{} b$ there exists $d$ such that $c \xrightarrow{*} d \xleftarrow{*} b$.
+In other words, all one-step divergent paths may be joined.
+\end{definition}
+
+\begin{proposition}
+  If a rewriting system is terminating and locally confluent, then it is confluent.
+\end{proposition}
+\begin{proof}
+  The idea of the proof is to join divergent paths using local confluence.
+  Suppose $b_n \xleftarrow{*} a \xrightarrow{*} c_m$, then we need to show that there exists $d_n$ such that $b_n \xrightarrow{*} d_{n,m} \xleftarrow{*} c_m$.
+  Since $b_n \xleftarrow{*} a \xrightarrow{*} c_m$, there are $b_1, c_1$ such that $b_1 \xleftarrow{} a \xrightarrow{} c_1$ and we can join those with $d_{1,1}$ using local confluence so that $b_1 \xrightarrow{*} d_{1,1} \xleftarrow{*} c_1$, since rewriting is terminating, $d_{1,1}$ is different from $a$.
+  We keep joining like this until we get to $d_{n,m}$ and termination of rewriting guarantees that we eventually stop.
+\end{proof}
+
+\begin{proposition}[Strong normalisation of lambda calculus]
+  If $\cdot \vdash M : T$, then $M \Downarrow \;\coloneqq\; \exists v . M \Downarrow v \coloneqq \exists v . M \xrightarrow{*} v$.
+\end{proposition}
+
+To prove the above proposition we will define inductive predicates parameterised by types that contain all strongly normalising terms of that type.
+\begin{gather*}
+SN_{bool}(M) \iff \cdot \vdash M : bool \land M \Downarrow\\
+SN_{T_1 \to T_2}(M) \iff \cdot \vdash M : T_1 \to T_2 \land M \Downarrow \land \forall N : T_1 \;.\; SN(N) \implies SN(MN)
+\end{gather*}
+
+and then we need to prove two lemmas
+\begin{lemma}
+  If $\cdot \vdash M : T$ then $SN_{T}(M)$
+\end{lemma}
+
+\begin{lemma}
+  If $M \in SN_{T}(M)$, then $M \Downarrow$ (this is just by definition)
+\end{lemma}
+
+Let's try to prove the second lemma to see where it stucks.
+
+\begin{proof}
+  Suppose $M = \lambda x . N : T_1 \to T_2$, we need to show that $M \in SN_{T_1 \to T_2}$.
+  For this we need to show that $\forall N' : T_1$ such that $SN_{T_1}(N')$ we have that $SN_{T_2}(MN)$.
+  Our hypothesis for $N$ is too weak for that.
+\end{proof}
+
+We extend $SN$ by its action on contexts.
+
+\begin{definition}
+  $SN(\Gamma) = \{\sigma | dom \Gamma = dom \sigma \land \forall x : T \in \Gamma\;.\; \sigma x \in SN_{T} \}$
+\end{definition}
+
+\begin{lemma}
+\[
+\Gamma \vdash M : T \land \sigma \in SN(\Gamma) \implies SN_{T}(\sigma M)
+\]
+\end{lemma}
+\begin{proof}
+  Suppose $M = \lambda x . N : T_1 \to T_2$, we need to show that $\sigma M \in SN_{T_1 \to T_2}$, or equivalently $\lambda x . \sigma N \in SN_{T_1 \to T_2}$.
+  For this we need to show that $\forall N' : T_1$ such that $SN_{T_1}(N')$ we have that $SN_{T_2}((\lambda x . \sigma N)N')$.
+  By IH we have that $\Gamma, x : T_1 \vdash N : T_2$ and that $SN_{T_2}(\sigma' N)$.
+  Consider $\sigma' = \sigma \cup x \mapsto v$ where $N' \Downarrow v$
+  By applying IH we have $SN_{T_{2}}(\sigma' N)$.
+  We have the following evaluation $(\lambda x . \sigma N)N' \xrightarrow{*} (\lambda x . \sigma N)v = (\sigma N)[x / v] = \sigma' N \in SN_{T_2}$.
+\end{proof}
+
+\begin{definition}[Critical pair]
+  Let $l_1 \to r_1$ and $l_2 \to r_2$ be rewrite rules.
+  A \emph{critical pair} is generated whenever there exists a
+  non-variable position $p$ in $l_2$ and a substitution $\sigma$
+  such that
+  \[
+    \sigma(l_2|_p) = \sigma(l_1).
+  \]
+  In this case the \emph{critical term} is $\sigma(l_2)$, and the
+  corresponding \emph{critical pair} is
+  \[
+    \bigl( \sigma(l_2[r_1]_p),\; \sigma(r_2) \bigr),
+  \]
+  where $l_2[r_1]_p$ denotes the term obtained from $l_2$ by replacing
+  the subterm at position $p$ with $r_1$.
+\end{definition}
+
+For example, given rewrite rules $l_1 \coloneq (u + v) + w \to u + (v + w)$ and $l_2 \coloneq -x + x \to 0$, we have a subterm $u + v$ of $l_1$ that can be unified with $l_2$ by $\sigma = \{u \mapsto -x, v \mapsto x\}$.
+Then, the critical term is $(-x + x) + w$. The critical pair is then $(0 + w,-x + (x + w))$.
+
+\section{E-graph semantics}
+
+Semantics of e-graph (or of equality saturation) can be roughly understood as a fixed point of the algorithm, if it exists the semantics is defined, otherwise it is undefined.
+We can ask whether the procedure terminates: given a set of rewrite rules, does the procedure terminate on a given e-graph or on all e-graphs.
+
+\begin{definition}
+  A (bottom-up) tree automaton $\mathcal{A}$ is given by a tuple $\mathcal{A} = \langle Q, \Sigma, Q_{f}, \Delta \rangle$ where $Q$ is a set of states, $Q_{f} \subseteq Q$ is a set of accepting states, $\Sigma$ is a set of functional symbols with given arity, $\Delta$ is a transition function of the form $f(q_1,\ldots,q_k) \to q$ for a functional symbol $f$ of arity $k$ and states $q_1, \ldots, q_k, q$.
+\end{definition}
+
+\begin{example}
+  Let $\Sigma = \{a : 0 \to 1, f : 2 \to 1\}$ be a signature and we will define a tree automaton that accepts trees with even number of leaves.
+  We will define $\Delta$ as follows, given state $q_0$ for trees with even number of leaves and $q_1$ for trees with odd number of leaves.
+  \[
+  \Delta \Coloneq \begin{cases}
+    a \to q_{1}\\
+    f(q_0,q_0) \to q_{0}\\
+    f(q_1,q_0) \to q_{1}\\
+    f(q_0,q_1) \to q_{1}\\
+    f(q_1,q_1) \to q_{0}
+  \end{cases}
+  \]
+  Given a tree like
+  \begin{center}
+  \begin{minted}{c}
+       f
+      / \
+     f   a
+    / \
+   a   a
+  \end{minted}
+\end{center}
+
+The leaves lead to state $q_1$ and then first $f(q_1,q_1) \to q_{0}$ and $f(q_0,q_1) \to q_{1}$ and therefore the tree is rejected.
+\end{example}
+
+We can associate a rewriting system with a tree automaton by treating each transition as a rewrite rule on terms over signature $\Sigma \cup Q$ (treating states from $Q$ as contants).
+A term $t \in T(\Sigma)$ is accepted by state $q$ if $t \to^{*}_{\mathcal{A}} q$.
+An e-graph can then be phrased in terms of a tree automaton.
+\begin{definition}
+  An e-graph is a tree automaton $\mathcal{A} = \langle Q, \Sigma, \Delta \rangle$.
+\end{definition}
+Each e-class $id_i$ correspond to a state $q_i$ and e-node is a transition $f(q_1,\ldots,q_k) \to q$.
+A term $t$ is representable by e-class $q$ if $t \to^{*}_{\mathcal{A}} q$.
+
+\begin{definition}
+  A partial equivalence relation (PER) on a set $\mathcal{A}$ is a symmetric and transitive relation and is an equivalence relation defined on a subset of $\mathcal{A}$.
+  $supp(\approx) = \{x \mid x \approx x\}$.
+  A PER is congruent, if for $s_i \approx t_i$ and $f(s_1, \ldots, s_k) \in supp(\approx)$, $f(s_1, \ldots, s_k) \approx f(t_1, \ldots, t_k)$.
+  A PER is reachable, if $f(s_1, \ldots, s_k) \in supp(\approx)$ implies $s_i \in supp(\approx)$.
+  A partial congruence relation (PCR) on $T(\Sigma)$ is a reachable and congruent PER. 
+\end{definition}
+An e-graph $G$ induces a PCR where $t_1 \approx t_2$ iff $t_1 \to^{*}_{G} c$ and $t_2 \to^{*}_{G} c$.
+When tree automata restricted to e-graphs, they have some interesting properties: there is at most one homomorphism between e-graphs.
+For two e-graphs $G$ and $H$ a homomorphism $G \to H$ defines a partial order $\sqsubseteq$.
+
+\begin{definition}
+  We say that an e-graph $H = \langle Q, \Sigma, \Delta \rangle$ is a model for a term rewriting system $\mathcal{R}$ if for every rule $lhs \to rhs \in \mathcal{R}$ and any substitution $\sigma : Var(lhs) \to Q$, $lhs[\sigma] \to^{*} c$ implies $rhs[\sigma] \to^{*} c$.
+  If $G$ is another e-graph, then we say that $H$ is a model for the pair $G,\mathcal{R}$ if $H$ is a model of $\mathcal{R}$ and $G \sqsubseteq H$.
+  $H$ is a universal model if for every other model $H'$, $H \sqsubseteq H'$.
+\end{definition}
+
+\begin{definition}[Flattening of a Term]
+Let $t \in T(\Sigma \cup Q)$ be a ground term and let $c \in Q$ be a state.  
+The \emph{flattening} of $t$ with root state $c$, written $\mathrm{FL}(t \to^* c)$, is the tree automaton (E-graph) constructed as follows:
+
+\begin{enumerate}
+  \item For every subterm $u$ of $t$, introduce a fresh state $q_u$.
+  \item For every subterm of the form $u = f(u_1,\dots,u_k)$ with $f \in \Sigma$, add a transition
+  \[
+      f(q_{u_1},\dots,q_{u_k}) \to q_u .
+  \]
+  \item Replace the state of the root subterm $q_t$ with the given state $c$ (i.e.\ set $q_t = c$).
+\end{enumerate}
+
+This automaton accepts the term $t$, i.e.\ $t \to^*_{\mathrm{FL}} c$.  
+Moreover, the induced congruence $\approx_{\mathrm{FL}}$ is the identity on all subterms of $t$, since each subterm is assigned a distinct state.
+
+Flattening is also known as \emph{normalization}.
+\end{definition}
+
+\begin{example}
+Let
+\[
+    t = f(g(a), a)
+\]
+and let the required root state be $c$.
+The subterms of $t$ are:
+\[
+    a_1,\ a_2,\ g(a_1),\ f(g(a_1), a_2).
+\]
+We therefore introduce the states
+\[
+    q_{a_1},\ q_{a_2},\ q_{g(a)},\ c.
+\]
+
+The transitions of $\mathrm{FL}(t \to^* c)$ are:
+\[
+    a \to q_{a_1}, \qquad
+    a \to q_{a_2},
+\]
+\[
+    g(q_{a_1}) \to q_{g(a)},
+\]
+\[
+    f(q_{g(a)}, q_{a_2}) \to c.
+\]
+
+Running the automaton bottom-up on the term $t$ yields $c$ at the root, so $t \to^*_{\mathrm{FL}} c$.  
+Since each subterm has a unique state, no distinct subterms are identified by $\approx_{\mathrm{FL}}$.
+\end{example}
+
+The result of inserting $(t,c)$ in $G$ is $A \coloneqq G \cup FL(t \to^{*} c)$ (i.e. we take the set-union of all states and all transitions).
+The result A is a reachable tree automaton, but it is non-deterministic in general, thus it is not an E-graph; the next operation, rebuilding, converts it back into an E-graph. 
+$G \sqsubseteq A$ holds, because the inclusion $G \to A$ is a homomorphism.
+Rebuilding of an e-graph $A$ is just a process of making it a deterministic automaton, i.e. for every $f(c_1, \ldots, c_k) \to c$ and $f(c_1, \ldots, c_k) \to c'$ we identify $c = c'$.
+Equality saturation is then defined as a fixed point of an \emph{immediate consequence operator} (ICO)
+\[
+ICO \coloneqq CC \circ T_{\mathcal{R}}
+\]
+where $T_{\mathcal{R}}(G) \coloneqq G \cup \bigcup \{FL(rhs[\sigma] \to^{*}_{G} c) \mid (lhs \to rhs) \in \mathcal{R}, \sigma : Var(lhs) \to Q, lhs[\sigma] \to^{*}_{G} c\}$ and $CC$ is a rebuilding operation.
+
 \section{Categorical logic (as per Michael Shulman)}
 
 The idea is to construct a free structure (with some nice syntactic properties, not every free structure will do) and then prove properties about non-free structures using the free structure and the homomorphism from this free structure.
@@ -632,6 +843,53 @@ A unit $\mathbf{1}$ is given by a nullary tensor product.
 
 We call a multicategory representable if it is equipped with a chosen unit object and for every pair of objects with their tensor.
 
+\begin{proposition}
+  There is an equivalence between the category of representable multicategories $\catname{RepMultCat}$ and the category of monoidal categories $\catname{MonCat}$.
+\end{proposition}
+
+Here's two approached to build a type theory for a representable multicategory: sequent calculus and natural deduction.
+
+Sequent calculus style type theory has the following inference rules
+\[
+\inferrule*[right=$\otimes L$]{\Gamma, A, B, \Delta \vdash C}{\Gamma, A \otimes B, \Delta \vdash C} \qquad \inferrule*[right=$\mathbf{I}L$]{\Gamma, \Delta \vdash A}{\Gamma, \mathbf{I}, \Delta \vdash A} \qquad \inferrule*[right=$\otimes R$]{\Gamma \vdash A \quad \Delta \vdash B}{\Gamma, \Delta \vdash A \otimes B} \qquad \inferrule*[right=$\otimes R$]{\;}{\vdash \mathbf{1}}
+\]
+
+In particular, given a morphism $\mathcal{M}(A_1, \ldots, A_n; B)$ we can build a morphism $\mathcal{M}(A\bigotimes_{i = 1}^{n}A_{i};B)$ and vice versa by the following rules
+\[
+\inferrule*[right=$\otimes L$]{\inferrule*[right=$\otimes L$]{A_1, A_2, A_3 \vdash B}{A_1 \otimes A_2, A_3 \vdash B}}{(A_1 \otimes A_2) \otimes A_3 \vdash B}
+\]
+and \textcolor{red}{This is for some reason called Yoneda-fication}
+\[
+\inferrule*[]{A_1 \vdash A_1 \quad A_2 \vdash A_2}{\inferrule*[]{A_1, A_2 \vdash A_1 \otimes A_2 \quad A_3 \vdash A_3}{A_1, A_2, A_3 \vdash (A_1 \otimes A_2) \otimes A_3}}
+\]
+Composing the above with $(A_1 \otimes A_2) \otimes A_3$ gives the needed morphism $\mathcal{M}(A_1, \ldots, A_n; B)$.
+
+The rules for natural deduction style type theory are as follows
+
+\[
+\inferrule*[right=$\otimes I$]{\Gamma \vdash A \quad \Delta \vdash B}{\Gamma, \Delta \vdash A \otimes B} \qquad \inferrule*[right=$\otimes E$]{\Psi \vdash A \otimes B \quad \Gamma, A, B, \Delta \vdash C}{\Gamma, \Psi, \Delta \vdash C}
+\]
+\[
+\inferrule*[right=$\mathbf{1}I$]{\;}{() \vdash \mathbf{1}} \qquad \inferrule*[right=$\mathbf{1}E$]{\Psi \vdash \mathbf{1} \quad \Gamma, \Delta \vdash A}{\Gamma, \Psi, \Delta \vdash A}
+\]
+
+plus identities for all types 
+\[
+\inferrule*[]{A \vdash \text{type}}{A \vdash A}
+\]
+
+Then, given for example $A_1 \otimes A_2 \otimes A_3 \vdash B$, we construct $A_1, A_2, A_3 \vdash (A_1 \otimes A_2) \otimes A_3$ as above and then do (again, by composition)
+\[
+\inferrule*[]{A_1, A_2, A_3 \vdash (A_1 \otimes A_2) \otimes A_3 \qquad A_1 \otimes A_2 \otimes A_3 \vdash B}{A_1, A_2, A_3 \vdash B}
+\]
+
+and the other way around, given $A_1, A_2, A_3 \vdash B$ and $A_1, A_2, A_3 \vdash (A_1 \otimes A_2) \otimes A_3$, we can compose with the inverse of the associator to get $A_1 \otimes A_2 \otimes A_3 \vdash B$ we get
+\[
+\inferrule*[right=$\otimes E$]{A_1, A_2, A_3 \vdash (A_1 \otimes A_2) \otimes A_3 \qquad (A_1 \otimes A_2) \otimes A_3 \vdash B \quad A_1, A_2, A_3 \vdash B}{A_1, A_2, A_3 \vdash B}
+\]
+
+So both calculi above express the universal property of the tensor in a multicategorical sense.
+
 Here are some extensions with additional structures
 
 \paragraph*{Symmetric monoidal structure} If $\mathcal{C}$ is a symmetric monoidal category, we have symmetry isomorphisms $A_1 \otimes \ldots \otimes A_n \xrightarrow{\sim} A_{\sigma 1} \otimes \ldots \otimes A_{\sigma n}$ for any permutation $\sigma \in S_{n}$.
@@ -659,6 +917,171 @@ Precomposition with those gives
 \sigma^{*} : \mathcal{C}(A_{\sigma 1}, \ldots, A_{\sigma m}; B) \to \mathcal{C}(A_{1}, \ldots, A_n; B)
 \] 
 
+\begin{definition}
+  Let $\catname{Fun}$ be the category of finite ordinals and functions.
+  That is, the objects are natural numbers $\underline{n}$ and morphisms are functions $a : \underline{n} \to \underline{m}$.
+  $\catname{Fun}$ is a cocartesian category with the coproduct given by addition of natural numbers and for $a : \underline{n} \to \underline{m}$ and $b : \underline{h} \to \underline{k}$
+  \[
+  a + b : \underline{n + h} \to \underline{m + k} = \begin{cases}
+    a(i) &\text{if}\; i \leq n\\
+    b(i - n) + m &\text{if}\; i > n
+  \end{cases}
+  \]
+We denote injections and copairings (for the families $(a_{i} : k_i \to m)_{i \in \underline{n}}$)
+\[
+\rotpi^{(k_i)_{i \in \underline{n}}}_j : k_j \to (\sum_{i \in \underline{n}} k_i) \qquad \langle a_1 | \ldots | a_n \rangle : (\sum_{i \in \underline{n}} k_{i}) \to m
+\]
+
+In particular, for every object $\underline{n}$ we have $\underline{n} = \sum_{i \in \underline{n}} 1$ and thus any $a : \underline{n} \to \underline{m}$ we have 
+\[
+a = \langle \rotpi^{(1)_{i \in \underline{m}}}_{a(1)} | \ldots | \rotpi^{(1)_{i \in \underline{m}}}_{a(n)} \rangle
+\]
+\end{definition}
+
+The latter \enquote{decomposition} is helpful when defining the $\wr$ (\textit{wreath}) product.
+Specifically, for each $a : \underline{n} \to \underline{m}$ in $\catname{Fun}$ and $k_1, \ldots, k_m \in \mathbb{N}$ we define their wreath product to be a morphism $a \wr (k_1, \ldots, k_m) : (\sum_{j \in \underline{n}}k_{a(j)}) \to (\sum_{i \in \underline{m}} k_i)$ of $\catname{Fun}$ as:
+\[
+a \wr (k_1, \ldots, k_m) = \langle \rotpi^{(1)_{i \in \underline{m}}}_{a(1)} | \ldots | \rotpi^{(1)_{i \in \underline{m}}}_{a(n)} \rangle \wr (k_1, \ldots, k_m) \coloneq \langle \rotpi^{(k_i)_{i \in \underline{m}}}_{a(1)} | \ldots | \rotpi^{(k_i)_{i \in \underline{m}}}_{a(n)} \rangle
+\]
+
+Intuitively, $i$-th output of $a$ gets copied $k_i$ times so that the new codomain is $(\sum_{i \in \underline{m}} k_i)$, then each input $j \in \underline{n}$ gets copied $k_{a(j)}$ times so that the new domain is $(\sum_{j \in \underline{n}} k_{a(j)})$.
+Finally, one \enquote{thickens} the line leaving each $i \in \underline{n}$ into $k_{a(i)}$ lines connecting to the respective $k_{j}$ copies.
+Consider an example below for a function $a : \underline{4} \to \underline{4} \wr (3,2,3,2) : \underline{9} \to \underline{10}$.
+The outputs are $\sum_{j \in \underline{4}} k_j = 3 + 2 + 3 + 2 = 10$ and the inputs are $\sum_{i \in \underline{4}} k_{a(i)} = k_2 + k_1 + k_4 + k_4 = 9$.
+\[
+\adjustbox{width=0.9\textwidth}{
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style={orange_red_v}] (0) at (-9.5, 20.5) {};
+		\node [style={forest_v}] (1) at (-9.5, 18.5) {};
+		\node [style={turquoise_v}] (2) at (-9.5, 16.5) {};
+		\node [style={turquoise_v}] (3) at (-9.5, 14.5) {};
+		\node [style={forest_v}] (4) at (-3.5, 20.5) {};
+		\node [style={orange_red_v}] (5) at (-3.5, 18.5) {};
+		\node [style=new style 1] (6) at (-3.5, 16.5) {};
+		\node [style={turquoise_v}] (7) at (-3.5, 14.5) {};
+		\node [style={orange_red_v}] (8) at (3.5, 22) {};
+		\node [style={orange_red_v}] (9) at (3.5, 21) {};
+		\node [style={forest_v}] (10) at (3.5, 19) {};
+		\node [style={forest_v}] (11) at (3.5, 18) {};
+		\node [style={forest_v}] (12) at (3.5, 17) {};
+		\node [style={turquoise_v}] (13) at (3.5, 15) {};
+		\node [style={turquoise_v}] (14) at (3.5, 14) {};
+		\node [style={turquoise_v}] (15) at (3.5, 13) {};
+		\node [style={turquoise_v}] (16) at (3.5, 12) {};
+		\node [style={forest_v}] (17) at (10, 22.5) {};
+		\node [style={forest_v}] (18) at (10, 21.5) {};
+		\node [style={forest_v}] (19) at (10, 20.5) {};
+		\node [style={orange_red_v}] (20) at (10, 18.5) {};
+		\node [style={orange_red_v}] (21) at (10, 17.5) {};
+		\node [style={turquoise_v}] (22) at (10, 14) {};
+		\node [style={turquoise_v}] (23) at (10, 13) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style={orange_red_e}] (0) to (5);
+		\draw [style={forest_e}] (1) to (4);
+		\draw [style={turquoise_e}] (2) to (7);
+		\draw [style={turquoise_e}] (3) to (7);
+		\draw [style={orange_red_e}] (8) to (20);
+		\draw [style={orange_red_e}] (9) to (21);
+		\draw [style={forest_e}] (10) to (17);
+		\draw [style={forest_e}] (18) to (11);
+		\draw [style={forest_e}] (12) to (19);
+		\draw [style={turquoise_e}] (13) to (22);
+		\draw [style={turquoise_e}] (14) to (23);
+		\draw [style={turquoise_e}] (15) to (22);
+		\draw [style={turquoise_e}] (16) to (23);
+	\end{pgfonlayer}
+\end{tikzpicture}}
+\]
+
+\begin{definition}
+  A faithful cartesian club is a subcategory $\mathfrak{S}$ of $\catname{Fun}$ such that
+  \begin{itemize}
+    \item $\mathfrak{S}$ contains all the objects of $\catname{Fun}$.
+    \item If morphisms $a$ and $b$ are in $\mathfrak{S}$ then so is $a + b$ (i.e. it is closed under cocartesian structure).
+    \item If $a$ is in $\mathfrak{S}$ then so is $a \wr (k_1, \ldots, k_n)$ (i.e. it is closed under $\wr$).
+  \end{itemize}
+\end{definition}
+
+Different functions in $\catname{Fun}$ give rise to different kind of clubs.
+Specifically, we have the following functions:
+\begin{itemize}
+  \item Transpositions
+  \[
+  \tau_{i}^{n}(x) = \begin{cases}
+    x + 1 &\text{if}\; x = i\\
+    x - 1 &\text{if}\; x = i + 1\\
+    x &\text{otherwise}
+  \end{cases}
+  \]
+  that swap $i$ and $i + 1$ and leave the rest unchanged.
+  \item degeneracy maps $\sigma_{i}^{n} : n + 1 \to n$
+  \[
+  \sigma_{i}^{n}(x) = 
+  \begin{cases}
+    x &\text{if}\; x \leq i\\
+    x - 1 &\text{if}\; x > i
+  \end{cases}
+  \]
+  which are monotone surjections;
+  \item face maps $\delta_{i}^{n} : n - 1 \to n$
+  \[
+  \delta_{i}^{n}(x) =
+  \begin{cases}
+    x &\text{if}\; x < i\\
+    x + 1 &\text{if}\; x \geq i
+  \end{cases}
+  \]
+  which are monotone injections.
+\end{itemize}
+
+\begin{definition}
+Let $\mathfrak{S}$ be a faithful cartesian club. A $\mathfrak{S}$-multicategory is a multicategory $\mathcal{M}$ together with an operation
+\[
+\mathcal{M}(A_{a(1)}, \ldots, A_{a(m)};B) \xrightarrow{[-](a)} \mathcal{M}(A_1,\ldots, A_n;B)
+\]
+for each $a : m \to n$ in $\mathfrak{S}$ such that
+\begin{itemize}
+  \item $[[f]a]b = [f](b \circ a)$
+  \item $[f]id_{\underline{n}} = f$
+  \item $g \circ ([f_1]a_1, \ldots, [f_n]a_n) = [(g \circ (f_1, \ldots, f_n))](a_1 + \ldots + a_n)$
+  \item $[g]a \circ (f_1, \ldots, f_n) = [(g \circ (f_{a(1)}, \ldots, f_{a(m)}))]a \wr (k_1, \ldots, k_n)$, where $k_i$ is the arity of $f_i$.
+\end{itemize}
+\end{definition}
+
+For a function $a : 4 \to 4$ depicted on the left, we can represent $[g]a$ as a diagram on the right.
+\[
+\adjustbox{scale=0.9}{
+\tikzfig{./figures/g_multicat_example}
+}
+\]
+Note how $a$ gets \enquote{reversed} as in a multicategory we have $A_{a(1)}, \ldots, A_{a(m)} \to A_{1}, \ldots, A_{m}$.
+
+
+The last condition above can be illustrated as follows for
+\[
+[g]a \circ (h,f,h,f) = [g \circ (h,f,h,f)](a \wr (3, 2, 3, 2))
+\]
+which is pictured as
+\[
+\adjustbox{scale=0.9}{
+\tikzfig{./figures/g_multicat_wreath_example}
+}
+\]
+
+To turn this into a type theory, we typically add structural rules line
+\[
+\inferrule*[right=$ACT$]{a \in \mathfrak{S} \quad A_{a1}, \ldots, A_{a(m)} \vdash t : B}{x_1 : A_1, \ldots, x_n :A_n \vdash [t]a : B}
+\]
+
+where $[t]a$ is defined as
+\[
+t[a] = \begin{cases}
+  x_{a(i)} &\text{if}\; t = x_i\\
+  f([t_1]a, \ldots, [t_n]a) &\text{if}\; t = f(t_1, \ldots, t_n)
+\end{cases}
+\]
 \begin{definition}
   Let $\mathfrak{N}$ be a full subcategory of $\catname{Set}$ whose objects are sets ${1, \ldots, n}$ for all integers $n \geq 0$.
   We regard it as a cocartesian strict monoidal category, under the disjoint union operation $\{1, \ldots, n\} \sqcup \{1,\ldots,m\} = \{1, \ldots, n + m\}$.
@@ -1311,6 +1734,84 @@ There is an equivalence $\catname{RepMCat} \simeq \catname{MonCat}$.
   \textcolor{red}{Why would one be preferable over the other? One syntax provides a reasoning framework about monoidal e-graphs while the other is just a linearisation of hypergraphs? Equality procedure for hypergraphs?}
 \end{example}
 
+\subsection{What we can do with all that}
+
+We may wish to try and prove that in a particular case equality saturation terminates, i.e. that type theory is \textit{strongly normalising} modulo $\equiv$ (that includes universal properties, semilattice equations etc.).
+In order to do this, our rewrite rules must be of a particular form.
+Suppose we had a rewrite rule $x \mapsto y$.
+Then, starting with $x$, we could apply idempotence and get $x + x$ and then apply the rewrite rule to get $x + y$ and then maybe apply it again to get $y + y$ and applying idempotence get $y$.
+This, however, is not the normal form we would like.
+We want the normal form to be the greatest element if we order terms under $+$, i.e. $x \leq x + y$.
+If, instead, our rewrite rule was $x \mapsto x + y$, we would end up with $x + y$ and then the only rewrite rule that we could apply is either $x + y \to x + x + y \to x + y + y \equiv x + y$ or $x + y \to x + y + y \equiv x + y$.
+
+\subsection{Derivation rewriting}
+
+We will define rewriting on derivations rather than terms, so given a rewrite rule $l \to r$ both $l$ and $r$ are derivations.
+Moreover, we will rewrite modulo $\equiv$.
+
+\begin{definition}[Derivation contexts]
+A \emph{derivation context} is a derivation with one distinguished hole
+$\square$, generated by:
+\[
+C[\square] ::= \square 
+\mid 
+\inferrule*[right=$\alpha$]{\Pi_1 \;\cdots\; C[\square] \;\cdots\; \Pi_n}{\Gamma \vdash M}.
+\]
+If $C[\square]$ is a context and $\Pi$ a derivation, we write
+$C[\Pi]$ for the derivation obtained by filling the hole.
+\end{definition}
+
+\begin{definition}[Rewriting modulo a congruence]
+Let $\equiv$ be a congruence on derivations and $\to$ a primitive 
+rewrite relation on derivations. The \emph{rewriting modulo $\equiv$} 
+relation $\Rrightarrow_{\!\equiv}$ is defined by:
+\[
+Q \Rrightarrow_{\!\equiv} P
+\quad\text{iff}\quad
+\exists Q',P',C[\square],\Pi,\Pi'\;\text{such that}\
+\begin{cases}
+Q \equiv Q',\\
+Q' = C[\Pi],\\
+\Pi \to \Pi',\\
+P' = C[\Pi'],\\
+P' \equiv P.
+\end{cases}
+\]
+\end{definition}
+
+We want to prove a statement of the form 
+\begin{quotation}
+  Given a rewriting system $\mathcal{R}$ with some properties (we need to figure out those), we need to show that a rewriting system $\mathcal{R}^{+}$ that is given by
+  \[
+  \{x \to x + y \land y \to y + x \;|\; \forall x \to y \in \mathcal{R}\}
+  \]
+  is strongly normalising and confluent (meaning that all rewrites terminate in a unique normal form (modulo our $\equiv$))
+\end{quotation}
+
+For example, the original rewriting system $\mathcal{R}$ might be locally confluent and our \enquote{enriched} rewriting system might be strongly normalising and confluent:
+\[
+\mathcal{R} = \{a \to b, b \to a, a \to c, b \to d\}
+\]
+\[
+\mathcal{R}^{+} = \{a \to a + b, b \to b + a, a \to a + c, b \to b + d, c \to a + c, d \to b + d\}
+\]
+
+The original rewriting system is not terminating because we have infinite chains like $a \to b \to a \to b \ldots$.
+However, our enriched rewriting system does terminate:
+\[
+a \to a + b \to (a + c) + b \to (a + c) + (b + d)
+\]
+
+For rewriting we want to have that if $a \equiv a'$ and $a \xrightarrow{} b$ then there exists $b'$ such that $a' \xrightarrow{*} b'$ and $b \equiv b'$.
+In the case of raw terms for monoidal categories this is avoided by defining rewriting on some canonical representatives of the equivalence class, i.e. on $c_1;id \otimes l;c_2$.
+
+
+Actually, strong normalisation is the wrong property to look for.
+This is because, given a rewrite rule like $l \to l + r$ and starting with $l$ we can get a sequence $l \to l + r \to l + l + r \to l + l + l + r$ where we rewrite each new occurence of $l$.
+Even though $l + r \equiv l + l + r \equiv l + l + l + r$ module the equations, they still constitute separate rewrite steps and hence the relation is not strongly normalising.
+What we need instead is a variation of a fixed point of the rewriting relation.
+In paritucular, we will consider a transitive closure of a one-step rewriting relation and will look for derivations $t$ (or terms) such that either $t$ is a normal form, i.e. there is no $t'$ such that $t \to t'$, or $t$ is a fixed point is a sense that for all rewrite rules $l \to r$ we have that $t \to t$.
+Definitng rewriting on derivations is a bit annoying, so really it should be defined on terms and check that it is confluent with respect to commutativity.
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../../bibliography}
 

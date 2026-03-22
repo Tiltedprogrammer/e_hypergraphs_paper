@@ -1,50 +1,3 @@
-%%
-%% This is file `sample-sigconf.tex',
-%% generated with the docstrip utility.
-%%
-%% The original source files were:
-%%
-%% samples.dtx  (with options: `sigconf')
-%%
-%% IMPORTANT NOTICE:
-%%
-%% For the copyright see the source file.
-%%
-%% Any modified versions of this file must be renamed
-%% with new filenames distinct from sample-sigconf.tex.
-%%
-%% For distribution of the original source see the terms
-%% for copying and modification in the file samples.dtx.
-%%
-%% This generated file may be distributed as long as the
-%% original source files, as listed above, are part of the
-%% same distribution. (The sources need not necessarily be
-%% in the same archive or directory.)
-%%
-%%
-%% Commands for TeXCount
-%TC:macro \cite [option:text,text]
-%TC:macro \citep [option:text,text]
-%TC:macro \citet [option:text,text]
-%TC:envir table 0 1
-%TC:envir table* 0 1
-%TC:envir tabular [ignore] word
-%TC:envir displaymath 0 word
-%TC:envir math 0 word
-%TC:envir comment 0 0
-%%
-%%
-%% The first command in your LaTeX source must be the \documentclass
-%% command.
-%%
-%% For submission and review of your manuscript please change the
-%% command to \documentclass[manuscript, screen, review]{acmart}.
-%%
-%% When submitting camera ready or to TAPS, please change the command
-%% to \documentclass[sigconf]{acmart} or whichever template is required
-%% for your publication.
-%%
-
 \documentclass[acmsmall,screen, nonacm, anonymous]{acmart}
 
 
@@ -56,6 +9,10 @@
 \input{../../hypergraph.tikzstyles}
 \input{../../hypergraph.tikzdefs}
 
+\usepackage{mathpartir}
+\usepackage{amsmath, amsthm}
+\usepackage{hyperref}
+
 
 \definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
 \definecolor{americanrose}{rgb}{1.0, 0.01, 0.24}
@@ -65,6 +22,37 @@
 % These are for comments
 \newcommand\question[1]{{\color{azure}#1}}
 \newcommand\update[1]{{\color{americanrose}#1}}
+
+
+\newcommand{\DB}{\mathcal{DB}}               % database
+\newcommand{\EQ}{\equiv}                    % equivalence relation
+\newcommand{\Id}{\mathrm{Id}}               % identity relation
+\newcommand{\flatten}{\mathsf{flatten}}     % flattening function
+\newcommand{\aux}{\mathsf{aux}}             % helper for flattening
+\newcommand{\mergef}{\mathsf{merge}}        % merge function
+\newcommand{\mergeop}{\mathsf{merge}}       % (alias)
+\newcommand{\freevars}{x_{\mathit{free}}}   % free variables
+\newcommand{\fv}{\mathsf{fv}}               % free variables (alt)
+\newcommand{\sqcupop}{\sqcup}               % lattice join operator
+\newcommand{\sqsubseteqop}{\sqsubseteq}     % lattice order
+\newcommand{\supjoin}{\bigsqcup}            % big join
+\newcommand{\program}{P}                    % program symbol
+\newcommand{\inst}{I}                       % instance symbol
+\newcommand{\Func}{f}                       % generic function symbol
+\newcommand{\Vars}{x}                       % variable tuple
+\newcommand{\schema}{S}                     % schema
+\newcommand{\lattice}{L}                    % lattice
+\newcommand{\interp}{\mathcal{C}}           % interpreted constants
+\newcommand{\uninterp}{\mathcal{N}}         % uninterpreted constants
+\newcommand{\default}{\mathit{default}}     % default value
+\newcommand{\closure}{\mathsf{closure}}     % closure operator
+\newcommand{\canonicalize}{\mathsf{canon}}  % canonicalization
+\newcommand{\Rebuild}{R}                    % rebuilding operator
+\newcommand{\Tup}{\mathit{Tuple}}           % tuple
+\newcommand{\Fix}{F}                        % full iteration operator
+\newcommand{\lfp}{\mathsf{lfp}}             % least fixpoint
+\newcommand{\Interp}{\llbracket}            % semantic brackets [
+\newcommand{\EndInterp}{\rrbracket}         % semantic brackets ]
 
 
 \usepackage{minted}
@@ -84,58 +72,6 @@
   \providecommand\BibTeX{{%
     Bib\TeX}}}
 
-%% Rights management information.  This information is sent to you
-%% when you complete the rights form.  These commands have SAMPLE
-%% values in them; it is your responsibility as an author to replace
-%% the commands and values with those provided to you when you
-%% complete the rights form.
-% \setcopyright{acmlicensed}
-% \copyrightyear{2024}
-% \acmYear{2024}
-% \acmDOI{XXXXXXX.XXXXXXX}
-
-%% These commands are for a PROCEEDINGS abstract or paper.
-
-%%
-%%  Uncomment \acmBooktitle if the title of the proceedings is different
-%%  from ``Proceedings of ...''!
-%%
-%%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
-%%  June 03--05, 2018, Woodstock, NY}
-% \acmISBN{978-1-4503-XXXX-X/18/06}
-
-
-%%
-%% Submission ID.
-%% Use this when submitting an article to a sponsored event. You'll
-%% receive a unique submission ID from the organizers
-%% of the event, and this ID should be used as the parameter to this command.
-%%\acmSubmissionID{123-A56-BU3}
-
-%%
-%% For managing citations, it is recommended to use bibliography
-%% files in BibTeX format.
-%%
-%% You can then either use BibTeX with the ACM-Reference-Format style,
-%% or BibLaTeX with the acmnumeric or acmauthoryear sytles, that include
-%% support for advanced citation of software artefact from the
-%% biblatex-software package, also separately available on CTAN.
-%%
-%% Look at the sample-*-biblatex.tex files for templates showcasing
-%% the biblatex styles.
-%%
-
-%%
-%% The majority of ACM publications use numbered citations and
-%% references.  The command \citestyle{authoryear} switches to the
-%% "author year" style.
-%%
-%% If you are preparing content for an event
-%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
-%% citations and references.
-%% Uncommenting
-%% the next command will enable that style.
-%%\citestyle{acmauthoryear}
 
 \settopmatter{printacmref=false}
 \authorsaddresses{}
@@ -496,6 +432,393 @@ C \Coloneqq \square \;|\; \lambda x . C \; | \; C\;t \;|\; t\;C\;|\;C[x / t]\;|\
 and in particular in $\lambda x . C$ and $C[x/t]$ $x$ is bound.
 
 \end{remark}
+
+\section{EggLog}
+
+This is a Datalog-like implementation of equality saturation.
+In this representation there is no notion of an e-graph \textit{per se}, but rather a bunch of relations (or partial functions) and rules.
+The motivation stems from Datalog implementation of finding the shortest paths in a graph.
+Consider a program below
+
+\begin{minted}[linenos]{prolog}
+(function edge (i64 i64) i64)
+(function path (i64 i64) i64 :merge (min old new)) 
+
+(rule ((= (edge x y) len)) 
+((set (path x y) len))) 
+(rule ((= (path x y) xy) 
+(= (edge y z) yz))
+((set (path x z) (+ xy yz))))
+
+(set (edge 1 2) 10)
+(set (edge 2 3) 10) 
+(set (edge 1 3) 30)
+
+(run) 14 (check (path 1 3)) ;; prints "20"  
+\end{minted}
+
+In the above, the function \mintinline{prolog}{edge} specifies a function that for two vertices (represented with numbers) assigns a weight.
+Similarly, the function \mintinline{prolog}{path} assigns a weight to a path.
+\mintinline{prolog}{set} essentially defines a function for provided arguments.
+
+\texttt{egglog} extends the above machinery with custom \textit{datatypes} and \textit{union'ing} of ids which are returned by constructors for each variant of a datatype.
+Datalog's semantics is iterative application of rules until a fixed point is reached. The \texttt{merge}, \texttt{union} and \texttt{canonicalization} are backed inside the engine.
+Semantics of \texttt{egglog} is given below.
+
+
+% ================================================================
+% OVERVIEW
+% ================================================================
+
+\paragraph{Intuition.}
+Core \texttt{egglog} is a simplified, mathematically clean subset of
+the full \texttt{egglog} language.
+It defines precisely what a program looks like (syntax)
+and what it means to run one (semantics).
+Compared to full \texttt{egglog}, it restricts:
+\begin{itemize}
+  \item Each rule may only have one head atom.
+  \item There is no \texttt{union} operator.
+  \item The meaning of \texttt{:merge} is fixed:
+    for IDs (uninterpreted constants) it is \texttt{union},
+    and for interpreted constants it is the lattice join~$\sqcup$.
+\end{itemize}
+These restrictions make the semantics easier to reason about
+while preserving the core behavior of \texttt{egglog}.
+
+% ================================================================
+% SYNTAX
+% ================================================================
+
+\subsection{Syntax}
+
+Given the set of (interpreted) constants~$C$,
+the syntax of core \texttt{egglog} is shown below in~\cref{fig:syntax}.
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{llcl}
+     Program        & $P$ & ::= & $R_1,\ldots, R_n$ \\
+     Rule           & $R$ & ::= & $A \gets A_1,\ldots A_m$ \\
+     Atom           & $A$ & ::= & $f(p_1,\ldots, p_k)\mapsto o
+                                  \mid f(p_1,\ldots, p_k)$ \\
+     Pattern        & $p$ & ::= & $f(p_1,\ldots, p_k)\mid o$ \\
+     Term           & $t$ & ::= & $f(t_1,\ldots, t_k)\mid v$ \\
+     Base pattern   & $o$ & ::= & $v\mid x$ \\
+     Constant       & $v$ & ::= & $c\mid n$ \\
+     Interpreted Constant & $c\in C$ & & (e.g. numbers, booleans)\\
+     Uninterpreted Constant & $n\in N$ & & (e.g. e-class ids)\\
+     Variable       & $x, y, \ldots$ &
+  \end{tabular}
+  \caption{Syntax of core \texttt{egglog}.}
+  \label{fig:syntax}
+\end{figure}
+
+\paragraph{Explanation.}
+A program is a list of rules.
+Each rule has a \emph{head atom} (what we want to derive)
+and a list of \emph{body atoms} (the facts that justify it).
+
+An atom such as
+\[
+  f(p_1, \ldots, p_k) \mapsto o
+\]
+intuitively means that function~$f$,
+when applied to arguments~$p_1,\ldots,p_k$,
+has value~$o$.
+
+\begin{itemize}
+  \item A \emph{pattern} may contain variables and nested expressions.
+  \item A \emph{term} is a pattern with no variables (i.e. ground).
+  \item An \emph{atom} is ground if all its patterns are ground.
+  \item \emph{Interpreted constants}~$c$ have semantic meaning
+        (e.g. numeric values);
+        \emph{uninterpreted constants}~$n$ are symbolic identifiers.
+\end{itemize}
+
+
+% ================================================================
+% SEMANTICS OVERVIEW
+% ================================================================
+
+\subsection{Semantics Overview}
+
+\paragraph{Intuition.}
+An \texttt{egglog} program maintains a database of known facts
+and equivalences between constants,
+and repeatedly applies rules to derive new facts.
+Two main components define the semantics:
+
+\begin{enumerate}
+  \item The \emph{immediate consequence operator}~$T_P^\uparrow$,
+        which applies rules once.
+  \item The \emph{rebuilding operator}~$R$,
+        which restores consistency by merging equal terms
+        and joining lattice values.
+\end{enumerate}
+
+% ================================================================
+% INSTANCES AND DATABASES
+% ================================================================
+
+\paragraph{Instances.}
+We assume:
+\begin{itemize}
+  \item An infinite set of uninterpreted constants
+        $N = \{n_1, n_2, \ldots\}$.
+  \item A complete lattice $L = (C, \sqsubseteq, \sqcup)$
+        over interpreted constants~$C$,
+        with least element~$\bot$.
+\end{itemize}
+
+A \emph{schema}~$S$ assigns function symbols types over $\{N, C\}$.
+Given a schema, an \emph{instance}
+\[
+  I = (\DB, \equiv)
+\]
+consists of:
+\begin{itemize}
+  \item A database $\DB$ of function entries
+        $f(v_1,\ldots,v_k)\mapsto v$;
+  \item An equivalence relation~$\equiv$ over $N\cup C$.
+\end{itemize}
+
+\paragraph{Remark.}
+The equivalence relation $\equiv$
+encodes what is known to be equal
+(similar to E-class IDs in equality saturation).
+Interpreted constants (like numbers) are only equal to themselves.
+
+
+% ================================================================
+% JUDGMENT: WHAT FACTS HOLD
+% ================================================================
+
+\paragraph{Judgment.}
+We write $I \vdash A$ to mean ``the ground atom~$A$ is contained in~$I$.''
+Formally:
+
+\begin{mathpar}
+    \inferrule{
+        I\vdash t_i\mapsto v_i \text{ for }i=1\ldots k \\
+        I=(\DB, \equiv)\quad
+        f(v_1, \ldots, v_k)\mapsto v \in \DB
+    }{
+        I\vdash f(t_1, \ldots, t_k)\mapsto v
+    }
+    \and
+    \inferrule{}{I\vdash v\mapsto v}
+    \and
+    \inferrule{
+        I\vdash f(t_1, \ldots, t_k)\mapsto v
+    }{
+        I\vdash f(t_1, \ldots, t_k)
+    }
+\end{mathpar}
+
+\paragraph{Explanation.}
+The first rule says:
+if all arguments of $f$ evaluate to some values~$v_i$
+and $\DB$ contains $f(v_1,\ldots,v_k)\mapsto v$,
+then we know $f(t_1,\ldots,t_k)\mapsto v$.
+
+The second rule ensures that any constant trivially maps to itself.
+The third allows us to ignore the output when only existence matters.
+
+
+% ================================================================
+% FLATTENING
+% ================================================================
+
+\paragraph{Flattening.}
+Nested atoms such as
+$f(g(1),2)\mapsto 3$
+must be flattened into simpler entries
+before insertion into~$\DB$.
+Flattening introduces auxiliary IDs for subterms.
+
+\begin{figure}[h]
+\begin{align*}
+    \flatten_I(A) &= s \qquad \text{where } (v, s) = \aux(A)&\\
+    \aux(f(t_1,\ldots,t_k)\mapsto v)
+      &= \bigl(v,\ \{f(v_1,\ldots,v_k)\mapsto v\}
+                   \cup \bigcup_i s_i\bigr)\\
+      &\text{where } (v_i,s_i)=\aux(t_i)\\[1ex]
+    \aux(f(t_1,\ldots,t_k))
+      &= \bigl(v,\ \{f(v_1,\ldots,v_k)\mapsto v\}
+                   \cup \bigcup_i s_i\bigr)\\
+      &\text{where } (v_i,s_i)=\aux(t_i)
+         \text{ and }
+         v=\begin{cases}
+              \text{existing value of } f(v_1,\ldots,v_k),\\
+              \text{default}_f \text{ otherwise.}
+            \end{cases}\\
+    \aux(v)&=(v,\emptyset)
+\end{align*}
+\caption{Flattening nested atoms before insertion into the database.}
+\end{figure}
+
+\paragraph{Example.}
+Flattening
+$f(g(1),2)\mapsto 3$
+yields:
+\[
+\{\, g(1)\mapsto n_1,\ f(n_1,2)\mapsto 3 \,\}
+\]
+where $n_1$ is a fresh ID.
+If the output type of $f$ is~$N$, $\textit{default}_f$ is a fresh~$n$;
+otherwise it is the lattice bottom~$\bot$.
+
+% ================================================================
+% IMMEDIATE CONSEQUENCE OPERATOR
+% ================================================================
+
+\subsection{Immediate Consequence Operator}
+
+\paragraph{Intuition.}
+This operator applies all rules once to derive new facts,
+similar to Datalog’s $T_P$ operator,
+but extended with flattening and non-monotone support.
+
+Formally, for program~$P$ and instance~$I=(\DB,\equiv)$:
+\[
+  T_P^\uparrow(I) = \DB \cup T_P(I)
+\]
+where
+\[
+  T_P(I) = (\DB', \equiv), \quad
+  \DB' = 
+    \bigcup_{(A\gets A_1,\ldots,A_m)\in P}
+    \{\, \flatten_I(A[\sigma]) \mid
+         \forall_i\ I\vdash A_i[\sigma] \,\}.
+\]
+
+\paragraph{Explanation.}
+For each rule, we consider all substitutions~$\sigma$
+mapping variables to constants.
+If all body atoms $A_i[\sigma]$ are true in the current database,
+we add the flattened head $A[\sigma]$ to the database.
+
+The union with the old $\DB$ makes this operator
+\emph{inflationary}—facts are only added, not removed.
+
+% ================================================================
+% REBUILDING OPERATOR
+% ================================================================
+
+\subsection{Rebuilding Operator}
+
+\paragraph{Intuition.}
+After applying rules, functions may map the same key to
+different outputs.
+The rebuilding operator~$R$ repairs this by merging
+equal IDs and joining lattice values.
+
+\begin{align*}
+  R((\DB,\equiv)) &= (\DB_R, \equiv_R)\\[1ex]
+  \equiv_R &=
+    \text{equivalence closure of }
+    \bigl(
+      \equiv \cup
+      \{(n_1,n_2)\mid
+        f(v_1,\ldots,v_k)\mapsto n_1\in\DB,\
+        f(v_1,\ldots,v_k)\mapsto n_2\in\DB,\
+        n_1,n_2\in N\}
+    \bigr)\\[1ex]
+  \DB_R &=
+    \lambda_{\equiv_R}\!\left(
+      \{\,f(v_1,\ldots,v_k)\mapsto
+          \mergef_{f,\equiv}(K)
+          \mid
+          K=\{v\mid f(v_1,\ldots,v_k)\mapsto v\in\DB\},
+          K\neq\emptyset
+      \}
+    \right)
+\end{align*}
+
+where
+\[
+\mergef_{f,\equiv}(K)=
+\begin{cases}
+  \min(\lambda_\equiv(K)) & \text{if output type of $f$ is $N$;}\\
+  \bigsqcup K              & \text{if output type of $f$ is $C$.}
+\end{cases}
+\]
+
+\paragraph{Explanation.}
+\begin{itemize}
+  \item If $f$ maps the same inputs to multiple
+        uninterpreted outputs $n_1,n_2$,
+        we record $n_1\equiv n_2$.
+  \item If it maps to multiple interpreted outputs,
+        we take their lattice join $\bigsqcup K$.
+  \item We then \emph{canonicalize} all entries
+        so that each equivalence class has a single representative.
+\end{itemize}
+
+Since canonicalization can introduce new equalities,
+we iterate rebuilding to a fixpoint $R^\infty(I)$.
+
+% ================================================================
+% FULL STEP AND FIXPOINT SEMANTICS
+% ================================================================
+
+\subsection{Program Evaluation}
+
+\paragraph{One iteration.}
+One full iteration of evaluation combines rule application
+and rebuilding:
+\[
+  F_P = R^\infty \circ T_P^\uparrow.
+\]
+Applying $F_P$ once means:
+(1) apply all rules to generate new facts,
+(2) rebuild until consistent.
+
+\paragraph{Monotonic growth.}
+Each iteration yields a database that ``knows more.''
+Define the \emph{expanded database}~$E_\equiv(\DB)$
+to include all consequences of equivalence and lattice order.
+Then we can order instances $(\DB_1,\equiv_1)\sqsubseteq_I(\DB_2,\equiv_2)$
+iff
+\[
+E_{\equiv_1}(\DB_1)\subseteq E_{\equiv_2}(\DB_2)
+\quad\text{and}\quad
+\equiv_1\subseteq\equiv_2.
+\]
+Even though $F_P$ need not be monotone itself,
+the sequence
+\[
+I_\bot
+\sqsubseteq_I F_P(I_\bot)
+\sqsubseteq_I F_P(F_P(I_\bot))
+\sqsubseteq_I \cdots
+\]
+is always increasing,
+where $I_\bot=(\emptyset,\textit{Id}_{N\cup C})$
+is the empty initial database.
+
+\paragraph{Fixpoint semantics.}
+The meaning of a program~$P$ is the inductive fixpoint:
+\[
+  \llbracket P \rrbracket = F_P^\infty(I_\bot).
+\]
+In practice, implementations approximate this by
+running a finite number of iterations
+$(R^\infty\circ T_P^\uparrow)^n(I_\bot)$.
+
+\paragraph{Summary.}
+\begin{itemize}
+  \item \textbf{Atoms} represent facts about functions.
+  \item \textbf{Instance $(\DB,\equiv)$} stores all known facts and equalities.
+  \item \textbf{Flattening} normalizes nested terms.
+  \item \textbf{$T_P^\uparrow$} applies all rules once.
+  \item \textbf{$R$} rebuilds to maintain functional consistency.
+  \item \textbf{$F_P$} performs one full reasoning step.
+  \item \textbf{Fixpoint} of $F_P$ gives the final meaning of the program.
+\end{itemize}
+
+
 
 \bibliographystyle{acm}
 \bibliography{../../bibliography}

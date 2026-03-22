@@ -86,6 +86,8 @@
 % listings for autoref
 \providecommand*{\listingautorefname}{Listing}
 
+\newcommand{\vcrule}[1]{\vcenter{\hbox{$#1$}}}
+
 
 \input{../macros}
 \input{../sample.tikzstyles}
@@ -116,7 +118,7 @@ The latter is usually understood as a fixed point of some algorithm~\cite{EggPap
 Recently, there has been a categorical account of e-graphs introduced by~\citet{tiurin2025equivalencehypergraphsdporewriting} that interpreted e-graphs as string diagrams for semilattice enriched Cartesian categories.
 This interpretation allowed viewing equality saturation as a double-pushout graph rewriting procedure and provided a data structure that absorbed certain representational bureaucracies.
 
-One can view a type theory as a formal syntactic language for, or calculus, for a category theory.
+One can view a type theory as a formal syntactic language, or calculus, for a category theory.
 The particular type of type theory depends on the structure of the category and vice versa.
 A classical example is of simply typed lambda calculus being the internal language for Cartesian closed categories~\cite{LambekLambda}.
 The benefit of this view is that one can prove categorical facts by building syntactic derivations in the type theory instead of chasing commutative diagrams.
@@ -377,14 +379,17 @@ let y = z (e y x y) x (w x x) in y
 \label{lst:terms-e-graph}
 \end{listing*}
 
+\subsection{Contributions}
+We define a type theory for $\catname{SLat}$-enriched categories and show that the type theory has standard desirable syntactic properties such as admissibility and associativity of substitution.
+We then show that the type theory correctly defines a free $\catname{SLat}$-enriched category.
+Finally, we define a term rewriting on the type theory that can capture the equality saturation.
 
 \section{Categorical semantics of e-graphs}
 Recap of $\catname{SLat}$ categories.
 
-\section{Type theory}
-Recap of categorical type theory as per Mike Shulman, introduction of $\catname{SLat}$-enriched type theory.
-Propositions that substitution is admissible, associative etc. 
-Terms uniquely determine derivation trees up to commutativity.
+
+\input{./sections/category_theory}
+\input{./sections/cat_logic}
 
 \section{Soundness}
 A theorem about type theory defining a free $\catname{SLat}$-enriched category.
