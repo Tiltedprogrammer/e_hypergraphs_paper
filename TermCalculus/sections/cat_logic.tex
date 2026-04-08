@@ -377,8 +377,8 @@ This follows from the observation that the conclusion of each rule uniquely dete
     and by applying the rule above we have
     \begin{gather*}
      \Gamma_1, \ldots, \Gamma'_j,\Gamma,\Gamma''_j, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{i_1} \ldots \sum_{k_j=1}^{i_j}\sum_{l=1}^{m} \ldots \sum_{k_n=1}^{i_n} f(N_{1k_1}, \ldots, N_{jk_j}[M_{l} / x], \ldots, N_{nk_n}) =\\
-     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{j,k_j}[M_1 + \ldots + M_m], \ldots, N_{nk_n})\\
-     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{nk_n})[M_1 + \ldots + M_m]
+     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{j,k_j}[M_1 + \ldots + M_m / x], \ldots, N_{nk_n})\\
+     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{nk_n})[M_1 + \ldots + M_m / x]
     \end{gather*}
   \item Suppose $N$ is the conclusion of the rule
   \[
@@ -703,7 +703,7 @@ We get type theories for generalised e-graphs by considering different structure
 \begin{example}
   Instead of identifying $M \equiv N$ for each $(M,N) \in \mathcal{E}(\Gamma; B)$, we can instead render them as rewrite rules $\mathcal{R} =\{ M \to N + M, N \to M + N \; | \; (M,N) \in \mathcal{E}(\Gamma; B) \; \}$.
   Then, we can define equality saturation as a \emph{fixed point} of term rewriting modulo $\equiv$ (the quotienting of our original type theory).
-  Given terms $M$ and $N$, we say $M \Rrightarrow_{\mathcal{R}} N$ if there exist $M' \equiv M$ and $N' \equiv N$ and there is a rule $L \to R \in \mathcal{R}$ such that $M'[L] = N'[R]$.
+  Given terms $\Gamma \vdash M : A$ and $\Gamma \vdash N : A$, we say $M \Rrightarrow_{\mathcal{R}} N$ if there exist $M' \equiv M$ and $N' \equiv N$, a rule $L \to R \in \mathcal{R}$ where $\Delta \vdash L : B$ and $\Delta \vdash R : B$, and a context (a term $z : B, \Phi \vdash C : A$ with a distinguished free variable $z$ such that $\Gamma = \Delta, \Phi$) such that $M' = C[L/z]$ and $N' = C[R/z]$, using the substitution of~\autoref{def:substitution}.
   The rewriting relation $\Rrightarrow_{\mathcal{R}}^{*}$ is the reflexive-transitive closure of $\Rrightarrow_{\mathcal{R}}$.
   We can also write $[M]_{\equiv} \Rrightarrow_{\mathcal{R}}^{*} [N]_{\equiv}$ to highlight that we are rewriting equivalence classes of terms.
   $[M]_{\equiv}$ is a fixed point of $\Rrightarrow_{\mathcal{R}}^{*}$ if there is no $[N]_{\equiv} \not = [M]_{\equiv}$ such that $[M]_{\equiv} \Rrightarrow_{\mathcal{R}}^{*} [N]_{\equiv}$.

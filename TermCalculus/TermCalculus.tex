@@ -151,9 +151,13 @@ The benefit of this view is that one can prove categorical facts by building syn
 Just like with string diagrams, the key property of this perspective is that certain categorical axioms are absorbed by the syntax.
 In this work we develop a type theoretic counterpart to the categorical framework of~\citet{tiurin2025equivalencehypergraphsdporewriting}.
 This perspective allows us to formulate equality saturation as a term rewriting problem.
+The key syntactic insight is that the semilattice join $+$ of the type theory corresponds directly to e-class membership: a term $M + N : A$ represents an equivalence class containing both $M$ and $N$ as terms of type $A$.
+The explicit \textbf{let} construct then captures the node-sharing structure of e-graphs, and the recursive \textbf{letrec} construct captures cyclic e-graphs.
+A further advantage over practical implementations such as \texttt{egg}~\cite{EggPaper}, where terms are essentially closed, is that the type theory treats open and closed terms uniformly: an e-graph with free variables is simply a term with a non-empty context $\Gamma$, requiring no special treatment.
 String diagrams can be rendered as concrete data structures such as hypergraphs with interfaces which can be thought of as generalisation of e-graphs for symmetric monoidal theories.
 This hypergraph representation while being theoretically elegant --- since it absorbs the axioms of symmetric monoidal categories thus already implicitly saturating a given term with these axioms --- requires the tensor to be symmetric.
 The type theory we present can be viewed as syntax for e-graphs for theories with more flexible structure, \textit{e.g.}, those with non-symmetric tensor.
+We develop the type theory in the \emph{linear} (multicategorical) setting first, as it is the most presentationally clean; Cartesian structure --- required for conventional e-graphs, where variables may be used multiple times --- is then straightforwardly added following the general recipe of~\citet{shulman2016categorical}.
 
 The key concepts of e-graphs can be intuitively grasped from some simple examples: \autoref{fig:e-graph-example} shows how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
 
@@ -373,7 +377,7 @@ We make the following contributions.
   phenomena: the explicit \textbf{let} construct captures sharing of subterms,
   corresponding to the sharing structure of e-graphs; the recursive
   \textbf{letrec} construct captures cyclic e-graphs, which are modelled
-  categorically by traced monoidal $\catname{SLat}$-categories
+  categorically by traced cartesian $\catname{SLat}$-categories
   (\autoref{ex:recursive_let}).
 \end{itemize}
 
