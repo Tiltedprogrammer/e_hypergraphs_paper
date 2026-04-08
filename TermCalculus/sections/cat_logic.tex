@@ -2,7 +2,7 @@
 
 In this section we will give a brief introduction to the categorical logic and will introduce the logic for $\catname{SLat}$-categories.
 
-\emph{Categorical logic} started with the work of Lawvere~[CITE] which introduced the interpretation of \emph{algebraic theories} in categories with finite products.
+\emph{Categorical logic} started with the work of~\citet{LawvereFunctorialSemanticsAlgebraic1963} which introduced the interpretation of \emph{algebraic theories} in categories with finite products.
 Since then, the field has expanded to include a wide variety of logics and corresponding categorical semantics offering a more general and simple alternative to \emph{set}-based semantics.
 This way one could prove meta-results about the logic using categorical constructions.
 Interestingly, such interpretation often defines an equivalence between the logic and the category allowing to also use the logic to reason about the category.
@@ -28,7 +28,7 @@ Of course, we need to be able to compose morphisms, so we have the following rul
 \]
 And the following rule for identities for each $A \in G$:
 \[
-\inferrule*[right=$id_{A}$]{}{A \vdash A} ~.
+\inferrule*[right=$id_{A}$]{\;}{A \vdash A} ~.
 \]
 
 So far, the type theory defines only a free-like structure.
@@ -50,7 +50,7 @@ For example,
   \,,
 \end{aligned}
 \]
-plus rules that say that such identification is preserved by all contexts.
+plus the rules that say that such identification is preserved by all contexts.
 This approach results in a \emph{cut-ful type theory for categories under $G$}.
 Another approach is to remove the composition rule and instead add an axiom for each $f \in G$:
 \[
@@ -75,3 +75,766 @@ This approach is dubbed a \emph{cut-free type theory for categories under $G$} a
 
 We will then proceed to define a type theory for more interesting (monoidal) categories and finally for $\catname{SLat}$-enriched (monoidal) categories.
 
+\begin{definition}
+A multigraph $\mathcal{G}$ consists of a set of objects $\mathcal{G}_{0}$ together with for each object $B$ and every list of objects $(A_1,\ldots,A_n)$ a set of arrows $\mathcal{G}(A_1,\ldots,A_n;B)$.
+Multigraphs and their homomorphisms form a category $\catname{Multigraph}$.
+\end{definition}
+
+\begin{remark}
+  A multigraph can be seen as a signature of generators.
+  For example, given a signature $\Sigma = \{f : 3 \to 1, g : 2 \to 1, h : 1 \to 1\}$ where each of the generators can have many inputs but only a single output, we can consider a multigraph where these are the only arrows in $\mathcal{G}(\langle 3 \rangle; 1), \mathcal{G}(\langle 2 \rangle; 1), \mathcal{G}(\langle 1 \rangle; 1)$ respectively.
+\end{remark}
+
+\begin{proposition}
+  There is a free-forgetful adjunction between the category of multigraphs and the category of multicategories $F_{\catname{Multigraph}} \dashv U_{\catname{MultCat}} : \catname{Multigraph} \to \catname{MultCat}$.
+\end{proposition}
+
+The forgetful direction of the adjunction is given by the underlying multigraph of a multicategory which is given be the same objects and all finite paths of multimorphisms.
+The free direction can be given by a type theory that we describe next.
+
+\begin{definition}
+\label{def:simple_type_theory}
+A type theory for (representable closed) multicategories under a multigraph $\mathcal{G}$ is given by the following rules.
+
+\[
+\inferrule*[]{A \in \obj{\mathcal{G}}}{\vdash A\;\text{type}} \qquad \inferrule*[]{\vdash A\;\text{type} \quad \vdash B\;\text{type}}{\vdash A \otimes B\;\text{type}} \qquad \inferrule*[]{\vdash A\;\text{type} \quad \vdash B\;\text{type}}{\vdash A \multimap B\;\text{type}} \qquad \inferrule*[]{\;}{\vdash \I\;\text{type}}
+\]
+
+\[
+\inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A \vdash x: A}
+\]
+\[
+\inferrule*[right=$f_{\text{intro}}$]{f \in \mathcal{G}(A_1, \ldots, A_n; B)\;\Gamma_1 \vdash M_1 : A_1, \ldots, \Gamma_n \vdash M_n : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash f(M_1, \ldots, M_n) : B}
+\]
+\[
+\inferrule*[right=$\otimes_{\text{intro}}$]{\Gamma \vdash N : A \qquad \Delta \vdash M : B}{\Gamma, \Delta \vdash \{N \otimes M\} : A \otimes B}
+\]
+\[
+\inferrule*[right=$\otimes_{\text{elim}}$]{\Psi \vdash M : A \otimes B \quad \Gamma, x : A, y : B, \Delta \vdash N : C}{\Gamma, \Psi, \Delta \vdash \text{match}_{A \otimes B}(M, xy.N) : C}
+\]
+\[
+\inferrule*[right=$\I_{\text{intro}}$]{\;}{() \vdash \star : \I} \qquad \inferrule*[right=$\I_{\text{elim}}$]{\Psi \vdash M : \I \qquad \Gamma,\Delta \vdash N : A}{\Gamma, \Psi, \Delta \vdash \text{match}_{\I}(M,N) : A}
+\]
+\[
+\inferrule*[right=$\multimap_{\text{intro}}$]{\Gamma, x : A \vdash M : B}{\Gamma \vdash \lambda x . M : A \multimap B}
+\]
+
+\[
+\inferrule*[right=$\multimap_{\text{elim}}$]{\Gamma \vdash M : A \multimap B \quad \Delta \vdash N : A}{\Gamma, \Delta \vdash M N : B}
+\]
+
+To implement the universal properties, we need the following equations for the tensor and $\lambda$-abstraction ($\beta$ and $\eta$ laws)
+\[
+\text{match}_{\otimes}(\{M,N\}, xy.P) \equiv_{\beta_{\otimes}} P[M / x, N /y]
+\]
+\[
+\text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) \equiv_{\eta_{\otimes}} N[M / u]
+\]
+\[
+\text{match}_{\I}(\star, N) \equiv_{\beta_{\I}} N \qquad \text{match}_{\I}(M,N[\star / u]) \equiv_{\eta_{\I}} N[M / u]
+\]
+\[
+(\lambda x . M) N \equiv_{\beta_{\multimap}} M[N / x] \qquad \lambda x . M x \equiv_{\eta_{\multimap}} M
+\]
+together with congruence rules.
+\end{definition}
+
+\begin{remark}
+  $\text{match}$ encodes one direction of the universal property of a tensor in a representable multicategory.
+  That is, given a morphism $\Delta_1, x : A, y : B, \Delta_2 \vdash N : C$, we get a morphism $\Delta_1, u : A \otimes B, \Delta_2 \vdash M : C \Coloneqq \text{match}_{A \otimes B}(u, xy.N) : C$.
+  $\{-,-\}$ then encodes another direction --- given a morphism $\Gamma, u : A \otimes B, \Delta \vdash M : C$, we get $\Gamma, x : A, y : B, \Delta \vdash M[\{x,y\} / u] : C$.
+  $\beta$ and $\eta$ rules then say that composing both of these gives the identity.
+  \begin{itemize}
+    \item Starting from $\Delta_1, x : A, y : B, \Delta_2 \vdash N : C$, we get $\Delta_1, u : A \otimes B, \Delta_2 \vdash \text{match}_{A \otimes B}(u, xy.N) : C$.
+    \enquote{Applying} $\{-,-\}$, we get $\Delta_1, x' : A, y' : B, \Delta_2 \vdash \text{match}_{A \otimes B}(u, xy.N)[\{x',y'\} / u] = \text{match}_{A \otimes B}(\{x', y'\}, xy.N) : C$.
+    As it must result in identity, we identify $\text{match}_{A \otimes B}(\{x', y'\}, xy.N) \equiv N$.
+    The more general rule $\text{match}_{\otimes}(\{M,N\}, xy.P) \equiv P[M / x, N / y]$ says that this equivalence respects substitution --- on the left we have $\text{match}_{A \otimes B}(\{x', y'\}, xy.N)[M / x', N / y']$.
+    \item Starting from $\Delta_1, u : A \otimes B, \Delta_2 \vdash M : C$, we get $\Delta_1, x : A, y : B, \Delta_2 \vdash M[\{x,y\} / u] : C$ and after applying $\text{match}$, we get $\Delta_1, u : A \otimes B, \Delta_2 \vdash \text{match}_{A \otimes B}(u, xy.M[\{x,y\} / u]) : C$.
+    Therefore, we identify $\text{match}_{A \otimes B}(u, xy.M[\{x,y\} / u]) \equiv M$.
+    Again, stability under substitution gives us $\text{match}_{A \otimes B}(u, xy.M[\{x,y\} / u])[N / u] = \text{match}_{A \otimes B}(N, xy.M[\{x,y\} / u]) = M[N/u]$.
+  \end{itemize}
+\end{remark}
+
+\begin{remark}
+  Technically, to define $\equiv$ on terms, the type theory must be extended to include the equality judgement of the form:
+  \[
+  \inferrule*[]{\vdots}{\Gamma \vdash M \equiv N : A}.
+  \]
+  That is, two terms $\Gamma \vdash M : A$ and $\Gamma \vdash N : A$ are identified, if we can derive the corresponding equality judgement.
+  For the equalities in~\autoref{def:simple_type_theory}, the corresponding rules for the judgements must be
+  \begin{gather*}
+    \inferrule*[right=refl]{\;}{\Gamma \vdash M \equiv M : A} \qquad \inferrule*[right=symm]{\Gamma \vdash M \equiv N : A}{\Gamma \vdash N \equiv M : A} \quad \inferrule*[right=trans]{\Gamma \vdash M \equiv N : A \qquad \Gamma \vdash N \equiv P : A}{\Gamma \vdash M \equiv P : A}\\
+    \inferrule*[right=cong $f$]{f \in \mathcal{G}(A_1, \ldots, A_n; B) \quad \Gamma_1 \vdash M_1 \equiv N_1 : A_1 \ldots \Gamma_n \vdash M_n \equiv N_n : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash f(M_1, \ldots, M_n) \equiv f(N_1, \ldots, N_n) : B}\\
+    \inferrule*[right=cong $\otimes$]{\Gamma \vdash M \equiv N : A \quad \Delta \vdash P \equiv Q : B}{\Gamma, \Delta \vdash \{M \otimes P\} \equiv \{N \otimes Q\} : A \otimes B}\\
+    \inferrule*[right=cong match $A \otimes B$]{\Psi \vdash M_1 \equiv M_2 : A \otimes B \qquad \Gamma, x : A, y : B, \Delta \vdash N_1 \equiv N_2 : C}{\Gamma, \Psi, \Delta \vdash \text{match}_{A \otimes B}(M_1, xy.N_1) \equiv \text{match}_{A \otimes B}(M_2, xy.N_2)}\\
+    \inferrule*[right=cong match $\I$]{\Psi \vdash M_1 \equiv M_2 : \I \qquad \Gamma, \Delta \vdash N_1 \equiv N_2 : A}{\Gamma, \Psi, \Delta \vdash \text{match}_{\I}(M_1, N_1) \equiv \text{match}_{\I}(M_2, N_2) : A}\\
+    \inferrule*[right=cong $\multimap_\text{intro}$]{\Gamma, x : A \vdash M \equiv N : B}{\Gamma \vdash \lambda x . M \equiv \lambda x . N : A \multimap B} \quad \inferrule*[right=cong $\multimap_\text{elim}$]{\Gamma \vdash M_1 \equiv M_2 : A \multimap B \qquad \Delta \vdash N_1 \equiv N_2 : A}{\Gamma, \Delta \vdash M_1N_1 \equiv M_2N_2 : B}\\
+    \inferrule*[right=$\beta_{\otimes}$]{x' : A \vdash x' : A \quad y' : A \vdash y' : A \quad \Gamma_1, x : A, y : B, \Gamma_2 \vdash P : C}{\Gamma_1, x': A, y' : B, \Gamma_2 \vdash \text{match}_{\otimes}(\{x',y'\}, xy.P) \equiv P : C} \quad \inferrule*[right=$\eta_{\otimes}$]{u : A \otimes B \vdash u : A \otimes B \quad \Delta_1, u : A \otimes B, \Delta_2 \vdash N : C}{\Delta_1, u : A \otimes B, \Delta_2 \vdash \text{match}_{\otimes}(u, xy.N[\{x,y\}/ u]) \equiv N : C}\\
+    \inferrule*[right=$\beta_{\I}$]{\Gamma \vdash N : A}{\Gamma \vdash \text{match}_{\I}(\star, N) \equiv N : A} \quad \inferrule*[right=$\eta_{\I}$]{u : \I \vdash u : \I \qquad \Delta_1, u : \I, \Delta_2 \vdash N : A}{\Delta_1, u : \I, \Delta_2 \vdash \text{match}_{\I}(u, N[\star / u]) \equiv N}\\
+    \inferrule*[right=$\beta_{\multimap}$]{\Gamma, x : A \vdash M : B \quad y : A \vdash y : A}{\Gamma, y : A \vdash (\lambda x . M) y \equiv M[y / x] : B} \quad \inferrule*[right=$\eta_{\multimap}$]{\Gamma \vdash M : A \multimap B \quad x : A \vdash x : A}{\Gamma \vdash (\lambda x . M x) \equiv M : A \multimap B}\\
+    \inferrule*[right=cong subst]{\Gamma_1, x : A, \Gamma_2 \vdash M_1 \equiv M_2 : B \quad \Delta \vdash P : A}{\Gamma_1, \Delta, \Gamma_2 \vdash M_1[P / x] \equiv M_2[P / x] : B}
+\end{gather*}
+That is, the rules saying that $\equiv$ is an equivalence relation which is preserved by all contexts and is stable under substitution with $\beta$ and $\eta$ being the generating rules.
+We will leave such rules in their implicit forms as in~\ref{def:simple_type_theory}.
+\end{remark}
+
+The goal is to make the derivations in this type theory correspond to morphisms in the free multicategory.
+For this we need to define composition of these derivations and show that it satisfies the properties of a composition in a multicategory.
+
+\begin{proposition}
+  Terms in the type theory above uniquely determine their derivation.
+\end{proposition}
+
+\begin{definition}
+The above proposition allows us to define the substitution directly on terms.
+\begin{align*}
+x[M/x] &= M\\
+f(N_1, \ldots, N_n)[M/x] &= f(N_1, \ldots, N_i[M/x], \ldots, N_n) \quad \text{if $x$ occurs in $N_i$}\\
+\{N_1 \otimes N_2\}[M/x] &= \{N_1[M/x] \otimes N_2\} \quad \text{if $x$ occurs in $N_1$}\\
+\{N_1 \otimes N_2\}[M/x] &= \{N_1 \otimes N_2[M/x]\} \quad \text{if $x$ occurs in $N_2$}\\
+\text{match}(N_1,xy.N_2)[M/x] &= \text{match}(N_1[M/x], xy.N_2) \quad \text{if $x$ occurs in $N_1$}\\
+\text{match}(N_1,xy.N_2)[M/x] &= \text{match}(N_1, xy.N_2[M/x]) \quad \text{if $x$ occurs in $N_2$}\\
+(\lambda y . N)[M / x] &= \lambda y . N[M/x]\\
+(N_1 N_2)[M / x] &= (N_1[M/x])N_2 \quad \text{if $x$ occurs in $N_1$}\\
+(N_1 N_2)[M / x] &= (N_1)N_2[M/x] \quad \text{if $x$ occurs in $N_2$}
+\end{align*}
+
+Note that the above type theory is linear and therefore every variable occurs exactly once in the term, and therefore we do not need a rule $y[M/x] = y$.
+\end{definition}
+
+\begin{proposition}[Substitution is associative and interchanging]\hspace{1em}
+  \begin{enumerate}
+  \item If $\Gamma \vdash M : A$ and $\Delta, x : A, \Delta' \vdash N : B$ and $\Psi, y : B, \Psi' \vdash P : C$, then
+  \[
+  (P[M/x])[N/y] = P[M[N/y]/x]
+  \]
+  \item If $\Gamma \vdash M : A$ and $\Delta \vdash N : B$ and $\Psi, x : A, \Psi', y : B, \Psi'' \vdash P : C$, then
+  \[
+  (P[M/x][N/y]) = P[N/y][M/x]
+  \]
+  \end{enumerate}
+\end{proposition}
+
+These are exactly the properties enjoyed by the composition in a multicategory.
+It also appears that we do not need to introduce a special rule for the composition as it is admissible.
+
+\begin{proposition}
+  Given derivations $\Gamma \vdash M : A$ and $\Delta, x : A, \Phi \vdash N : B$ we can derive
+  \[
+  \Gamma, \Delta, \Phi \vdash N[M / x]
+  \]
+\end{proposition}
+
+We can finally state that the above data defines the structure that we wanted.
+
+\begin{proposition}
+  The type theory of~\autoref{def:simple_type_theory} defines a free (closed representable) multicategory under $\mathcal{G}$.
+\end{proposition}
+\begin{proof}
+  The objects of the free multicategory are given by the types of the type theory and the morphisms are given by the derivations quotiented by $\equiv$.
+  The composition is given by the substitution and the rules for $\equiv$ and $\multimap$ make sure that the multicategory is closed and representable.
+  Given a multicategory $\mathcal{M}$ and a morphism of multigraphs $F : \mathcal{G} \to U(\mathcal{M})$, the functor from the free multicategory is induced by the freeness starting from the applying $F$ to the generators.
+\end{proof}
+
+\begin{remark}
+  Using the equivalence $\catname{MultCat} \simeq \catname{Mon}\text{-}\catname{Cat}$, the above type theory also defines a free monoidal closed category.
+\end{remark}
+
+\begin{example}
+With the type theory above we can prove that $A \otimes \I$ is isomorphic to $A$ in any monoidal category.
+For this we need to construct two morphisms $A \otimes \I \to A$ and $A \to A \otimes \I$ and show that their composition is identity.
+First, let's build a morphism from $A \to A \otimes \I$
+\[
+\inferrule*{
+  x : A \vdash x : A \qquad () \vdash \star : \I
+}{x : A \vdash \{x,\star\} : A \otimes \I}
+\]
+the morphism $A \otimes \I \to A$ is then
+\[
+\inferrule*{
+\inferrule*{}{z : A \otimes \I \vdash z : A \otimes \I}
+\qquad
+\inferrule*{y : \I \vdash y : \I \qquad x : A \vdash x : A}{x : A, y : \I \vdash \text{match}_{\I}(y,x) : A}}
+{z : A \otimes \I \vdash \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)) : A}
+\]
+Then we have
+\begin{itemize}
+  \item \[
+  \inferrule*{
+            \inferrule*{
+  w : A \vdash w : A \qquad () \vdash \star : \I
+}{w : A \vdash \{w,\star\} : A \otimes \I}
+\qquad
+\inferrule*{
+\inferrule*{}{z : A \otimes \I \vdash z : A \otimes \I}
+\qquad
+\inferrule*{y : \I \vdash y : \I \qquad x : A \vdash x : A}{x : A, y : \I \vdash \text{match}_{\I}(y,x) : A}}
+{z : A \otimes \I \vdash \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)) : A}}
+{w : A \vdash \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x))[\{w, \star\}/z]}
+\]
+
+\begin{align*}
+  \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x))[\{w, \star\}/z] &\equiv \text{match}_{A \otimes \I}(\{w, \star\}, xy.\text{match}_{\I}(y,x))\\
+  &\equiv_{\beta_{\otimes}} \text{match}_{\I}(\star,w)\\
+  &\equiv_{\beta_{\I}} w
+\end{align*}
+
+  \item The other direction is substitution 
+  \[
+  \inferrule*{z : A \otimes \I \vdash \{w, \star\}[\text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)) / w]}
+{z : A \otimes \I \vdash \{\text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)), \star\}}
+  \]
+
+\begin{align*}
+  \underbrace{\{\text{match}_{A \otimes \I}(\underbrace{z}_{M}, xy.\text{match}_{\I}(y,x)), \star\}}_{N} &\equiv_{\eta_{\otimes}} \text{match}_{A \otimes \I}(z, xy.\{\text{match}_{A \otimes \I}(\{x,y\}, x'y'.\text{match}_{\I}(y',x')), \star\})\\ 
+  &\equiv_{\beta_{\otimes}} \text{match}_{A \otimes \I}(z,xy.\{{\text{match}_{\I}(y,x), \star}\})\\
+  &\equiv_{\eta_{\I}}\text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,\{\text{match}_{\I}(\star,x), \star\}))\\
+  &\equiv_{\beta_{\I}} \text{match}_{A \otimes \I}(z, xy.\{x, y\})\\
+  &\equiv_{\eta_{\otimes}} z\\
+\end{align*}
+\end{itemize}
+\end{example}
+
+This type theory can be extended to give representable multicategories (and therefore monoidal categories) with additional structure.
+This is done by adding new rules inspired by $\mathfrak{S}$-multicategories (see~\autoref{def:S_multicategory}), that is, rules of the form:
+\[
+\inferrule*[]
+{y_1 : A_{\sigma(1)}, \ldots, y_n : A_{\sigma(n)} \vdash M : B}
+{x_1 : A_1, \ldots, x_n : A_n \vdash \sigma^{*}M : B},
+\]
+where $\sigma^*(y_j) = x_{\sigma(j)}$.
+This gives rise to symmetric and cartesian multicategories.
+
+We will present the type theory for (representable) $\catname{SLat}$-multicategories next.
+\begin{definition}
+\label{def:s_lat_type_theory}
+A type theory for (representable) $\catname{SLat}$-multicategories under a multigraph $\mathcal{G}$ is given by the following rules
+\begin{gather*}
+  \inferrule*[]{A \in \obj{\mathcal{G}}}{\vdash A\;\text{type}} \qquad \inferrule*[]{\vdash A\;\text{type} \quad \vdash B\;\text{type}}{\vdash A \otimes B\;\text{type}} \qquad \inferrule*[]{\;}{\vdash \I\;\text{type}}\\
+  \inferrule*[right=$\id$]{\vdash A\;\text{type}}{x : A \vdash x : A}\\
+  \inferrule*[right=$f$]{f \in \mathcal{G}(A_1,\ldots,A_n;B) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n} M_{nj} : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1 = 1}^{j_1} \ldots \sum_{k_n=1}^{i_n} f(M_{1 k_1}, \ldots, M_{n k_n}) : B}\\
+  \inferrule*[right=$\otimes_{\text{intro}}$]{\Gamma \vdash \sum_{i=1}^{m}M_i : A \quad \Delta \vdash \sum_{i=1}^{n} N_i : B}{\Gamma, \Delta \vdash \sum_{i=1}^{m}\sum_{j=1}^{n}\{M_i, N_j\} : A \otimes B}\\
+  \inferrule*[right=$\otimes_{\text{elim}}$]{\Gamma \vdash \sum_{i=1}^{m}M_i : A \otimes B \qquad \Delta_1, x : A, y : B, \Delta_2 \vdash \sum_{i=1}^{n}N_i : C}{\Delta_1, \Gamma, \Delta_2 \vdash \sum_{i=1}^{m}\sum_{j=1}^{n}\text{match}_{A \otimes B}(M_i, xy. N_j) : C}\\
+  \inferrule*[right=$\I_{\text{intro}}$]{\;}{() \vdash \star : \mathbf{1}}\\
+  \inferrule*[right=$\I_{\text{elim}}$]{\Gamma \vdash \sum_{i=1}^{m} M_i : \mathbf{1} \qquad \Delta_1,\Delta_2 \vdash \sum_{i=1}^{n} N_i : A}{\Delta_1,\Gamma,\Delta_2 \vdash \sum_{i=1}^{m}\sum_{j=1}^{n} \text{match}_{\mathbf{1}}(M_i,N_j) : A}\\
+  \inferrule*[right=$+_{\text{intro}}$]{\Gamma \vdash \sum_{i=1}^{m} M_i : A \quad \Gamma \vdash \sum_{j=1}^{n} N_j : A \quad \text{either all } M_i, N_j \text{ are variables, or outermost constructors of } M_i, N_j \text{ are distinct}}{\Gamma \vdash \sum_{i=1}^{m} M_i + \sum_{j=1}^{n} N_j : A}
+\end{gather*}
+together with the following equations:
+\begin{align*}
+\text{match}_{\otimes}(\{M,N\}, xy.P) &\equiv_{\beta_{\otimes}} P[M / x, N /y]\\
+\text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) &\equiv_{\eta_{\otimes}} N[M / u]\\
+\text{match}_{\I}(\star, N) &\equiv_{\beta_{\I}} N\\
+\text{match}_{\I}(M,N[\star / u]) &\equiv_{\eta_{\I}} N[M / u]\\
+  \{N_1 + \ldots + N_n, M\} &\equiv \{N_1, M\} + \ldots + \{N_n, M\}\\
+  \{M, N_1 + \ldots + N_n\} &\equiv \{M, N_1\} + \ldots + \{M, N_n\}\\
+  N_1 + \ldots + (M_1 + \ldots + M_m)  + \ldots + N_n &\equiv N_1 + \ldots + M_1 + \ldots + M_m + \ldots + N_n\\
+  M + N &\equiv N + M\\
+  N &\equiv N + N.
+\end{align*}
+\end{definition}
+
+\begin{proposition}
+\label{prop:terms_unique}
+  In the type theory above, terms uniquely determine their derivation.
+\end{proposition}
+\begin{proof}
+This follows from the observation that the conclusion of each rule uniquely determines the premises.
+\end{proof}
+
+
+\begin{remark}
+  For the above to hold, the side condition on the $+_{\text{intro}}$ rule is crucial.
+  Without this requirement, we could have two distinct derivations for the same term. For example, the following term can be derived in two ways.
+  \[
+  \inferrule*[right=$f$]{f \in \mathcal{G}(A;B) \qquad \inferrule*[right=$+_{\text{intro}}$]{x : A \vdash x : A \quad x : A \vdash x : A}{x : A \vdash x + x : A}}{x : A \vdash f(x) + f(x) : B}
+  \]
+  \[
+  \inferrule*[right=$+_{\text{intro}}$]{\inferrule*[right=$f$]{f \in \mathcal{G}(A;B) \quad x : A \vdash x : A}{x : A \vdash f(x)} \qquad \inferrule*[right=$f$]{f \in \mathcal{G}(A;B) \quad x : A \vdash x : A}{x : A \vdash f(x)}}{x : A \vdash f(x) + f(x) : B}
+  \]
+  With the side condition in place, only the first derivation is valid, as there the $+_{\text{intro}}$ rule is applied to variables.
+  It can not be applied in the second derivation as the outermost constructors of $x : A \vdash f(x)$ and $x : A \vdash f(x)$ are $f$ and therefore the same.
+\end{remark}
+
+\begin{definition}[Substitution]
+\label{def:substitution}
+  Given derivations $\Gamma \vdash M_1 + \ldots + M_m : A$ and $\Delta_1, x : A, \Delta_2 \vdash N$,
+  we define $\Delta_1, \Gamma, \Delta_2 \vdash N[M_1 + \ldots + M_m / x]$ by induction on derivation of $N$.
+  Moreover, we have the property that $(N_1 + \ldots + N_n)[M_1 + \ldots + M_m / x] = \sum_{i=1}^{n}\sum_{j=1}^{m}N_i[M_j / x]$.
+  \begin{enumerate}
+    \item Suppose $N \Coloneqq x : A \vdash x : A$, then $A = B$ and we can just use $M_1 + \ldots + M_m$ and define $\Gamma \vdash x[M_1 + \ldots + M_m / x] = x[M_1 / x] + \ldots + x[M_m / x] = M_1 + \ldots + M_m$.
+    \item Suppose $N$ is the conclusion of the rule
+    \[
+      \inferrule*[right=$f$]{f \in \mathcal{G}(A_1,\ldots,A_n;B) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n} M_{nj} : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(M_{1 k_1}, \ldots, M_{n k_n}) : B}
+    \] 
+    then there exists $1 \leq j \leq n$ such that $x : A \in \Gamma_j$ and $\Gamma'_j, x : A, \Gamma''_j \vdash \sum_{i=1}^{i_j}N_{ji}$ and by IH we have a derivation
+    \[
+    (\sum_{i=1}^{i_j}N_{ji})[M_1 + \ldots + M_m / x] = \sum_{i=1}^{i_j}\sum_{k=1}^{m}N_{ji}[M_k / x]
+    \]
+    \begin{gather*}
+    \Gamma'_j,\Gamma,\Gamma''_j \vdash (N_{j 1} + \ldots + N_{j i_j})[M_1 + \ldots + M_m / x] =\\
+      = N_{j 1}[M_1 / x] + \ldots + N_{j 1}[M_m /x] + \ldots + N_{j i_j}[M_1 / x] + \ldots + N_{j i_j}[M_m /x]
+    \end{gather*}
+    and by applying the rule above we have
+    \begin{gather*}
+     \Gamma_1, \ldots, \Gamma'_j,\Gamma,\Gamma''_j, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{i_1} \ldots \sum_{k_j=1}^{i_j}\sum_{l=1}^{m} \ldots \sum_{k_n=1}^{i_n} f(N_{1k_1}, \ldots, N_{jk_j}[M_{l} / x], \ldots, N_{nk_n}) =\\
+     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{j,k_j}[M_1 + \ldots + M_m], \ldots, N_{nk_n})\\
+     = \sum_{k_1=1}^{i_1}\ldots\sum_{k_n=1}^{i_n}f(N_{1k_1}, \ldots, N_{nk_n})[M_1 + \ldots + M_m]
+    \end{gather*}
+  \item Suppose $N$ is the conclusion of the rule
+  \[
+    \inferrule*[right=$\otimes I$]{\Delta_1 \vdash \sum_{i=1}^{p}P_i : A \quad \Delta_2 \vdash \sum_{i=1}^{n} N_i : B}{\Delta_1, \Delta_2 \vdash \sum_{i=1}^{p}\sum_{j=1}^{n}\{P_i, N_j\} : A \otimes B}
+  \]
+  and w.l.o.g suppose $x : A \in \Delta_1$, then by IH we have a derivation 
+  \[
+    \Delta'_1, \Gamma, \Delta''_1 \vdash (\sum_{i=1}^{p}P_i)[M_1 + \ldots + M_m] = (\sum_{i=1}^{p} \sum_{j=1}^{m}P_i[M_j / x]) : A
+  \]
+  and by applying the same rule we get
+  \begin{gather*}
+    \Delta'_1,\Gamma,\Delta''_1,\Delta_2 \vdash \sum_{i=1}^{p}\sum_{k=1}^{m}\sum_{j=1}^{n}\{P_i[M_j / x],N_j\} = \sum_{i=1}^{p}\sum_{j=1}^{n}\{P_i[M_1 + \ldots + M_m / x],N_j\} = \\
+    = \sum_{i=1}^{p}\sum_{j=1}^{n}\{P_i,N_j\}[M_1 + \ldots + M_m / x]
+  \end{gather*}
+  \item Suppose $N$ is the conclusion of the rule
+  \[
+    \inferrule*[right=$+I$]{\Delta', x : A, \Delta'' \vdash \sum_{i=1}^{i_1} N_{1i} \quad \ldots \quad \Delta', x : A, \Delta'' \vdash \sum_{i=1}^{i_n} N_{ni}}{\Delta', x : A, \Delta'' \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j} N_{ij}}
+  \]
+  then by IH we have 
+  \begin{gather*}
+  \Delta',\Gamma,\Delta'' \vdash (\sum_{i=1}^{i_1}N_{1i})[M_1 + \ldots + M_m] = (\sum_{i=1}^{i_1}N_{1i}[M_1 + \ldots + M_m]) = (\sum_{i=1}^{i_1}\sum_{j=1}^{m}N_{1i}[M_j / x])\\
+  \vdots\\
+  \Delta',\Gamma,\Delta'' \vdash (\sum_{i=1}^{i_n}N_{ni})[M_1 + \ldots + M_m] = (\sum_{i=1}^{i_1}N_{ni}[M_1 + \ldots + M_m]) = (\sum_{i=1}^{i_1}\sum_{j=1}^{m}N_{ni}[M_j / x])\\
+  \end{gather*}
+  and again by applying the same rule we get
+  \begin{gather*}
+    \sum_{k=1}^{n}\sum_{i=1}^{i_k}\sum_{j=1}^{m}(N_{ki}[M_j / x]) = \sum_{k=1}^{n}\sum_{i=1}^{i_k}(N_{ki}[M_1 + \ldots + M_m / x]) = \sum_{k=1}^{n}\sum_{i=1}^{i_k}(N_{ki})[M_1 + \ldots + M_m / x]
+  \end{gather*}
+  \end{enumerate}
+  The rest of the cases are analogous.
+\end{definition}
+
+Then the admissibility follows from the above construction.
+\begin{lemma}
+  If we have derivations $\Gamma \vdash M_1 + \ldots + M_n : A$ and $\Delta_1, x : A, \Delta_2 \vdash N : B$, then we can derive $\Delta_1, \Gamma, \Delta_2 \vdash N[M_1 + \ldots + M_m / x]$.
+\end{lemma}
+
+\begin{lemma}[Substitution is associative, interchanging, and distributes over $+$]
+\label{lemma:subst_properties}
+  We have the following properties for the substitution.
+  \begin{enumerate}
+    \item\label{subst_prop:a} $(N_1 + \ldots + N_n)[M_1 + \ldots + M_m / x] = \sum_{i=1}^{n}\sum_{j=1}^{m}N_i[M_j / x]$ (shown above)
+    \item\label{subst_prop:b} If $\Gamma \vdash N : B$ and $\Delta, y : B, \Delta' \vdash M : A$ and $\Psi, x : A, \Psi' \vdash P : C$, then
+      \[
+      (P[M/x])[N/y] = P[M[N/y]/x]
+      \]
+    \item\label{subst_prop:c} If $\Gamma \vdash M : A$ and $\Delta \vdash N : B$ and $\Psi, x : A, \Psi', y : B, \Psi'' \vdash P : C$, then
+      \[
+      (P[M/x][N/y]) = P[N/y][M/x]
+      \]
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \leavevmode\\
+  We will first prove~\autoref{subst_prop:b}.
+  \begin{itemize}
+    \item Suppose $P \Coloneqq x : A \vdash x : A$, then the result of $P[M/x] = M$ and therefore $(P[M/x])[N / y] = P[M[N/y]/x] = M[N/y]$
+    \item Suppose 
+    \begin{gather*}
+      P \Coloneqq \inferrule[]{
+        f \in \mathcal{G}(A_1, \ldots, A_n;C) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} M_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n}M_{nj} : A_n
+        }{
+          \Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots,M_{nk_{n}}): C
+        }
+    \end{gather*}
+    then 
+    \[
+    \Psi, \Delta, y : B, \Delta', \Psi' \vdash P[M/x] = \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots, M_{ik_i}[M/x] ,\ldots,M_{nk_{n}})
+    \]
+    and then 
+    \[
+    \Psi,\Delta,\Gamma,\Delta',\Psi' \vdash (P[M/x])[N/y] = \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots, (M_{ik_i}[M/x])[N/y] ,\ldots,M_{nk_{n}})
+    \]
+    by IH we have that
+    \[
+      (M_{i,k_i}[M/x])[N/y] = M_{i,k_i}[M[N/y]/x]
+    \]
+    and
+    \[
+      \Psi,\Delta,\Gamma,\Delta',\Psi' \vdash (P[M[N/y]/x]) = \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(M_{1k_1},\ldots, (M_{ik_i}[M[N/y] / x]) ,\ldots,M_{nk_{n}})
+    \]
+    \item Suppose 
+    \begin{gather*}
+    P \Coloneqq \inferrule[]{\Gamma \vdash \sum_{i=1}^{i_1}P_{1i} : C \ldots \Gamma \vdash \sum_{i=1}^{i_n}P_{ni} : C}{\Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij} : C}
+    \end{gather*}
+    and $\Gamma \Coloneqq \Psi, x : A, \Psi'$.
+    We have that 
+    \[
+    (P[M/x])[N/y] = \sum_{i=1}^{n}\sum_{j=1}^{j_i}(P_{ij}[M/x])[N/y]
+    \] 
+    and by IH we have that $(P_{ij}[M/x])[N/y] = P_{ij}[M[N/y]/x]$ and
+    \[
+      (P[M/x])[N/y] = \sum_{i=1}^{n}\sum_{j=1}^{j_i}(P_{ij}[M[N/y]/x]) = P[M[N/y]/x]
+    \]
+    \item The other cases are analogous
+  \end{itemize}
+  Now for the~\autoref{subst_prop:c}.
+  \begin{itemize}
+    \item Suppose
+      \begin{gather*}
+        P \Coloneqq \inferrule[]{
+          f \in \mathcal{G}(A_1, \ldots, A_n;C) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} P_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n}P_{nj} : A_n
+          }{
+            \Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(P_{1k_1},\ldots,P_{nk_{n}}): C
+          }
+      \end{gather*}
+      It must be that $x : A$ appears in $\Gamma_w$ and $y : B$ appears in $\Gamma_u$. If $w = u$ we simply apply IH to $\Gamma_w \vdash \sum_{j=1}^{i_w}P_{wj}$.
+      Otherwise, we have
+      \begin{align*}
+      P[M/x][N/y] &= \Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1=1}^{j_1}\ldots\sum_{k_n=1}^{i_n}f(P_{1k_1},\ldots, P_{wk_w}[M/x],\ldots, P_{uk_{w}}[N/y] ,\ldots,P_{nk_{n}}): C\\
+                  &= P[N/y][M/x]
+      \end{align*}
+    \item Suppose
+    \begin{gather*}
+      P \Coloneqq \inferrule[]{\Gamma \vdash \sum_{i=1}^{i_1}P_{1i} : C \ldots \Gamma \vdash \sum_{i=1}^{i_n}P_{ni} : C}{\Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij} : C}
+    \end{gather*}
+    and we have that 
+    \begin{gather*}
+      P[M/x][N/y] \Coloneqq \inferrule[]{\Gamma \vdash \sum_{i=1}^{i_1}P_{1i}[M/x][N/y] : C \ldots \Gamma \vdash \sum_{i=1}^{i_n}P_{ni}[M/x][N/y] : C}{\Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij}[M/x][N/y] : C}
+    \end{gather*}
+    and by IH we have that $P_{ji}[M/x][N/y] = P_{ji}[N/y][M/x]$ and 
+    \[
+      \Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij}[M/x][N/y] = \Gamma \vdash \sum_{i=1}^{n}\sum_{j=1}^{i_j}P_{ij}[N/y][M/x]
+    \] 
+    \item The rest are analogous.
+  \end{itemize}
+\end{proof}
+
+
+\begin{theorem}
+\label{theorem:free_slat_multicat}
+  Recall the adjunction 
+  \[
+  F_{\catname{RepMultCat}} \dashv U_{\catname{Multigraph}} : \catname{Multigraph} \to \catname{RepMultCat}.
+  \]
+  It extends to an adjunction 
+  \[
+  F_{\catname{SLat}} \circ F_{\catname{Multigraph}} \dashv U_{\catname{Set}} \circ U_{\catname{Multigraph}} : \catname{Multigraph} \to \catname{SLat}\text{-}\catname{RepMultCat}.
+  \]
+  For a multigraph $\mathcal{G}$, the free (representable) $\catname{SLat}$-multicategory over $\mathcal{G}$ is given by the type theory in~\autoref{def:s_lat_type_theory}.
+\end{theorem}
+\begin{proof}
+The objects are given by the types of the type theory and the morphisms are given by the derivations (or, equivalently, terms) quotiented by $\equiv$.
+The composition is given by the substitution and the properties of the substitution make sure it is the composition in an $\catname{SLat}$-multicategory.
+The rules and equations for $\otimes$ make it a representable multicategory.
+We denote the functor and the category thus obtained by $F_{\catname{SLatType}}$ and $F_{\catname{SLatType}}(\mathcal{G})$.
+
+Now, given another category $\mathcal{M}$ in $\catname{SLat}-\catname{RepMultCat}$ and its underlying multigraph $U_{\catname{Set} \circ U_{\catname{Multigraph}}}(\mathcal{M})$ and a map $P : \mathcal{G} \to U_{\catname{Set}} \circ U_{\catname{Multigraph}}(\mathcal{M})$,
+we can extend it to a functor $P : F_{\catname{SLatType}}(\mathcal{G}) \to \mathcal{M}$ induced by the map of generators:
+% first extend the map $P$ from objects of $\mathcal{G}$ to types, then extend $P$ to terms, then this extension maps substitution to composition and finally identified terms are mapped to the same morphism.
+\begin{itemize}
+  \item We first extend $P$ to types by sending $A \otimes B$ to $P(A) \otimes P(B)$ and $\I$ to $\I$.
+  \item We then extend $P$ to terms (the action of $P$'s mapping terms to morphisms in $\mathcal{M}$) by induction on the derivation of the term. 
+  For example, if we have a term $f(M_1, \ldots, M_n)$ where $f \in \mathcal{G}(A_1, \ldots, A_n;B)$ and we have already defined $P(M_i)$ for each $i$, then we can define $P(f(M_1, \ldots, M_n)) = P(f) \circ (P(M_1), \ldots, P(M_n))$.
+  If we have a term $\text{match}_{A \otimes B}(M, xy. N)$, then we let $P(\text{match}_{A \otimes B}(M, xy. N)) = \tilde{P(N)} \circ (P(M))$ where $\widetilde{P(N)}$ is the unique morphism such that $\widetilde{P(N)} \circ \xi_{P(A), P(B)} = P(N)$.
+  The other cases are analogous.
+  \item By induction on the derivation of the term we can show that this extension maps substitution to composition.
+  That is, we have that $P(N[M/x]) = P(N) \circ P(M)$.
+  \begin{itemize}
+    \item Suppose $N \Coloneqq x : A \vdash x : A$, then $P(N[M/x]) = P(M)$ and $P(N) \circ P(M) = \id_{P(A)} \circ P(M) = P(M)$.
+    \item Suppose $N$ is the conclusion of the rule
+    \[
+      \inferrule*[right=$f$]{f \in \mathcal{G}(A_1,\ldots,A_n;B) \quad \Gamma_1 \vdash \sum_{j=1}^{i_1} N_{1j} : A_1 \ldots \Gamma_n \vdash \sum_{j=1}^{i_n} N_{nj} : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1 k_1}, \ldots, N_{n k_n}) : B}.
+    \] 
+    Then there exists $1 \leq j \leq n$ such that $x : A \in \Gamma_j$ and $\Gamma'_j, x : A, \Gamma''_j \vdash \sum_{k=1}^{i_j} N_{j k}$ and by IH we have that 
+    \[
+    P((\sum_{k=1}^{i_j} N_{j k})[M/x]) = P((\sum_{k=1}^{i_j} N_{j k})) \circ P(M) = \sum_{k=1}^{i_j} P(N_{j k}) \circ P(M) = \sum_{k=1}^{i_j} (P(N_{j k}) \circ (P(M))).
+    \]
+    We also have that 
+    \[
+    P\left(\sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1 k_1}, \ldots, N_{n k_n})\right) \circ P(M) = \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n}(P(f) \circ (P(N_{1 k_1}), \ldots, P(N_{n k_n})) \circ P(M))
+    \]
+    and
+    \[
+    \left(\sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1 k_1}, \ldots, N_{n k_n})\right)[M/x] = \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1 k_1}, \ldots, N_{j k_j}[M/x], \ldots, N_{n k_n}),
+    \]
+    and
+    \begin{align*}
+    P\left(\sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1 k_1}, \ldots, N_{n k_n})[M/x]\right) &=\\ 
+    &= \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} P(f) \circ (P(N_{1 k_1}), \ldots, P(N_{j k_j}[M/x]), \ldots, P(N_{n k_n}))\\
+    &\text{by IH}\\
+    &= \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} P(f) \circ (P(N_{1 k_1}), \ldots, P(N_{j k_j}) \circ P(M), \ldots, P(N_{n k_n})).
+    \end{align*}
+    By the associativity axiom of $\mathcal{M}$ applied in the $j$-th slot, we have
+    \[
+    P(f) \circ (P(N_{1k_1}),\ldots,P(N_{jk_j}) \circ P(M),\ldots,P(N_{nk_n})) = P(f) \circ (P(N_{1k_1}),\ldots,P(N_{nk_n})) \circ P(M)
+    \]
+    and therefore
+    \begin{align*}
+      P\left(\sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1 k_1}, \ldots, N_{n k_n})[M/x]\right) &=\\
+      &= \sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} \left( P(f) \circ (P(N_{1 k_1}), \ldots, P(N_{j k_j}), \ldots, P(N_{n k_n})) \circ P(M)\right)\\
+      &= P\left(\sum_{k_1 = 1}^{i_1} \ldots \sum_{k_n=1}^{i_n} f(N_{1k_1},\ldots,N_{nk_n})\right) \circ P(M).
+    \end{align*}
+    \item The rest of the cases are analogous.
+  \end{itemize}
+  \item We show that $P$ respects $\equiv$ by checking each generating equation.
+Since $P$ respects the equivalence relation structure (reflexivity, symmetry,
+transitivity) by definition, and respects congruence since it is defined
+inductively on derivations, it suffices to check the generating equations.
+
+\begin{itemize}
+  \item \textbf{$\beta_\otimes$}: We need $P(\text{match}_\otimes(\{M,N\}, xy.Q)) =
+  P(Q[M/x, N/y])$.
+  By definition, $P(\text{match}_\otimes(\{M,N\},xy.Q)) = \widetilde{P(Q)} \circ
+  P(\{M,N\})$ where $\widetilde{P(Q)} \circ \xi_{P(A),P(B)} = P(Q)$.
+  We have $P(\{M,N\}) = \xi_{P(A),P(B)} \circ (P(M), P(N))$, so
+  \[
+  \widetilde{P(Q)} \circ \xi_{P(A),P(B)} \circ (P(M), P(N)) = P(Q) \circ (P(M), P(N))
+  \]
+  and by the argument that $P$ maps substitution to composition we have
+  $P(Q) \circ (P(M), P(N)) = P(Q[M/x, N/y])$.
+
+  \item \textbf{Distributivity of $\{-,-\}$ over $+$}: We need
+  $P(\{N_1 + \ldots + N_n, M\}) = P(\{N_1,M\} + \ldots + \{N_n,M\})$.
+  By definition,
+  \[
+  P(\{N_1 + \ldots + N_n, M\}) = \xi_{P(A),P(B)} \circ (P(N_1) + \ldots + P(N_n),
+  P(M))
+  \]
+  and since $\mathcal{M}$ is a $\catname{SLat}$-multicategory, composition
+  distributes over $+$, giving
+  \[
+  = \xi_{P(A),P(B)} \circ (P(N_1), P(M)) + \ldots + \xi_{P(A),P(B)} \circ (P(N_n),
+  P(M)) = P(\{N_1,M\}) + \ldots + P(\{N_n,M\})
+  \]
+  as required. 
+  The symmetric case $\{M, N_1 + \ldots + N_n\}$ is analogous.
+
+  \item \textbf{Associativity of $+$}: We need
+  $P(N_1 + \ldots + (M_1 + \ldots + M_m) + \ldots + N_n) =
+  P(N_1 + \ldots + M_1 + \ldots + M_m + \ldots + N_n)$.
+  Both sides are equal to $P(N_1) + \ldots + P(M_1) + \ldots + P(M_m) + \ldots +
+  P(N_n)$ by definition of $P$ on $+$, using associativity of $+$ in the
+  hom-object of $\mathcal{M}$.
+
+  \item \textbf{Commutativity of $+$}: We need $P(M + N) = P(N + M)$.
+  Both sides equal $P(M) + P(N) = P(N) + P(M)$ using commutativity of $+$ in
+  the hom-object of $\mathcal{M}$.
+
+  \item \textbf{Idempotence of $+$}: We need $P(N) = P(N + N)$.
+  We have $P(N + N) = P(N) + P(N) = P(N)$ using idempotence of $+$ in the
+  hom-object of $\mathcal{M}$.
+
+  \item The remaining equations are analogous.
+\end{itemize}
+\end{itemize}
+Therefore, $F_{\catname{SLatType}}$ is the left adjoint to $U_{\catname{Set}} \circ U_{\catname{Multigraph}}$ and is naturally isomorphic to $F_{\catname{SLat}} \circ F_{\catname{Multigraph}}$.
+By using representability, we also get that the type theory defines a free monoidal $\catname{SLat}$-category over $\mathcal{G}$.
+By~\autoref{prop:representabilities_agree}, we get the same data had we started with the type theory from~\autoref{def:simple_type_theory} and then freely enriched the corresponding free multicategory.
+\end{proof}
+
+\begin{remark}
+  Removing the rules for $\otimes$ and $\I$ we get the adjunction between multigraphs and (not representable) $\catname{SLat}$-multicategories.
+  Similarly, by adding the rules for $\multimap$ and corresponding $\mathfrak{S}$-multicategories we can derive $\catname{SLat}$-multicategories (and monoidal categories) with more structure.
+  In particular, the following rules (replacing the identity rule) define a free cartesian multicategory (and therefore a free cartesian category):
+  \begin{gather}
+  \label{eq:cartesian_structure}
+  \inferrule*[right=$\id$]{\vdash A\;\text{type} \quad x \in \Gamma}{\Gamma \vdash x : A}\\
+  \inferrule*[]{\;}{\Gamma \vdash \star : \I}
+  \end{gather}
+\end{remark}
+
+So far, we actually defined a type theory for e-graphs with empty set of equations.
+This is because, while we have the ability to express \enquote{multiple} terms using $+$, writing $f(x) + g(x)$ does not tell us whether $f(x)$ and $g(x)$ are actually equivalent.
+We recover e-graphs, if instead of multigraphs we consider \emph{multicategorical presentations}.
+
+\begin{definition}[Definition 1.7.1 in~\cite{shulman2016categorical}]
+  A multicategory presentation $\mathcal{P}$ is a pair $(\mathcal{G}, \mathcal{E})$ where $\mathcal{G}$ is a multigraph and $\mathcal{E}$ is a set of generating equalities, each of which is a pair of derivations $A_1, \ldots, A_n \vdash B$ for $A_1, \ldots, A_n,B \in \mathcal{G}$.
+  These presentations define a category $\catname{PrCat}$ where morphisms are multigraph homomorphisms such that equalities are preserved.
+\end{definition}
+Equivalently, we can think of $\mathcal{E}$ as a set of pairs of terms $x_1 : A_1, \ldots, x_n : A_n \vdash M : B$ and $x_1 : A_1, \ldots, x_n : A_n \vdash N : B$ which define two parallel morphisms in a free $\catname{SLat}$-multicategory on $\mathcal{G}$.
+
+\begin{definition}[Definition 1.7.2 in~\cite{shulman2016categorical}]
+For an $\catname{SLat}$-multicategory $\mathcal{C}$, its underlying presentation is a multigraph of $\mathcal{G}$ with, as generating equalities, the set of all parallel pairs of morphisms in $F_{\catname{SLatType}}(\mathcal{G})$ that become equal after applying the counit functor $F_{\catname{SLatType}}(\mathcal{G}) \to \mathcal{C}$.
+\end{definition}
+
+\begin{definition}
+\label{def:type_theory_under_presentation}
+  A type theory under a multicategorical presentation $\mathcal{P} = (\mathcal{G}, \mathcal{E})$ is given by the type theory under $\mathcal{G}$ together with the following rule:
+  \begin{align*}
+    \inferrule*[]{(M,N) \in \mathcal{E}(\Gamma; B)}{\Gamma \vdash M \equiv N : B}
+  \end{align*}
+  where $\mathcal{E}(\Gamma; B)$ is the set of pairs $\Gamma \vdash M : B, \Gamma \vdash N : B$.
+\end{definition}
+
+\begin{proposition}[Theorem 1.7.3 in~\cite{shulman2016categorical}]
+  For any multicategory presentation $\mathcal{P}$, the free multicategory generated by $\mathcal{P}$ (i.e. the image of $\mathcal{P}$ under the left adjoint to the underlying-presentation functor) is described by the type theory for categories under $\mathcal{P}$: its objects are those of $\mathcal{P}$, and its morphisms are the derivations of $\Gamma \vdash M : B$ modulo the equivalence relation $\equiv$.
+\end{proposition}
+
+Thus, given an e-graph over a signature $\Sigma$ and equations $\mathcal{E}$, the corresponding type theory is defined by a multicategory presentation $(\Sigma, \mathcal{E})$.
+Note that just like in the case of PROPs, type theories for usual e-graphs need to have cartesian structure. 
+We get type theories for generalised e-graphs by considering different structures.
+
+\begin{example}
+  Recall the e-graphs from~\autoref{fig:e-graph-example}.
+  The corresponding multigraph $\mathcal{G}$ is given by objects natural numbers and multi-edges $(*) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N}), (<\!\!<) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N}), (/) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})$.
+  The type theory is given by~\autoref{def:s_lat_type_theory} (with additional constants for all natural numbers and the constant $a$, and with the rules for cartesian structure from~\autoref{eq:cartesian_structure}) together with $\mathcal{E}$:
+  \begin{gather*}
+    x : \mathbb{N} \vdash (x * 2) / 2 \equiv x <\!\!< 1 : \mathbb{N}\\
+    x : \mathbb{N}, y : \mathbb{N}, z : \mathbb{N} \vdash (x * y) / z \equiv x * (y / z) : \mathbb{N}\\
+    x : \mathbb{N} \vdash x / x \equiv 1 : \mathbb{N}\\
+    x : \mathbb{N} \vdash x * 1 \equiv x
+  \end{gather*}
+  Starting from the term 
+  \[
+  \vdash (a * 2) / 2 : \mathbb{N},
+  \] 
+  we can derive first that (by using $N \equiv N + N$ and the congruence)
+  \[
+  \vdash (a * 2) / 2 \equiv \vdash ((a * 2) + (a * 2)) / 2 : \mathbb{N},
+  \]
+  then that (by using the substitution congruence)
+  \[
+  \vdash (a * 2) \equiv a <\!\!< 1 : \mathbb{N},
+  \]
+  and finally that 
+  \[
+  \vdash (a * 2) / 2 \equiv ((a * 2) + a <\!\!< 1) / 2 : \mathbb{N}.
+  \]
+\end{example}
+
+\begin{example}
+  Instead of identifying $M \equiv N$ for each $(M,N) \in \mathcal{E}(\Gamma; B)$, we can instead render them as rewrite rules $\mathcal{R} =\{ M \to N + M, N \to M + N \; | \; (M,N) \in \mathcal{E}(\Gamma; B) \; \}$.
+  Then, we can define equality saturation as a \emph{fixed point} of term rewriting modulo $\equiv$ (the quotienting of our original type theory).
+  Given terms $M$ and $N$, we say $M \Rrightarrow_{\mathcal{R}} N$ if there exist $M' \equiv M$ and $N' \equiv N$ and there is a rule $L \to R \in \mathcal{R}$ such that $M'[L] = N'[R]$.
+  The rewriting relation $\Rrightarrow_{\mathcal{R}}^{*}$ is the reflexive-transitive closure of $\Rrightarrow_{\mathcal{R}}$.
+  We can also write $[M]_{\equiv} \Rrightarrow_{\mathcal{R}}^{*} [N]_{\equiv}$ to highlight that we are rewriting equivalence classes of terms.
+  $[M]_{\equiv}$ is a fixed point of $\Rrightarrow_{\mathcal{R}}^{*}$ if there is no $[N]_{\equiv} \not = [M]_{\equiv}$ such that $[M]_{\equiv} \Rrightarrow_{\mathcal{R}}^{*} [N]_{\equiv}$.
+\end{example}
+
+\begin{example}
+\label{ex:recursive_let}
+  As the cut rule in the type theory defined in~\autoref{def:s_lat_type_theory} is admissible, we can introduce it as a derivation former in a style of explicit substitution calculi.
+  \[
+  \inferrule*[right=let]{\Gamma \vdash M : A \qquad \Delta_1, x : A, \Delta_2 \vdash N : B}
+  {\Delta_1, \Gamma, \Delta_2 \vdash \textbf{let } x = M \textbf{ in } N : B},
+  \]
+  populating $\equiv$ with extra equations defining the behaviour of the \textbf{let} construct.
+  This approach formalises our examples in~\autoref{lst:terms-e-graph}.
+
+  Consider the example (b).
+  We have the following terms.
+  \begin{gather*}
+  \inferrule*[]{\;}{\vdash 2 : \mathbb{N}} \qquad \inferrule*[]{\;}{\vdash a : \mathbb{N}} \qquad \inferrule*[]{\;}{\vdash 1 : \mathbb{N}}\\
+  \inferrule*[right=intro $*$, left=$\pi_{y * x}$]{
+    y : \mathbb{N}, x : \mathbb{N} \vdash x : \mathbb{N} \quad 
+    y : \mathbb{N}, x : \mathbb{N} \vdash y : \mathbb{N} \quad  
+    (*) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
+  {y : \mathbb{N}, x : \mathbb{N} \vdash y * x : \mathbb{N}}\\
+  \inferrule*[right=intro $<\!\!<$, left=$\pi_{y <\!\!< 1}$]{
+    y : \mathbb{N}, x : \mathbb{N} \vdash y : \mathbb{N} \quad 
+    y : \mathbb{N}, x : \mathbb{N} \vdash 1 : \mathbb{N} \quad  
+    (<\!\!<) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
+  {y : \mathbb{N}, x : \mathbb{N} \vdash y <\!\!< 1 : \mathbb{N}}\\
+  \inferrule*[right=intro $+$, left=$\pi_E$]{\pitri{\pi_{y * x}} \quad \pitri{\pi_{y <\!\!< 1}}}
+  {y : \mathbb{N}, x : \mathbb{N} \vdash (y * x) + (y <\!\!< 1) : \mathbb{N}}\\
+  \inferrule*[right=intro $/$, left=$\pi_{E/x}$]{
+    \pitri{\pi_{E}} \quad
+    y : \mathbb{N}, x : \mathbb{N} \vdash x : \mathbb{N} \quad
+    (/) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
+  {y : \mathbb{N}, x : \mathbb{N} \vdash ((y * x) + (y <\!\!< 1)) / x : \mathbb{N}}\\
+  \inferrule*[left=$\pi_{x = 2}$]{\vdash 2 : \mathbb{N} \quad \pitri{\pi_{E/x}}}
+  {y : \mathbb{N} \vdash \textbf{let } x = 2 \textbf{ in } ((y * x) + (y <\!\!< 1)) / x : \mathbb{N}}\\
+  \inferrule*[left=$\pi_{y = a}$]{\vdash a : \mathbb{N} \quad \pitri{\pi_{x=2}}}
+  {\vdash \textbf{let } y = a \textbf{ in } (\textbf{let } x = 2 \textbf{ in } ((y * x) + (y <\!\!< 1)) / x) : \mathbb{N}}
+\end{gather*}
+
+Then, we can extend the type theory with a fixed point operator
+\[
+\inferrule*[]{\Gamma, x : A \vdash M : A}{\mu x. M : A},
+\]
+together with the equation
+\[
+\mu x. M \equiv M[\mu x. M / x].
+\]
+Or, alternatively, written as a possibly recursive let
+\[
+\inferrule*[]{\Gamma, x : A \vdash M : A \quad \Delta_1, y : A, \Delta_2 \vdash N : B}
+{\Delta_1, \Gamma, \Delta_2 \vdash \textbf{letrec } x = M \textbf{ in } N : B}.
+\]
+
+Type theories with fixed points are modelled by (cartesian) traced monoidal categories as described by~\citet{hasegawa_models_1999}.
+Trace is given by the operation on hom-objects
+\[
+\text{Tr}_{A,B}^{X} : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A,B)
+\]
+satisfying certain axioms.
+Since a representable multicategory is equivalent to a monoidal category by~\autoref{prop:representable_multicategories}, the trace operation on hom-objects
+\[
+\text{Tr}_{A,B}^X : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A, B)
+\]
+translates directly to the multicategorical setting via the representability isomorphism
+\[
+\mathcal{C}(A \otimes X, B \otimes X) \cong \mathcal{M}(A, X; B \otimes X)
+\]
+giving
+\[
+\text{Mult-Tr}_{A,B}^X : \mathcal{M}(A, X; B \otimes X) \to \mathcal{M}(A; B)
+\]
+where the output lands in the unary hom-object $\mathcal{M}(A; B)$.
+Thus, the type theory with recursive \texttt{let} is modelled by cartesian $\catname{SLat}$-multicategories with trace in the above sense which are equivalent to cartesian traced $\catname{SLat}$-categories.
+
+With this at hand, we can justify the example (d):
+\begin{gather*}
+\inferrule*[]{\;}{\vdash 2 : \mathbb{N}} \qquad
+\inferrule*[]{\;}{\vdash a : \mathbb{N}} \qquad
+\inferrule*[]{\;}{\vdash 1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{y*x}$]{
+  y:\mathbb{N},x:\mathbb{N} \vdash y : \mathbb{N} \quad
+  y:\mathbb{N},x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  {*} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{y:\mathbb{N},x:\mathbb{N} \vdash y * x : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{y\mathbin{<\!\!<}1}$]{
+  \inferrule*[]{}{y:\mathbb{N},x:\mathbb{N} \vdash y : \mathbb{N}} \quad
+  y:\mathbb{N},x:\mathbb{N} \vdash 1 : \mathbb{N} \quad
+  {\mathbin{<\!\!<}} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{y:\mathbb{N},x:\mathbb{N} \vdash y \mathbin{<\!\!<} 1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_E$]{
+  \pitri{\pi_{y*x}} \qquad \pitri{\pi_{y\mathbin{<\!\!<}1}}
+}{y:\mathbb{N},x:\mathbb{N} \vdash y*x + y\mathbin{<\!\!<}1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{E/x}$]{
+  \pitri{\pi_E} \quad
+  y:\mathbb{N},x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  {/} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{y:\mathbb{N},x:\mathbb{N} \vdash (y*x+y\mathbin{<\!\!<}1)/x : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_W$]{
+  \inferrule*[]{
+    y:\mathbb{N},x:\mathbb{N} \vdash x:\mathbb{N} \quad
+    y:\mathbb{N},x:\mathbb{N} \vdash x:\mathbb{N} \quad
+    {/} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+  }{y:\mathbb{N},x:\mathbb{N} \vdash x/x : \mathbb{N}} \quad
+  y:\mathbb{N},x:\mathbb{N} \vdash 1 : \mathbb{N}
+}{y:\mathbb{N},x:\mathbb{N} \vdash x/x+1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{y \cdot W}$]{
+  y:\mathbb{N},x:\mathbb{N} \vdash y:\mathbb{N} \quad
+  \pitri{\pi_W} \quad
+  {*} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{y:\mathbb{N},x:\mathbb{N} \vdash y*(x/x+1) : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_Z$]{
+  \inferrule*[]{
+    \pitri{\pi_{E/x}} \qquad \pitri{\pi_{y \cdot W}}
+  }{y:\mathbb{N},x:\mathbb{N} \vdash (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) : \mathbb{N}} \quad
+  y:\mathbb{N},x:\mathbb{N} \vdash a:\mathbb{N}
+}{y:\mathbb{N},x:\mathbb{N} \vdash (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) + a : \mathbb{N}}\\
+\inferrule*[left=$\pi_y$]{
+  \pitri{\pi_Z} \qquad y:\mathbb{N} \vdash y : \mathbb{N}
+}{x:\mathbb{N} \vdash \textbf{letrec}\ y\ \textbf{be}\ (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) + a\ \textbf{in}\ y : \mathbb{N}}\\
+\inferrule*[]{
+  x:\mathbb{N} \vdash 2 : \mathbb{N} \qquad \pitri{\pi_y}
+}{\vdash \textbf{letrec}\ x\ \textbf{be}\ 2\ \textbf{in}\ (\textbf{letrec}\ y\ \textbf{be}\ (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) + a\ \textbf{in}\ y) : \mathbb{N}}
+\end{gather*}
+\end{example}

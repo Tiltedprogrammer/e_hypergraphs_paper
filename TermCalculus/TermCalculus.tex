@@ -1,5 +1,6 @@
 \documentclass[manuscript, nonacm, anonymous]{acmart}
 
+\usepackage{cmap}
 
 \usepackage{amsmath,amsfonts}
 \usepackage{algorithmic}
@@ -8,6 +9,9 @@
 \usepackage{textcomp}
 \usepackage{soul}
 \usepackage{xcolor}
+
+\let\Bbbk\relax
+\usepackage{quiver}
 
 \usepackage{amsthm}
 \usepackage{hyperref}
@@ -53,7 +57,20 @@
 \usepackage{subcaption}
 \DeclareCaptionSubType{listing}
 
+% save space
+\usepackage{microtype}
 
+\newtheoremstyle{fancy}
+  {6pt}   % space above
+  {6pt}   % space below
+  {\normalfont}  % body font (NOT italic)
+  {}      % indent
+  {\bfseries} % head font
+  {}      % punctuation after head
+  {0.5em} % space after head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}\;\blacktriangleright}
+
+% \theoremstyle{fancy}
 \newtheorem{theorem}{Theorem}[section]
 
 % definition
@@ -86,8 +103,16 @@
 % listings for autoref
 \providecommand*{\listingautorefname}{Listing}
 
+
+
 \newcommand{\vcrule}[1]{\vcenter{\hbox{$#1$}}}
 
+% triangle for proof trees
+\newcommand{\pitri}[1]{%
+\tikz[baseline=-0.5ex]{
+  \node[draw, isosceles triangle, isosceles triangle apex angle=60,
+        shape border rotate=270, inner sep=1pt] {\scriptsize $#1$};
+}}
 
 \input{../macros}
 \input{../sample.tikzstyles}
@@ -120,65 +145,8 @@ This interpretation allowed viewing equality saturation as a double-pushout grap
 
 One can view a type theory as a formal syntactic language, or calculus, for a category theory.
 The particular type of type theory depends on the structure of the category and vice versa.
-A classical example is of simply typed lambda calculus being the internal language for Cartesian closed categories~\cite{LambekLambda}.
+A classical example is of simply typed lambda calculus being the internal language for cartesian closed categories~\cite{LambekLambda}.
 The benefit of this view is that one can prove categorical facts by building syntactic derivations in the type theory instead of chasing commutative diagrams.
-
-\begin{example}
-We can prove, for example, that $A \otimes \mathbf{1}$ is isomorphic to $A$.
-For this we need to construct two morphisms $A \otimes \mathbf{1} \to A$ and $A \to A \otimes \mathbf{1}$ and show that their composition is identity.
-First, let's build a morphism from $A \to A \otimes \mathbf{1}$
-
-\[
-\inferrule*{
-  x : A \vdash x : A \qquad () \vdash \star : \mathbf{1}
-}{x : A \vdash \{x,\star\} : A \otimes \mathbf{1}}
-\]
-the morphism $A \otimes \mathbf{1} \to A$ is then
-\[
-\inferrule*{
-\inferrule*{}{z : A \otimes \mathbf{1} \vdash z : A \otimes \mathbf{1}}
-\qquad
-\inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
-}{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
-\]
-Then we have
-\begin{itemize}
-  \item \[
-  \inferrule*{
-            \inferrule*{
-  w : A \vdash w : A \qquad () \vdash \star : \mathbf{1}
-}{w : A \vdash \{w,\star\} : A \otimes \mathbf{1}}
-\qquad
-\inferrule*{
-\inferrule*{}{z : A \otimes \mathbf{1} \vdash z : A \otimes \mathbf{1}}
-\qquad
-\inferrule*{y : \mathbf{1} \vdash y : \mathbf{1} \qquad x : A \vdash x : A}{x : A, y : \mathbf{1} \vdash \text{match}_{\mathbf{1}}(y,x) : A}
-}{z : A \otimes \mathbf{1} \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) : A}
-}{w : A \vdash \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z]}
-\]
-
-\begin{align*}
-  \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x))[\{w, \star\}/z] &\equiv \text{match}_{A \otimes \mathbf{1}}(\{w, \star\}, xy.\text{match}_{\mathbf{1}}(y,x))\\
-  &\equiv_{\beta_{\otimes}} \text{match}_{\mathbf{1}}(\star,w)\\
-  &\equiv_{\beta_{\mathbf{1}}} w
-\end{align*}
-
-  \item The other direction is substitution 
-  \[
-  \inferrule*{z : A \otimes \mathbf{1} \vdash \{w, \star\}[\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)) / w]}
-{z : A \otimes \mathbf{1} \vdash \{\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}
-  \]
-
-\begin{align*}
-  \underbrace{\{\text{match}_{A \otimes \mathbf{1}}(\underbrace{z}_{M}, xy.\text{match}_{\mathbf{1}}(y,x)), \star\}}_{N} &\equiv_{\eta_{\otimes}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\{\text{match}_{A \otimes \mathbf{1}}(\{x,y\}, x'y'.\text{match}_{\mathbf{1}}(y',x')), \star\})\\ 
-  &\equiv_{\beta_{\otimes}} \text{match}_{A \otimes \mathbf{1}}(z,xy.\{{\text{match}_{\mathbf{1}}(y,x), \star}\})\\
-  &\equiv_{\eta_{\mathbf{1}}}\text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(y,\{\text{match}_{\mathbf{1}}(\star,x), \star\}))\\
-  &\equiv_{\beta_{\mathbf{1}}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\text{match}_{\mathbf{1}}(\underbrace{y}_{M},\underbrace{\{x, \star\}}_{N[\star / u]}))\\
-  &\equiv_{\beta_{\mathbf{1}}} \text{match}_{A \otimes \mathbf{1}}(z, xy.\{x, y\})\\
-  &\equiv_{\eta_{\otimes}} z\\
-\end{align*}
-\end{itemize}
-\end{example}
 
 Just like with string diagrams, the key property of this perspective is that certain categorical axioms are absorbed by the syntax.
 In this work we develop a type theoretic counterpart to the categorical framework of~\citet{tiurin2025equivalencehypergraphsdporewriting}.
@@ -324,9 +292,10 @@ let x = 2 in
 \begin{minipage}[t]{0.45\textwidth}
   \begin{minted}{haskell}
 let x = 2
+let y = a
 let e arg_1 arg_2 arg_3 =
   arg_1 * arg_2 + arg_3 << 1 in
-  (e a x 0) / x
+  (e y x y) / x
   \end{minted}
   \subcaption{}
 \end{minipage}
@@ -380,25 +349,43 @@ let y = z (e y x y) x (w x x) in y
 \end{listing*}
 
 \subsection{Contributions}
-We define a type theory for $\catname{SLat}$-enriched categories and show that the type theory has standard desirable syntactic properties such as admissibility and associativity of substitution.
-We then show that the type theory correctly defines a free $\catname{SLat}$-enriched category.
-Finally, we define a term rewriting on the type theory that can capture the equality saturation.
 
-\section{Categorical semantics of e-graphs}
-Recap of $\catname{SLat}$ categories.
+We make the following contributions.
 
+\begin{itemize}
+  \item We define a type theory for (representable) $\catname{SLat}$-multicategories
+  (\autoref{def:s_lat_type_theory}) and show that it has standard desirable
+  syntactic properties: terms uniquely determine their derivations
+  (\autoref{prop:terms_unique}), substitution is admissible and satisfies
+  associativity and interchange (\autoref{def:substitution},
+  \autoref{lemma:subst_properties}).
+
+  \item We show that the type theory correctly defines the free (representable)
+  $\catname{SLat}$-multicategory over a multigraph $\mathcal{G}$, and that this
+  agrees with the free construction obtained by composing the free multicategory
+  functor with the free $\catname{SLat}$-enrichment functor
+  (\autoref{theorem:free_slat_multicat}, \autoref{prop:representabilities_agree}).
+
+  \item We show how equality saturation can be formulated as a fixed point of
+  term rewriting modulo the structural equations of the type theory.
+
+  \item We show how extensions of the type theory capture richer computational
+  phenomena: the explicit \textbf{let} construct captures sharing of subterms,
+  corresponding to the sharing structure of e-graphs; the recursive
+  \textbf{letrec} construct captures cyclic e-graphs, which are modelled
+  categorically by traced monoidal $\catname{SLat}$-categories
+  (\autoref{ex:recursive_let}).
+\end{itemize}
 
 \input{./sections/category_theory}
 \input{./sections/cat_logic}
+\input{./sections/conclusion}
 
-\section{Soundness}
-A theorem about type theory defining a free $\catname{SLat}$-enriched category.
-
-\section{Term rewriting}
-Formulate equality saturation in terms of a fixed point of term rewriting.
-Not sure I can say more than that.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../bibliography}
+
+\appendix
+\input{./sections/appendix}
 
 \end{document}

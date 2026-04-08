@@ -1,0 +1,41 @@
+\section{Conclusion}
+
+We have developed a type theory for semilattice-enriched representable 
+multicategories and shown that it has the standard desirable properties of a 
+well-behaved type theory: terms uniquely determine their derivations, substitution 
+is admissible and satisfies associativity and interchange, and the type theory 
+correctly defines the free (representable) $\catname{SLat}$-multicategory over a 
+multigraph.
+The connection to e-graphs is made precise by showing that the $+$ operation of 
+the type theory corresponds to the equivalence classes of e-graphs, and that 
+equality saturation can be formulated as a fixed point of term rewriting modulo 
+the structural equations of the type theory.
+
+The type theory naturally accommodates extensions that capture richer 
+computational phenomena present in e-graphs.
+The explicit \textbf{let} construct captures sharing of subterms, corresponding 
+to the node-sharing structure of e-graphs.
+The recursive \textbf{letrec} construct captures cyclic e-graphs, which arise 
+when equality saturation introduces cycles, and is modelled categorically by 
+traced monoidal $\catname{SLat}$-categories.
+
+We hope that this work contributes to a cleaner mathematical foundation for 
+e-graphs and equality saturation, complementing the existing categorical accounts 
+of~\citet{tiurin2025equivalencehypergraphsdporewriting} at the level of syntax 
+rather than string diagrams.
+
+\paragraph{Future work.}
+On the computational side, it would be interesting to investigate whether the 
+type theory can be used as the basis for an implementation of equality saturation 
+that is more amenable to formal verification than existing algorithms.
+
+Finally, we speculate that this work may lay some of the mathematical groundwork 
+for programming languages with e-graphs built in as a primitive concept.
+Just as the simply typed lambda calculus underlies the design of functional 
+programming languages, a type theory of the kind developed here could inform the 
+design of a language where equality saturation is not an external optimization 
+pass but an intrinsic part of the language's evaluation semantics --- one where 
+terms natively denote equivalence classes of programs rather than individual 
+programs.
+We leave the development of such a language as an ambitious direction for future 
+work.

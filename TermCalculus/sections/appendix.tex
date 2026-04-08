@@ -1,0 +1,110 @@
+\section{Multicategories}
+
+\begin{definition}[Definition C.1.28 in~\citet{johnson2023homotopytheoryenrichedmackey}]
+    Suppose $\mathcal{M}$ and $\mathcal{N}$ are $\mathcal{V}$-multicategories.
+\paragraph{Vertical composition.} Suppose $\theta$ and $\phi$ are $\mathcal{V}$-multinatural transformations as in the following diagram:
+% https://q.uiver.app/#q=WzAsMixbMCwwLCJcXG1hdGhjYWx7TX0iXSxbMiwwLCJcXG1hdGhjYWx7Tn0iXSxbMCwxLCJGIiwwLHsiY3VydmUiOi0zfV0sWzAsMSwiSCIsMix7ImN1cnZlIjozfV0sWzAsMSwiRyIsMCx7ImxhYmVsX3Bvc2l0aW9uIjozMH1dLFsyLDQsIlxcdGhldGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzQsMywiXFxwaGkiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+\[\begin{tikzcd}
+	{\mathcal{M}} && {\mathcal{N}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-1, to=1-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "H"', curve={height=18pt}, from=1-1, to=1-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "G"{pos=0.3}, from=1-1, to=1-3]
+	\arrow["\theta", between={0.2}{0.8}, Rightarrow, from=0, to=2]
+	\arrow["\phi", between={0.2}{0.8}, Rightarrow, from=2, to=1]
+\end{tikzcd}\]
+The \emph{vertical} composition $\phi \cdot \theta$, is the $\mathcal{V}$-multinatural transformation with component at each $x \in \mathcal{M}$ given by the following composite in $\mathcal{V}$:
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhiZnsxfSJdLFszLDAsIlxcbWF0aGNhbHtOfShGeDtIeCkiXSxbMCwyLCIxIFxcb3RpbWVzIDEiXSxbMywyLCJcXG1hdGhjYWx7Tn0oR3g7SHgpIFxcb3RpbWVzIFxcbWF0aGNhbHtOfShGeDtHeCkiXSxbMCwxLCIoXFx0aGV0YVxccGhpKV97eH0iXSxbMCwyLCJcXGxhbWJkYV57LTF9IiwyXSxbMywxLCJcXGNpcmMiLDJdLFsyLDMsIlxcdGhldGFfe3h9IFxcb3RpbWVzIFxccGhpX3t4fSIsMl1d
+\[\begin{tikzcd}
+	{\mathbf{1}} &&& {\mathcal{N}(Fx;Hx)} \\
+	\\
+	{1 \otimes 1} &&& {\mathcal{N}(Gx;Hx) \otimes \mathcal{N}(Fx;Gx)}
+	\arrow["{(\theta \cdot \phi)_{x}}", from=1-1, to=1-4]
+	\arrow["{\lambda^{-1}}"', from=1-1, to=3-1]
+	\arrow["{\theta_{x} \otimes \phi_{x}}"', from=3-1, to=3-4]
+	\arrow["\circ"', from=3-4, to=1-4]
+\end{tikzcd}\]
+\paragraph{Horizontal composition.} Suppose $\theta$ and $\phi$ are $\mathcal{V}$-multinatural transformations as in the following diagram:
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXG1hdGhjYWx7TX0iXSxbMiwwLCJcXG1hdGhjYWx7Tn0iXSxbNCwwLCJcXG1hdGhjYWx7UH0iXSxbMCwxLCJGXzEiLDAseyJjdXJ2ZSI6LTN9XSxbMCwxLCJGXzIiLDIseyJjdXJ2ZSI6M31dLFsxLDIsIkdfMSIsMCx7ImN1cnZlIjotM31dLFsxLDIsIkdfMiIsMix7ImN1cnZlIjozfV0sWzMsNCwiXFx0aGV0YSIsMix7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XSxbNSw2LCJcXHBoaSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+\[\begin{tikzcd}
+	{\mathcal{M}} && {\mathcal{N}} && {\mathcal{P}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{F_1}", curve={height=-18pt}, from=1-1, to=1-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{G_1}"', curve={height=18pt}, from=1-1, to=1-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{F_2}", curve={height=-18pt}, from=1-3, to=1-5]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{G_2}"', curve={height=18pt}, from=1-3, to=1-5]
+	\arrow["\theta"', between={0.2}{0.8}, Rightarrow, from=0, to=1]
+	\arrow["\phi", between={0.2}{0.8}, Rightarrow, from=2, to=3]
+\end{tikzcd}\]
+The \emph{horizontal} composition $\phi * \theta$ is the $\mathcal{V}$-multinatural transformation with component at each $x \in \mathcal{M}$ given by the following composite in $\mathcal{V}$:
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhiZnsxfSJdLFsyLDAsIlxcbWF0aGNhbHtQfShGXzJGMXg7R18yR18xeCkiXSxbMCwyLCJcXG1hdGhiZnsxfSBcXG90aW1lcyBcXG1hdGhiZnsxfSJdLFsyLDIsIlxcbWF0aGNhbHtQfShGXzJHXzF4O0dfMkdfMXgpXFxvdGltZXMgXFxtYXRoY2Fse059KEZfMkZfMXg7Rl8yR18xeCkiXSxbMCwyLCJcXGxhbWJkYV57LTF9IiwyXSxbMCwxLCIoXFxwaGkqXFx0aGV0YSlfe3h9Il0sWzIsMywiXFxwaGlfe0dfMXh9IFxcb3RpbWVzIEZfMlxcdGhldGFfe3h9IiwyXSxbMywxLCJcXGNpcmMiLDJdXQ==
+\[\begin{tikzcd}
+	{\mathbf{1}} && {\mathcal{P}(F_2F1x;G_2G_1x)} \\
+	\\
+	{\mathbf{1} \otimes \mathbf{1}} && {\mathcal{P}(F_2G_1x;G_2G_1x)\otimes \mathcal{N}(F_2F_1x;F_2G_1x)}
+	\arrow["{(\phi*\theta)_{x}}", from=1-1, to=1-3]
+	\arrow["{\lambda^{-1}}"', from=1-1, to=3-1]
+	\arrow["{\phi_{G_1x} \otimes F_2\theta_{x}}"', from=3-1, to=3-3]
+	\arrow["\circ"', from=3-3, to=1-3]
+\end{tikzcd}\]
+\end{definition}
+
+\begin{proposition}
+\label{prop:representable_enriched}
+    There is a 2-equivalence
+    \[
+    \mathcal{V}\text{-}\catname{RepMultCat} \simeq \mathcal{V}\text{-}\catname{MonCat}
+    \]
+    between the 2-category of representable $\mathcal{V}$-multicategories and the 2-category of $\mathcal{V}$-enriched monoidal categories and strong monoidal $\mathcal{V}$-functors.
+\end{proposition}
+\begin{proof}
+	Below we will distinguish the tensor of $\mathcal{V}$ and the tensor of $\mathcal{C}$ by writing $\otimes$ and  $\enriched{\otimes}$ respectively.
+    The $\mathcal{V}\text{-}\catname{MonCat} \to \mathcal{V}\text{-}\catname{RepMultCat}$ direction is given by the following construction.
+    Given a $\mathcal{V}$-enriched monoidal category $\mathcal{C}$, we construct a $\mathcal{V}$-multicategory $\catname{Mult}\text{-}\mathcal{C}$ by letting:
+    \begin{itemize}
+        \item $\obj{\catname{Mult}\text{-}\mathcal{C}} = \obj{\mathcal{C}}$,
+        \item $\catname{Mult}\text{-}\mathcal{C}(A_1, \ldots, A_n; B) = \mathcal{C}(((A_1 \otimes A_2) \otimes \ldots) \otimes A_n, B)$,
+        \item identities are those of $\mathcal{C}$
+        \item composition $\catname{Mult}\text{-}\mathcal{C}(\langle B \rangle; C) \otimes (\bigotimes_{i=1}^{n} \catname{Mult}\text{-}\mathcal{C}(\langle A_i \rangle; B)) \to \catname{Mult}\text{-}\mathcal{C}(A_{11}, \ldots, A_{1m_{1}}, \ldots, A_{n1}, \ldots, A_{nm_{n}}; C)$ is given by the following composite in $\mathcal{V}$:
+        % https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXG1hdGhjYWx7Q30oKEJfMSBcXGVucmljaGVke1xcb3RpbWVzfSBCXzIpIFxcbGRvdHMgQl97bn0sQykgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tpPTF9XntufVxcbWF0aGNhbHtDfSgoQV97aTF9IFxcZW5yaWNoZWR7XFxvdGltZXN9IEFfe2kyfSkgXFxsZG90cyBBX3tpbV9pfSxCX3tpfSkpIl0sWzMsMiwiXFxtYXRoY2Fse0N9KChBX3sxMX0gXFxvdGltZXMgQV97MTJ9KSBcXGxkb3RzIEFfezFtXzF9KSBcXG90aW1lcyBcXGxkb3RzIFxcb3RpbWVzIEFfe25tX259LEMpIl0sWzAsMiwiXFxtYXRoY2Fse0N9KChCXzEgXFxlbnJpY2hlZHtcXG90aW1lc30gQl8yKSBcXGxkb3RzIEJfe259LEMpIFxcb3RpbWVzXFxtYXRoY2Fse0N9KChBX3sxMX0gXFxlbnJpY2hlZHtcXG90aW1lc31BX3sxMn0pIFxcbGRvdHMgQV97MW1fezF9fSkgXFxlbnJpY2hlZHtcXG90aW1lc30gXFxsZG90cyBcXGVucmljaGVke1xcb3RpbWVzfSBBX3tubV97bn19LCBcXGVucmljaGVke1xcYmlnb3RpbWVzX3tpPTF9XntufX1CX3tpfSkiXSxbMCwyLCJcXGlkIFxcb3RpbWVzIFxcZW5yaWNoZWR7XFxvdGltZXN9IiwyXSxbMiwxLCJcXGNpcmMiXV0=
+\[\begin{tikzcd}
+	{\mathcal{C}((B_1 \enriched{\otimes} B_2) \ldots B_{n},C) \otimes (\bigotimes_{i=1}^{n}\mathcal{C}((A_{i1} \enriched{\otimes} A_{i2}) \ldots A_{im_i},B_{i}))} &&& \\
+	\\
+	{\mathcal{C}((B_1 \enriched{\otimes} B_2) \ldots B_{n},C) \otimes\mathcal{C}((A_{11} \enriched{\otimes}A_{12}) \ldots A_{1m_{1}}) \enriched{\otimes} \ldots \enriched{\otimes} A_{nm_{n}}, \enriched{\bigotimes}_{i=1}^{n}B_{i})} &&& {\mathcal{C}((A_{11} \otimes A_{12}) \ldots A_{1m_1}) \otimes \ldots \otimes A_{nm_n},C)}
+	\arrow["{\id \otimes \enriched{\otimes}}"', from=1-1, to=3-1]
+	\arrow["\circ", from=3-1, to=3-4]
+\end{tikzcd}\]
+using the property that $\enriched{\otimes}$ distributes over $\otimes$~\ref{def:monoidal_enriched_category}.
+$\enriched{\otimes}$ in the map $\id \otimes \enriched{\otimes}$ implicitly includes the necessary symmetries and associatoes so that the arrow makes sense.
+    \end{itemize}
+    This construction induces a corresponding 2-functor.
+    The other direction is given by the following construction.
+    Given a representable $\mathcal{V}$-multicategory $\mathcal{M}$, we construct a $\mathcal{V}$-enriched monoidal category $\mathcal{M}_c$ by letting:
+    \begin{itemize}
+        \item $\obj{\mathcal{M}_c} = \obj{\mathcal{M}}$,
+        \item $\mathcal{M}_c(A, B) = \mathcal{M}(A; B)$,
+        \item for objects $A$ and $B$, we let $A \enriched{\otimes} B$ be the representing object for the universal morphism
+        \[
+        \I \xrightarrow{\xi_{A,B}} \mathcal{M}(A, B; A \enriched{\otimes} B)
+        \]
+        in $\mathcal{V}$, and similarly $\I$ is the representing object for the universal morphism $\I \xrightarrow{\xi_{()}} \mathcal{M}(;\I)$.
+    \end{itemize}
+    The bifunctor $\enriched{\otimes}$ on $\mathcal{M}_c$ is defined on hom-objects as follows. 
+	Given objects $A,B,C,D$, the action of $\enriched{\otimes}$ on morphisms is the morphism in $\mathcal{V}$
+	\[
+	\mathcal{M}_c(A,B) \otimes \mathcal{M}_c(C,D) \to \mathcal{M}_c(A \enriched{\otimes} C, B \enriched{\otimes} D)
+	\]
+	which is given by the following composite in $\mathcal{V}$:
+	% https://q.uiver.app/#q=WzAsNCxbMCw0LCJcXG1hdGhjYWx7TX1fYyhCLEQ7QiBcXGVucmljaGVke1xcb3RpbWVzfSBEKSBcXG90aW1lcyAoXFxtYXRoY2Fse019X2MoQSxCKSBcXG90aW1lcyBcXG1hdGhjYWx7TX1fYyhDLEQpKSJdLFswLDAsIlxcbWF0aGNhbHtNfV9jKEEsQikgXFxvdGltZXMgXFxtYXRoY2Fse019X2MoQyxEKSJdLFswLDIsIlxcSSBcXG90aW1lcyBcXG1hdGhjYWx7TX1fYyhBLEIpIFxcb3RpbWVzIFxcbWF0aGNhbHtNfV9jKEMsRCkiXSxbMiw0LCJcXG1hdGhjYWx7TX1fYyhBLEM7IEIgXFxlbnJpY2hlZHtcXG90aW1lc30gRCkgXFxjb25nIFxcbWF0aGNhbHtNfV9jKEEsQzsgQSBcXGVucmljaGVke1xcb3RpbWVzfSBDKSBcXG90aW1lcyBcXG1hdGhjYWx7TX1fYyhBIFxcZW5yaWNoZWR7XFxvdGltZXN9IEM7IEIgXFxlbnJpY2hlZHtcXG90aW1lc30gRCkiXSxbMSwyLCJcXGxhbWJkYV57LTF9IiwyXSxbMiwwLCJcXHhpX3tCLER9IFxcb3RpbWVzIFxcaWQiLDJdLFswLDMsIlxcY2lyYyJdXQ==
+\[\begin{tikzcd}
+	{\mathcal{M}(A;B) \otimes \mathcal{M}(C;D)} && \\
+	\\
+	{\I \otimes \mathcal{M}(A;B) \otimes \mathcal{M}(C;D)} \\
+	\\
+	{\mathcal{M}(B;D;B \enriched{\otimes} D) \otimes (\mathcal{M}(A;B) \otimes \mathcal{M}(C;D))} && {\mathcal{M}(A,C; B \enriched{\otimes} D) \cong \mathcal{M}(A,C; A \enriched{\otimes} C) \otimes \mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes} D)}
+	\arrow["{\lambda^{-1}}"', from=1-1, to=3-1]
+	\arrow["{\xi_{B,D} \otimes \id}"', from=3-1, to=5-1]
+	\arrow["\circ", from=5-1, to=5-3]
+\end{tikzcd},
+\]
+that is, it is given by the unique hom-object $\mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes} D) = \mathcal{M}_{c}(A \enriched{\otimes} C; B \enriched{\otimes} D)$, such that tensoring on the left with $\mathcal{M}(A,C; A \enriched{\otimes} C)$ is isomorphic to $\mathcal{M}(A,C; B \enriched{\otimes} D)$.
+All of the properties follow similarly to~\autoref{prop:representable_multicategories} generalising to morphisms in $\mathcal{V}$.
+\end{proof}

@@ -1,20 +1,455 @@
-\section{Categorical Semantics}
-This section will introduce categorical semantics of e-graphs in terms of $\catname{SLat}$-enriched categories.
+\section{Categorical semantics of e-graphs}
+This section will introduce categorical semantics of e-graphs as morphism in semilattice-enriched categories as introduced by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+Informally, a semilattice is a set with a binary operation that we denote with a $+$ that is associative, commutative and idempotent.
+A typical example of such a structure is the set of subsets of a given set with $+ \coloneqq \cup$.
+As an e-graph can be understood as a (potentially infinite) set of equivalent terms of a given type $A$, we can identify a given e-graph with some morphism in a hom-semilattice $(\mathbf{1}, A)$ of a Cartesian semilattice-enriched category, where equivalences are given by the $+$.
+For example, the e-graph (b) from~\autoref{fig:e-graph-example} can be written as a term as
+\begin{align}
+\label{eq:e-graph-example-sigma-term}
+(a \otimes ((2;\comonoid) \otimes (1;id));\sym);((* \otimes \counit + (id \otimes \counit \otimes id);<\!\!<) \otimes id);/~,
+\end{align}
+where $+$ encodes the equivalence of the subterms rooted at $*$ and $<\!\!<$.
+This categorical interpretation allows us to define more general notions of e-graphs --- e-graphs for terms with variables, e-graphs for terms with multiple outputs.
+Both of these correspond to morphisms in hom-semilattices where the source and the target are tensors of objects.
+In this work we will generalise even further by considering hom-semilattices of morphisms that have genuinely many inputs, namely we will consider hom-semilattices of multicategories.
+Such treatment will come in handy when we will define the actual type theory for (generalised) e-graphs, because type theories for multicategories arise more naturally than type theories for monoidal categories.
+First, we will recap the necessary notions from enriched category theory giving concrete examples in the case of semilattices and then proceed to multicategories.
 
-However, a more natural setting for a type theory with generators with many inputs are \emph{multicategories}, first introduced by~\citet{LambekMulticategories}, that allow morphisms with multiple sources which is reflected type theoretically as a judgement below
+\subsection{Category of semilattices}
+\begin{definition}[Semilattice]
+	A \textit{semilattice} is a set equipped with an operation that we denote as $+$ which is associative, commutative and idempotent.
+\end{definition}
+
+Note that we do not require the existence of a unit for $+$.
+Semilattices that satisfy this extra requirement are sometimes called \textit{bounded}, i.e., they are idempotent commutative monoids.
+
+\begin{definition}[Semilattice homomorphism]
+	A homomorphism between two semilattices $S_{1}$ and $S_{2}$ is a map $h$ that respects $+$.
+	That is, for all $s,s' \in S_{1}$, $h(s +_{S_{1}} s') = h(s) +_{S_{2}} h(s')$.
+\end{definition}
+
+\begin{definition}[Category of semilattices]
+	Semilattices with their respective homomorphisms form a category that we denote $\catname{SLat}$.
+\end{definition}
+
+  \begin{proposition}
+    $\catname{SLat}$ is a closed symmetric monoidal category.
+  \end{proposition}
+  \begin{proof}
+    The tensor product of two semilattices $S_{1}$ and $S_{2}$ is defined as follows.
+    $S_{1} \otimes S_{2}$ consists of pairs $(s_1,s_2)$ $s_{1} \in S_{1}$, $s_{2} \in S_{2}$ quotiented by commutativity, idempotence and associativity and additionally by the following relations
+    \begin{itemize}
+      \item $(s_{1} +_{S_{1}} s_{1}',s_{2}) \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
+      \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1},s_{2}')$
+    \end{itemize}
+  
+    The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
+    Clearly $S \otimes I \cong S$ by mapping $(s,*) \mapsto s$ for all $s \in S$ and vice versa.
+    The symmetry, associators and unitors are then obvious morphisms.
+    Finally, the category is closed since the set of homomorphisms between two semilattices is a semilattice by defining $(f + g)(x)$ as $f(x) + g(x)$.
+    $f + g$ is a homomorphism since $(f + g)(x+y) = f(x+y) + g(x+y) = f(x) + f(y) + g(x) + g(y) = f(x) + g(x) + f(y) + g(y) = (f+g)(x) + (f+g)(y)$.
+  \end{proof}
+  
+  This makes $\catname{SLat}$ a suitable base for enrichment.
+
+\begin{remark}
+    The above definition of a tensor product should not be confused with a tensor given by $\times$, which is constructed in the same vein as the tensor product above with the additional quotienting
+    \[
+        (s_1,s_2) +_{S_1 \times S_2} (s_1',s_2') \equiv (s_1 +_{S_1} s_1', s_2 +_{S_2} s_2')~.
+    \]
+    The reason for using the former construction is that it has better theoretical properties, in particular, the free semilattice functor (defined below) is a monoidal functor.
+\end{remark}
+
+\begin{definition}
+	Forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(I_{\catname{SLat}, -}) : \catname{SLat} \to \catname{Set}$.
+\end{definition}
+
+Intuitively, the above functor returns the underlying set of a given semilattice $S$ as each morphism from $\{*\} \to S$ picks out an element of $S$.
+
+\begin{proposition}[Special case of Proposition 6.4.6~\cite{Borceux_1994}]
+	The forgetful functor $U : \catname{SLat} \to \catname{Set}$ has a left adjoint free functor $F : \catname{Set} \to \catname{SLat}$.
+\end{proposition}
+\begin{proof}
+	The functor $F$ is defined by letting $F(A) = \coprod_{A} I_{\catname{SLat}}$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
+	The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
+	The adjunction is then given by the following natural isomorphisms
+	\begin{align*}
+		\catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) & \cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B))       \\
+		                                                   & \cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B)) \\
+		                                                   & \cong \catname{Set}(A, U(B))
+	\end{align*}
+	The fist isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
+	Furthermore, we have,
+	\[
+		F(I) \cong I_{\catname{SLat}}
+	\]
+	and
+	\begin{align*}
+		F(A) \otimes F(B) & \cong (\coprod_{A} I_{\catname{SLat}}) \otimes (\coprod_{B} I_{\catname{SLat}}) \\
+		                  & \cong \coprod_{A} (I_{\catname{SLat}} \otimes \coprod_{B} I_{\catname{SLat}})   \\
+		                  & \cong \coprod_{A} (\coprod_{B} (I_{\catname{SLat}} \otimes I_{\catname{SLat}})) \\
+		                  & \cong \coprod_{A} (\coprod_{B} I_{\catname{SLat}})                              \\
+		                  & \cong \coprod_{A \times B} I_{\catname{SLat}}                                   \\
+		                  & \cong F(A \times B)
+	\end{align*}
+	In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
+\end{proof}
+
+\subsection{Enriched categories}
+Enriched categories were introduced by~\citet{EilenbergKellyClosedCategories} as a generalisation of ordinary categories in which hom-sets are replaced by objects of a monoidal category. 
+This framework allows one to encode additional structure directly into the notion of morphism, making it possible to treat contexts such as topology, algebra, and order theory in a unified way. 
+A key motivating example, due to~\citet{lawvere_metric_1973}, shows that metric spaces can be viewed as categories enriched over $[0,\infty]$, illustrating how familiar mathematical structures arise naturally in this setting.
+This perspective not only provided new insights into category theory by drawing on intuition from metric spaces, but also allowed metric spaces themselves to be studied using categorical methods. 
+As a result, enriched category theory provides a flexible and powerful language for organizing and comparing diverse mathematical phenomena.
+In this work, our goals are more utilitarian, as we use the framework of enriched categories to describe a semantics of e-graphs and to define a type theory for them.
+We will proceed with the recap of enriched category theory.
+
+\begin{definition}[Definition 6.2.1 in~\cite{Borceux_1994}]
+  Let $\mathcal{V} = (\mathcal{V}_{0}, \I_{\mathcal{V}}, \otimes, \lambda, \rho, \alpha)$ be a monoidal category where $\lambda$ and $\rho$ are left and right unitors and $\alpha$ is the associator.
+  We define a (small) $\mathcal{V}$-enriched category $\enriched{C}$ consisting of the following data
+  \begin{enumerate}
+    \item a set of objects $\obj{\enriched{C}}$
+    \item for every pair of objects $A,B \in \obj{\enriched{C}}$ --- an (hom-)object $\obj{\enriched{C}}(A,B) \in \mathcal{V}$
+    \item for every triple of objects $A,B,C \in \obj{\enriched{C}}$ --- a composition morphism in $\mathcal{V}$
+    \[
+    \circ_{A,B,C} : \enriched{C}(B,C) \otimes \enriched{C}(A,B) \to \enriched{C}(A,C)
+    \]
+    \item for every object $A \in \obj{\enriched{C}}$ --- a unit morphism
+    \[
+      \id_{A} : \I_{\mathcal{V}} \to \enriched{C}(A,A)
+    \]
+  \end{enumerate}
+  such that the following diagrams commute (associativity and unitality)
+  % https://q.uiver.app/#q=WzAsNSxbMCwwLCIoXFxlbnJpY2hlZHtDfShDLEQpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQixDKSkgXFxvdGltZXMgXFxlbnJpY2hlZHtDfShBLEIpIl0sWzAsMiwiXFxlbnJpY2hlZHtDfShDLEQpIFxcb3RpbWVzIChcXGVucmljaGVke0N9KEIsQykpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQSxCKSJdLFsyLDAsIlxcZW5yaWNoZWR7Q30oQixEKSBcXG90aW1lcyBcXGVucmljaGVke0N9KEEsQikiXSxbMiwyLCJcXGVucmljaGVke0N9KEMsRClcXG90aW1lc1xcZW5yaWNoZWR7Q30oQSxDKSJdLFszLDEsIlxcZW5yaWNoZWR7Q30oQSxEKSJdLFswLDIsIlxcY2lyY197QixDLER9IFxcb3RpbWVzIFxcaWQiXSxbMCwxLCJcXGFscGhhIiwyXSxbMSwzLCJcXGlkIFxcb3RpbWVzIFxcY2lyY197QSxCLEN9IiwyXSxbMiw0LCJcXGNpcmNfe0EsQixEfSJdLFszLDQsIlxcY2lyY197QSxDLER9IiwyXV0=
+\[\begin{tikzcd}
+	{(\enriched{C}(C,D) \otimes \enriched{C}(B,C)) \otimes \enriched{C}(A,B)} && {\enriched{C}(B,D) \otimes \enriched{C}(A,B)} & \\
+	&&& {\enriched{C}(A,D)} \\
+	{\enriched{C}(C,D) \otimes (\enriched{C}(B,C)) \otimes \enriched{C}(A,B)} && {\enriched{C}(C,D)\otimes\enriched{C}(A,C)}
+	\arrow["{\circ_{B,C,D} \otimes \id_{\enriched{C}(A,B)}}", from=1-1, to=1-3]
+	\arrow["\alpha"', from=1-1, to=3-1]
+	\arrow["{\circ_{A,B,D}}", from=1-3, to=2-4]
+	\arrow["{\id_{\enriched{C}(C,D)} \otimes \circ_{A,B,C}}"', from=3-1, to=3-3]
+	\arrow["{\circ_{A,C,D}}"', from=3-3, to=2-4]
+\end{tikzcd}\]
+% https://q.uiver.app/#q=WzAsNixbMCwxLCJcXGVucmljaGVke0N9KEEsQikiXSxbMSwwLCJcXGVucmljaGVke0N9KEEsQikgXFxvdGltZXMgXFxJX3tcXG1hdGhjYWx7Vn19Il0sWzEsMiwiXFxJX3tcXG1hdGhjYWx7Vn19IFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQSxCKSJdLFszLDAsIlxcZW5yaWNoZWR7Q30oQSxCKSBcXG90aW1lcyBcXGVucmljaGVke0EsQX0iXSxbMywyLCJcXGVucmljaGVke0N9KEIsQikgXFxvdGltZXMgXFxlbnJpY2hlZHtDfShBLEIpIl0sWzQsMSwiXFxlbnJpY2hlZHtDfShBLEIpIl0sWzAsMSwiXFxyaG9eey0xfSIsMl0sWzAsMiwiXFxsYW1iZGFeey0xfSJdLFsxLDMsIlxcaWRfe1xcZW5yaWNoZWR7Q30oQSxCKX0gXFxvdGltZXMgXFxpZF97QX0iXSxbMiw0LCJcXGlkX3tCfSBcXG90aW1lcyBcXGlkX3tcXGVucmljaGVke0N9KEEsQil9IiwyXSxbMyw1LCJcXGNpcmNfe0EsQSxCfSIsMl0sWzQsNSwiXFxjaXJjX3tBLEIsQn0iXV0=
+\[\begin{tikzcd}
+	& {\enriched{C}(A,B) \otimes \I_{\mathcal{V}}} && {\enriched{C}(A,B) \otimes \enriched{C}(A,A)} & \\
+	{\enriched{C}(A,B)} &&&& {\enriched{C}(A,B)} \\
+	& {\I_{\mathcal{V}} \otimes \enriched{C}(A,B)} && {\enriched{C}(B,B) \otimes \enriched{C}(A,B)}
+	\arrow["{\id_{\enriched{C}(A,B)} \otimes \id_{A}}", from=1-2, to=1-4]
+	\arrow["{\circ_{A,A,B}}"', from=1-4, to=2-5]
+	\arrow["{\rho^{-1}}"', from=2-1, to=1-2]
+	\arrow["{\lambda^{-1}}", from=2-1, to=3-2]
+	\arrow["{\id_{B} \otimes \id_{\enriched{C}(A,B)}}"', from=3-2, to=3-4]
+	\arrow["{\circ_{A,B,B}}", from=3-4, to=2-5]
+\end{tikzcd}\]
+\end{definition}
+
+We will then omit writing the subscripts, when they are clear from the context.
+We will also replace the composition of $\lambda, \rho, \alpha$ by writing $\cong$.
+
+As hom-objects are not generally sets, we cannot talk about elements of them.
+Instead, we can talk about morphisms from the unit $\I_{\mathcal{V}}$ to a given hom-object $\enriched{C}(A,B)$, which are called \emph{generalised elements} of $\enriched{C}(A,B)$, like we saw above in the case of $\id_{A}$.
+For example, the notion of isomorphism between two objects $A$ and $B$ in such a category $\enriched{C}$ takes the following form.
+
+\begin{definition}[Isomorphism in $\enriched{C}$. Lemma 3.5.12~\cite{Riehl_2014}]
+
+Let $\enriched{C}$ be a $\mathcal{V}$-enriched category.
+Given two objects $A,B \in \enriched{C}$ and a morphism $f : I_{\mathcal{V}} \to \enriched{C}(A,B)$, we call $f$ an isomorphism if there is a $g : I_{\mathcal{V}} \to \enriched{C}(B,A)$ such that
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXEkiXSxbMiwwLCJcXEkgXFxvdGltZXMgXFxJIl0sWzQsMCwiXFxlbnJpY2hlZHtDfShCLEEpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQSxCKSJdLFs0LDIsIlxcZW5yaWNoZWR7Q30oQSxBKSJdLFsyLDMsIlxcY2lyYyJdLFswLDMsIlxcaWRfe0F9IiwyXSxbMCwxLCJcXGNvbmciXSxbMSwyLCJmIFxcb3RpbWVzIGciXV0=
+\[\begin{tikzcd}
+	\I && {\I \otimes \I} && {\enriched{C}(B,A) \otimes \enriched{C}(A,B)} \\
+	\\
+	&&&& {\enriched{C}(A,A)}
+	\arrow["\cong", from=1-1, to=1-3]
+	\arrow["{\id_{A}}"', from=1-1, to=3-5]
+	\arrow["{f \otimes g}", from=1-3, to=1-5]
+	\arrow["\circ", from=1-5, to=3-5]
+\end{tikzcd}\]
+\end{definition}
+
+\begin{example}
+    Since $\catname{SLat}$ is a set-like category, we can talk about elements of the hom-objects for an $\catname{SLat}$-category $\enriched{C}$ by pretending that a particular morphism was chosen by a map from the unit semilattice.
+    Thus, we will simply write $f \in \enriched{C}(A,B)$ meaning $\I_{\catname{SLat}} \to \enriched{C}(A,B)$.
+    $\circ$ being a homomorphism of semilattices means that for any $f,f' \in \enriched{C}(A,B)$ and $g,g' \in \enriched{C}(B,C)$ we have
+    \[
+    (f' + f) \circ (g' + g) = (f' \circ g') + (f' \circ g) + (f \circ g') + (f \circ g)
+    \]
+\end{example}
+
+\begin{definition}
+  Let $\enriched{C}$ and $\enriched{D}$ be two $\mathcal{V}$-categories.
+  A $\mathcal{V}$-enriched functor $F : \enriched{C} \to \enriched{D}$ is defined by the following data.
+  \begin{enumerate}
+    \item A mapping $F : \obj{\enriched{C}} \to \obj{\enriched{D}}$
+    \item An object-indexed family of morphisms in $\mathcal{V}$ $F_{A,B} : \enriched{C}(A,B) \to \enriched{D}(FA,FB)$
+  \end{enumerate}
+  such that the following diagrams commute
+
+  \[
+  \begin{tikzcd}
+	{\enriched{C}(A,A') \otimes \enriched{C}(A',A'')} && {\enriched{C}(A,A'')} \\
+	\\
+	{\enriched{D}(FA,FA') \otimes \enriched{D}(FA',FA'')} && {\enriched{D}(FA,FA'')}
+	\arrow["{c_{A,A',A''}}"', from=1-1, to=1-3]
+	\arrow["{F_{A,A'} \otimes F_{A',A''}}", from=1-1, to=3-1]
+	\arrow["{F_{A,A''}}"', from=1-3, to=3-3]
+	\arrow["{c_{FA,FA',FA''}}"', from=3-1, to=3-3]
+\end{tikzcd}
+\]
+
+\[
+\begin{tikzcd}
+	I_{\mathcal{V}} && {\enriched{C}(A,A)} \\
+	\\
+	&& {\enriched{D}(FA,FA)}
+	\arrow["{u_{A}}", from=1-1, to=1-3]
+	\arrow["{u_{FA}}"', from=1-1, to=3-3]
+	\arrow["{F_{A,A}}", from=1-3, to=3-3]
+\end{tikzcd}
+\]
+\end{definition}
+
+\begin{definition}
+  Given two $\mathcal{V}$-functors $F,G : \enriched{C} \to \enriched{D}$ a $\mathcal{V}$-natural transformation is family of morphisms indexed by objects in $\enriched{C}$, $\alpha_{A} : I_{\mathcal{V}} \to \enriched{D}(FA,GA)$ in $\mathcal{V}$ such that the following diagram commutes
+  \[
+  \begin{tikzcd}
+	& {\enriched{C}(A,A')\otimes I_{\mathcal{V}}} && {\enriched{D}(FA,FA') \otimes \enriched{D}(FA',GA')} \\
+	{\enriched{C}(A,A')} &&&& {\enriched{D}(FA,GA')} \\
+	& {I_{\mathcal{V}} \otimes \enriched{C}(A,A')} && {\enriched{D}(FA,GA) \otimes \enriched{D}(GA,GA')}
+	\arrow["{G_{A,A'}\otimes \alpha_{A'}}"', from=1-2, to=1-4]
+	\arrow["{c_{FA,FA',GA'}}"', from=1-4, to=2-5]
+	\arrow["{r^{-1}}", from=2-1, to=1-2]
+	\arrow["{l^{-1}}", from=2-1, to=3-2]
+	\arrow["{\alpha_{A} \otimes F_{A,A'}}", from=3-2, to=3-4]
+	\arrow["{c_{FA,GA,GA'}}", from=3-4, to=2-5]
+\end{tikzcd}
+\]
+\end{definition}
+
+The data above defines a 2-category $\mathcal{V}\text{-}\catname{Cat}$ of $\mathcal{V}$-enriched categories with $\mathcal{V}$-functors being 1-cells and $\mathcal{V}$-natural transformations being 2-cells.
+This in particular means that we can define adjunction as in any 2-category which immediately gives the definition of many standard categorical constructions.
+
+\begin{definition}[Page 12 in~\citet{Kelly2022BASICCO}]
+    Let $\mathcal{V}$ by a symmetric monoidal category.
+    Then, for any $\mathcal{V}$-categories $\mathcal{M}$ and $\mathcal{N}$ we can define the product category $\mathcal{M} \times \mathcal{N}$ defined by the following data.
+    \paragraph{Objects.} $\obj{\mathcal{M} \times \mathcal{N}} = \obj{\mathcal{M}} \times \obj{\mathcal{N}}$.
+    \paragraph{Hom-objects.} $\mathcal{M} \times \mathcal{N}((A,B), (C,D)) = \mathcal{M}(A,C) \otimes \mathcal{N}(B,D)$.
+    The composition is given be the top arrow in
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCIoXFxtYXRoY2Fse019KEIsRSkgXFxvdGltZXMgXFxtYXRoY2Fse059KEQsRikpIFxcb3RpbWVzIChcXG1hdGhjYWx7TX0oQSxCKSBcXG90aW1lcyBcXG1hdGhjYWx7Tn0oQyxEKSkiXSxbMCwyLCIoXFxtYXRoY2Fse019KEIsRSkgXFxvdGltZXMgXFxtYXRoY2Fse019KEEsQikpIFxcb3RpbWVzIChcXG1hdGhjYWx7Tn0oRCxGKSBcXG90aW1lcyBcXG1hdGhjYWx7Tn0oQyxEKSkiXSxbMiwwLCJcXG1hdGhjYWx7TX0oQSxFKSBcXG90aW1lcyBcXG1hdGhjYWx7Tn0oQyxGKSJdLFswLDEsIm0iLDJdLFsxLDIsIlxcY2lyY197XFxtYXRoY2Fse019fSBcXG90aW1lcyBcXGNpcmNfe1xcbWF0aGNhbHtOfX0iLDJdLFswLDIsIlxcY2lyY197XFxtYXRoY2Fse019IFxcdGltZXMgXFxtYXRoY2Fse059fSJdXQ==
+\[\begin{tikzcd}
+	{(\mathcal{M}(B,E) \otimes \mathcal{N}(D,F)) \otimes (\mathcal{M}(A,B) \otimes \mathcal{N}(C,D))} && {\mathcal{M}(A,E) \otimes \mathcal{N}(C,F)} \\
+	\\
+	{(\mathcal{M}(B,E) \otimes \mathcal{M}(A,B)) \otimes (\mathcal{N}(D,F) \otimes \mathcal{N}(C,D))}
+	\arrow["{\circ_{\mathcal{M} \times \mathcal{N}}}", from=1-1, to=1-3]
+	\arrow["m"', from=1-1, to=3-1]
+	\arrow["{\circ_{\mathcal{M}} \otimes \circ_{\mathcal{N}}}"', from=3-1, to=1-3]
+\end{tikzcd}
+\]
+where $m$ is any suitable composition of $\alpha$ and $\sym$.
+The identity is given by the morphism
+\[
+\I \xrightarrow{\cong} \I \otimes \I \xrightarrow{\id_{\mathcal{M}} \otimes \id_{\mathcal{N}}} \mathcal{M}(A,A) \otimes \mathcal{N}(B,B)
+\]
+\end{definition}
+
+\begin{remark}
+    Note that symmetry of $\mathcal{V}$ is essential to define a tensor product in a $\mathcal{V}$-category.
+\end{remark}
+
+\begin{definition}
+\label{def:monoidal_enriched_category}
+    Let $\enriched{C}$ be a $\mathcal{V}$-category.
+    $\enriched{C}$ is a monoidal $\mathcal{V}$-category if it is equipped with the following functors
+    \[
+    \enriched{C} \times \enriched{C} \xrightarrow{\enriched{\otimes}} \enriched{C} \qquad \enriched{I} \xrightarrow{\I} \enriched{C}
+    \]
+    together with appropriate associators and unitors, where $\enriched{I}$ is the unit $\mathcal{V}$-category with one object and hom-object given by $\I_{\mathcal{V}}$.
+    The definition of composition in $\enriched{C} \times \enriched{C}$ together with functoriality of $\enriched{\otimes}$ results in the following diagram
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCIoXFxlbnJpY2hlZHtDfShCLEUpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oRCxGKSkgXFxvdGltZXMgKFxcZW5yaWNoZWR7Q30oQSxCKSBcXG90aW1lcyBcXGVucmljaGVke0N9KEMsRCkpIl0sWzMsMCwiXFxlbnJpY2hlZHtDfShBLEUpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQyxGKSJdLFswLDIsIlxcZW5yaWNoZWR7Q30oQiBcXGVucmljaGVke1xcb3RpbWVzfSBELCBFIFxcZW5yaWNoZWR7XFxvdGltZXN9IEYpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQSBcXGVucmljaGVke1xcb3RpbWVzfSBDLCBCIFxcZW5yaWNoZWR7XFxvdGltZXN9IEQpIl0sWzMsMiwiXFxlbnJpY2hlZHtDfShBIFxcZW5yaWNoZWR7XFxvdGltZXN9IEMsIEUgXFxlbnJpY2hlZHtcXG90aW1lc30gRikiXSxbMCwxLCJcXGNpcmN7XFxlbnJpY2hlZHtDfSBcXHRpbWVzIFxcZW5yaWNoZWR7Q319Il0sWzAsMiwiXFxlbnJpY2hlZHtcXG90aW1lc30gXFxvdGltZXMgXFxlbnJpY2hlZHtcXG90aW1lc30iLDJdLFsxLDMsIlxcZW5yaWNoZWR7XFxvdGltZXN9Il0sWzIsMywiXFxjaXJjX3tcXGVucmljaGVke0N9fSIsMl1d
+\[\begin{tikzcd}
+	{(\enriched{C}(B,E) \otimes \enriched{C}(D,F)) \otimes (\enriched{C}(A,B) \otimes \enriched{C}(C,D))} &&& {\enriched{C}(A,E) \otimes \enriched{C}(C,F)} \\
+	\\
+	{\enriched{C}(B \enriched{\otimes} D, E \enriched{\otimes} F) \otimes \enriched{C}(A \enriched{\otimes} C, B \enriched{\otimes} D)} &&& {\enriched{C}(A \enriched{\otimes} C, E \enriched{\otimes} F)}
+	\arrow["{\circ_{\enriched{C} \times \enriched{C}}}", from=1-1, to=1-4]
+	\arrow["{\enriched{\otimes} \otimes \enriched{\otimes}}"', from=1-1, to=3-1]
+	\arrow["{\enriched{\otimes}}", from=1-4, to=3-4]
+	\arrow["{\circ_{\enriched{C}}}"', from=3-1, to=3-4]
+\end{tikzcd}\]
+meaning that $\enriched{\otimes}$ distributes over $\otimes$.
+\end{definition}
+
+\begin{example}
+    For an $\catname{SLat}$-category $\enriched{C}$, the hom-objects of $\enriched{C} \times \enriched{C}$ are tensor products of semilattices.
+    This, together with the tensor being a homomorphism of semilattices, means that we have the following property for the tensor product
+    \[
+    (f + g) \otimes h = f \otimes h + g \otimes h,
+    \]
+    because in a tensor product of semilattices we have that $(f + g, h) = (f,h) + (g,h)$ so the acion of the tensor product functor must agree on both sides.
+\end{example}
+
+\begin{example}
+    We can then define a closed monoidal $\catname{SLat}$-category $\enriched{C}$ as a category equipped with a pair of adjoint $\catname{SLat}$-functors for all objects $X$
+    \[
+    (-) \otimes X \dashv X \multimap (-) \colon \enriched{C} \to \enriched{C}
+    \]
+    defined by $\catname{SLat}$-natural transformations
+    \[
+    \eta \colon \I \to X \multimap (- \otimes X) \qquad \varepsilon \colon (X \multimap -) \otimes X.
+    \]
+    With these we can define the \enquote{currying} operator $\Lambda : \enriched{C}(A \otimes B, D) \to \enriched{C}(A, B \multimap D)$ for a morphism $f \in \enriched{C}(A \otimes B, D)$ as
+    \[
+    \Lambda(f) \Coloneq (B \multimap f) \circ \eta_{B}.
+    \]
+    We have that
+    \begin{align*}
+    \Lambda(f + g) &= (B \multimap (f+g)) \circ \eta_{B}\\
+                   &= ((B \multimap f) + (B \multimap g)) \circ \eta_{B}\\
+                   &= (B \multimap f) \circ \eta_{B} + (B \multimap g) \circ \eta_{B}\\
+                   &= \Lambda(f) + \Lambda(g)
+    \end{align*}
+    by using the properties of $B \multimap -$ being an $\catname{SLat}$-functor and $\circ$ being the composition.
+\end{example}
+
+It comes as no surprise that we can turn a given ordinary category $\mathcal{C}$ into an $\catname{SLat}$-category $\enriched{C}$ is a canonical way.
+This fact is leveraged when defining the semantics of e-graphs since the latter are defined over a signature of generating morphisms.
+Canonically building an $\catname{SLat}$-category from this signature induces the mentioned semantics.
+
+\begin{definition}[Proposition 6.4.7~\cite{Borceux_1994}]
+    Let $\mathcal{V}$ and $\mathcal{W}$ be monoidal categories and let $F : \mathcal{V} \to \mathcal{W}$ be a monoidal functor.
+    It induces a 2-functor $\tilde{F} : \mathcal{V}\text{-}\catname{Cat} \to \mathcal{W}\text{-}\catname{Cat}$ defined as follows.
+    \paragraph{Objects.} Given a $\mathcal{V}$-category $\enriched{C}$, $\tilde{F}(\enriched{C})$ has the same objects as $\enriched{C}$.
+    \paragraph{Hom-objects.} For any pair of objects $A,B$, $\tilde{F}(\enriched{C})(A,B) \Coloneq F(\enriched{C}(A,B))$.
+    \paragraph{Composition.} For any triple of objects $A,B,C$, the composition morphism $\circ_{A,B,C} : \tilde{F}(\enriched{C})(B,C) \otimes \tilde{F}(\enriched{C})(A,B) \to \tilde{F}(\enriched{C})(A,C)$ is given by the following composition
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXHRpbGRle0Z9KFxcZW5yaWNoZWR7Q30pKEIsQykgXFxvdGltZXMgXFx0aWxkZXtGfShcXGVucmljaGVke0N9KShBLEIpIl0sWzAsMiwiRihcXGVucmljaGVke0N9KEIsQykpIFxcb3RpbWVzIEYoXFxlbnJpY2hlZHtDfShBLEIpKSJdLFsyLDIsIkYoXFxlbnJpY2hlZHtDfShCLEMpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQSxCKSkiXSxbNCwyLCJGKFxcZW5yaWNoZWR7Q30oQSxDKSkgPSBcXHRpbGRle0Z9KFxcZW5yaWNoZWR7Q30pKEEsQykiXSxbMCwxLCI9IiwyXSxbMSwyLCJcXGNvbmciXSxbMiwzLCJGKFxcY2lyYykiXV0=
+\[\begin{tikzcd}
+	{\tilde{F}(\enriched{C})(B,C) \otimes \tilde{F}(\enriched{C})(A,B)} &&&& \\
+	\\
+	{F(\enriched{C}(B,C)) \otimes F(\enriched{C}(A,B))} && {F(\enriched{C}(B,C) \otimes \enriched{C}(A,B))} && {F(\enriched{C}(A,C)) = \tilde{F}(\enriched{C})(A,C)}
+	\arrow["{=}"', from=1-1, to=3-1]
+	\arrow["\cong", from=3-1, to=3-3]
+	\arrow["{F(\circ)}", from=3-3, to=3-5]
+\end{tikzcd}\]
+\paragraph{Identities.} For any object $A$, the identity morphism $\id_{A} : I_{\mathcal{W}} \to \tilde{F}(\enriched{C})(A,A)$ is given by the following composition
+\[
+\I_{\mathcal{W}} \xrightarrow{\cong} F(\I_{\mathcal{V}}) \xrightarrow{F(\id_{A})} F(\enriched{C}(A,A)) = \tilde{F}(\enriched{C})(A,A)
+\]
+\paragraph{Functors.} Given a $\mathcal{V}$-functor $G : \enriched{C} \to \enriched{D}$, $\tilde{F}(G) : \tilde{F}(\enriched{C}) \to \tilde{F}(\enriched{D})$ is given by the same mapping on objects and the following morphism on hom-objects
+\[
+(\tilde{F}\enriched{C})(A,B) = F(\enriched{C}(A,B)) \xrightarrow{F(G_{A,B})} F(\enriched{D}(GA,GB)) = (\tilde{F}\enriched{D})(GA,GB)
+\]
+\paragraph{Natural transformations.} Given a $\mathcal{V}$-natural transformation $\alpha : G \to H$ between $\mathcal{V}$-functors $G,H : \enriched{C} \to \enriched{D}$, $\tilde{F}(\alpha) : \tilde{F}(G) \to \tilde{F}(H)$ is given by the following family of morphisms
+\[
+\I_{\mathcal{W}} \xrightarrow{\cong} F(\I_{\mathcal{V}}) \xrightarrow{F(\alpha_{A})} F(\enriched{D}(GA,HA)) = (\tilde{F}\enriched{D})(GA,HA)
+\]
+\end{definition}
+
+\begin{example}
+    Let $\mathcal{C}$ be a usual $\catname{Set}$-category and let $F : \catname{Set} \to \catname{SLat}$ be the free semilattice functor.
+    Then $\enriched{C} = \tilde{F}(\mathcal{C})$ has the same objects as $\mathcal{C}$ and every hom-object $\enriched{C}(A,B)$ additionally contains $f + g$ for all $f,g \in \mathcal{C}(A,B)$ quotiented by the axioms of a semilattice, or, equivalently, consists of all finite non-empty subsets of $\mathcal{C}(A,B)$.
+    The identity $\id_{A}$ is given by the identity of $\mathcal{C}(A,A)$ and the composition is defined componentwise.
+    $\tilde{F}$ being a 2-functor means that $\enriched{C}$ inherits all adjunctions from $\mathcal{C}$.
+
+    When the functor $\tilde{F}$ is induced by a free functor from $\catname{Set}$, we call it a free enrichment.
+\end{example}
+
+\begin{proposition}[Theorem 5.7.1~\cite{cruttwell2008normed}]
+    Let $\mathcal{V}$ and $\mathcal{W}$ be symmetric monoidal categories and let $F : \mathcal{V} \to \mathcal{W}$ be a symmetric monoidal functor.
+    Then, the induced 2-functor $\tilde{F} : \mathcal{V}\text{-}\catname{Cat} \to \mathcal{W}\text{-}\catname{Cat}$ maps monoidal $\mathcal{V}$-categories to monoidal $\mathcal{W}$-categories.
+\end{proposition}
+
+All the above properties are essential to give a semantics to (generalised) e-graphs.
+The latter are defined over a signature of generating morphisms that induce some free category with, for example, symmetric monoidal closed structure.
+Then, free enrichment allows us to talk about equivalence classes of morphisms in this category with all structures of the original category preserved.
+We recap this interpretation next.
+
+\subsection{E-graphs as enriched PROPs}
+
+A presentation of an algebraic theory is traditionally given by a \textit{signature} of $n$-ary operations and a set of \textit{equations}---formally,  pairs of terms freely generated over the signature which are identified.  We are interested here in symmetric monoidal theories, which are generalisations of algebraic theories where the operations of the signature may have arbitrary \textit{co-arities}.  
+First,  we generalise the notion of a signature. 
+\begin{definition}[Monoidal signature]
+A \textit{(monoidal) signature} $\Sigma$ is given by a set of \textit{generators} $c: n \to m$,  with \textit{arity} $n$ and \textit{co-arity} $m$.  %A \textit{signature homomorphism} $h: \Sigma \to \Gamma$ is a function from $\Sigma$ to $\Gamma$ which preserves the (co-)arities of elements. 
+\end{definition}
+
+% \begin{remark}
+%     Below we will assume that for all $c_1,c_2 \in \Sigma$, if arity (respectively, co-arity) of $c_1$ is 0, then co-arity (respectively, arity) of $c_2$ must be at least 1.
+% 	This is to ensure we do not have terms of type $0 \to 0$.
+% \end{remark}
+
+A \textit{symmetric monoidal theory} is then defined using $\Sigma$-terms.
+A set of such terms is the set obtained by taking well-typed combinations of $c \in \Sigma, \textsf{id}_{I}, \textsf{id}_{1}, \text{sym}_{1,1}, (;), \text{ and } \otimes$.
+A categorical presentation of a set of $\Sigma$-terms is given by a freely generated products and permutations category.
+
+\begin{definition}[Products and permutations category]
+A \textit{products and permutations category (PROP)} is a strict symmetric monoidal category with natural numbers as objects,  and such that $n \otimes m = n+m$.  
+A \textit{PROP functor} is a strict SMC-functor which is additionally identity-on-objects.
+We denote the free \textit{products and permutations category} over a monoidal signature $\Sigma$ by $\catname{S}(\Sigma)$.
+Such PROPs and functors between them define the category $\catname{PROP}$ and, in particular, $\catname{S}(\Sigma) \in \catname{PROP}$.
+\end{definition}
+The free category $\textbf{S}(\Sigma)$ can be syntactically constructed by quotienting the set of $\Sigma$-terms by the axioms of a symmetric monoidal category.
+Thus, $\textbf{S}$ stands for \textit{syntactic} as another way of saying free.
+
+An equation associated with a monoidal signature is a pair of parallel $\Sigma$-terms, leading to the following definition of a symmetric monoidal theory. 
+\begin{definition}[Symmetric Monoidal Theory (Definition 2.1~\cite{bonchi_string_2022-1})]
+A \textit{presentation of a symmetric monoidal theory} $(\Sigma, \mathcal{E})$ is given by a pair of a monoidal signature $\Sigma$ and a set $\mathcal{E}$ of pairs of parallel $\Sigma$-terms $f,g: n \to m$.
+A \textit{symmetric monoidal theory} $\textbf{SMT}(\Sigma,\mathcal{E})$ generated by a presentation $(\Sigma, \mathcal{E})$ is given by a set of $\Sigma$-terms quotiented by the least congruence including $\mathcal{E}$.
+\end{definition}
+
+\begin{definition}(Definition 2.4~\cite{bonchi_string_2022-1})
+Let $\catname{S}(\Sigma, \mathcal{E})$ a free PROP presented by $\catname{SMT}(\Sigma, \mathcal{E})$.
+That is, it is given by $\catname{S}(\Sigma)$ additionally quotiented by the least congruence including $\mathcal{E}$.
+\end{definition}
+
+\begin{definition}
+We define $\catname{S}(\Sigma)^{+}$ and $\catname{S}(\Sigma, \mathcal{E})^{+}$ to be $\catname{SLat}$-SMCs obtained as $\mathcal{F}(\catname{S}(\Sigma))$ and $\mathcal{F}(\catname{S}(\Sigma, \mathcal{E}))$ respectively.
+Both of these $\catname{SLat}$-categories are in $\catname{PROP}^{+}$ which we define to be the image of $\catname{PROP}$ via the same adjunction.
+\end{definition}
+Equivalently, they can be constructed from taking (typed) $\Sigma^+$-terms  -- namely, those freely constructed from generators $c \in \Sigma$, $\textsf{id}_1$, $\sym_{1,1}$, $(;\!)$ and $\otimes$ (and $f+g$, respectively) -- quotiented by the axioms of an enriched symmetric monoidal category (and the least congruence including $\mathcal{E}$ in the case of $\catname{S}(\Sigma, \mathcal{E})^{+}$).
+
+\begin{figure}
+
+\begin{align*}
+    \text{functional symbols}& \hspace{2em} f,g\\
+    \text{e-class id}& \hspace{2em} a,b\\
+    \text{terms}& \hspace{2em} t \Coloneqq f \;|\; f (t_1, \ldots, t_m) \hspace{2em} &m \geq 1\\
+    \text{e-nodes}& \hspace{2em} n \Coloneqq f \;|\; f (a_1, \ldots, a_m) \hspace{2em} &m \geq 1\\
+    \text{e-classes}& \hspace{2em} c \Coloneqq \{n_1, \ldots, n_m\}   \hspace{2em} &m \geq 1
+\end{align*}
+\caption{E-graph components}
+\label{fig:e-graph-components}
+\end{figure}
+
+\begin{definition}[E-graph~\cite{EggPaper}]
+    E-graph is a data-structure that consists of
+    \begin{itemize}
+        \item components defined in a grammar in Figure~\ref{fig:e-graph-components}
+        \item a union find structure $U$ that stores equivalence relation on e-class ids
+        \item \textit{e-class} map $M$ that maps e-class ids to e-classes. All equivalent e-class ids map to the same e-class, \textit{i.e.}, if $a \equiv_{id} b$ then $M[a]$ and $M[b]$ are the same set.
+              An e-class id $a$ is said to refer to e-class $M[\text{find}(a)]$. NB: $\text{find}()$ returns the canonical representative for the equivalence, i.e. the last predecessor of $a$ in $U$.
+        \item The \textit{hashcons} map $H$ that maps e-nodes to e-class ids.
+    \end{itemize}
+    Together with operations that \texttt{add} terms into the e-graph and \texttt{merge} e-classes, while maintaining the invariants.
+\end{definition}
+
+\citet{tiurin2025equivalencehypergraphsdporewriting} then interpreted each e-graph as a morphism in $\catname{SMT}(\Sigma, \mathcal{E})^{+}$ where $\Sigma$-terms correspond to the terms component of an e-graph and $\mathcal{E}$ are equalities of these $\Sigma$-terms.
+They then rendered each such morphism as a concrete combinatorial object --- an e-hypergraph --- and defined the rewriting of those such that a series of rewriting steps expressed \texttt{add} and \texttt{merge} operations of an e-graph.
+In what follows, we will focus on the categorical semantics of e-graphs in terms of morphisms in structures that have a notion of an operation with many inputs as a first-class entity.
+These structures are called multicategories, first introduced by~\citet{LambekMulticategories}, and are a generalisation of categories that allow morphisms with multiple sources.
+These categories are particularly useful for giving semantics to type theories, by treating the following judgements naturally, without having to worry about associativity of the context on the left of the turnstile, essintially treating it as a list.
 \[
 \inferrule{\;}{x_1 : A_1, \ldots, x_n : A_n \vdash M}
 \]
-One benefit of treating things multicategorically is that it allows one to not bother about associativity of the context on the left of the turnstile, essentially treating it as a list.
 Another benefit is that the properties of the substitution in type theory directly mirror the properties of multicategorical composition.
 Familiar notions of monoidal categories with different additional structures are then just special cases of multicategories.
 We will formally define multicategories next as well as their enriched versions next.
+Ultimately, the type theory for these multicategories will give us a well-defined term calculus for e-graphs, which are notationally better than the raw $\Sigma^{+}$-terms used in~\autoref{eq:e-graph-example-sigma-term}.
 
 \subsection{Multicategories}
+\label{sec:multicategories}
 \begin{definition}
     A \emph{multicategory} $\mathcal{M}$ consists of the following data:
     \begin{enumerate}
-        \item a collection of objects $\mathrm{Ob}(\mathcal{M})$;
+        \item a collection of objects $\obj(\mathcal{M})$;
         \item for each $n \geq 0$ and objects $A_1, \ldots, A_n, B$, a set of (multi-) morphisms
         \[\mathcal{M}(A_1, \ldots, A_n; B)\,;\]\
         \item for each object $A$, an identity morphism $\mathrm{id}_A \in \mathcal{M}(A; A)$;
@@ -40,6 +475,7 @@ We will formally define multicategories next as well as their enriched versions 
 A typical example is a multicategory of vector spaces and multilinear maps.
 
 \begin{remark}
+\label{remark:placed_composition}
     Equivalently, one can define a multicategory using the data (1) - (3) above, together with a placed binary composition
     \begin{align*}
     \mathcal{M}({B_1, \ldots, B_m;C}) \times \mathcal{M}(A_1, \ldots, A_n; B_i) &\to \mathcal{M}(B_1, \ldots, B_{i-1}, A_1, \ldots, A_n, B_{i+1}, \ldots, B_{m};C)\\
@@ -76,7 +512,7 @@ A typical example is a multicategory of vector spaces and multilinear maps.
 \begin{definition}
     A (multi-) \emph{functor} $F : \mathcal{M} \to \mathcal{N}$ between multicategories $\mathcal{M}$ and $\mathcal{N}$ consists of the following data:
     \begin{itemize}
-        \item a function $F : \mathrm{Ob}(\mathcal{M}) \to \mathrm{Ob}(\mathcal{N})$;
+        \item a function $F : \obj(\mathcal{M}) \to \obj(\mathcal{N})$;
         \item for each $n$ and objects $A_1, \ldots, A_n, B$, a function
         \[
         F : \mathcal{M}(A_1, \ldots, A_n; B) \to \mathcal{N}(F(A_1), \ldots, F(A_n); F(B))
@@ -111,7 +547,7 @@ A typical example is a multicategory of vector spaces and multilinear maps.
 \end{remark}
 
 \begin{definition}
-    A tensor product in a multicategory $\mathcal{M}$ is an object $\bigotimes_{i}A_{i}$ together with a morphism $\xi \in \mathcal{M}(A_1, \ldots, A_{n}; \bigotimes_{i}A_{i})$ such that all $- \circ_{i} \xi_{i}$ are bijections
+    A tensor product in a multicategory $\mathcal{M}$ is an object $\bigotimes_{i}A_{i}$ together with a morphism $\xi \in \mathcal{M}(A_1, \ldots, A_{n}; \bigotimes_{i}A_{i})$ such that all $- \circ_{i} \xi_{i}$ are bijections, natural in $D$ and multinatural in $B_i,C_j$,
     \[
     \mathcal{M}(B_{1}, \ldots, B_{n}, A_{1}, \ldots, A_{n}, C_{1}, \ldots, C_{k}; D) \xrightarrow{\sim} \mathcal{M}(B_1, \ldots, B_n, \bigotimes_{i}A_{i}, C_{1}, \ldots, C_{k}; D)
     \]
@@ -119,6 +555,7 @@ A typical example is a multicategory of vector spaces and multilinear maps.
 \end{definition}
 
 \begin{proposition}[Theorem 9.8 in~\citet{hermida_representable_2000}]
+\label{prop:representable_multicategories}
     There is a 2-equivalence
     \[
     \catname{RepMultCat} \simeq \catname{MonCat}
@@ -129,9 +566,9 @@ A typical example is a multicategory of vector spaces and multilinear maps.
     The $\catname{MonCat} \to \catname{RepMultCat}$ direction of the equivalence is given by the following construction.
     Given a monoidal category $\mathcal{V} = (\mathcal{V}, \otimes, \mathbf{1}_{V}, \lambda, \rho, \alpha)$, we can construct a representable multicategory $\catname{Mult}-\mathcal{V}$ as follows:
     \begin{itemize}
-        \item $\mathrm{Ob}(\catname{Mult}-\mathcal{V}) = \mathrm{Ob}(\mathcal{V})$
-        \item $\catname{Mult}-\mathcal{V}(A_1, \ldots, A_n; B) = \mathcal{V}(((A_1 \otimes A_2) \ldots \otimes A_n), B)$, \emph{i.e.}, given by a morphism from the tensor product associated from the left to $B$.
-        \item identities are those of $\mathcal{V}$
+        \item $\obj{\catname{Mult}-\mathcal{V}} = \obj{\mathcal{V}}$;
+        \item $\catname{Mult}-\mathcal{V}(A_1, \ldots, A_n; B) = \mathcal{V}(((A_1 \otimes A_2) \ldots \otimes A_n), B)$, \emph{i.e.}, given by a morphism from the tensor product associated from the left to $B$;
+        \item identities are those of $\mathcal{V}$;
         \item composition $g \circ (f_1, \ldots, f_m) : \catname{Mult}-\mathcal{V}(A_{11}, \ldots, A_{mn_m}; B)$ for $f_i \in \catname{Mult}-\mathcal{V}(A_{i1}, \ldots, A_{in_i};B)$ and $g \in \catname{Mult}-\mathcal{V}(B_1, \ldots, B_m;C)$ is given by the following composition in $\mathcal{V}$:
 % https://q.uiver.app/#q=WzAsNCxbMCwwLCIoKEFfezExfSBcXG90aW1lcyBBX3sxMn0pIFxcb3RpbWVzIFxcbGRvdHMgXFxvdGltZXMgQV97bW5fbX0pIl0sWzAsMiwiKEFfezExfSBcXG90aW1lcyBcXGxkb3RzIFxcb3RpbWVzIEFfezFuXzF9KVxcbGRvdHMoQV97bTF9IFxcb3RpbWVzIFxcbGRvdHMgXFxvdGltZXMgQV97bW5fbX0pIl0sWzIsMiwiQl8xIFxcb3RpbWVzIFxcbGRvdHMgXFxvdGltZXMgQl9tIl0sWzQsMiwiQiJdLFswLDEsIlxcc2ltZXEiXSxbMSwyLCJmXzEgXFxvdGltZXMgXFxsZG90cyBcXG90aW1lcyBmX20iXSxbMiwzLCJnIl1d
 \[\begin{tikzcd}
@@ -143,11 +580,12 @@ A typical example is a multicategory of vector spaces and multilinear maps.
 	\arrow["g", from=3-3, to=3-5]
 \end{tikzcd}\]
     \end{itemize}
+    The universal morphisms $\xi$ are then given by the corresponding identity maps.
     This construction induces a corresponding 2-functor.
     The other direction is given by the following construction.
     Given a representable multicategory $\mathcal{M}$, we construct a monoidal category $\mathcal{M}_{c}$ by letting:
     \begin{itemize}
-        \item $\mathrm{Ob}(\mathcal{M}_{c}) = \mathrm{Ob}(\mathcal{M})$
+        \item $\obj{\mathcal{M}_{c}} = \obj{\mathcal{M}}$
         \item $\mathcal{M}_{c}(A, B) = \mathcal{M}(A; B)$
         \item for objects $A$ and $B$, we let $A \otimes B$ be the object in the codomain of the universal arrow $(A,B) \to A \otimes B$ in $\mathcal{M}$, and $\mathbf{1}_{\mathcal{M}_{c}}$ be the object in the codomain of the universal arrow $() \to \mathbf{1}$.
     \end{itemize}
@@ -175,6 +613,7 @@ The equivalence above extends to the case of monoidal categories with additional
 The generalisation comes through the notion of $\mathfrak{S}$-multicategories.
 
 \begin{definition}
+\label{def:S_multicategory}
 Let $\mathfrak{S}$ be a faithful cartesian club. 
 A $\mathfrak{S}$-multicategory is a multicategory $\mathcal{M}$ together with an operation
 \[
@@ -229,19 +668,19 @@ Concatenation is associative with the unit $\langle \rangle$.
 \begin{definition}[Definition C.1.3 in~\citet{johnson2023homotopytheoryenrichedmackey}]
 A (small) $\mathcal{V}$-enriched multicategory $\mathcal{M}$ consists of the following data:
 \paragraph{Objects:} 
-  a set of objects $\mathrm{Ob}(\mathcal{M})$;
-\paragraph{Morphisms:} for $\langle \langle x \rangle, x' \rangle \in \text{Prof}(S) \times S$ and $\langle x \rangle = \langle x_j \rangle_{j=1}^{n}$, it is equipped with an object in $\mathcal{V}$ 
+  a set of objects $\obj(\mathcal{M})$, that we identify with $\mathcal{M}$ when it is clear from the context;
+\paragraph{Morphisms:} for $\langle \langle x \rangle, x' \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ and $\langle x \rangle = \langle x_j \rangle_{j=1}^{n}$, it is equipped with an object in $\mathcal{V}$ 
   \[
   \mathcal{M}(\langle x \rangle; x') = \mathcal{M}(x_1, \ldots, x_n; x')
   \]
-\paragraph{Identities:} for each object $x \in \mathrm{Ob}(\mathcal{M})$, a morphism $id_x$:
+\paragraph{Identities:} for each object $x \in \obj(\mathcal{M})$, a morphism $id_x$:
   \[
   \mathbf{1} \to \mathcal{M}(x;x)
   \]
   in $\mathcal{V}$;
 \paragraph{Composition:}
 \begin{itemize}
-  \item given $\langle \langle x' \rangle, y \rangle \in \text{Prof}(S) \times S$ with $\langle x' \rangle = \langle x'_j \rangle_{j=1}^{n} \in \text{Prof}(M)$ and
+  \item given $\langle \langle x' \rangle, y \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ with $\langle x' \rangle = \langle x'_j \rangle_{j=1}^{n} \in \text{Prof}(\mathcal{M})$ and
   \item $\langle x_j \rangle = \langle x_{ji} \rangle_{i=1}^{m_j}$ for each $j \in \{1, \ldots, n\}$ with $\langle x \rangle = \bigoplus_{j=1}^{n} \langle x_j \rangle$,
 \end{itemize}
 then $\mathcal{M}$ is equipped with a morphism in $\mathcal{V}$
@@ -250,6 +689,14 @@ then $\mathcal{M}$ is equipped with a morphism in $\mathcal{V}$
 \]
 such that the appropriate diagrams commute for the above data.
 \end{definition}
+
+\begin{remark}
+    We can similarly define a $\mathcal{V}$-enriched multicategory by using a placed composition:
+    \[
+    \mathcal{M}(\langle x' \rangle; y) \otimes \mathcal{M}(\langle x'' \rangle; x'_{i}) \xrightarrow{\circ_{i}} \mathcal{M}((x_{1}, \ldots, x_{i-1}, x''_{1}, \ldots, x''_{m}, \ldots, x_{n}); y)
+    \]
+    where $\langle x \rangle = \langle x_{i} \rangle_{i=1}^{n}$ and $\langle x'' \rangle = \langle x''_{j} \rangle_{j=1}^{m}$, subject to the same conditions as in~\autoref{remark:placed_composition} phrased in terms of morphisms in $\mathcal{V}$.
+\end{remark}
 
 \begin{example}
     In the case when $\mathcal{V} = \catname{SLat}$, the above definition tells us, that in particular, the following holds
@@ -263,8 +710,8 @@ such that the appropriate diagrams commute for the above data.
     Given two $\mathcal{V}$-multicategories $\mathcal{M}$ and $\mathcal{N}$, a $\mathcal{V}$-enriched multifunctor 
     \[F : \mathcal{M} \to \mathcal{N}\] 
     consists of the following data:
-    \paragraph{Function on objects:} a function $F : \mathrm{Ob}(\mathcal{M}) \to \mathrm{Ob}(\mathcal{N})$;
-    \paragraph{Function on morphisms:} for each $\langle \langle x \rangle, y \rangle \in \text{Prof}(S) \times S$ a morphism in $\mathcal{V}$:
+    \paragraph{Function on objects:} a function $F : \obj{\mathcal{M}} \to \obj{\mathcal{N}}$;
+    \paragraph{Function on morphisms:} for each $\langle \langle x \rangle, y \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ a morphism in $\mathcal{V}$:
     \[
     \mathcal{M}(\langle x \rangle; y) \xrightarrow{F} \mathcal{N}(\langle F(x_j) \rangle_{j=1}^{n}; F(y))
     \]
@@ -291,3 +738,171 @@ such that the appropriate diagrams commute for the above data.
 \end{tikzcd}
 \]
 \end{definition}
+
+\begin{definition}[Definition C.1.25 in~\citet{johnson2023homotopytheoryenrichedmackey}]
+    Given two $\mathcal{V}$-multifunctors $F,G : \mathcal{M} \to \mathcal{N}$, a $\mathcal{V}$-enriched multinatural transformation $\theta : F \Rightarrow G$ consists of the following data:
+    \paragraph{Components:} for each object $x$ of $\mathcal{M}$, a morphism $\theta_x$ in $\mathcal{V}$:
+    \[
+    \mathbf{1} \to \mathcal{N}(Fx; Gx)
+    \]
+    such that the following diagram commutes for each $\langle \langle x' \rangle, y \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ with $\langle x' \rangle = \langle x'_j \rangle_{j=1}^{n}$ and $\langle x_j \rangle = \langle x_{ji} \rangle_{i=1}^{m_j}$ for each $j$ with $\langle x \rangle = \bigoplus_{j=1}^{n} \langle x_j \rangle$:
+    % https://q.uiver.app/#q=WzAsNixbMCwyLCJcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCBcXHJhbmdsZTsgeSkiXSxbMSwwLCJcXG1hdGhiZnsxfSBcXG90aW1lcyBcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCBcXHJhbmdsZTsgeSkiXSxbNCwwLCJcXG1hdGhjYWx7Tn0oRnk7R3kpIFxcb3RpbWVzIFxcbWF0aGNhbHtOfShcXGxhbmdsZSBGeCBcXHJhbmdsZTsgRnkpIl0sWzUsMiwiXFxtYXRoY2Fse059KFxcbGFuZ2xlIEZ4IFxccmFuZ2xlOyBHeSkiXSxbMSw0LCJcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCBcXHJhbmdsZTsgeSkgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tqPTF9XntufSBcXG1hdGhiZnsxfSkiXSxbNCw0LCJOKFxcbGFuZ2xlIEd4IFxccmFuZ2xlOyBHeSkgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tqPTF9XntufVxcbWF0aGNhbHtOfShGeF9qO0d4X2opKSJdLFswLDEsIlxcbGFtYmRhXnstMX0iXSxbMSwyLCJcXHRoZXRhX3kgXFxvdGltZXMgRiJdLFsyLDMsIlxcY2lyYyJdLFswLDQsIlxccmhvXnstMX0iLDJdLFs0LDUsIkcgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tqPTF9XntufVxcdGhldGFfe3hfan0pIiwyXSxbNSwzLCJcXGNpcmMiLDJdXQ==
+\[\begin{tikzcd}
+	& {\mathbf{1} \otimes \mathcal{M}(\langle x \rangle; y)} &&& {\mathcal{N}(Fy;Gy) \otimes \mathcal{N}(\langle Fx \rangle; Fy)} & \\
+	\\
+	{\mathcal{M}(\langle x \rangle; y)} &&&&& {\mathcal{N}(\langle Fx \rangle; Gy)} \\
+	\\
+	& {\mathcal{M}(\langle x \rangle; y) \otimes (\bigotimes_{j=1}^{n} \mathbf{1})} &&& {N(\langle Gx \rangle; Gy) \otimes (\bigotimes_{j=1}^{n}\mathcal{N}(Fx_j;Gx_j))}
+	\arrow["{\theta_y \otimes F}", from=1-2, to=1-5]
+	\arrow["\circ", from=1-5, to=3-6]
+	\arrow["{\lambda^{-1}}", from=3-1, to=1-2]
+	\arrow["{\rho^{-1}}"', from=3-1, to=5-2]
+	\arrow["{G \otimes (\bigotimes_{j=1}^{n}\theta_{x_j})}"', from=5-2, to=5-5]
+	\arrow["\circ"', from=5-5, to=3-6]
+\end{tikzcd}\]
+\end{definition}
+One can also define vertical and horizontal composition of $\mathcal{V}$-enriched multinatural transformations.
+The data above define a 2-category $\mathcal{V}\text{-}\catname{Multicat}$ of $\mathcal{V}$-enriched multicategories, $\mathcal{V}$-enriched multifunctors and $\mathcal{V}$-enriched multinatural transformations.
+
+\begin{definition}
+    Given a monoidal functor $F : \mathcal{V} \to \mathcal{W}$, we can define the induced functor $\hat{F} : \mathcal{V}\text{-}\catname{Multicat} \to \mathcal{W}\text{-}\catname{Multicat}$ between the 2-categories of $\mathcal{V}$-enriched and $\mathcal{W}$-enriched multicategories respectively akin to the usual change of base functor.
+    Suppose $\mathcal{M}$ is a $\mathcal{V}$-multicategory.
+    \paragraph{Objects.} The objects of $\hat{F}(\mathcal{M})$ are the same as those of $\mathcal{M}$.
+    \paragraph{Hom-objects.} The hom-objects of $\hat{F}(\mathcal{M})$ are given by $\hat{F}(\mathcal{M})(\langle x \rangle; y) = F(\mathcal{M}(\langle x \rangle; y))$ for $(\langle x \rangle y) \in \text{Prof}(\mathcal{M} \times \mathcal{M})$.
+    \paragraph{Identities.} The identities of $\hat{F}(\mathcal{M})$ are given by the composite:
+    \[
+    \mathbf{1}_{\mathcal{W}} \xrightarrow{\cong} F(\mathbf{1}_{\mathcal{V}}) \xrightarrow{F(id_x)} F(\mathcal{M}(x;x)) = \hat{F}(\mathcal{M})(x;x)
+    \]
+    \paragraph{Composition.} The composition of $\hat{F}(\mathcal{M})$ is given by the composite:
+    \[
+    \hat{F}(\mathcal{M})(\langle x' \rangle; y) \otimes \bigotimes_{j=1}^{n} \hat{F}(\mathcal{M})(\langle x_j \rangle; x'_j) \xrightarrow{\cong} F(\mathcal{M}(\langle x' \rangle; y) \otimes \bigotimes_{j=1}^{n}(\mathcal{M}(\langle x_j \rangle; x'_j))) \xrightarrow{F(\circ)} F(\mathcal{M}(\langle x \rangle; y)) = \hat{F}(\mathcal{M})(\langle x \rangle; y)
+    \]
+    \paragraph{Multifunctors.} Given a $\mathcal{V}$-enriched multifunctor $G : \mathcal{M} \to \mathcal{N}$, we define $\hat{F}(G) : \hat{F}(\mathcal{M}) \to \hat{F}(\mathcal{N})$ by letting $\hat{F}(G)(x) = G(x)$ for each object $x$ of $\mathcal{M}$ and 
+    \[
+    \hat{F}(G) : \hat{F}(\mathcal{M})(\langle x \rangle; y) \xrightarrow{FG} \hat{F}(\mathcal{N})(\langle G(x_j) \rangle; G(y)).
+    \]
+    \paragraph{Multinatural transformations.} Given a $\mathcal{V}$-enriched multinatural transformation $\theta : G \Rightarrow H$ between $\mathcal{V}$-multifunctors $G,H : \mathcal{M} \to \mathcal{N}$, we define $\hat{F}(\theta) : \hat{F}(G) \Rightarrow \hat{F}(H)$ by letting $\hat{F}(\theta)_x$ be the composite:
+    \[
+    \mathbf{1}_{\mathcal{W}} \xrightarrow{\cong} F(\mathbf{1}_{\mathcal{V}}) \xrightarrow{F(\theta_{x})} F(\mathcal{N}(Gx; Hx))
+    \]
+    The required diagrams commute by appealing to~\citet[Lemma 4.1.1 -- Lemma 4.1.4]{cruttwell2008normed}, with the only difference being the number of tensor products.
+\end{definition}
+
+\begin{proposition}
+$\hat{F}$ is a 2-functor.
+\end{proposition}
+
+\begin{proposition}
+    Let $\mathcal{M}$ be a representable $\mathcal{V}$-multicategory, then $\hat{F}(\mathcal{M})$ is also representable.
+\end{proposition}
+\begin{proof}
+    In a representable $\mathcal{V}$-multicategory $\mathcal{M}$ the universal morphism $\xi$ is a morphism in $\mathcal{V}$:
+    \[
+    \mathbf{1}_{\mathcal{V}} \xrightarrow{\xi} \mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i).
+    \]
+    The universal property is then that precomoposing with $\xi$ induces an isomorphism below
+    \begin{align}
+    \label{eq:m_representable}
+    \mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) &\xrightarrow{\rho^{-1}} \mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathbf{1}_{\mathcal{V}}\\
+    &\xrightarrow{id \otimes \xi} \mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i)\notag\\ 
+    &\xrightarrow{\circ} \mathcal{M}(B_1, \ldots, B_m, A_1, \ldots, A_n, C_1, \ldots, C_k; D)\notag.
+    \end{align}
+    We define the universal morphism for $\hat{F}(\mathcal{M})$ as the following composite in $\mathcal{W}$:
+    \[
+    \mathbf{1}_{\mathcal{W}} \xrightarrow{\cong} F(\mathbf{1}_{\mathcal{V}}) \xrightarrow{F(\xi)} F(\mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i)) = \hat{F}(\mathcal{M})(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i).
+    \]
+    It remains to show that precomposing with this morphism induces an isomorphism in $\mathcal{W}$.
+    Applying $F$ to the composite~\eqref{eq:m_representable} gives us the following composite in $\mathcal{W}$:
+    \begin{align*}
+    F(\mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) 
+    &\xrightarrow{F(\rho^{-1})} F\!\left(\mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathbf{1}_{\mathcal{V}}\right) \\
+    &\xrightarrow{\cong} F(\mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) \otimes F(\mathbf{1}_{\mathcal{V}}) \\
+    &\xrightarrow{\cong} F(\mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) \otimes \mathbf{1}_{\mathcal{W}} \\
+    &\xrightarrow{\mathrm{id} \otimes F(\xi)} F(\mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) \otimes F(\mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i)) \\
+    &\xrightarrow{\cong} F\!\left(\mathcal{M}(B_1, \ldots, B_m, \bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i)\right) \\
+    &\xrightarrow{F(\circ_i)} F(\mathcal{M}(B_1, \ldots, B_m, A_1, \ldots, A_n, C_1, \ldots, C_k; D)).
+    \end{align*}
+    This composite is an isomorphism in $\mathcal{W}$ since each step is an isomorphism --- $F(\rho^{-1})$ because $F$ preserves isomorphisms, the monoidal structure maps because $F$ is monoidal, $\mathrm{id} \otimes F(\xi)$ because $F(\xi)$ is the composite of isomorphisms $\mathbf{1}_\mathcal{W} \xrightarrow{\cong} F(\mathbf{1}_\mathcal{V}) \xrightarrow{F(\xi)} F(\mathcal{M}(A_1,\ldots,A_n;\bigotimes A_i))$, and $F(\circ_i)$ because $F$ preserves isomorphisms. Finally, by definition of $\hat{F}(\mathcal{M})$ we have $F(\mathcal{M}(\langle x \rangle; y)) = \hat{F}(\mathcal{M})(\langle x \rangle; y)$ for all $\langle x \rangle, y$, so the above isomorphism is exactly the representability condition for $\hat{F}(\mathcal{M})$. Since $\mathcal{M}$ and $\hat{F}(\mathcal{M})$ share the same objects, we are done.
+\end{proof}
+
+\begin{proposition}
+\label{prop:representabilities_agree}
+    Let $F_{\catname{SLat}} : \catname{Set} \to \catname{SLat}$ be the free monoidal functor from sets to semilattices.
+    Let $\hat{F}_{\catname{SLat}} : \catname{RepMultCat} \to \catname{SLat}\text{-}\catname{RepMultCat}$ and $\tilde{F}_{\catname{SLat}} : \catname{MonCat} \to \catname{SLat}\text{-}\catname{MonCat}$ be the induced 2-functors.
+    Then the following diagram commutes strictly
+\[\begin{tikzcd}
+	{\catname{SLat}\text{-}\catname{RepMultCat}} && {\catname{SLat}\text{-}\catname{MonCat}} \\
+	\\
+	{\catname{RepMultCat}} && {\catname{MonCat}}
+	\arrow["\simeq"', from=1-1, to=1-3]
+	\arrow["{\hat{F}_{\catname{SLat}}}"', from=3-1, to=1-1]
+	\arrow["\simeq", from=3-1, to=3-3]
+	\arrow["{\tilde{F}_{\catname{SLat}}}", from=3-3, to=1-3]
+\end{tikzcd}\]
+where $\simeq$ are the specific 2-functors $\mathcal{M} \mapsto \mathcal{M}_c$ constructed in~\autoref{prop:representable_multicategories} and~\autoref{prop:representable_enriched}.
+\end{proposition}
+\begin{proof}
+    We need to show that the two composite 2-functors
+    \[
+    \catname{RepMultCat} \xrightarrow{\hat{F}_{\catname{SLat}}} \catname{SLat}\text{-}\catname{RepMultCat} \xrightarrow{\mathcal{M} \mapsto \mathcal{M}_c} \catname{SLat}\text{-}\catname{MonCat}
+    \]
+    and
+    \[
+    \catname{RepMultCat} \xrightarrow{\mathcal{M} \mapsto \mathcal{M}_c} \catname{MonCat} \xrightarrow{\tilde{F}_{\catname{SLat}}} \catname{SLat}\text{-}\catname{MonCat}
+    \]
+    are equal. We check agreement on objects, 1-cells, and 2-cells.
+
+    \paragraph{Objects.} Let $\mathcal{M}$ be a representable multicategory. Both composites produce a $\catname{SLat}$-enriched monoidal category with:
+    \begin{itemize}
+        \item objects $\obj{\mathcal{M}}$, since neither $\hat{F}_{\catname{SLat}}$, $\tilde{F}_{\catname{SLat}}$, nor $(-)_c$ change the underlying objects;
+        \item hom-objects $F_{\catname{SLat}}(\mathcal{M}(A;B))$ for each pair $A,B$, since both paths apply $F_{\catname{SLat}}$ to the hom-sets of $\mathcal{M}$;
+        \item the same tensor product on objects, namely the representing object for $\xi_{A,B}$, since $\hat{F}_{\catname{SLat}}$ and $\tilde{F}_{\catname{SLat}}$ do not change objects and both $(-)_c$ functors use the same chosen representing objects from $\mathcal{M}$.
+    \end{itemize}
+    It remains to check that the tensor on hom-objects and the coherence isomorphisms agree.
+
+    The tensor on hom-objects in $\mathcal{M}_c$ is, by~\autoref{prop:representable_multicategories}, given by the following composite in $\catname{Set}$:
+    \[\begin{tikzcd}
+    	{\mathcal{M}(A;B) \times \mathcal{M}(C;D)} && {\mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes}D) \times \mathcal{M}(A,C;A \enriched{\otimes} C)} \\
+    	\\
+    	{\I_{\catname{Set}} \times (\mathcal{M}(A;B) \times \mathcal{M}(C;D))} \\
+    	\\
+    	{\mathcal{M}(B,D; B \enriched{\otimes} D) \times (\mathcal{M}(A;B) \times \mathcal{M}(C;D))} && {\mathcal{M}(A,C; B \enriched{\otimes} D)}
+    	\arrow["{\lambda^{-1}}", from=1-1, to=3-1]
+    	\arrow["{\xi_{B,D} \times \id}", from=3-1, to=5-1]
+    	\arrow["\circ", from=5-1, to=5-3]
+    	\arrow["\cong", from=5-3, to=1-3]
+    \end{tikzcd}\]
+    Applying $\tilde{F}_{\catname{SLat}}$ to $\mathcal{M}_c$ turns each $\times$ into $\otimes_{\catname{SLat}}$ via the monoidal structure of $F_{\catname{SLat}}$, turns $\I_{\catname{Set}}$ into $\I_{\catname{SLat}}$ via $F_{\catname{SLat}}(\I_{\catname{Set}}) \cong \I_{\catname{SLat}}$, and turns $\xi_{B,D}$ into $F_{\catname{SLat}}(\xi_{B,D})$, giving the following composite in $\catname{SLat}$:
+    \[\begin{tikzcd}
+    	{F_{\catname{SLat}}(\mathcal{M}(A;B)) \otimes F_{\catname{SLat}}(\mathcal{M}(C;D))} && {F_{\catname{SLat}}(\mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes} D)) \otimes F_{\catname{SLat}}(\mathcal{M}(A,C; A \enriched{\otimes} C))} \\
+    	\\
+    	{\I_{\catname{SLat}} \otimes F_{\catname{SLat}}(\mathcal{M}(A;B)) \otimes F_{\catname{SLat}}(\mathcal{M}(C;D))} \\
+    	\\
+    	{F_{\catname{SLat}}(\mathcal{M}(B,D; B \enriched{\otimes} D)) \otimes F_{\catname{SLat}}(\mathcal{M}(A;B)) \otimes F_{\catname{SLat}}(\mathcal{M}(C;D))} && {F_{\catname{SLat}}(\mathcal{M}(A,C; B \enriched{\otimes} D))}
+    	\arrow["{\lambda^{-1}}", from=1-1, to=3-1]
+    	\arrow["{F_{\catname{SLat}}(\xi_{B,D}) \otimes \id}", from=3-1, to=5-1]
+    	\arrow["{F_{\catname{SLat}}(\circ)}", from=5-1, to=5-3]
+    	\arrow["\cong", from=5-3, to=1-3]
+    \end{tikzcd}\]
+    On the other hand, the tensor on hom-objects in $\hat{F}_{\catname{SLat}}(\mathcal{M})_c$ is, by~\autoref{prop:representable_enriched}, given by exactly the same composite in $\catname{SLat}$, since $\hat{F}_{\catname{SLat}}(\mathcal{M})$ has hom-objects $F_{\catname{SLat}}(\mathcal{M}(A;B))$ and universal morphisms $F_{\catname{SLat}}(\xi_{A,B})$, and the composition in $\hat{F}_{\catname{SLat}}(\mathcal{M})$ is given by $F_{\catname{SLat}}(\circ)$ by definition of $\hat{F}_{\catname{SLat}}$.
+    Hence the tensors on hom-objects agree.
+
+    The coherence isomorphisms $\lambda, \rho, \alpha$ are in both composites constructed by the same chain of universal properties applied internally in $\catname{SLat}$, as described in~\autoref{prop:representable_multicategories} and~\autoref{prop:representable_enriched}: applying $F_{\catname{SLat}}$ to the universal properties of $\mathcal{M}$ gives the universal properties of $\hat{F}_{\catname{SLat}}(\mathcal{M})$, and the coherence isomorphisms are the unique morphisms determined by these universal properties. Hence they agree.
+
+    \paragraph{1-cells.} Let $G : \mathcal{M} \to \mathcal{N}$ be a multifunctor. Both composites send $G$ to a $\catname{SLat}$-enriched strong monoidal functor with:
+    \begin{itemize}
+        \item action on objects given by $G$ on $\obj{\mathcal{M}}$,
+        \item action on hom-objects given by $F_{\catname{SLat}}(G_{A,B}) : F_{\catname{SLat}}(\mathcal{M}(A;B)) \to F_{\catname{SLat}}(\mathcal{N}(GA;GB))$.
+    \end{itemize}
+    The monoidal structure maps are in both cases obtained by applying $F_{\catname{SLat}}$ to the monoidal structure maps of $G_c : \mathcal{M}_c \to \mathcal{N}_c$, which are constructed in~\autoref{prop:representable_multicategories} as the unique morphisms making the appropriate diagrams commute with respect to $\xi$. Since both paths apply $F_{\catname{SLat}}$ to the same morphisms, they agree.
+
+    \paragraph{2-cells.} Let $\theta : G \Rightarrow H$ be a multinatural transformation between multifunctors $G, H : \mathcal{M} \to \mathcal{N}$. Both composites send $\theta$ to a $\catname{SLat}$-enriched monoidal natural transformation whose component at each object $A$ is
+    \[
+    \I_{\catname{SLat}} \xrightarrow{\cong} F_{\catname{SLat}}(\I_{\catname{Set}}) \xrightarrow{F_{\catname{SLat}}(\theta_A)} F_{\catname{SLat}}(\mathcal{N}(GA;HA))
+    \]
+    since both paths apply $F_{\catname{SLat}}$ to the same underlying multinatural transformation components. Hence they agree on 2-cells.
+
+    Therefore the two composite 2-functors are equal, and the diagram commutes strictly.
+\end{proof}
+
+Now we have introduced the necessary multicategorical machinery to define the type theory of e-graphs which we will do in the next section.
