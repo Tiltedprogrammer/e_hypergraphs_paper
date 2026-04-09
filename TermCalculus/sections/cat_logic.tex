@@ -325,8 +325,8 @@ together with the following equations:
 \text{match}_{\otimes}(M, xy.N[\{x,y\}/ u]) &\equiv_{\eta_{\otimes}} N[M / u]\\
 \text{match}_{\I}(\star, N) &\equiv_{\beta_{\I}} N\\
 \text{match}_{\I}(M,N[\star / u]) &\equiv_{\eta_{\I}} N[M / u]\\
-  \{N_1 + \ldots + N_n, M\} &\equiv \{N_1, M\} + \ldots + \{N_n, M\}\\
-  \{M, N_1 + \ldots + N_n\} &\equiv \{M, N_1\} + \ldots + \{M, N_n\}\\
+  % \{N_1 + \ldots + N_n, M\} &\equiv \{N_1, M\} + \ldots + \{N_n, M\}\\
+  % \{M, N_1 + \ldots + N_n\} &\equiv \{M, N_1\} + \ldots + \{M, N_n\}\\
   N_1 + \ldots + (M_1 + \ldots + M_m)  + \ldots + N_n &\equiv N_1 + \ldots + M_1 + \ldots + M_m + \ldots + N_n\\
   M + N &\equiv N + M\\
   N &\equiv N + N.
@@ -590,22 +590,6 @@ inductively on derivations, it suffices to check the generating equations.
   \]
   and by the argument that $P$ maps substitution to composition we have
   $P(Q) \circ (P(M), P(N)) = P(Q[M/x, N/y])$.
-
-  \item \textbf{Distributivity of $\{-,-\}$ over $+$}: We need
-  $P(\{N_1 + \ldots + N_n, M\}) = P(\{N_1,M\} + \ldots + \{N_n,M\})$.
-  By definition,
-  \[
-  P(\{N_1 + \ldots + N_n, M\}) = \xi_{P(A),P(B)} \circ (P(N_1) + \ldots + P(N_n),
-  P(M))
-  \]
-  and since $\mathcal{M}$ is a $\catname{SLat}$-multicategory, composition
-  distributes over $+$, giving
-  \[
-  = \xi_{P(A),P(B)} \circ (P(N_1), P(M)) + \ldots + \xi_{P(A),P(B)} \circ (P(N_n),
-  P(M)) = P(\{N_1,M\}) + \ldots + P(\{N_n,M\})
-  \]
-  as required. 
-  The symmetric case $\{M, N_1 + \ldots + N_n\}$ is analogous.
 
   \item \textbf{Associativity of $+$}: We need
   $P(N_1 + \ldots + (M_1 + \ldots + M_m) + \ldots + N_n) =
