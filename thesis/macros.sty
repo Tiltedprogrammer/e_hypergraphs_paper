@@ -1,0 +1,91 @@
+% For example
+%
+\RequirePackage{mathtools}
+\usepackage{minted}
+\definecolor{codebg}{RGB}{248,250,252} % very light cool grey-blue
+\definecolor{codeframe}{RGB}{226,232,240}
+
+\setminted{
+  bgcolor=codebg,
+  breaklines=true,
+  fontsize=\small,
+  frame=lines,
+  framesep=6pt,
+  rulecolor=\color{codeframe},
+  baselinestretch=1.1,
+  autogobble=true,
+}
+\definecolor{pygreen}{HTML}{008000}
+\newcommand{\kw}[1]{\textcolor{pygreen}{\textbf{#1}}}
+
+\setmintedinline{bgcolor={}}
+\providecommand*{\listingautorefname}{Listing}
+
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\sym}{sym}
+\DeclareMathOperator{\I}{I}
+\newcommand{\egg}{\texttt{egg}}
+\newcommand{\surj}{\twoheadrightarrow}
+\DeclareMathOperator{\ev}{\textsf{ev}}
+\DeclareMathOperator{\join}{\oplus}
+
+
+% tiny inline string diagrams
+\newcommand{\comonoid}{%
+	\begin{tikzpicture}[baseline=0.4ex, scale=0.4, line width=0.8pt]
+		\path [use as bounding box] (0,0) rectangle (0.6,0.8);
+		\draw (0.2,0) -- (0.2,0.4);
+		\filldraw[black] (0.2,0.4) circle (0.08);
+		\draw (0,0.8) .. controls (0,0.65) and (0.1,0.45) .. (0.2,0.4);
+		\draw (0.4,0.8) .. controls (0.4,0.65) and (0.3,0.45) .. (0.2,0.4);
+	\end{tikzpicture}%
+}
+\newcommand{\counit}{%
+	\begin{tikzpicture}[baseline=0.4ex, scale=0.4, line width=0.8pt]
+		\path [use as bounding box] (0,0) rectangle (0.4,0.8);
+		\draw (0.2,0) -- (0.2,0.4);
+		\filldraw[black] (0.2,0.4) circle (0.08);
+	\end{tikzpicture}%
+}
+
+\newcommand{\delete}{
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-4.5, 1) {};
+		\node [style=vertex] (1) at (-4.5, 1.15) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (1) to (0.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
+}
+
+\newcommand{\evaltikz}{
+  \adjustbox{scale=0.15}{\begin{tikzpicture}
+		\begin{pgfonlayer}{nodelayer}
+			\node [style=none] (0) at (1, 6.75) {};
+			\node [style=none] (1) at (1.25, 7.75) {};
+			\node [style=none] (2) at (2, 8) {};
+			\node [style=none] (3) at (2.75, 7.75) {};
+			\node [style=none] (4) at (3, 6.75) {};
+			\node [style=none] (5) at (1.5, 6.75) {};
+			\node [style=none] (6) at (2.5, 6.75) {};
+			\node [style=none] (7) at (2, 9) {};
+			\node [style=none] (8) at (1.5, 5.75) {};
+			\node [style=none] (9) at (2.5, 5.75) {};
+		\end{pgfonlayer}
+		\begin{pgfonlayer}{edgelayer}
+			\draw [style=lambda_unit_string] (3.center)
+			to [in=60, out=-30, looseness=0.75] (4.center)
+			to (0.center)
+			to [in=-150, out=120, looseness=0.75] (1.center)
+			to [in=-180, out=45, looseness=0.75] (2.center)
+			to [in=135, out=0, looseness=0.75] cycle;
+			\draw (2.center) to (7.center);
+			\draw (5.center) to (8.center);
+			\draw (9.center) to (6.center);
+		\end{pgfonlayer}
+	\end{tikzpicture}
+}
+}

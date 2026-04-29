@@ -1,0 +1,165 @@
+\chapter{Egg Implementation of the Saturation Example}\label{appendix:smce-rules}
+
+This appendix documents the computational verification of~\autoref{example:sat-comonoid} using the \texttt{egg} equality saturation library~\cite{EggPaper}.
+We describe how the symmetric monoidal theory of commutative comonoids is encoded in the \texttt{egg} framework, justify the design decisions that shape the implementation, and account for the rule application statistics in~\autoref{tab:appendix-rules}.
+
+\paragraph{Term language.}
+In \texttt{egg}, the term language is a Rust \mintinline{rust}{enum} defined via the \mintinline{rust}{define_language!} macro, which associates string tokens with constructors and fixes their arities.
+\autoref{lst:language} shows the language for commutative comonoids.
+
+\begin{listing}[h]
+\caption{Term language for commutative comonoids.}
+\label{lst:language}
+\begin{minted}{rust}
+define_language! {
+    enum CommutativeComonoids {
+        "mu"       = Mu,              // mu : 1 -> 2
+        "i"        = I,               // i  : 1 -> 0  (counit eta)
+        ";"        = Compose([Id; 2]),
+        "parallel" = Parallel([Id; 2]),
+        "id_0" = Identity0,  "id_1" = Identity1,
+        "id_2" = Identity2,  "id_3" = Identity3,  "id_4" = Identity4,
+        "sym_0_1" = Sym0_1,  "sym_1_0" = Sym1_0,  "sym_1_1" = Sym1_1,
+        "sym_1_2" = Sym1_2,  "sym_2_1" = Sym2_1,  "sym_2_2" = Sym2_2,
+    }
+}
+\end{minted}
+\end{listing}
+
+Two design decisions are visible here.
+
+\emph{Finite enumeration of identities and symmetries.}
+The SMC equations reference identities $\id_n$ and symmetries $\sym_{n,m}$ for all $n,m\in\mathbb{N}$.
+Because \texttt{egg} requires a finite language, these must be enumerated at the arities actually needed by the example: identities at arities $0$--$4$ and symmetries for all $(n,m)$ with $n+m \leq 3$ and additionally $\sym_{2,2}$.
+This necessitates the \emph{definitional rules} (e.g.\ $\id_2 = \id_1 \otimes \id_1$, $\sym_{2,1} = (\sym_{1,1} \otimes \id_1);(\id_1 \otimes \sym_{1,1})$) that link these tokens.
+Each definitional rule is applied at most once during saturation and is omitted from~\autoref{tab:appendix-rules}.
+
+\emph{Binary encoding of the tensor product.}
+String diagrams allow $n$-ary parallel composition, but \texttt{egg} operators have fixed binary arity.
+Encoding $\otimes$ as a binary \mintinline{rust}{"parallel"} operator requires explicit \emph{tensor associativity} rules $(f \otimes g) \otimes h = f \otimes (g \otimes h)$ and \emph{tensor unit} laws $\id_0 \otimes f = f$, $f \otimes \id_0 = f$ to expose all equivalent forms of a tensor expression.
+As~\autoref{tab:appendix-rules} shows, these two rule groups account for more than half of all applications---a direct cost of the encoding.
+
+\paragraph{Type analysis.}
+Each morphism in an SMC has a type $(dom, cod)\in\mathbb{N}^2$.
+The \texttt{egg} framework supports \emph{e-class analyses}: user-defined data associated with each equivalence class, maintained invariantly as classes are merged.
+A \mintinline{rust}{TypeAnalysis} computes the type of every expression bottom-up, as shown in~\autoref{lst:types}.
+
+\begin{listing}[h]
+\caption{Type computation for composition and tensor product.}
+\label{lst:types}
+\begin{minted}{rust}
+Compose([f, g]) => Ty { dom: get(f).dom, cod: get(g).cod },
+Parallel([f, g]) => Ty {
+    dom: get(f).dom + get(g).dom,
+    cod: get(f).cod + get(g).cod,
+},
+\end{minted}
+\end{listing}
+
+Types are used to \emph{guard} rules that are only valid at specific arities.
+For example, the left-identity rule $\id_n ; f = f$ must be restricted to morphisms $f$ with domain $n$:
+
+\begin{listing}[h]
+\caption{Type-guarded identity rules for $n=1$ (the pattern repeats for $n=2,3,4$).}
+\label{lst:identity}
+\begin{minted}{rust}
+rw!("id_1-left-compose-left";  "(; id_1 ?x)" => "(?x)"
+    if check_dom_type(var("?x"), 1)),
+rw!("id_1-left-compose-right"; "(?x)" => "(; id_1 ?x)"
+    if check_dom_type(var("?x"), 1)),
+\end{minted}
+\end{listing}
+
+Without the guard, the rule would fire for morphisms of any type, producing ill-typed terms and incorrect equalities.
+The guard is evaluated against the \mintinline{rust}{TypeAnalysis} data stored in each e-class.
+
+\paragraph{Rewrite rules.}
+\autoref{lst:rules} shows the remaining representative rules.
+Each equation of the theory is split into two directed rules, one for each orientation, so that equality saturation can add both sides of the equivalence to the same e-class.
+
+\begin{listing}[h]
+\caption{Representative rewrite rules (simplified for presentation).}
+\label{lst:rules}
+\begin{minted}{rust}
+// Composition associativity
+rw!("assoc-compose-left";  "(; ?x (; ?y ?z))" => "(; (; ?x ?y) ?z)"),
+rw!("assoc-compose-right"; "(; (; ?x ?y) ?z)" => "(; ?x (; ?y ?z))"),
+
+// Tensor associativity
+rw!("parallel-assoc-left";
+    "(parallel ?x (parallel ?y ?z))" => "(parallel (parallel ?x ?y) ?z)"),
+rw!("parallel-assoc-right";
+    "(parallel (parallel ?x ?y) ?z)" => "(parallel ?x (parallel ?y ?z))"),
+
+// Symmetry naturality for cod(f)=cod(g)=1
+// (general form: sym_{1,1};(f*g) = (g*f);sym_{cod(g),cod(f)})
+rw!("sym-nat-1-1";
+    "(; sym_1_1 (parallel ?f ?g))" => "(; (parallel ?g ?f) sym_1_1)"
+    if check_dom_cod(1,1, 1,1)),  // dom and cod of f and g
+
+// Comonoid laws
+rw!("comult-commutative-right"; "(; mu sym_1_1)" => "(mu)"),
+rw!("comult-commutative-left";  "(mu)" => "(; mu sym_1_1)"),
+rw!("counit-left"; "(; mu (parallel i id_1))" => "(id_1)"),
+\end{minted}
+\end{listing}
+
+The symmetry naturality rule $\sym_{1,1};(f \otimes g) = (g \otimes f);\sym_{cod(g),cod(f)}$ cannot be expressed as a single rule because the output symmetry token depends on the codomains of $f$ and $g$, which are run-time data rather than syntactic structure.
+The rule is therefore split into one instance for each possible combination of codomains, each guarded by type conditions on $f$ and $g$.
+Six such instances are required for the example, covering codomains $(cod(f), cod(g)) \in \{(1,1),(1,0),(0,1),(1,2),(2,1),(2,2)\}$.
+
+\paragraph{The verified term.}
+The initial e-graph contains the term
+\[
+  ((\mu;\sym_{1,1});(\eta \otimes \id_1)) \otimes (\mu;(\id_1 \otimes \id_1)),
+\]
+represented in the egg S-expression syntax as
+\begin{minted}{text}
+(parallel (; (; mu sym_1_1) (parallel i id_1))
+          (; mu (parallel id_1 id_1)))
+\end{minted}
+After saturation, the code checks that this e-class equals \mintinline{text}{(parallel id_1 mu)}, i.e.\ $\id_1 \otimes \mu$, returning \mintinline{rust}{true}.
+The equivalence follows by: commutativity ($\mu;\sym_{1,1} = \mu$) followed by the counit law ($\mu;(\eta \otimes \id_1) = \id_1$) for the left component, and the right identity law ($\mu;(\id_1 \otimes \id_1) = \mu;\id_2 = \mu$) for the right component.
+
+\paragraph{Rule application statistics.}
+\autoref{tab:appendix-rules} reports the number of times each non-definitional rule was applied during saturation.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}llp{7.5cm}rr@{}}
+\toprule
+Group & Rule & Equation & $(\to)$ & $(\leftarrow)$ \\
+\midrule
+\multirow{8}{*}{SMC}
+  & Left identity       & $\id_n ; f = f$                                                                     & ---     & 899 \\
+  & Right identity      & $f ; \id_n = f$                                                                     & 4       & 308 \\
+  & Composition assoc.  & $(f ; g) ; h = f ; (g ; h)$                                                         & 1{,}325 & 580 \\
+  & Bifunctoriality     & $(f_1 \otimes f_2) ; (g_1 \otimes g_2) = (f_1 ; g_1) \otimes (f_2 ; g_2)$           & 157     & 92  \\
+  & Tensor assoc.       & $(f \otimes g) \otimes h = f \otimes (g \otimes h)$                                  & 1{,}695 & 2{,}174 \\
+  & Tensor unit         & $\id_0 \otimes f = f,\quad f \otimes \id_0 = f$                                     & ---     & 2{,}005 \\
+  & Sym.\ naturality    & $\sym_{1,1} ; (f \otimes g) = (g \otimes f) ; \sym$                                 & 10      & ---   \\
+  & Sym.\ involution    & $\sym ; \sym = \id$                                                                  & ---     & 1     \\
+\midrule
+\multirow{2}{*}{$(\Sigma,\mathcal{E})$}
+  & Commutativity       & $\mu ; \sym = \mu$                                                                   & 1       & --- \\
+  & Counit              & $\mu ; (\eta \otimes \id) = \id$                                                     & 1       & --- \\
+\midrule
+  & \multicolumn{2}{l}{Total (shown rules only)} & 3{,}193 & 6{,}059 \\
+\bottomrule
+\end{tabular}
+\caption{Rewrite rules applied during saturation in~\autoref{example:sat-comonoid}. The subscript $n$ in the identity rules ranges over $\{1,2,3,4\}$. The $(\to)$ and $(\leftarrow)$ columns give application counts for the left-to-right and right-to-left orientations of each equation; --- indicates zero applications.}
+\label{tab:appendix-rules}
+\end{table}
+
+\paragraph{SMC equations.}
+\emph{Left} and \emph{right identity} express that $\id_n$ is a unit for sequential composition.
+The strong asymmetry (899 introductions vs.\ 0 eliminations for left identity; 308 vs.\ 4 for right identity) is a hallmark of equality saturation: the algorithm adds both sides of every equation, so it frequently introduces $\id_n ; f$ as equivalent to $f$ to enable subsequent pattern matches, but rarely needs to simplify $\id_n ; f$ away.
+\emph{Composition associativity} is applied 1,905 times in total; more applications go right-to-left (flattening left-nested compositions) than left-to-right, reflecting which normal form is more useful for downstream matches.
+\emph{Bifunctoriality} converts between interleaved and separated compositions.
+\emph{Tensor associativity} (3,869 total) and the \emph{tensor unit} (2,005 total) together account for $56\%$ of all applications, directly reflecting the overhead of the binary \mintinline{rust}{"parallel"} encoding described above.
+\emph{Symmetry naturality} fires in only one direction and only 10 times, at the specific arity combinations needed to expose the commutativity of $\mu$.
+\emph{Symmetry involution} ($\sym;\sym = \id$, applied once in the introducing direction) provides the converse that allows the saturation to close the loop on symmetry-related equivalences.
+
+\paragraph{Comonoid equations.}
+\emph{Commutativity} ($\mu;\sym = \mu$) and the \emph{counit law} ($\mu;(\eta \otimes \id) = \id$) are each applied exactly once, confirming that the verification terminates as soon as the two relevant equivalences are found.
+Coassociativity of $\mu$ ($\mu;(\id \otimes \mu) = \mu;(\mu \otimes \id)$) is present as a rule but not applied: the particular input term does not require it.

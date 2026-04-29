@@ -211,7 +211,7 @@
   journal = {Journal of Functional Programming},
   author = {Nakata, Keiko and Hasegawa, Masahito},
   year = {2009},
-  pages = {699–722},
+  pages = {699--722},
 }
 
 @inbook{Selinger_2010,
@@ -224,7 +224,7 @@
   publisher = {Springer Berlin Heidelberg},
   author = {Selinger, P.},
   year = {2010},
-  pages = {289–355},
+  pages = {289--355},
 }
 
 @article{EggPaper,
@@ -690,7 +690,7 @@ misc{alvarez-picallo_functorial_2021,
   author = {Bonchi, Filippo and Gadducci, Fabio and Kissinger, Aleks and
             Sobocinski, Pawel and Zanasi, Fabio},
   year = {2022},
-  pages = {511–541},
+  pages = {511--541},
 }
 
 @inproceedings{ghica_rewriting_2023,
@@ -726,8 +726,8 @@ misc{alvarez-picallo_functorial_2021,
               non-strict monoidal categories, and show how this construction can
               handle applications in domains such as digital circuits and
               programming languages. We prove the correctness of our construction
-              , which yields a novel proof of Mac Lane’s strictness theorem. This
-              in turn leads to an elementary graphical proof of Mac Lane’s
+              , which yields a novel proof of Mac Lane's strictness theorem. This
+              in turn leads to an elementary graphical proof of Mac Lane's
               coherence theorem, and in particular allows for the inductive
               construction of the canonical isomorphisms in a monoidal category.},
   language = {en},
@@ -1013,7 +1013,7 @@ misc{alvarez-picallo_functorial_2021,
 }
  
  
-@article{10.1145/1594834.1480915,
+@article{EqualitySaturation2009,
   author = {Tate, Ross and Stepp, Michael and Tatlock, Zachary and Lerner, Sorin
             },
   title = {Equality Saturation: A New Approach to Optimization},
@@ -1052,7 +1052,7 @@ misc{alvarez-picallo_functorial_2021,
               performing translation validation for a realistic optimizer.},
   journal = {SIGPLAN Not.},
   month = {jan},
-  pages = {264–276},
+  pages = {264--276},
   numpages = {13},
   keywords = {intermediate representation, equality reasoning, compiler
               optimization},
@@ -1148,7 +1148,7 @@ misc{alvarez-picallo_functorial_2021,
   author = {Ghica, Dan R and Lopez, Aliaume},
   year = {2018},
   month = feb,
-  pages = {71–83},
+  pages = {71--83},
 }
 
 @misc{probabilistic,
@@ -1180,7 +1180,7 @@ misc{alvarez-picallo_functorial_2021,
   publisher = {Cambridge University Press},
   author = {Borceux, Francis},
   year = {1994},
-  pages = {291–348},
+  pages = {291--348},
   collection = {Encyclopedia of Mathematics and its Applications},
 }
 
@@ -1230,13 +1230,23 @@ misc{alvarez-picallo_functorial_2021,
 }
 
 % url          = {https://michel.steuwer.info/files/publications/2024/EGRAPHS-2024.pdf}
-@misc{slotted-egraphs,
-  author = {Rudi Schneider and Thomas Koehler and Michel Steuwer},
-  title = {Slotted E-Graphs --- First-Class Support for (Bound) Variables in
-           E-Graphs},
-  year = {2025},
-  note = {Accepted to PLDI 2025},
-  url = {https://michel.steuwer.info/files/publications/2025/PLDI-2025.pdf},
+@article{slotted-egraphs,
+author = {Schneider, Rudi and Rossel, Marcus and Shaikhha, Amir and Goens, Andr\'{e}s and Kundefinedhler, Thomas and Steuwer, Michel},
+title = {Slotted E-Graphs: First-Class Support for (Bound) Variables in E-Graphs},
+year = {2025},
+issue_date = {June 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {9},
+number = {PLDI},
+url = {https://doi.org/10.1145/3729326},
+doi = {10.1145/3729326},
+abstract = {Equality saturation has gained significant interest as a powerful optimization and reasoning technique. At its heart is the e-graph data structure, that space-efficiently represents equal sub-terms uniquely.   An important open problem in this context is extending this efficient representation to languages featuring (bound) variables.   Independent of how we represent variables in e-graphs, either as names or nameless (using de Bruijn indices), sharing is broken as sub-terms that differ only in the names of their variables are represented separately.   This results in aggressive e-graph growth, bad performance, as well as reduced expressiveness.   In this paper, we present a novel approach to representing bound variables in e-graphs by making them a first-class built-in feature of the data structure.   Our slotted e-graph represents terms that differ only by (bound or free) variable names uniquely.   To do so, e-classes that represent equivalent terms via e-nodes are parameterized by slots, abstracting over free variables of the represented terms.   Referring to an e-class from an e-node now requires relating the variables from its context to the slots of the e-class.    Our evaluation of slotted e-graph uses two case studies from compiler optimization and theorem proving to show that performing equality saturation for languages with bound variables is greatly simplified and that we can solve practically relevant problems that cannot be solved with e-graphs using de Bruijn indices.},
+journal = {Proc. ACM Program. Lang.},
+month = jun,
+articleno = {223},
+numpages = {23},
+keywords = {binders, e-graphs, equality saturation, rewrite systems}
 }
 
 @article{Kelly2022BASICCO,
@@ -1293,7 +1303,7 @@ misc{alvarez-picallo_functorial_2021,
   journal = {Journal of Functional Programming},
   author = {Abadi, M. and Cardelli, L. and Curien, P.-L. and Lévy, J.-J.},
   year = {1991},
-  pages = {375–416},
+  pages = {375--416},
 }
 
 
@@ -1309,7 +1319,7 @@ misc{alvarez-picallo_functorial_2021,
   doi = {10.1145/2535838.2535886},
   booktitle = {Proceedings of the 41st ACM SIGPLAN-SIGACT Symposium on
                Principles of Programming Languages},
-  pages = {659–670},
+  pages = {659--670},
   numpages = {12},
   keywords = {explicit substitutions, lambda-calculus, proof-nets, residuals,
               standardization},
@@ -1502,7 +1512,7 @@ url = {https://doi.org/10.1145/141471.141563},
 doi = {10.1145/141471.141563},
 abstract = {Plotkin's λ-value calculus is sound but incomplete for reasoning about βeegr;-transformations on programs in continuation-passing style (CPS).  To find a complete extension, we define a new, compactifying CPS transformation and an “inverse”mapping, un-CPS, both of which are interesting in their own right.   Using the new CPS transformation, we can determine the precise language of CPS terms closed under β7eegr;-transformations. Using the un-CPS transformation, we can derive a set of axioms such that every equation between source programs is provable if and only if βη can prove the corresponding equation between CPS programs.  The extended calculus is equivalent to an untyped variant of Moggi's computational λ-calculus.},
 booktitle = {Proceedings of the 1992 ACM Conference on LISP and Functional Programming},
-pages = {288–298},
+pages = {288--298},
 numpages = {11},
 location = {San Francisco, California, USA},
 series = {LFP '92}
@@ -1663,4 +1673,155 @@ isbn="978-3-642-99902-4"
 	author = {Hasegawa, Masahito},
 	year = {1999},
 	file = {PDF:/Users/alekseytyurin/Zotero/storage/29UEXCGX/Hasegawa - 1999 - Models of Sharing Graphs.pdf:application/pdf},
+}
+
+
+@techreport{AbramskyCoeckeCategoricalSemantics2004,
+  title = "A Categorical semantics of Quantum Protocols",
+  author = "Samson Abramsky and Bob Coecke",
+  year = "2004",
+  institution = "Oxford University Computing Laboratory",
+  month = "February",
+  number = "RR-04-02",
+}
+
+@InProceedings{BonchiSignalFlowGraphs2014,
+author="Bonchi, Filippo
+and Soboci{\'{n}}ski, Pawe{\l}
+and Zanasi, Fabio",
+editor="Baldan, Paolo
+and Gorla, Daniele",
+title="A Categorical Semantics of Signal Flow Graphs",
+booktitle="CONCUR 2014 -- Concurrency Theory",
+year="2014",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="435--450",
+abstract="We introduce {\$}{\backslash}mathbb{\{}IH{\}}{\$}, a sound and complete graphical theory of vector subspaces over the field of polynomial fractions, with relational composition. The theory is constructed in modular fashion, using Lack's approach to composing PROPs with distributive laws.",
+isbn="978-3-662-44584-6"
+}
+
+
+@inproceedings{10.1145/2676726.2676993,
+author = {Bonchi, Filippo and Sobocinski, Pawel and Zanasi, Fabio},
+title = {Full Abstraction for Signal Flow Graphs},
+year = {2015},
+isbn = {9781450333009},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2676726.2676993},
+doi = {10.1145/2676726.2676993},
+abstract = {Network theory uses the string diagrammatic language of monoidal categories to study graphical structures formally, eschewing specialised translations into intermediate formalisms. Recently, there has been a concerted research focus on developing a network theoretic approach to signal flow graphs, which are classical structures in control theory, signal processing and a cornerstone in the study of feedback. In this approach, signal flow graphs are given a relational denotational semantics in terms of formal power series.Thus far, the operational behaviour of such signal flow graphs has only been discussed at an intuitive level. In this paper we equip them with a structural operational semantics. As is typically the case, the purely operational picture is too concrete -- two graphs that are denotationally equal may exhibit different operational behaviour. We classify the ways in which this can occur and show that any graph can be realised -- rewritten, using the graphical theory, into an executable form where the operational behavior and the denotation coincides.},
+booktitle = {Proceedings of the 42nd Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+pages = {515--526},
+numpages = {12},
+keywords = {full abstraction, props, signal flow graphs, string diagrams, structural operational semantics},
+location = {Mumbai, India},
+series = {POPL '15}
+}
+
+@article{BonchiFullAbstractionSignal2015,
+author = {Bonchi, Filippo and Sobocinski, Pawel and Zanasi, Fabio},
+title = {Full Abstraction for Signal Flow Graphs},
+year = {2015},
+issue_date = {January 2015},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {50},
+number = {1},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/2775051.2676993},
+doi = {10.1145/2775051.2676993},
+abstract = {Network theory uses the string diagrammatic language of monoidal categories to study graphical structures formally, eschewing specialised translations into intermediate formalisms. Recently, there has been a concerted research focus on developing a network theoretic approach to signal flow graphs, which are classical structures in control theory, signal processing and a cornerstone in the study of feedback. In this approach, signal flow graphs are given a relational denotational semantics in terms of formal power series.Thus far, the operational behaviour of such signal flow graphs has only been discussed at an intuitive level. In this paper we equip them with a structural operational semantics. As is typically the case, the purely operational picture is too concrete -- two graphs that are denotationally equal may exhibit different operational behaviour. We classify the ways in which this can occur and show that any graph can be realised -- rewritten, using the graphical theory, into an executable form where the operational behavior and the denotation coincides.},
+journal = {SIGPLAN Not.},
+month = jan,
+pages = {515--526},
+numpages = {12},
+keywords = {full abstraction, props, signal flow graphs, string diagrams, structural operational semantics}
+}
+
+@inproceedings{Ghica_Jung_Categorical,
+author = {Ghica, Dan R. and Jung, Achim},
+title = {Categorical semantics of digital circuits},
+year = {2016},
+isbn = {9780983567868},
+publisher = {FMCAD Inc},
+address = {Austin, Texas},
+abstract = {This paper proposes a categorical theory of digital circuits based on monoidal categories and graph rewriting. The main goal of this paper is conceptual: to fill a foundational gap in reasoning about digital circuits, which is currently almost exclusively semantic (simulations). The level of abstraction we target is circuits with discrete signal levels, discrete time, and explicit delays, which is appropriate for modelling a range of components such as boolean gates or transistors working in saturation mode.We start with an algebraic signature consisting of the basic electronic components of a given class of circuits and extend it gradually (and in a free way) with further algebraic structure (representing circuit combinations, delays, and feedback), while quotienting it with a notion of equivalence corresponding to input-output observability. Using well-known results about the correspondence between free monoidal categories and graph-like structures we can develop, in a principled way, a graph rewriting system which is shown to be useful in reasoning about such circuits. We illustrate the power of our system by reasoning equationally about a challenging class of circuits: combinational circuits with feedback.},
+booktitle = {Proceedings of the 16th Conference on Formal Methods in Computer-Aided Design},
+pages = {41--48},
+numpages = {8},
+keywords = {multivalued logic, monoidal categories, feedback circuits, digital circuits, circuit topology, category theory},
+location = {Mountain View, California},
+series = {FMCAD '16}
+}
+
+@article{MarkovProp,
+author = {Fritz, Tobias},
+year = {2020},
+month = {08},
+pages = {107239},
+title = {A synthetic approach to Markov kernels, conditional independence and theorems on sufficient statistics},
+volume = {370},
+journal = {Advances in Mathematics},
+doi = {10.1016/j.aim.2020.107239}
+}
+
+
+@inproceedings{Caviar,
+author = {Kourta, Smail and Namani, Adel Abderahmane and Benbouzid-Si Tayeb, Fatima and Hazelwood, Kim and Cummins, Chris and Leather, Hugh and Baghdadi, Riyadh},
+title = {Caviar: an e-graph based TRS for automatic code optimization},
+year = {2022},
+isbn = {9781450391832},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3497776.3517781},
+doi = {10.1145/3497776.3517781},
+abstract = {Term Rewriting Systems (TRSs) are used in compilers to simplify and prove expressions. State-of-the-art TRSs in compilers use a greedy algorithm that applies a set of rewriting rules in a predefined order (where some of the rules are not axiomatic). This leads to a loss of the ability to simplify certain expressions. E-graphs and equality saturation sidestep this issue by representing the different equivalent expressions in a compact manner from which the optimal expression can be extracted. While an e-graph-based TRS can be more powerful than a TRS that uses a greedy algorithm, it is slower because expressions may have a large or sometimes infinite number of equivalent expressions. Accelerating e-graph construction is crucial for making the use of e-graphs practical in compilers. In this paper, we present Caviar, an e-graph-based TRS for proving expressions within compilers. The main advantage of Caviar is its speed. It can prove expressions much faster than base e-graph TRSs. It relies on three techniques: 1) a technique that stops e-graphs from growing when the goal is reached, called Iteration Level Check; 2) a mechanism that balances exploration and exploitation in the equality saturation algorithm, called Pulsing Caviar; 3) a technique to stop e-graph construction before reaching saturation when a non-provable pattern is detected, called Non-Provable Patterns Detection (NPPD). We evaluate caviar on Halide, an optimizing compiler that relies on a greedy-algorithm-based TRS to simplify and prove its expressions. The proposed techniques allow Caviar to accelerate e-graph expansion for the task of proving expressions. They also allow Caviar to prove expressions that Halide’s TRS cannot prove while being only 0.68x slower. Caviar is publicly available at: <a>https://github.com/caviar-trs/caviar</a>.},
+booktitle = {Proceedings of the 31st ACM SIGPLAN International Conference on Compiler Construction},
+pages = {54--64},
+numpages = {11},
+keywords = {Algebraic expressions simplification, Equality Graphs, Equality Saturation, Term Rewriting Systems},
+location = {Seoul, South Korea},
+series = {CC 2022}
+}
+
+@inproceedings{EqualitySaturationTensorGraphSuperoptimization,
+  author       = {Yichen Yang and
+                  Phitchaya Mangpo Phothilimthana and
+                  Yisu Remy Wang and
+                  Max Willsey and
+                  Sudip Roy and
+                  Jacques A. Pienaar},
+  editor       = {Alex Smola and
+                  Alex Dimakis and
+                  Ion Stoica},
+  title        = {Equality Saturation for Tensor Graph Superoptimization},
+  booktitle    = {Proceedings of the Fourth Conference on Machine Learning and Systems,
+                  MLSys 2021, virtual, April 5-9, 2021},
+  publisher    = {mlsys.org},
+  year         = {2021},
+  url          = {https://proceedings.mlsys.org/paper\_files/paper/2021/hash/cc427d934a7f6c0663e5923f49eba531-Abstract.html},
+  timestamp    = {Wed, 14 Jan 2026 08:32:03 +0100},
+  biburl       = {https://dblp.org/rec/conf/mlsys/0008PWW0P21.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@InProceedings{EggsAreAdhesive,
+  author =	{Biondo, Roberto and Castelnovo, Davide and Gadducci, Fabio},
+  title =	{{EGGs Are Adhesive!}},
+  booktitle =	{11th Conference on Algebra and Coalgebra in Computer Science (CALCO 2025)},
+  pages =	{10:1--10:18},
+  series =	{Leibniz International Proceedings in Informatics (LIPIcs)},
+  ISBN =	{978-3-95977-383-6},
+  ISSN =	{1868-8969},
+  year =	{2025},
+  volume =	{342},
+  editor =	{C\^{i}rstea, Corina and Knapp, Alexander},
+  publisher =	{Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
+  address =	{Dagstuhl, Germany},
+  URL =		{https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CALCO.2025.10},
+  URN =		{urn:nbn:de:0030-drops-235690},
+  doi =		{10.4230/LIPIcs.CALCO.2025.10},
+  annote =	{Keywords: Hypergraphs, terms graphs, e-graphs, adhesive categories}
 }

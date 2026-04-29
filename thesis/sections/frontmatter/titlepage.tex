@@ -1,0 +1,37 @@
+\newgeometry{total={180mm,267mm}} % Make "A thesis submitted...the degree of" fit one line
+  \makeatletter
+
+\providecommand{\displaytitle}{\@title}
+\begin{titlepage}
+\begin{center}
+  \vspace*{\stretch{0.5}}
+
+  \large % Default size for the title page
+
+  {\Huge\textsc{\displaytitle}\par}
+
+  \vspace{\stretch{0.2}}
+
+  by
+
+  \vspace{\stretch{0.2}}
+
+  {\huge\textsc{\@author}}
+
+
+  \vspace{\stretch{0.5}}
+
+    A thesis submitted to the \@institution{} for the degree of\\
+  \textsc{\@degree}
+
+  \vfill
+
+  \flushright
+    \@ifundefined{@school}{}{\@school \\}
+    \@ifundefined{@college}{}{\@college \\}
+    \@institution \\
+    \@date
+
+\end{center}
+\end{titlepage}
+  \makeatother

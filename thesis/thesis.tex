@@ -1,0 +1,61 @@
+%!LW recipe=latexmk_recipe
+% !TEX root = thesis.tex
+\documentclass[a4paper, oneside, 12pt, openany]{book}
+\pdfoutput=1
+
+
+\usepackage[cal=cm,frak=euler,ttscale=1.0]{thesis}
+\usepackage{macros}
+\usepackage[draft]{tikzit}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{mathpartir}
+\usepackage{subcaption}
+
+\usepackage{inconsolata}
+\renewcommand{\ttdefault}{zi4}
+
+\addbibresource{../bibliography.bib}
+
+\DeclareCaptionSubType{listing}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+
+\title{The Title of a PhD Thesis}
+%\newcommand{\displaytitle}{The Title\\{\smaller[2] of a}\\ PhD Thesis} % optional
+\author{Jane Doe}
+\institution{University of Foo}
+\degree{Doctor of Philosophy}
+%\school{School of Bar}    % optional
+%\college{College of Baz and Quz}    % optional
+%\date{January 2023}
+%\subject{PhD thesis}    % optional
+%\keywords{some, descriptive, keywords}
+
+\begin{document}
+
+\frontmatter
+
+\include{sections/frontmatter/titlepage}
+\restoregeometry%
+
+\include{sections/frontmatter/abstract}
+\include{sections/frontmatter/aknowledgements}
+\tableofcontents
+
+\mainmatter%
+
+\include{sections/mainmatter/introduction}
+\include{sections/mainmatter/monoidal}
+\include{sections/mainmatter/lambda}
+\include{sections/mainmatter/type_theory}
+
+\backmatter%
+\printbibliography[heading=bibintoc]%
+\printnomenclature%
+\printindex
+\appendix
+\include{appendix/appendix}
+
+\end{document}
