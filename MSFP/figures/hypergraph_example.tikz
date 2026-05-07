@@ -1,0 +1,28 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=hedge] (0) at (-0.5, 7.5) {$e_3$};
+		\node [style=hedge] (1) at (2.5, 7.5) {$e_4$};
+		\node [style=hedge] (2) at (-0.5, 3.5) {$e_1$};
+		\node [style=hedge] (3) at (2.5, 4) {$e_2$};
+		\node [style=node, label={above:$v_4$}] (4) at (-1.5, 9.5) {};
+		\node [style=node, label={above:$v_5$}] (5) at (0.5, 9.5) {};
+		\node [style=node, label={above:$v_6$}] (6) at (2.5, 9.5) {};
+		\node [style=node, label={above:$v_7$}] (7) at (4.5, 9.5) {};
+		\node [style=node, label={left:$v_2$}] (8) at (-0.5, 5.5) {};
+		\node [style=node, label={right:$v_3$}] (9) at (2.5, 5.5) {};
+		\node [style=node, label={below:$v_1$}] (10) at (2.5, 2.5) {};
+		\node [style=none] (11) at (2.5, 7) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [in=120, out=-120] (8) to (2);
+		\draw [in=-60, out=60] (2) to (8);
+		\draw [in=120, out=-90] (4) to (0);
+		\draw [in=60, out=-90] (5) to (0);
+		\draw (1) to (5);
+		\draw (6) to (1);
+		\draw (7) to (1);
+		\draw [in=-90, out=-30, looseness=0.75] (11.center) to (7);
+		\draw (0) to (8);
+		\draw (11.center) to (9);
+	\end{pgfonlayer}
+\end{tikzpicture}

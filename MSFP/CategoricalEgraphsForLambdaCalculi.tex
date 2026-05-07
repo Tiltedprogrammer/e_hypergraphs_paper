@@ -1,0 +1,189 @@
+\documentclass[submission]{eptcs}
+
+% space saving
+\usepackage[moderate,bibbreaks=normal,bibnotes=normal,bibliography=normal,leading=normal]{savetrees}
+
+\let\Bbbk\relax
+\usepackage{amsmath,amssymb}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{soul}
+\usepackage{xcolor}
+\let\openbox\relax
+\usepackage{amsthm}
+\usepackage{hyperref}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Subsection}
+
+\usepackage{cleveref}
+\usepackage{stmaryrd}
+
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{fontenc}
+\usepackage{csquotes}
+
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+% to reduce tikz picture white space
+\usepackage{adjustbox}
+
+% for quotienting
+\usepackage{xfrac} 
+\usepackage{wrapfig}
+
+\usepackage{microtype}
+
+% inference rules
+\usepackage{mathpartir}
+
+\usepackage{aliascnt}
+
+% for tables
+\usepackage{multirow}
+\usepackage{bigdelim}
+\usepackage{colortbl}
+% code
+\usepackage{minted}
+
+% citation
+\usepackage[numbers]{natbib}
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+  \par\pushQED{\qed}%
+  \normalfont
+  % tighten vertical space around the proof block:
+  \topsep=2pt\partopsep=2pt\parsep=0pt\itemsep=0pt
+  \trivlist
+  \item[\hskip\labelsep\itshape #1\@addpunct{.}]%
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+\newtheoremstyle{tight}
+  {0pt}   % Space above
+  {1pt}   % Space below
+  {}      % Body font
+  {}      % Indent
+  {\bfseries\scshape} % Head font
+  {.}     % Punctuation after head
+  {.5em}  % Space after head
+  {}      % Head spec
+
+\theoremstyle{tight}
+
+
+\newtheorem{theorem}{Theorem}[section]
+
+% definition
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\providecommand*{\definitionautorefname}{Definition}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\providecommand*{\exampleautorefname}{Example}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\providecommand*{\propositionautorefname}{Proposition}
+
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\providecommand*{\remarkautorefname}{Remark}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\providecommand*{\lemmaautorefname}{Lemma}
+
+
+% change red to orange
+\definecolor{e-color}{named}{orange}
+\definecolor{closed-color}{named}{blue}
+
+
+% some macros that maybe should be moved elsewhere
+
+\newcommand\HypI[1]{\textbf{HypI}(#1)}
+\newcommand\MdaCospans{\textbf{MHypI}(\Sigma)}
+\newcommand{\Ecospans}{{\catname{CEHypI(\Sigma)}}}
+\newcommand{\MdaEcospans}{{\catname{MCEHypI(\Sigma)}}}
+\newcommand{\WellTypedMdaEcospans}{{\catname{MCEHypI(\Sigma)}}}
+% conflict
+\newcommand{\hashtag}{{\#}}
+\newcommand{\consistency}{{\smile}}
+
+% listings for autoref
+\providecommand*{\listingautorefname}{Listing}
+
+
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+
+
+% hacks that reduce space around floats
+\AtBeginDocument{
+  \setlength{\textfloatsep}{1pt}
+  \setlength{\intextsep}{1pt}
+}
+
+\author{Anonymous
+\institute{Anonymous}
+\email{anonymous}
+}
+\title{Categorical E-Graphs for Lambda Calculi}
+\def\titlerunning{Categorical E-Graphs for Lambda Calculi}
+\def\authorrunning{Anon.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+	Equality saturation is a powerful technique for program optimisation and reasoning, driven by the use of equivalence classes of terms under rewrite rules.
+	These equivalence classes lie at the root of data structures called equality graphs (e-graphs).
+	Despite their numerous advantages, until recently e-graphs lacked native support for variable binding, limiting their applicability to programming languages.
+	We propose to address this problem from a categorical perspective by extending the interpretation of e-graphs as string diagrams, namely morphisms in symmetric monoidal semilattice-enriched categories which we additionally equip with a monoidal closed structure.
+	We further define a concrete representation using hierarchical hypergraphs, and introduce a corresponding double-pushout (DPO) rewriting system.
+	Finally, we establish the equivalence between term rewriting and DPO rewriting, with the combinatorial model inherently absorbing the equations of the symmetric monoidal structure.
+	Our approach, specifically designed for lambda calculi, is compared and contrasted with slotted e-graphs — an alternative method for incorporating variable binding within e-graphs.
+\end{abstract}
+
+
+\input{sections/introduction}
+\input{sections/categorical_semantics}
+\input{sections/combinatorial_semantics}
+\input{sections/soundness}
+% \input{sections/lambda-calculus}
+
+% \section{Conclusion}
+% In this work we introduced e-graphs with bindings derived as morphisms of a closed symmetric monoidal $\catname{SLat}$-category.
+% In doing so, we are able to leverage its internal language to provide variable binding in $\lambda$-calculus-like languages by metatheoretic $\lambda$-abstraction.
+% We then provided a combinatorial representation for such morphisms in terms of closed e-hypergraphs with a suitable notion of sound and complete DPO rewriting, making it possible for a closed e-hypergraph to represent equivalences derivable from a set of equations $\mathcal{E}$.
+% We argued for the utility of our techniques in the representation of programming languages (which inherently require variable binding) as e-graphs, contrasting with the more general-purpose slotted e-graphs, and advocating for the benefits of string-diagrammatic syntax, in particular in the context of programming languages.
+% In the future, we hope to implement an efficient version of e-graphs for hypergraphs as a data structure using DPO rewriting as its foundation to implement e-graph operations, with the theory we have developed here acting as a roadmap.
+
+\bibliographystyle{eptcs}
+\bibliography{../bibliography}
+
+\appendix
+
+\input{sections/appendix}
+
+\end{document}

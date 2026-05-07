@@ -740,16 +740,153 @@ together with the equation
 \]
 Or, alternatively, written as a possibly recursive let
 \[
-\inferrule*[]{\Gamma, x : A \vdash M : A \quad \Delta_1, y : A, \Delta_2 \vdash N : B}
-{\Delta_1, \Gamma, \Delta_2 \vdash \textbf{letrec } x = M \textbf{ in } N : B}.
+\inferrule*[]{\Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash M : A \quad \Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash N : B}
+{\Gamma \vdash \textbf{letrec } (x_1, \ldots, x_n) = M \textbf{ in } N : B},
 \]
+note that $M$ and $N$ use the same context $\Gamma$.
+
+We then define the substitution on a let as
+\[
+(\textbf{letrec } x = M \textbf{ in } N) [P/y] = \textbf{ letrec } x = M[P/y] \textbf{ in } N[P/y].
+\]
+Then we require the following equations to hold:
+\begin{gather*}
+  \textbf{letrec } x = M \textbf{ in } N \equiv N[M/x], x \not \in FV(M)\\
+  \textbf{letrec } y = (\textbf{letrec } x = L \textbf{ in } M) \textbf{ in } N \equiv \textbf{letrec } x = L \textbf{ in } (\textbf{letrec } y = M \textbf{ in } N)\\
+  \textbf{letrec } D_1 \textbf{ in } \textbf{letrec} D_2 \textbf{ in } M \equiv \textbf{letrec} D_1, D_2 \textbf{ in } M\\
+  \textbf{letrec } D_1, D_2, D_3 \textbf{ in } M \equiv \textbf{letrec } D_2, D_1, D_3 \textbf{ in } M\\
+  \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...) 
+\end{gather*}
+
+We then define trace as
+\[
+Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{match} M \{uv . \textbf{letrec} \} \rrbracket
+\]
+
 
 Type theories with fixed points are modelled by (cartesian) traced monoidal categories as described by~\citet{hasegawa_models_1999}.
 Trace is given by the operation on hom-objects
 \[
 \text{Tr}_{A,B}^{X} : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A,B)
 \]
-satisfying certain axioms.
+satisfying the following axioms.
+\paragraph{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : A \to B$, $f : B \otimes X \to C \otimes X, g : C \to D$
+\[
+\text{Tr}^{X}((g \otimes \id_{X}) \circ f \circ (h \otimes \id_{X})) = g \circ Tr^{X}(f) \circ h
+\]
+\paragraph{Sliding} For all $A,B,X,Y \in \mathcal{C}$, $f : A \otimes X \to B \otimes Y$, $g : Y \to X$
+\[
+\text{Tr}^{X}((\id_{B} \otimes g) \circ f) = \text{Tr}^{Y}(f \circ (\id_{A} \otimes g))
+\]
+\paragraph{Vanishing} For all $A,B,X,Y \in \mathcal{C}$
+\[
+\text{Tr}^{\I}(f) = f, \forall f : A \to B
+\]
+and
+\[
+\text{Tr}^{X \otimes Y}(f) = \text{Tr}^{X}(\text{Tr}^{Y}(f)), \forall f : A \otimes X \otimes Y \to B \otimes X \otimes Y
+\]
+\paragraph{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : C \otimes X \to D \otimes X$, $g : A \to B$
+\[
+\text{Tr}^{X}(g \otimes f) = g \otimes \text{Tr}^{X}(f)
+\]
+\paragraph{Yanking} For all $A,X \in \mathcal{C}$
+\[
+\text{Tr}^{X}(\sym_{X,X}) = \id_{X}
+\]
+
+We can translate this to the multicategorical setting, by letting the trace be an operation on hom-objects
+\[
+\text{Tr}^{X} : \mathcal{C}(A,X; B \otimes X) \to \mathcal{C}(A; B)
+\]
+The axioms then take the following form.
+\paragraph{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : (A;B)$, $f : (B,X; C \otimes X)$, $g : (C;D)$
+\[
+\text{Tr}^{X}(g' \circ f \circ_{1} h) = g \circ \text{Tr}^{X}(f) \circ h,
+\]
+where $g' : (C \otimes X; D \otimes X)$ is the unique morphism such that $g' \circ \xi_{C,X} = \xi_{D,X} \circ  (g, id_{X})$.
+\paragraph{Sliding} For all $A,B,X,Y \in \mathcal{C}$, $f : (A,X;B \otimes Y)$, $g : (Y;X)$
+\[
+\text{Tr}^{X}((g_{B}) \circ f) = \text{Tr}^{Y}(f \circ_2 g),
+\]
+where we let $g_{B}$ be the unique morphism with $g_{B} \circ \xi_{B,Y} = \xi_{B,X} \circ (\id_{B}, g)$.
+\paragraph{Vanishing I} For all $A,B,X,Y \in \mathcal{C}$ and $f : (A;B)$
+\[
+\text{Tr}^{\I}(f') = f,
+\]
+where $f' : (A,\I; B \otimes \I) = \xi_{B,\I} \circ (f, \id_{I})$.
+
+\paragraph{Vanishing II} For all $A,B,X,Y \in \mathcal{C}$ and $f : (A,X,Y;B \otimes X \otimes Y)$
+\[
+\text{Tr}^{X \otimes Y}(f') = \text{Tr}^{X}(\text{Tr}^{Y}(f)),
+\]
+where $f' : (A, X \otimes Y; B \otimes X \otimes Y)$ is the unique morphism such that $f' \circ (id_{A}, \xi_{X,Y}) = f$.
+
+\paragraph{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : (C,X;D \otimes X)$, $g : (A;B)$
+\[
+\text{Tr}^{X}(\xi_{B, D \otimes X} \circ (g,f)) = \xi_{B,D} \circ (g, \text{Tr}^{X}(f))
+\]
+
+\paragraph{Yanking} Recall that the symmetry in a representable multicategory is given by the unique morphism $\sym_{A,B}$ such that $\sym_{A,B} \circ \xi_{A,B} = [\xi_{B,A}](a)$, where $[-](a) : \mathcal{C}(B,A; B \otimes A) \to \mathcal{C}(A,B; B \otimes A)$.
+The axiom then becomes
+\[
+\text{Tr}^{X}([\xi_{X,X}](a)) = \id_{X}.
+\]
+We call the (symmetric) representable multicategories with the structure above \emph{traced} (symmetric) representable multicategories.
+
+\begin{proposition}
+Traced (symmetric) representable multicategories are equivalent to traced (symmetric) monoidal categories.
+The monoidal structure is not affected by the trace and therefore the monoidal part of the equavalence is given by the same argument as in~\autoref{prop:representable_multicategories}.
+We only need to translate the trace operation and check that the axioms are satisfied.
+For a traced (symmetric) representable multicategory $\mathcal{C}$ we define the corresponding traced (symmetric) monoidal category $\mathcal{M}_{c}$ as in~\autoref{prop:representable_multicategories}.
+A morphism $f : \mathcal{M}_{c}(A \otimes X, B \otimes X)$ is given by a morphism $f : \mathcal{C}(A \otimes X; B \otimes X)$ for which there exists a unique $f' : \mathcal{C}(A, X; B \otimes X)$ such that $f \circ \xi_{A,X} = f'$.
+We then let $\text{tr}^{X}(f) = \text{Tr}^{X}(f')$.
+Note that we denote the monoidal tensor as $\text{tr}$.
+\end{proposition}
+\begin{proof}
+  We check the axioms for $\text{tr}^{X}$ in $\mathcal{M}_{c}$.
+  \begin{itemize}
+    \item \textbf{Tightening}: We need to show that for all $A,B,C,D,X \in \mathcal{C}$, $h : A \to B$, $f : B \otimes X \to C \otimes X, g : C \to D$
+    \[
+    \text{tr}^{X}((g \otimes \id_{X}) \circ f \circ (h \otimes \id_{X})) = g \circ \text{tr}^{X}(f) \circ h
+    \]
+    $h \otimes \id_{X}$ is given by the unique morphism $h'$ such that $h' \circ \xi_{A,X} = \xi_{B,X} \circ (h, \id_{X})$ and $g \otimes \id_{X}$ is given by the unique morphism $g'$ such that $g' \circ \xi_{C,X} = \xi_{D,X} \circ (g, \id_{X})$.
+    Then, we have that 
+    \[
+    \text{tr}^{X}(g' \circ f \circ h') = \text{Tr}^{X}(k)
+    \]
+    where $k$ is the unique morphism such that $k = g' \circ f \circ h' \circ \xi_{A,X}$.
+    \begin{align*}
+      k &= g' \circ f \circ h' \circ \xi_{A,X}\\
+      &= g' \circ f \circ \xi_{B,X} \circ (h, \id_{X})\\
+      &= g' \circ f'' \circ (h, \id_{X})\\
+      &= g' \circ f'' \circ_{1} h\\
+    \end{align*}
+    where $f''$ is the unique morphism such that $f'' = f \circ \xi_{B,X}$.
+    Then, by tightening in $\mathcal{C}$ we have
+    \[
+    \text{Tr}^{X}(k) = \text{Tr}^{X}(g' \circ f'' \circ_{1} h) = g \circ \text{Tr}^{X}(f'') \circ h = g \circ \text{tr}^{X}(f) \circ h.
+    \]
+    \item \textbf{Sliding}: We need to show that for all $A,B,X,Y \in \mathcal{C}$, $f : A \otimes X \to B \otimes Y$, $g : Y \to X$
+    \[
+    \text{tr}^{X}((\id_{B} \otimes g) \circ f) = \text{tr}^{Y}(f \circ (\id_{A} \otimes g))
+    \]
+    $\id_{B} \otimes g$ is given by the unique morphism $g_{B}$ such that $g_{B} \circ \xi_{B,Y} = \xi_{B,X} \circ (\id_{B}, g)$.
+    $\id_{A} \otimes g$ is given by the unique morphism $g_{A}$ such that $g_{A} \circ \xi_{A,Y} = \xi_{A,X} \circ (\id_{A}, g)$.
+    Then, we have that
+    \[
+    \text{tr}^{X}(g_{B} \circ f) = \text{Tr}^{X}(k),
+    \]
+    where $k$ is the unique morphism such that $k = g_{B} \circ f \circ \xi_{A,X}$.
+    Let $f'$ be the unique morphism such that $f' = f \circ \xi_{A,X}$.
+    Then, we have that
+    \[
+    \text{Tr}^{X}(k) = \text{Tr}^{X}(g_{B} \circ f \circ \xi_{A,X}) = \text{Tr}^{X}(g_{B} \circ f') = \text{Tr}^{Y}(f' \circ_{2} g) = \text{Tr}^{Y}(f \circ \xi_{A,X} \circ (id_{A}, g))
+    \]
+    By definition, $\text{tr}^{Y}(f \circ (\id_{A} \otimes g)) = \text{tr}^{Y}(f \circ g_{A}) = \text{Tr}^{Y}(f \circ g_{A} \circ \xi_{A,Y}) = \text{Tr}^{Y}(f \circ \xi_{A,X} \circ (\id_{A},g)) = \text{Tr}^{X}(k) = \text{tr}^{X}(g_{B} \circ f)$.
+  \end{itemize}
+\end{proof}
+
 Since a representable multicategory is equivalent to a monoidal category by~\autoref{prop:representable_multicategories}, the trace operation on hom-objects
 \[
 \text{Tr}_{A,B}^X : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A, B)

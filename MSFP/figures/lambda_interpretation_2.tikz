@@ -1,0 +1,108 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (57) at (-4, 4) {};
+		\node [style=none] (58) at (2.25, 4) {};
+		\node [style=none] (59) at (2.25, -7.5) {};
+		\node [style=none] (60) at (-4, -7.5) {};
+		\node [style=none] (10) at (-3.25, -4.25) {};
+		\node [style=none] (11) at (-2.75, -4.75) {};
+		\node [style=none] (12) at (1, -4.75) {};
+		\node [style=none] (13) at (1.5, -4.25) {};
+		\node [style=none] (14) at (1.5, 1.25) {};
+		\node [style=none] (15) at (1, 1.75) {};
+		\node [style=none] (16) at (-2.75, 1.75) {};
+		\node [style=none] (17) at (-3.25, 1.25) {};
+		\node [style=none] (0) at (-9, -1.5) {\Large$\llbracket\Lambda_{A,B,C}(f)\rrbracket$};
+		\node [style=none] (1) at (-5.5, -1.5) {$\Coloneqq$};
+		\node [style=medium box] (2) at (-0.75, -1.5) {$\llbracket f \rrbracket$};
+		\node [style=node, label={below:$A$}] (3) at (-1.25, -3.75) {};
+		\node [style=node, label={below:$B$}] (4) at (-0.25, -3.75) {};
+		\node [style=none] (5) at (-1.25, -2) {};
+		\node [style=none] (6) at (-0.25, -2) {};
+		\node [style=node, label={above:$C$}] (7) at (-0.75, 0.75) {};
+		\node [style=none] (8) at (-0.75, -0.75) {};
+		\node [style=none] (9) at (-2.25, 3.25) {$B \multimap C$};
+		\node [style=node] (18) at (-0.75, 3) {};
+		\node [style=none] (19) at (-0.75, 1.75) {};
+		\node [style=none] (20) at (-1.25, -4.75) {};
+		\node [style=node, label={below:$A$}] (21) at (-1.25, -6.5) {};
+		\node [style=node, label={below:$A$}] (22) at (-1, -9.25) {};
+		\node [style=node, label={below:$B$}] (23) at (0, -9.25) {};
+		\node [style=node, label={below:$A$}] (24) at (-2, -9.25) {};
+		\node [style=none] (25) at (-3, -10.25) {};
+		\node [style=none] (26) at (1, -10.25) {};
+		\node [style=none] (27) at (1, -8.75) {};
+		\node [style=none] (28) at (-3, -8.75) {};
+		\node [style=node, label={below:$A$}] (29) at (-1, -12.5) {};
+		\node [style=none] (32) at (1, -13.5) {};
+		\node [style=none] (33) at (-3, -13.5) {};
+		\node [style=none] (34) at (-3, -12) {};
+		\node [style=none] (35) at (1, -12) {};
+		\node [style=none] (36) at (-1, -11.5) {};
+		\node [style=none] (37) at (-1, -10.75) {};
+		\node [style=none] (38) at (-1, -8.5) {};
+		\node [style=none] (39) at (-1, -7.75) {};
+		\node [style=node] (40) at (-1, 10) {};
+		\node [style=none] (41) at (-2, 10.5) {$B \multimap C$};
+		\node [style=node] (42) at (-1, 6.5) {};
+		\node [style=none] (43) at (-2, 7.125) {$B \multimap C$};
+		\node [style=node, label={above:$C$}] (44) at (0.25, 6.5) {};
+		\node [style=none] (45) at (-3, 6) {};
+		\node [style=none] (46) at (1, 6) {};
+		\node [style=none] (47) at (1, 7.5) {};
+		\node [style=none] (48) at (-3, 7.5) {};
+		\node [style=none] (49) at (1, 9.5) {};
+		\node [style=none] (50) at (-3, 9.5) {};
+		\node [style=none] (51) at (-3, 10.75) {};
+		\node [style=none] (52) at (1, 10.75) {};
+		\node [style=none] (53) at (-1, 8.75) {};
+		\node [style=none] (54) at (-1, 8) {};
+		\node [style=none] (55) at (-1, 5.25) {};
+		\node [style=none] (56) at (-1, 4.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (59.center)
+			 to (58.center)
+			 to (57.center)
+			 to [in=90, out=-90] (60.center)
+			 to cycle;
+		\draw [style=lambda box] (11.center)
+			 to (12.center)
+			 to [in=-90, out=0, looseness=1.75] (13.center)
+			 to (14.center)
+			 to [in=0, out=90, looseness=1.75] (15.center)
+			 to (16.center)
+			 to [in=90, out=180, looseness=1.75] (17.center)
+			 to (10.center)
+			 to [in=180, out=-90, looseness=1.75] cycle;
+		\draw (3) to (5.center);
+		\draw (4) to (6.center);
+		\draw (8.center) to (7);
+		\draw (19.center) to (18);
+		\draw (21) to (20.center);
+		\draw [style=boundary frame] (28.center)
+			 to (25.center)
+			 to (26.center)
+			 to (27.center)
+			 to cycle;
+		\draw [style=boundary frame] (35.center)
+			 to (32.center)
+			 to (33.center)
+			 to (34.center)
+			 to cycle;
+		\draw [style=diredge] (36.center) to (37.center);
+		\draw [style=diredge] (38.center) to (39.center);
+		\draw [style=boundary frame] (45.center)
+			 to (46.center)
+			 to (47.center)
+			 to (48.center)
+			 to cycle;
+		\draw [style=boundary frame] (50.center)
+			 to (51.center)
+			 to (52.center)
+			 to (49.center)
+			 to cycle;
+		\draw [style=diredge] (53.center) to (54.center);
+		\draw [style=diredge] (55.center) to (56.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

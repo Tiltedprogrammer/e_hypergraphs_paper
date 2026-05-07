@@ -1,0 +1,40 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-5.5, -0.75) {};
+		\node [style=vertex] (1) at (-5.5, 0.75) {};
+		\node [style=none] (2) at (-6, 0) {$\Gamma_1$};
+		\node [style=none] (3) at (-4.75, -0.75) {};
+		\node [style=vertex] (4) at (-4.75, 0.75) {};
+		\node [style=none] (5) at (-4.25, 0) {$y$};
+		\node [style=none] (6) at (-3.25, -0.75) {};
+		\node [style=vertex] (7) at (-3.25, 0.75) {};
+		\node [style=none] (8) at (-2.75, 0) {$\Gamma_2$};
+		\node [style=round box] (9) at (-3.25, 3) {$v$};
+		\node [style=none] (10) at (-3.5, 2.5) {};
+		\node [style=none] (11) at (-3.25, 2.5) {};
+		\node [style=none] (12) at (-3, 2.5) {};
+		\node [style=vertex] (13) at (-6.5, 4.5) {};
+		\node [style=none] (14) at (-5.5, 4.5) {};
+		\node [style=vertex] (15) at (-4.5, 4.5) {};
+		\node [style=none] (16) at (-3.25, 3.5) {};
+		\node [style=vertex] (17) at (-3.25, 4.5) {};
+		\node [style=none] (18) at (-3.5, 2) {};
+		\node [style=none] (19) at (-3.25, 2) {};
+		\node [style=none] (20) at (-3, 2) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (1) to (0.center);
+		\draw (4) to (3.center);
+		\draw (7) to (6.center);
+		\draw [in=-90, out=120, looseness=0.75] (1) to (13);
+		\draw [in=-90, out=120, looseness=0.75] (4) to (14.center);
+		\draw [in=-90, out=120, looseness=0.75] (7) to (15);
+		\draw (16.center) to (17);
+		\draw (10.center) to (18.center);
+		\draw (11.center) to (19.center);
+		\draw (12.center) to (20.center);
+		\draw [bend left=15] (20.center) to (7);
+		\draw [bend left=45, looseness=0.75] (19.center) to (4);
+		\draw [in=-90, out=30, looseness=0.75] (1) to (18.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
