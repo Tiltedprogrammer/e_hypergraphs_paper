@@ -1,28 +1,24 @@
 \section{String Diagram Rewrite Theory}%
 \label{sec:combinatorial-semantics}
 
-We recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories, recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs, as established in~\citet{bonchi_string_2022-1, bonchi_string_2022-2}.
+We recall the fundamental definitions and results of string diagram rewrite theory for symmetric monoidal categories, recapitulating the correspondence between string diagram rewriting and an appropriate notion of double pushout (DPO) rewriting of certain hypergraphs, as established by Bonchi et al.~\cite{bonchi_string_2022-1,bonchi_string_2022-2}.
 
-First,  we fix some notation.  Let $(-)^*$ be the free monoid monad over $\catname{Set}$.
-We extend this to the case of relations $R \subseteq V \times V$,  denoting by $R^{*} \subseteq V^* \times V^*$ the element-wise extension of $R$ to a relation on ordered sequences.
-We will sometimes use functional notation for relations, so that given $R \subseteq V \times W$ and $v \in V$, we write $R(v) \in W$.
-We elide associativity and unit isomorphisms associated with coproducts $\sqcup$,  and denote by $\iota_j\colon X_{j} \rightarrow X_{1} \sqcup \dots X_{j} \sqcup \dots X_{n}$ the $j^{\text{th}}$ injection,  and $[f,g]\colon A_1 \sqcup A_2 \to B$ the co-pairing of two morphisms $f\colon A_1 \to B$ and $g\colon A_2 \to B$.
-We denote by $A \sqcup_{f,g} B$ the pushout of the span $A \xleftarrow{f} C \xrightarrow{g} B$.
-We will also refer to $A,B$ as \emph{feet} of the cospan, and to $C$ as \emph{carrier}.
+We write $(-)^*$ for the free monoid monad over $\catname{Set}$, extended element-wise to relations; for $R \subseteq V \times W$ and $v \in V$ we write $R(v) \subseteq W$ in functional notation.
+We elide coproduct associativity and unit isomorphisms, write $\iota_j$ for the $j^{\text{th}}$ injection into $X_1 \sqcup \cdots \sqcup X_n$, $[f,g]$ for co-pairing, and $A \sqcup_{f,g} B$ for the pushout of $A \xleftarrow{f} C \xrightarrow{g} B$; we call $A,B$ the \emph{feet} and $C$ the \emph{carrier} of the cospan.
 % Given an ordered sequence of labels from some alphabet $\Sigma$, $[l_1, \ldots, l_n]$ we will denote with $w([l_1, \ldots, l_n])$ the word concatenated from these labels using $\otimes$, e.g.\ $w([A,B]) = A \otimes B$.
 
 \subsection{Hypergraphs}
 
 Hypergraphs generalise directed graphs by allowing edges to have multiple (ordered) sources and targets.
-\citet{bonchi_string_2022-2} show that a certain class of hypergraphs \emph{with interfaces} are sound and complete for categorical presentations of arbitrary symmetric monoidal theories.
+Bonchi et al.~\cite{bonchi_string_2022-2} show that a certain class of hypergraphs \emph{with interfaces} are sound and complete for categorical presentations of arbitrary symmetric monoidal theories.
 They develop the use of hypergraphs as combinatorial representations of string diagrams for symmetric monoidal categories, whereby morphisms (nodes) are represented as hyperedges, and objects (wires) as vertices.
 String diagram rewriting is then formalised as DPO rewriting of said hypergraphs.
-We briefly present this correspondence, but the interested reader should consult the work of~\citet{bonchi_string_2022-1,bonchi_string_2022-2}.
+We briefly present this correspondence, but the interested reader should consult the work of Bonchi et al.~\cite{bonchi_string_2022-1,bonchi_string_2022-2}.
 
 \begin{definition}[Category of hypergraphs]\label{def:hypergraph}
-	A hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ is a tuple $(V,E,s,t,l)$, where $V$ is a finite set of vertices, $E$ is a finite set of hyperedges, $s\colon E \to V^{*}$ is a source function, $t\colon E \to V^{*}$ is a target function,  and $l = (l_{V}\colon V \to \Sigma_{O},l_{E}\colon E \to \Sigma_{M})$ is a pair of labelling functions that assigns each hyperedge and vertex an operator and a type from monoidal signature $\Sigma$ respectively.
+	A hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ is a tuple $(V,E,s,t,l)$, where $V$ is a finite set of vertices, $E$ is a finite set of hyperedges, $s\colon E \to V^{*}$ is a source function, $t\colon E \to V^{*}$ is a target function,  and $l = (l_{V}\colon V \to \Sigma_{O},l_{E}\colon E \to \Sigma_{M})$ is a pair of labelling functions that assigns each hyperedge and vertex a generator and a type from monoidal signature $\Sigma$ respectively.
 
-	The labelling function must respect the typing of the operator:
+	The labelling function must respect the typing of the generator:
 	\[
 		\forall e \in E. \, l(e) = c : A \to B \implies l_{V}^{*}(s(e)) = A \text{ and } l_{V}^{*}(t(e)) = B.
 	\]
@@ -92,56 +88,8 @@ String diagrams also have dangling wires exiting at their top/bottom boundaries,
 % Hypergraphs without these restrictions correspond to morphisms in symmetric monoidal categories with additional structure (Frobenius algebra structure~\cite{bonchi_string_2022-1}, for example) that we do not necessarily have.
 % In order to rectify this, we impose additional constraints on the hypergraphs under consideration.
 Additional constraints on hypergraphs are needed to put them in bijective correspondence with string diagrams in a symmetric monoidal category: \emph{monogamy}, which enforces that $\mathsf{in}$ and $\mathsf{out}$ are injective and constrain the in-degree and out-degree of vertices in $\mathcal{G}$, and \emph{acyclicity}, which states that there are no loops in the hypergraph.
-Together, these ensure that a hypergraph with interfaces \enquote{looks like} a string diagram, and determines a subcategory $\catname{MHypI}(\Sigma) \hookrightarrow \catname{HypI}(\Sigma)$ --- a category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
-% \begin{definition}[Degree]
-% 	The in-degree of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.
-% 	Similarly, the out-degree of $v$ is the number of hyperedges $e \in E_\mathcal{G}$ such that $v \in s(e)$.
-% 	% A path from $e_0$ to $e_{n-1}$ of length $n$ in a hypergraph $\mathcal{G}$ is an ordered sequence of hyperedges $[e_0, e_1, \ldots, e_{n-1}] \in E_\mathcal{G}^*$ such that for all $i < n - 1$ some vertex $v \in t(e_i)$ is also in $s(e_{i+1})$.
-% 	% A hypergraph is directed acyclic if it contains no paths of length $n > 0$ that start and end in the same hyperedge.
-% \end{definition}
+Together, these ensure that a hypergraph with interfaces \enquote{looks like} a string diagram, and determines a subcategory $\catname{MHypI}(\Sigma) \hookrightarrow \catname{HypI}(\Sigma)$ --- the category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
 An example and a non-example of an MDA cospan can be found in~\autoref{sec:appendix:hyp}.
-
-% \begin{definition}[Category of MDA Hypergraphs with Interfaces~\cite{bonchi_string_2022-2}]%
-% 	\label{def:monogamy_hyp}
-% 	We call a cospan $n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m$ in $\HypI{\Sigma}$ monogamous if:
-% 	\begin{enumerate}
-% 		\item $\mathcal{G}$ is directed acyclic;
-% 		\item $f$ and $g$ are monomorphisms;
-% 		\item the in-degree and out-degree of every vertex is at most~$1$;
-% 		\item vertices with in-degree $0$ are precisely the image of $f$;
-% 		\item vertices with out-degree $0$ are precisely the image of $g$.
-% 	\end{enumerate}
-% 	We denote by $\MdaCospans$ the subcategory of $\HypI{\Sigma}$ of monogamous directed acyclic (MDA) cospans.
-% \end{definition}
-
-% An example and a non-example of an MDA cospan can be found in~\autoref{sec:appendix:hyp}.
-% \autoref{fig:hypergraph-with-interfaces} gives an example of an MDA cospan, which is such because it \enquote{looks like} the string diagram \comonoid.
-% Analogously, we can see that~\autoref{fig:hypergraph} (equipped with the interfaces choosing $\{ v_1 \}$ and $\{ v_4, v_5, v_6, v_7 \}$) fails to form an MDA cospan --- it is not monogamous for many reasons: $v_1$ has out-degree 0, $v_1, v_5, v_7$ have in-degree 2, and $v_3$ has in-degree 0; additionally, it fails be be directed acyclic due to the path along $e_4$ from $v_7$ to itself\footnote{Recall that loops are not part of the syntax of string diagrams for symmetric monoidal categories in the absence of a trace --- a relaxation of monogamy to allow for this is explored by~\citet{ghica_rewriting_2023}.}.
-
-% \begin{figure}
-% 	\begin{subfigure}[c]{0.3\linewidth}
-% 		\centering
-%         \[
-%         \adjustbox{scale=0.8}{
-%         \tikzfig{figures/hypergraph_example}
-%         }
-%         \]
-% 		\caption{Hypergraph with 7 vertices and 4 hyperedges, all directed bottom-to-top; source/target vertices are ordered left-to-right.}%
-% 		\label{fig:hypergraph}
-% 	\end{subfigure}
-% 	\begin{subfigure}[c]{0.3\linewidth}
-% 		\centering
-%         \[
-%         \adjustbox{scale=0.8}{
-%         \tikzfig{figures/cospan_hypergraph_example}
-%         }
-%         \]
-% 		\caption{Hypergraph with interfaces}%
-% 		\label{fig:hypergraph-with-interfaces}
-% 	\end{subfigure}
-% 	\caption{Example hypergraphs}%
-% 	\label{fig:hypergraph-examples}
-% \end{figure}
 
 % Note that $\MdaCospans$ remains a symmetric monoidal category with the same structure as before.
 There is a symmetric monoidal equivalence which witnesses that MDA hypergraphs with interfaces are precisely string diagrams.
@@ -186,22 +134,22 @@ The right pushout square then glues $\mathcal{R}$ into this context, producing t
 	Given a span of morphisms $\mathcal{G} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{H}$ in $\catname{Hyp}(\Sigma)$, we say $\mathcal{G}$ rewrites to $\mathcal{H}$ with interface $n \sqcup m$ via rewrite rule $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{R}$ if there exists an object $\mathcal{L}^{\bot}$ and morphisms completing the commutative diagram above such that the two marked squares are pushouts.
 \end{definition}
 For soundness and completeness with respect to $\Sigma$-term rewriting modulo SMC, matches are restricted to \emph{convex} matches and pushout complements to \emph{boundary complements} (see~\autoref{sec:appendix:hyp}).
-\citet{bonchi_string_2022-2} show that any two $\Sigma$-terms $f$ and $g$ are equal modulo SMC and $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} \llbracket g \rrbracket$, where $\llbracket - \rrbracket$ is the functor from~\autoref{thm:prop-equiv} and $\llbracket \mathcal{E} \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \mid l=r \in \mathcal{E} \}$.
+Bonchi et al.~\cite{bonchi_string_2022-2} show that any two $\Sigma$-terms $f$ and $g$ are equal modulo SMC and $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} \llbracket g \rrbracket$, where $\llbracket - \rrbracket$ is the functor from~\autoref{thm:prop-equiv} and $\llbracket \mathcal{E} \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \mid l=r \in \mathcal{E} \}$.
 Next, we build a combinatorial representation for closed $\Sigma^{+}$-terms to obtain a notion of DPOI rewriting that also subsumes equality modulo the laws of closed symmetric monoidal $\catname{SLat}$-categories.
 
 \section{Closed E-Hypergraphs}%
 \label{sec:closed-e-hyp}
-\citet{tiurin2025equivalencehypergraphsdporewriting} introduced \emph{e-hypergraphs} --- a combinatorial representation of morphism terms for free symmetric monoidal $\catname{SLat}$-categories with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
+Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} introduced \emph{e-hypergraphs} --- a combinatorial representation of morphism terms for free symmetric monoidal $\catname{SLat}$-categories with a modified notion of DPOI rewriting to make it sound and complete for equalities between morphism terms.
 The $\catname{SLat}$-enrichment structure was encoded using hierarchical hyperedges in a hypergraph following the approach of a well-established body of literature on hierarchical hypergraphs~\cite{plump:hierarchical-graphs, montanari:gs-lambda, palacz:hierarchical-transform, Gaducci:hierarchical-graphs, Ghica:hierarchical, fscd}.
-The first work in loc.\ cit.\ introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
-Notably, the laws of a $\catname{SLat}$-enrichment used by~\citet{tiurin2025equivalencehypergraphsdporewriting} and the laws of~\autoref{def:closed}~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
+The last work in loc.\ cit.\ introduced a combinatorial representation of closed $\Sigma$-terms (without enrichment).
+Notably, the laws of a $\catname{SLat}$-enrichment used by Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} and the laws of~\autoref{def:closed}~\cite{fscd} were not absorbed by the combinatorial representation and instead were implemented on top as structural DPOI rewrites.
 
-We follow an analogous approach by combining combinatorial representations of~\citet{fscd} and~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+We follow an analogous approach by combining combinatorial representations of Alvarez-Picallo et al.~\cite{fscd} and Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting}.
 We next extend the definition of e-hypergraphs for symmetric monoidal $\catname{SLat}$-categories~\cite{tiurin2025equivalencehypergraphsdporewriting} to accommodate new structure brought by closure.
 
 \begin{definition}
 	Over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$, we define a closed e-hypergraph $\mathcal{G}$ as a tuple 
-	\[(V,E,s,t, l_{V}, l_{E} \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency), \text{ where}\]
+	\[(V,E,s,t, l_{V}, l_{E}, \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency), \text{ where}\]
 	\begin{itemize}
 		\item $V$ is a set of vertices.
 		\item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined as follows.
@@ -229,7 +177,7 @@ Intuitively, edges from $\textcolor{e-color}{E}$ encode equivalence classes, i.e
 Also note the typing on the $l_{V}$ function.
 We work with freely generated closed $\catname{SLat}$-categories, and to avoid unnecessary complications we limit the labelling of vertices to such a type.
 This prohibits the labelling of vertices by e.g.\ $A \otimes B$, but allows them to be labelled by $A \otimes B \multimap C \otimes D$.
-$\textcolor{closed-color}{<}$ defines closed monoidal structure as defined by~\citet{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+$\textcolor{closed-color}{<}$ defines closed monoidal structure as defined by Alvarez-Picallo et al.~\cite{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting}.
 
 Consider an example in the middle part of~\autoref{fig:e-cospan-example}.
 The closed e-hypergraph there is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{e-color}{E} = \{e_{1}\}$, $\textcolor{closed-color}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$; the elements of the involved relations are shown in~\autoref{fig:e-cospan-example-rels},
@@ -298,8 +246,7 @@ The conditions on closed e-hypergraph homomorphisms require preserving immediate
 
 The category of closed e-hypergraphs has coproducts, given by the disjoint union of closed e-hypergraphs, and an initial object given by the empty closed e-hypergraph.
 A concrete description of the pushout of two morphisms in this category is given in~\autoref{sec:appendix:pushout}.
-Generally,  the pushout of two closed e-hypergraph homomorphisms need not exist,  but it does when certain technical conditions are satisfied.
-However, a pushout for the composition of two cospans with discrete feet always exists, as described below.
+Generally,  the pushout of two closed e-hypergraph homomorphisms need not exist,  but it does when certain technical conditions are satisfied; in particular, a pushout for the composition of two cospans with discrete feet always exists.
 
 As in the case of $\catname{S}(\Sigma)$ and $\MdaCospans$, closed e-hypergraphs require interfaces in order to model string diagrams with dedicated inputs and outputs.
 Because string diagrams for closed  symmetric monoidal $\catname{SLat}$-categories are nested, containing substring diagrams inside e-class boxes and $\lambda$-abstraction boxes, we need to account for the interfaces in these nested contexts as well.
@@ -308,18 +255,17 @@ We thus propose \emph{extended} cospans of discrete closed e-hypergraphs and use
 with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub closed e-hypergraph of $n$.
 
 \begin{definition}[Category of closed e-hypergraphs with interfaces]
-	The category of closed e-hypergraphs with extended interfaces $\Ecospans$ has discrete \emph{ordered} closed e-hypergraphs as objects,  with Hom sets $\Ecospans(n,m)$ consisting of isomorphism classes (\autoref{def:cospan-isomorphism}) of extended cospans, defined as follows:
+	The category of closed e-hypergraphs with extended interfaces $\Ecospans$ has discrete \emph{ordered} closed e-hypergraphs as objects,  with Hom sets $\Ecospans(n,m)$ consisting of isomorphism classes (\autoref{def:cospan-isomorphism}) of extended cospans, defined as:
 	\[
 		n \xrightarrow{f_{ext}} n^\prime \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m^\prime \xleftarrow{g_{ext}} m,
 	\]
 	where $\mathcal{G}$ is a closed e-hypergraph,  and $n, n^\prime, m, m^\prime$ are discrete ordered closed e-hypergraphs,  $f_{ext},g_{ext}$ are monomorphisms in $\catname{CEHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and the vertices in the strictly internal interface (defined below) are not top-level.
 	Write $\mathcal G$ to denote the extended cospan when it is clear from context $\mathcal G$ is equipped with extended interfaces.
-
 \end{definition}
 We call $n$  \emph{external input interfaces}, $n^\prime$ \emph{internal input interfaces},
 and $n^\prime \setminus f_{ext}(n)$  the \emph{strictly internal input interfaces}.
 We do analogously for the \emph{output interfaces},  with respect to $m$,  $m^\prime$ and $m^\prime \setminus g_{ext}(m)$.
-We conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n^\prime$ and $m^\prime$,  and likewise $m, m, n^\prime, m^\prime$ with their images in $\mathcal{G}$.
+We conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n^\prime$ and $m^\prime$,  and likewise $n, m, n^\prime, m^\prime$ with their images in $\mathcal{G}$.
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \emph{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.
 Graphically, we depict such extended cospans as in~\autoref{fig:e-cospan-example}: feet of the cospan are depicted within shaded regions.
 All non-black vertices form strictly internal interfaces.
@@ -332,7 +278,8 @@ We follow the same orientation that we chose for string diagrams --- the input i
 	\]
 	for $x, y \in n^\prime$, with $S$ its reflexive closure.
 	The latter partitions $n^\prime$ into non-empty subsets $\{p_{j}\}^{k}_{j=1}$.
-	We get an analogous partition for $m^\prime$.In~\autoref{fig:e-cospan-example}, colours denote the partitions for input and output internal interfaces.
+	We get an analogous partition for $m^\prime$. 
+	In~\autoref{fig:e-cospan-example}, colours denote the partitions for input and output internal interfaces.
 	% \begin{wrapfigure}{r}{0.3\textwidth}
 	% 	\centering
 	% 	\begin{adjustbox}{scale=0.8}
@@ -455,7 +402,7 @@ To make edge $e_{2}$ well-typed, it is necessary that $l_{V}^{*}([v_4,v_5,v_9]) 
 \section{DPOI-Rewriting for Closed E-Hypergraphs}
 
 Because extended cospans have a more general notion of interface,  including \emph{internal} vertices,  DPOI rewriting as presented in~\autoref{sec:combinatorial-semantics} needs some adjustments, which we define in this section.
-The construction in this section closely follows the one introduced by~\citet{tiurin2025equivalencehypergraphsdporewriting} with some adjustments to account for $\textcolor{closed-color}{<}$.
+The construction in this section closely follows the one introduced by Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} with some adjustments to account for $\textcolor{closed-color}{<}$.
 We do not expect internal interfaces to be preserved during rewriting: e.g.\ when the semilattice equations are considered as rewrites.
 Thus,  we wish a rewrite rule to be a pair of \emph{extended} cospans of closed e-hypergraphs with matching \emph{external} (but not necessarily internal) interfaces:
 \[
@@ -465,8 +412,8 @@ Thus,  we wish a rewrite rule to be a pair of \emph{extended} cospans of closed 
 \]
 Analogously to~\autoref{sec:combinatorial-semantics}, observing that the cospan
 $
-	0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n^{\prime\prime} \sqcup m^{\prime\prime} \xleftarrow{} n \sqcup m$ expresses the same data as $
-	0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n^\prime \sqcup m^\prime \xleftarrow{} n \sqcup m
+	0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n^{\prime} \sqcup m^{\prime} \xleftarrow{} n \sqcup m$ expresses the same data as $
+	n \xrightarrow{} n^\prime \xrightarrow{} \mathcal{L} \xleftarrow{} m^\prime \xleftarrow{} m
 $
 allows us to encode rewrite rules as extended cospans of the form
 $
@@ -543,7 +490,7 @@ In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, 
 % The morphisms are then constructed correspondingly to require that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
 
 The conditions (3) and (4) require that top-level connected components in $\mathcal{L}$ do not end up inside edges of different types within $\mathcal{G}$ and $\mathcal{L}^{\bot}$ under $m$ and $[c_1,c_2]$.
-Conditions (2) and (7) are the original boundary complement conditions (forgetting the extra interfaces) introduced by ~\citet{bonchi_string_2022-2}.
+Conditions (2) and (7) are the original boundary complement conditions (forgetting the extra interfaces) introduced by Bonchi et al.~\cite{bonchi_string_2022-2}.
 Intuitively these conditions ensure that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
 Convexity and down-closed-ness conditions ensures that the subgraph corresponds to a proper subterm modulo SMC.
 \begin{proposition}%

@@ -8,9 +8,9 @@ They mitigate the \emph{phase-ordering problem} of term rewriting: the way rewri
 This is achieved by making rewrites on e-graphs non-destructive: an application of a rewrite rule, instead of replacing the left-hand side by the right-hand side, adds the latter to the e-graph so that all pre-existing redexes are protected and new ones are introduced.
 Exponential growth of the e-graph is avoided by the clever use of sharing of nodes.
 
-E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{10.1145/1594834.1480915, flatt_small_2022, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
+E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{EqualitySaturation2009, flatt_small_2022, EggPaper}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
 We are interested in using e-graphs in the context of functional programming languages, which builds upon an internal representation of the $\lambda$-calculus.
-\citet{koehler2022sketchguided} pioneered work in this area by identifying two key, interconnected challenges—handling binding and ensuring capture-avoiding substitution—when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
+K{\oe}hler et al.~\cite{koehler2022sketchguided} pioneered work in this area by identifying two key, interconnected challenges—handling binding and ensuring capture-avoiding substitution—when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
 
 In the textual representation of $\lambda$-terms, $\alpha$-equivalent terms may be distinct and thus cannot be shared.
 De Bruijn indices~\cite{de1972lambda} syntactically identify $\alpha$-equivalent terms, but the same variable can receive different indices depending on its scope, again interfering with sharing.
@@ -21,13 +21,13 @@ Terms are identified up to permutations of non-interacting substitutions, called
 Modelling this in conventional e-graphs requires additional nodes for explicit substitutions and additional rewrite rules to capture graphical equivalence, polluting the equality saturation state space with bureaucracy rather than the domain-specific rewriting one actually cares about.
 
 All these issues can be resolved by the use of \emph{string diagrams} in place of textual syntax.
-\citet{tiurin2025equivalencehypergraphsdporewriting}~shows how e-graphs (without binding) can be given a categorical semantics using symmetric monoidal semilattice-enriched categories, which allows e-graphs to be reconstructed as string diagrams.
+Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} shows how e-graphs (without binding) can be given a categorical semantics using symmetric monoidal semilattice-enriched categories, which allows e-graphs to be reconstructed as string diagrams.
 In this paper, we extend this technique to e-graphs with bindings, lifting to monoidal \emph{closed} categories.
 
 \subsection{String diagrams}
 
 String diagrams provide a topological calculus for monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}.
-They bridge category theory---which gives semantic models to programming languages and logics---to the concrete language of graphs fundamental in compiler design; see~\citet{ghica2024stringdiagramslambdacalculifunctional} for the $\lambda$-calculus setting and~\citet{tiurin2025equivalencehypergraphsdporewriting} for e-graphs without bindings.
+They bridge category theory---which gives semantic models to programming languages and logics---to the concrete language of graphs fundamental in compiler design; see Ghica and Zanasi~\cite{ghica2024stringdiagramslambdacalculifunctional} for the $\lambda$-calculus setting and Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} for e-graphs without bindings.
 In our string diagrams, which are oriented left-to-right and bottom-to-top, the structure of symmetric monoidal categories is absorbed into the graphical syntax, with composition and tensoring represented by juxtaposition and symmetries as weaving of strings.
 
 We require a concrete encoding of string diagrams, analogous to the de Bruijn index representation of $\lambda$-terms.
@@ -71,7 +71,7 @@ E-graphs simultaneously represent several equivalent terms of an algebraic theor
 Extracting a term amounts to choosing one e-node per e-class; different choices yield equivalent terms.
 \autoref{fig:e-graph-example} shows how a series of rewrite rules are non-destructively applied to an e-graph~\cite{EggPaper}, alongside the equivalent string diagram representation using \emph{e-hypergraphs}~\cite{tiurin2025equivalencehypergraphsdporewriting}.
 Applying a rewrite rule to an e-graph amounts to adding new e-nodes into the e-graph and \emph{merging} e-classes for the left-hand side and right-hand side of the rewrite rule, instantiating the variables in the rule with the e-classes according to the match.
-The key difference that can be noted in string diagrammatic representation, is that the dashed boxes that correspond to e-graph e-classes are just ordinary nodes that happen to have hierarchical structure.
+The key difference that can be noted in string-diagrammatic representation, is that the dashed boxes that correspond to e-graph e-classes are just ordinary nodes that happen to have hierarchical structure.
 These boxes have enough inputs to cater for each subdiagram inside, explicitly deleting the unnecessary wires inside each component using $\counit$.
 \begin{figure*}[t!]
 	\begin{minipage}{0.18\textwidth}
@@ -130,9 +130,9 @@ Recent work on \emph{slotted} e-graphs~\cite{slotted-egraphs} addresses the shar
 An example is shown in~\autoref{fig:slotted}: each e-class is parameterised by a set of free variables and can be \enquote{invoked} by supplying concrete variable names. 
 We can achieve a similar degree of sharing via closure conversion in our setting (\autoref{fig:closed}).
 The key difference is that slotted e-graphs solve variable binding generically using nominal techniques applicable to arbitrary formal languages with binders (e.g.\ $\pi$-calculus), while our approach embeds into the internal language of our categorical model, using metatheoretic $\lambda$-abstraction to handle variable binding.
-We provide a case study to~\autoref{sec:application}, where we argue that our approach has particular advantages for e-graphs for (variations of) $\lambda$-calculus.
+We provide a case study in~\autoref{sec:application}, where we argue that our approach has particular advantages for e-graphs for (variations of) $\lambda$-calculus.
 Our categorical model can also help justify the congruences maintained by slotted e-graphs, as we elaborate in~\autoref{sec:categorical}.
-We note that \citet{slotted-egraphs} focus on the e-graph as a data structure with a full implementation, while we focus on the foundational categorical semantics of e-graphs with binding and their combinatorial representation.
+We note that Schneider et al.~\cite{slotted-egraphs} focus on the e-graph as a data structure with a full implementation, while we focus on the foundational categorical semantics of e-graphs with binding and their combinatorial representation.
 We hope our work serves as a foundation for semantics of e-graphs with bindings, a currently underdeveloped area~\cite{zhang_relational_2022,tree_automata_e_graphs}.
 
 \begin{figure*}
@@ -156,11 +156,11 @@ We hope our work serves as a foundation for semantics of e-graphs with bindings,
 \subsection{Contributions}
 Our contribution is the construction of a form of e-graphs that support binding, developed through a principled categorical approach.
 Specifically, we extend a prior categorical semantics for e-graphs without binding by incorporating a monoidal closed structure.
-\citet{tiurin2025equivalencehypergraphsdporewriting} shows that e-graphs over signature $\Sigma$ can be represented as morphisms of a free Cartesian symmetric monoidal semilattice-enriched category over the same signature.
+Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} shows that e-graphs over signature $\Sigma$ can be represented as morphisms of a free Cartesian symmetric monoidal semilattice-enriched category over the same signature.
 We argue that restricting the categorical domain to free \textbf{closed} symmetric monoidal semilattice-enriched categories gives rise to structures that naturally support binding and equivalence classes of morphisms.
 That is, morphisms (string diagrams) of such category can both encode variable binding (using the closed structure) and equivalence (using the semilattice enrichment) between subterms (sub-diagrams).
 We call these string diagrams, or more precisely, the combinatorial representation of them, \emph{closed e-hypergraphs}.
 First, we define closed enriched $\Sigma$-terms which generate a theory with equivalences and bindings.
-Then we define what e-hypergraphs are and provide the interpretation of closed enriched $\Sigma$-terms as cospans of e-hypergraphs (and by doing this we also formalise the corresponding string diagrams as concrete combinatorial objects).
-Next we formulate the DPO rewriting for e-hypergraphs and show that this notion of rewriting is sound and complete with respect to rewriting of closed enriched $\Sigma$-terms modulo SMC equations.
-We present a description of what benefits the e-hypergraph representation may bring for equality saturation in the context of $\lambda$-calculus with explicit substitution compared to conventional (slotted) e-graphs in~\autoref{sec:application}.
+Then we define what closed e-hypergraphs are and provide the interpretation of closed enriched $\Sigma$-terms as cospans of e-hypergraphs (and by doing this we also formalise the corresponding string diagrams as concrete combinatorial objects).
+Next we formulate the DPO rewriting for closed e-hypergraphs and show that this notion of rewriting is sound and complete with respect to rewriting of closed enriched $\Sigma$-terms modulo SMC equations.
+We describe what benefits the closed e-hypergraph representation may bring for equality saturation in the context of $\lambda$-calculus with explicit substitution compared to conventional (slotted) e-graphs in~\autoref{sec:application}.

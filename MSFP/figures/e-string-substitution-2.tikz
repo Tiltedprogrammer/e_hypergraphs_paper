@@ -303,14 +303,15 @@
 		\draw (256.center) to (257.center);
 		\draw (258.center) to (259.center);
 		\draw (261.center) to (262.center);
-		\draw [bend left=45, looseness=1.75] (263.center) to (264.center);
-		\draw (264.center) to (265.center);
-		\draw [bend left=45, looseness=1.75] (265.center) to (266.center);
+		\draw (269.center)
+			 to [bend left=45, looseness=1.75] (270.center)
+			 to (263.center)
+			 to [bend left=45, looseness=1.75] (264.center)
+			 to (265.center)
+			 to [bend left=45, looseness=1.75] (266.center);
 		\draw (266.center) to (267.center);
 		\draw [bend left=45, looseness=1.50] (267.center) to (268.center);
 		\draw (268.center) to (269.center);
-		\draw [bend left=45, looseness=1.75] (269.center) to (270.center);
-		\draw (263.center) to (270.center);
 		\draw (292.center) to (293);
 		\draw (290.center) to (294.center);
 		\draw (291.center) to (295.center);
@@ -391,14 +392,15 @@
 		\draw (454.center) to (455.center);
 		\draw (456.center) to (457.center);
 		\draw (459.center) to (460.center);
-		\draw [bend left=45, looseness=1.75] (461.center) to (462.center);
-		\draw (462.center) to (463.center);
-		\draw [bend left=45, looseness=1.75] (463.center) to (464.center);
+		\draw (466.center)
+			 to (467.center)
+			 to [bend left=45, looseness=1.75] (468.center)
+			 to (461.center)
+			 to [bend left=45, looseness=1.75] (462.center)
+			 to (463.center)
+			 to [bend left=45, looseness=1.75] (464.center);
 		\draw (464.center) to (465.center);
 		\draw [bend left=45, looseness=1.50] (465.center) to (466.center);
-		\draw (466.center) to (467.center);
-		\draw [bend left=45, looseness=1.75] (467.center) to (468.center);
-		\draw (461.center) to (468.center);
 		\draw (470.center) to (469.center);
 		\draw (457.center) to (471.center);
 		\draw [in=180, out=-90] (455.center) to (473.center);

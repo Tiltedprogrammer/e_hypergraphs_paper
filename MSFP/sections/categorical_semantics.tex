@@ -13,8 +13,8 @@ We also show a specific case of closed monoidal semilattice-enriched categories 
 % We elide all associativity and unit isomorphisms associated with monoidal categories, and often omit subscripts on identities and natural transformations where it can be inferred.
 % Given two adjoint functors $F\colon \mathbb{A} \to \mathbb{B}$ and $G\colon \mathbb{B} \to \mathbb{A}$ with $F$ being left-adjoint, we write $F \dashv G\colon \mathbb{B} \to \mathbb{A}$ for this adjunction.
 % We follow standard notation and conventions from category theory~\cite{maclane}.
-We use $(;\!)$ to denote the composition in diagrammatic order and use $\sym$ for the symmetry natural transformation for a tensor ($\otimes$).
-We elide all associativity and unit isomorphisms associated with monoidal categories, and often omit subscripts on identities and natural transformations where it can be inferred.
+We use $(;\!)$ to denote the composition in diagrammatic order and use $\sym$ for the symmetry natural transformation for a (strict) tensor ($\otimes$).
+We also omit subscripts on identities and natural transformations where it can be inferred.
 % Given two adjoint functors $F\colon \mathbb{A} \to \mathbb{B}$ and $G\colon \mathbb{B} \to \mathbb{A}$ with $F$ being left-adjoint, we write $F \dashv G\colon \mathbb{B} \to \mathbb{A}$ for this adjunction.
 
 \begin{definition}
@@ -60,13 +60,12 @@ If the tensor is symmetric, then the monoidal category is \emph{closed}.
 \begin{definition}
 	Closed $\Sigma$-terms are defined inductively by first defining a family of objects $obj_{\Sigma_{O}}$.
 	\begin{itemize}
-		\item For all $A \in \Sigma_{O}$, $A \in obj_{\Sigma_{O}}$.
-		\item A designated $I$ is in $obj_{\Sigma_{O}}$.
+		\item A designated $I$ is in $obj_{\Sigma_{O}}$ and for all $A \in \Sigma_{O}$, $A \in obj_{\Sigma_{O}}$.
 		\item If $A \in obj_{\Sigma_{O}}$ and $B \in obj_{\Sigma_{O}}$, then $A \otimes B \in obj_{\Sigma_{O}}$ and $A \multimap B \in obj_{\Sigma_{O}}$.
 	\end{itemize}
 	A family of closed $\Sigma$ terms is then defined by:
 	\begin{itemize}
-		\item $\phi \colon A \to B \in \Sigma_{M}$ is a closed $\Sigma$-term;
+		\item $\phi \colon A \to B \in \Sigma_{M}$ is a closed $\Sigma$-term, once we turned lists into tensors;
 		\item if $A$ and $B$ are $obj_{\Sigma_{O}}$, then $\id_{A}$ and $\sym_{A,B}$ are closed $\Sigma$-terms;
 		\item if $f \colon A \to B$ and $g : B \to C$ are closed $\Sigma$-terms, then so is $f;\;g : A \to C$;
 		\item if $f \colon A \to B$ and $g : C \to D$ are closed $\Sigma$-terms, then so is $f \otimes g \colon A \otimes C \to B \otimes D$;
@@ -80,12 +79,12 @@ If the tensor is symmetric, then the monoidal category is \emph{closed}.
 	We can similarly consider a free closed symmetric monoidal category $\catname{CS}(\Sigma, \mathcal{E})$ induced by a $\catname{SMT}(\Sigma, \mathcal{E})$ over closed $\Sigma$-terms.
 \end{definition}
 
-To encode equivalences between morphisms (or $\Sigma$-terms), the Hom sets of the corresponding free categories can be endowed with the additional structure of a semilattice induced by an idempotent, commutative and associative operator \textit{join} $+$ as presented by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
-This is modelled by enrichment in semilattices, yielding $\catname{SLat}$-categories where $\catname{SLat}$ is a category of \textit{unbounded} semilattices and homomorphisms between them (see~\autoref{sec:appendix:slat}).
+To encode equivalences between morphisms (or $\Sigma$-terms), the Hom sets of the corresponding free categories can be endowed with the additional structure of a semilattice induced by an idempotent, commutative and associative operator \textit{join} $+$ as presented by Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting}.
+This is modelled by enrichment in semilattices, yielding $\catname{SLat}$-categories where $\catname{SLat}$ is the category of \textit{unbounded} semilattices and homomorphisms between them (see~\autoref{sec:appendix:slat}).
 
 \begin{definition}[$\catname{SLat}$-category]%
 	\label{def:slat-cat}
-	A $\catname{SLat}$-category $\mathbb{C}$ is defined by the following data:
+	An $\catname{SLat}$-category $\mathbb{C}$ is defined by the following data:
 	\begin{itemize}
 		\item a set of objects $\mathbb{C}$;
 		\item for every pair of objects $A,B \in \mathbb{C}$ --- a Hom semilattice $\mathbb{C}(A,B) \in \catname{SLat}$;
@@ -116,7 +115,7 @@ The collection of $\catname{SLat}$-categories and $\catname{SLat}$-functors form
 	A symmetric monoidal $\catname{SLat}$-category is given by a $\catname{SLat}$-category $\mathbb{C}$ that additionally has: a unit object $I \in \mathbb{C}$, an $\catname{SLat}$-functor tensor $\otimes\colon \mathbb{C} \times \mathbb{C} \to \mathbb{C}$, such that particular coherence diagrams analogous to those for symmetric monoidal categories commute.
 \end{definition}
 This is completely analogous to a symmetric monoidal category, with the fact that the tensor is an $\catname{SLat}$-functor ensuring compatibility with the join: $f \otimes (g+h) = f \otimes g + f \otimes h $ and $ (f+g) \otimes h = f \otimes h + g \otimes h$.
-As before, we take $\otimes$ to bind more tightly than $+$.
+We take $\otimes$ to bind more tightly than $+$.
 
 \begin{proposition}(A specialised case of Proposition 6.4.7~\cite{Borceux_1994} and Theorem 5.7.1~\cite{cruttwell2008normed})
 	There is a 2-adjunction
@@ -130,7 +129,7 @@ As before, we take $\otimes$ to bind more tightly than $+$.
 	Moreover, $\mathcal{F}$ and $\mathcal{U}$ preserve symmetric monoidal structure, sending symmetric monoidal categories to symmetric monoidal $\catname{SLat}$-categories and vice versa.
 \end{proposition}
 In particular, the 2-functor $\mathcal{F}$ turns every category $\mathbb{C}_0 \in \catname{Cat}$ freely into a semilattice-enriched category $\mathbb{C} \in \catname{SLat}\text{--}\catname{Cat}$ by making every Hom set of $\mathbb{C}_0$ into the free semilattice on that set along $F$.
-Being a 2-functor, it preserves dualities (in the 2-categorical sense): it lifts an adjunction in between categories in $\catname{Cat}$ into an $\catname{SLat}$-adjunction between their free semilattice-enriched correspondants.
+Being a 2-functor, it preserves dualities (in the 2-categorical sense): it lifts an adjunction in between categories in $\catname{Cat}$ into an $\catname{SLat}$-adjunction between their free semilattice-enriched counterparts.
 We take closure, in the sense of~\autoref{def:closed}, to be defined generally for $\catname{SLat}$-categories by an analogous $\catname{SLat}$-adjunction $- \otimes B \dashv B \multimap -$ for every object $B$.
 Thus, applying the 2-functor $\mathcal{F}$ to $\catname{CS}(\Sigma)$ we get a closed symmetric monoidal $\catname{SLat}$-category $\catname{CS}(\Sigma)^{+}$ by this lifting.
 We can similarly derive $\catname{SLat}$-enriched versions of  $\Lambda_{A,B,C}$ and $\textbf{ev}_{A,B}$ morphisms using the lifted adjunction as $\textbf{ev}_{A,B} = \varepsilon_{A}$ and $\Lambda_{A,B,C}(f) = \eta_A; (B \multimap{} f)$.
@@ -146,13 +145,12 @@ The following distributivity law can then be derived, forming the basis of encod
 \end{equation}
 
 Similar to $\catname{CS}(\Sigma)$, $\catname{CS}(\Sigma)^{+}$ can be freely generated from a set of closed $\Sigma^{+}$-terms as follows.
-Every closed $\Sigma$-term is also a $\Sigma^{+}$-term.
-Given two closed $\Sigma^{+}$-terms $f\colon A \to B$ and $g\colon A \to B$, $f + g\colon A \to B$ is also a closed $\Sigma^{+}$-term.
-Terms of $\catname{CS}(\Sigma)^{+}$ are quotiented by the laws of closed symmetric monoidal $\catname{SLat}$-categories, including the distributivity law (\autoref{law:distributivity}).
+The set of closed $\Sigma^{+}$-terms is constructed just like the set of closed $\Sigma$-terms, with $+$ being an additional constructor for terms.
+Terms of $\catname{CS}(\Sigma)^{+}$ are quotiented by the laws of closed symmetric monoidal $\catname{SLat}$-categories.
 The same applies in the presence of equations for $\catname{CS}(\Sigma,\mathcal{E})^{+}$.
 
-To aid reasoning, we introduce a new language of string diagrams for closed symmetric monoidal $\catname{SLat}$-categories, using a hierarchical \enquote{dashed box} structure to capture the join operation on morphisms (as was done by~\citet{tiurin2025equivalencehypergraphsdporewriting}) as well as another hierarchical \enquote{rounded box} for $\lambda$-abstraction.
-\autoref{fig:egraph-strings} displays the generators of this language, which is the usual string-diagrammatic syntax~\cite{Selinger_2010} plus the syntax for $\lambda$-abstraction as established by~\citet{ghica2024stringdiagramslambdacalculifunctional} and syntax for semilattice enrichment as introduced by~\citet{tiurin2025equivalencehypergraphsdporewriting}; the first component denotes an empty diagram.
+To aid reasoning, we introduce a new language of string diagrams for closed symmetric monoidal $\catname{SLat}$-categories, using a hierarchical \enquote{dashed box} structure to capture the join operation on morphisms (as was done by Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting}) as well as another hierarchical \enquote{rounded box} for $\lambda$-abstraction.
+\autoref{fig:egraph-strings} displays the generators of this language, which is the usual string-diagrammatic syntax~\cite{Selinger_2010} plus the syntax for $\lambda$-abstraction as established by Ghica and Zanasi~\cite{ghica2024stringdiagramslambdacalculifunctional} and syntax for semilattice enrichment as introduced by Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting}; the first component denotes an empty diagram.
 
 % rotated the diagrams
 % Note the orientation of string diagrams are now from top to bottom as opposed to what was used in~\nameref{sec:introduction}: the latter was mimicking the orientation of e-graphs, \textit{i.e.}, traditional orientation for expression trees.
@@ -195,8 +193,7 @@ Slotted e-graphs~\cite{slotted-egraphs} extend the traditional signature employe
 		\inferrule*[right=cong. (variadic)]
 		{E \vdash tc_i \cong tc'_i,\; i = 1, \ldots, k}
 		{E \vdash tc_1, \ldots, tc_k \cong tc'_1, \ldots, tc'_k}
-	\end{mathpar}
-	\begin{mathpar}
+		\quad 
 		\inferrule*[right=cong. (f)]
 		{E \vdash tc \cong tc'}
 		{E \vdash f(tc_1) \cong f(tc')}
@@ -209,9 +206,9 @@ Slotted e-graphs~\cite{slotted-egraphs} extend the traditional signature employe
 		{E \vdash \text{bind}\; \$x\; tc \cong \text{bind}\; \$x\; tc'},
 	\end{equation}
 	plus the rules for equivalence of terms up to renaming of slots.
-	The earlier work of~\citet{tiurin2025equivalencehypergraphsdporewriting} that introduced free semilattice enrichment to describe e-graphs using morphism terms used the join operation $+$ of a semilattice to denote the equivalence of morphism subterms.
+	The earlier work of Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} that introduced free semilattice enrichment to describe e-graphs using morphism terms used the join operation $+$ of a semilattice to denote the equivalence of morphism subterms.
 	For example, the e-graph (b) from~\autoref{fig:e-graph-example} can be written as a term as
-	\[(a \otimes ((2;\comonoid) \otimes (1;id))\,;\,\sym);((* \otimes \counit + (id \otimes \counit \otimes id);<\!\!<) \otimes id);/~,\] where $+$ encodes the equivalence of the subterms rooted at $*$ and $<\!\!<$
+	\[(a \otimes ((2;\comonoid) \otimes (1;id))\,;\,\sym);((* \otimes \counit + (id \otimes \counit \otimes id);<\!\!<) \otimes id);/~,\] where $+$ encodes the equivalence of the subterms rooted at $*$ and $<\!\!<$.
 	We can see that the first three rules (plus reflexivity, symmetry, and transitivity) above correspond to idempotence, commutativity and associativity of $+$ and the fact that $+$ respect the composition\footnote{For example, given a morphism $f\,;\,(a + b)$, we know it is equal to $f\,;\,a + f\,;\,b$ as per the axioms of the category.} $(;)$.
 	%  and tensoring $\otimes$ (traditional e-graphs do not have tensoring as they are defined for algebraic signatures).
 	Moreover, we can also justify~\autoref{eq:cong-bind} from a purely categorical perspective, by the free enrichment as per~\autoref{law:distributivity}.

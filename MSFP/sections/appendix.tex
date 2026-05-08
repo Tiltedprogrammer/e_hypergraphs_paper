@@ -128,7 +128,7 @@ The latter is a pushout in $\catname{Hyp}(\Sigma)$ and always exists since $\cat
 \end{definition}
 
 \autoref{fig:hypergraph-with-interfaces} gives an example of an MDA cospan, which is such because it \enquote{looks like} the string diagram \comonoid.
-Analogously, we can see that~\autoref{fig:hypergraph} (equipped with the interfaces choosing $\{ v_1 \}$ and $\{ v_4, v_5, v_6, v_7 \}$) fails to form an MDA cospan --- it is not monogamous for many reasons: $v_1$ has out-degree 0, $v_1, v_5, v_7$ have in-degree 2, and $v_3$ has in-degree 0; additionally, it fails be be directed acyclic due to the path along $e_4$ from $v_7$ to itself\footnote{Recall that loops are not part of the syntax of string diagrams for symmetric monoidal categories in the absence of a trace --- a relaxation of monogamy to allow for this is explored by~\citet{ghica_rewriting_2023}.}.
+Analogously, we can see that~\autoref{fig:hypergraph} (equipped with the interfaces choosing $\{ v_1 \}$ and $\{ v_4, v_5, v_6, v_7 \}$) fails to form an MDA cospan --- it is not monogamous for many reasons: $v_1$ has out-degree 0, $v_1, v_5, v_7$ have in-degree 2, and $v_3$ has in-degree 0; additionally, it fails be be directed acyclic due to the path along $e_4$ from $v_7$ to itself\footnote{Recall that loops are not part of the syntax of string diagrams for symmetric monoidal categories in the absence of a trace --- a relaxation of monogamy to allow for this is explored by Ghica et al.~\cite{ghica_rewriting_2023}.}.
 
 \begin{figure}
 	\begin{subfigure}[c]{0.3\linewidth}
@@ -598,7 +598,7 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
 		      \fi
 	\end{itemize}
 
-	This construction is analogous to how a pushout was constructed by~\citet{tiurin2025equivalencehypergraphsdporewriting} and we refer the reader for more detailed proofs there.
+	This construction is analogous to how a pushout was constructed by Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} and we refer the reader for more detailed proofs there.
 	The only addition is $\textcolor{closed-color}{<_{\sfrac{X\sqcup Y}{\sim}}^{\mu}}$ that is constructed analogously to $\textcolor{e-color}{<_{\sfrac{X\sqcup Y}{\sim}}^{\mu}}$.
 \end{proof}
 The construction can be illustrated with the example in~\autoref{fig:pushout_example}.
@@ -770,7 +770,7 @@ fn beta() -> Rewrite<Lambda> {
 
 
 Recall the grammar, the reduction rules and the equational theory of $\lambda_{\text{lsub}}$ from~\autoref{sec:application}.
-These can be directly encoded in the framework of slotted e-graphs of ~\citet{slotted-egraphs} as can be seen in \autoref{listing:define_language}, \autoref{listing:lsub_beta_rule}, \autoref{listing:lsub_ls_rules}, \autoref{listing:gc_rule}, and \autoref{listing:graphical_equivalence}.
+These can be directly encoded in the framework of slotted e-graphs of Schneider et al.~\cite{slotted-egraphs} as can be seen in \autoref{listing:define_language}, \autoref{listing:lsub_beta_rule}, \autoref{listing:lsub_ls_rules}, \autoref{listing:gc_rule}, and \autoref{listing:graphical_equivalence}.
 We use \mintinline{rust}{"subst"} to denote explicit substitution and use the built-in substitution mechanism provided by slotted e-graphs to encode $C\llbracket x \rrbracket[x / u] \to C\llbracket u \rrbracket[x/u]$ rules.
 Notably, since equivalence is symmetric, the corresponding rules have two versions --- \textit{left} and \textit{right}.
 We check for the side conditions using conditional rewrites provided by the slotted e-graphs framework.
@@ -800,7 +800,7 @@ Consider a substitution $y[x / v]$ which corresponds to the following compositio
 This composition is represented using the string diagram in~\autoref{fig:subst_no_var_string}.
 While string diagrammatically this composition equals the string diagram for just $y$ since we are working modulo the equations for copy and delete, they are not isomorphic as e-hypergraphs.
 However, since the output of $v$ gets deleted anyway, we can ignore any rewrites that involve $v$ and its inputs.
-The deletion morphisms for $\Gamma_1, \Gamma_2$ that follow the copy can be absorbed by the e-hypergraph representation by following the approach of~\citet{zanassi_comonoid}.
+The deletion morphisms for $\Gamma_1, \Gamma_2$ that follow the copy can be absorbed by the e-hypergraph representation by following the approach of Milosavljevi\'{c} et al.~\cite{zanassi_comonoid}.
 \end{remark}
 
 \begin{listing}
