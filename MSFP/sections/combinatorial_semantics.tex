@@ -154,7 +154,6 @@ The practical meaning of this is that two $\Sigma$-terms $f$ and $g$ are equal m
 Term rewriting and hence equality modulo $\mathcal{E}$ is then implemented as DPO rewriting over such hypergraphs with interfaces, which we recall.
 
 \subsection{DPOI-Rewriting for Hypergraphs with Interfaces}
-\noindent
 \begin{wrapfigure}{r}{0.3\textwidth}
 	\centering
 	\begin{adjustbox}{scale=0.8}
@@ -177,119 +176,17 @@ Term rewriting and hence equality modulo $\mathcal{E}$ is then implemented as DP
 					\end{tikzcd}
 	\end{adjustbox}
 \end{wrapfigure}
-In graph rewriting, given a rewrite rule $\mathcal L \rightsquigarrow \mathcal R$ and a graph $\mathcal{G}$, occurrences of $\mathcal L$ within $\mathcal{G}$ are \emph{replaced} with $\mathcal R$, resulting in a rewritten graph $\mathcal{H}$.
-In DPO rewriting, such a rewrite rule is formalised categorically as a span $\mathcal L \xleftarrow{} \mathcal K \xrightarrow{} \mathcal R$ in some appropriate category of graphs, where $\mathcal{K}$ is some invariant graph fragment that should be maintained during rewriting.
-In the context of rewriting hypergraph with interfaces, we also need to maintain the interfaces.
-This leads to a generalisation of DPO rewriting, called DPO with interfaces (DPOI), with the defining square shown on the right.
-
-The morphism $\mathcal{L} \to \mathcal{G}$ is called a \emph{match}, defined whenever there is a corresponding \emph{pushout complement} --- the pair of morphisms $\mathcal{K} \to \mathcal{L}^{\bot} \to \mathcal{G}$ completing the top half of the pushout square with $\mathcal K \xrightarrow{} \mathcal L \xrightarrow{} \mathcal G$.
-When the morphisms involved in the rewrite rule are monomorphisms, as is usually required, constructing $\mathcal{L}^{\bot}$ can be intuitively understood as finding an occurrence of $\mathcal{L}$ in $\mathcal{G}$ and removing from this occurrence everything that has no preimage in $\mathcal{K}$.
-The final graph $\mathcal H$ is then obtained by inserting into the hole everything from $\mathcal{R}$ that has no preimage in $\mathcal{K}$ --- hence the two pushouts: one for deletion and one for insertion.
-In this case, we say that $\mathcal{G}$ is rewritten into $\mathcal{H}$ via the rewrite rule $\mathcal{L} \xleftarrow{} \mathcal{K} \xrightarrow{} \mathcal{R}$.
-
-To express the rewriting of (hyper-)graphs with interfaces,  i.e.\ the ones that represent morphisms in $\HypI{\Sigma}$, the DPO formalism has been extended to double-pushout rewriting with \emph{interfaces} (DPOI) as shown in~\autoref{fig:dpo_dpoi}~(right).
-In the case of $ \catname{Hyp(\Sigma)}$,  we wish for a rewrite rules to be pairs of discrete cospans of hypergraphs with matching interfaces: $n \xrightarrow{} \mathcal{L} \xleftarrow{} m$, $n \xrightarrow{} \mathcal{R} \xleftarrow{} m$.
-By noting that a cospan $0 \xrightarrow{} \mathcal{L} \xleftarrow{[f,g]} n \sqcup m$ encodes the same data as a cospan $n \xrightarrow{f} \mathcal L \xleftarrow{g} m$ \cite[Remark 3.14]{bonchi_string_2022-1} we can formulate a rewrite rule as a single span $\mathcal{L} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{R}$,  and we can do similarly for the discrete cospans giving the interface to $\mathcal{G}$ and $\mathcal{H}$.
-We now make this identification throughout without further mention.
-Thus, we reach the following variant of DPO rewriting.
+The rewriting of hypergraphs with interfaces (and hence of string diagrams) is formalised as double-pushout rewriting with interfaces (DPOI)~\cite{bonchi_string_2022-1,bonchi_string_2022-2}, whose defining diagram is shown on the right.
+A rewrite rule is a pair of discrete cospans with matching interfaces, $n \xrightarrow{} \mathcal{L} \xleftarrow{} m$ and $n \xrightarrow{} \mathcal{R} \xleftarrow{} m$, equivalently encoded as a single span $\mathcal{L} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{R}$~\cite[Remark~3.14]{bonchi_string_2022-1}; we make this identification throughout.
+Applying the rule to $\mathcal{G}$ (with interface $n \sqcup m$) proceeds in two pushout steps.
+A \emph{match} $f\colon \mathcal{L} \to \mathcal{G}$ locates an occurrence of $\mathcal{L}$; the left pushout square computes the \emph{pushout complement} $\mathcal{L}^{\bot}$ --- what remains of $\mathcal{G}$ after excising the matched part, with both $n \sqcup m$ and $i \sqcup j$ contributing to the interface, the latter corresponding to newly created inputs and outputs of the \emph{hole}.
+The right pushout square then glues $\mathcal{R}$ into this context, producing the rewritten graph $\mathcal{H}$, with the interface $n \sqcup m$ threaded through both steps.
 \begin{definition}[DPOI rewriting]%
 	\label{def:dpoi}
-	Given a span of morphisms $\mathcal{G} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{H}$ in $\catname{Hyp}(\Sigma)$,  we say $\mathcal{G}$ rewrites to $\mathcal{H}$ with interface $n \sqcup m$ via rewrite rule $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{R}$ if there exists an object $\mathcal{L}^{\bot}$ and morphisms which complete the rightmost commutative diagram in~\autoref{fig:dpo_dpoi} such that the two marked squares are pushouts.
-
-	% \begin{figure}[t!]
-	% 	\captionsetup{
-	% 		skip=0pt
-	% 	}
-	% 	\begin{subfigure}[T]{0.35\linewidth}
-	% 		\[
-	% 			% \tikzfig{../figures/combinatorial_semantics/DPO_square}
-	% 			\begin{tikzcd}
-	% 				{\mathcal{L}} & {\mathcal{K}} & {\mathcal{R}} \\
-	% 				{\mathcal{G}} & {\mathcal{L}^{\bot}} & {\mathcal{H}}
-	% 				\arrow["f"', from=1-1, to=2-1]
-	% 				\arrow[from=1-2, to=1-1]
-	% 				\arrow[from=1-2, to=1-3]
-	% 				\arrow[from=1-2, to=2-2]
-	% 				\arrow[from=1-3, to=2-3]
-	% 				\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=2-1, to=1-2]
-	% 				\arrow[from=2-2, to=2-1]
-	% 				\arrow[from=2-2, to=2-3]
-	% 				\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
-	% 			\end{tikzcd}
-	% 		\]
-	% 		% \subcaption{DPO square}
-	% 		% \label{fig:dpo}
-	% 	\end{subfigure}
-	% 	\hfill
-	% 	\begin{subfigure}[T]{0.4\linewidth}
-	% 		\[
-	% 			% \scalebox{0.8}{
-	% 			% \tikzfig{../figures/combinatorial_semantics/DPOI_square_Hyp}
-	% 			% }
-	% 			\begin{adjustbox}{scale=0.8}
-	% 				\begin{tikzcd}
-	% 					{\mathcal{L}} & {i \sqcup j} & {\mathcal{R}} \\
-	% 					{\mathcal{G}} & {\mathcal{L}^{\bot}} & {\mathcal{H}} \\
-	% 					& {n \sqcup m}
-	% 					\arrow["f"', from=1-1, to=2-1]
-	% 					\arrow[from=1-2, to=1-1]
-	% 					\arrow[from=1-2, to=1-3]
-	% 					\arrow[from=1-2, to=2-2]
-	% 					\arrow[from=1-3, to=2-3]
-	% 					\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=2-1, to=1-2]
-	% 					\arrow[from=2-2, to=2-1]
-	% 					\arrow[from=2-2, to=2-3]
-	% 					\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
-	% 					\arrow[from=3-2, to=2-1]
-	% 					\arrow[from=3-2, to=2-2]
-	% 					\arrow[from=3-2, to=2-3]
-	% 				\end{tikzcd}
-	% 			\end{adjustbox}
-	% 		\]
-	% 		% \subcaption{DPOI square}
-	% 		% \label{fig:dpoi}
-	% 	\end{subfigure}
-	% 	\caption{DPO and DPOI squares}
-	% 	\label{fig:dpo_dpoi}
-	% \end{figure}
-
+	Given a span of morphisms $\mathcal{G} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{H}$ in $\catname{Hyp}(\Sigma)$, we say $\mathcal{G}$ rewrites to $\mathcal{H}$ with interface $n \sqcup m$ via rewrite rule $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{R}$ if there exists an object $\mathcal{L}^{\bot}$ and morphisms completing the commutative diagram above such that the two marked squares are pushouts.
 \end{definition}
-To make DPOI rewriting sound and complete with respect to rewriting of $\Sigma$-terms modulo the laws of symmetric monoidal categories, the notion of both pushout complement and match must be restricted: otherwise, there might be DPO rewrites that do not correspond to rewriting of morphisms just modulo SMC equations.
-This gives rise to the notions of a \emph{boundary complement} and \emph{convex} DPOI rewriting, which we adapt to our setting later (also see~\autoref{sec:appendix:hyp}).
-
-% \begin{definition}[Boundary complement]%
-% 	\label{def:boundary_original}
-% 	For MDA cospans $i \xrightarrow{a_1} \mathcal{L} \xleftarrow{a_2} j$ and $n \xrightarrow{b_1} \mathcal{G} \xleftarrow{b_2} m$ and monomorphism $f\colon \mathcal L \to \mathcal G$, a pushout complement $i \sqcup j \to \mathcal{L}^\bot \to \mathcal{G}$ as depicted in the square below
-% 	\[
-% 		\adjustbox{scale=0.8}{
-% 			\tikzfig{./figures/DPOI_boundary_complement}
-% 		}\]
-% 	is called a boundary complement if $[c_1, c_2]$ is a monomorphism and there exist $d_1\colon n \to \mathcal{L}^{\bot}$ and $d_2\colon m \to \mathcal{L}^{\bot}$ making the above triangle commute and such that
-% 	$
-% 		n \sqcup j \xrightarrow{[d_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[d_2,c_1]} m \sqcup i
-% 	$
-% 	is an MDA cospan.
-% \end{definition}
-
-% Intuitively, requiring boundary complements ensures that inputs are glued exclusively to outputs and vice-versa in the two pushout squares.
-
-% \begin{definition}[Convex match]
-% 	A subgraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ is a convex subgraph if for all $v_i, v_j \in V_{\mathcal{H}}$ every path from $v_i$ to $v_j$ is also in $\mathcal{H}$.
-% 	A match $f\colon \mathcal{L} \to \mathcal{G}$ is a convex match if it is a monomorphism and its image is a convex subgraph of $\mathcal{G}$.
-% \end{definition}
-
-% \begin{definition}[Convex DPOI rewriting]%
-% 	\label{def:convex_dpo}
-% 	Let $\mathfrak{R}$ be a set of DPOI rewrite rules.
-% 	Then, given $\mathcal{G} \xleftarrow{} n \sqcup m$ and $\mathcal{H} \xleftarrow{} n \sqcup m$ in $\catname{Hyp(\Sigma)}$, $\mathcal{G}$ rewrites convexly into $\mathcal{H}$ with interface $n \sqcup m$, and we write $(\mathcal G \xleftarrow{} n \sqcup m ) \Rrightarrow_{\mathfrak{R}}  (\mathcal H \xleftarrow{} n \sqcup m )$, if
-% 	\begin{enumerate}
-% 		\item there exists a rule $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{R}$ in $\mathfrak{R}$ and object $\mathcal{L}^{\bot}$ and cospan arrows $i \sqcup j \xrightarrow{} \mathcal{L}^{\bot} \xleftarrow{} n \sqcup m$ such that the DPOI diagram of~\autoref{def:dpoi} commutes and its marked squares are pushouts;
-% 		\item $f\colon L \to \mathcal G$ is a convex match;
-% 		\item $i \sqcup j \to \mathcal{L}^{\bot} \to \mathcal G$ is a boundary complement in the leftmost pushout.
-% 	\end{enumerate}
-% \end{definition}
-
-\citet{bonchi_string_2022-2} show that this enhanced notion of DPOI rewriting is sound and complete in the following sense: any two $\Sigma$-terms $f$ and $g$ are equal modulo the laws of symmetric monoidal categories and equations $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} \llbracket g \rrbracket$ where $\llbracket - \rrbracket$ is the functor giving the equivalence in~\autoref{thm:prop-equiv} and $\llbracket \mathcal{E} \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \mid l=r \in \mathcal{E} \}$.
+For soundness and completeness with respect to $\Sigma$-term rewriting modulo SMC, matches are restricted to \emph{convex} matches and pushout complements to \emph{boundary complements} (see~\autoref{sec:appendix:hyp}).
+\citet{bonchi_string_2022-2} show that any two $\Sigma$-terms $f$ and $g$ are equal modulo SMC and $\mathcal{E}$ if and only if $\llbracket f \rrbracket \Rrightarrow{}_{\llbracket \mathcal{E} \rrbracket} \llbracket g \rrbracket$, where $\llbracket - \rrbracket$ is the functor from~\autoref{thm:prop-equiv} and $\llbracket \mathcal{E} \rrbracket = \{\langle \llbracket l \rrbracket, \llbracket r \rrbracket \rangle, \langle \llbracket r \rrbracket, \llbracket l \rrbracket \rangle \mid l=r \in \mathcal{E} \}$.
 Next, we build a combinatorial representation for closed $\Sigma^{+}$-terms to obtain a notion of DPOI rewriting that also subsumes equality modulo the laws of closed symmetric monoidal $\catname{SLat}$-categories.
 
 \section{Closed E-Hypergraphs}%
@@ -335,8 +232,32 @@ This prohibits the labelling of vertices by e.g.\ $A \otimes B$, but allows them
 $\textcolor{closed-color}{<}$ defines closed monoidal structure as defined by~\citet{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\citet{tiurin2025equivalencehypergraphsdporewriting}.
 
 Consider an example in the middle part of~\autoref{fig:e-cospan-example}.
-The closed e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{e-color}{E} = \{e_{1}\}$, $\textcolor{closed-color}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$; then we have
-\[
+The closed e-hypergraph there is given by $V = \{v_{1}, \ldots w_{10}\}$, $E = \{e_{1}, \ldots, e_{7}\}$, $\textcolor{e-color}{E} = \{e_{1}\}$, $\textcolor{closed-color}{E} = \{e_{2}\}$, $l_{E} = {e_{1} \mapsto \bot, e_{2} \mapsto \bot, e_{3} \mapsto g, \ldots, e_{7} \mapsto f}$; the elements of the involved relations are shown in~\autoref{fig:e-cospan-example-rels},
+% \[
+% 	\begin{array}{cccc}
+% 		v_{4} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & v_{7} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & v_{4} \consistency e_{2}   & v_{4} \not \consistency v_{10} \\
+% 		e_{3} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & v_{8} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & e_{2} \consistency u_{1}   & e_{2} \not \consistency e_{6}  \\
+% 		e_{2} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & e_{5} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & e_{2} \consistency e_{4}   & e_{4} \not \consistency e_{7}  \\
+% 		\ldots                                        & \ldots                                            & \ldots                     & \ldots                         \\
+% 		v_{12} \textcolor{e-color}{\;<^{\mu}\;} e_{1} & w_{9} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
+% 	\end{array}
+% \]
+and, in particular, we have $[e_{5}) = \{e_2, e_1\}$.
+$\consistency_{e_{1}}$ defines a partition on immediate successors of $e_{1}$ which we delimit by a dashed line.
+We depict edges in $\textcolor{e-color}{E}$ with a dashed box, and edges in $\textcolor{closed-color}{E}$ with a round box.
+\begin{figure}
+	\begin{subfigure}{0.45\textwidth}
+	\[
+		\adjustbox{scale=0.6}{
+			\tikzfig{./figures/closed_iso_example_2_2}
+		}
+	\]
+	\subcaption{Example of a cospan of closed e-hypergraphs.}
+	\label{fig:e-cospan-example}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+	\[
 	\begin{array}{cccc}
 		v_{4} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & v_{7} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & v_{4} \consistency e_{2}   & v_{4} \not \consistency v_{10} \\
 		e_{3} \textcolor{e-color}{\;<^{\mu}\;} e_{1}  & v_{8} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & e_{2} \consistency u_{1}   & e_{2} \not \consistency e_{6}  \\
@@ -344,19 +265,10 @@ The closed e-hypergraph in the example is given by $V = \{v_{1}, \ldots w_{10}\}
 		\ldots                                        & \ldots                                            & \ldots                     & \ldots                         \\
 		v_{12} \textcolor{e-color}{\;<^{\mu}\;} e_{1} & w_{9} \textcolor{closed-color}{\;<^{\mu}\;} e_{2} & v_{11} \consistency v_{12} & w_{6} \not \consistency w_{10}
 	\end{array}
-\]
-and, in particular, we have $[e_{5}) = \{e_2, e_1\}$.
-$\consistency_{e_{1}}$ defines a partition on immediate successors of $e_{1}$ which we delimit by a dashed line.
-We depict edges in $\textcolor{e-color}{E}$ with a dashed box, and edges in $\textcolor{closed-color}{E}$ with a round box.
-\begin{figure}
-	\[
-		\adjustbox{scale=0.6}{
-			\tikzfig{./figures/closed_iso_example_2_2}
-		}
 	\]
-	\captionsetup{skip=0pt}
-	\caption{Cospan of closed e-hypergraphs example}
-	\label{fig:e-cospan-example}
+	\subcaption{Corresponding relations of the closed e-hypergraph in the middle.}
+	\label{fig:e-cospan-example-rels}
+\end{subfigure}
 \end{figure}
 \begin{definition}[Closed e-hypergraph homomorphism]
 	A homomorphism $\phi\colon \mathcal{F}\to\mathcal{G}$ between closed e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V\colon  V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E\colon E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that:
@@ -420,8 +332,13 @@ We follow the same orientation that we chose for string diagrams --- the input i
 	\]
 	for $x, y \in n^\prime$, with $S$ its reflexive closure.
 	The latter partitions $n^\prime$ into non-empty subsets $\{p_{j}\}^{k}_{j=1}$.
-	We get an analogous partition for $m^\prime$.
-
+	We get an analogous partition for $m^\prime$.In~\autoref{fig:e-cospan-example}, colours denote the partitions for input and output internal interfaces.
+	% \begin{wrapfigure}{r}{0.3\textwidth}
+	% 	\centering
+	% 	\begin{adjustbox}{scale=0.8}
+	% 		{\tikzfig{./figures/isomorphic_e_cospans}}
+	% 	\end{adjustbox}
+	% \end{wrapfigure}
 	Two extended cospans are isomorphic if there exist isomorphisms $\alpha$, $\beta$ and $\gamma$ making the following diagram commute and such that $\alpha$ and $\gamma$ preserve order within each $p_j$.
 	\[
 		\scalebox{0.8}{
@@ -429,12 +346,9 @@ We follow the same orientation that we chose for string diagrams --- the input i
 		}
 	\]
 \end{definition}
-
-In~\autoref{fig:e-cospan-example}, colours denote the partitions for input and output internal interfaces.
-
 Intuitively, such notion of isomorphism makes it possible to freely rearrange interfaces for disjoint components.
 For example, in the input interface of cospan in~\autoref{fig:e-cospan-example}, we can swap
-\begin{tikzpicture}
+\begin{tikzpicture}[font=\small,scale=0.6]
 	\begin{pgfonlayer}{nodelayer}
 		\node [style=red node, label={above:$v_{4}$}] (0) at (-0.5, 3.5) {};
 		\node [style=red node, label={above:$v_5$}] (1) at (0, 3.5) {};
@@ -442,7 +356,7 @@ For example, in the input interface of cospan in~\autoref{fig:e-cospan-example},
 	\end{pgfonlayer}
 \end{tikzpicture}
 with
-\begin{tikzpicture}
+\begin{tikzpicture}[font=\small,scale=0.6]
 	\begin{pgfonlayer}{nodelayer}
 		\node [style=blue node, label={above:$v_{7}$}] (0) at (-0.5, 3.5) {};
 		\node [style=blue node, label={above:$v_8$}] (1) at (0, 3.5) {};
@@ -450,7 +364,7 @@ with
 	\end{pgfonlayer}
 \end{tikzpicture}
 but we can not swap
-\begin{tikzpicture}
+\begin{tikzpicture}[font=\small,scale=0.6]
 	\begin{pgfonlayer}{nodelayer}
 		\node [style=red node, label={above:$v_{4}$}] (0) at (-0.5, 3.5) {};
 		\node [style=red node, label={above:$v_5$}] (1) at (0, 3.5) {};
@@ -458,20 +372,27 @@ but we can not swap
 \end{tikzpicture}
 with each other as it would result in a non-isomorphic cospan.
 
+\begin{wrapfigure}{r}{0.35\textwidth}
+	\centering
+	\trimbox{0cm 0cm 0cm 0.75cm}{
+		\adjustbox{scale=0.9,center}
+		{\tikzfig{./figures/pushout_e_cospans}}
+	}
+\end{wrapfigure}
 Composition of two morphisms
 $
 	n \xrightarrow{f_{ext}} n^\prime \xrightarrow{f_{int}} \mathcal{F} \xleftarrow{f^\prime_{int}} m^\prime \xleftarrow{f^\prime_{ext}} m
 $ and $
 	m \xrightarrow{g_{ext}} m^\prime\!^\prime \xrightarrow{g_{int}} \mathcal{G} \xleftarrow{g^\prime_{int}} k^\prime \xleftarrow{g^\prime_{ext}} k
 $ is computed in two stages.
-First, $\mathcal{H}$ is computed as the result of the pushout square shown below:
+First, $\mathcal{H}$ is computed as the result of the pushout square shown on the right;
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiZXh0KFgpIl0sWzEsMSwiWCJdLFsyLDIsIkEiXSxbMywwLCJZIl0sWzQsMCwiZXh0KFkpIl0sWzUsMCwiWSciXSxbNiwyLCJCIl0sWzcsMSwiWiJdLFs4LDAsImV4dChaKSJdLFs0LDMsIl57XFx1bGNvcm5lcn1BK197Zl97ZXh0fTtmLGdfe2V4dH07Z31CIl0sWzAsMV0sWzEsMl0sWzMsMiwiZiJdLFs0LDMsImZfe2V4dH0iXSxbNCw1LCJnX3tleHR9IiwyXSxbNSw2LCJnIiwyXSxbNyw2XSxbOCw3XSxbMiw5XSxbNiw5XV0=
-\[
-	\trimbox{0cm 0cm 0cm 0.75cm}{
-		\adjustbox{scale=0.9,center}
-		{\tikzfig{./figures/pushout_e_cospans}}
-	}
-\]
+% \[
+% 	\trimbox{0cm 0cm 0cm 0.75cm}{
+% 		\adjustbox{scale=0.9,center}
+% 		{\tikzfig{./figures/pushout_e_cospans}}
+% 	}
+% \]
 then,  the result of composition is defined as follows:
 \[
 	n \xrightarrow{f_{ext};\iota_1} n^\prime \sqcup (m^{\prime\prime} \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k^\prime \sqcup (m^\prime \setminus m) \xleftarrow{g^\prime_{ext};\iota_1} k
@@ -580,9 +501,7 @@ First,  we introduce the  ancillary notion of a \emph{down-closed} graph:
 
 \begin{definition}[Extended boundary complement]
 	\label{def:boundary_new}
-
 	% https://q.uiver.app/#q=WzAsNyxbMiwwLCJMIl0sWzQsMCwieF97ZXh0fSArIHlfe2V4dH0iXSxbMiwyLCJHXntcXHVyY29ybmVyfSJdLFs0LDIsIkMiXSxbNCw0LCJuX3tleHR9K21fe2V4dH0iXSxbMCwwLCJsX2krbF9vIl0sWzAsMiwiZ19pK2dfbyJdLFsxLDAsIiIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzAsMiwibSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMywiW2lfYyxqX2NdIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwzLCJbbl9jLG1fY10iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDIsIiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfV0sWzQsMiwiIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19XSxbNSwwXSxbNiwyXV0=
-
 	For MDA cospans
 	$
 		i \xrightarrow{} i^\prime \xrightarrow{} \mathcal{L} \xleftarrow{} j^\prime \xleftarrow{} j
@@ -600,7 +519,7 @@ First,  we introduce the  ancillary notion of a \emph{down-closed} graph:
 		\item $m(\mathcal L)$ is a convex down-closed closed e-hypergraph;
 		\item $[c_1,c_2]$ is a monomorphism;
 		\item for all $v,w$ in $\mathcal{G}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level, or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{\;<^{\mu}\;} e$;
-		\item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{\;<^{\mu}\;} e$;
+		\item for all $v,w$ in $\mathcal{L}^{\bot}$ in the image of $i \sqcup j$,  $v$ and $w$ share the same sequence of predecessors, and either $v,w$ are top-level or $v \consistency w$, or there exists $e \in \textcolor{closed-color}{E}$ s.t. $v,w \textcolor{closed-color}{\;<^{\mu}\;} e$;
 		\item there exist $d_1 : n \to \mathcal{L}^\bot$ and $d_2 : k \to \mathcal{L}^\bot$ making the above triangle commute; and
 		\item if the image of $\mathcal{L}$'s external interfaces under $m$ consists exclusively of top-level vertices of $\mathcal{G}$ then there exists a \emph{well-typed} extended MDA cospan
 		      \[
@@ -618,26 +537,7 @@ First,  we introduce the  ancillary notion of a \emph{down-closed} graph:
 	%because the image of $m$ is a convex down-closed closed e-hypergraph, 
 	The strictly internal interface $i^\prime \setminus i$ of $\mathcal L$ is mapped to the internal interface $n^\prime$ of $\mathcal G$,  since $\mathcal L$ is a down-closed subgraph of $\mathcal G$,  inducing an identification of $i^\prime \setminus i$ in  $n^\prime$.
 	Then map $f_1$ is given by $g_{ext}$ with its codomain restricted to $n^\prime \setminus (i^\prime \setminus i)$.\footnote{Noting the image of $g_{ext}$ indeed lies within $n^\prime \setminus (i^\prime \setminus i)$}  The map $g_1$ is derived from the restriction of $g_{int}$ to type $n^\prime \setminus (i^\prime \setminus i) \to \mathcal G$ by further observing that $\mathcal L^\bot$ can be identified within $\mathcal G$ --- and in particular has the internal interface $n^\prime$ of $\mathcal G$ minus $i^\prime \setminus i$.  The maps $f_2$ and $g_2$ are defined similarly.
-	%$i^\prime \setminus i$, which is a strict internal interface of $\mathcal{L}$, is necessarily mapped to vertices in the strict internal interface of $\mathcal{G}$ which are also in the image of $n^\prime$ and therefore we can construct a 
-	%morphism $f^\prime : i^\prime \setminus i \to n^\prime$ by first following $m$ and then composing with the partial inverse of $g_{int}$ which exists because it is mono. 
-	%Then we define $n^\prime \setminus (i^\prime \setminus i)$ as the pushout complement in the diagram below
-	%
-	%\[
-	%    \tikzfig{combinatorial_semantics/pushout_difference}
-	%\]
-	%and $g_1$ is obtained by composition $g^\prime;g_{int}$ and then composing with the inverse of $l$.
-	%Similarly for $g_2$.
-	% CHRIS: TRY TO DEFINE G1, G2 AS SIMPLY AS POSSIBLE, AND POSSIBLY ADD AN INFORMAL EXPLANATION BELOW THE DEFINITION. 
-	% Because $\mathcal{L}^{\bot}$ is essentially $\mathcal{G}$ with $\mathcal{L}$ removed, apart from the part that has a pre-image in $i \sqcup j$, there is an obvious morphism from $l \to \mathcal{L}^{\bot}$ which is $g_1 = g_{int} |_{D}$ where
-	% \[
-	%     D = \{ v \in n^\prime \text{ such that } \not \exists u \in (i^\prime \setminus i) ~ . ~ g_{int}(v) = f^\prime_{int};f(u) \}
-	% \]
-	% Similarly for $r \to \mathcal{L}^{\bot}$, which we denote as $g_2$.
-	% Then there exists a morphism $n \to l$, because there is a morphism $n \to n^\prime$ and the external interfaces of $n^\prime$ and $l$ are the same.
-	% That is, it is a morphism $f: n \to l$ such that $d_1 = f;g_1$.
-	% Similarly for $k \to r$.
 \end{definition}
-
 Intuitively, the above definition means that when the occurrence of $\mathcal{L}$ within $\mathcal{G}$ is top-level then $\mathcal{L}$'s external interfaces become the part of $\mathcal{L}^{\bot}$'s external interfaces and when the occurrence is nested, those interfaces become the part of $\mathcal{L}^{\bot}$'s strict internal interfaces.
 In both cases when removing the occurrence of $\mathcal{L}$ from $\mathcal{G}$, $\mathcal{L}$'s strict internal interfaces are removed from strict internal interfaces of $\mathcal{G}$ to form internal interfaces of the corresponding MDA cospans above.
 % The morphisms are then constructed correspondingly to require that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
@@ -646,34 +546,6 @@ The conditions (3) and (4) require that top-level connected components in $\math
 Conditions (2) and (7) are the original boundary complement conditions (forgetting the extra interfaces) introduced by ~\citet{bonchi_string_2022-2}.
 Intuitively these conditions ensure that inputs (respectively, outputs) of $\mathcal{R}$ are glued to the outputs (respectively, inputs) of $\mathcal{L}^{\bot}$.
 Convexity and down-closed-ness conditions ensures that the subgraph corresponds to a proper subterm modulo SMC.
-
-%The notion of a boundary complement above is essentially the same as the one from~\autoref{sec:combinatorial-semantics}.
-%CHRIS: THE FOLLOWING SENTENCE IS UNCLEAR. 
-%The only difference is that we account for internal interfaces to require monogamous-ness and these interfaces must be computed explicitly to define the monogamous cospan.
-%
-%\begin{figure}
-%    \centering
-%    \[
-%    \scalebox{0.5}{\tikzfig{combinatorial_semantics/interfaces_change_example}}\]
-%    \caption{Hypothetical DPO square for $\catname{MACsp_{D}(CEHyp_{\Sigma})}$}
-%    \label{fig:interface_change_example}
-%\end{figure}
-
-% The second point above means that when cutting the mono-occurrence of $L$ out from $G$ we also need to remove the inner interfaces of $L$ from the whole interface of $G$. \question{According to the pushout squares above, $c_i$ is constructed by removing from $g_i$ everything from $l_i$ which does not have a pre-image in $i$, i.e., everything except the outermost interfaces (same holds for $c_o$)}
-
-% Note that,  in the above definition,  the extended cospan 
-%     \[
-%     n \xrightarrow{} n^\prime \setminus (i^\prime \setminus i) \sqcup j \xrightarrow{[g_1,c_2]} \mathcal{L}^{\bot} \xleftarrow{[g_2,c_1]} k^\prime \setminus (j^\prime \setminus j) \sqcup i \xleftarrow{} k
-%     \]
-%  is not necessarily well-typed.
-% This is because its input internal interface may contain vertices that previously were a part of the output internal interface and vice versa.
-% \begin{remark}
-% The boundary complement conditions, in particular, prohibit finding a match for $\mathcal L$ in $\mathcal G$,  below.  
-% \[
-% 	\mathcal{L} = \scalebox{0.8}{\tikzfig{./figures/f_times_g}} \qquad \mathcal{G} = \scalebox{0.6}{\tikzfig{./figures/f_plus_g_inline}}
-% \]
-% \end{remark}
-
 \begin{proposition}%
 	\label{prop:boundary_unique}
 	The boundary complement of~\autoref{def:boundary_new} when it exists is unique.

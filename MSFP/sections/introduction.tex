@@ -9,25 +9,16 @@ This is achieved by making rewrites on e-graphs non-destructive: an application 
 Exponential growth of the e-graph is avoided by the clever use of sharing of nodes.
 
 E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{10.1145/1594834.1480915, flatt_small_2022, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
-% The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 We are interested in using e-graphs in the context of functional programming languages, which builds upon an internal representation of the $\lambda$-calculus.
-% Pioneering work in this direction has been done by~\citet{koehler2022sketchguided}, where the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
 \citet{koehler2022sketchguided} pioneered work in this area by identifying two key, interconnected challenges—handling binding and ensuring capture-avoiding substitution—when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
 
-In the textual representation of $\lambda$-terms, $\alpha$-equivalent terms may be distinct and thus cannot be shared, which adds a layer of bookkeeping and complexity.
-This is traditionally handled by using de Bruijn indices~\cite{de1972lambda}, for which $\alpha$-equivalent terms are syntactically identified; however, this creates issues because the same variable can be assigned different indices depending on its scope with respect to the instance of that variable, again interfering with sharing.
-As a simple example, consider the term $\lambda f . f ((\lambda x . f x) 2)$ which, with de Bruijn indices,  is encoded as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$.
-The two different occurrences of the same bound variable $f$ are represented differently by $\%0$ and $\%1$, and cannot be shared in an e-graph.
+In the textual representation of $\lambda$-terms, $\alpha$-equivalent terms may be distinct and thus cannot be shared.
+De Bruijn indices~\cite{de1972lambda} syntactically identify $\alpha$-equivalent terms, but the same variable can receive different indices depending on its scope, again interfering with sharing.
+As a simple example, $\lambda f . f ((\lambda x . f x) 2)$ is encoded as $\lambda . \%0 ((\lambda . \%1 \%0) 2)$, where the two occurrences of $f$ are represented differently and cannot be shared.
 
-% A simple extension of $\lambda$-calculus is given by adding \emph{explicit substitution}, which models \textbf{let}-bindings in programming languages.
 A simple but theoretically~\cite{AbadiExplicitSubst} and practically~\cite{anf} important extension of the $\lambda$-calculus consists of adding let-bindings or explicit substitutions to the syntax.
-% Here, a term equipped with explicit substitutions $t[y/v][x/u]$ (modelling $\textbf{let} \; x = u \; \textbf{in} \; \textbf{let} \; y = v \; \textbf{in} \; t$) can be identified with the corresponding term where the order of substitution is reversed $t[x/u][y/v]$, supposing the substitutions are non-interacting.
-Terms are identified up to permutations of non-interacting substitutions, which is called \enquote{graph equivalence}~\cite{accattoli2014nonstandard} since such identification becomes obvious in certain diagrammatic representations.
-% This imposes a \emph{graphical equivalence}~\cite{accattoli2014nonstandard} of terms.
-Modelling this in the conventional language of e-graphs requires the introduction of additional nodes to represent the explicit substitutions, and additional rewrite rules which capture graphical equivalence.
-This pollutes the state space of equality saturation for these languages: the interesting rewriting is that of the user-specified algebraic theory one wishes to model,
-% not between semantically equivalent but syntactically distinct forms in the language.
-not the bureaucracy of managing the congruences of semantically equivalent yet syntactically distinct forms in the language.
+Terms are identified up to permutations of non-interacting substitutions, called \enquote{graph equivalence}~\cite{accattoli2014nonstandard}.
+Modelling this in conventional e-graphs requires additional nodes for explicit substitutions and additional rewrite rules to capture graphical equivalence, polluting the equality saturation state space with bureaucracy rather than the domain-specific rewriting one actually cares about.
 
 All these issues can be resolved by the use of \emph{string diagrams} in place of textual syntax.
 \citet{tiurin2025equivalencehypergraphsdporewriting}~shows how e-graphs (without binding) can be given a categorical semantics using symmetric monoidal semilattice-enriched categories, which allows e-graphs to be reconstructed as string diagrams.
@@ -35,27 +26,16 @@ In this paper, we extend this technique to e-graphs with bindings, lifting to mo
 
 \subsection{String diagrams}
 
-String diagrams are a direct bridge from the language of category theory, which in turn can be used to give semantic models to a variety of programming languages and logics, to the concrete language of graphs, which are a fundamental data structure in compiler design.
-These categorical techniques provide methodological guidance in how to solve the problems of binding and capture-avoiding substitution in e-graphs, as we develop in this paper.
+String diagrams provide a topological calculus for monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}.
+They bridge category theory---which gives semantic models to programming languages and logics---to the concrete language of graphs fundamental in compiler design; see~\citet{ghica2024stringdiagramslambdacalculifunctional} for the $\lambda$-calculus setting and~\citet{tiurin2025equivalencehypergraphsdporewriting} for e-graphs without bindings.
+In our string diagrams, which are oriented left-to-right and bottom-to-top, the structure of symmetric monoidal categories is absorbed into the graphical syntax, with composition and tensoring represented by juxtaposition and symmetries as weaving of strings.
 
-% The general background literature for string diagrams and their relationship to formal languages is summarised by~\citet{piedeleu2023introductionstringdiagramscomputer}.
-The particular context of string diagrams for $\lambda$-calculi is given in~\citet{ghica2024stringdiagramslambdacalculifunctional}, while string diagrams for e-graphs without bindings are defined in~\citet{tiurin2025equivalencehypergraphsdporewriting}.
+We require a concrete encoding of string diagrams, analogous to the de Bruijn index representation of $\lambda$-terms.
+For this we use \emph{hypergraphs}~\cite{bonchi_string_2022-1}: hypergraph isomorphism rigorously expresses when string diagrams \enquote{look the same} topologically, and string-diagrammatic equational reasoning is formalised as DPO rewriting over these hypergraphs~\cite{bonchi_string_2022-1}.
+For variable binding and equivalence classes we rely on \emph{functorial boxes}~\cite{10.1007/11874683_1}, represented via \emph{hierarchical hypergraphs}~\cite{fscd}.
 
-String diagrams provide a topological calculus for monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out.
-In this article, our string diagrams are oriented left-to-right, bottom-to-top to make the pictures look more similar to those commonly drawn for e-graphs.
-The structure of symmetric monoidal categories is absorbed into the graphical syntax, with the composition and tensoring represented by juxtaposition, and symmetries as weaving of strings.
-% This visual approach hides the bureacracy of complex operations and reveals insights sometimes obscured by traditional one-dimensional (textual) syntax.
-% Originating from notations by~\citet{hotzsd} (for automata) and~\citet{penrose1984spinors} (for tensor networks), extensions of string diagrammatic calculi exist for various forms of monoidal categories and even bicategories~\cite{Selinger_2010}, and provide a mathematically rigorous reasoning toolkit~\cite{joyal_geometry_1991}.
-
-Commonly, string diagrams are used informally to provide a two-dimensional syntax for the internal language of a category, but for our purposes we must be more formal.
-Specifically, we require a concrete encoding of string diagrams, analogous to the de Bruijn index representation of $\lambda$-terms.
-For this, we use \emph{hypergraphs}~\cite{bonchi_string_2022-1}, which have suitable theoretical properties.
-For instance, hypergraph isomorphism rigorously expresses what it means for string diagrams to \enquote{look the same} --- topologically, that one may be deformed continuously into the other without obstruction\footnote{This is the informal notion of the \enquote{isomorphism of string diagrams}.}; secondly, string-diagrammatic equational reasoning can be formalised as (categorical) graph rewriting over these hypergraphs using the technique of double-pushout rewriting (DPO)~\cite{bonchi_string_2022-1}.
-Finally, for the diagrammatic representation of two concepts essential to both programming languages (variable binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{10.1007/11874683_1}.
-These boxes require extra structure in their hypergraph representation in the form of a layering of graphs (\emph{hierarchical hypergraphs})~\cite{fscd}.
-
-Revisiting the earlier example $\lambda f . f ((\lambda x . f x) 2)$, in~\autoref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
-The scope of a $\lambda$-abstraction is represented by a rounded box with the bound variable represented as a wire attached to the frame, the application node a half-circle
+Revisiting the earlier example in~\autoref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
+The scope of a $\lambda$-abstraction is a rounded box with the bound variable as a wire on the frame, the application node a half-circle
 \adjustbox{scale=0.15}{\begin{tikzpicture}
 		\begin{pgfonlayer}{nodelayer}
 			\node [style=none] (0) at (1, 6.75) {};
@@ -86,13 +66,17 @@ and sharing a \emph{copy node} \comonoid.
 
 \subsection{E-graphs}
 
-E-graphs can efficiently simultaneously represent several equivalent terms of an algebraic theory, generalising the \emph{term graph} representation of terms to include equivalence classes of subterms (or subgraphs).
-The key concepts of e-graphs can be intuitively grasped from some simple examples: \autoref{fig:e-graph-example} shows how a series of rewrite rules can be non-destructively applied to an e-graph~\cite{EggPaper}.
-
+E-graphs simultaneously represent several equivalent terms of an algebraic theory by generalising \emph{term graphs} to include equivalence classes of subterms.
+\emph{E-classes} (dashed boxes) contain \emph{e-nodes} representing equivalent terms with the same root; e-nodes reference e-classes rather than other e-nodes.
+Extracting a term amounts to choosing one e-node per e-class; different choices yield equivalent terms.
+\autoref{fig:e-graph-example} shows how a series of rewrite rules are non-destructively applied to an e-graph~\cite{EggPaper}, alongside the equivalent string diagram representation using \emph{e-hypergraphs}~\cite{tiurin2025equivalencehypergraphsdporewriting}.
+Applying a rewrite rule to an e-graph amounts to adding new e-nodes into the e-graph and \emph{merging} e-classes for the left-hand side and right-hand side of the rewrite rule, instantiating the variables in the rule with the e-classes according to the match.
+The key difference that can be noted in string diagrammatic representation, is that the dashed boxes that correspond to e-graph e-classes are just ordinary nodes that happen to have hierarchical structure.
+These boxes have enough inputs to cater for each subdiagram inside, explicitly deleting the unnecessary wires inside each component using $\counit$.
 \begin{figure*}[t!]
 	\begin{minipage}{0.18\textwidth}
 		\centering
-		\adjustbox{scale=0.6}{
+		\adjustbox{scale=0.55}{
 			\tikzfig{figures/de-brujin-string}
 		}
 		\caption{String-dia\-gram\-matic representation of $\lambda f . f ((\lambda x . f x) 2)$.}
@@ -101,7 +85,7 @@ The key concepts of e-graphs can be intuitively grasped from some simple example
 	\hfill
 	\begin{minipage}{0.8\textwidth}
 		\begin{center}
-			\adjustbox{scale=0.6}{
+			\adjustbox{scale=0.55}{
 				\tikzfig{figures/e-graph-example-2}
 			}
 		\end{center}
@@ -110,71 +94,29 @@ The key concepts of e-graphs can be intuitively grasped from some simple example
 	\end{minipage}
 \end{figure*}
 
-Each column represents a term (or term rewrite rule), its conventional e-graph, and the equivalent string diagram (for Cartesian symmetric monoidal categories) representation using the \emph{e-hypergraphs} used by~\citet{tiurin2025equivalencehypergraphsdporewriting}.
-For the initial term, $(a*2)/2$, which is already represented efficiently in the e-graph by sharing the node $2$, the string diagram version shares this node explicitly, using a copy node.
-
-E-graphs consist of two types of nodes: \emph{e-classes}, representing equivalence classes of terms and denoted by dashed boxes, containing \emph{e-nodes}, representing equivalent terms that share the same root.
-E-nodes reference e-classes instead of other e-nodes, in contrast to a traditional term graph.
-By making a sequence of choices for e-nodes in e-classes, we can extract terms from the graph; intuitively, a different sequence of choices results in an equivalent term.
-A term graph is embedded by an e-graph where each e-class has a single e-node.
-
-The first rewrite rule, replacing multiplication by \emph{shift-left} creates the first non-singleton e-class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) nodes, now sharing the node $a$.
-This second e-graph illustrates the other representational difference\footnote{Despite the \enquote{difference}, these representations are isomorphic in the sense that there is a non-ambiguous translation from one representation to the other and vice versa.}, besides sharing, between conventional e-graphs and e-hypergraphs.
-In the former, edges connect directly to e-nodes inside the e-class, whereas in the latter edges connect to the equivalence class itself.
-Explicit deletion nodes are depicted with black dots with a single incoming wire
-\scalebox{0.4}{
-	\begin{tikzpicture}
-		\begin{pgfonlayer}{nodelayer}
-			\node [style=vertex] (0) at (1.5, 3.5) {};
-			\node [style=none] (1) at (1.5, 3) {};
-		\end{pgfonlayer}
-		\begin{pgfonlayer}{edgelayer}
-			\draw (0) to (1.center);
-		\end{pgfonlayer}
-	\end{tikzpicture}
-}
-inside the dashed boxes, indicating which of the equivalence-class-level edges are connected to which nodes inside the equivalence class.
-
-The other steps represent further elaborations of the e-graph, or e-hypergraph, via the application of more rewrite rules.
-
 \subsection{Conventional vs.\ slotted vs.\ categorical e-graphs with binding}%
 \label{sec:vs-e-graphs-with-binding}
 
-Let us compare our proposal with how substitution works in conventional e-graphs, which lack specialised support for binding.
+A common approach to $\beta$-reduction in e-graphs uses special explicit-substitution nodes with associated rewrite rules~\cite{EggPaper,koehler2022sketchguided}.
+In our categorical representation these nodes are unnecessary, since explicit substitution is modelled as composition.
+\autoref{fig:e-graph-substitution} illustrates successive $\beta$-reductions in a conventional e-graph for $(\lambda x . (y + y) + x) 1$; \autoref{fig:e-string-substitution} shows the same reduction via string diagrams, where $\beta$-reduction is simply re-wiring when an application node meets an abstraction.
+Using de Bruijn indices instead would only push the problem elsewhere: it greatly increases the complexity of encoding the reduction as a rewrite rule, requiring meta-syntactic shifting operators on the right-hand side~\cite{koehler2022sketchguided}.
 
-A common way of dealing with $\beta$-reduction for the $\lambda$-calculus in e-graphs is by representing the rules of $\lambda$-calculus explicitly, using special nodes for explicit substitution and associating them with particular rewrite rules~\cite{EggPaper,koehler2022sketchguided}.
-The auxiliary nature of these nodes is evident in that, after rewriting, they may be removed from the graph.
-We will see how in our categorical representation these nodes are not necessary, because explicit substitution is simply modelled categorically as composition.
-
-In~\autoref{fig:e-graph-substitution} we show successive iterations of a conventional e-graph for $(\lambda x . (y + y) + x) 1$ following $\beta$-reductions.
-A subterm for an explicit substitution must be introduced, which is deemed equivalent to the top-level application term (hence they are inside the same dashed box).
-The substitution is then propagated through child e-classes using additional rewrite rules (depicted at the top of each column).
-At the end, all explicit substitution nodes can be removed.
-The same example is then given again with string diagrams in~\autoref{fig:e-string-substitution}.
-
-Using string diagrams, $\beta$-reduction is simply the re-wiring of the diagram where an application node meets an abstraction, and explicit substitution simplifies into mere composition.
-The explicit occurrences of variable names in the conventional approach raise obvious questions of scope, binding and explicit substitution, whereas the use of terms inside the explicit substitution nodes also raises many technical difficulties which adds significant complexity to proving various mathematical properties.
-Additionally, explicit substitutions need to be propagated recursively throughout the graph, which adds another layer of technical and conceptual overhead.
-Using de Bruijn indices instead when performing $\beta$-reduction would only push the problem elsewhere, as it greatly increases the complexity of representing the reduction as a rewrite rule, and special shifting operators need to be introduced on the right-hand side of a rewrite rule, which is a meta-syntactic operation~\cite{koehler2022sketchguided}.
-
-Recent work on \emph{slotted} e-graphs~\cite{slotted-egraphs} addresses the sharing issues when representing terms that are equivalent up to renaming of variables (even free ones) by incorporating variables as first-class data of an e-graph and making binding a built-in operation.
-They also solved the problem of explicit variable names, guaranteeing freshness inside binders, explicitly differentiating between bound and free variables.
-An example of a slotted e-graph is given in~\autoref{fig:slotted}.
-
-\begin{figure}[t!]
-	\captionsetup{skip=0pt}
-	\begin{subfigure}[b]{0.45\linewidth}
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\vspace{-8pt}
+	\captionsetup{skip=2pt}
+	\begin{subfigure}[b]{0.48\linewidth}
 		\centering
-		\adjustbox{scale=0.6}{
+		\adjustbox{scale=0.55}{
 			\tikzfig{figures/slotted-e-graph-example}
 		}
 		\caption{Slotted e-graph}%
 		\label{fig:slotted}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.45\linewidth}
+	\begin{subfigure}[b]{0.48\linewidth}
 		\centering
-		\adjustbox{scale=0.5}{
+		\adjustbox{scale=0.45}{
 			\tikzfig{figures/slotted-string-2}
 		}
 		\caption{Closed e-hypergraph}%
@@ -182,39 +124,27 @@ An example of a slotted e-graph is given in~\autoref{fig:slotted}.
 	\end{subfigure}
 	\caption{Extensions of e-graphs to handle binding in $\lambda x . (a + b) + (x + c)$.}%
 	\label{fig:extended-egraphs}
-\end{figure}
-
-In slotted e-graphs, every e-class is parameterised by a set of free variables of the terms it represents.
-The edges then additionally convey the information about how variables are instantiated.
-For example, in~\autoref{fig:slotted}, an e-class $e_1$ containing $+$ that is parameterised by variable names $s_2$ and $s_3$ gets instantiated once with $a,b$ (via $s_4 \mapsto a, s_2 \mapsto s_4$ and $s_5 \mapsto b, s_3 \mapsto s_5$) and once with $x,c$.
-The fact that the variable $x$ is bound is evident from the corresponding e-class being parameterised by only three variables.
-If we were to add another e-node such as $e + d$, there would be an edge added to an already existing e-class such that $s_1 \mapsto e$, $s_2 \mapsto d$.
-We can achieve a similar degree of sharing (in the sense that we have the same number of nodes for $+$) using string diagrams by performing a closure conversion of $+$ (\autoref{fig:closed}).
-% One can consider the example from~\autoref{fig:e-graph-substitution} as an instance of a slotted e-graph as well (with headers omitted), the explicit substitution works similarly between the two versions of e-graphs with the slotted version providing sharing up-to renaming.
-A slotted e-graph version of~\autoref{fig:e-graph-substitution} would be able to introduce sharing for the variable names $x$ and $y$ but must still represent abstraction, application, and substitution explicitly, and so would look much the same\footnote{The framework of slotted e-graphs also provides a built-in substitution operation, however the explicit substitution remains the preferred way of dealing with variables and binding due to its flexibility.}.
-Fundamentally, there is a difference in approach here: slotted e-graphs solve the problem of variable binding generically using nominal techniques, in a way that can be applied to arbitrary formal languages with binders (e.g. $\pi$-calculus), while ours utilises an embedding into the internal language of our categorical model, which resembles a kind of metatheoretic $\lambda$-calculus, for which we use the metatheoretic $\lambda$-abstraction to handle the binding of variables.
-We defer a case study to~\autoref{sec:application}, where we argue that our approach has advantages if one is particularly interested in e-graphs for (variations of) $\lambda$-calculus, and, by extension, programming languages.
-However, these constructions are not unrelated: our categorical model can help justify the congruences maintained by slotted e-graphs, which we further elaborate on in~\autoref{sec:categorical}.
-We also note that there is also a difference in the scopes of these related works: \citet{slotted-egraphs} focus on the e-graph as a data structure, providing a full implementation of their slotted e-graphs, while we focus on the foundational categorical semantics of e-graphs with binding and their combinatorial representation.
-Finally, the development of e-graph applications and algorithms outpaces the development of its semantics with only two works dedicated to the former~\cite{zhang_relational_2022,tree_automata_e_graphs}.
-We hope that our work might serve as a foundation for semantics of e-graphs with bindings.
-
-% Do we need this section?
-% \subsection{Lambda calculus with explicit substitutions and graphical equivalence of terms}
+	\vspace{-8pt}
+\end{wrapfigure}
+Recent work on \emph{slotted} e-graphs~\cite{slotted-egraphs} addresses the sharing issues by incorporating variables as first-class data and making binding a built-in operation, guaranteeing freshness inside binders and differentiating bound from free variables.
+An example is shown in~\autoref{fig:slotted}: each e-class is parameterised by a set of free variables and can be \enquote{invoked} by supplying concrete variable names. 
+We can achieve a similar degree of sharing via closure conversion in our setting (\autoref{fig:closed}).
+The key difference is that slotted e-graphs solve variable binding generically using nominal techniques applicable to arbitrary formal languages with binders (e.g.\ $\pi$-calculus), while our approach embeds into the internal language of our categorical model, using metatheoretic $\lambda$-abstraction to handle variable binding.
+We provide a case study to~\autoref{sec:application}, where we argue that our approach has particular advantages for e-graphs for (variations of) $\lambda$-calculus.
+Our categorical model can also help justify the congruences maintained by slotted e-graphs, as we elaborate in~\autoref{sec:categorical}.
+We note that \citet{slotted-egraphs} focus on the e-graph as a data structure with a full implementation, while we focus on the foundational categorical semantics of e-graphs with binding and their combinatorial representation.
+We hope our work serves as a foundation for semantics of e-graphs with bindings, a currently underdeveloped area~\cite{zhang_relational_2022,tree_automata_e_graphs}.
 
 \begin{figure*}
 	\captionsetup{skip=0pt}
 	\begin{subfigure}{\linewidth}
-		% \hspace{1.3cm}
 		\adjustbox{width=\textwidth}{
 			\tikzfig{figures/e-graph-substitution}
 		}
-		% \captionsetup{skip=0pt}
 		\subcaption{E-graph explicit substitution example.}
 		\label{fig:e-graph-substitution}
 	\end{subfigure}
 	\begin{subfigure}{\linewidth}
-		% \hspace{1.3cm}
 		\adjustbox{width=\textwidth}{
 			\tikzfig{figures/e-string-substitution-2}
 		}
@@ -222,20 +152,8 @@ We hope that our work might serve as a foundation for semantics of e-graphs with
 	\end{subfigure}
 	\caption{Conventional e-graphs vs.\ categorical e-graphs with binding.}
 \end{figure*}
-%   \begin{figure*}
-%     \[
-%         % \hspace{1.3cm}
-%         \adjustbox{width=\textwidth}{
-%         \tikzfig{figures/e-string-substitution-2}
-%         }
-%     \]
-% 	\captionsetup{skip=0pt}
-%     \caption{String-diagrammatic substitution example.}
-%     \label{fig:e-string-substitution}
-%   \end{figure*}
 
 \subsection{Contributions}
-
 Our contribution is the construction of a form of e-graphs that support binding, developed through a principled categorical approach.
 Specifically, we extend a prior categorical semantics for e-graphs without binding by incorporating a monoidal closed structure.
 \citet{tiurin2025equivalencehypergraphsdporewriting} shows that e-graphs over signature $\Sigma$ can be represented as morphisms of a free Cartesian symmetric monoidal semilattice-enriched category over the same signature.
@@ -245,6 +163,4 @@ We call these string diagrams, or more precisely, the combinatorial representati
 First, we define closed enriched $\Sigma$-terms which generate a theory with equivalences and bindings.
 Then we define what e-hypergraphs are and provide the interpretation of closed enriched $\Sigma$-terms as cospans of e-hypergraphs (and by doing this we also formalise the corresponding string diagrams as concrete combinatorial objects).
 Next we formulate the DPO rewriting for e-hypergraphs and show that this notion of rewriting is sound and complete with respect to rewriting of closed enriched $\Sigma$-terms modulo SMC equations.
-We conclude the paper with a description of what benefits the e-hypergraph representation may bring for equality saturation in the context of $\lambda$-calculus with explicit substitution compared to conventional (slotted) e-graphs.
-
-% DRG: LIST THE MAIN DEFINITIONS AND THEOREMS AND WHAT THEY MEAN
+We present a description of what benefits the e-hypergraph representation may bring for equality saturation in the context of $\lambda$-calculus with explicit substitution compared to conventional (slotted) e-graphs in~\autoref{sec:application}.

@@ -1,6 +1,6 @@
 MAIN=CategoricalEgraphsForLambdaCalculi
 LATEXMK=latexmk
-LATEXFLAGS=-pdf -shell-escape -interaction=nonstopmode -output-directory=build
+LATEXFLAGS=-pdf -shell-escape -synctex=1 -interaction=nonstopmode -output-directory=build
 
 FIGS := $(shell find ./figures -type f -name "*.tikz")
 PDFS := $(patsubst ./%.tikz,cache/%.pdf,$(FIGS))

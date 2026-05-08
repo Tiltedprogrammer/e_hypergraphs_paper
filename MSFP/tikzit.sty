@@ -23,14 +23,20 @@
 \newcommand{\tikzfig}[1]{%
   \ifdefined\tikzitdraft%
     \IfFileExists{./cache/#1.pdf}
-    {\includegraphics[scale=1,align=c]{./cache/#1.pdf}}
+    {\typeout{tikzfig: using cached PDF ./cache/#1.pdf}%
+     \includegraphics[scale=1,align=c]{./cache/#1.pdf}}
     {\IfFileExists{./#1.tikz}
-      {{\tikzstyle{every picture}=[tikzfig]\input{./#1.tikz}}}
-      {\tikz[baseline=-0.5em]{\node[draw=red,font=\color{red},fill=red!10!white] {\textit{#1}};}}}%
+      {\typeout{tikzfig: using tikz source ./#1.tikz}%
+       {\tikzstyle{every picture}=[tikzfig]\input{./#1.tikz}}}
+      {\typeout{tikzfig: FILE NOT FOUND #1}%
+       \tikz[baseline=-0.5em]{\node[draw=red,font=\color{red},fill=red!10!white] {\textit{#1}};}}}%
   \else%
+    \typeout{tikzfig: tikzitdraft not set, using tikz source}%
     \IfFileExists{./#1.tikz}
-      {{\tikzstyle{every picture}=[tikzfig]\input{./#1.tikz}}}
-      {\tikz[baseline=-0.5em]{\node[draw=red,font=\color{red},fill=red!10!white] {\textit{#1}};}}%
+      {\typeout{tikzfig: using tikz source ./#1.tikz}%
+       {\tikzstyle{every picture}=[tikzfig]\input{./#1.tikz}}}
+      {\typeout{tikzfig: FILE NOT FOUND #1}%
+       \tikz[baseline=-0.5em]{\node[draw=red,font=\color{red},fill=red!10!white] {\textit{#1}};}}%
   \fi%
 }
 \newcommand{\ctikzfig}[1]{%
