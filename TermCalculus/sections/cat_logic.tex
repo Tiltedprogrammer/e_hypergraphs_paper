@@ -750,50 +750,62 @@ We then define the substitution on a let as
 (\textbf{letrec } x = M \textbf{ in } N) [P/y] = \textbf{ letrec } x = M[P/y] \textbf{ in } N[P/y].
 \]
 Then we require the following equations to hold:
-\begin{gather*}
-  \textbf{letrec } x = M \textbf{ in } N \equiv N[M/x], x \not \in FV(M)\\
+\begin{gather}\label{eq:let_equations}
+  \textbf{letrec } x = M \textbf{ in } N \equiv \textbf{letrec } x = M \textbf{ in } N[M / x]\\
   \textbf{letrec } y = (\textbf{letrec } x = L \textbf{ in } M) \textbf{ in } N \equiv \textbf{letrec } x = L \textbf{ in } (\textbf{letrec } y = M \textbf{ in } N)\\
-  \textbf{letrec } D_1 \textbf{ in } \textbf{letrec} D_2 \textbf{ in } M \equiv \textbf{letrec} D_1, D_2 \textbf{ in } M\\
+  \textbf{letrec } D_1 \textbf{ in } \textbf{letrec } D_2 \textbf{ in } M \equiv \textbf{letrec} D_1, D_2 \textbf{ in } M\\
   \textbf{letrec } D_1, D_2, D_3 \textbf{ in } M \equiv \textbf{letrec } D_2, D_1, D_3 \textbf{ in } M\\
-  \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...) 
-\end{gather*}
+  \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...)\\ 
+  \textbf{letrec } x = M \textbf{ in } N \equiv N,\;x \not \in FV(N).
+\end{gather}
 
 We then define trace as
 \[
-Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{match} M \{uv . \textbf{letrec} \} \rrbracket
+Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{match } M \{uv . \textbf{letrec } x = v \text{ in } M \} \rrbracket
 \]
 
 
 Type theories with fixed points are modelled by (cartesian) traced monoidal categories as described by~\citet{hasegawa_models_1999}.
-Trace is given by the operation on hom-objects
+E-graphs are similar to sharing graphs (with the addition of equivalence classes) and the latter were given models in traced monoidal categories by~\citet{hasegawa_models_1999}.
+We recall a notion of a traced (symmetric) monoidal category, according to~\citet{Joyal_Street_Verity_1996}, next.
+
+\begin{remark}
+  Below we will give the definition of a traced monoidal category when the tensor is not necessarily strict.
+  This might seem surprising, but it makes things easier when making a multicategorical account of the trace as the corresponding monoidal categories for representable multicategories are canonically non-strict.
+  It is possible to give a fully strict account using the language of multicategories, but it requires additional quotienting.
+\end{remark}
+
+\begin{definition}
+  A symmetric monoidal category $(\mathcal{C}, \otimes, \alpha, \lambda, \rho, \sym)$ is traced if it is equipped with a family of operations 
+  \[
+  \text{tr}_{A,B}^{X} : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A,B),
+  \]
+  satisfying the following axioms.
+  \paragraph{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : A \to B$, $f : B \otimes X \to C \otimes X, g : C \to D$
 \[
-\text{Tr}_{A,B}^{X} : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A,B)
-\]
-satisfying the following axioms.
-\paragraph{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : A \to B$, $f : B \otimes X \to C \otimes X, g : C \to D$
-\[
-\text{Tr}^{X}((g \otimes \id_{X}) \circ f \circ (h \otimes \id_{X})) = g \circ Tr^{X}(f) \circ h
+\text{tr}_{A,D}^{X}((g \otimes \id_{X}) \circ f \circ (h \otimes \id_{X})) = g \circ tr_{B,C}^{X}(f) \circ h
 \]
 \paragraph{Sliding} For all $A,B,X,Y \in \mathcal{C}$, $f : A \otimes X \to B \otimes Y$, $g : Y \to X$
 \[
-\text{Tr}^{X}((\id_{B} \otimes g) \circ f) = \text{Tr}^{Y}(f \circ (\id_{A} \otimes g))
+\text{tr}_{A,B}^{X}((\id_{B} \otimes g) \circ f) = \text{tr}_{A,B}^{Y}(f \circ (\id_{A} \otimes g))
 \]
 \paragraph{Vanishing} For all $A,B,X,Y \in \mathcal{C}$
 \[
-\text{Tr}^{\I}(f) = f, \forall f : A \to B
+\text{tr}_{A,B}^{\I}(f \otimes \id_{\I}) = f, \forall f : A \to B
 \]
 and
 \[
-\text{Tr}^{X \otimes Y}(f) = \text{Tr}^{X}(\text{Tr}^{Y}(f)), \forall f : A \otimes X \otimes Y \to B \otimes X \otimes Y
+\text{tr}_{A,B}^{X \otimes Y}(f) = \text{tr}_{A,B}^{X}(\text{tr}_{A \otimes X, B \otimes X}^{Y}(\alpha^{-1}_{B,X,Y} \circ f \circ \alpha_{A,X,Y})), \forall f : A \otimes X \otimes Y \to B \otimes X \otimes Y
 \]
 \paragraph{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : C \otimes X \to D \otimes X$, $g : A \to B$
 \[
-\text{Tr}^{X}(g \otimes f) = g \otimes \text{Tr}^{X}(f)
+\text{tr}_{A \otimes C,B \otimes D}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = g \otimes \text{tr}_{C,D}^{X}(f)
 \]
-\paragraph{Yanking} For all $A,X \in \mathcal{C}$
+\paragraph{Yanking} For all $X \in \mathcal{C}$
 \[
-\text{Tr}^{X}(\sym_{X,X}) = \id_{X}
+\text{tr}_{X,X}^{X}(\sym_{X,X}) = \id_{X}
 \]
+\end{definition}
 
 We can translate this to the multicategorical setting, by letting the trace be an operation on hom-objects
 \[
@@ -816,17 +828,16 @@ where we let $g_{B}$ be the unique morphism with $g_{B} \circ \xi_{B,Y} = \xi_{B
 \]
 where $f' : (A,\I; B \otimes \I) = \xi_{B,\I} \circ (f, \id_{I})$.
 
-\paragraph{Vanishing II} For all $A,B,X,Y \in \mathcal{C}$ and $f : (A,X,Y;B \otimes X \otimes Y)$
+\paragraph{Vanishing II} For all $A,B,X,Y \in \mathcal{C}$ and $f : (A,X \otimes Y;B \otimes (X \otimes Y))$
 \[
-\text{Tr}^{X \otimes Y}(f') = \text{Tr}^{X}(\text{Tr}^{Y}(f)),
+\text{Tr}^{X \otimes Y}(f) = \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ (\id_{A}, \xi_{X,Y}))),
 \]
-where $f' : (A, X \otimes Y; B \otimes X \otimes Y)$ is the unique morphism such that $f' \circ (id_{A}, \xi_{X,Y}) = f$.
-
+where $\alpha_{B,X,Y}^{-1}$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B,X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B \otimes X, Y} \circ (\xi_{B,X}, \id_{Y})$. 
 \paragraph{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : (C,X;D \otimes X)$, $g : (A;B)$
 \[
-\text{Tr}^{X}(\xi_{B, D \otimes X} \circ (g,f)) = \xi_{B,D} \circ (g, \text{Tr}^{X}(f))
+\text{Tr}^{X}(\alpha_{B,D,X}^{-1} \circ \xi_{B, D \otimes X} \circ (g,f)) = \xi_{B,D} \circ (g, \text{Tr}^{X}(f))
 \]
-
+where $\alpha_{B,X,Y}^{-1}$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B,X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B \otimes X, Y} \circ (\xi_{B,X}, \id_{Y})$. 
 \paragraph{Yanking} Recall that the symmetry in a representable multicategory is given by the unique morphism $\sym_{A,B}$ such that $\sym_{A,B} \circ \xi_{A,B} = [\xi_{B,A}](a)$, where $[-](a) : \mathcal{C}(B,A; B \otimes A) \to \mathcal{C}(A,B; B \otimes A)$.
 The axiom then becomes
 \[
@@ -884,7 +895,160 @@ Note that we denote the monoidal tensor as $\text{tr}$.
     \text{Tr}^{X}(k) = \text{Tr}^{X}(g_{B} \circ f \circ \xi_{A,X}) = \text{Tr}^{X}(g_{B} \circ f') = \text{Tr}^{Y}(f' \circ_{2} g) = \text{Tr}^{Y}(f \circ \xi_{A,X} \circ (id_{A}, g))
     \]
     By definition, $\text{tr}^{Y}(f \circ (\id_{A} \otimes g)) = \text{tr}^{Y}(f \circ g_{A}) = \text{Tr}^{Y}(f \circ g_{A} \circ \xi_{A,Y}) = \text{Tr}^{Y}(f \circ \xi_{A,X} \circ (\id_{A},g)) = \text{Tr}^{X}(k) = \text{tr}^{X}(g_{B} \circ f)$.
+    \item \textbf{Vanishing I}: We need to show that for all $f : A \to B$,
+    \[
+    \text{tr}^{\I}(f \otimes \id_{\I}) = f
+    \]
+    By definition, $f \otimes \id_{\I}$ is the unique morphism such that $(f \otimes \id_{\I}) \circ \xi_{A,\I} = \xi_{B,\I} \circ (f, \id_{\I})$.
+    Then, also by definition,
+    \[
+    \text{tr}^{\I}(f \otimes \id_{\I}) = \text{Tr}^{\I}(f \otimes \id_{\I} \circ \xi_{A,\I}) = \text{Tr}^{\I}(\xi_{B,\I} \circ (f, \id_{\I})).
+    \]
+    By multicategorical vanishing, we have that $\text{Tr}^{\I}(\xi_{B,\I} \circ (f, \id_{\I})) = f$.
+    Hence, $\text{tr}^{\I}(f \otimes \id_{\I}) = f$.
+    \item \textbf{Vanishing II}: We need to show that for all $f : A \otimes (X \otimes Y) \to B \otimes (X \otimes Y)$,
+    \[
+    \text{tr}^{X \otimes Y}(f) = \text{tr}^{X}(\text{tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y}))
+    \]
+    By definition, 
+    \[
+    \text{tr}^{X \otimes Y}(f) = \text{Tr}^{X \otimes Y}(f \circ \xi_{A, X \otimes Y}).
+    \]
+    $\alpha_{A,X,Y}$ is the unique morphism such that $\alpha_{A,X,Y} \circ \xi_{A \otimes X, Y} \circ (\xi_{A,X}, \id_{Y}) = \xi_{A, X \otimes Y} \circ (\id_{A}, \xi_{X,Y})$.
+    By multicategorical vanishing, we have that
+    \[
+    \text{Tr}^{X \otimes Y}(f \circ \xi_{A, X \otimes Y}) = \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \xi_{A, X \otimes Y} \circ (\id_{A}, \xi_{X,Y}))),
+    \]
+    On the other hand, by definition, we have that
+    \begin{align*}
+    \text{tr}^{X}(\text{tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y})) &= \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y}))\\
+    &= \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y}) \circ \xi_{A,X})
+    \end{align*}
+    By tightening, we have that
+    \[
+    \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y}) \circ \xi_{A,X} = \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y} \circ (\xi_{A,X}, \id_{Y}))
+    \]
+    By the definition of $\alpha_{A,X,Y}$, we have that
+    \[
+    \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y} \circ (\xi_{A,X}, \id_{Y})) = \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \xi_{A,X \otimes Y} \circ (\id_{A}, \xi_{X,Y})).
+    \]
+    and therefore,
+    \[
+    \text{tr}^{X \otimes Y}(f) = \text{tr}^{X}(\text{tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y}))
+    \]
+    \item \textbf{Strength}: We need to show that for all $f : C \otimes X \to D \otimes X$ and $g : A \to B$,
+    \[
+    \text{tr}_{A \otimes C,B \otimes D}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = g \otimes \text{tr}_{C,D}^{X}(f)
+    \]
+    By definition, $\alpha_{A,C,X}$ is the unique morphism such that
+    \[
+   \alpha_{A,C,X} \circ \xi_{A \otimes C, X} \circ (\xi_{A,C}, \id_{X}) = \xi_{A, C \otimes X} \circ (\id_{A}, \xi_{C,X}),
+    \]
+    and
+    \begin{equation}\label{eq:strength-proof}
+    \text{tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = \text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X} \circ \xi_{A \otimes C, X}),
+    \end{equation}
+    and $g \otimes f$ is the unique morphism such that $(g \otimes f) \circ \xi_{A, C \otimes X} = \xi_{B,D \otimes X} \circ (g, f)$,
+    with $f$ being the unique morphism such that $f \circ \xi_{C,X} = f'$ for $f' : (C,X; D \otimes X)$.
+    We proceed by precomposing~\autoref{eq:strength-proof} with $\xi_{A,C}$:
+    \begin{align*}
+     \text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X} \circ \xi_{A \otimes C, X}) \circ \xi_{A,C} &=\\
+     &\text{by tightening}\\
+     &= \text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X} \circ \xi_{A \otimes C, X} \circ (\xi_{A,C}, \id_{X}))\\
+     &\text{by the definition of $\alpha_{A,C,X}$}\\
+     &=\text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \xi_{A, C \otimes X} \circ (\id_{A}, \xi_{C,X}))\\
+     &\text{by the definition of $g \otimes f$}\\
+     &=\text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ \xi_{B,D \otimes X} \circ (g , f) \circ (\id_{A}, \xi_{C,X}))\\
+     &=\text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ \xi_{B,D \otimes X} \circ (g , f'))\\
+     &=\text{by multicategorical strength}\\
+     &=\xi_{B,D} \circ (g,\text{Tr}^{X}(f'))\\
+    \end{align*}
   \end{itemize}
+  By definition, we also have that $g \otimes \text{tr}^{X}(f)$ is the unqiue morphism such that
+  \[
+  (g \otimes \text{tr}^{X}(f)) \circ \xi_{A,C} = \xi_{B,D} \circ (g, \text{tr}^{X}(f)),
+  \]
+  and $\text{tr}^{X}(f)$ is given by $\text{Tr}^{X}(f \circ \xi_{C,X}) = \text{Tr}^{X}(f')$.
+  Hence, we have that
+  \[
+  \text{tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) \circ \xi_{A,C} = (g \otimes \text{tr}^{X}(f)) \circ \xi_{A,C}, 
+  \]
+  and since precomposition with $\xi_{A,C}$ is a bijection, we have that
+  \[
+   \text{tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = g \otimes \text{tr}^{X}(f)
+  \]
+  \item \textbf{Yanking}: We need to show that for all $X \in \mathcal{C}$,
+  \[
+  \text{tr}^{X}(\sym_{X,X}) = \id_{X}
+  \]
+  By definition, $\sym_{X,X}$ is the unique morphism such that $\sym_{X,X} \circ \xi_{X,X} = [\xi_{X,X}](a)$, where $[-](a) : \mathcal{C}(X,X; X \otimes X) \to \mathcal{C}(X,X; X \otimes X)$.
+  Then, also by definition, we have that
+  \begin{align*}
+    \text{tr}^{X}(\sym_{X,X}) &= \text{Tr}^{X}(\sym_{X,X} \circ \xi_{X,X})\\
+    &=\text{by definition above}\\
+    &=\text{Tr}^{X}([\xi_{X,X}](a))\\
+    &=\text{by multicategorical yanking}\\
+    &= \id_{X}.
+  \end{align*}
+\end{proof}
+
+\begin{proposition}
+The construction
+\[
+\text{Tr}_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{ match}(x, uv.v) \textbf{ in } \textbf{match}(M, uv.u)\rrbracket
+\]
+together with the equations~\autoref{eq:let_equations} defines a multicategorical trace.
+\end{proposition}
+\begin{proof}
+\begin{itemize}
+\item \textbf{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : (A;B)$, $f : (B,X; C \otimes X)$, $g : (C;D)$
+\[
+\text{Tr}^{X}(g' \circ f \circ_{1} h) = g \circ \text{Tr}^{X}(f) \circ h,
+\]
+where $g' : (C \otimes X; D \otimes X)$ is the unique morphism such that $g' \circ \xi_{C,X} = \xi_{D,X} \circ  (g, id_{X})$.
+We have that $y : B, x : X \vdash f(y, x) : C \otimes X$, $z : C \vdash g(z) : D$, and $w : C \otimes X \vdash \text{match}(w, uv.\{g(u), v\}) : D \otimes X$.
+Ultimately, we need to show that
+\begin{align*}
+a : A &\vdash \textbf{letrec } x = \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u), v\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u), v\}), uv.u) : D\\
+&\equiv\\
+&\equiv g(\textbf{letrec } x = \textbf{match}(f(h(a),x), uv.v) \textbf{ in } \textbf{match}(f(h(a),x), uv.u)) : D
+\end{align*}
+We first show that
+\[
+\textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u), v\}), uv.v) \equiv \textbf{match}(f(h(a),x), uv.v)
+\]
+We have that
+\begin{align*}
+\{g(u), v\} &\equiv\\
+&\text{by $\beta$}\\
+&\equiv\{g(\textbf{match}(u', \alpha\beta.\alpha)), \textbf{match}(u', \alpha\beta.\beta)\}[\{u,v\}/u'].
+\end{align*}
+And therefore,
+\begin{align*}
+\textbf{match}(f(h(a),x), uv.\{g(u),v\}) &\equiv \{g(\textbf{match}(u', \alpha\beta.\alpha)), \textbf{match}(u', \alpha\beta.\beta)\}[f(h(a),x) / u']\\
+&\equiv \{g(\textbf{match}(f(h(a),x),\alpha\beta.\alpha)), \textbf{match}(f(h(a),x),\alpha\beta.\beta)\}
+\end{align*}
+\begin{align*}
+\textbf{match}(\{g(\textbf{match}(f(h(a),x), \alpha\beta.\alpha)), \textbf{match}(f(h(a),x), \alpha\beta.\beta)\}, uv.v) \equiv\\
+\text{by $\beta$}\\
+\equiv \textbf{match}(f(h(a),x), \alpha\beta.\beta)
+\end{align*}
+We similarly have that
+\[
+\textbf{match}(\textbf{match}(f(h(a),x),uv.\{g(u),v\}), uv.u) \equiv g(\textbf{match}(f(h(a),x), \alpha\beta.\alpha)),
+\]
+and hence
+\begin{align*}
+\textbf{letrec } x = \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u),v\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u),v\}),uv.u) \equiv\\
+\equiv \textbf{letrec } x = \textbf{match}(f(h(a),x), uv.v) \textbf{ in } g(\textbf{match}(f(h(a),x), uv.u))\\
+\equiv g(\textbf{letrec } x = \textbf{match}(f(h(a),x), uv.v) \textbf{ in } \textbf{match}(f(h(a),x), uv.u))
+\end{align*}
+\item \textbf{Sliding}: For all $A,B,X,Y \in \mathcal{C}$, $f : (A,X;B \otimes Y)$, $g : (Y;X)$
+\[
+\text{Tr}^{X}((g_{B}) \circ f) = \text{Tr}^{Y}(f \circ_2 g)
+\]
+
+\end{itemize}
 \end{proof}
 
 Since a representable multicategory is equivalent to a monoidal category by~\autoref{prop:representable_multicategories}, the trace operation on hom-objects
