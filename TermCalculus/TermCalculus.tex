@@ -1,3 +1,4 @@
+%!LW recipe=pdflatex -> bibtex -> pdflatex*2
 \documentclass[manuscript, nonacm, anonymous]{acmart}
 
 \usepackage{cmap}
@@ -22,6 +23,7 @@
 \usepackage{stmaryrd}
 
 \usepackage{mathtools}
+\mathtoolsset{showonlyrefs=false}
 \usepackage{tikz}
 \usepackage{tikz-network}
 \usepackage{xspace}
@@ -120,8 +122,6 @@
 \input{../hypergraph.tikzdefs}
 
 
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 
 \title{Type Theory for E-Graphs}

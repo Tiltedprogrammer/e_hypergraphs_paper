@@ -618,11 +618,11 @@ By~\autoref{prop:representabilities_agree}, we get the same data had we started 
   Removing the rules for $\otimes$ and $\I$ we get the adjunction between multigraphs and (not representable) $\catname{SLat}$-multicategories.
   Similarly, by adding the rules for $\multimap$ and corresponding $\mathfrak{S}$-multicategories we can derive $\catname{SLat}$-multicategories (and monoidal categories) with more structure.
   In particular, the following rules (replacing the identity rule) define a free cartesian multicategory (and therefore a free cartesian category):
-  \begin{gather}
+  \begin{gather*}
   \label{eq:cartesian_structure}
   \inferrule*[right=$\id$]{\vdash A\;\text{type} \quad x \in \Gamma}{\Gamma \vdash x : A}\\
   \inferrule*[]{\;}{\Gamma \vdash \star : \I}
-  \end{gather}
+  \end{gather*}
 \end{remark}
 
 So far, we actually defined a type theory for e-graphs with empty set of equations.
@@ -740,28 +740,43 @@ together with the equation
 \]
 Or, alternatively, written as a possibly recursive let
 \[
-\inferrule*[]{\Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash M : A \quad \Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash N : B}
-{\Gamma \vdash \textbf{letrec } (x_1, \ldots, x_n) = M \textbf{ in } N : B},
+\inferrule*[]{\Gamma, x : A \vdash M : A \quad \Gamma, x : A \vdash N : B}
+{\Gamma \vdash \textbf{letrec } x = M \textbf{ in } N : B},
 \]
+
 note that $M$ and $N$ use the same context $\Gamma$.
 
 We then define the substitution on a let as
 \[
 (\textbf{letrec } x = M \textbf{ in } N) [P/y] = \textbf{ letrec } x = M[P/y] \textbf{ in } N[P/y].
 \]
+and use a syntactic sugar for multi-variable let as follows:
+\[
+\textbf{letrec } (x,y) = M \textbf{ in } N \coloneqq \textbf{letrec } z = \textbf{match}(z, xy.M) \textbf{ in } \textbf{match}(z, xy.N).
+\]
 Then we require the following equations to hold:
-\begin{gather}\label{eq:let_equations}
-  \textbf{letrec } x = M \textbf{ in } N \equiv \textbf{letrec } x = M \textbf{ in } N[M / x]\\
-  \textbf{letrec } y = (\textbf{letrec } x = L \textbf{ in } M) \textbf{ in } N \equiv \textbf{letrec } x = L \textbf{ in } (\textbf{letrec } y = M \textbf{ in } N)\\
-  \textbf{letrec } D_1 \textbf{ in } \textbf{letrec } D_2 \textbf{ in } M \equiv \textbf{letrec} D_1, D_2 \textbf{ in } M\\
-  \textbf{letrec } D_1, D_2, D_3 \textbf{ in } M \equiv \textbf{letrec } D_2, D_1, D_3 \textbf{ in } M\\
-  \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...)\\ 
-  \textbf{letrec } x = M \textbf{ in } N \equiv N,\;x \not \in FV(N).
+\begin{gather}
+  \textbf{letrec } x = M \textbf{ in } N \equiv \textbf{letrec } x = M \textbf{ in } N[M / x]\label{eq:let_equations:subst}\\
+\textbf{letrec } x = N(M(x)) \textbf{ in } M(x) \equiv \textbf{letrec } y = M(N(y)) \textbf{ in } y\label{eq:let_equations:dinaturality}\\
+\textbf{letrec } x = (letrec y = Q \textbf{ in } P) \textbf{ in } N \equiv \textbf{letrec } (x,y) = \{P,Q\} \textbf{ in } N\label{eq:let_equations:merge}\\
+  \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...)\label{eq:let_equations:congruence}\\ 
+  \textbf{letrec } x = M \textbf{ in } \{P, N\} \equiv \{P,\; \textbf{letrec } x = M \textbf{ in } N\},
+    \quad x \notin FV(P) \label{eq:let_equations:float-tensor-R}\\
+  \textbf{letrec } x = M \textbf{ in } \{N, Q\} \equiv \{\textbf{letrec } x = M \textbf{ in } N,\; Q\},
+    \quad x \notin FV(Q) \label{eq:let_equations:float-tensor-L}\\
+  \textbf{letrec } x = M \textbf{ in } \textbf{match}(N, uv.P) \equiv
+    \textbf{match}(N,\; uv.\textbf{letrec } x = M \textbf{ in } P),
+    \quad x \notin FV(N),\; \{u,v\}\cap\{x\}=\varnothing \label{eq:let_equations:float-match-body}\\
+  \textbf{letrec } x = M \textbf{ in } \textbf{match}(P, uv.N) \equiv
+    \textbf{match}(\textbf{letrec } x = M \textbf{ in } P,\; uv.N),
+    \quad x \notin FV(N),\; \{u,v\}\cap\{x\}=\varnothing \label{eq:let_equations:float-match-scrutinee}\\
+  \textbf{letrec } x = M \textbf{ in } N \equiv N,\;x \not \in FV(N)\label{eq:let_equations:gc}\\
+\textbf{letrec } z = \textbf{match}(z, xy. \{w, Q(w, y)\}) \textbf{ in } M[w/x]  \equiv  \textbf{letrec } y = Q(w, y) \textbf{ in } M \qquad w \not \in \{x,y,z\}\label{eq:let_equations:qvar}
 \end{gather}
 
 We then define trace as
 \[
-Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{match } M \{uv . \textbf{letrec } x = v \text{ in } M \} \rrbracket
+Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{match}(M, uv.v) \textbf{ in } \textbf{match}(M, uv.u) \rrbracket
 \]
 
 
@@ -995,7 +1010,7 @@ Note that we denote the monoidal tensor as $\text{tr}$.
 \begin{proposition}
 The construction
 \[
-\text{Tr}_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{ match}(x, uv.v) \textbf{ in } \textbf{match}(M, uv.u)\rrbracket
+\text{Tr}_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{ match}(M, uv.v) \textbf{ in } \textbf{match}(M, uv.u)\rrbracket
 \]
 together with the equations~\autoref{eq:let_equations} defines a multicategorical trace.
 \end{proposition}
@@ -1025,7 +1040,9 @@ We have that
 \end{align*}
 And therefore,
 \begin{align*}
-\textbf{match}(f(h(a),x), uv.\{g(u),v\}) &\equiv \{g(\textbf{match}(u', \alpha\beta.\alpha)), \textbf{match}(u', \alpha\beta.\beta)\}[f(h(a),x) / u']\\
+\textbf{match}(f(h(a),x), uv.\{g(u),v\}) &\equiv\\
+&\text{by $\eta$}\\
+&\equiv \{g(\textbf{match}(u', \alpha\beta.\alpha)), \textbf{match}(u', \alpha\beta.\beta)\}[f(h(a),x) / u']\\
 &\equiv \{g(\textbf{match}(f(h(a),x),\alpha\beta.\alpha)), \textbf{match}(f(h(a),x),\alpha\beta.\beta)\}
 \end{align*}
 \begin{align*}
@@ -1047,7 +1064,99 @@ and hence
 \[
 \text{Tr}^{X}((g_{B}) \circ f) = \text{Tr}^{Y}(f \circ_2 g)
 \]
-
+We have that $a : A, x : X \vdash f(a,x) : B \otimes Y$ and $y : Y \vdash g(y) : X$.
+$g_{B}$ is then given by $w : B \otimes Y \vdash \textbf{match}(w, uv. \{u, g(v)\}) : B \otimes X$.
+Therefore, we need to show that
+\begin{align*}
+a : A \vdash &\textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,x), uv.\{u,g(v)\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(a,x), uv. \{u, g(v)\}), uv.u) : B\\
+&\equiv\\ 
+&\textbf{letrec } y = \textbf{match}(f(a,g(y)), uv.v) \textbf{ in } \textbf{match}(f(a,g(y)), uv.u): B
+\end{align*}
+As before, we have that
+\[
+\{u, g(v)\} \equiv \{\textbf{match}(u', \alpha\beta.\alpha), g(\textbf{match}(u', \alpha\beta.\beta))\}[\{u,v\}/u'].
+\]
+And therefore,
+\begin{align*}
+\textbf{match}(f(a,x), uv.\{u,g(v)\}) &\equiv\\
+&\text{by $\eta$}\\
+&\equiv \{\textbf{match}(u', \alpha\beta.\alpha), g(\textbf{match}(u', \alpha\beta.\beta))\}[f(a,x) / u']\\
+&\equiv \{\textbf{match}(f(a,x), \alpha\beta.\alpha), g(\textbf{match}(f(a,x), \alpha\beta.\beta))\}.
+\end{align*}
+Then,
+\begin{align*}
+  \textbf{match}(\textbf{match}(f(a,x),uv.\{u,g(v)\}), uv.v) &\equiv \textbf{match}(\{\textbf{match}(f(a,x), \alpha\beta.\alpha), g(\textbf{match}(f(a,x), \alpha\beta.\beta))\}, uv.v)\\
+  &\equiv g(\textbf{match}(f(a,x), \alpha\beta.\beta))
+\end{align*}
+and
+\begin{align*}
+  \textbf{match}(\textbf{match}(f(a,x),uv.\{u,g(v)\}), uv.u) &\equiv \textbf{match}(\{\textbf{match}(f(a,x), \alpha\beta.\alpha), g(\textbf{match}(f(a,x), \alpha\beta.\beta))\}, uv.u)\\
+  &\equiv \textbf{match}(f(a,x), \alpha\beta.\alpha).
+\end{align*}
+Hence,
+\begin{align*}
+  a : A \vdash &\textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,x), uv.\{u,g(v)\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(a,x), uv. \{u, g(v)\}), uv.u) : B \equiv\\
+  &\equiv \textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha) : B\\
+  &\text{by \autoref{eq:let_equations:congruence}}\\
+  &\equiv \textbf{match}(f(a,\textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } x), \alpha\beta.\alpha) : B\\
+  &\text{by \autoref{eq:let_equations:subst}}\\
+  &\equiv \textbf{match}(f(a,\textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } g(\textbf{match}(f(a,x), \alpha\beta.\beta))), \alpha\beta.\alpha) : B\\
+  &\text{by \autoref{eq:let_equations:congruence}}\\
+  &\equiv \textbf{match}(f(a, g(\textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\beta))), \alpha\beta.\alpha) : B\\
+  &\text{by \autoref{eq:let_equations:dinaturality}}\\
+  &\equiv \textbf{match}(f(a,g(\textbf{letrec } y = \textbf{match}(f(a,g(y)), \alpha\beta.\beta) \textbf{ in } \textbf{y}), \alpha\beta.\alpha) : B\\
+  &\text{by \autoref{eq:let_equations:congruence}}\\
+  &\equiv \textbf{letrec } y = \textbf{match}(f(a,g(y)),\alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,g(y)), \alpha\beta.\alpha) : B
+\end{align*}
+Up to $\alpha$-equivalence this is what we needed.
+\item \textbf{Vanishing I}: For all $f : (A;B)$,
+\[
+\text{Tr}^{I}(f') = f,
+\]
+where $f' = \xi_{B,I} \circ (f,id_{I})$.
+We have that $a : A \vdash f(a) : B$ and $f'$ is given by $a : A, x : I \vdash \{f(a), x\} : B \otimes I$.
+Therefore, we need to show that
+\[
+a : A \vdash \textbf{letrec } x = \textbf{match}(\{f(a), x\}, uv.v) \textbf{ in } \textbf{match}(\{f(a), x\}, uv.u) : B \equiv f(a) : B
+\]
+We have that
+\begin{align*}
+  a : A \vdash &\textbf{letrec } x = \textbf{match}(\{f(a), x\}, uv.v) \textbf{ in } \textbf{match}(\{f(a), x\}, uv.u) : B\\
+  &\text{by $\beta$}\\
+  &\textbf{letrec } x = x \textbf{ in } f(a) : B\\
+  &\text{by \autoref{eq:let_equations:gc}}\\
+  &\equiv f(a): B
+\end{align*}
+\item \textbf{Vanishing II}: For all $f : (A, X \otimes Y; B \otimes (X \otimes Y))$,
+\[
+\text{Tr}^{X \otimes Y}(f) = \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ (\id_{A}, \xi_{X,Y}))),
+\]
+where $\alpha_{B,X,Y}^{-1} : (B, X \otimes Y; B \otimes (X \otimes Y))$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B, X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B, X \otimes Y} \circ (\id_{B}, \xi_{X,Y})$.
+As a term, it is given by $w : B \otimes (X \otimes Y) \vdash \textbf{match}(w, uv. \textbf{match}(v, \alpha\beta.\{\{u, \alpha\},\beta\})) : (B \otimes X) \otimes Y)$.
+Therefore, we need to show that
+\begin{align*}
+a : A \vdash &\textbf{letrec } z = \textbf{match}(f(a,z), uv.v) \textbf{ in } \textbf{match}(f(a,z), uv.u) : B \equiv\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{letrec } y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.v) \textbf{ in }\\
+&\hspace{6em}\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.u), \gamma\delta.\delta) \textbf{ in }\\
+&\hspace{10em}\textbf{match}(\textbf{letrec } y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.v) \textbf{ in }\\
+&\hspace{14em}\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.u), \gamma\delta.\gamma) : B
+\end{align*}
+By congruence, for any $y : Y \vdash P : B \otimes X$, we have the following
+\[
+\textbf{match}(\textbf{letrec } y = B_{y} \textbf{ in } P, \gamma\delta.\delta) \equiv \textbf{letrec } y = B_{y} \textbf{ in } \textbf{match}(P, \gamma\delta.\delta).
+\]
+Let $x : X, y : Y \vdash B_y(x,y) = \textbf{match}(f'(a,x,y), uv.v) : Y$ and $A(x,y) = \textbf{match}(f'(a,x,y), uv.u) : B \otimes X$,
+where $f' = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}))$.
+Let $A_x = \textbf{match}(A,\gamma\delta.\delta)$ and $A_B = \textbf{match}(A, \gamma\delta.\gamma) : B$.
+Then we can rewrite the right-hand side as
+\begin{align*}
+a : A \vdash \textbf{letrec } x &= \textbf{match}(\textbf{letrec } y = B_{y}(x,y) \textbf{ in } A(x,y), \gamma\delta.\delta) \textbf{ in }\\
+&\hspace{6em}\textbf{match}(\textbf{letrec } y = B_{y}(x,y) \textbf{ in } A(x,y), \gamma\delta.\gamma) : B \equiv\\
+&\text{by \autoref{eq:let_equations:congruence}}\\
+&\equiv \textbf{letrec } x = \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y),\gamma\delta.\delta) \textbf{ in }\\
+&\hspace{6em} \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y),\gamma\delta.\gamma) : B \equiv\\
+\text{TODO}
+\end{align*}
 \end{itemize}
 \end{proof}
 
