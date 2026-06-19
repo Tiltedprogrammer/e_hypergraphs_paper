@@ -8,7 +8,7 @@ They mitigate the \emph{phase-ordering problem} of term rewriting: the way rewri
 This is achieved by making rewrites on e-graphs non-destructive: an application of a rewrite rule, instead of replacing the left-hand side by the right-hand side, adds the latter to the e-graph so that all pre-existing redexes are protected and new ones are introduced.
 Exponential growth of the e-graph is avoided by the clever use of sharing of nodes.
 
-E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{EqualitySaturation2009, flatt_small_2022, EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
+E-graphs were first introduced in the automated theorem proving literature in the 1980s~\cite{nelson1980techniques}, but recent years have seen renewed interest, particularly for optimisation and synthesis using the technique of \emph{equality saturation}~\cite{EqualitySaturation2009,EggPaper,flatt_small_2022}, wherein rewrites to an e-graph are repeated until a fixpoint (or timeout) is reached.
 % The wide range of application domains led to extensions of the e-graph formalism, for instance to account for conditional rewriting~\cite{singher2023colored} or  to combine e-graphs with database queries (\emph{relational e-matching})~\cite{zhang_relational_2022}.
 We are interested in using e-graphs in the context of functional programming languages, which builds upon an internal representation of the $\lambda$-calculus.
 % Pioneering work in this direction has been done by~\citet{koehler2022sketchguided}, where the authors outlined the two interconnected challenges of binding and capture-avoiding substitution that arise when applying equality saturation to an encoding of the $\lambda$-calculus in e-graphs.
@@ -58,12 +58,12 @@ The structure of symmetric monoidal categories is absorbed into the graphical sy
 Commonly, string diagrams are used informally to provide a two-dimensional syntax for the internal language of a category, but for our purposes we must be more formal.
 Specifically, we require a concrete encoding of string diagrams, analogous to the de Bruijn index representation of $\lambda$-terms.
 For this, we use \emph{hypergraphs}~\cite{bonchi_string_2022-1}, which have suitable theoretical properties.
-For instance, hypergraph isomorphism rigorously expresses what it means for string diagrams to \enquote{look the same} --- topologically, that one may be deformed continuously into the other without obstruction\footnote{This is the informal notion of the \enquote{isomorphism of string diagrams}.}; secondly, string-diagrammatic equational reasoning can be formalised as (categorical) graph rewriting over these hypergraphs using the technique of double-pushout rewriting (DPO)~\cite{bonchi_string_2022-1}.
+For instance, hypergraph isomorphism rigorously expresses what it means for string diagrams to \enquote{look the same} --- topologically, that one may be deformed continuously into the other without obstruction\footnote{This is the informal notion of the \enquote{equality of string diagrams}.}; secondly, string-diagrammatic equational reasoning can be formalised as (categorical) graph rewriting over these hypergraphs using the technique of double-pushout rewriting (DPO)~\cite{bonchi_string_2022-1}.
 Finally, for the diagrammatic representation of two concepts essential to both programming languages (variable binding) and to e-graphs (equivalence classes) we rely on the concept of \emph{functorial boxes} as introduced by Melli\`es~\cite{10.1007/11874683_1}.
 These boxes require extra structure in their hypergraph representation in the form of a layering of graphs (\emph{hierarchical hypergraphs})~\cite{fscd}.
 
 Revisiting the earlier example $\lambda f . f ((\lambda x . f x) 2)$, in~\autoref{fig:de-brujin-string}, observe that the two occurrences of $f$ are now shared.
-The scope of a $\lambda$-abstraction is represented by a rounded box with the bound variable represented as a wire attached to the frame, the application node a half-circle
+The scope of a $\lambda$-abstraction is represented by a rounded box with the bound variable represented as a wire attached to the frame, the application node by a half-circle
 \adjustbox{scale=0.15}{\begin{tikzpicture}
 		\begin{pgfonlayer}{nodelayer}
 			\node [style=none] (0) at (1, 6.75) {};
@@ -90,7 +90,7 @@ The scope of a $\lambda$-abstraction is represented by a rounded box with the bo
 		\end{pgfonlayer}
 	\end{tikzpicture}
 },
-and sharing a \emph{copy node} \comonoid.
+and sharing by a \emph{copy node} \comonoid.
 
 \subsection{E-graphs}
 
@@ -102,7 +102,7 @@ The key concepts of e-graphs can be intuitively grasped from some simple example
 			\tikzfig{figures/e-graph-example-2}
 		}
 	\end{center}
-	\caption{E-graph example (top) and its equivalent string diagram representation (bottom)~\cite{tiurin2025equivalencehypergraphsdporewriting}}
+	\caption{E-graph rewriting example (top) and its equivalent string diagram representation (bottom)~\cite{tiurin2025equivalencehypergraphsdporewriting}}
 	\label{fig:e-graph-example}
 \end{figure}
 
@@ -111,12 +111,12 @@ For the initial term, $(a*2)/2$, which is already represented efficiently in the
 
 E-graphs consist of two types of nodes: \emph{e-classes}, representing equivalence classes of terms and denoted by dashed boxes, containing \emph{e-nodes}, representing equivalent terms that share the same root.
 E-nodes reference e-classes instead of other e-nodes, in contrast to a traditional term graph.
-By making a sequence of choices for e-nodes in e-classes, we can extract terms from the graph; intuitively, a different sequence of choices results in an equivalent term.
-A term graph is embedded by an e-graph where each e-class has a single e-node.
+By making a sequence of choices for e-nodes in e-classes, we can extract terms from the graph; a different sequence of choices results in an equivalent term.
+Term graphs embed in e-graphs, where each e-class has a single e-node.
 
-The first rewrite rule, replacing multiplication by \emph{shift-left} creates the first non-singleton e-class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) nodes, now sharing the node $a$.
+In~\autoref{fig:e-graph-example}, for the first rewrite rule, replacing multiplication by \emph{shift-left} creates the first non-singleton e-class, which includes the multiplication ($*$) and shift-left ($<\!\!<$) nodes, now sharing the e-class containing the node $a$.
 This second e-graph illustrates the other representational difference\footnote{Despite the \enquote{difference}, these representations are isomorphic in the sense that there is a non-ambiguous translation from one representation to the other and vice versa.}, besides sharing, between conventional e-graphs and e-hypergraphs.
-In the former, edges connect directly to e-nodes inside the e-class, whereas in the latter edges connect to the equivalence class itself.
+In the latter, edges connect directly to e-nodes inside the e-class, whereas in the former edges connect to the equivalence class itself.
 Explicit deletion nodes are depicted with black dots with a single incoming wire
 \scalebox{0.4}{
 	\begin{tikzpicture}
@@ -239,7 +239,7 @@ We argue that restricting the categorical domain to free \textbf{closed} symmetr
 That is, morphisms (string diagrams) of such category can both encode variable binding (using the closed structure) and equivalence (using the semilattice enrichment) between subterms (sub-diagrams).
 We call these string diagrams, or more precisely, the combinatorial representation of them, \emph{closed e-hypergraphs}.
 First, we define closed enriched $\Sigma$-terms which generate a theory with equivalences and bindings.
-Then we define what e-hypergraphs are and provide the interpretation of closed enriched $\Sigma$-terms as cospans of e-hypergraphs (and by doing this we also formalise the corresponding string diagrams as concrete combinatorial objects).
+Then we define what closed e-hypergraphs are and provide the interpretation of closed enriched $\Sigma$-terms as cospans of e-hypergraphs (and by doing this we also formalise the corresponding string diagrams as concrete combinatorial objects).
 Next we formulate the DPO rewriting for e-hypergraphs and show that this notion of rewriting is sound and complete with respect to rewriting of closed enriched $\Sigma$-terms modulo SMC equations.
 We conclude the paper with a description of what benefits the e-hypergraph representation may bring for equality saturation in the context of $\lambda$-calculus with explicit substitution compared to conventional (slotted) e-graphs.
 

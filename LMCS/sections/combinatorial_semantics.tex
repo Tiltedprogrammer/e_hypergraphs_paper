@@ -20,9 +20,9 @@ String diagram rewriting is then formalised as DPO rewriting of said hypergraphs
 We briefly present this correspondence, but the interested reader should consult the work of~\citet{bonchi_string_2022-1,bonchi_string_2022-2}.
 
 \begin{defi}[Category of hypergraphs]\label{def:hypergraph}
-	A hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ is a tuple $(V,E,s,t,l)$, where $V$ is a finite set of vertices, $E$ is a finite set of hyperedges, $s\colon E \to V^{*}$ is a source function, $t\colon E \to V^{*}$ is a target function,  and $l = (l_{V}\colon V \to \Sigma_{O},l_{E}\colon E \to \Sigma_{M})$ is a pair of labelling functions that assigns each hyperedge and vertex an operator and a type from monoidal signature $\Sigma$ respectively.
+	A hypergraph $\mathcal{G}$ over a monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$ is a tuple $(V,E,s,t,l)$, where $V$ is a finite set of vertices, $E$ is a finite set of hyperedges, $s\colon E \to V^{*}$ is a source function, $t\colon E \to V^{*}$ is a target function,  and $l = (l_{V}\colon V \to \Sigma_{O},l_{E}\colon E \to \Sigma_{M})$ is a pair of labelling functions that assigns each hyperedge and vertex an generator and a type from monoidal signature $\Sigma$ respectively.
 
-	The labelling function must respect the typing of the operator:
+	The labelling function must respect the typing of the generator:
 	\[
 		\forall e \in E. \, l(e) = c : A \to B \implies l_{V}^{*}(s(e)) = A \text{ and } l_{V}^{*}(t(e)) = B.
 	\]
@@ -60,7 +60,7 @@ String diagrams also have dangling wires exiting at their top/bottom boundaries,
 \begin{defi}[Hypergraphs with interfaces]%
 	\label{def:cspd}
 	A hypergraph with interfaces is a cospan $n \xrightarrow{\mathsf{in}} \mathcal{G} \xleftarrow{\mathsf{out}} m$ in $\catname{Hyp}(\Sigma)$ where $n$, $m$ are discrete hypergraphs denoting input and output interfaces.
-	We write $\catname{HypI}(\Sigma)$ for the full subcategory of the quotient category of cospans\footnote{This is the 1-categorical version of the bicategory of cospans: for a bicategory, its quotient category is given by the same objects but by taking \emph{isomorphism classes} of morphisms instead.} of $\catname{Hyp}(\Sigma)$ whose objects are discrete hypergraphs and morphisms are isomorphism classes of cospans of hypergraphs\footnote{By abuse of notation, we ignore the distinction between a cospan and its isomorphism class --- this is validated by replacing \enquote{pushout} (which is only determined up to unique isomorphism) by \enquote{chosen pushouts}, which any concrete setting (e.g.\ an implementation of DPO rewriting) would satisfy.}.
+	We write $\catname{HypI}(\Sigma)$ for the full subcategory of the quotient category of cospans\footnote{This is the 1-categorical version of the bicategory of cospans: for a bicategory, its quotient category is given by the same objects but by taking \emph{isomorphism classes} of morphisms instead.} of $\catname{Hyp}(\Sigma)$ whose objects are discrete hypergraphs and morphisms are isomorphism classes of cospans of hypergraphs\footnote{By abuse of notation, we ignore the distinction between a cospan and its isomorphism class --- this is validated by replacing \enquote{pushout} (which is only determined up to unique isomorphism) by \enquote{chosen pushouts}, which would be the actual structure being manipulated in any concrete setting (e.g.\ an implementation of DPO rewriting).}.
 \end{defi}
 
 % \begin{prop}
@@ -92,7 +92,7 @@ String diagrams also have dangling wires exiting at their top/bottom boundaries,
 % Hypergraphs without these restrictions correspond to morphisms in symmetric monoidal categories with additional structure (Frobenius algebra structure~\cite{bonchi_string_2022-1}, for example) that we do not necessarily have.
 % In order to rectify this, we impose additional constraints on the hypergraphs under consideration.
 Additional constraints on hypergraphs are needed to put them in bijective correspondence with string diagrams in a symmetric monoidal category: \emph{monogamy}, which enforces that $\mathsf{in}$ and $\mathsf{out}$ are injective and constrain the in-degree and out-degree of vertices in $\mathcal{G}$, and \emph{acyclicity}, which states that there are no loops in the hypergraph.
-Together, these ensure that a hypergraph with interfaces \enquote{looks like} a string diagram, and determines a subcategory $\catname{MHypI}(\Sigma) \hookrightarrow \catname{HypI}(\Sigma)$ --- a category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
+Together, these ensure that a hypergraph with interfaces \enquote{looks like} a string diagram, and determines a subcategory $\catname{MHypI}(\Sigma) \hookrightarrow \catname{HypI}(\Sigma)$ --- the category of \emph{monogamous directed acyclic (MDA) hypergraphs with interfaces}.
 % \begin{defi}[Degree]
 % 	The in-degree of a vertex $v$ in a hypergraph $\mathcal{G}$ is the number of hyperedges $e \in {E_\mathcal{G}}$ such that $v \in t(e)$.
 % 	Similarly, the out-degree of $v$ is the number of hyperedges $e \in E_\mathcal{G}$ such that $v \in s(e)$.
@@ -281,7 +281,7 @@ We next extend the definition of e-hypergraphs for symmetric monoidal $\catname{
 
 \begin{defi}
 	Over a closed symmetric monoidal signature $\Sigma = (\Sigma_{O}, \Sigma_{M})$, we define a closed e-hypergraph $\mathcal{G}$ as a tuple
-	\[(V,E,s,t, l_{V}, l_{E} \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency), \text{ where}\]
+	\[(V,E,s,t, l_{V}, l_{E}, \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency), \text{ where}\]
 	\begin{itemize}
 		\item $V$ is a set of vertices.
 		\item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined as follows.
@@ -306,8 +306,7 @@ We next extend the definition of e-hypergraphs for symmetric monoidal $\catname{
 \end{defi}
 
 Intuitively, edges from $\textcolor{e-color}{E}$ encode equivalence classes, i.e.\ e-classes, while edges from $\textcolor{closed-color}{E}$ encode $\lambda$-abstraction boxes.
-Also note the typing on the $l_{V}$ function.
-We work with freely generated closed $\catname{SLat}$-categories, and to avoid unnecessary complications we limit the labelling of vertices to such a type.
+Because we work with freely generated closed $\catname{SLat}$-categories, to avoid unnecessary complications we restrict the typing of the $l_{V}$ function.
 This prohibits the labelling of vertices by e.g.\ $A \otimes B$, but allows them to be labelled by $A \otimes B \multimap C \otimes D$.
 $\textcolor{closed-color}{<}$ defines closed monoidal structure as defined by~\citet{fscd} and $(\textcolor{e-color}{<},\consistency)$ defines $\catname{SLat}$ structure as per~\citet{tiurin2025equivalencehypergraphsdporewriting}.
 
@@ -385,7 +384,7 @@ We call $n$  \emph{external input interfaces}, $n^\prime$ \emph{internal input i
 and $n^\prime \setminus f_{ext}(n)$  the \emph{strictly internal input interfaces}.
 We do analogously for the \emph{output interfaces},  with respect to $m$,  $m^\prime$ and $m^\prime \setminus g_{ext}(m)$.
 We conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n^\prime$ and $m^\prime$,  and likewise $n, m, n^\prime, m^\prime$ with their images in $\mathcal{G}$.
-Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \emph{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.
+Given an edge $e \in E_\mathcal{G}$ such that $l_E(e) = \bot$,  we call the \emph{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.
 Graphically, we depict such extended cospans as in~\autoref{fig:e-cospan-example}: feet of the cospan are depicted within shaded regions.
 All non-black vertices form strictly internal interfaces.
 We follow the same orientation that we chose for string diagrams --- the input interface of the cospan is at the bottom and the output interface is at the top.

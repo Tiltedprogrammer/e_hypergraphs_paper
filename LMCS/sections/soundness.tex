@@ -4,7 +4,7 @@ In this section we explore soundness and completeness of EDPOI rewriting with re
 First we recall the rewriting of $\Sigma$-terms modulo the laws of symmetric monoidal categories.
 
 \begin{defi}[Closed $\Sigma$-term rewrite rule]
-	A $\Sigma$-term rewrite rules is a pair $\langle l, r \rangle$ where $l$ and $r$ are $\Sigma$ terms with matching inputs and outputs (as lists of input and output types).
+	A $\Sigma$-term rewrite rules is a pair $\langle l, r \rangle$ where $l$ and $r$ are $\Sigma$ terms with matching inputs and outputs.
 	When $l$ and $r$ are closed $\Sigma$-terms, we call such a rewrite rule closed.
 \end{defi}
 
@@ -45,10 +45,10 @@ This leads to the following, for rewriting for closed $\Sigma^{+}$-terms.
 	$
 	such that there is a permutation $\sigma$ such that there exist indices $i,j$ and $f_{\sigma(i)} \leadsto f_{j}$.
 \end{defi}
-Note that the rewrite rule consist of closed $\Sigma$-terms and not closed $\Sigma^{+}$-terms, i.e. neither $l$ nor $r$ contain any $+$.
-This is intentional as there rewrite rules are supposed to be domain-specific (like a rule $\langle 2 \otimes id;*, id \otimes 1; <\!\!< \rangle$) and not related to the free enrichment.
+Note that the rewrite rule consist of closed $\Sigma$-terms and not of closed $\Sigma^{+}$-terms, i.e.\ neither $l$ nor $r$ contain any $+$.
+This is intentional as these rewrite rules are supposed to be domain-specific (like a rule $\langle 2 \otimes id;*, id \otimes 1; <\!\!< \rangle$) and not related to the free enrichment.
 
-Next, to formulate the correspondence between rewriting systems we first define interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$ terms in $\WellTypedMdaEcospans$.
+Next, to formulate the correspondence between rewriting systems we first define the interpretation $\llbracket - \rrbracket$ of closed $\Sigma^{+}$-terms in $\WellTypedMdaEcospans$.
 It follows by first defining the interpretation of generators by extending the interpretation of plain $\Sigma$-terms as morphisms in $\MdaCospans$ as given in~\autoref{sec:appendix:interpretation} with the interpretation of $\llbracket \text{ev}_{A,B}\rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$ by following the work of~\citet{fscd} (\autoref{sec:appendix:interpretation}).
 % The only missing cases, $\llbracket \textsf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$, are given in~\autoref{fig:ev_and_lambda}.
 
@@ -97,7 +97,7 @@ We do not perform such quotienting as these equations bear operational meaning, 
 \begin{defi}[Quotient by rewrites]
 	Given a set of EDPOI rewrite rules $\mathcal{E}$,  we denote by $\WellTypedMdaEcospans/\mathcal{E}$ the $\catname{SLat}$-category $\WellTypedMdaEcospans$ quotiented by the relation $f \sim g \quad \text{if} \quad f \Rrightarrow^{*}_{\mathcal{E}} g$.
 \end{defi}
-This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to~\autoref{lemma:normal_form}, such that carrier of $f_{i}$ does not contain any hierarchical edges from $\textcolor{e-color}{E}$.
+This explicit quotienting allows us to only consider cospans of the form $f_1 + \ldots + f_{n}$, similar to~\autoref{lemma:normal_form}, such that the carrier of each $f_{i}$ does not contain any hierarchical edges from $\textcolor{e-color}{E}$.
 % $\llbracket - \rrbracket$ is then induced by its definition on operators by induction
 % \[
 % 	\llbracket f;g \rrbracket = \llbracket f \rrbracket ; \llbracket g \rrbracket \quad
