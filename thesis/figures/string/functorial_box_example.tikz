@@ -1,0 +1,85 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=round box] (0) at (0, 0) {$f$};
+		\node [style=vertex set] (1) at (0, 2) {};
+		\node [style=vertex set] (2) at (0, -2) {};
+		\node [style=none] (3) at (-2, 2) {};
+		\node [style=none] (4) at (2, 2) {};
+		\node [style=none] (5) at (2, -2) {};
+		\node [style=none] (6) at (-2, -2) {};
+		\node [style=none] (7) at (1.5, -1.5) {$G$};
+		\node [style=none] (8) at (1, -2) {};
+		\node [style=none] (9) at (1, -1) {};
+		\node [style=none] (10) at (2, -1) {};
+		\node [style=none] (11) at (0, -5) {};
+		\node [style=none] (12) at (-1, -4) {};
+		\node [style=none] (13) at (1, -4) {};
+		\node [style=vertex set] (14) at (0, -7) {};
+		\node [style=none] (15) at (0, -4) {};
+		\node [style=none] (16) at (-0.75, -6.5) {$FX$};
+		\node [style=none] (17) at (-0.75, -3) {$GX$};
+		\node [style=none] (18) at (-0.75, -1) {$X$};
+		\node [style=none] (19) at (-0.75, 1) {$Y$};
+		\node [style=vertex set] (20) at (0, 3.5) {};
+		\node [style=none] (21) at (-0.75, 3) {$GY$};
+		\node [style=none] (22) at (4.5, -1.5) {$=$};
+		\node [style=round box] (23) at (9, -3) {$f$};
+		\node [style=vertex set] (24) at (9, -1) {};
+		\node [style=vertex set] (25) at (9, -5) {};
+		\node [style=none] (26) at (7, -1) {};
+		\node [style=none] (27) at (11, -1) {};
+		\node [style=none] (28) at (11, -5) {};
+		\node [style=none] (29) at (7, -5) {};
+		\node [style=none] (30) at (10.5, -4.5) {$F$};
+		\node [style=none] (31) at (10, -5) {};
+		\node [style=none] (32) at (10, -4) {};
+		\node [style=none] (33) at (11, -4) {};
+		\node [style=vertex set] (37) at (9, -7) {};
+		\node [style=none] (41) at (8.25, -4) {$X$};
+		\node [style=none] (42) at (8.25, -2) {$Y$};
+		\node [style=none] (44) at (8.25, 0) {$FY$};
+		\node [style=none] (45) at (9, 1) {};
+		\node [style=none] (46) at (8, 2) {};
+		\node [style=none] (47) at (10, 2) {};
+		\node [style=none] (48) at (9, 2) {};
+		\node [style=vertex set] (49) at (9, 3.5) {};
+		\node [style=none] (50) at (8.25, 3) {$GY$};
+		\node [style=none] (51) at (8.25, -6.5) {$FX$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (1) to (0);
+		\draw (0) to (2);
+		\draw (6.center)
+			 to (3.center)
+			 to (4.center)
+			 to (5.center)
+			 to cycle;
+		\draw (10.center)
+			 to (9.center)
+			 to (8.center);
+		\draw [style={lambda_unit_string}] (13.center)
+			 to (12.center)
+			 to [bend right=45] (11.center)
+			 to [bend right=45] cycle;
+		\draw (11.center) to (14);
+		\draw (2) to (15.center);
+		\draw (20) to (1);
+		\draw (24) to (23);
+		\draw (23) to (25);
+		\draw (29.center)
+			 to (26.center)
+			 to (27.center)
+			 to (28.center)
+			 to cycle;
+		\draw (33.center)
+			 to (32.center)
+			 to (31.center);
+		\draw [style={lambda_unit_string}] (45.center)
+			 to [bend right=45] (47.center)
+			 to (46.center)
+			 to [bend right=45] cycle;
+		\draw (25) to (37);
+		\draw (45.center) to (24);
+		\draw (49) to (48.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

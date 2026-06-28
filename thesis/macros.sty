@@ -89,3 +89,70 @@
 	\end{tikzpicture}
 }
 }
+
+\newcommand{\coevaltikz}{
+	\adjustbox{scale=0.15}{
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (4) at (0, -0.5) {};
+		\node [style=none] (5) at (-1, 0.5) {};
+		\node [style=none] (6) at (1, 0.5) {};
+		\node [style=none] (7) at (0, 0.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style={lambda_unit_string}] (4.center)
+			 to [bend right=45] (6.center)
+			 to (5.center)
+			 to [bend right=45] cycle;
+	\end{pgfonlayer}
+\end{tikzpicture}
+	}
+}
+
+\newcommand{\node}{
+\begin{tikzpicture}[baseline=-0.5ex]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=vertex] (0) at (1,0) {};
+	\end{pgfonlayer}
+\end{tikzpicture}
+}
+\newcommand{\bnode}{%
+  \begin{tikzpicture}[baseline=-0.5ex]
+    \node [style=vertex set] at (0,0) {};
+  \end{tikzpicture}%
+}
+\newcommand\enriched[1]{{\overline{\mathcal{#1}}}}
+% Source - https://tex.stackexchange.com/a/50973
+% Posted by egreg, modified by community. See post 'Timeline' for change history
+% Retrieved 2026-06-04, License - CC BY-SA 3.0
+
+% \newcommand{\defeq}{%
+%   \mathrel{\vbox{\offinterlineskip\ialign{%
+%     \hfil##\hfil\cr
+%     $\scriptscriptstyle\triangle$\cr
+%     %\noalign{\kern0ex}
+%     $=$\cr
+% }}}}
+\newcommand{\defeq}{\stackrel{\triangle}{=}}
+\newcommand{\catname}[1]{\mathbf{#1}}
+\newcommand{\obj}[1]{\mathrm{obj}(#1)}
+\newcommand{\mor}[1]{\mathrm{mor}(#1)}
+
+\usepackage{derivative}
+
+\newcommand{\egraphs}{\mbox{e-graphs}\xspace}
+\newcommand{\egraph}{\mbox{e-graph}\xspace}
+\newcommand{\Egraph}{\mbox{E-graph}\xspace}
+\newcommand{\Egraphs}{\mbox{E-graphs}\xspace}
+\newcommand{\eclass}{\mbox{e-class}\xspace}
+\newcommand{\Eclass}{\mbox{E-class}\xspace}
+\newcommand{\enode}{\mbox{e-node}\xspace}
+\newcommand{\eclasses}{\mbox{e-classes}\xspace}
+\newcommand{\enodes}{\mbox{e-nodes}\xspace}
+\newcommand{\Enodes}{\mbox{E-nodes}\xspace}
+\newcommand{\find}{\texttt{find}\xspace}
+\newcommand{\union}{\texttt{union}\xspace}
+
+\newcommand{\equivid}{\equiv_{\sf id}}
+\newcommand{\equivnode}{\equiv_{\sf node}}
+\newcommand{\equivterm}{\equiv_{\sf term}}

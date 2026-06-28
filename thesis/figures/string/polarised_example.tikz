@@ -1,0 +1,36 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=round box] (0) at (-2.5, 0) {$f$};
+		\node [style=round box] (1) at (0, 0) {$g$};
+		\node [style=vertex set] (2) at (-3.75, -3) {};
+		\node [style=vertex set] (3) at (-2.5, -3) {};
+		\node [style=vertex set] (4) at (-1.25, -3) {};
+		\node [style=none] (5) at (-2.75, -0.5) {};
+		\node [style=none] (6) at (-2.5, -0.5) {};
+		\node [style=none] (7) at (-2.25, -0.5) {};
+		\node [style=none] (8) at (-2.5, 0.5) {};
+		\node [style=vertex set] (9) at (-2.5, 2) {};
+		\node [style=none] (10) at (-0.25, 0.5) {};
+		\node [style=none] (11) at (0.25, 0.5) {};
+		\node [style=vertex set] (12) at (-0.25, 2) {};
+		\node [style=vertex set] (13) at (0.25, 2) {};
+		\node [style=none] (14) at (0, -0.5) {};
+		\node [style=vertex set] (15) at (0, -3) {};
+		\node [style=none] (16) at (-3.75, -4) {$A_1$};
+		\node [style=none] (17) at (-2.5, -4) {$A_2$};
+		\node [style=none] (18) at (-1.25, -4) {$A_3$};
+		\node [style=none] (19) at (-2.5, 2.75) {$B$};
+		\node [style=none] (20) at (0, -4) {$C$};
+		\node [style=none] (21) at (-0.5, 2.75) {$D_1$};
+		\node [style=none] (22) at (0.5, 2.75) {$D_2$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [in=-90, out=60, looseness=1.50] (2) to (5.center);
+		\draw (6.center) to (3);
+		\draw [in=120, out=-90, looseness=1.50] (7.center) to (4);
+		\draw (9) to (8.center);
+		\draw (13) to (11.center);
+		\draw (12) to (10.center);
+		\draw (14.center) to (15);
+	\end{pgfonlayer}
+\end{tikzpicture}

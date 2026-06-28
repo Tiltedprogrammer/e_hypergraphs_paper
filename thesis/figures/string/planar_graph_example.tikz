@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=vertex] (0) at (-4.5, -2.5) {};
+		\node [style=vertex set] (1) at (-4.5, -5) {};
+		\node [style=vertex set] (2) at (-6, 0) {};
+		\node [style=vertex set] (3) at (-3, 0) {};
+		\node [style=vertex] (4) at (-0.5, -2.5) {};
+		\node [style=vertex set] (5) at (-1.25, -5) {};
+		\node [style=vertex set] (6) at (-0.5, 0) {};
+		\node [style=vertex set] (7) at (0.5, -5) {};
+		\node [style=none] (8) at (-7, 0) {};
+		\node [style=none] (9) at (1, 0) {};
+		\node [style=none] (10) at (1, -5) {};
+		\node [style=none] (11) at (-7, -5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [in=-75, out=150, looseness=1.25] (1) to (0);
+		\draw [in=-30, out=150, looseness=1.25] (0) to (2);
+		\draw [in=-135, out=30, looseness=1.25] (0) to (3);
+		\draw [in=-120, out=150] (5) to (4);
+		\draw [in=-90, out=90, looseness=0.50] (4) to (6);
+		\draw [in=75, out=-45, looseness=0.75] (4) to (7);
+		\draw [style=fancy blue dash] (8.center) to (9.center);
+		\draw [style=fancy blue dash] (11.center) to (10.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

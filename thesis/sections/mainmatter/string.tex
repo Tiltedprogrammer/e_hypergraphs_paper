@@ -1,0 +1,670 @@
+\chapter{String Diagram Rewriting}
+
+E-graphs can be seen as a particular flavour of term graphs~\cite{plump_term,EggsAreAdhesive} that is equipped with a congruence relation.
+In our journey towards categorical interpretation of e-graphs and their generalisations, we may view string diagrams as a particular flavour of term graphs that are available for more general theories.
+String diagrams being a graphical syntax for morphisms in monoidal categories are completely formalised objects on their own: they are given by nodes and curves embedded into a plane quotiented by the topological deformations (isotopy).
+While this view of string diagrams is very handy when reasoning about monoidal categories using pen and paper, it is not very convenient for computer-aided reasoning.
+Luckily, this gap of inconvenience was filled by a series of works initiated by Bonchi et. al.~\cite{bonchi_string_2022-1,bonchi_string_2022-2} consequently picked up and extended by other authors~\cite{zanassi_comonoid,ghica2024stringdiagramslambdacalculifunctional,ghica_rewriting_2023}.
+In their works, string diagrams are formalised as concrete combinatorial objects, called hypergraphs, that are just collections of vertices and hyperedges.
+This view turns out to absorb many structural equivalences between morphisms of monoidal categories: unlike in string diagrams where such equivalences are stipulated by either isotopy or by equations, in hypergraph they are built-in into the notion of isomorphism which is much simpler.
+A great benefit of this view is that it allows for a definition of rewriting of such hypergraphs which automatically happens modulo much of the symmetric monoidal structure, making it practically appealing.
+We will view our generalised e-graphs as string diagrams for a particular monoidal category and hence as a certain kind of hypergraphs, defining a suitable notion of rewriting for them.
+We will then use this representation in showing that the ordinary e-graphs are recovered as a special case of these hypergraphs.
+Before we can do that, we need to recall the necessary machinery introduced by Bonchi et. el. in their works.
+This is the content of this chapter.
+
+\section{String diagrams}
+
+String diagrams are traditionally attributed to Penrose~\cite{penrose1984spinors}, who used diagrams for combining linear operators.
+Now the (variations of) diagrams are prevalent in many areas of mathematics and computer science, both as an efficient device for calculating with parallel processes and as an aid to understanding complex phenomena such as quantum processes (via ZX-calculus) and higher category theory (\textit{cf.} \texttt{homotopy.io} proof assistant~\cite{homotopy_io}).
+Below we give a brief account of string diagrams as a syntax for morphisms in a (symmetric) monoidal category as developed by Joyal and Street~\cite{joyal_geometry_1991}, who first made precise the folklore that string diagrams are sound and complete syntax for morphisms in a monoidal category.
+
+The basic building blocks of their theory are \emph{generalised graphs} $\Gamma$, which are given by a topological space with extra structure.
+There's a dedicated \emph{discrete} (finite) subset of \emph{nodes} $\Gamma_0$ and a finite number of subsets $\Gamma \setminus \Gamma_0$ called \emph{wires} each of which is a connected component in the appropriate sense locally behaving like an interval in $\mathbb{R}$\footnote{Formally this is stipulated by saying that this complement is 1-manifold.}, which in particular means that one can go only either up or down the wire.
+Each connected component also includes its endpoints which are furthermore ordered to prescribe the orientation to each wire.
+A node $x$ is said to have a \emph{degree} $n$ if the number of connected components of $V \setminus \{x\}$ is $n$ where $V$ is a small neighbourhood of $x$.
+Then, a certain subset of nodes $\partial \Gamma$ is identified as the \emph{boundary} of the graph, which is the set of nodes of degree one.
+We call a graph \emph{progressive} if it has no directed cycles and will consider only such graphs in this overview.
+
+In a plain monoidal case (without symmetry), such graphs are embedded into a strip of $\mathbb{R}^{2}$.
+\begin{definition}[Chapter 1. Section 2~\cite{joyal_geometry_1991}]
+Let $a < b$ be real numbers.
+A \textit{progressive plane graph} is a graph $\Gamma$ with boundary embedded in $\mathbb{R} \times [a,b]$ such that 
+\begin{itemize}
+    \item $\partial \Gamma = \Gamma \cap (\mathbb{R} \times \{a,b\})$,
+    \item the second projection $\pi_{2} : \mathbb{R} \times [a,b] \to [a,b]$ is injective on each connected component of $\Gamma \setminus \Gamma_0$.
+\end{itemize}
+\end{definition}
+Intuitively, the strip has an unbounded width and a fixed height $[a,b]$.
+Condition (i) says the graph meets the top and bottom edges of the strip exactly at its boundary nodes, and nowhere else; condition (ii) says no wire ever bends back downward. 
+The embedding guarantees that the wires do not cross each other and the nodes are not on top of each other.
+With this in place, it makes sense to draw an example.
+
+\begin{example}
+    Below, there is one example and three non-examples of progressive plane graphs.
+    We depict the nodes of $\Gamma_0$ as $\node$ and depict the wires as curves connecting the nodes, and the nodes of $\partial \Gamma$ as $\bnode$.
+    The strip of the plane is depicted by the dashed lines.
+
+\begin{center}
+\begin{tabular}{cccc}
+\tikzfig{./figures/string/planar_graph_example} &
+\tikzfig{./figures/string/planar_graph_non_example_1} &
+\tikzfig{./figures/string/planar_graph_non_example_2} &
+\tikzfig{./figures/string/planar_graph_non_example_3}\\
+(i) & (ii) & (iii) & (iv)
+\end{tabular}
+\end{center}
+The graph (i) is a valid progressive plane graph; the graph (ii) fails to be a progressive plane graph because the wires cross, so it fails to be an embedding---two wires intersect at a point which is not a node; the graph (iii) fails to be a progressive plane graph because a wire bends back and furthermore the first condition above is not satisfied as not all nodes of $\partial \Gamma$ lie on the boundary lines $\mathbb{R} \times \{a,b\}$; finally, the graph (iv) fails to be a progressive plane graph because a wire has three endpoints and thus does not behave locally as an interval in $\mathbb{R}$, in particular, where the wire splits there's an option to go in three directions.
+\end{example}
+Because each wire is monotone in height, the wires crossing any horizontal line $\mathbb{R} \times \{u\}$ inherit a left-to-right linear order from their first coordinate.
+We write $\mathrm{dom}\,\Gamma$ and $\mathrm{cod}\,\Gamma$ for the boundary nodes on the bottom line $\mathbb{R} \times \{a\}$ and top line $\mathbb{R} \times \{b\}$ respectively, each linearly ordered left to right. 
+For an inner node $x$, let $\mathrm{in}(x)$ and $\mathrm{out}(x)$ denote its incoming and outgoing wires, again linearly ordered by the same device.
+Given a plane graph $\Gamma$, $\Gamma[c,d]$ is a subgraph of $\Gamma$ between the horizontal lines $\mathbb{R} \times \{c\}$ and $\mathbb{R} \times \{d\}$, also called a \emph{layer}, such that neither of the lines intersect any inner nodes, with the wires crossing the lines $c$ and $d$ become its domain and codomain respectively.
+It is also possible to split a graph $\Gamma$ vertically if there exists a number $\xi$ such that
+\[\Gamma_1 \subseteq (-\infty, \xi) \times [a,b] \quad \text{and} \quad \Gamma_2 \subseteq (\xi, \infty) \times [a,b]\]
+so that the graph $\Gamma$ is a disjoint union of $\Gamma_1, \Gamma_2$, written $\Gamma_1 \otimes \Gamma_2$.
+
+Given a strict monoidal category $\mathcal{C}$, we can assign to each graph $\Gamma$ a \emph{valuation} $v = (v_0, v_1)$ that assigns to each wire $w$ an object $v_0(w)$ of $\mathcal{C}$ and to each inner node $x$ a morphism $v_1(x)$ of $\mathcal{C}$ in a compatible way.
+A graph together with a valuation is called a \emph{diagram}.
+The \emph{value} of the diagram as a whole is then assigned by splitting the diagram horizontally and vertically into simple pieces as follows.
+A graph $\Gamma$ is called \emph{primitive} if it is either a connected component with a single node, or a collection of connected components each of which is a single wire.
+In the first case, let the single node be $x$; then the value $v(\Gamma) = v_1(x) : \mathop{\otimes}\limits_{i \in \mathrm{in}(x)}v_0(i) \to \mathop{\otimes}\limits_{j \in \mathrm{out}(x)}v_0(j)$ with $\mathrm{out}(x)$ and $\mathrm{in}(x)$ ordered.
+In the second case let $\pi_0(\Gamma)$ be the set of connected components ordered by their intersection with a horizontal line; then the value $v(\Gamma) = \id_{\mathop{\otimes}\limits_{i \in \pi_0(\Gamma)}v_0(i)}$.
+A graph $\Gamma$ is called \emph{elementary} if it is a tensor of primitive graphs, i.e., $\Gamma = \Gamma_1 \otimes \ldots \otimes \Gamma_n$ and then $v(\Gamma) = v(\Gamma_1) \otimes \ldots \otimes v(\Gamma_n)$.
+A value of a general diagram $\Gamma$ is computed by slicing the diagram into elementary layers $\Gamma[a, c_1], \Gamma[c_1, c_2], \ldots, \Gamma[c_{n}, b]$ and taking $v(\Gamma) = v(\Gamma[c_n, b]) \circ v(\Gamma[c_{n-1}, c_{n}]) \circ \ldots \circ v(\Gamma[a, c_1])$.
+A fundamental result of Joyal and Street is that the value of a diagram is invariant under deformation, which is defined next.
+
+\begin{definition}[Chapter 1. Section 2~\cite{joyal_geometry_1991}]
+Let $\Gamma, \partial\Gamma$ be a graph with boundary.
+A deformation of progressive plane graphs (between levels $a$ and $b$) is a continuous function
+\[
+h : \Gamma \times [0,1] \to \mathbb{R} \times [a,b]
+\]
+such that for all $t \in [0,1]$, the function $h(-,t) : \Gamma \to \mathbb{R} \times [a,b]$ is an embedding whose image is a progressive plane graph $(\Gamma(t), \partial\Gamma(t))$ between the levels $a$ and $b$.
+\end{definition}
+Put simply, each $h(-,t)$ is a way to embed $\Gamma$ into the plane and the deformation is a continuous way to change this embedding.
+\begin{example}
+    \[
+    \tikzfig{./figures/string/string_diagram_example_1}
+    \]
+    Above, the valuation of the inner nodes is given by labels $f,g,h,k$ which are appropriately typed morphisms; we assume that all object of the category are given by tensors of a single object.
+    When it is important, the wires can also be labelled by the types.
+    One particular slicing of the diagram is shown with dashed boxes, each box denote a \emph{primitive} diagram which is either a single inner node or a collection of wires with no inner nodes.
+    A (horizontal) layer is a tensor product of primitive diagrams and the valuation of the whole diagram is then obtained by composing the valuations of the layers sequentially. 
+    That is, the value of the diagram is 
+    \[
+   (\id \otimes h) \circ (f \otimes \id) \circ (g \otimes k) .
+    \]
+    We can bend the wires and slide the boxes around to obtain different embeddings of the same graph without changing the value.
+\end{example}
+
+Finally, it can be shown that diagrams embedded in a square strip $(-1,1) \times [-1,1]$, called \emph{boxed} diagrams, can be equipped with the structure of a monoidal category. 
+The tensor of two such diagrams is obtained by translating the two graphs apart so that they occupy the left and right halves, taking their union, and rescaling the result back into the square. 
+The unit is the empty diagram. 
+Composition is given by stacking the two diagrams, joining the codomain wires of the lower diagram to the domain wires of the upper one by new wire segments, and again rescaling to fit the strip.
+This data possesses a universal property which is what makes it useful for pen-and-paper reasoning about monoidal categories as described next.
+
+\begin{definition}[Monoidal signature]\label{def:mon_signature}
+A monoidal signature $\Sigma$ is a pair of sets $(\Sigma_0, \Sigma_1)$ together with two functions $\mathrm{dom}$ and $\mathrm{cod}$ from $\Sigma_1 \to \Sigma_0^{*}$ that assign for each \emph{generator} $f \in \Sigma_1$ a list of objects (a word) in $\Sigma_0$ as its domain and codomain respectively.
+When $\Sigma_0 \cong \{*\}$ (and $\Sigma_0^{\ast} \cong \mathbb{N}$), the generators can be written as $f : n \to m$ where $n = \mathrm{dom}(f)$ and $m = \mathrm{cod}(f)$ simply mean the number of inputs and outputs of $f$, respectively.
+\end{definition}
+\begin{definition}\label{def:free}
+Given a monoidal category $\mathcal{C}$, an \emph{interpretation} of a monoidal
+signature $\Sigma$ in $\mathcal{C}$ assigns to each object of $\Sigma_0$ an object
+of $\mathcal{C}$ and to each generator $d : X_1\cdots X_m \to Y_1 \cdots Y_n$ in
+$\Sigma_1$ a morphism
+$Kd : KX_1 \otimes \cdots \otimes KX_m \to KY_1 \otimes \cdots \otimes KY_n$ of
+$\mathcal{C}$. Interpretations form a category $[\Sigma, \mathcal{C}]$: a morphism
+$\kappa : K \to L$ is a family of morphisms $\kappa_X : KX \to LX$, one for each
+$X \in \Sigma_0$, such that for every generator $d$ as above the square
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJLWF8xIFxcb3RpbWVzIFxcY2RvdHMgXFxvdGltZXMgS1hfbSJdLFsyLDAsIktZXzEgXFxvdGltZXNcXGxkb3RzXFxvdGltZXMgS1luIl0sWzAsMiwiTFhfMSBcXG90aW1lc1xcbGRvdHMgXFxvdGltZXMgTFhfbSJdLFsyLDIsIkxZXzFcXG90aW1lc1xcbGRvdHNcXG90aW1lcyBMWV9uIl0sWzAsMSwiS2QiXSxbMCwyLCJcXGthcHBhIFhfMSBcXG90aW1lcyBcXGxkb3RzIFxca2FwcGEgWF9tIiwyXSxbMiwzLCJZZCIsMl0sWzEsMywiXFxrYXBwYSBZXzEgXFxvdGltZXMgXFxsZG90cyBcXGthcHBhIFlfbiJdXQ==
+\[
+\adjustbox{scale=0.8}{
+\begin{tikzcd}
+	{KX_1 \otimes \cdots \otimes KX_m} && {KY_1 \otimes\ldots\otimes KYn} \\
+	\\
+	{LX_1 \otimes\ldots \otimes LX_m} && {LY_1\otimes\ldots\otimes LY_n}
+	\arrow["Kd", from=1-1, to=1-3]
+	\arrow["{\kappa X_1 \otimes \ldots \kappa X_m}"', from=1-1, to=3-1]
+	\arrow["{\kappa Y_1 \otimes \ldots \kappa Y_n}", from=1-3, to=3-3]
+	\arrow["Yd"', from=3-1, to=3-3]
+\end{tikzcd}}
+\]
+commutes.
+
+A strict monoidal category $\mathcal{F}$, equipped with a distinguished
+interpretation $N \in [\Sigma, \mathcal{F}]$, is called \emph{free} on $\Sigma$ if
+for every monoidal category $\mathcal{C}$ and every interpretation
+$K \in [\Sigma, \mathcal{C}]$ there is a unique strict monoidal functor
+$F : \mathcal{F} \to \mathcal{C}$ with $F \circ N = K$.
+\end{definition}
+\begin{theorem}\label{theorem:free_string_planar}
+For each monoidal signature $\Sigma$, the following data define a strict monoidal
+category $\mathbb{F}(\Sigma)$.
+\paragraph{Objects.} The objects are words in $\Sigma_{0}$.
+\paragraph{Morphisms.} The morphisms are deformation classes of boxed progressive
+plane diagrams with nodes and wires labelled by the generators of $\Sigma$.
+The tensor product on words is given by concatenation, and on morphisms by the
+tensor product of diagrams defined above; composition is given by vertical
+stacking of diagrams.
+
+Equipped with the interpretation $N \in [\Sigma, \mathbb{F}(\Sigma)]$ sending each
+generator $d$ to the deformation class of the single-node diagram labelled by
+$d$, the category $\mathbb{F}(\Sigma)$ is the \emph{free} monoidal category on
+$\Sigma$ in the sense of \cref{def:free}.
+\end{theorem}
+This means we can use string diagrams to reason about morphisms in a monoidal categry: whenever something holds in a free monoidal category, it holds in any monoidal category.
+
+\paragraph{Equational extensions.}
+The freeness theorem describes the morphisms generated with \emph{no} relations
+beyond those of the monoidal structure itself. In applications one wants to
+impose equations between morphisms---for instance the laws governing a functorial
+box, or a naturality condition. Because the value of a diagram is purely a
+function of its deformation class, one may quotient the diagrams by additional
+equations that replace a layer of a diagram with another layer of the same domain
+and codomain. As such a replacement is local, preserves the \emph{value}, and
+does not alter the surrounding topology, the resulting graphical calculus is
+sound and complete for the monoidal category \emph{presented} by the signature
+together with those equations: that is, two diagrams are equal in the presented
+category if and only if they are related by a finite sequence of deformations and
+equational replacements. This is the principle underlying functorial
+boxes~\cite{mellies_functorial_2006}, where a node is allowed to enclose an
+entire sub-diagram, and various other extensions describing naturality and
+similar conditions.
+
+\begin{example}
+Below is the equation stipulating the functoriality of boxes $F$ and $G$, and the
+naturality condition expressed using the functorial boxes of
+Melli\`es~\cite{mellies_functorial_2006} together with the natural-transformation
+notation $\coevaltikz$ introduced by Ghica and
+Zanasi~\cite{ghica-zanassi2023string}.
+\[
+\tikzfig{./figures/string/functorial_box_example}
+\]
+A functorial box is just syntactic sugar for a node enclosing a sub-diagram;
+in particular, it is impossible to slice across the box.
+\end{example}
+
+In order to apply such a replacement to a diagram $(\Gamma, v)$, it is necessary
+to identify an \emph{incision}~\cite{joyal_geometry_II}: a region
+$R = [\alpha,\beta] \times [c,d]$ whose horizontal sides
+$[\alpha,\beta]\times\{c\}$ and $[\alpha,\beta]\times\{d\}$ meet no inner nodes of
+$\Gamma$, and whose vertical sides $\{\alpha\}\times[c,d]$ and
+$\{\beta\}\times[c,d]$ do not meet $\Gamma$ at all. After deforming the diagram
+outside $R$ so that the full levels $x = c$ and $x = d$ contain no nodes, we
+obtain a decomposition
+\[
+  v(\Gamma) = f \circ \big(h \otimes v(\Gamma \cap R) \otimes k\big) \circ g,
+\]
+where $f$ and $g$ are the values of the pieces above and below the region, and
+$h$ and $k$ the values of the pieces to the left and right of it. 
+A rewrite rule is a pair of diagrams $\langle(\Omega,w), (\Omega',w')\rangle$ with
+the same domain and codomain and equal value, $w(\Omega) = w'(\Omega')$.
+To apply it, we seek a \emph{match} of $\Omega$ into the incision: an embedding of
+$\Omega$ into the region $R$ whose image is a deformation of $\Gamma \cap R$,
+fixing the boundary, so that the wires meet the sides of $R$ at the same points
+throughout the deformation. By deformation-invariance, such a match gives
+$v(\Gamma \cap R) = w(\Omega)$. We then replace $\Gamma \cap R$ by $\Omega'$,
+placing it via the boundary identification supplied by the match together with
+$\mathrm{dom}\,\Omega = \mathrm{dom}\,\Omega'$ and
+$\mathrm{cod}\,\Omega = \mathrm{cod}\,\Omega'$. Since the decomposition isolates
+$v(\Gamma \cap R)$ as a single factor and $w(\Omega) = w'(\Omega')$, the resulting
+diagram has the same value as $\Gamma$; the replacement is sound. In the symmetric
+case, treated below, only an isomorphism of the underlying \emph{unanchored}
+diagrams is required---the boundary order may be permuted, absorbed by the
+symmetry---which is one of the simplifications the symmetric setting brings.
+% \begin{remark}
+% The presence of a symmetry $\sym_{A,B} : A \otimes B \to B \otimes A$ in $\mathcal{C}$
+% has a profound effect on the picture above. 
+% The crucial property is that the symmetry is self-inverse, $\sym_{A,B} = \sym_{B,A}^{-1}$. 
+% When it is present, the planar embedding may be discarded entirely and deformation equivalence collapses to mere isomorphism of the underlying (still topological) graphs, with no reference to the plane. 
+% Without self-inverseness the symmetry is a \emph{braiding}, and one must embed the graph in $\mathbb{R}^3$ to record which wire passes over which when two wires cross.\footnote{One may still regard the symmetric case as geometric: isomorphism of diagrams coincides with ambient isotopy in four dimensions, where any over-crossing may be slid past an under-crossing~\cite{Selinger_2010}.}
+% While the notion of equivalence is simplified in the symmetric case, the valuation of a diagram is more complicated.
+% We will recap the symmetric case next.
+% \end{remark}
+
+In the symmetric case, the graphs we consider are required to be \emph{polarised}, meaning that the wires from $\mathrm{in}(x)$ and $\mathrm{out}(x)$ are linearly ordered for each inner node $x$: there will be no embedding to induce the order, so it must come built-in.
+The valuation of such a graph is then again given by layers but approached differently.
+Suppose $\Gamma$ is a polarised graph with boundary and let $\mathring{\Gamma}$ be the set of inner nodes of $\Gamma$ with a partial order $\leq$ given by $x \leq y$ if there is a directed path from $x$ to $y$ in $\Gamma$.
+Define a \emph{level} of $\Gamma$ to be a downward closed subset of $\mathring{\Gamma}$, i.e., a subset $L \subseteq \mathring{\Gamma}$ such that if $x \in L$ and $y \leq x$, then $y \in L$.
+A wire $e$ is cut by a level $L$ if $\mathrm{src}(e) \in L \cup \mathrm{dom}\,\Gamma$ and $\mathrm{tgt}(e) \in (\mathring{\Gamma} \setminus L) \cup \mathrm{cod}\,\Gamma$.
+We can similarly slice the graph between two levels $L_1$ and $L_2$ to yield a \emph{layer} $\Gamma[L_1, L_2]$ if $L_1 \subseteq L_2$ which is the graph with inner nodes $L_2 \setminus L_1$ with wires whose endpoints are either both in $L_2 \setminus L_1$ or cut by either of the levels.
+$\mathrm{dom}\,\Gamma[L_1, L_2]$ is then the set of wires cut by $L_1$ and $\mathrm{cod}\,\Gamma[L_1, L_2]$ is the set of wires cut by $L_2$.
+
+Before we can assign a value to a polarised graph we need to define a category whose objects are invariant under symmetry.
+\begin{definition}[Chapter 2. Section 1.~\cite{joyal_geometry_1991}]
+    Let $\mathcal{C}$ be a symmetric monoidal category.
+    We define a category $\widetilde{\mathcal{C}}$ by the following data.
+    \paragraph{Objects.} Objects are families $(A_s \vert s \in S)$ of objects of $\mathcal{C}$ indexed by finite sets $S$.
+    \paragraph{Morphisms.} A morphism $(A_s \vert s \in S) \to (B_t \vert t \in T)$ is given by equivalence class of triples $(\phi, f, \psi)$ consisting of linear orderings $\phi : [1 .. m] \to S$ and $\psi : [1 .. n] \to T$ and an arrow $f : \bigotimes_{i=1}^{m} A_{\phi(i)} \to \bigotimes_{j=1}^{n} B_{\psi(j)}$ in $\mathcal{C}$.
+    A triple $(\phi, f, \psi)$ is equivalent to $(\phi', f', \psi')$ if the following diagram commutes
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJcXGJpZ290aW1lc197aT0xfV57bX1BX3tcXHBoaShpKX0iXSxbMiwwLCJcXGJpZ290aW1lc197aj0xfV57bn1CX3tcXHBzaShqKX0iXSxbMCwyLCJcXGJpZ290aW1lc197aT0xfV57bX1BX3tcXHBoaScoaSl9Il0sWzIsMiwiXFxiaWdvdGltZXNfe2o9MX1ee259Ql97XFxwc2knKGopfSJdLFswLDFdLFswLDEsImYiXSxbMCwyLCJcXGxhbmdsZVxccGhpJ157LTF9XFxwaGlcXHJhbmdsZSIsMl0sWzEsMywiXFxsYW5nbGUgXFxwc2knXnstMX1cXHBzaVxccmFuZ2xlIl0sWzIsMywiZiciLDJdXQ==
+\[\begin{tikzcd}
+	{\bigotimes_{i=1}^{m}A_{\phi(i)}} && {\bigotimes_{j=1}^{n}B_{\psi(j)}} \\
+	{} \\
+	{\bigotimes_{i=1}^{m}A_{\phi'(i)}} && {\bigotimes_{j=1}^{n}B_{\psi'(j)}}
+	\arrow["f", from=1-1, to=1-3]
+	\arrow["{\langle\phi'^{-1}\phi\rangle}"', from=1-1, to=3-1]
+	\arrow["{\langle \psi'^{-1}\psi\rangle}", from=1-3, to=3-3]
+	\arrow["{f'}"', from=3-1, to=3-3]
+\end{tikzcd}\]
+where $\langle \phi^{-1}\psi \rangle : \bigotimes_{i=1}^{m} X_{\psi(i)} \to \bigotimes_{i=1}^{m} X_{\phi(i)}$ is a symmetry isomorphism induced by a permutation $\phi^{-1} \circ \psi : [1..m] \to [1..m]$.
+Given two (equivalence classes of) morphisms $[\phi_1, f, \psi_1]$ and $[\phi_2, g, \psi_2]$ their composition is given by picking representatives $(\phi_1, f, \psi_1)$ and $(\psi_1, g', \psi_2)$---that is, by re-representing the second morphism by using $\psi_1$ as its source ordering and such that $g' = g \circ \langle\phi_2^{-1}\psi_1\rangle$.
+This choice is possible because every morphism admits a representative with any source ordering.
+The resulting composition is then $[\phi_1, g' \circ f, \psi_2]$.
+
+The category $\tilde{\mathcal{C}}$ is further symmetric monoidal. 
+The tensor $\boxtimes$ on objects is given by $(A_s \vert s \in S) \boxtimes (B_t \vert t \in T) = (U_u \vert u \in S \sqcup T)$, where $U_{\mathrm{inj}_{S}(s)} = A_s, U_{\mathrm{inj}_{T}(t)} = B_t$, with symmetry inherited from $\mathcal{C}$ and with the evident action on morphisms.
+The empty family is the unit.
+\end{definition}
+The value of a polarised graph $\Gamma$ is then
+\[
+\widetilde{v}(\Gamma) : (v_0(s) \vert s \in \mathrm{dom}\,\Gamma) \to (v_0(t) \vert t \in \mathrm{cod}\,\Gamma),
+\]
+where $v=(v_0,v_1)$ is the valuation.
+That is, the value, formally defined later, of a polarised graph is a morphism in $\widetilde{\mathcal{C}}$ which is invariant under different orderings of the domain and codomain.
+By fixing a linear order on the domain and codomain, we can assign a morphism in $\mathcal{C}$.
+
+Before we define a value of a polarised graph, another category will be of use.
+\begin{definition}[Chapter 2. Section 1.~\cite{joyal_geometry_1991}]
+    Let $\mathcal{C}$ be a symmetric monoidal category and $I$ a finite set.
+    The category $\mathrm{sp}(I, \mathcal{C})$ is given by the following data.
+    \paragraph{Objects.} An object is a family $(A_s \mid s \in S \xrightarrow{\phi} I)$,
+    where $(A_s \mid s \in S)$ is a family of objects of $\mathcal{C}$ indexed by a
+    finite set $S$, and $\phi : S \to I$ is a map such that each pre-image $\phi^{-1}(i)$
+    is linearly ordered.
+    \paragraph{Morphisms.} A morphism
+    $(A_s \mid s \in S \xrightarrow{\phi} I) \to (B_t \mid t \in T \xrightarrow{\psi} I)$
+    is a family of maps
+    \[
+      \Big(u_i : \bigotimes_{\phi(s) = i} A_s \to \bigotimes_{\psi(t) = i} B_t \;\Big\vert\; i \in I\Big),
+    \]
+    one for each $i \in I$, with composition taken componentwise.
+\end{definition}
+There is a functor $\widetilde{\bigotimes}_{i \in I} : \mathrm{sp}(I, \mathcal{C}) \to \widetilde{\mathcal{C}}$
+sending an object $(A_s \mid s \in S \xrightarrow{\phi} I)$ to the underlying family
+$(A_s \mid s \in S)$, and a morphism $(u_i \mid i \in I)$ to $\widetilde{\bigotimes}_{i \in I} u_i$,
+defined as follows. Choose a linear order on $I$; together with the pre-image orders this
+determines linear orders $\omega_S : [1,m] \xrightarrow{\sim} S$ and
+$\omega_T : [1,n] \xrightarrow{\sim} T$ by first ordering by $I$, then within each pre-image $\phi^{-1}(i)$ and $\psi^{-1}(i)$ by their given order.
+Form the genuine
+$\mathcal{C}$-morphism
+\[
+  f \;=\; \bigotimes_{i \in I} u_i \;:\;
+  \bigotimes_{i \in I} \bigotimes_{\phi(s) = i} A_s \;\longrightarrow\;
+  \bigotimes_{i \in I} \bigotimes_{\psi(t) = i} B_t .
+\]
+The arrow $\widetilde{\bigotimes}_{i \in I} u_i$ in $\widetilde{\mathcal{C}}$ is then the
+map represented by the triple $(\omega_S, f, \omega_T)$. Different choices of
+linear order on $I$ yield different representatives of this kind, but all lie in the
+same equivalence class, so the functor is well-defined.
+Put simply, the objects are collections sorted into ordered groups, with no order imposed on the index set 
+$I$ itself, and the morphisms are families of maps between corresponding groups.
+
+This machinery is necessary because when we slice a polarised graph, we do not know the order of the connected components of the slice, so the value must be order-invariant.
+For instance, a slice with two components 
+$f$ and $g$ may be read with $f$ before $g$ or with $g$ before $f$; the two readings order the boundary wires oppositely and are related by a symmetry, so they must yield the same value. Only the inputs and outputs of each individual component are intrinsically ordered, by the polarisation, which is precisely the data recorded by $\mathrm{sp}(I,\mathcal{C})$,
+where $I$ is the unordered set of components.
+
+We can now give a value to a polarised graph $\Gamma$ by slicing it into \emph{elementary} components.
+A graph $\Gamma$ is called \emph{elementary} if its corresponding $\mathring{\Gamma}$ is a discrete partially ordered set, i.e., there are no distinct inner nodes $x,y$ such that $x \leq y$.
+Let $I = \pi_0(\Gamma)$ be the set of connected components of $\Gamma$. 
+Then for each $i \in I$, its value $u_i$ is $v_1(i)$ if $i$ is a single node and $\id_{v_0(i)}$ if $i$ is a single wire. 
+Then, each elementary graph $\Gamma$ is evaluated as a morphism in $\widetilde{\mathcal{C}}$ by setting:
+\[
+\widetilde{v}(\Gamma) = \widetilde{\bigotimes}_{i \in I} u_i ,
+\]
+with $(u_i \vert i \in I) : (v_0(s) \vert s \in \mathrm{dom}\,\Gamma \to I) \to (v_0(t) \vert t \in \mathrm{cod}\,\Gamma \to I)$.
+
+\begin{example}
+Below is an elementary polarised graph, since the nodes $f$ and $g$ are
+incomparable in the partial order of $\mathring{\Gamma}$. The polarisation order
+is left-to-right.
+\[
+\tikzfig{./figures/string/polarised_example}
+\]
+The two connected components give a morphism $(u_1, u_2)$ in
+$\mathrm{sp}(I, \mathcal{C})$, where $I = \{1, 2\}$ and $u_1 = f$, $u_2 = g$ are
+the morphisms labelling them. Choosing the order $1 < 2$ on $I$ produces the
+representative
+\[
+  u_1 \otimes u_2 \;:\; A_1 \otimes A_2 \otimes A_3 \otimes C
+  \;\longrightarrow\; B \otimes D_1 \otimes D_2
+\]
+in $\mathcal{C}$. The value $\widetilde{v}(\Gamma)$ is the arrow of $\widetilde{\mathcal{C}}$
+from $(A_1, A_2, A_3, C)$ to $(B, D_1, D_2)$ that this morphism represents. The
+opposite order $2 < 1$ gives instead $g \otimes f$ on the reordered boundary, but
+represents the same arrow of $\widetilde{\mathcal{C}}$, so $\widetilde{v}(\Gamma)$ is
+well-defined.
+\end{example}
+
+For any progressive polarised graph $\Gamma$, pick a maximal chain $\varnothing \subset L_1 \subset \ldots \subset L_n = \mathring{\Gamma}$ of levels.
+Each layer $\Gamma[L_i, L_{i+1}]$ has precisely one inner node and is therefore elementary.
+Define $\widetilde{v}(\Gamma) = \widetilde{v}(\Gamma[L_{n-1}, L_n]) \circ \ldots \circ \widetilde{v}(\Gamma[\varnothing, L_1])$.
+
+\begin{example}\label{example:layering_polarised_graph}
+Below is an example of layering of a polarised graph.
+\[
+\tikzfig{./figures/string/polarised_example_2}
+\]
+The levels are given by $\varnothing \subset \{f\} \subset \{f,g\} \subset \{f,g,h\} = \mathring{\Gamma}$.
+$\Gamma[\varnothing, \{f\}]$ is an elementary graph containing the node $f$, its input wires and output wires, and the wire with target in $g$, but does not contain the node $g$ itself: in total, there are two connected components and valuation is $\{f,\id_{C}\}$.
+$\Gamma[\{f\}, \{f,g\}]$ is an elementary graph containing the node $g$, its input wires and output wires, and the output wire of $f$: the valuation is $\{\id_{A}, g\}$.
+Finally, $\Gamma[\{f,g\}, \{f,g,h\}]$ is an elementary graph containing the node $h$, its input wires and output wires, and the output wires of $g$: the valuation is $\{h, \id_{D_1 \otimes D_2}\}$.
+
+To obtain the value of the entire graph, we compose the three layer-values.
+First, within each elementary layer, the components are bundled into a single
+arrow of $\widetilde{\mathcal{C}}$ by the functor 
+$\widetilde{\bigotimes}_{i \in I}$:
+\begin{align*}
+  \widetilde{v}_1 &= \widetilde{\bigotimes}(\, f,\ \mathrm{id}_C \,)
+    : (A_1, A_2, A_3, C) \to (A, C), \\
+  \widetilde{v}_2 &= \widetilde{\bigotimes}(\, \mathrm{id}_A,\ g \,)
+    : (A, C) \to (A, D_1, D_2), \\
+  \widetilde{v}_3 &= \widetilde{\bigotimes}(\, h,\ \mathrm{id}_{D_1 \otimes D_2} \,)
+    : (A, D_1, D_2) \to (B, D_1, D_2),
+\end{align*}
+where each interface family is written unordered. 
+The value of the whole graph is therefore the composite in $\widetilde{\mathcal{C}}$, read bottom to top:
+\[
+  \widetilde{v}(\Gamma) = \widetilde{v}_3 \circ \widetilde{v}_2 \circ \widetilde{v}_1
+  : (A_1, A_2, A_3, C) \to (B, D_1, D_2).
+\]
+\end{example}
+
+As before, a diagram is a graph coupled with a valuation.
+An equivalence of diagrams is then captured by the notion of \emph{isomorphism}.
+\begin{definition}
+An isomorphism $f : \Gamma \to \Omega$ of progressive polarised diagrams is an isomorphism of the underlying graphs with boundary which preserves orientation and the orders on each input and output, and is compatible with the valuations. 
+\end{definition}
+\begin{theorem}\label{theorem:symm_iso_preserve_value}
+If $\Gamma \cong \Omega$, then $\widetilde{v}(\Gamma) = \widetilde{v}(\Omega)$.
+\end{theorem}
+A graph $\Gamma$ is called \emph{anchored} if there is an ordering imposed on the $\mathrm{dom}\,\Gamma$ and $\mathrm{cod}\,\Gamma$.
+In this case the valuation of $\Gamma$ is a morphism in $\mathcal{C}$, by picking the ordering on $(v(s) \vert s \in \mathrm{dom}\,\Gamma)$ and $(v(t) \vert t \in \mathrm{cod}\,\Gamma)$.
+
+\begin{remark}
+Because progressive polarised diagrams are not embedded in the plane and are identified up to isomorphism, drawing them is strictly speaking ambiguous.
+For example, we could have drawn the diagram in~\cref{example:layering_polarised_graph} as
+\[
+\tikzfig{./figures/string/polarised_example_3},
+\]
+or we could have crossed some wires in between, without changing the connectivity.
+It is therefore a convention to draw a diagram with its domain and codomain ordered
+left to right according to the anchoring, letting the symmetry be expressed by crossed
+wires.
+It is then common to \enquote{untangle} wires that cross twice, as this does not change
+the connectivity (the symmetry being self-inverse, $\sym_{A,B} \circ \sym_{B,A} = \id$).
+In contrast, the equivalence of diagrams for \emph{braided} monoidal categories is
+defined up to isotopy in $\mathbb{R}^{3}$, the extra dimension recording which wire passes
+over which at a crossing.
+One may likewise present the symmetric case geometrically, as equivalence up to isotopy
+in $\mathbb{R}^{4}$, viewing a drawn diagram as a $2$-dimensional projection of a diagram
+embedded in $\mathbb{R}^{4}$.
+This notion of equivalence coincides with the isomorphism of progressive polarised
+diagrams; see the survey of Selinger~\cite{Selinger_2010} for more details.
+\end{remark}
+\begin{example}
+Recall the diagram from~\cref{example:layering_polarised_graph}.
+Suppose the anchoring is given by ordering $A_1 < A_2 < A_3 < C$ on the domain and $D_1 < D_2 < B$ on the codomain.
+Then, the value of the diagram, $v(\Gamma)$, is given by a morphism $u : A_1 \otimes A_2 \otimes A_3 \otimes C \to D_1 \otimes D_2 \otimes B$ in $\mathcal{C}$.
+Thanks to evaluating the layers in $\widetilde{\mathcal{C}}$, the value $v(\Gamma)$ is invariant under different choices of ordering within each layer.
+Suppose we ordered the layers as $v_1 = \id_C \otimes f$, $v_2 = \id_A \otimes g$, and $v_3 = \id_{D_1 \otimes D_2} \otimes h$.
+The value of the diagram is then given by the composite
+\begin{align*}
+A_1 \otimes A_2 \otimes A_3 \otimes C &\xrightarrow{\sym_{A_1 \otimes A_2 \otimes A_3, C}} C \otimes A_1 \otimes A_2 \otimes A_3\\
+&\xrightarrow{v_1} C \otimes A\\
+&\xrightarrow{\sym_{C,A}} A \otimes C\\
+&\xrightarrow{v_2} A \otimes D_1 \otimes D_2\\
+&\xrightarrow{\sym_{A, D_1 \otimes D_2}} D_1 \otimes D_2 \otimes A \xrightarrow{v_3} D_1 \otimes D_2 \otimes B .
+\end{align*} 
+This is the same morphism had we chosen any other ordering, for example, the left-to-right ordering of $v_1 = f \otimes \id_C$, $v_2 = \id_{A} \otimes g$, and $v_3 = h \otimes \id_{D_1 \otimes D_2}$, which is
+\begin{align*}
+A_1 \otimes A_2 \otimes A_3 \otimes C &\xrightarrow{v_1} A \otimes C\\
+&\xrightarrow{v_2} A \otimes D_1 \otimes D_2\\
+&\xrightarrow{v_3} B \otimes D_1 \otimes D_2\\
+&\xrightarrow{\sym_{B, D_1 \otimes D_2}} D_1 \otimes D_2 \otimes B.
+\end{align*}
+\end{example}
+
+Finally, anchored diagrams can be equipped with a structure of a symmetric monoidal category.
+The tensor product of two diagrams is given by their disjoint union, while the composition of two anchored progressive polarised diagrams $\Gamma$ and $\Omega$ such that $\mathrm{cod}\,\Gamma = \mathrm{dom}\,\Omega$ is given by the disjoint union of the two graphs, identifying wires with target in $\mathrm{cod}\,\Gamma$ with wires with source in $\mathrm{dom}\,\Omega$.
+Given a monoidal signature $\Sigma$, a free symmetric monoidal category $\mathbf{F}(\Sigma)$ is given by the following data.
+\paragraph{Objects.} The objects are words of $\Sigma_0$.
+\paragraph{Morphisms.} The morphisms are isomorphism classes of anchored progressive polarised diagrams.
+Composition and tensor product are given as described above.
+The symmetry $\sym_{V,W} : VW \to WV$ for words $V = V_1 \ldots V_n$ and $W = W_1 \ldots W_m$ is given by the anchored diagram $\Gamma$ with $n + m$ wires, represented by disjoint closed intervals and with a corresponding valuation, such that $\mathrm{dom}\,\Gamma$ is ordered $V_1 < \ldots < V_n < W_1 < \ldots < W_m$ and $\mathrm{cod}\,\Gamma$ ordered $W_1 < \ldots < W_m < V_1 < \ldots < V_n$.
+\begin{theorem}
+The data above defines a free symmetric monoidal category on the signature $\Sigma$ in the same sense as \cref{theorem:free_string_planar}.
+\end{theorem}
+
+\paragraph{Diagram replacement.}
+While the presence of a symmetry greatly simplifies the notion of sameness for the diagrams, it makes the formulation of rewriting or replacing of sub-diagrams more subtle as there is no longer a planar embedding to rely on to identify a square.
+    
+Let $\langle (\Omega, w), (\Omega', w') \rangle$ be a rewrite rule: a pair of
+anchored diagrams whose domain words agree and whose codomain words agree, that
+is $\mathrm{dom}\,\Omega = \mathrm{dom}\,\Omega'$ and
+$\mathrm{cod}\,\Omega = \mathrm{cod}\,\Omega'$ as words in $\Sigma_0$, imposed as
+the equation $\widetilde{w}(\Omega) = \widetilde{w'}(\Omega')$. Given an anchored
+diagram $(\Gamma, v)$, we identify a \emph{convex} sub-diagram $\Gamma'$ of
+$\Gamma$---a sub-diagram whose nodes are closed under directed paths in
+$\Gamma$ between them---equipped with an isomorphism $\Gamma' \cong \Omega$ of
+unanchored diagrams.
+
+We replace $\Gamma'$ with $\Omega'$ to form $\Gamma''$: we remove the nodes and
+wires of $\Gamma'$ and insert $\Omega'$, identifying each boundary wire of
+$\Gamma'$ with a boundary wire of $\Omega'$ along the composite bijection
+\[
+  \mathrm{dom}\,\Gamma' \xrightarrow{\ \cong\ } \mathrm{dom}\,\Omega
+  \xrightarrow{\ \cong\ } \mathrm{dom}\,\Omega',
+\]
+where the first map is the action of $\Gamma' \cong \Omega$ on boundary wires and
+the second matches wires by position---well-defined since
+$\mathrm{dom}\,\Omega = \mathrm{dom}\,\Omega'$ as words---and similarly for the
+codomains. The rest of $\Gamma$ is left untouched.
+
+By convexity, the nodes of $\Gamma'$ are exactly $L_2 \setminus L_1$ for the
+levels $L_1 = \{x : x < \Gamma'\}$ and $L_2 = L_1 \cup \mathring{\Gamma'}$, so
+$\Gamma'$ occupies the layer $\Gamma[L_1, L_2]$. Furthermore, this layer is the disjoint union of $\Gamma'$ and the wires passing
+through it, each cut by both levels. Since $\widetilde{v}$ sends disjoint unions
+to the monoidal product $\boxtimes$ of $\widetilde{\mathcal{C}}$, the layer value
+decomposes as
+\[
+  \widetilde{v}(\Gamma[L_1, L_2])
+  = \widetilde{v}(\Gamma') \boxtimes \widetilde{\bigotimes}_{i \in I} u_i,
+\]
+where $I = \pi_0\big(\Gamma[L_1, L_2] \setminus \Gamma'\big)$ indexes the
+pass-through wires and each $u_i = \mathrm{id}_{v_0(e_i)}$ is the identity on its
+wire's object. Slicing $\Gamma$ at $L_1$ and $L_2$ factors its value through the
+layer,
+\[
+  \widetilde{v}(\Gamma)
+  = \widetilde{v}(\Gamma[L_2, \mathring{\Gamma}])
+    \circ \widetilde{v}(\Gamma[L_1, L_2])
+    \circ \widetilde{v}(\Gamma[\varnothing, L_1]).
+\]
+Since $\Gamma' \cong \Omega$ as unanchored diagrams,
+$\widetilde{v}(\Gamma') = \widetilde{w}(\Omega)$ by \cref{theorem:symm_iso_preserve_value},
+and $\widetilde{w}(\Omega) = \widetilde{w'}(\Omega')$ by the rule. The replacement
+alters only the factor $\widetilde{v}(\Gamma')$ in the decomposition above,
+leaving the pass-through wires and the surrounding layers untouched; substituting
+the equal value $\widetilde{w'}(\Omega')$ gives
+$\widetilde{v}(\Gamma'') = \widetilde{v}(\Gamma)$. The replacement is therefore
+sound.
+
+\begin{remark}
+To the best of the author's knowledge, the formulation above represents a folklore result in the theory of string diagrams, and is not explicitly stated in the literature.
+This is unlike the planar case, where the notion of slicing and replacing can be traced to the other work by Joyal and Street~\cite{joyal_geometry_II}.
+This is perhaps unsurprising, as the topological nature of these diagrams makes the rewriting and reasoning about the rewriting intricate in both cases.
+While planar case formalises well the pen-and-paper reasoning using string diagrams, mechanisation of this process is difficult as the notion of equivalence of diagrams is not trivial and requires one to check if one embedding is a continuous deformation of another.
+In the symmetric case, the notion of equivalence is much simpler, but as we saw, the notion of slicing and replacing is more subtle.
+This inspired a separate line of work by Bonchi et. al.~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022-3,zanassi_comonoid} who treated string diagrams as mere graphical notation for morphism terms rather than as topological first-class objects, formalising them combinatorially as hypergraphs and formalising the rewriting of diagrams as double-pushout rewriting of hypergraphs.
+The approach keeps the simplicity of the notion of equivalence of diagrams and brings the convenience of double-pushout rewriting which is an established technique for graph transformations by treating the \emph{graphs} as first-class objects rather than something induced by points in a topological space.
+We review this approach next.
+\end{remark}
+
+\section{String diagrams 2.0}
+
+Another approach to string diagrams is to define them syntactically, starting from the morphism terms first and treating the diagrams as a graphical representation for the latter.
+More precisely, string diagrams are defined as equivalence classes of $\Sigma$-terms over a monoidal signature $\Sigma$, modulo the axioms of a symmetric monoidal category.
+Before, we had string diagrams as first-class objects paired with a valuation in $\Sigma$, which induced a symmetric monoidal category on the diagrams themselves.
+Now we will consider free symmetric monoidal categories generated by $\Sigma$-terms, and string diagrams as a graphical representation of the morphisms in the free category.
+\begin{definition}[$\Sigma$-terms]
+  Given a monoidal signature $\Sigma$ of~\cref{def:mon_signature}, a set of $\Sigma$-terms is defined by the following grammar:
+  \[
+  t \Coloneqq f \in \Sigma_1 \;\vert\; \id_{\I} \;\vert\; \id_A,\; A \in \Sigma_0 \;\vert\; \sym_{A,B},\; A,B \in \Sigma_0 \;\vert\; t_1 \otimes t_2 \;\vert\; t_1 \circ t_2.
+  \] 
+  We will also write $(f \fatsemi g)$ for $g \circ f$---a composition in diagrammatic order.
+\end{definition}
+
+\begin{definition}
+  Given a $\Sigma$-term $t$, its domain ($\mathrm{dom}\;t$) and codomain ($\mathrm{cod}\;t$) are lists defined as follows:
+  \[
+  \mathrm{dom}\;t = \begin{cases}
+    \mathrm{dom}\;f & \text{if } t = f,\;f \in \Sigma_{1}\\
+    [\I] & \text{if } t = \id_{\I}\\
+    [A] & \text{if } t = \id_A \\
+    [A,B] & \text{if } t = \sym_{A,B} \\
+    [\dots\mathrm{dom}\;t_1,\dots\mathrm{dom}\;t_2] & \text{if } t = t_1 \otimes t_2\\
+    \mathrm{dom}\;t_2 & \text{if } t = t_1 \circ t_2
+  \end{cases}
+  \]
+  \[
+  \mathrm{cod}\;t = \begin{cases}
+    \mathrm{cod}\;f & \text{if } t = f,\;f \in \Sigma_{1}\\
+    [\I] & \text{if } t = \id_{\I}\\
+    [A] & \text{if } t = \id_A \\
+    [B,A] & \text{if } t = \sym_{A,B} \\
+    [\dots\mathrm{cod}\;t_1,\dots\mathrm{cod}\;t_2] & \text{if } t = t_1 \otimes t_2\\
+    \mathrm{cod}\;t_1 & \text{if } t = t_1 \circ t_2
+  \end{cases},
+  \]
+  where we used the JavaScript inspired notation $\dots xs$ for element-wise copy of the list, i.e., $[\dots xs] = [1,2,3]$ for $xs = [1,2,3]$.
+\end{definition}
+This is a generalisation of a free $\Sigma$-algebra that we had in~\cref{def:free_sigma_algebra}.
+\begin{definition}[Symmetric monoidal theory]
+  A (presentation of) symmetric monoidal theory (SMT, for short) is a pair $(\Sigma, \mathcal{E})$, given by a monoidal signature $\Sigma$ and a set of equations $\mathcal{E}$ between $\Sigma$-terms with the same domain and codomain.
+\end{definition}
+
+String diagrams for $\Sigma$-terms can then be given by the set generated by the following grammar, simplified for the case of $\Sigma_0 \cong \{*\}$, such that every wire carries the same type, quotiented by the axioms in~\cref{fig:string-diagram-axioms}.
+\begin{figure}[h!]
+    \centering
+    \tikzfig{./figures/introduction/string-diagrams-syntax}
+    \caption{String diagrams syntax for symmetric monoidal categories.}
+    \label{fig:string-diagram-syntax-2}
+\end{figure}
+
+\begin{figure}
+\begin{align*}
+  (s \fatsemi t) \fatsemi u \equiv s \fatsemi (t \fatsemi u) &\quad \id_n \fatsemi s \equiv s \equiv s \fatsemi \id_m\\
+  (s \otimes t) \otimes u \equiv s \otimes (t \otimes u) &\quad \id_{\I} \otimes s \equiv s \equiv s \otimes \id_{\I}\\
+  (s \otimes t) \fatsemi (u \otimes v) \equiv (s \fatsemi u) \otimes (t \fatsemi v) &\quad \id_m \otimes \id_n \equiv \id_{m+n}\\
+  (\sym_{m,n} \otimes \id_o) \fatsemi (\id_n \otimes \sym_{m,o}) \equiv \sym_{m,n+o} &\quad \sym_{n,m} \fatsemi \sym_{m,n} \equiv \id_{n+m}\\
+  (s \otimes \id_m) \fatsemi \sym_{n,m} &\equiv \sym_{o,m} \fatsemi (\id_m \otimes s)
+\end{align*}
+\caption{Equivalences of $\Sigma$-terms, generating the same string diagram~\cite{bonchi_string_2022-1}.}
+\label{fig:string-diagram-axioms}
+\end{figure}
+
+\begin{remark}
+Although the syntactic diagrams of this section and the polarised diagrams of Joyal and Street are different kinds of object, both constructions yield the \emph{free} strict symmetric monoidal category on $\Sigma$.
+By the universal property of freeness this category is unique up to equivalence; under this equivalence, isomorphism of Joyal--Street diagrams corresponds exactly to SMC-axiom-equality of $\Sigma$-terms.
+The syntactic and topological presentations are thus two presentations of the same free category.
+
+In this syntactic setting, we can also recover some topological properties similar to those of Joyal--Street planar diagrams.
+For example, we can slide boxes along a single wire, which results in the same diagram since it corresponds to a sequential composition with identity morphism; we can similarly slide boxes past boxes on other wires which is justified by the bifunctoriality equation; we can untangle wires that cross twice, which is validated by $\sym$ being an involution; we can also slide boxes along crossed wires, which is validated by the naturality of $\sym$.
+These manipulations may seem topological, but they are completely governed by the equations on the syntax with no real topology involved, unlike in the case of the diagrams by Joyal and Street.
+\end{remark}
+
+$\Sigma$-terms induce a free syntactic symmetric monoidal category which is an instance of a collection of categories called $\mathrm{PROPs}$, short for \textbf{PRO}duct and \textbf{P}ermutation categories.
+\begin{definition}
+  A $\mathrm{PROP}$ is a symmetric strict monoidal category whose objects are natural numbers, with the tensor product on objects given by addition.
+\end{definition}
+This is a generalisation of Lawvere theories, as seen in~\cref{chapter:algebras}.
+
+\begin{definition}
+For a set $\mathcal{C}$, a \emph{coloured} $\mathrm{PROP}$ is a symmetric strict monoidal category whose objects are words in $\mathcal{C}$, with the tensor product on objects given by concatenation.
+\end{definition}
+This is a generalisation of Lawvere theories in the multi-sorted case.
+A $\mathrm{PROP}$ is a coloured $\mathrm{PROP}$ with a single colour.
+
+\begin{definition}
+Let $\mathbf{S}_{\Sigma,\mathcal{E}}$ be a free syntactic PROP presented by SMT $(\Sigma, \mathcal{E})$ with $\Sigma_0 \cong \{*\}$, that is hom-sets $\mathbf{S}_{\Sigma,\mathcal{E}}(m,n)$ are sets of $\Sigma$-terms with domain $m$ and codomain $n$, quotiented by the equations of a symmetric monoidal category from~\cref{fig:string-diagram-axioms} and the equations in $\mathcal{E}$.
+We also let $\mathbf{S}_{\Sigma}$ be the free syntactic PROP presented by the SMT $(\Sigma, \varnothing)$.
+\end{definition}
+This is an analogue of a collection of free algebras $T_{\Sigma, \mathcal{E}}$, viewed as a Lawvere theory.
+We already saw an instance of such a syntactic PROP in~\cref{example:comonoids}, another example is the theory of bialgebras that has both monoid and comonoid structure, interacting in a certain way.
+\begin{example}
+Consider a signature $\Sigma_{\mathbb{B}} = \{\delta : 1 \to 2, \epsilon : 1 \to 0, \mu : 2 \to 1, \eta : 0 \to 1\}$
+and equations 
+\begin{align*}
+\mathcal{E}_{\mathbb{B}} = \{\qquad\qquad\qquad&\\
+\quad \delta \fatsemi (\delta \otimes \id_1) &\equiv \delta \fatsemi (\id_1 \otimes \delta) (\text{coassociativity})\\
+\quad \delta \fatsemi (\epsilon \otimes \id_1) &\equiv \id_1 (\text{counitality})\\
+\quad \delta \fatsemi \sym_{1,1} & \equiv \delta (\text{cocommutativity})\\
+\quad (\mu \otimes \id_1) \fatsemi \mu &\equiv (\id_1 \otimes \mu) \fatsemi \mu (\text{associativity})\\
+\quad (\eta \otimes \id_1) \fatsemi \mu &\equiv \id_1 (\text{unitality})\\
+\quad (\sym_{1,1} \otimes \id_1) \fatsemi \mu &\equiv \mu \fatsemi \sym_{1,1} (\text{commutativity})\\
+\quad \eta \fatsemi \delta &\equiv (\delta \otimes \delta) \fatsemi (\id_1 \otimes \sym_{1,1} \otimes \id_1) \fatsemi (\mu \otimes \mu) \text{(multiplication-comultiplication interaction)}\\
+\quad \mu \fatsemi \epsilon &\equiv (\epsilon \otimes \epsilon)\\
+\quad \eta \fatsemi \delta &\equiv \eta \otimes \eta\\
+\quad \eta \fatsemi \epsilon &\equiv \id_0\\
+\}~.  
+\end{align*}
+This gives a presentation of the theory of bialgebras $\mathbf{S}_{\Sigma_{\mathbb{B}}, \mathcal{E}_{\mathbb{B}}}$.
+This is a theory where resources can be both duplicated and merged with a certain interaction between those two operations.
+A canonical model of such a prop is the category $\catname{B}$ with objects natural numbers and morphisms $\catname{B}(m,n)$ given by $n \times m$ matrices over $\mathbb{N}$ with composition given by matrix multiplication and tensor produce given by direct sum of matrices.
+$\delta$ is interpreted as the $2 \times 1$ matrix $\begin{pmatrix}1\\1\end{pmatrix}$, $\epsilon$ as the $0 \times 1$ matrix $\begin{pmatrix}\;\end{pmatrix}$, $\mu$ as the $1 \times 2$ matrix $\begin{pmatrix}1 & 1\end{pmatrix}$, and $\eta$ as the $1 \times 0$ matrix $\begin{pmatrix}\;\end{pmatrix}$.
+It is easy to check that the equations in $\mathcal{E}_{\mathbb{B}}$ are satisfied by these interpretations, and that this gives a model of the theory of bialgebras.
+It is much more convenient to represent both the generators and the equations graphically as string diagrams as can be seen in~\cref{fig:bialgebra_generators_equations}.
+\end{example}
+
+\begin{figure}
+\begin{subfigure}{\textwidth}
+    \centering
+    \tikzfig{./figures/string/bialgebra_generators}
+    \subcaption{Bialgebra generators.}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+    \centering
+    \tikzfig{./figures/string/bialgebra_equations}
+    \subcaption{Bialgebra equations.}
+\end{subfigure}
+\caption{String diagrams for the theory of bialgebras.}
+\label{fig:bialgebra_generators_equations}
+\end{figure}
+
+Other examples of $\mathrm{PROPs}$ include \emph{Frobenius algebras}, \emph{Hopf algebras}, and generally theories that have generators with multiple outputs which are related in some way and hence can not be projected and processed separately, for example, maps that return a joint probability distribution of their inputs.
+Another important example are theories that have commutative comonoid structure, that is also natural.
+\begin{example}
+Consider a signature $\Sigma = \{\ldots, \delta : 1 \to 2, \epsilon : 1 \to 0, \ldots\}$ with containts $\delta$ and $\epsilon$ generators in addition to some other generators.
+The equations $\mathcal{E}$ include the already familiar coassociativity, counitality and cocomutativity in addition to the following \emph{scheme} equation:
+\[
+F_{m,n} \fatsemi \underbrace{\delta \otimes \ldots \otimes \delta}_{n} = \underbrace{\delta \otimes \ldots \otimes \delta}_{m} \fatsemi \underbrace{F_{m,n} \otimes \ldots \otimes F_{m,n}}_{n}
+\] 
+where $F_{m,n}$ stands for any $\Sigma$-term of type $m \to n$.
+TODO!
+\end{example}
+
+The fact that in the above example, the PROP has a cartesian monoidal structure follows from the result by Fox~\cite{foxCoalgebrasCartesianCategories1976}.
+\begin{theorem}[Fox~\cite{foxCoalgebrasCartesianCategories1976}]
+ Let $X$ be a symmetric monoidal category.
+ $X$-coalgebra is a triple $(C, \delta, \varepsilon)$ with $C \in \obj{X}$, $\delta : C \to C \otimes C$ and $\varepsilon : C \to \I$ having a structure of a commutative comonoid with $\delta$ acting as comultiplication and $\vaepsilon$ as a counit.
+ A morphism of $X$-coalgebras $(C, \delta_{C}, \varepsilon_{C})$ and $(D, \delta_{D}, \varepsilon_{D})$ is a map $f : C \to D$ such that
+ \[
+ \delta_{C} \fatsemi f \otimes f = f \fatsemi \delta_{D} \quad \text{and} \quad \varepsilon_{C} = f \fatsemi \varepsilon_{D}~.
+ \]
+ Similarly, given $X$-coalgebras $(C, \delta_{C}, \varepsilon_{C})$ and $(D, \delta_{D}, \varepsilon_{D})$, their product is given by $(C \otimes D, \delta_{C} \otimes \delta_{D}, \varepsilon_{C} \otimes \varepsilon_{D})$, by defining
+ \[
+ \delta_{C \otimes D} = (\delta_{C} \otimes \delta_{D}) \fatsemi (\id_{C} \otimes \sym_{C,D} \otimes \id_{D}) \quad \text{and} \quad \varepsilon_{C \otimes D} = \varepsilon_{C} \otimes \varepsilon_{D}.
+ \]
+ $\pi_{C} = \id_{C} \otimes \varepsilon_{D}$ and $\pi_{D} = \varepsilon_{C} \otimes \id_{D}$.
+ This equips $X$-coalgebras with a structure of a cartesian monoidal category that we denote as $(X)C$.
+ This also defines a functor $(-)C : X \to (X)C$.
+ There is an adjunction
+ \[
+ (-)C \dashv U : \catname{Mon} \to \catname{Cart}
+ \]
+ between the category of symmetric monoidal categories and the category of cartesian categories with $U$ being the natural forgetful functor.
+\end{theorem}
+That is, given a symmetric monoidal category $X$, equipping every objects of $X$ with a commutative comonoid structure and quotienting the category by the equations above, we get a \enquote{free} cartesian category induced by $X$.
