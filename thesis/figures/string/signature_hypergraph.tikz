@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=node] (0) at (0, 0) {};
+		\node [style=hedge] (1) at (-1, 2.25) {$g$};
+		\node [style=hedge] (2) at (4, -0.5) {$f$};
+		\node [style=none] (3) at (-1.5, 2.5) {};
+		\node [style=none] (4) at (-1.5, 2) {};
+		\node [style=none] (5) at (-0.5, 2.25) {};
+		\node [style=none] (7) at (3.5, 0) {};
+		\node [style=none] (8) at (3.5, -0.5) {};
+		\node [style=none] (9) at (3.5, -1) {};
+		\node [style=none] (10) at (4.5, -0.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [in=60, out=-15] (5.center) to (0);
+		\draw [in=150, out=-120] (4.center) to (0);
+		\draw [in=-165, out=-180, looseness=1.75] (0) to (3.center);
+		\draw [bend right=15] (0) to (9.center);
+		\draw [bend left=45, looseness=0.75] (0) to (8.center);
+		\draw [bend left=45] (0) to (7.center);
+		\draw [bend right=75] (0) to (10.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -11,11 +11,17 @@
 \usepackage{multirow}
 \usepackage{mathpartir}
 \usepackage{subcaption}
+\usepackage{quiver}
+
+% this is to fix bibliography
+\usepackage{newunicodechar}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{∞}{\ensuremath{\infty}}
 
 \usepackage{inconsolata}
 \renewcommand{\ttdefault}{zi4}
 
-\addbibresource{../bibliography.bib}
+\addbibresource{thesis.bib}
 
 \DeclareCaptionSubType{listing}
 \input{../sample.tikzstyles}
