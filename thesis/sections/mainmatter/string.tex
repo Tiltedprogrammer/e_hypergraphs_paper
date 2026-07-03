@@ -1195,10 +1195,49 @@ and $\mathcal{E}_{\text{Frob}}$ given by the equations
 \cref{eq:monoid_frob} and \cref{eq:comonoid_frob} are the commutative monoid and commutative comonoid equations, respectively, for monoid and comonoid generators, just the ones we had in the case of bialgebra in~\cref{fig:bialgebra_generators_equations}---generators depicted with dots with the reason becoming clear later---and \cref{eq:frobenius_frob} is the Frobenius equation stipulating the interaction between the monoid and comonoid structures---again like in the case of bialgebras, just with a different interaction rule.
 We let $\mathbf{Frob}$ denote the free PROP presented by the SMT $(\Sigma_{\text{Frob}}, \mathcal{E}_{\text{Frob}})$.
 We then let $\mathbf{H}_{\Sigma, \mathcal{E}}$ be the PROP obtained by taking a coproduct $\mathbf{S}_{\Sigma,\mathcal{E}} \coprod \mathbf{Frob}$ in $\catname{PROP}$---see~\cref{remark:composing_props} for details.
-It can be equivalently presented by an SMT $(\Sigma \cup \Sigma_{\text{Frob}}, \mathcal{E} \cup \mathcal{E}_{\text{Frob}})$.
+It can be equivalently presented by an SMT $(\Sigma \cup \Sigma_{\text{Frob}}, \mathcal{E} \cup \mathcal{E}_{\text{Frob}})$---note that $\Sigma_{\text{Frob}}$ is not part of $\Sigma$ which is the parameter of $\mathbf{H}_{\Sigma, \mathcal{E}}$ and similarly for $\mathcal{E}_{\text{Frob}}$.
 \end{definition}
 
 \begin{definition}
 Given a monoidal signature $\Sigma_{\text{Frob}} = (\{*\}, \Sigma_1)$, we define the interpretation function $[-] : \Sigma_1 \to U(\catname{HypI}(\Sigma_{\text{Frob}}))$ as follows:
-
+\begin{gather*}
+ [\adjustbox{scale=0.4}{\tikzfig{./figures/string/monoid_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/monoid_interpretation}}~,
+ [\;\adjustbox{scale=0.6}{\tikzfig{./figures/string/unit_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/unit_interpretation}}~,
+ [\adjustbox{scale=0.4}{\tikzfig{./figures/string/comonoid_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/comonoid_interpretation}}~,
+ [\;\adjustbox{scale=0.6}{\tikzfig{./figures/string/counit_generator}} ] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/counit_interpretation}}~.
+\end{gather*}
+This induces a unique strong symmetric monoidal functor $[-] : \mathbf{Frob} \to \catname{HypI}(\Sigma_{\text{Frob}})$.
+We then let $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma)$ be the copairing $[\llbracket - \rrbracket, [-]]$.
 \end{definition}
+
+\begin{theorem}[Theorem 4.1~\cite{bonchi_string_2022-1}]\label{thm:frobenius_isomorphism}
+  The functor $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma)$ is an isomorphism of PROPs, i.e., $\mathbf{H}_{\Sigma} \cong \catname{HypI}(\Sigma)$.
+\end{theorem}
+\begin{proof}
+We present a sketch of the proof here, and refer the reader to~\cite{bonchi_string_2022-1} for the full details.
+The idea is to show that $\catname{HypI}(\Sigma)$ has the universal property of the coproduct, namely that for any PROP $\mathbb{A}$ and PROP morphisms $\alpha : \mathbf{S}_{\Sigma} \to \mathbb{A}$ and $\beta : \catname{Frob} \to \mathbb{A}$, there exists a unique PROP morphism $\gamma$ such that the following diagram commutes:
+\[\begin{tikzcd}
+	{\mathbf{S}_{\Sigma}} && {\catname{HypI}(\Sigma)} && {\catname{Frob}} \\
+	\\
+	&& {\mathbb{A}}
+	\arrow["{\llbracket - \rrbracket}", from=1-1, to=1-3]
+	\arrow["\alpha"', from=1-1, to=3-3]
+	\arrow["\gamma", from=1-3, to=3-3]
+	\arrow["{[-]}"', from=1-5, to=1-3]
+	\arrow["\beta"', from=1-5, to=3-3]
+\end{tikzcd}~.\]
+As all the arrows are identity-on-objects functors, it suffices to show that every morphism in $\catname{HypI}(\Sigma)$ can be decomposed in a unique way into components such that every component is in the image of either $\llbracket - \rrbracket$ or $[-]$.
+Let $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ be a morphism in $\catname{HypI}(\Sigma)$ and let $\mathcal{G} = (V_{\mathcal{G}}, E_{\mathcal{G}}, s, t, l)$ be its carrier hypergraph.
+Let $e_1, \ldots, e_n$ be some ordering on $E_{\mathcal{G}}$.
+Let $\tilde{m} \xrightarrow{\tilde{f}} \tilde{E} \xleftarrow{\tilde{g}} \tilde{n}$ be a cospan with the carrier formed by edges from $\mathcal{G}$, disconnected from each other and stacked vertically with $\tilde{m}$ being the collection of all input vertices for each edge and $\tilde{m}$ being the collection of all output vertices for each edge.
+There are functions $i : n \to V_{\mathcal{G}}$,  $\tilde{i} : \tilde{n} \to V_{\mathcal{G}}$, $j : m \to V_{\mathcal{G}}$, and $\tilde{j} : \tilde{m} \to V_{\mathcal{G}}$ that map vertices in the interfaces to their occurences in the set of all vertices.
+The decomposition of $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ is then given by the composition of cospans
+\[
+(m \xrightarrow{i} V_{\mathcal{G}} \xleftarrow{[\id, \tilde{j}]} V_{\mathcal{G}} \otimes \tilde{m}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{m} \xrightarrow{\id \otimes \tilde{f}} V_{\mathcal{G}} \otimes \tilde{E} \xleftarrow{\id \otimes \tilde{g}} V_{\mathcal{G}} \otimes \tilde{n}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{n} \xrightarrow{[\id, \tilde{i}]} V_{\mathcal{G}} \xleftarrow{i} \tilde{n})~.
+\]
+For example, below is a cospan (on the left) and its $\tilde{E}$ counterpart (on the right),
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_1}} \qquad \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_2}}~.
+\]
+
+\end{proof}
