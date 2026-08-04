@@ -1,5 +1,6 @@
+%!LW recipe=pdflatex -> bibtex -> pdflatex*2
 \documentclass[submission]{eptcs}
-
+\providecommand{\event}{}
 % space saving
 \usepackage[moderate,paragraphs=normal]{savetrees}
 
@@ -51,6 +52,13 @@
 \usepackage{multirow}
 \usepackage{bigdelim}
 \usepackage{colortbl}
+\usepackage{colortbl}
+\makeatletter
+\providecommand\CT@arc@{}
+\providecommand\CT@row@color{}
+\providecommand\CT@cell@color{}
+\providecommand\CT@do@color{}
+\makeatother
 % code
 \usepackage{minted}
 
@@ -111,12 +119,16 @@
 \aliascntresetthe{lemma}
 \providecommand*{\lemmaautorefname}{Lemma}
 
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\providecommand*{\corollaryautorefname}{Corollary}
 
 % change red to orange
 \definecolor{e-color}{named}{orange}
 \definecolor{closed-color}{named}{blue}
 
-
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{\ensuremath{#2}}}
 % some macros that maybe should be moved elsewhere
 
 \newcommand\HypI[1]{\textbf{HypI}(#1)}
@@ -127,7 +139,8 @@
 % conflict
 \newcommand{\hashtag}{{\#}}
 \newcommand{\consistency}{{\smile}}
-
+\newcommand{\join}{+}
+\newcommand{\defeq}{\stackrel{\triangle}{=}}
 % listings for autoref
 \providecommand*{\listingautorefname}{Listing}
 
@@ -143,11 +156,23 @@
   \setlength{\textfloatsep}{1pt}
   \setlength{\intextsep}{1pt}
 }
+\makeatletter
+\def\@oddhead{}
+\def\@evenhead{}
+\makeatother
 
-\author{Anonymous}
+\author{\begin{tabular}{ccc}
+  Aleksei Tiurin & Dan R. Ghica & Nick Hu\\
+  {\small University of Birmingham} & {\small University of Birmingham} & {\small Kyoto University}\\
+  &{\small and}&\\
+  &{\small Huawei Central Software Institute}&
+\end{tabular}\\
+\thanks{This work was supported by EPSRC grants EP/V001612/1 and EP/Y010035/1.}
+% \thanks{An extended version of this paper is available on arXiv~\cite{tiurin2025equivalencehypergraphsdporewriting}.}
+}
 \title{Categorical E-Graphs for Lambda Calculi}
 \def\titlerunning{Categorical E-Graphs for Lambda Calculi}
-\def\authorrunning{Anon.}
+\def\authorrunning{Tiurin, Ghica \& Hu}
 
 \begin{document}
 \maketitle
@@ -161,13 +186,11 @@
 	Finally, we establish the equivalence between term rewriting and DPO rewriting, with the combinatorial model inherently absorbing the equations of the symmetric monoidal structure.
 	Our approach, specifically designed for lambda calculi, is compared and contrasted with slotted e-graphs — an alternative method for incorporating variable binding within e-graphs.
 \end{abstract}
-
-
 \input{sections/introduction}
 \input{sections/categorical_semantics}
 \input{sections/combinatorial_semantics}
 \input{sections/soundness}
-% \input{sections/lambda-calculus}
+\input{sections/lambda-calculus}
 
 % \section{Conclusion}
 % In this work we introduced e-graphs with bindings derived as morphisms of a closed symmetric monoidal $\catname{SLat}$-category.

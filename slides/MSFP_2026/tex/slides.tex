@@ -1,0 +1,818 @@
+%!LW recipe=xelatex
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage{tikz}
+
+\usepackage{amsmath}
+\usepackage{tikz-network}
+\usepackage{tikz-cd}
+\usepackage{tikzit}
+\usepackage{subcaption}
+\usepackage{minted}
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+\newcommand{\consistency}{{\smile}}
+\usepackage{adjustbox}
+\usepackage{appendixnumberbeamer}
+\usepackage{csquotes}
+\usepackage{mathpartir}
+\usepackage{macros}
+\usepackage{longtable}
+\usepackage{booktabs}
+% for tables
+\usepackage{multirow}
+\usepackage{bigdelim}
+\usepackage{colortbl}
+\usepackage{colortbl}
+\makeatletter
+\providecommand\CT@arc@{}
+\providecommand\CT@row@color{}
+\providecommand\CT@cell@color{}
+\providecommand\CT@do@color{}
+\makeatother
+\usepackage[style=authoryear,backend=biber]{biblatex} % or backend=biber
+\addbibresource{./bibliography.bib}
+\setbeamerfont{author}{series=\normalfont}
+% \hypersetup{
+%     colorlinks=true,
+%     linkcolor=gray,
+%     filecolor=magenta,      
+%     urlcolor=cyan,
+%     pdftitle={Overleaf Example},
+%     pdfpagemode=FullScreen,
+%     }
+
+\input{../../../sample.tikzstyles}
+\input{../../../hypergraph.tikzstyles}
+\input{../../../hypergraph.tikzdefs}
+
+\usetheme[subsectionpage=simple]{metropolis}
+% \usetheme{awesome}
+
+% \setsansfont{Ubuntu}
+% \setmonofont{Ubuntu Mono}
+
+
+\setbeamertemplate{footline}
+{
+  \leavevmode
+  \hbox{
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=.7\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}
+    \usebeamerfont{author in head/foot}\insertshorttitle
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}
+    \insertframenumber{} / \inserttotalframenumber
+  \end{beamercolorbox}
+  }
+}
+
+\makeatletter
+\metropolis@disablesubsectionpage
+\makeatother
+
+\newcommand{\bsubsection}[1]{\subsection{$\bullet$ #1}}
+
+\title{Categorical E-Graphs for $\lambda$-calculi} 
+\date{July, 2025} % Use metropolis theme 
+\author[Aleksei Tiurin]{\underline{Aleksei Tiurin}, Dan Ghica, Nick Hu\\University of Birmingham}
+\begin{document} 
+
+
+\renewcommand{\maketitle}{
+  \begin{frame}[plain]
+    \usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
+    \alert{\rule{\textwidth}{1pt}}
+    \vfill
+    \[
+    \left\llbracket 
+        \;\vcenter{\hbox{\tikzfig{./figures/e-graph-logo}}}\; 
+    \right\rrbracket
+    \]
+    \vfill
+    \centering
+    \usebeamerfont{author}\insertauthor\par
+    \usebeamerfont{date}\insertdate\par
+  \end{frame}
+}
+
+\maketitle 
+
+% \begin{frame}{Table of contents}
+%     \small
+%     \setbeamertemplate{section in toc}[sections numbered]
+%     \tableofcontents
+% \end{frame}
+
+\section{Equality saturation $\simeq$ E-graphs}
+\bsubsection{Equality Saturation and E-graphs}
+
+\begin{frame}{Equality saturation}
+\vfill
+First introduced as a decision procedure for the quantifier-free fragment of theory of uninterpreted functional symbols with equality
+\pause
+\vfill
+Program optimisation technique that obviates the need to worry about \alert{phase ordering}
+\pause
+\vfill
+Equalities are applied non-destructively until the representation is \enquote{saturated} with respect to these equalities\par
+\pause
+\vfill
+Once saturated, the \alert{best} candidate can be extracted from the set\par
+\vfill
+\pause
+The \alert{best} candidate is domain-specific
+\begin{itemize}
+    \item Best program in compiler optimisation
+    \item Smallest test-case in fuzzy testing
+    \item Smallest digital circuit
+    \item $\ldots$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+E-graph is a \alert{data structure} that facilitates equality saturation
+\hfill
+\begin{example}
+\begin{minipage}{0.45\textwidth}
+    \[
+    \tikzfig{./figures/e-graph-definition-example-2}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+E-classes $\scalebox{0.4}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {};\end{pgfonlayer}\end{tikzpicture}}$ 
+\begin{itemize}
+    \item Set of equivalent terms represented by enodes rooted at this particular e-class
+\end{itemize}
+\end{minipage}
+\end{example}
+\end{frame}
+
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+E-graph is a \alert{data structure} that facilitates equality saturation
+\hfill
+\begin{example}
+\begin{minipage}{0.45\textwidth}
+    \[
+    \tikzfig{./figures/e-graph-definition-example}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+E-nodes $\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=round box] (0) at (0, 0) {$*$};\node [style=none] (1) at (-0.5, -0.5) {};\node [style=none] (2) at (0.5, -0.5) {};\node [style=none] (3) at (0, -0.5) {$\small\ldots$};\end{pgfonlayer}\begin{pgfonlayer}{edgelayer}\draw [style=new edge style 1] (0.center) to (1.center);\draw [style=new edge style 1] (0.center) to (2.center);\end{pgfonlayer}\end{tikzpicture}$, $\ldots$, $\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=round box] (0) at (0, 0) {$<\!\!<$};\node [style=none] (1) at (-0.5, -0.5) {};\node [style=none] (2) at (0.5, -0.5) {};\node [style=none] (3) at (0, -0.5) {$\small\ldots$};\end{pgfonlayer}\begin{pgfonlayer}{edgelayer}\draw [style=new edge style 1] (0.center) to (1.center);\draw [style=new edge style 1] (0.center) to (2.center);\end{pgfonlayer}\end{tikzpicture}$
+\begin{itemize}
+    \item A representative of an e-class once the root node is fixed
+\end{itemize}
+\end{minipage}
+\end{example}
+\end{frame}
+
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+Can also be understood as a device computing the quotient of a free term-algebra over an \alert{algebraic} signature
+\pause
+    \vfill
+    \begin{itemize}
+        \item $\Sigma = \{\mathbb{N} \setminus \{0\}, * : 2 \to 1, / : 2 \to 1, <\!\!< : 2 \to 1, a : 0 \to 1\}$
+        \item $\mathcal{E} = \{x * 2 = x <\!\!<1, (x * y) / z =  x * (y / z), x / x = 1, x * 1 = x\}$
+        \item $a$, $a * 2$, $a <\!\!< 1$, $\ldots$
+    \end{itemize}
+    \vfill
+\begin{example}[$(a * 2) / 2$]
+    \[
+    \scalebox{0.9}{
+    \tikzfig{./figures/e-graph-example-a-no-label}}
+    \]
+\end{example}
+\end{frame}
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+    \begin{example}[$x * 2 \to x <\!\!< 1$]
+        \hspace{-3em}
+        \begin{minipage}{0.25\linewidth}
+        \[
+        \scalebox{0.8}{
+        \tikzfig{./figures/e-graph-example-a-no-label}
+        }
+        \]    
+        \end{minipage}
+        \pause
+        \hspace{-1.5em}
+        \begin{minipage}{0.075\linewidth}
+        \[
+        \xRightarrow{\texttt{add}(a <\!\!< 1)}
+        \]
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-b-add}
+            }
+            \]    
+        \end{minipage}
+        \hfill
+        \pause
+        \begin{minipage}{0.1\linewidth}
+            \[
+            \xRightarrow{\texttt{merge}(\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag yellow] (0) at (0, 0) {<\!\!<};\end{pgfonlayer}\end{tikzpicture}},\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {*};\end{pgfonlayer}\end{tikzpicture}})}
+            \]
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-b-merged}
+            }
+            \]
+        \end{minipage}
+        \hfill
+    \end{example}
+\end{frame}
+
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+    \begin{example}[$(x * y) / z \to x * (y / z)$]
+        \hspace{-2.5em}
+        \begin{minipage}{0.25\linewidth}
+        \[
+        \scalebox{0.8}{
+        \tikzfig{./figures/e-graph-example-b-merged}
+        }
+        \]    
+        \end{minipage}
+        \pause
+        \hspace{-1.5em}
+        \begin{minipage}{0.075\linewidth}
+        \[
+        \xRightarrow{\texttt{add}(a * (2/2))}
+        \]
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \scalebox{0.8}{
+                \tikzfig{./figures/e-graph-example-c-add}
+            }
+            \]    
+        \end{minipage}
+        \hfill
+        \pause
+        \begin{minipage}{0.1\linewidth}
+            \[
+            \xRightarrow{\texttt{merge}(\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag yellow] (0) at (0, 0) {/};\end{pgfonlayer}\end{tikzpicture}},\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {*};\end{pgfonlayer}\end{tikzpicture}})}
+            \]
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-c-merged}
+            }
+            \]
+        \end{minipage}
+        \hfill
+    \end{example}
+\end{frame}
+
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+    \begin{example}[$(x / x) \to 1$]
+        \hspace{-2.5em}
+        \begin{minipage}{0.25\linewidth}
+        \[
+        \scalebox{0.8}{
+        \tikzfig{./figures/e-graph-example-c-merged}
+        }
+        \]    
+        \end{minipage}
+        \pause
+        \hfill
+        \begin{minipage}{0.075\linewidth}
+        \[
+        \xRightarrow{\texttt{add}(1)}
+        \]
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-c-merged}
+            }
+            \]    
+        \end{minipage}
+        \hfill
+        \pause
+        \begin{minipage}{0.1\linewidth}
+            \[
+            \xRightarrow{\texttt{merge}(\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {/};\end{pgfonlayer}\end{tikzpicture}},\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {1};\end{pgfonlayer}\end{tikzpicture}})}
+            \]
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-d-merged}
+            }
+            \]
+        \end{minipage}
+        \hfill
+    \end{example}
+\end{frame}
+
+
+\begin{frame}{E-graphs~[\cite{EggPaper}]}
+    \begin{example}[$x * 1 \to x$]
+        \hspace{-2em}
+        % \hfill
+        \begin{minipage}{0.2\linewidth}
+        \[
+        \scalebox{0.8}{
+        \tikzfig{./figures/e-graph-example-d-merged}
+        }
+        \]    
+        \end{minipage}
+        \pause
+        \hspace{2em}
+        \begin{minipage}{0.1\linewidth}
+        \[
+        \xRightarrow{\texttt{add}(a)}
+        \]
+        \end{minipage}
+        \begin{minipage}{0.2\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-d-merged}
+            }
+            \]    
+        \end{minipage}
+        \hspace{1em}
+        \pause
+        \begin{minipage}{0.25\linewidth}
+            \[
+            \xRightarrow{\texttt{merge}(\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {/\;,*};\end{pgfonlayer}\end{tikzpicture}},\scalebox{0.3}{\begin{tikzpicture}\begin{pgfonlayer}{nodelayer}\node [style=empty diag black] (0) at (0, 0) {a};\end{pgfonlayer}\end{tikzpicture}})}
+            \]
+        \end{minipage}
+        \hspace{-2em}
+        \begin{minipage}{0.2\linewidth}
+            \[
+            \scalebox{0.8}{
+            \tikzfig{./figures/e-graph-example-e-merged}
+            }
+            \]
+        \end{minipage}
+    \end{example}
+\end{frame}
+
+\begin{frame}{Challenges}
+    \vfill
+    \begin{itemize}
+    \item Do not scale well in the case of \alert{(symmetric) monoidal theories}
+    \item No first-class notion of variables, binding and substitution
+    \end{itemize}
+    \vfill
+\end{frame}
+
+\begin{frame}{Symmetric monoidal theories}
+    Presented by a \alert{monoidal signature} $\Sigma = (\Sigma_0, \Sigma_1)$ and a set of \alert{equations} $\mathcal{E}$ between $\Sigma$-terms
+    \vfill
+    \begin{example}
+    \vfill
+    $\Sigma = \{ \mu : 1 \to 2, \eta : 1 \to 0\}$
+    \vfill
+    $\mathcal{E} = \{\mu;\sym \equiv \mu, \mu;(\eta \otimes \mathrm{id}) \equiv \mathrm{id}, \mu;(\mathrm{id} \otimes \mu) \equiv \mu;(\mu \otimes \mathrm{id})\}$
+    \vfill
+    \end{example}
+    \vfill
+    Two kinds of composition: $\fatsemi$ and $\otimes$
+    \vfill
+    Additional generators $\id_n$, $\sym_{m,n}$
+    \vfill
+    Must coherently interact with each other: $f \fatsemi \id_n = f$, $(f \otimes g) \fatsemi (h \otimes k) = (f \fatsemi h) \otimes (g \fatsemi k)$, $\ldots$
+\end{frame}
+
+\begin{frame}{Symmetric monoidal theories}
+    Can be still presented algebraically by lifting $\fatsemi$ and $\otimes$ to the level of functional symbols
+    \vfill
+    \begin{example}[$((\mu \fatsemi \sym) \otimes (\eta \otimes \id)) \otimes (\mu \fatsemi (\id \otimes \id))$]
+    \vfill
+\[    
+\adjustbox{scale=0.6}{\tikzfig{./figures/e-graph-comonoid-example}}
+\]
+    \end{example}
+\end{frame}
+
+\begin{frame}
+\vfill
+\begin{itemize}
+\item Saturating the e-graph yields...
+\end{itemize}
+\centering
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Rule & $(\to)$ & $(\leftarrow)$ \\
+\midrule
+Left identity \hfill $(\id_n \fatsemi f = f)$ & --- & 899 \\
+Right identity \hfill $(f \fatsemi \id_n = f)$ & 4 & 308 \\
+Composition assoc.\ \hfill $((f \fatsemi g) \fatsemi h = f \fatsemi (g \fatsemi h))$ & 1{,}325 & 580 \\
+Bifunctoriality \hfill $((f_1 \otimes f_2) \fatsemi (g_1 \otimes g_2) = (f_1 \fatsemi g_1) \otimes (f_2 \fatsemi g_2))$ & 157 & 92 \\
+Tensor assoc.\ \hfill $((f \otimes g) \otimes h = f \otimes (g \otimes h))$ & 1{,}695 & 2{,}174 \\
+Tensor unit \hfill $(\id_0 \otimes f = f,\; f \otimes \id_0 = f)$ & --- & 2{,}005 \\
+Sym.\ naturality \hfill $(\sym \fatsemi (f \otimes g) = (g \otimes f) \fatsemi \sym)$ & 10 & --- \\
+Sym.\ involution \hfill $(\sym \fatsemi \sym = \id)$ & --- & 1 \\
+Commutativity \hfill $(\mu \fatsemi \sym = \mu)$ & 1 & --- \\
+Counit \hfill $(\mu;(\eta \otimes \id) = \id)$ & 1 & --- \\
+\midrule
+Total & 3{,}193 & 6{,}059 \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Variables and Binding}
+Traditional e-graphs model variables promoting them to functional symbols with no inputs. No notion of binding and substitution
+\vfill
+\begin{example}[{[\cite{OptimizingBetaReductionEGraphs}]}]
+\vfill
+% \[
+% \adjustbox{width=\textwidth}{
+% \tikzfig{./figures/e-graph-substitution}
+% }
+% \]
+\begin{minipage}{0.1\linewidth}
+    \[
+   \adjustbox{scale=0.55}{\tikzfig{../../../figures/categorical-semantics/e-graph-substitution-1}} 
+    \]
+\end{minipage}
+\hspace{1em}
+\begin{minipage}{0.2\linewidth}
+    \[
+   \adjustbox{scale=0.55}{\tikzfig{../../../figures/categorical-semantics/e-graph-substitution-2}} 
+    \]
+\end{minipage}
+\hspace{2em}
+\begin{minipage}{0.25\linewidth}
+    \[
+   \adjustbox{scale=0.55}{\tikzfig{../../../figures/categorical-semantics/e-graph-substitution-3}} 
+    \]
+\end{minipage}
+\hspace{2em}
+\begin{minipage}{0.25\linewidth}
+    \[
+   \adjustbox{scale=0.55}{\tikzfig{../../../figures/categorical-semantics/e-graph-substitution-4}} 
+    \]
+\end{minipage}
+% \begin{minipage}{0.15\linewidth}
+%     \[
+%    \adjustbox{scale=0.6}{\tikzfig{../../../figures/categorical-semantics/e-graph-substitution-5}} 
+%     \]
+% \end{minipage}
+% \hfill
+\end{example}
+\end{frame}
+
+\section{Categorical E-graphs}
+
+\begin{frame}{What we do}
+Both challenges can be addressed by studying e-graphs from a \alert{categorical} perspective
+\vfill
+We view e-graphs as morphisms in a particular category induced by the signature
+\vfill
+Categorical approach has clear notions of variables and binding
+\vfill
+Helps to justify certain congruences stipulated by e-graphs
+\vfill
+A concrete representation of e-graphs can be obtained by considering \alert{string diagrams} for the corresponding category
+\end{frame}
+\begin{frame}{Categorical semantics~[\cite{tiurin2025equivalencehypergraphsdporewriting}]}
+\vfill
+To capture the notion of equivalence between (sub)terms we freely enrich a given signature-generated category over a category of semilattices
+\vfill
+Semilattices are sets with an idempotent commutative associative binary operation $+$
+\vfill
+This means we have the following properties in the category
+\begin{itemize}
+\item $f + f = f$
+\item $f + g = g + f$
+\item $(f + g) \fatsemi h = (f \fatsemi h) + (g \fatsemi h)$
+\item $f \fatsemi (g + h) = (f \fatsemi g) + (f \fatsemi h)$
+\item $f \otimes (g + h) = (f \otimes g) + (f \otimes h)$
+\item $(f + g) \otimes h = (f \otimes h) + (g \otimes h)$
+% \item $\Lambda_{A,B,C}(f + g) = \Lambda_{A,B,C}(f) + \Lambda_{A,B,C}(g)$
+\end{itemize}
+\vfill
+\end{frame}
+
+\begin{frame}{Or, string diagrammatically}
+\[
+\scalebox{0.8}{
+\tikzfig{./figures/egraph-strings}
+}
+\]
+\end{frame}
+
+
+\begin{frame}{Or, string diagrammatically}
+\[
+\scalebox{0.55}{
+\tikzfig{./figures/egraph-strings-equations}
+}
+\]
+\end{frame}
+
+\begin{frame}
+    \begin{example}
+        \begin{minipage}{0.4\linewidth}
+\[    
+\adjustbox{scale=0.8}{\tikzfig{./figures/e-graph-comonoid-example}}
+\]
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\linewidth}
+\[    
+\adjustbox{scale=0.8}{\tikzfig{./figures/string_diagram_commutative_comonoid}}
+\]
+        \end{minipage}
+    \end{example}
+\vfill
+A concrete representation can literally absorb all the non-domain-specific equations (and some domain-specific ones)~[\cite{bonchi-lics}]
+\vfill
+Extend this representation to support string diagrams with dashed boxes~[\cite{tiurin2025equivalencehypergraphsdporewriting}]
+\end{frame}
+\begin{frame}
+    Traditional e-graphs are recovered as string diagrams for cartesian semilattice-enriched categories
+    \begin{example}[$(a * 2) / 2$]
+        \[
+        \scalebox{0.8}{
+        \tikzfig{./figures/e-graph-example-a-no-label}
+        }\qquad\qquad \scalebox{0.8}{\tikzfig{./figures/e-string-example-a}}
+        \]
+    \end{example}
+\end{frame}
+
+\begin{frame}
+\begin{example}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{../../../figures/categorical-semantics/egraph-translation-step-by-step-a-b}
+    }
+    \]
+\end{example}
+\end{frame}
+
+\begin{frame}
+
+\begin{example}
+    \begin{minipage}{0.25\linewidth}
+\[
+\adjustbox{width=\linewidth}{
+\tikzfig{./figures/e-string-example-b}
+}
+\]
+    \end{minipage}
+\hfill
+\begin{minipage}{0.05\linewidth}
+    \[
+    \xRightarrow{}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\linewidth}
+\[
+\adjustbox{width=\linewidth}{
+    \tikzfig{./figures/e-string-example-c}
+}
+\]
+\end{minipage}
+\hfill
+\begin{minipage}{0.05\linewidth}
+    \[
+    \xRightarrow{}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\linewidth}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{./figures/e-string-example-d}
+    }
+    \]
+    \end{minipage}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\begin{example}
+\begin{minipage}{0.35\linewidth}
+        \[
+        \adjustbox{width=\linewidth}{
+        \tikzfig{./figures/e-string-example-d}
+        }
+        \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.2\linewidth}
+    \[
+    \xRightarrow{}
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.35\linewidth}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{./figures/e-string-example-e}
+    }
+    \]
+\end{minipage}
+\end{example}
+\end{frame}
+
+
+\bsubsection{Combinatorial semantics}
+
+\begin{frame}{This work}
+
+Semilattice-enriched closed symmetric monoidal categories 
+\vfill
+\[
+\adjustbox{width=0.9\textwidth}{
+\tikzfig{./figures/egraph-strings-2}}
+\]
+\vfill
+\begin{gather*}
+f = \Lambda_{A,B,C}(f) \otimes \id_{B} \fatsemi \textbf{ev}_{B,C}\\
+\id_{B \multimap{} C} = \Lambda_{B \multimap{} C,B,C}(\textbf{ev}_{B,C})\\
+\Lambda_{Z,B,C}(g \otimes \id_{B} \fatsemi f) = g \fatsemi \Lambda_{A,B,C}(f)\\
+\Lambda_{A,B,C}(f + g) = \Lambda_{A,B,C}(f) + \Lambda_{A,B,C}(g)
+\end{gather*}
+\end{frame}
+
+\begin{frame}{Or, string diagrammatically}
+\begin{minipage}{0.45\linewidth}
+    \[
+   \adjustbox{scale=0.6}{\tikzfig{./figures/beta_law}} 
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+    \[
+   \adjustbox{scale=0.6}{\tikzfig{./figures/curry_eval}} 
+    \]
+\end{minipage}
+\hfill
+\vfill
+\begin{minipage}{0.45\linewidth}
+    \[
+   \adjustbox{scale=0.6}{\tikzfig{./figures/g_id_f}} 
+    \]
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+    \[
+   \adjustbox{scale=0.6}{\tikzfig{./figures/curry_join}} 
+    \]
+\end{minipage}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+$\lambda f . f\;((\lambda x . f \;x)\;2)$
+\end{center}
+\vfill
+\[
+\adjustbox{scale=0.6}{
+\tikzfig{./figures/de-brujin-string}
+}
+\]
+Invariant under $\alpha$-equivalence
+\vfill
+Invariant under non-interacting substitutions
+\vfill
+Substitution is composition
+\vfill
+$\beta$-reduction is diagram rewiring
+\end{frame}
+
+\begin{frame}
+\[
+\adjustbox{width=0.8\textwidth}{
+\tikzfig{./figures/e-graph-substitution}
+}
+\]
+\vfill
+\[
+\adjustbox{width=0.8\textwidth}{
+\tikzfig{./figures/e-string-substitution-2}
+}
+\]
+\end{frame}
+
+\begin{frame}{Slotted e-graphs~[\cite{slotted-egraphs}]}
+\[
+\adjustbox{scale=0.6}{\tikzfig{./figures/slotted_1}} \qquad \Rightarrow{} \qquad \adjustbox{scale=0.6}{\tikzfig{./figures/slotted_2}}
+\]
+\end{frame}
+
+\begin{frame}
+
+Enrichment helps to justify certain equalities
+\vfill
+\begin{equation*}
+	\begin{aligned}
+		\Lambda_{A,B,C}(f + g) & = \eta_A;(B \multimap (f + g))                    \\
+		                       & = \eta_A;(B \multimap f + B \multimap g)          \\
+		                       & = \eta_A;(B \multimap f) + \eta_A;(B \multimap g) \\
+		                       & = \Lambda_{A,B,C}(f\;) + \Lambda_{A,B,C}(g).
+	\end{aligned}%
+	\label{law:distributivity}
+\end{equation*}
+\vfill
+That appeared in slotted e-graphs
+
+\begin{equation*}%
+    \label{eq:cong-bind}
+    \inferrule*[right=cong. (bind)]
+    {E \vdash tc \cong tc'}
+    {E \vdash \text{bind}\; \$x\; tc \cong \text{bind}\; \$x\; tc'},
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Lambda calculus with explicit substitution aka let~[\cite{Standardisation}]}
+\[t \coloneqq x \mid t t \mid \lambda x. t \mid t [x/t]\]
+\vfill
+\begin{align*}
+	(\lambda x. t) L u              \quad & \to_{d\beta} \quad t[x/u] L,                                                \\
+	C \llbracket x \rrbracket [x/u] \quad & \to_{ls} \quad C \llbracket u \rrbracket [x/u],                             \\
+	t [x/u]                         \quad & \to_{gc} \quad t,                               & x \notin \textsf{fv} (t),
+\end{align*}
+\vfill
+\begin{align}
+	t [x/u] [y/v] \quad        & \sim \quad t [y/v] [x/u],        & x \notin \textsf{fv} (v) \land y \notin \textsf{fv} (u), \nonumber \\
+	\label{eq:subst-lambda}
+	(\lambda y. t) [x/u] \quad & \sim \quad \lambda y. (t [x/u]), & y \notin \textsf{fv} (u), \tag{$\ast$}                             \\
+	(t v) [x/u] \quad          & \sim \quad t [x/u] v,            & x \notin \textsf{fv} (v), \nonumber
+\end{align}
+\end{frame}
+
+\begin{frame}
+    \adjustbox{width=\textwidth}{
+	\begin{tabular}{lcccc}
+		Set of equations & $d\beta$ + $ls$ + $gc$ & $d\beta$ + $ls$ + $gc$    & $d\beta$ + $ls$ + $gc$     & $d\beta$ + $ls$ + $gc$\\
+		                 &                        & + \texttt{lambda\_subst}  & + \texttt{lambda\_subst}   & + \texttt{lambda\_subst}\\
+		                 &                        &                           & + \texttt{subst\_comm}     & + \texttt{subst\_comm}\\
+						 &                        &                           &                            & + \texttt{subst\_app}\\						 
+		\# of e-nodes    & 88                     & 185                       & 244                        & 846
+	\end{tabular}}
+\end{frame}	
+\begin{frame}
+    \adjustbox{width=\textwidth}{ 
+    \begin{tabular}{l|ccccc}
+		Rewrite rule & \# of applications     & \# of applications         & \# of applications      & \# of applications       & Absorbed?\\
+		             &($d\beta$ + $ls$ + $gc$)&($d\beta$ + $ls$ + $gc$     &($d\beta$ + $ls$ + $gc$  &($d\beta$ + $ls$ + $gc$   &\\
+		             &                        & + \texttt{lambda\_subst})  & + \texttt{lambda\_subst}& + \texttt{lambda\_subst} &\\
+		             &                        &                            & + \texttt{subst\_comm}) & + \texttt{subst\_comm}   &\\
+		             &                        &                            &                         & + \texttt{subst\_app})   &\\
+		\hline
+		\texttt{beta} & 14 & 57 & 49 & 80 & No\\
+		\texttt{subst\_no\_var} & 35 & 113 & 118 & 197 & No\\
+		\rowcolor{gray!30}
+		\texttt{ls\_rule\_*} & 48 & 141 & 140 & 302 & Yes\\
+		\texttt{subst\_lambda} & --- & 76 & 109 & 336 & No\\
+		\rowcolor{gray!30}
+		\texttt{subst\_comm} & --- & --- & 104 & 321 & Yes\\
+		\rowcolor{gray!30}
+		\texttt{subst\_app} & --- & --- & --- & 263 & Yes\\
+	\end{tabular}}
+\end{frame}
+
+\begin{frame}{Conclusion}
+  We extend the categorical semantics of e-graphs to support \alert{binding},
+  moving from semilattice-enriched symmetric monoidal to semillattice-enriched symmetric monoidal \alert{closed} categories
+  \vfill
+  A single string diagram encodes both \alert{binding} (closed structure) and
+  \alert{equivalence} of subterms (semilattice enrichment)
+  \vfill
+  \alert{Closed e-hypergraphs} give these diagrams a combinatorial
+  representation, with DPOI rewriting shown \alert{sound and complete} w.r.t.\
+  term rewriting modulo SMC equations
+  \vfill
+  Binding comes \alert{for free}: no explicit-substitution nodes or de Bruijn
+  shifting --- $\beta$-reduction is just re-wiring, and $\alpha$-equivalence built in
+  \vfill These \emph{categorical e-graphs} have clear advantages over slotted e-graphs in some scenarios and built from a semantics-first approach
+\end{frame}
+
+
+\appendix
+
+\begin{frame}[allowframebreaks]{References}
+\footnotesize
+\printbibliography
+\end{frame}
+
+\end{document}

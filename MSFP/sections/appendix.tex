@@ -4,99 +4,162 @@
 In this section we will define the category of semilattices that we use as a base for enrichment throughout the paper.
 
 \begin{definition}[Semilattice]
-	A \textit{semilattice} is a set equipped with an operation that we denote as $+$ which is associative, commutative and idempotent.
+	A \textit{semilattice} $(S,\join)$ is a set $S$ equipped with a binary operation $\join : S \times S \to S$ satisfying the following properties:
+    \begin{align*}
+        a \join (b \join c) &\equiv (a \join b) \join c \quad \text{(associativity)}\\
+        a \join b &\equiv b \join a \quad \text{(commutativity)}\\
+        a \join a &\equiv a \quad \text{(idempotence)}
+    \end{align*}
 \end{definition}
 
-Note that we do not require the existence of a unit for $+$.
+Note that we do not require the existence of a unit for $+$, adopting this requirement would mean that every hom-object must be non-empty.
 Semilattices that satisfy this extra requirement are sometimes called \textit{bounded}, i.e., they are idempotent commutative monoids.
 
 \begin{definition}[Semilattice homomorphism]
-	A homomorphism between two semilattices $S_{1}$ and $S_{2}$ is a map $h$ that respects $+$.
-	That is, for all $s,s' \in S_{1}$, $h(s +_{S_{1}} s') = h(s) +_{S_{2}} h(s')$.
+	A homomorphism between two semilattices $S_{1}$ and $S_{2}$ is a map $\phi : S_1 \to S_2$ such that $\phi(s \join_{S_{1}} s') = \phi(s) \join_{S_{2}} \phi(s')$ for all $s,s' \in S_{1}$.
 \end{definition}
 
 \begin{definition}[Category of semilattices]
 	Semilattices with their respective homomorphisms form a category that we denote $\catname{SLat}$.
 \end{definition}
 
-  \begin{proposition}
-    $\catname{SLat}$ is a closed symmetric monoidal category.
-  \end{proposition}
-  \begin{proof}
-    The tensor product of two semilattices $S_{1}$ and $S_{2}$ is defined as follows.
-    $S_{1} \otimes S_{2}$ consists of pairs $(s_1,s_2)$ $s_{1} \in S_{1}$, $s_{2} \in S_{2}$ quotiented by commutativity, idempotence and associativity and additionally by the following relations
-    \begin{itemize}
-      \item $(s_{1} +_{S_{1}} s_{1}',s_{2}) \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
-      \item $(s_{1}, s_{2} +_{S_{2}} s_{2}') \equiv (s_{1},s_{2}) +_{S_{1} \otimes S_{2}} (s_{1}',s_{2})$
-    \end{itemize}
-  
-    The unit for this tensor product is $I = \{*\}$ --- a one-element semilattice.
-    Clearly $S \otimes I \cong S$ by mapping $(s,*) \mapsto s$ for all $s \in S$ and vice versa.
-    The symmetry, associators and unitors are then obvious morphisms.
-    Finally, the category is closed since the set of homomorphisms between two semilattices is a semilattice by defining $(f + g)(x)$ as $f(x) + g(x)$.
-    $f + g$ is a homomorphism since $(f + g)(x+y) = f(x+y) + g(x+y) = f(x) + f(y) + g(x) + g(y) = f(x) + g(x) + f(y) + g(y) = f(x+y) + g(x+y)$.
-  \end{proof}
-  
-  This makes $\catname{SLat}$ a suitable base for enrichment.
+\begin{definition}\label{def:slat-tensor}
+We define a tensor product of semilattices $S_1$ and $S_2$ as follows.
+$S_1 \otimes S_2$ is the free semilattice on the set $S_1 \times S_2$ --- finite non-empty formal joins of pairs $(s_1,s_2)$ with $s_{1} \in S_{1}$, $s_2 \in S_{2}$ --- quotiented by the following bilinearity relations
+\begin{itemize}
+    \item $(s_1 \join_{S_{1}} s_1', s_2) \equiv (s_1,s_2) \join_{S_{1} \otimes S_{2}} (s'_1, s_2)$
+    \item $(s_1, s_2 \join_{S_{2}} s'_2) \equiv (s_1, s_2) \join_{S_{1} \otimes S_{2}} (s_1,s'_2)$
+\end{itemize}
+Writing $\eta_{S_1,S_2} : S_1 \times S_2 \to S_1 \otimes S_2$, $(s_1,s_2) \mapsto [(s_1,s_2)]$, for the inclusion of pairs, the tensor product is characterised by the universal property that every \emph{bimorphism} out of $S_1 \times S_2$---a function $b : S_1 \times S_2 \to T$ that is a homomorphism in each variable separately---factors as $b = \bar{b} \circ \eta_{S_1,S_2}$ for a unique homomorphism $\bar{b} : S_1 \otimes S_2 \to T$.
+On morphisms, given $f : S_1 \to T_1$ and $g : S_2 \to T_2$, the composite $\eta_{T_1,T_2} \circ (f \times g)$ is a bimorphism, and we define $f \otimes g : S_1 \otimes S_2 \to T_1 \otimes T_2$ to be the unique homomorphism with
+\[
+(f \otimes g) \circ \eta_{S_1,S_2} = \eta_{T_1,T_2} \circ (f \times g).
+\]
+The unit for this tensor product is $\I = \{*\}$ --- a one-element semilattice.
+\end{definition}
+
+\begin{remark}\label{rem:slat-tensor-functorial}
+The action of $\otimes$ on morphisms is functorial: $\id \otimes \id = \id$ and
+\[
+(f \otimes g) \circ (h \otimes k) = (f \circ h) \otimes (g \circ k).
+\]
+Both equations follow from the uniqueness in the universal property, since each side restricts along $\eta$ to the same bimorphism; for the second,
+\[
+\begin{aligned}
+(f \otimes g) \circ (h \otimes k) \circ \eta
+&= (f \otimes g) \circ \eta \circ (h \times k) \\
+&= \eta \circ (f \times g) \circ (h \times k) \\
+&= \eta \circ \big((f \circ h) \times (g \circ k)\big),
+\end{aligned}
+\]
+which is exactly the bimorphism defining $(f \circ h) \otimes (g \circ k)$. By the same reasoning the unitors $S \otimes \I \cong S$ (given by $(s,*) \mapsto s$), the associators and the symmetry are the unique homomorphisms induced by the evident bimorphisms, and the coherence axioms hold because the corresponding diagrams already commute at the level of bimorphisms, where they reduce to coherence for the cartesian product in $\catname{Set}$. This equips $\catname{SLat}$ with a symmetric monoidal structure.
+\end{remark}
 
 \begin{remark}
     The above definition of a tensor product should not be confused with a tensor given by $\times$, which is constructed in the same vein as the tensor product above with the additional quotienting
     \[
-        (s_1,s_2) +_{S_1 \times S_2} (s_1',s_2') \equiv (s_1 +_{S_1} s_1', s_2 +_{S_2} s_2')~.
+        (s_1,s_2) \join_{S_1 \times S_2} (s_1',s_2') \equiv (s_1 \join_{S_1} s_1', s_2 \join_{S_2} s_2')~.
     \]
-    The reason for using the former construction is that it has better theoretical properties, in particular, the free semilattice functor (defined below) is a monoidal functor.
+    The reason for using the former construction is that it has better theoretical properties, in particular, the free semilattice functor is strong monoidal (\cref{cor:slat-free-monoidal}).
 \end{remark}
 
+\begin{definition}\label{def:slat-internal-hom}
+For semilattices $S_1$ and $S_2$, the \emph{internal hom} $[S_1, S_2]$ is the set $\catname{SLat}(S_1, S_2)$ of homomorphisms $S_1 \to S_2$, made into a semilattice by the pointwise join
+\[
+(f \join g)(x) \defeq f(x) \join g(x).
+\]
+This is well-defined, as $f \join g$ is again a homomorphism:
+\begin{align*}
+    (f \join g)(x \join y) &= f(x \join y) \join g(x \join y)\\
+    &= f(x) \join f(y) \join g(x) \join g(y)\\
+    &= f(x) \join g(x) \join f(y) \join g(y)\\
+    &= (f \join g)(x) \join (f \join g)(y).
+\end{align*}
+\end{definition}
+  \begin{proposition}\label{prop:slat-smcc}
+    $\catname{SLat}$ is a closed symmetric monoidal category.
+  \end{proposition}
+  \begin{proof}
+    The symmetric monoidal structure is given by the tensor product of \cref{def:slat-tensor}, with functoriality and coherence established in \cref{rem:slat-tensor-functorial}.
+    For closedness, take the internal hom $[S_2, T]$ of \cref{def:slat-internal-hom}; the universal property of the tensor gives bijections, natural in $S_1$ and $T$,
+    \[
+    \catname{SLat}(S_1 \otimes S_2, T) \;\cong\; \{\text{bimorphisms } S_1 \times S_2 \to T\} \;\cong\; \catname{SLat}(S_1, [S_2, T]),
+    \]
+    where the first is the universal property of $\otimes$ and the second is currying: a bimorphism $b : S_1 \times S_2 \to T$ corresponds to the homomorphism $s_1 \mapsto b(s_1, -)$ into $[S_2, T]$.
+    Hence $- \otimes S_2 \dashv [S_2, -]$, so $\catname{SLat}$ is closed.
+  \end{proof}
+
+\begin{remark}
+The above is a special case of the result by Keigher~\cite{keigher_symmetric_nodate} that says that a category of Eilenberg-Moore algebras induced by a commutative monad on $\catname{Set}$ is canonically symmetric monoidal closed.
+\end{remark}
 \begin{definition}
-	Forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(I_{\catname{SLat}, -}) : \catname{SLat} \to \catname{Set}$.
+	The forgetful functor $U : \catname{SLat} \to \catname{Set}$ is given by $\catname{SLat}(\I_{\catname{SLat}}, -) : \catname{SLat} \to \catname{Set}$.
 \end{definition}
 
 Intuitively, the above functor returns the underlying set of a given semilattice $S$ as each morphism from $\{*\} \to S$ picks out an element of $S$.
 
-\begin{proposition}[Special case of Proposition 6.4.6~\cite{Borceux_1994}]
+\begin{proposition}[Special case of Proposition 6.4.6~\cite{Borceux_1994}]\label{prop:slat-free}
 	The forgetful functor $U : \catname{SLat} \to \catname{Set}$ has a left adjoint free functor $F : \catname{Set} \to \catname{SLat}$.
 \end{proposition}
 \begin{proof}
-	The functor $F$ is defined by letting $F(A) = \coprod_{A} I_{\catname{SLat}}$ where the latter is a coproduct which is a `free' product of semilattices defined as follows.
-	The elements of $S_{1} \coprod S_{2}$ are sequences $s_{1} + s_{2} + \ldots + s_{n}$ where each $s_{i}$ is either from $S_{1}$ or $S_{2}$ quotiented by all relations in $S_{1}$ and $S_{2}$.
+	The functor $F$ is defined by letting $F(A) = \coprod_{A} \I_{\catname{SLat}}$, the coproduct of $A$-many copies of the unit semilattice.
+	The coproduct $S_{1} \coprod S_{2}$ of two semilattices has as elements the formal joins $s_{1} \join s_{2} \join \ldots \join s_{n}$ with each $s_{i}$ drawn from $S_{1}$ or $S_{2}$, quotiented by the semilattice axioms together with the relations of $S_{1}$ and $S_{2}$.
 	The adjunction is then given by the following natural isomorphisms
 	\begin{align*}
-		\catname{SLat}(\coprod_{A}(I_{\catname{SLat}}), B) & \cong \prod_{A}(\catname{SLat}(I_{\catname{SLat}}, B))       \\
-		                                                   & \cong \catname{Set}(A,\catname{SLat}(I_{\catname{SLat}}, B)) \\
+		\catname{SLat}(\coprod_{A}(\I_{\catname{SLat}}), B) & \cong \prod_{A}(\catname{SLat}(\I_{\catname{SLat}}, B))       \\
+		                                                   & \cong \catname{Set}(A,\catname{SLat}(\I_{\catname{SLat}}, B)) \\
 		                                                   & \cong \catname{Set}(A, U(B))
 	\end{align*}
-	The fist isomorphism is given by the fact that hom-functor makes limits into colimits in its first argument, the second being given by the property that $|\catname{Set}(A,B)| = |B|^{|A|} = |\underbrace{B \times \ldots \times B}_{|A|}|$, and the last isomorphism is given by the definition of $U$.
-	Furthermore, we have,
+	The first isomorphism holds because the contravariant hom-functor sends colimits in its first argument to limits, so the coproduct becomes a product.
+	The second is the isomorphism $\prod_{A} X \cong \catname{Set}(A, X)$. By the Yoneda lemma it suffices to give a bijection natural in $Y$:
 	\[
-		F(I) \cong I_{\catname{SLat}}
+	\catname{Set}\big(Y, \textstyle\prod_A X\big) \cong \prod_A \catname{Set}(Y, X) \cong \catname{Set}\big(\textstyle\coprod_A Y, X\big) \cong \catname{Set}(Y \times A, X) \cong \catname{Set}\big(Y, \catname{Set}(A,X)\big),
 	\]
-	and
-	\begin{align*}
-		F(A) \otimes F(B) & \cong (\coprod_{A} I_{\catname{SLat}}) \otimes (\coprod_{B} I_{\catname{SLat}}) \\
-		                  & \cong \coprod_{A} (I_{\catname{SLat}} \otimes \coprod_{B} I_{\catname{SLat}})   \\
-		                  & \cong \coprod_{A} (\coprod_{B} (I_{\catname{SLat}} \otimes I_{\catname{SLat}})) \\
-		                  & \cong \coprod_{A} (\coprod_{B} I_{\catname{SLat}})                              \\
-		                  & \cong \coprod_{A \times B} I_{\catname{SLat}}                                   \\
-		                  & \cong F(A \times B)
-	\end{align*}
-	In the above we used the fact that functors $- \otimes X$ and $X \otimes -$ preserve colimits as they are both left-adjoint by symmetry and monoidal closedness of $\catname{SLat}$.
+	using, in order, the universal property of the product, that of the coproduct (with $\coprod_A Y \cong Y \times A$), and currying.
+    The last bijection is the definition of $U$.
+	As all three bijections are natural in $B$, their composite exhibits $F \dashv U$.
 \end{proof}
+
+\begin{corollary}\label{cor:slat-free-monoidal}
+	The free functor $F : \catname{Set} \to \catname{SLat}$ is strong monoidal as a functor $(\catname{Set}, \times) \to (\catname{SLat}, \otimes)$.
+\end{corollary}
+\begin{proof}
+	We have $F(\I_{\catname{Set}}) \cong \I_{\catname{SLat}}$, and
+	\begin{align*}
+		F(A) \otimes F(B) & \cong (\coprod_{A} \I_{\catname{SLat}}) \otimes (\coprod_{B} \I_{\catname{SLat}}) \\
+		                  & \cong \coprod_{A} (\I_{\catname{SLat}} \otimes \coprod_{B} \I_{\catname{SLat}})   \\
+		                  & \cong \coprod_{A} (\coprod_{B} (\I_{\catname{SLat}} \otimes \I_{\catname{SLat}})) \\
+		                  & \cong \coprod_{A} (\coprod_{B} \I_{\catname{SLat}})                              \\
+		                  & \cong \coprod_{A \times B} \I_{\catname{SLat}}                                   \\
+		                  & \cong F(A \times B),
+	\end{align*}
+	naturally in $A$ and $B$, where we used that $- \otimes X$ and $X \otimes -$ preserve colimits, being left adjoints by the symmetry and monoidal closedness of $\catname{SLat}$ (\cref{prop:slat-smcc}).
+\end{proof}
+
+While a monoidal base suffices to define enriched categories, we assume that the base is symmetric monoidal closed, so that the standard category-theoretic machinery (such as the tensoring of enriched categories) is available in the enriched setting.
+
 
 \section{String diagram rewrite theory}
 \label{sec:appendix:hyp}
 
 \subsection{Hypergraphs}
 
-\begin{proposition}
-$\catname{Hyp(\Sigma)}$ is equivalently characterised as the category of (finite) presheaves over the category $\mathbf{I}$ generated by objects pairs $(k, l) \in \mathbb{N} \times \mathbb{N}$ and an additional object $\star$, with $k + l$ morphisms: $\{ i\colon \star \to (k, l) \mid 0 \leq i < k + l \}$.
+\begin{proposition}[\cite{bonchi_string_2022-1}]
+$\catname{Hyp}(\Sigma)$ is equivalently the slice category $\catname{Hyp} \downarrow G_{\Sigma}$, where $\catname{Hyp}$ is the category of (unlabelled) hypergraphs --- equivalently, the category of finite presheaves over the index category $\mathbf{I}$ whose objects are the pairs $(k, l) \in \mathbb{N} \times \mathbb{N}$ together with a distinguished object $\star$, with $k + l$ morphisms $\{ i\colon \star \to (k, l) \mid 0 \leq i < k + l \}$ --- and $G_{\Sigma}$ is the hypergraph with a single vertex $v$ and, for each generator $g : n \to m$ of $\Sigma$, one hyperedge $e_g$ in which $v$ occurs $n$ times in $s(e_g)$ and $m$ times in $t(e_g)$.
 \end{proposition}
-As such, it has all finite colimits; the initial object is given by the empty hypergraph, and coproducts are given by the disjoint union of hypergraphs.
+Intuitively, $\mathbf{I}$ presents a hypergraph by its vertices (the object $\star$) and its hyperedges sorted by arity (an object $(k,l)$ is the sort of hyperedges with $k$ sources and $l$ targets), the $k+l$ maps picking out each source and target vertex.
+The hyperedges of $G_{\Sigma}$ are then the available labels, and a morphism $H \to G_{\Sigma}$ in $\catname{Hyp}$ labels each hyperedge of $H$ by the generator it is sent to, automatically matching arities.
+As a presheaf category, $\catname{Hyp}$ has all finite colimits --- the initial object is the empty hypergraph and coproducts are disjoint unions --- and these are created by the forgetful functor out of the slice, so $\catname{Hyp}(\Sigma)$ inherits them.
+
+The single vertex of $G_{\Sigma}$ reflects that $\Sigma$ here carries a single object type.
+For a many-sorted signature with a set of types (colours) $C$, one works instead with the category $\catname{Hyp}_{C}$ of $C$-\emph{coloured} hypergraphs --- finite presheaves over the analogous index category $\mathbf{I}_{C}$ in which the single vertex object $\star$ is replaced by one object $\star_{c}$ per colour $c \in C$, and the arity objects record the colour of each source and target --- and takes $G_{\Sigma}$ to have one vertex per colour, attaching each generator's sources and targets to the vertices of the corresponding colours.
+The resulting slice $\catname{Hyp}_{C} \downarrow G_{\Sigma} =: \catname{Hyp}_{C,\Sigma}$ then enforces the typing discipline of~\autoref{def:hypergraph} for free, since a labelling morphism must respect sources and targets and hence colours.
 
 \begin{proposition}
 	$\HypI{\Sigma}$ is a symmetric monoidal category.
 \end{proposition}
 \begin{proof}
-Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m;m \xrightarrow{f^\prime} \mathcal{G} \xleftarrow{g^\prime} k$ is given by the pushout
+Composition of two cospans $n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m \fatsemi m \xrightarrow{f^\prime} \mathcal{G} \xleftarrow{g^\prime} k$ is given by the pushout
 $
 	n \xrightarrow{f} \mathcal{F} \sqcup_{g,f^\prime} \mathcal{G} \xleftarrow{g^\prime} k
 $,
@@ -226,7 +289,7 @@ Analogously, we can see that~\autoref{fig:hypergraph} (equipped with the interfa
 Intuitively, requiring boundary complements ensures that inputs are glued exclusively to outputs and vice-versa in the two pushout squares.
 
 \begin{example}[Example 29~\cite{bonchi_string_2022-2}]
-	Consider the following signature $\Sigma = \{\alpha_1 : 0 \to 1, \alpha_2 : 1 \to 0, \alpha_3 : 1 \to 1\}$ and the rewrite rule $id \to \alpha_3$ for the example term $\alpha_1;\alpha_2$.
+	Consider the following signature $\Sigma = \{\alpha_1 : 0 \to 1, \alpha_2 : 1 \to 0, \alpha_3 : 1 \to 1\}$ and the rewrite rule $id \to \alpha_3$ for the example term $\alpha_1 \fatsemi \alpha_2$.
 	Without the boundary complement condition, we get, for example, the following two possible DPOI squares.
 	\[
 	\adjustbox{scale=0.5}{
@@ -260,7 +323,7 @@ Intuitively, requiring boundary complements ensures that inputs are glued exclus
 \begin{example}[Example 32~\cite{bonchi_string_2022-2}]
 	Consider the following signature $\Sigma \{e_1 : 1 \to 2, e_2 : 2 \to 1, e_3 : 1 \to 1, e_4 : 1 \to 1\}$ and the following rewrite rule
 	\[
-	id \otimes e_{1};\sym \otimes id; id \otimes e_{2} \quad \to \quad \sym;e_4 \otimes e_4
+	id \otimes e_{1} \fatsemi \sym \otimes id \fatsemi id \otimes e_{2} \quad \to \quad \sym \fatsemi e_4 \otimes e_4
 	\]
 	represented as the following span of hypergraphs
 	\[
@@ -268,7 +331,7 @@ Intuitively, requiring boundary complements ensures that inputs are glued exclus
 	\tikzfig{./figures/convex_match_example_rule}~.
 	}
 	\]
-	Now consider the cospan of hypergraphs corresponding to the following $\Sigma$-term $e_1;e_3\otimes id;e_2$.
+	Now consider the cospan of hypergraphs corresponding to the following $\Sigma$-term $e_1 \fatsemi e_3\otimes id \fatsemi e_2$.
 	\[
 	\adjustbox{scale=0.65}{
 	\tikzfig{./figures/convex_match_example_source}~.
@@ -277,8 +340,8 @@ Intuitively, requiring boundary complements ensures that inputs are glued exclus
 	Applying the rule to the cospan above results in the DPOI square from~\autoref{fig:non_convex_dpoi_example}.
 	While the DPOI square is valid and the pushout complement satisfies the boundary complement condition, the match (highlighted in red) is not convex as there exists a path from the input of $e_3$ to its output that does not belong to the match itself.
 	The consequence of this is that this rewrite step does not correspond to a term rewriting modulo SMC --- there is no way to identify such a redex without at least traced monoidal structure.
-	That is, there is no decomposition of $e_1;e_3\otimes id;e_2$ as $c_1;id_{n}\otimes(id \otimes e_1;\sym\otimes id;id \otimes e_2);c_2$.
-	There is, however, a match modulo traced symmetric monoidal structure --- $\text{tr}(e_3\otimes id;\textcolor{red}{e_1 \otimes id;\sym \otimes id; id \otimes e_2})$.
+	That is, there is no decomposition of $e_1 \fatsemi e_3\otimes id \fatsemi e_2$ as $c_1 \fatsemi id_{n}\otimes(id \otimes e_1 \fatsemi \sym\otimes id \fatsemi id \otimes e_2) \fatsemi c_2$.
+	There is, however, a match modulo traced symmetric monoidal structure --- $\text{tr}(e_3\otimes id \fatsemi \mathcolorbox{yellow}{e_1 \otimes id \fatsemi \sym \otimes id \fatsemi  id \otimes e_2})$.
 	Requiring convex matches prevents such situations from arising.
 \end{example}
 
@@ -314,33 +377,33 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
 
 		\item When $x$ is not a top-level vertex such that $\textcolor{e-color}{<}(\iota_{V}(x))$ is defined,
 		      \[
-			      \phi_{E}(\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{e-color}{<_{\mathcal{G}}^{\mu}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
+			      \phi_{E}(\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{e-color}{<_{\mathcal{G}}^{\mu}}(\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}}(x))
 		      \]
 		      and
 		      \[
-			      \phi_{E}(\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{e-color}{<_{\mathcal{G}}^{\mu}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))
+			      \phi_{E}(\textcolor{e-color}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{e-color}{<_{\mathcal{G}}^{\mu}}(\phi_{E} \fatsemi \iota_{E_{\mathcal{G}}}(x))
 		      \] when $x$ is a not top-level edge.
 		\item When $x$ is not a top-level vertex such that $\textcolor{closed-color}{<}(\iota_{V}(x))$ is defined,
 		      \[
-			      \phi_{E}(\textcolor{closed-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x))
+			      \phi_{E}(\textcolor{closed-color}{<_{\mathcal{F}}^{\mu}}(\iota_{V_{\mathcal{F}}}(x))) = \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}}(\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}}(x))
 		      \]
 		      and
 		      \[
-			      \phi_{E}(\textcolor{closed-color}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))
+			      \phi_{E}(\textcolor{closed-color}{<_{\mathcal{F}}^{\mu}}(\iota_{E_{\mathcal{F}}}(x))) = \textcolor{closed-color}{<_{\mathcal{G}}^{\mu}}(\phi_{E} \fatsemi \iota_{E_{\mathcal{G}}}(x))
 		      \] when $x$ is a not top-level edge.
 		\item
 		      When $x \in E_{\mathcal{F}}$
 		      \[
-			      [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}} ]^{*}(\consistency_{\mathcal{F}}(\iota_{E_{\mathcal{F}}}(x)))
+			      [\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}}, \phi_{E} \fatsemi \iota_{E_{\mathcal{G}}} ]^{*}(\consistency_{\mathcal{F}}(\iota_{E_{\mathcal{F}}}(x)))
 			      \subseteq
-			      \consistency_{\mathcal{G}}(\phi_{E};\iota_{E_{\mathcal{G}}}(x))
+			      \consistency_{\mathcal{G}}(\phi_{E} \fatsemi \iota_{E_{\mathcal{G}}}(x))
 		      \]
-		      where $\phi_{V};\iota_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} \sqcup  E_{\mathcal{G}}$, and similarly for $\phi_{E};\iota_{E_\mathcal{G}}$ so that $[\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}] : V_{\mathcal{F}} \sqcup  E_{\mathcal{F}} \to  V_{\mathcal{G}} \sqcup  E_{\mathcal{G}}$.
+		      where $\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}} : V_{\mathcal{F}} \to V_{\mathcal{G}} \sqcup  E_{\mathcal{G}}$, and similarly for $\phi_{E} \fatsemi \iota_{E_\mathcal{G}}$ so that $[\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}}, \phi_{E} \fatsemi \iota_{E_{\mathcal{G}}}] : V_{\mathcal{F}} \sqcup  E_{\mathcal{F}} \to  V_{\mathcal{G}} \sqcup  E_{\mathcal{G}}$.
 		\item When $x \in V_{\mathcal{F}}$
 		      \[
-			      [\phi_{V};\iota_{V_{\mathcal{G}}}, \phi_{E};\iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{F}}(\iota_{V_{\mathcal{F}}}(x)))
+			      [\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}}, \phi_{E} \fatsemi \iota_{E_{\mathcal{G}}}]^{*}(\consistency_{\mathcal{F}}(\iota_{V_{\mathcal{F}}}(x)))
 			      \subseteq
-			      \consistency_{\mathcal{G}}(\phi_{V};\iota_{V_{\mathcal{G}}}(x)).
+			      \consistency_{\mathcal{G}}(\phi_{V} \fatsemi \iota_{V_{\mathcal{G}}}(x)).
 		      \]
 	\end{enumerate}
 \end{definition}
@@ -383,19 +446,19 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
 	\[
 		X \sqcup  Y = \{V_{X} \sqcup  V_{Y}, E_{X} \sqcup  E_{Y}, s_{X\sqcup Y}, t_{X\sqcup Y}, \consistency_{X\sqcup Y}, \textcolor{e-color}{<_{X\sqcup Y}}, \textcolor{closed-color}{<_{X\sqcup Y}}\}
 	\]
-	where $s_{X\sqcup Y} : E_{X} \sqcup  E_{Y} \to (V_{X} \sqcup  V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} \sqcup  E_{Y} \to (V_{X} \sqcup  V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} \sqcup  V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} \sqcup  V_{Y})^{*}$ defined as $s'_{X} = s_{X};\iota_{1,V}^{*}$ and $s'_{Y} = s_{Y};\iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X\sqcup Y}, \textcolor{e-color}{<_{X\sqcup Y}}, \textcolor{closed-color}{<_{X\sqcup Y}}, \consistency_{X\sqcup Y}$.
+	where $s_{X\sqcup Y} : E_{X} \sqcup  E_{Y} \to (V_{X} \sqcup  V_{Y})^{*}$ which can be defined as a copairing $[s'_{X}, s'_{Y}] : E_{X} \sqcup  E_{Y} \to (V_{X} \sqcup  V_{Y})^{*}$ and $s'_{X} : E_{X} \to (V_{X} \sqcup  V_{Y})^{*}$, $s'_{Y} : E_{Y} \to (V_{X} \sqcup  V_{Y})^{*}$ defined as $s'_{X} = s_{X} \fatsemi \iota_{1,V}^{*}$ and $s'_{Y} = s_{Y} \fatsemi \iota_{2,V}^{*}$ where $\iota_1,\iota_2$ are corresponding coproduct injections, similarly for $t_{X\sqcup Y}, \textcolor{e-color}{<_{X\sqcup Y}}, \textcolor{closed-color}{<_{X\sqcup Y}}, \consistency_{X\sqcup Y}$.
 	We will omit labels as they are irrelevant to pushout construction.
 	Consider relations
 	\begin{align*}
 		S_{V} & = \{
 		\;(x_i,y_j) \in (V_{X} \sqcup  V_{Y}) \times (V_{X} \sqcup  V_{Y})\; |                                               \\
-		      & \;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z) \\
+		      & \;\exists z \in V_{Z} \; . \; x_i = f_{V} \fatsemi \iota_{1,V}(z) \text{ and } y_j = g_{V} \fatsemi \iota_{2,V}(z) \\
 		      & \;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
 		\}                                                                                                       \\
 		      & \cup                                                                                             \\
 		      & \{
 		\;(y_j,x_j) \in (V_{X} \sqcup  V_{Y}) \times (V_{X} \sqcup  V_{Y})\; |                                               \\
-		      & \;\exists z \in V_{Z} \; . \; x_i = f_{V};\iota_{1,V}(z) \text{ and } y_j = g_{V};\iota_{2,V}(z) \\
+		      & \;\exists z \in V_{Z} \; . \; x_i = f_{V} \fatsemi \iota_{1,V}(z) \text{ and } y_j = g_{V} \fatsemi \iota_{2,V}(z) \\
 		      & \;\text{ where $x_i \in V_{X}$ and $y_j \in V_{Y}$ }
 		\}                                                                                                       \\
 		      & \cup                                                                                             \\
@@ -430,7 +493,7 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
 	There is also $[] : E_{X} \sqcup  E_{Y} \to \sfrac{E_{X} \sqcup  E_{Y}}{\sim}$ and we will omit subscripts as the correct type will be clear from the argument.
 	We then define
 	\[
-		\sfrac{s_{X\sqcup Y}}{\sim}([e]) = s_{X\sqcup Y};[]^{*}(e) = [s_{X\sqcup Y}(e)]^{*}
+		\sfrac{s_{X\sqcup Y}}{\sim}([e]) = s_{X\sqcup Y} \fatsemi []^{*}(e) = [s_{X\sqcup Y}(e)]^{*}
 	\]
 	We will also use subscripts when it is important to tell if an element of $E_{X} \sqcup  E_{Y}$ has a pre-image in either $E_{X}$ or $E_{Y}$ by writing $e_{x}$ or $e_{y}$.
 	Similarly, we will write $v_{x}$ to refer to a vertex with a pre-image in $V_{X}$.
@@ -500,7 +563,7 @@ In constructing the pushout the functional versions of e-hypergraph relations wi
 	\[
 		\consistency_{X\sqcup Y}' : V_{X} \sqcup  V_{Y} \sqcup  E_{X} \sqcup  E_{Y} \to 2^{(\sfrac{V_{X} \sqcup  V_{Y}}{\sim} \sqcup  \sfrac{(E_{X} \sqcup  E_{Y})}{\sim})}
 	\]
-	which is essentially $[ []_{V};\iota_{\sfrac{V_{X} \sqcup  V_{Y}}{\sim}}, []_{E};\iota_{\sfrac{E_{X} \sqcup  E_{Y}}{\sim}}]^{*}$ (a copairing extended to sequences that we will further denote as $[ []_{V}^{\consistency} []_{E}^{\consistency}]$) applied to the return value of $\consistency_{X\sqcup Y}$.
+	which is essentially $[ []_{V} \fatsemi \iota_{\sfrac{V_{X} \sqcup  V_{Y}}{\sim}}, []_{E} \fatsemi \iota_{\sfrac{E_{X} \sqcup  E_{Y}}{\sim}}]^{*}$ (a copairing extended to sequences that we will further denote as $[ []_{V}^{\consistency} []_{E}^{\consistency}]$) applied to the return value of $\consistency_{X\sqcup Y}$.
 	We then first define an auxiliary relation $\consistency^{\hashtag}$ similarly to how $<^{\mu}_{\sfrac{X\sqcup Y}{\sim}}$ was defined. We begin with defining $\consistency^{\hashtag}_{\sfrac{X\sqcup Y}{\sim}}$ for vertices.
 
 	\begin{enumerate}
@@ -642,12 +705,12 @@ This motivates the requirement for conditions (2), (3), and (4) of~\autoref{th:e
 \end{figure*}
 
 The base cases for interpretation function $[-] : \textbf{S}(\Sigma) \to \MdaCospans$ are given in~\autoref{fig:base_cases}.
-Then it is defined inductively by letting $[f \otimes g] \Coloneqq [f] \otimes [g]$ and $[f;g] \Coloneqq [f];[g]$ and by freeness induces the corresponding functor.
+Then it is defined inductively by letting $[f \otimes g] \Coloneqq [f] \otimes [g]$ and $[f \fatsemi g] \Coloneqq [f] \fatsemi [g]$ and by freeness induces the corresponding functor.
 We obtain the interpretation function $\llbracket - \rrbracket : \Sigma^{+} \to \WellTypedMdaEcospans$ by combining the above with the interpretations of $\llbracket \textbf{ev}_{A,B} \rrbracket$ and $\llbracket \Lambda_{A,B,C} \rrbracket$ shown in~\autoref{fig:ev_and_lambda} and by interpreting $\llbracket f + g \rrbracket$ as shown in~\autoref{fig:f+g}.
 The rest again follows by induction and freeness.
 Note that unlike $[-]$, $\llbracket - \rrbracket$ does not get promoted to a functor $\catname{CS}^{+}(\Sigma) \to \WellTypedMdaEcospans$; this is because target of the to-be functor is not a \emph{closed} symmetric monoidal $\catname{SLat}$-category, although we will turn it into a symmetric monoidal $\catname{SLat}$-category.
 This is achieved by quotienting morphisms of $\WellTypedMdaEcospans$ by EDPOI rewrite rules that arise from the interpretation of $\catname{SLat}$ SMC axioms.
-For example, the EDPOI rule corresponding to the distributivity of $(;)$ over $+$ is given by the following rewrite rule.
+For example, the EDPOI rule corresponding to the distributivity of $( \fatsemi )$ over $+$ is given by the following rewrite rule.
 \[
 	\adjustbox{width=\linewidth}{
 		\tikzfig{./figures/semilattice_rule_1_2}~.
@@ -720,8 +783,6 @@ After computing the pushout for the second half of the diagram we add strict int
 	\label{fig:dpoi-example}
 \end{figure}
 
-
-\input{sections/lambda-calculus}
 
 \section{Modelling $\lambda_{\text{lsub}}$-calculus in slotted e-graphs}%
 \label{sec:e-graph-explicit-subst}

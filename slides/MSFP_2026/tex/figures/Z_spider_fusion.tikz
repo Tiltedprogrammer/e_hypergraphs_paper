@@ -1,0 +1,53 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=Z phase dot] (0) at (-2.5, 1.5) {$\alpha$};
+		\node [style=none] (1) at (-3.5, 3) {};
+		\node [style=none] (2) at (-2, 3) {};
+		\node [style=none] (3) at (-1.5, 3) {};
+		\node [style=none] (4) at (-2.75, 3) {$\ldots$};
+		\node [style=Z phase dot] (5) at (-4.75, 0) {$\beta$};
+		\node [style=none] (6) at (-5.5, 3) {};
+		\node [style=none] (7) at (-4.5, 3) {};
+		\node [style=none] (8) at (-4, 3) {};
+		\node [style=none] (9) at (-5, 3) {$\ldots$};
+		\node [style=none] (10) at (-5.5, -3) {};
+		\node [style=none] (11) at (-4.5, -3) {};
+		\node [style=none] (12) at (-4, -3) {};
+		\node [style=none] (13) at (-3.5, -3) {};
+		\node [style=none] (14) at (-2, -3) {};
+		\node [style=none] (15) at (-1.5, -3) {};
+		\node [style=none] (16) at (-5, -3) {$\ldots$};
+		\node [style=none] (17) at (-2.75, -3) {$\ldots$};
+		\node [style=none] (18) at (-0.5, 0) {$=$};
+		\node [style=Z phase dot] (19) at (1, 0) {$\alpha + \beta$};
+		\node [style=none] (20) at (0, 3) {};
+		\node [style=none] (21) at (1.5, 3) {};
+		\node [style=none] (22) at (2.25, 3) {};
+		\node [style=none] (23) at (0, -3) {};
+		\node [style=none] (24) at (1.5, -3) {};
+		\node [style=none] (25) at (2.25, -3) {};
+		\node [style=none] (26) at (0.75, 3) {$\ldots$};
+		\node [style=none] (27) at (0.75, -3) {$\ldots$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [bend left=15] (0) to (1.center);
+		\draw [bend right=15] (0) to (2.center);
+		\draw [bend right] (0) to (3.center);
+		\draw [bend left=15] (5) to (6.center);
+		\draw [bend right=15, looseness=0.50] (5) to (7.center);
+		\draw [bend right=15] (5) to (8.center);
+		\draw [bend right=15] (5) to (0);
+		\draw [bend right=15] (5) to (10.center);
+		\draw [bend left=15, looseness=0.50] (5) to (11.center);
+		\draw [bend left=15] (5) to (12.center);
+		\draw [bend right=15] (0) to (13.center);
+		\draw [bend left=15, looseness=0.50] (0) to (14.center);
+		\draw [bend left=15] (0) to (15.center);
+		\draw [bend left=15] (19) to (20.center);
+		\draw [bend right=15, looseness=0.50] (19) to (21.center);
+		\draw [bend left, looseness=0.75] (22.center) to (19);
+		\draw [bend right=15] (19) to (23.center);
+		\draw [bend left=15, looseness=0.50] (19) to (24.center);
+		\draw [bend right=15, looseness=0.75] (25.center) to (19);
+	\end{pgfonlayer}
+\end{tikzpicture}

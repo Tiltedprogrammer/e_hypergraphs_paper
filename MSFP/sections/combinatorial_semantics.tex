@@ -5,7 +5,7 @@ We recall the fundamental definitions and results of string diagram rewrite theo
 
 We write $(-)^*$ for the free monoid monad over $\catname{Set}$, extended element-wise to relations; for $R \subseteq V \times W$ and $v \in V$ we write $R(v) \subseteq W$ in functional notation.
 We elide coproduct associativity and unit isomorphisms, write $\iota_j$ for the $j^{\text{th}}$ injection into $X_1 \sqcup \cdots \sqcup X_n$, $[f,g]$ for co-pairing, and $A \sqcup_{f,g} B$ for the pushout of $A \xleftarrow{f} C \xrightarrow{g} B$; we call $A,B$ the \emph{feet} and $C$ the \emph{carrier} of the cospan.
-% Given an ordered sequence of labels from some alphabet $\Sigma$, $[l_1, \ldots, l_n]$ we will denote with $w([l_1, \ldots, l_n])$ the word concatenated from these labels using $\otimes$, e.g.\ $w([A,B]) = A \otimes B$.
+Given an ordered sequence of objects $[A_1, \ldots, A_n]$, we write $w([A_1, \ldots, A_n])$ for the object obtained by tensoring them, $A_1 \otimes \cdots \otimes A_n$, with $w([\,]) = I$ the monoidal unit; e.g.\ $w([A,B]) = A \otimes B$.
 
 \subsection{Hypergraphs}
 
@@ -125,7 +125,7 @@ Term rewriting and hence equality modulo $\mathcal{E}$ is then implemented as DP
 	\end{adjustbox}
 \end{wrapfigure}
 The rewriting of hypergraphs with interfaces (and hence of string diagrams) is formalised as double-pushout rewriting with interfaces (DPOI)~\cite{bonchi_string_2022-1,bonchi_string_2022-2}, whose defining diagram is shown on the right.
-A rewrite rule is a pair of discrete cospans with matching interfaces, $n \xrightarrow{} \mathcal{L} \xleftarrow{} m$ and $n \xrightarrow{} \mathcal{R} \xleftarrow{} m$, equivalently encoded as a single span $\mathcal{L} \xleftarrow{} n \sqcup m \xrightarrow{} \mathcal{R}$~\cite[Remark~3.14]{bonchi_string_2022-1}; we make this identification throughout.
+A rewrite rule is a pair of discrete cospans with matching interfaces, $i \xrightarrow{} \mathcal{L} \xleftarrow{} j$ and $i \xrightarrow{} \mathcal{R} \xleftarrow{} j$, equivalently encoded as a single span $\mathcal{L} \xleftarrow{} i \sqcup j \xrightarrow{} \mathcal{R}$~\cite[Remark~3.14]{bonchi_string_2022-1}; we make this identification throughout.
 Applying the rule to $\mathcal{G}$ (with interface $n \sqcup m$) proceeds in two pushout steps.
 A \emph{match} $f\colon \mathcal{L} \to \mathcal{G}$ locates an occurrence of $\mathcal{L}$; the left pushout square computes the \emph{pushout complement} $\mathcal{L}^{\bot}$ --- what remains of $\mathcal{G}$ after excising the matched part, with both $n \sqcup m$ and $i \sqcup j$ contributing to the interface, the latter corresponding to newly created inputs and outputs of the \emph{hole}.
 The right pushout square then glues $\mathcal{R}$ into this context, producing the rewritten graph $\mathcal{H}$, with the interface $n \sqcup m$ threaded through both steps.
@@ -152,7 +152,7 @@ We next extend the definition of e-hypergraphs for symmetric monoidal $\catname{
 	\[(V,E,s,t, l_{V}, l_{E}, \textcolor{e-color}{<}, \textcolor{closed-color}{<},\consistency), \text{ where}\]
 	\begin{itemize}
 		\item $V$ is a set of vertices.
-		\item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined as follows.
+		\item $E = \colorbox{yellow}{E} \cup \textcolor{e-color}{E} \cup \textcolor{closed-color}{E}$ is a set of hyperedges that is formed of three disjoint sets of hyperedges defined below.
 		\item $s,t\colon E \to V^{*}$ are source and target functions.
 		\item $l_{E}\colon E \to \Sigma_{M} \sqcup 1$, $l_{V}\colon V \to \Sigma_{O} \cup \text{obj}_{\multimap}$ are label functions, where $\text{obj}_{\multimap}$ consists of objects $A \multimap B$ for $A,B \in obj_{\Sigma_{O}}$.
 		\item $\textcolor{e-color}{<} \subseteq \textcolor{e-color}{E} \times (V \sqcup E)$ and $\textcolor{closed-color}{<} \subseteq \textcolor{closed-color}{E} \times (V \sqcup E)$ with $\textcolor{e-color}{E}, \textcolor{closed-color}{E} \subset E$ are disjoint partial orders that are defined as a transitive closure of corresponding immediate predecessor relations that we denote as $\textcolor{e-color}{\;<^{\mu}\;}$ and $\textcolor{closed-color}{\;<^{\mu}\;}$.
@@ -217,6 +217,7 @@ We depict edges in $\textcolor{e-color}{E}$ with a dashed box, and edges in $\te
 	\subcaption{Corresponding relations of the closed e-hypergraph in the middle.}
 	\label{fig:e-cospan-example-rels}
 \end{subfigure}
+\caption{}
 \end{figure}
 \begin{definition}[Closed e-hypergraph homomorphism]
 	A homomorphism $\phi\colon \mathcal{F}\to\mathcal{G}$ between closed e-hypergraphs $\mathcal{F},\mathcal{G}$ is a pair of functions $\phi_V\colon  V_{\mathcal{F}} \to V_{\mathcal{G}}, \phi_E\colon E_{\mathcal{F}} \to E_{\mathcal{G}}$ such that:
@@ -259,13 +260,13 @@ with the vertices of $m$ removed from $n$ when vertices of $m$ is a sub closed e
 	\[
 		n \xrightarrow{f_{ext}} n^\prime \xrightarrow{f_{int}} \mathcal{G} \xleftarrow{g_{int}} m^\prime \xleftarrow{g_{ext}} m,
 	\]
-	where $\mathcal{G}$ is a closed e-hypergraph,  and $n, n^\prime, m, m^\prime$ are discrete ordered closed e-hypergraphs,  $f_{ext},g_{ext}$ are monomorphisms in $\catname{CEHyp(\Sigma)}$,  and the image of $f_{ext};f_{int}$ and of $g_{ext};g_{int}$ consist exclusively of top-level vertices,  and the vertices in the strictly internal interface (defined below) are not top-level.
+	where $\mathcal{G}$ is a closed e-hypergraph,  and $n, n^\prime, m, m^\prime$ are discrete ordered closed e-hypergraphs,  $f_{ext},g_{ext}$ are monomorphisms in $\catname{CEHyp(\Sigma)}$,  and the image of $f_{ext} \fatsemi f_{int}$ and of $g_{ext} \fatsemi g_{int}$ consist exclusively of top-level vertices,  and the vertices in the strictly internal interface (defined below) are not top-level.
 	Write $\mathcal G$ to denote the extended cospan when it is clear from context $\mathcal G$ is equipped with extended interfaces.
 \end{definition}
 We call $n$  \emph{external input interfaces}, $n^\prime$ \emph{internal input interfaces},
 and $n^\prime \setminus f_{ext}(n)$  the \emph{strictly internal input interfaces}.
 We do analogously for the \emph{output interfaces},  with respect to $m$,  $m^\prime$ and $m^\prime \setminus g_{ext}(m)$.
-We conflate $f_{ext}$ with $f_{ext};f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n^\prime$ and $m^\prime$,  and likewise $n, m, n^\prime, m^\prime$ with their images in $\mathcal{G}$.
+We conflate $f_{ext}$ with $f_{ext} \fatsemi f_{int}$ when it is clear from context,  and also conflate $n$ and $m$ with their images in $n^\prime$ and $m^\prime$,  and likewise $n, m, n^\prime, m^\prime$ with their images in $\mathcal{G}$.
 Given an edge $e \in E_\mathcal{G}$ such that $l(e) = \bot$,  we call the \emph{inputs of $e$} the intersection of the strictly internal input interface of $\mathcal{G}$ with the immediate successors of $e$,  and analogously for the \emph{outputs of $e$}.
 Graphically, we depict such extended cospans as in~\autoref{fig:e-cospan-example}: feet of the cospan are depicted within shaded regions.
 All non-black vertices form strictly internal interfaces.
@@ -342,11 +343,11 @@ First, $\mathcal{H}$ is computed as the result of the pushout square shown on th
 % \]
 then,  the result of composition is defined as follows:
 \[
-	n \xrightarrow{f_{ext};\iota_1} n^\prime \sqcup (m^{\prime\prime} \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k^\prime \sqcup (m^\prime \setminus m) \xleftarrow{g^\prime_{ext};\iota_1} k
+	n \xrightarrow{f_{ext} \fatsemi \iota_1} n^\prime \sqcup (m^{\prime\prime} \setminus m) \xrightarrow{h_{1}} \mathcal{H} \xleftarrow{h_2} k^\prime \sqcup (m^\prime \setminus m) \xleftarrow{g^\prime_{ext} \fatsemi \iota_1} k
 \]
 where $h_i$ are defined as follows,  using $|$ to denote the restriction of a function on a discrete closed e-hypergraph.
 \begin{align*}
-	h_1 = [ f_{int};p_1, ~(g_{int};p_2)|_{m^{\prime\prime} \setminus m} ] \; h_2 = [ g^\prime_{int};p_2, ~(f^\prime_{int};p_1)|_{m^\prime \setminus m} ]
+	h_1 = [ f_{int} \fatsemi p_1, ~(g_{int} \fatsemi p_2)|_{m^{\prime\prime} \setminus m} ] \; h_2 = [ g^\prime_{int} \fatsemi p_2, ~(f^\prime_{int} \fatsemi p_1)|_{m^\prime \setminus m} ]
 	% \\
 	% h_2 = [ g^\prime_{int};p_2, ~(f^\prime_{int};p_1)|_{m^\prime \setminus m} ]
 \end{align*}
@@ -387,9 +388,9 @@ We also need to enforce typing constraints on hierarchical edges so that they re
 	well-typed if all hierarchical edges of $\mathcal{G}$ are well-typed:
 	\begin{itemize}
 		\item for each $e \in \textcolor{e-color}{E}$ consider sets $I$ and $O$ of its input and output vertices partitioned according to $\consistency_{e}$;
-		      $e$ is well-typed if for each element $S$ of the partition of $I$ $w(S) = w(s(e))$ and similarly for $O$ and $t(e)$;
+		      $e$ is well-typed if for each element $S$ of the partition of $I$ $w(l_{V}^{*}(S)) = w(l^{*}_{V}(s(e)))$ and similarly for $O$ and $t(e)$;
 		\item for each $e \in \textcolor{closed-color}{E}$ consider sets $I$ and $O$ of its input and output vertices;
-		      $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $[w(s(e)), B] = w(I)$ and $B \multimap w(O) = w(t(e))$.
+		      $e$ is well-typed if there exists an object $B \in \text{obj}_{\Sigma_{O}}$ such that $w(l^{*}_{V}(s(e))) \otimes B = w(l^{*}_{V}(I))$ and $B \multimap w(l^{*}_{V}(O)) = w(l^{*}_{V}(t(e)))$.
 	\end{itemize}
 
 	We denote the category of well typed MDA cospans as $\WellTypedMdaEcospans$.
