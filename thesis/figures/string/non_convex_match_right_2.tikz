@@ -1,0 +1,55 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-2.5, -3.25) {};
+		\node [style=none] (1) at (2.5, -3.25) {};
+		\node [style=none] (2) at (2.5, 3.5) {};
+		\node [style=none] (3) at (-2.5, 3.5) {};
+		\node [style=node, label={below:$v_2$}] (6) at (1, -2.25) {};
+		\node [style=node, label={below:$v_1$}] (7) at (-1, -2.25) {};
+		\node [style=node, label={above:$w_1$}] (11) at (-1, 2.5) {};
+		\node [style=node, label={above:$w_2$}] (12) at (1, 2.5) {};
+		\node [style=node, label={above:$v_1$}] (15) at (-0.75, -6.25) {};
+		\node [style=node, label={above:$v_2$}] (16) at (0.75, -6.25) {};
+		\node [style=none] (17) at (-1.25, -6.75) {};
+		\node [style=none] (18) at (-1.25, -5.25) {};
+		\node [style=none] (19) at (1.25, -5.25) {};
+		\node [style=none] (20) at (1.25, -6.75) {};
+		\node [style=none] (21) at (0, -4.75) {};
+		\node [style=none] (22) at (0, -3.75) {};
+		\node [style=node, label={below:$w_1$}] (23) at (-0.75, 6.5) {};
+		\node [style=node, label={below:$w_2$}] (24) at (0.75, 6.5) {};
+		\node [style=none] (25) at (-1.25, 7) {};
+		\node [style=none] (26) at (-1.25, 5.5) {};
+		\node [style=none] (27) at (1.25, 5.5) {};
+		\node [style=none] (28) at (1.25, 7) {};
+		\node [style=none] (29) at (0, 5) {};
+		\node [style=none] (30) at (0, 4) {};
+		\node [style=hedge] (31) at (-1, 1) {$e_4$};
+		\node [style=hedge] (32) at (1, 1) {$e_4$};
+		\node [style=none] (33) at (-1, 0.5) {};
+		\node [style=none] (34) at (1, 0.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (3.center)
+			 to (2.center)
+			 to (1.center)
+			 to (0.center)
+			 to cycle;
+		\draw [style=boundary frame] (17.center)
+			 to (18.center)
+			 to (19.center)
+			 to (20.center)
+			 to cycle;
+		\draw [style=cdedge] (21.center) to (22.center);
+		\draw [style=boundary frame] (25.center)
+			 to (26.center)
+			 to (27.center)
+			 to (28.center)
+			 to cycle;
+		\draw [style=cdedge] (29.center) to (30.center);
+		\draw [in=90, out=-90, looseness=0.75] (34.center) to (7);
+		\draw [in=90, out=-90, looseness=0.75] (33.center) to (6);
+		\draw (11) to (31);
+		\draw (32) to (12);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=round box] (0) at (0, -1) {$g$};
+		\node [style=round box] (1) at (0, 1) {$f$};
+		\node [style=none] (2) at (0, -2) {};
+		\node [style=none] (3) at (0, 0) {};
+		\node [style=none] (4) at (0, 2) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (3.center) to (0);
+		\draw (0) to (2.center);
+		\draw (3.center) to (1);
+		\draw (4.center) to (1);
+	\end{pgfonlayer}
+\end{tikzpicture}

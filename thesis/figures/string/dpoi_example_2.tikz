@@ -1,0 +1,42 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (7) at (-1.5, 5.5) {};
+		\node [style=none] (8) at (1.5, 5.5) {};
+		\node [style=none] (9) at (-1.5, -5.5) {};
+		\node [style=none] (10) at (1.5, -5.5) {};
+		\node [style=hedge] (0) at (0, -3) {$f$};
+		\node [style=hedge] (1) at (0, 0) {$g$};
+		\node [style=node] (2) at (0, -1.5) {};
+		\node [style=node, label={below:$u_1$}] (3) at (0, -4.5) {};
+		\node [style=node] (4) at (0, 1.5) {};
+		\node [style=hedge] (5) at (0, 3) {$f$};
+		\node [style=node, label={above:$z_1$}] (6) at (0, 4.5) {};
+		\node [style=node, label={above:$u_1$}] (11) at (-0.75, -8.75) {};
+		\node [style=node, label={above:$z_1$}] (12) at (0.75, -8.75) {};
+		\node [style=none] (13) at (-1.5, -9.25) {};
+		\node [style=none] (14) at (-1.5, -7.5) {};
+		\node [style=none] (15) at (1.5, -7.5) {};
+		\node [style=none] (16) at (1.5, -9.25) {};
+		\node [style=none] (17) at (0, -6) {};
+		\node [style=none] (18) at (0, -7) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (10.center)
+			 to (9.center)
+			 to (7.center)
+			 to (8.center)
+			 to cycle;
+		\draw (0) to (2);
+		\draw (2) to (1);
+		\draw (3) to (0);
+		\draw (1) to (4);
+		\draw (5) to (4);
+		\draw (6) to (5);
+		\draw [style=boundary frame] (16.center)
+			 to (15.center)
+			 to (14.center)
+			 to (13.center)
+			 to cycle;
+		\draw [style=diredge] (18.center) to (17.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

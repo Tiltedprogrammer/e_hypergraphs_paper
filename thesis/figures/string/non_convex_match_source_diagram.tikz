@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=semilarge horizontal box] (0) at (0, -2.5) {$e_1$};
+		\node [style=semilarge horizontal box] (1) at (0, 2.25) {$e_2$};
+		\node [style=small box] (2) at (-1, 0) {$e_3$};
+		\node [style=none] (3) at (-1, 2) {};
+		\node [style=none] (4) at (1, 2) {};
+		\node [style=none] (5) at (1, -2) {};
+		\node [style=none] (6) at (-1, -2) {};
+		\node [style=none] (7) at (0, 3.25) {};
+		\node [style=none] (9) at (0, -3.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (6.center) to (2);
+		\draw (2) to (3.center);
+		\draw (4.center) to (5.center);
+		\draw (7.center) to (1);
+		\draw (9.center) to (0);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -33,7 +33,7 @@ Upon applying all rules until no new equivalences can be discovered---a fixed po
 This technique, \emph{equality saturation}, was systematised into a general program optimisation methodology by Tate et al.~\cite{EqualitySaturation2009} and subsequently operationalised in the \egg library~\cite{EggPaper}, which provides a fast and extensible framework for equality saturation in Rust.
 The \egg library sparked a wave of applications and extensions, including proof generation from congruence closure~\cite{flatt_small_2022}, relational e-matching for efficient rule application~\cite{zhang_relational_2022}, sketch-guided equality saturation for scaling to large programs~\cite{koehler2022sketchguided}, and conditional rewriting via coloured e-graphs~\cite{singher2023colored}.
 
-\begin{example}
+\begin{example}\label{example:egraph_example_introduction}
 The e-graph presentation of rewriting in~\autoref{example:term_rewrite} can be seen in~\autoref{fig:e-graph_example}.
 The subfigure (a) represents the initial term $(a * 2) / 2$.
 Rounded boxes are e-nodes which point to e-classes---dashed round boxes.

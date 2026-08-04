@@ -381,7 +381,7 @@ with the following parent links on identifiers
 (read $b \to a$ as ``$a$ is the parent of $b$''), and every other
 identifier being its own parent.
 \paragraph{Restoring the invariants.}
-We now need to make sure that the entries in the hashcons table are canonicalised e-nodes pointing to a canonical e-class identifier.
+We now need to make sure that the entries in the hashcons table are canonicalised e-nodes pointing to a canonical e-class identifier---this is necessary to maintain sharing---this is necessary to maintain sharing---this is necessary to maintain sharing---this is necessary to maintain sharing.
 Furthermore, we need to make sure that the represented relation is a congruence, that is, if $\find(\alpha_i) = \find(\alpha_j)$ then $f(\alpha_i)$ and $f(\alpha_j)$ are in the same e-class.
 Rebuilding re-canonicalises the children of each affected e-node through
 $\find$ and re-inserts it. The node $d(\alpha_3)$ in class $\alpha_4$

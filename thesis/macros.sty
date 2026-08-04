@@ -98,12 +98,16 @@
 		\node [style=none] (5) at (-1, 0.5) {};
 		\node [style=none] (6) at (1, 0.5) {};
 		\node [style=none] (7) at (0, 0.5) {};
+		\node [style=none] (8) at (0, 1.5) {};
+		\node [style=none] (9) at (0, -1.5) {};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style={lambda_unit_string}] (4.center)
 			 to [bend right=45] (6.center)
 			 to (5.center)
 			 to [bend right=45] cycle;
+		\draw (8.center) to (7.center);
+		\draw (4.center) to (9.center);
 	\end{pgfonlayer}
 \end{tikzpicture}
 	}
@@ -163,3 +167,30 @@
 \renewcommand{\coprod}{\sqcup}
 \newcommand{\llangle}{\langle\!\langle}
 \newcommand{\rrangle}{\rangle\!\rangle}
+\newcommand{\corner}[1]{\ulcorner\!{#1}\!\urcorner}
+
+\newcommand{\boxsort}{
+	\adjustbox{scale=0.5}{
+\begin{tikzpicture}
+    \node [style=small box dashed] at (0,0) {};
+  \end{tikzpicture}%
+}}
+\newcommand{\cmpsort}{
+	\adjustbox{scale=0.5}{
+\begin{tikzpicture}
+    \node [style=small box] at (0,0) {};
+  \end{tikzpicture}
+}}
+
+\newcommand{\boxsortsubscript}{
+	\adjustbox{scale=0.3}{
+\begin{tikzpicture}
+    \node [style=small box dashed] at (0,0) {};
+  \end{tikzpicture}%
+}}
+\newcommand{\cmpsortsubscript}{
+	\adjustbox{scale=0.3}{
+\begin{tikzpicture}
+    \node [style=small box] at (0,0) {};
+  \end{tikzpicture}
+}}

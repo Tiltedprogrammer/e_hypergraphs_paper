@@ -1,0 +1,57 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=semilarge horizontal box] (0) at (-2.5, -1.5) {$\corner{b}$};
+		\node [style=none] (1) at (-3.75, 0.75) {$m$};
+		\node [style=none] (2) at (-1.25, 0.75) {$n$};
+		\node [style=none] (3) at (0, 0) {$=$};
+		\node [style=none] (46) at (5.75, -4) {};
+		\node [style=none] (47) at (5.75, -4) {};
+		\node [style=small box] (48) at (5.75, -3.25) {$r$};
+		\node [style=none] (49) at (5.75, 0.25) {};
+		\node [style=none] (50) at (6.25, -4.5) {$i$};
+		\node [style=none] (51) at (6.25, -1.25) {$j$};
+		\node [style=none] (52) at (4.75, 0.25) {};
+		\node [style=medium horizontal box] (53) at (5.25, 0.75) {$a_2$};
+		\node [style=none] (54) at (5.25, 3) {};
+		\node [style=none] (55) at (4.75, 2.5) {$n$};
+		\node [style=none] (56) at (3.75, -5.75) {};
+		\node [style=none] (57) at (1.75, -4) {};
+		\node [style=medium horizontal box] (59) at (2.25, 0.75) {$a^{\star}_1$};
+		\node [style=none] (60) at (2.25, 3) {};
+		\node [style=none] (61) at (2.25, 1.25) {};
+		\node [style=none] (62) at (1.75, 0.25) {};
+		\node [style=none] (63) at (2.75, 0.25) {};
+		\node [style=none] (64) at (1.75, -2) {};
+		\node [style=none] (65) at (2.75, -1) {};
+		\node [style=none] (66) at (3.75, -1) {$k$};
+		\node [style=none] (67) at (1.5, 2.5) {$m$};
+		\node [style=none] (68) at (3.75, -2) {};
+		\node [style=none] (69) at (4.75, -1) {};
+		\node [style=none] (70) at (0.5, -2.25) {};
+		\node [style=none] (71) at (7.25, -2.25) {};
+		\node [style=none] (72) at (-1.75, -1) {};
+		\node [style=none] (73) at (-1.75, 1) {};
+		\node [style=none] (74) at (-3.25, -1) {};
+		\node [style=none] (75) at (-3.25, 1) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (49.center) to (48);
+		\draw (48) to (47.center);
+		\draw (54.center) to (53);
+		\draw (47.center)
+			 to (46.center)
+			 to [bend left=45] (56.center)
+			 to [bend left=45] (57.center)
+			 to (64.center)
+			 to (62.center);
+		\draw (60.center) to (61.center);
+		\draw (63.center)
+			 to (65.center)
+			 to [bend right=45] (68.center)
+			 to [bend right=45] (69.center)
+			 to (52.center);
+		\draw [style=dashed edge] (70.center) to (71.center);
+		\draw (73.center) to (72.center);
+		\draw (75.center) to (74.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -1,4 +1,4 @@
-\chapter{String Diagram Rewriting}
+\chapter{String Diagram Rewriting}\label{chapter:string_diagrams}
 
 E-graphs can be seen as a particular flavour of term graphs~\cite{plump_term,EggsAreAdhesive} that is equipped with a congruence relation.
 In our journey towards categorical interpretation of e-graphs and their generalisations, we may view string diagrams as a particular flavour of term graphs that are available for more general theories.
@@ -181,8 +181,7 @@ Zanasi~\cite{ghica-zanassi2023string}.
 \[
 \tikzfig{./figures/string/functorial_box_example}
 \]
-A functorial box is just syntactic sugar for a node enclosing a sub-diagram;
-in particular, it is impossible to slice across the box.
+A functorial box is like a magnifying glass that lets you zoom in through the functor by delimiting a part of the diagram and relabelling the wires and nodes.
 \end{example}
 
 In order to apply such a replacement to a diagram $(\Gamma, v)$, it is necessary
@@ -798,7 +797,7 @@ coalgebra structure, is terminal. Under this cartesian structure the
 forgetful functor $U : (X)^{\mathrm{C}} \to X$ is strict monoidal.
 \end{lemma}
 
-\begin{theorem}[Fox~\cite{foxCoalgebrasCartesianCategories1976}]
+\begin{theorem}[Fox~\cite{foxCoalgebrasCartesianCategories1976}]\label{theorem:fox}
 The assignment $X \mapsto (X)^{\mathrm{C}}$ extends to a functor
 $(-)^{\mathrm{C}} : \catname{Mon} \to \catname{Cart}$ that is right
 adjoint to the inclusion $\iota : \catname{Cart} \hookrightarrow
@@ -890,7 +889,7 @@ $\mathbf{S}_{\Sigma,\mathcal{E}}$.
 \end{remark}
 
 Finally, one can define rewriting on PROPs.
-\begin{definition}[Definition 2.17~\cite{bonchi_string_2022-1}]
+\begin{definition}[{\cite[Def. 2.17]{bonchi_string_2022-1}}]\label{def:rewriting_prop}
  A rewriting system $\mathcal{R}$ on a PROP $\mathbb{A}$ consists of a set of \emph{rewrite rules}, i.e., pairs $\langle l, r \rangle$ of morphisms $l,r : i \to j$ in $\mathbb{A}$ with the same domain and codomain.
  Given $a,b : m \to n \in \mathbb{A}(m,n)$, we say that $a$ rewrites to $b$ via $\mathcal{R}$, written $a \rewriteArrow{\mathcal{R}} b$, if they are decomposable as follows for some rule $\langle l,r \rangle \in \mathcal{R}$.
  \[
@@ -1013,7 +1012,7 @@ The coproduct is then
 where the source map $s = [\,(\iota^V_1)^{*} \circ s_{\mathcal{G}_1},\; (\iota^V_2)^{*} \circ s_{\mathcal{G}_2}\,]$ relabels each source list along the vertex injection, the target map $t$ is defined analogously, and the label map $l = [\,l_{\mathcal{G}_1},\, l_{\mathcal{G}_2}\,] : E_{\mathcal{G}_1} \coprod E_{\mathcal{G}_2} \to \Sigma_1$ is the copairing, both labellings targeting the same $\Sigma_1$.
 \end{definition}
 
-\begin{definition}[Pushout]
+\begin{definition}[Pushout]\label{def:pushout_hyp}
 Let $\mathcal{G}_0$, $\mathcal{G}_1$, and $\mathcal{G}_2$ be hypergraphs, viewed as functors $\mathcal{G}_i : \catname{I} \to \mathbb{F}$.
 Let $f : \mathcal{G}_0 \to \mathcal{G}_1$ and $g : \mathcal{G}_0 \to \mathcal{G}_2$ be hypergraph homomorphisms, i.e., natural transformations.
 Their pushout $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ is computed pointwise in $\mathbb{F}^{\catname{I}}$: for each object $x$ of $\catname{I}$ it is the pushout
@@ -1065,7 +1064,7 @@ A hypergraph is \emph{acyclic} if it has no path that contains the same vertex t
 Just like in the case of topological string diagrams where we had the ordering on the boundary (either induced by slicing or by choice), to make hypergraphs denote string diagrams we need a notion of a boundary equipped with an ordering.
 This is achieved by considering a category of cospans of hypergraphs.
 
-\begin{definition}[Category $\catname{HypI}(\Sigma)$]
+\begin{definition}[Category $\catname{HypI}(\Sigma)$]\label{def:hypI}
 Let $D : \mathbb{F} \to \catname{Hyp}(\Sigma)$ be the coproduct-preserving functor that maps each $[n]$ to the discrete hypergraph with vertex set $[n]$, and each function $h : [m] \to [n]$ to the homomorphism of discrete hypergraphs acting as $h$ on vertices.
 We let $\catname{HypI}(\Sigma)$ be the category with objects $D([n])$ for $[n] \in \mathbb{F}$ and morphisms isomorphism classes of cospans in $\catname{Hyp}(\Sigma)$ of the form
 \[
@@ -1139,7 +1138,9 @@ The name $\catname{HypI}(\Sigma)$ is meant to suggest that hypergraphs are \emph
 The left leg denotes the \emph{input} interface, and the right leg denotes the \emph{output} interface.
 \end{remark}
 
-\begin{example}[Example 3.7~\cite{bonchi_string_2022-1}]
+We will next use the terms cospans and morphisms interchangeably when talking about morphisms in $\catname{HypI}(\Sigma)$.
+
+\begin{example}[Example 3.7~\cite{bonchi_string_2022-1}]\label{example:hypergraph_category_structure}
   Consider the following morphisms $G : 2 \to 3$ and $H : 3 \to 1$ in $\catname{HypI}(\Sigma)$
   \[
   G \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/G_example}} \qquad H \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/H_example}}~.
@@ -1179,10 +1180,10 @@ There is no string diagram generators such that composing them would result in a
 Another reason why the cospan fails to be a string diagram is that the vertices $v_1$ and $v_2$ from the input interface are mapped to the same vertex in the carrier, intuitively such map would correspond to a monoid structure on the generating object which is not available in general.
 In fact, morphisms in $\catname{HypI}(\Sigma)$ correspond to string diagrams for a free \emph{Frobenius} PROP.
 
-\begin{definition}
+\begin{definition}\label{def:frobenius_prop}
 Consider an SMT $(\Sigma_{\text{Frob}}, \mathcal{E}_{\text{Frob}})$ with $\Sigma_{\text{Frob}}$ given by
 \[
-\Sigma_{\text{Frob}} \defeq \{\adjustbox{scale=0.6}{\tikzfig{./figures/string/monoid_generator}} : 2 \to 1, \adjustbox{scale=0.6}{\tikzfig{./figures/string/unit_generator}} : 0 \to 1, \adjustbox{scale=0.6}{\tikzfig{./figures/string/comonoid_generator}} : 1 \to 2, \adjustbox{scale=0.6}{\tikzfig{./figures/string/counit_generator}} : 1 \to 0 \};
+\Sigma_{\text{Frob}} \defeq \{\adjustbox{scale=0.3}{\tikzfig{./figures/string/monoid_generator}} : 2 \to 1, \adjustbox{scale=0.6}{\tikzfig{./figures/string/unit_generator}} : 0 \to 1, \adjustbox{scale=0.3}{\tikzfig{./figures/string/comonoid_generator}} : 1 \to 2, \adjustbox{scale=0.6}{\tikzfig{./figures/string/counit_generator}} : 1 \to 0 \};
 \]
 and $\mathcal{E}_{\text{Frob}}$ given by the equations
 \begin{gather}
@@ -1198,19 +1199,27 @@ We then let $\mathbf{H}_{\Sigma, \mathcal{E}}$ be the PROP obtained by taking a 
 It can be equivalently presented by an SMT $(\Sigma \cup \Sigma_{\text{Frob}}, \mathcal{E} \cup \mathcal{E}_{\text{Frob}})$---note that $\Sigma_{\text{Frob}}$ is not part of $\Sigma$ which is the parameter of $\mathbf{H}_{\Sigma, \mathcal{E}}$ and similarly for $\mathcal{E}_{\text{Frob}}$.
 \end{definition}
 
-\begin{definition}
+\begin{remark}
+  More precisely, the above is the presentation of a theory of commutative Frobenius algebras and in particular only one interaction rule between monoid and comonoid is given, the dual rule is derivable using symmetry:
+  \[
+  \adjustbox{scale=0.7}{\tikzfig{./figures/string/frobenius_interaction_dual}}~.
+  \]
+  Non-commutative version features two interaction rules explicitly.
+\end{remark}
+
+\begin{definition}\label{def:frobenius_interpretation}
 Given a monoidal signature $\Sigma_{\text{Frob}} = (\{*\}, \Sigma_1)$, we define the interpretation function $[-] : \Sigma_1 \to U(\catname{HypI}(\Sigma_{\text{Frob}}))$ as follows:
 \begin{gather*}
- [\adjustbox{scale=0.4}{\tikzfig{./figures/string/monoid_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/monoid_interpretation}}~,
+ [\adjustbox{scale=0.3}{\tikzfig{./figures/string/monoid_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/monoid_interpretation}}~,
  [\;\adjustbox{scale=0.6}{\tikzfig{./figures/string/unit_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/unit_interpretation}}~,
- [\adjustbox{scale=0.4}{\tikzfig{./figures/string/comonoid_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/comonoid_interpretation}}~,
+ [\adjustbox{scale=0.3}{\tikzfig{./figures/string/comonoid_generator}}] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/comonoid_interpretation}}~,
  [\;\adjustbox{scale=0.6}{\tikzfig{./figures/string/counit_generator}} ] \defeq \adjustbox{scale=0.8}{\tikzfig{./figures/string/counit_interpretation}}~.
 \end{gather*}
 This induces a unique strong symmetric monoidal functor $[-] : \mathbf{Frob} \to \catname{HypI}(\Sigma_{\text{Frob}})$.
 We then let $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma)$ be the copairing $[\llbracket - \rrbracket, [-]]$.
 \end{definition}
 
-\begin{theorem}[Theorem 4.1~\cite{bonchi_string_2022-1}]\label{thm:frobenius_isomorphism}
+\begin{theorem}[Theorem 4.1~\cite{bonchi_string_2022-1}]\label{thm:frobenius_isomorphism}\label{theorem:frobenius_isomorphism}
   The functor $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma)$ is an isomorphism of PROPs, i.e., $\mathbf{H}_{\Sigma} \cong \catname{HypI}(\Sigma)$.
 \end{theorem}
 \begin{proof}
@@ -1232,12 +1241,769 @@ Let $e_1, \ldots, e_n$ be some ordering on $E_{\mathcal{G}}$.
 Let $\tilde{m} \xrightarrow{\tilde{f}} \tilde{E} \xleftarrow{\tilde{g}} \tilde{n}$ be a cospan with the carrier formed by edges from $\mathcal{G}$, disconnected from each other and stacked vertically with $\tilde{m}$ being the collection of all input vertices for each edge and $\tilde{m}$ being the collection of all output vertices for each edge.
 There are functions $i : n \to V_{\mathcal{G}}$,  $\tilde{i} : \tilde{n} \to V_{\mathcal{G}}$, $j : m \to V_{\mathcal{G}}$, and $\tilde{j} : \tilde{m} \to V_{\mathcal{G}}$ that map vertices in the interfaces to their occurences in the set of all vertices.
 The decomposition of $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ is then given by the composition of cospans
+% \begin{gather}\label{eq:decomposition}
+% \displaystyle (m \xrightarrow{i} V_{\mathcal{G}} \xleftarrow{[\id, \tilde{j}]} V_{\mathcal{G}} \otimes \tilde{m}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{m} \xrightarrow{\id \otimes \tilde{f}} V_{\mathcal{G}} \otimes \tilde{E} \xleftarrow{\id \otimes \tilde{g}} V_{\mathcal{G}} \otimes \tilde{n}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{n} \xrightarrow{[\id, \tilde{i}]} V_{\mathcal{G}} \xleftarrow{i} n)~.
+% \end{gather}
+\begin{equation}\label{eq:decomposition}
+  \begin{adjustbox}{scale=0.9}
+\begin{tikzcd}
+	m & {V_{\mathcal{G}}} & {V_{\mathcal{G}}\otimes\tilde{m}} & {V_{\mathcal{G}}\otimes\tilde{E}} & {V_{\mathcal{G}}\otimes\tilde{n}} & {V_{\mathcal{G}}} & n
+	\arrow["i", from=1-1, to=1-2]
+	\arrow["{{[\id,\tilde{j}]}}"', from=1-3, to=1-2]
+	\arrow["{{\id\otimes\tilde{f}}}", from=1-3, to=1-4]
+	\arrow["{{\id\otimes\tilde{g}}}"', from=1-5, to=1-4]
+	\arrow["{{[\id,\tilde{i}]}}", from=1-5, to=1-6]
+	\arrow[from=1-6, to=1-5]
+	\arrow["i"', from=1-7, to=1-6]
+\end{tikzcd}
+\end{adjustbox}
+\end{equation}
+For example, below is a cospan (on the left) and its decomposition (on the right); we showed the embedding of the interfaces using dashed arrows to avoid excessive cluttering of the cospans and used the labels to assign identities to vertices in $V_{\mathcal{G}}$.
 \[
-(m \xrightarrow{i} V_{\mathcal{G}} \xleftarrow{[\id, \tilde{j}]} V_{\mathcal{G}} \otimes \tilde{m}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{m} \xrightarrow{\id \otimes \tilde{f}} V_{\mathcal{G}} \otimes \tilde{E} \xleftarrow{\id \otimes \tilde{g}} V_{\mathcal{G}} \otimes \tilde{n}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{n} \xrightarrow{[\id, \tilde{i}]} V_{\mathcal{G}} \xleftarrow{i} \tilde{n})~.
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_1}} \quad \cong \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_3}} \fatsemi\; \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_2}} \fatsemi \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_4}}~.
 \]
-For example, below is a cospan (on the left) and its $\tilde{E}$ counterpart (on the right),
-\[
-\adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_1}} \qquad \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_2}}~.
-\]
+By computing the pushouts for the compositions on the right, we can verify that the composition is indeed isomorphic to the cospan on the left. 
+Intuitively, the middle cospan records all edges and vertices of the carrier hypergraph and the cospans on the sides record the incidence of the hyperedges and vertices.
+For example, in the first composition, vertices $u_1, u_3$ of hyperedges $a$ and $b$ get identified with the vertex $z_1$ according to the interface embedding.
 
+The middle cospan of the decomposition~\ref{eq:decomposition} is in the image of $\llbracket - \rrbracket$ as it is a tensor of identities and generators from $\Sigma$.
+The cospans on the sides are essentially cospans of finite sets and hence in the image of $[-]$ as $\catname{Frob} \cong \catname{Cospan}(\mathbb{F})$---a result of Lack~\cite{lackDedicatedAurelioCarboni}.
+This means that every morphism $\gamma : \catname{HypI}(\Sigma) \to \mathbb{A}$ is uniquely determined by its action on the components of the decomposition of each morphism.
 \end{proof}
+
+\begin{proposition}[Corollary 4.3~\cite{bonchi_string_2022-1}]\label{prop:faithful_interpretation}
+  The functor $\llbracket - \rrbracket : \mathbf{S}_{\Sigma} \to \catname{HypI}(\Sigma)$ is faithful.
+\end{proposition}
+
+PROPs equipped with a Frobenius algebra structure on each object constitute a subcategory of $\catname{PROP}$, called $\catname{FROP}$, with $\catname{H}_{\Sigma}$ and $\catname{H}_{\Sigma, \mathcal{E}}$ being the instances of FROPs.
+The notion of syntactic rewriting for FROPs is the same with the only difference that rewriting happens modulo SMC equations and the equations of Frobenius algebra.
+\begin{definition}[{\cite[p. 15]{bonchi_string_2022-1}}]\label{def:rewriting_frop}
+ A rewriting system $\mathcal{R}$ on a FROP $\mathbb{A}$ consists of a set of \emph{rewrite rules}, i.e., pairs $\langle l, r \rangle$ of morphisms $l,r : i \to j$ in $\mathbb{A}$ with the same domain and codomain.
+ Given $a,b : m \to n \in \mathbb{A}(m,n)$, we say that $a$ rewrites to $b$ via $\mathcal{R}$, written $a \rewriteArrow{\mathcal{R}} b$, if they are decomposable as follows for some rule $\langle l,r \rangle \in \mathcal{R}$.
+ \[
+\tikzfig{./figures/string/decomposition} 
+ \] 
+\end{definition}
+
+In order to get a full and faithful characterisation of morphisms in $\mathbf{S}_{\Sigma}$, we need to restrict the morphisms in $\catname{HypI}(\Sigma)$; such characterisation will automatically be an isomorphism as the categories have the same objects, i.e., the characterisation is essentially surjective by construction.
+\begin{definition}[Monogamous cospans (Definition 13~\cite{bonchi_string_2022-2})]
+  A cospan $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$ is \emph{monogamous} if $f$ and $g$ are mono and for all vertices $v$ of $\mathcal{G}$,
+  \[
+  \text{in-degree of } v = \begin{cases}
+  0 & \text{if } v \in f(m)\\
+  1 & \text{otherwise}
+  \end{cases}
+  \]
+  \[
+  \text{out-degree of } v = \begin{cases}
+  0 & \text{if } v \in g(m)\\
+  1 & \text{otherwise}
+  \end{cases}
+  \]
+\end{definition}
+Practically, a cospan is monogamous if no vertex is incident to more than one hyperedge, the vertices in the image of the input (output) interface have no incoming (outgoing) hyperedges, and the interface maps $f$ and $g$ are monic.
+\begin{example}
+All the cospans in~\cref{def:frobenius_interpretation} fail to be monogamous: the input interface of the first cospan is not monic, the output interface of the third cospan is not monic, the out-degree of the single vertex in the carrier of the cospan number two must be one for the cospan to be monogamous as the vertex is not in the image of the output interface, similarly for the single vertex in the carrier of the last cospan: its in-degree is zero but it is not in the image of the input interface.
+The following cospan is not monogamous
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/non_monogamous_example}}~,
+\]
+because vertices $v_1$ and $w_1$ have in- and out-degree of $2$ respectively.
+In contrast, all the cospans in~\cref{example:hypergraph_category_structure} are monogamous.
+\end{example}
+
+\begin{definition}[Acyclic cospans (Definition 20~\cite{bonchi_string_2022-2})]
+  A cospan $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$ is \emph{acyclic} if the carrier hypergraph $\mathcal{G}$ is acyclic.
+\end{definition}
+
+\begin{definition}
+  A cospan $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$ is \emph{monogamous acyclic} if it is both monogamous and acyclic.
+  We will call such cospans mda-cospans for short.
+\end{definition}
+
+\begin{proposition}
+The objects of $\;\catname{HypI}(\Sigma)$ together with the mda-cospans form a full subcategory of $\;\catname{HypI}(\Sigma)$ which we denote by $\catname{MHypI}(\Sigma)$.
+\end{proposition}
+\begin{proof}
+The cospans for identities and symmetries are monogamous acyclic.
+The composition and tensoring of two mda-cospans are also mda-cospans.
+\end{proof}
+
+Before we can state that the characterisation of morphisms of $\mathbf{S}_{\Sigma}$ in $\catname{MHypI}(\Sigma)$ is fully faithful, we will need a technical lemma and a definition.
+
+\begin{definition}[Definition 22~\cite{bonchi_string_2022-2}]
+  A sub-hypergraph $\mathcal{H}$ of a hypergraph $\mathcal{G}$ is \emph{convex} if for all vertices $v_1, v_2$ in $\mathcal{H}$, every hyperedge on a path between $v_1$ and $v_2$ in $\mathcal{G}$ is also in $\mathcal{H}$.
+\end{definition}
+
+\begin{example}[Example 23~\cite{bonchi_string_2022-2}]
+Below, for the hypergraph on the left, there are two sub-hypergraphs (outlined) with the first one being a convex sub-hypergraph as all hyperedges on the one and only path between vertices $v_1$ and $v_2$ are in the sub-hypergraph, and the second one failing to be a convex sub-hypergraph because a path between vertices $v_2$ and $v_3$ contains a hyperedge not in the sub-hypergraph.
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/convex_hypergraph_example_1}} \qquad \adjustbox{scale=0.8}{\tikzfig{./figures/string/convex_hypergraph_example_2}} \qquad \adjustbox{scale=0.8}{\tikzfig{./figures/string/convex_hypergraph_example_3}}~.
+\]
+\end{example}
+
+\begin{lemma}[Lemma 24~\cite{bonchi_string_2022-2}]
+Let $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ be an mda-cospan in $\catname{MHypI}(\Sigma)$ and let $\mathcal{L}$ be a convex sub-hypergraph of $\mathcal{G}$.
+Then there exists $k \in \mathbb{N}$ and an mda-cospan $i \xrightarrow{} L \xleftarrow{} j$ such that $\mathcal{G}$ factors as
+\begin{equation}\label{eq:convex_decomposition}
+\tikzfig{./figures/string/convex_decomposition_1}~,
+\end{equation}
+where all cospans are mda-cospans.
+\end{lemma}
+\begin{proof}
+Let $\mathcal{C}_{1}$ be the smallest hypergraph that contains the input vertices of $\mathcal{G}$ and contains all hyperedges $e$ that are not in $\mathcal{L}$ but such that there is path from $e$ to a vertex in $\mathcal{L}$.
+Let $\mathcal{C}_{2}$ be the smallest hypergraph that contains the outputs of $\mathcal{G}$ such that $\mathcal{G} = \mathcal{C}_{1} \cup \mathcal{L} \cup \mathcal{C}_{2}$.
+By minimality, the three hypergraphs $\mathcal{C}_{1}$, $\mathcal{L}$, and $\mathcal{C}_{2}$ overlap only on vertices.
+Let
+\begin{gather*}
+i \defeq V_{\mathcal{C}_{1}} \cap V_{\mathcal{L}}\\
+j \defeq V_{\mathcal{C}_{2}} \cap V_{\mathcal{L}}\\
+k \defeq (V_{\mathcal{C}_{1}} \cap V_{\mathcal{C}_{2}}) \setminus V_{\mathcal{L}}~.
+\end{gather*}
+Now define the following cospans where all arrows are mono
+\begin{gather*}
+m \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} k \coprod i\\
+i \xrightarrow{} \mathcal{L} \xleftarrow{} j\\
+k \coprod j \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} n~.
+\end{gather*}
+Then \ref{eq:convex_decomposition} is computed by taking pushouts for the diagram below
+\[
+m \xrightarrow{} \mathcal{C}_{1} \xleftarrow{} k \coprod i \xrightarrow{} k \coprod \mathcal{L} \xleftarrow{} k \coprod j \xrightarrow{} \mathcal{C}_{2} \xleftarrow{} n~.
+\]
+The two spans identify those vertices from $\mathcal{G}$ that occur in more than one sub-hypergraph, so this amounts to simply taking the union
+\[
+m \xrightarrow{} \mathcal{C}_{1} \cup \mathcal{L} \cup \mathcal{C}_{2} \xrightarrow{} n = m \xrightarrow{} \mathcal{G} \xleftarrow{} n~.
+\]
+$\mathcal{C}_{1}$, $\mathcal{L}$, and $\mathcal{C}_{2}$ are all acyclic as $\mathcal{G}$ is acyclic, so it remains to check that all components are monogamous.
+By $\mathcal{G}$ being monogamous, the in- and out- degrees of vertices in $\mathcal{G}$ are at most $1$, so checking that the cospans are monogamous amounts to checking whether the vertices with in-degree (out-degree) $0$ are exactly in the image of the input (output) interface.
+$\mathcal{C}_{1}$ is closed under predecessors and hence vertices with in-degree $0$ are exactly in the image of $m$.
+Suppose there exists a vertex $v$ in $\mathcal{C}_{1}$ with out-degree $0$ that is not in the image of $k \coprod i$, then there must be a hyperedge $e$ such that $v$ is its source; $e$ can not be in either $\mathcal{L}$ or $\mathcal{C}_{2}$ as otherwise $v$ would be in the image of $k \coprod i$, but then we get a contradiction since $\mathcal{G} = \mathcal{C}_{1} \cup \mathcal{L} \cup \mathcal{C}_{2}$.
+$\mathcal{C}_{2}$ is monogamous by noting that it is closed under successors and by mirroring the argument for $\mathcal{C}_{1}$.
+Now, given a vertex $v$ in $\mathcal{L}$ with no input hyperedge, it must be in the image of $i$.
+Suppose it is not, then there must be a hyperedge $e$ such that $v$ is its target as otherwise $v$ would be in the input interface of $\mathcal{G}$ and hence in the image of $i$.
+As $e$ is not in $\mathcal{L}$, it must be in $\mathcal{C}_{1}$ as there is a path from $e$ to $v$ which is in $\mathcal{L}$ and therefore $v$ must be in $\mathcal{C}_{1}$ and hence must be in $i$ by construction, which is a contradiction.
+Now, given a vertex $v$ in $\mathcal{L}$ with no output hyperedge, it must be in the image of $j$.
+Suppose it is not, then there must be a hyperedge $e$ such that $v$ is its source.
+We will show that $e$ must be in $\mathcal{C}_{2}$; suppose it is in $\mathcal{C}_{1}$, then by construction of $\mathcal{C}_{1}$ there is a path containing $e$ and $v$ to $\mathcal{L}$, since $\mathcal{L}$ is convex, $e$ must be in $\mathcal{L}$ which is a contradiction and therefore $e$ is in $\mathcal{C}_{2}$ as well as $v$.
+Then, by construction, $v$ must be in $j$.
+\end{proof}
+\begin{theorem}[Theorem 25~\cite{bonchi_string_2022-2} and Corollary 26~\cite{bonchi_string_2022-2}]\label{theorem:monogamous_isomorphism}
+$\mathbf{S}_{\Sigma} \cong \catname{MHypI}(\Sigma)$.
+\end{theorem}
+\begin{proof}
+Recall the functor $\llbracket - \rrbracket : \mathbf{S}_{\Sigma} \to \catname{HypI}(\Sigma)$.
+As the interpretation $\llbracket - \rrbracket : \Sigma_1 \to U(\catname{HypI}(\Sigma))$ produces mda-cospans and mda-cospans are closed under composition and tensoring and since symmetries and identities are mda-cospans, we have a restriction $\llbracket - \rrbracket : \mathbf{S}_{\Sigma} \to \catname{MHypI}(\Sigma)$. 
+By \cref{prop:faithful_interpretation}, the functor $\llbracket - \rrbracket : \mathbf{S}_{\Sigma} \to \catname{MHypI}(\Sigma)$ is faithful and hence its restriction is also faithful.
+It remains to show that the functor is full.
+Let $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ be an mda-cospan in $\catname{MHypI}(\Sigma)$.
+We will show that there exists a morphism $F : m \to n$ in $\mathbf{S}_{\Sigma}$ such that $\llbracket F \rrbracket = m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$.
+We will do this by induction on the number of hyperedges in $\mathcal{G}$.
+\paragraph{Base case:} If $\mathcal{G}$ does not contain any hyperedges, then it is a discrete hypergraph and the monogamy condition implies that $f$ and $g$ are bijections and therefore the cospan is the image of the morphism that is a mix of identities and symmetries.
+\paragraph{Inductive step:} Pick any hyperedge $e$ in $\mathcal{G}$. Recall that $l(e) : \Sigma_1$ is a morphism in $\mathbf{S}_{\Sigma}$.
+Furthermore, a single hyperedge is a convex sub-hypergraph of $\mathcal{G}$ and hence by the lemma above, we can decompose the cospan as in~\cref{eq:convex_decomposition} with $\mathcal{L} = \llbracket l(e) \rrbracket$.
+By the induction hypothesis, there exist morphisms $F_1 : m \to k \coprod i$, $F_2 : k \coprod j \to n$ and $l(e) : i \to j$ for each component of the decomposition and by functoriality of $\llbracket - \rrbracket$, $m \xrightarrow{} \mathcal{G} \xleftarrow{} n$ has a pre-image in $\mathbf{S}_{\Sigma}$ and the functor is full. 
+As $\llbracket - \rrbracket$ is fully faithful and is identity-on-objects, it is an isomorphism of PROPs.
+\end{proof}
+
+The major payoff of~\cref{theorem:frobenius_isomorphism} and~\cref{theorem:monogamous_isomorphism} is that we can now reason about string diagrams (equivalence classes of terms in $\mathbf{H}_{\Sigma}$ and $\mathbf{S}_{\Sigma}$, respectively) using the corresponding notion of cospans of hypergraphs.
+First, it makes it straightforward to check whether two string diagrams are equal by checking whether the corresponding cospans are isomorphic which can be checked by picking a \enquote{canonical} cospans by choosing a particular traversal for the carrier out of the equivalence class of cospans and therefore this characterisation may be used to efficiently represent string diagrams in a computer---this is the insight we will later use to generalise e-graphs so that they handle symmetric monoidal theories more efficiently.
+Second, it allows us to reason about string diagrams using graph rewriting: noting that the cospans of $\catname{HypI}(\Sigma)$ and $\catname{MHypI}(\Sigma)$ contain all the redexes modulo SMC and Frobenius equations and modulo SMC equations, respectively, on the nose.
+By performing graph rewriting on the cospans and by taking the appropriate quotients, we can obtain $\mathbf{H}_{\Sigma, \mathcal{E}}$ and $\mathbf{S}_{\Sigma, \mathcal{E}}$.
+We will recall the (categorical) notion of graph rewriting in the next section and then show how it applies in the cases of $\catname{HypI}(\Sigma)$ and $\catname{MHypI}(\Sigma)$.
+
+\section{DPO(I) Rewriting}\label{sec:dpo_rewriting}
+
+Double-pushout (DPO) rewriting, introduced by Ehrig et al.~\cite{ehrigGraphgrammarsAlgebraicApproach1973} is the classical categorical approach to graph transformation, generalising term rewriting from trees to graph-like structures. 
+Where a term-rewriting rule $l \to r$ replaces a subterm matching $l$ with $r$ in some bigger term $t = C[l]$ producing a term $t' = C[r]$, where $C$ is a context----a term-with-a-hole together with a notion of substitution, with $r$; a DPO rule is a span $L \xleftarrow{} K \xrightarrow{} R$ in some category $\mathcal{C}$:
+$L$ is the pattern to match, $R$ is its replacement, and $K$ is a shared "interface" — the part of $L$ that must be preserved (not deleted) and glued unchanged into $R$. A rewriting step consists of two pushout squares:
+\begin{equation}\label{eq:dpo_rewriting}
+  \begin{tikzcd}
+	L && K && R \\
+	\\
+	G && {L^{\bot}} && H
+	\arrow[from=1-1, to=3-1]
+	\arrow[from=1-3, to=1-1]
+	\arrow[from=1-3, to=1-5]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow[from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+\end{tikzcd}
+\end{equation}
+where the left square identifies a match of $L$ inside the source object $G$ together with its complement $L^{\bot}$---a \emph{pushout complement}, generalised from the notion of a context $C[-]$---and the right square glues $R$  back onto $L^{\bot}$ to produce the result $H$. 
+Intuitively, the two pushouts amount to \emph{deleting} the occurrence of those parts of $L$ that have no pre-image in $K$ in $G$ and \emph{gluing} $R$ into the hole.
+The name \enquote{double pushout} refers to these two squares.
+
+One of the main benefits of this approach is that it can be studied regardless of the particular category as long as it has pushouts which allows one to translate the properties of abstract rewriting between the categories.
+By further requiring that pushouts in a given category are \emph{well-behaved}, such categories are referred to as \emph{adhesive}, it can be shown that DPO rewriting has some useful properties that apply to a wide range of categories.
+Our interest is primarily in treating DPO rewriting as a tool to perform rewriting efficiently on string diagrams.
+
+DPO rewriting is not the only categorification of graph rewriting.
+Other approaches include single-pushout (SPO) rewriting~\cite{HandbookGraphGrammars2003}, which features a single pushout in a category of partial morphisms with the nature of a pushout in such a category responsible for deleting and gluing at the same time.
+The deletion in SPO rewriting has more leeway than in DPO rewriting, which does not interact well with the rewriting modulo SMC equations since the latter impose strict restrictions on what may and may not be deleted to constitute a redex.
+A different tradition altogether is that of higher-dimensional rewriting in the sense of Burroni~\cite{burroniHigherdimensionalWordProblems1993}, later developed by Guiraud and Mimram~\cite{guiraudTerminationOrdersThreedimensional2006,mimram3DimensionalRewritingTheory2014}, in which a rewriting system on the morphisms of an $n$-category is presented by an $(n+1)$-polygraph: the terms being rewritten are $n$-cells and the rewriting rules themselves are $(n+1)$-cells, applied in context by whiskering with identity cells.
+String diagram rewriting is then an instance of $2$-polygraphs.
+This framework is considerably more general than what we will describe in this section, as it presupposes no monoidal structure whatsoever; the price of this generality is that the laws of symmetric monoidal categories are not built in and must themselves be adjoined as explicit (invertible) rewriting cells, so that any analysis of the resulting system---termination or confluence in particular---must account for these structural rules alongside the rules of the theory of interest.
+The hypergraph representation avoids this overhead entirely, since the SMC equations hold on the nose in $\catname{HypI}(\Sigma)$.
+Closest to the present approach are the open graphs (also called string graphs) of Dixon and Kissinger~\cite{dixonOpengraphsMonoidalTheories2013}, which likewise encode morphisms of a symmetric monoidal category as graphs with boundary and reason equationally via DPO rewriting, with adhesivity obtained by embedding open graphs into the adhesive category of typed graphs rather than exhibited directly.
+The crucial difference is soundness: unrestricted DPO rewriting on open graphs is sound only in the presence of a traced symmetric monoidal structure, as a match may wrap around its context in a way that requires a feedback loop to be expressed syntactically, whereas the convexity and boundary conditions of~\cite{bonchi_string_2022-2} rule out precisely such matches and thereby guarantee soundness for arbitrary SMCs.
+
+\begin{example}[Example 3.15~\cite{bonchi_string_2022-1}]\label{example:dpo}
+  Consider the following span (on the left) in $\catname{HypI}(\Sigma)$ and the hypergraph in which it has a matching (on the right):
+  \[
+  \adjustbox{scale=0.7}{
+  \tikzfig{./figures/string/dpo_example_1} \qquad\qquad \tikzfig{./figures/string/dpo_example_2}~.
+  }
+  \]
+  This yields the following DPO square
+  \[
+  \adjustbox{scale=0.7}{
+  \tikzfig{./figures/string/dpo_example_3}~.
+  }
+  \]
+  The pushout complement is computed by deleting the hyperedges and vertices in $L$ with no pre-image in $K$, i.e. keeping those which are the image of $v_1$ and $w_1$.
+  The span intuitively corresponds to one of the two rewrite rules induced by $\mathcal{E}$: $\langle \adjustbox{scale=0.65}{\tikzfig{./figures/string/dpo_example_4}}, \adjustbox{scale=0.65}{\tikzfig{./figures/string/dpo_example_5}} \rangle$ for a corresponding presentation.
+\end{example}
+
+While pushouts are characterised by their universal property, pushout complements are not and may not exist, or there may be many of them.
+There is a well-known result that for a category of directed graphs a pushout complement exists when so called \emph{no-dangling} and \emph{no-identification} conditions are satisfied~\cite{corradiniAlgebraicApproachesGraph1997}.
+This result is usually cited verbatim for hypergraphs as well even though these are different objects.
+It is straightforward to adapt the notions to the case of hypergraphs and show that the same result holds.
+
+\begin{definition}[No-dangling condition (Definition 3.16~\cite{bonchi_string_2022-1})]
+  Morphisms $K \xrightarrow{i} L \xrightarrow{f} G$ satisfy \emph{no-dangling} condition, if for every hyperedge $e$ not in the image of $f$, its sources and targets are either not in the image of $f$ or in the image of $f \circ i$.
+\end{definition}
+Intuitively, this condition ensures that when we should not delete vertices that are incident to hyperedges which are not being deleted.
+\begin{example}\label{example:no-dangling}
+The left square in~\cref{example:dpo} satisfies the no-dangling condition as the only hyperedge not in the image of $f$ is the hyperedge labelled $f$ and its source vertex is in the image of $f \circ i$ and the target vertex is not in the image of $f$ at all.
+Below is the example of morphisms that do not satisfy the condition due to Kaye~\cite[Example 9.14]{kayeFoundationsDigitalCircuits2025}.
+\[
+\tikzfig{./figures/string/no_dangling_example}~.
+\]
+In particular, the vertices $v_3$ and $v_4$ incident to the hyperedge $e_2$ are in the image of $f$.
+An intuitive reason for why the no-dangling condition is necessary is that a pushout complement is computed---when the morphism $i$ is mono---by deleting the hyperedges and vertices in the image of $f$ keeping everything in the image of $f \circ i$ intact.
+An attempt to perform such a deletion would result in the following picture
+\[
+\tikzfig{./figures/string/no_dangling_example_2}~.
+\]
+The alleged pushout complement is not a valid hypergraph as a hyperedge labelled $e_2$ must have a source and a target; a homomorphism between hypergraphs must also preserve the number of inputs and outputs, so there is simply no map from the alleged pushout complement to the source hypergraph. 
+\end{example}
+The other vital condition is the no-identification condition.
+\begin{definition}[No-identification condition~{\cite[Def. 3.17]{bonchi_string_2022-1}}]
+  Morphisms $K \xrightarrow{i} L \xrightarrow{f} G$ satisfy the \emph{no-identification} condition if any two distinct items of $L$ (vertices or hyperedges) identified by $f$ lie in the image of $i$.
+\end{definition}
+\begin{example}
+Any monic $f$ trivially satisfies the condition, which is the case both in~\cref{example:dpo} and~\cref{example:no-dangling}.
+An example of morphisms that do not satisfy the condition, again due to Kaye~\cite[Example 9.16]{kayeFoundationsDigitalCircuits2025}, is given below.
+\[
+\tikzfig{./figures/string/no_identification_example}~.
+\]
+Computing the alleged pushout complement by deleting the hyperedges and vertices in the image of $f$ and keeping everything in the image of $f \circ i$ gives us the following square.
+\[
+\tikzfig{./figures/string/no_identification_example_2}~.
+\]
+Again, computing the pushout does not give us back the source hypergraph because there is no way to identify the vertices $v_3$ and $v_4$ using just the hypergraph $K$.
+\end{example}
+
+\begin{proposition}
+  Let $K \xrightarrow{i} L \xrightarrow{f} G$ be morphisms in $\catname{Hyp}(\Sigma)$.
+  A pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$ exists if and only if the no-dangling and no-identification conditions are satisfied.
+\end{proposition}
+\begin{proof}
+  For the if direction, suppose the two conditions hold, and define $L^{\bot}$ as the following sub-hypergraph of $G$
+  \[
+  L^{\bot} \defeq (V_{L^{\bot}}, E_{L^{\bot}}, s_{L^{\bot}}, t_{L^{\bot}}, l_{L^{\bot}}) \hookrightarrow G, 
+  \]
+  where 
+  \begin{gather*}
+    V_{L^{\bot}} \defeq \bigl(V_G \setminus f(V_L)\bigr) \cup f(i(V_K))\\
+    E_{L^{\bot}} \defeq \bigl(E_G \setminus f(E_L)\bigr) \cup f(i(E_K))\\
+    s_{L^{\bot}} \defeq s_G \restriction_{E_{L^{\bot}}} \quad t_{L^{\bot}} \defeq t_G \restriction_{E_{L^{\bot}}} \quad l_{L^{\bot}} \defeq l_G \restriction_{E_{L^{\bot}}}
+  \end{gather*}
+  This is a well-defined sub-hypergraph: a hyperedge of $L^{\bot}$ either lies outside the image of $f$, in which case the no-dangling condition places each of its sources and targets outside the image of $f$ or inside the image of $f \circ i$, hence in $V_{L^{\bot}}$; or it lies in the image of $f \circ i$, in which case its sources and targets lie in the image of $f \circ i$ as well, since $f \circ i$ is a homomorphism.
+  Let $g \colon L^{\bot} \hookrightarrow G$ be the inclusion and $c \colon K \to L^{\bot}$ the corestriction of $f \circ i$, which lands in $L^{\bot}$ by construction; then $g \circ c = f \circ i$, so the square commutes.
+
+  It remains to show the square is a pushout.
+  Let $P \defeq L \coprod_{K} L^{\bot}$ be the pushout of $L \xleftarrow{i} K \xrightarrow{c} L^{\bot}$ computed as in~\cref{def:pushout_hyp}: the vertices and edges of the resulting hypergraph are quotients $V_{L} \coprod_{V_{K}} V_{L^{\bot}} / \sim$ and $E_{L}\coprod_{E_{K}} E_{L^{\bot}} / \sim$ by the least equivalence relation identifying $\iota_{1}^{V}(i_{V}(z))$ with $\iota_{2}^{V}(c_{V}(z))$ for $z \in V_{K}$ and similarly for edges.
+  Let $u \colon P \to G$ be the homomorphism induced by $f$ and $g$ via the universal property, given explicitly on vertices by $u_{V}([\iota^{V}_{1}(w)]) = f_{V}(w)$ and $u_{V}([\iota^{V}_{2}(z)]) = g_{V}(z)$, and analogously on edges.
+  We show that $u_{V}$ and $u_{E}$ are bijections; since a homomorphism that is bijective on vertices and on edges is an isomorphism of hypergraphs, this suffices.
+
+  For surjectivity, a vertex of $G$ either lies in $f(V_{L})$, hence in the image of $u_{V} \circ [\iota^{V}_{1}]$, or lies in $V_{G} \setminus f(V_{L}) \subseteq V_{L^{\bot}}$, hence in the image of $u_{V} \circ [\iota^{V}_{2}]$; the same argument applies to edges.
+
+  For injectivity, note that $u_{V}$ is injective if and only if any two elements of $V_{L} \coprod V_{L^{\bot}}$ with the same image under the copairing $[f_{V}, g_{V}] \colon V_{L} \coprod V_{L^{\bot}} \to V_{G}$ are related by $\sim$: the copairing factors as $u_{V}$ after the quotient projection.
+  So suppose two elements of $V_{L} \coprod V_{L^{\bot}}$ have the same image under $[f_{V}, g_{V}]$; we show that they are related by $\sim$.
+  There are three cases.
+  If both are of the form $\iota^{V}_{2}(z_{1}), \iota^{V}_{2}(z_{2})$, then $g_{V}(z_{1}) = g_{V}(z_{2})$ implies $z_{1} = z_{2}$, since $g$ is an inclusion.
+  If both are of the form $\iota^{V}_{1}(w_{1}), \iota^{V}_{1}(w_{2})$ with $w_{1} \neq w_{2}$, then $f_{V}(w_{1}) = f_{V}(w_{2})$, so by the no-identification condition $w_{1} = i_{V}(z_{1})$ and $w_{2} = i_{V}(z_{2})$ for some $z_{1}, z_{2} \in V_{K}$.
+  Then $c_{V}(z_{1}) = f_{V}(i_{V}(z_{1})) = f_{V}(w_{1}) = f_{V}(w_{2}) = c_{V}(z_{2})$, where the outer equalities hold because $c$ is the corestriction of $f \circ i$, and hence
+  \[
+  \iota^{V}_{1}(w_{1}) = \iota^{V}_{1}(i_{V}(z_{1})) \sim \iota^{V}_{2}(c_{V}(z_{1})) = \iota^{V}_{2}(c_{V}(z_{2})) \sim \iota^{V}_{1}(i_{V}(z_{2})) = \iota^{V}_{1}(w_{2}).
+  \]
+ Finally, suppose the elements are $\iota^{V}_{1}(w)$ and $\iota^{V}_{2}(z)$ with $f_{V}(w) = g_{V}(z)$.
+  Since $g_{V}(z) \in V_{L^{\bot}}$ and $f_{V}(w) \in f(V_{L})$, the construction of $V_{L^{\bot}}$ yields $f_{V}(w) \in f(i(V_{K}))$, say $f_{V}(w) = f_{V}(i_{V}(y))$ for some $y \in V_{K}$.
+  If $w = i_{V}(y)$, then
+  \[
+  g_{V}(c_{V}(y)) = f_{V}(i_{V}(y)) = f_{V}(w) = g_{V}(z),
+  \]
+  where the first equality is the commutativity $g \circ c = f \circ i$; injectivity of $g_{V}$ then gives $c_{V}(y) = z$, and hence $\iota^{V}_{1}(w) = \iota^{V}_{1}(i_{V}(y)) \sim \iota^{V}_{2}(c_{V}(y)) = \iota^{V}_{2}(z)$.
+  Otherwise, $w$ and $i_{V}(y)$ are distinct vertices identified by $f$, so by the no-identification condition $w = i_{V}(y')$ for some $y' \in V_{K}$, and the previous argument applies with $y'$ in place of $y$.
+  In all cases the two elements are related by $\sim$, so $u_{V}$ is injective; the argument for $u_{E}$ is identical, using the no-identification condition for edges in the second case.
+  Hence $u$ is an isomorphism, the constructed square is a pushout, and $L^{\bot}$ is a pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$.
+
+  For the converse, suppose that a pushout complement $K \xrightarrow{c} L^{\bot} \xrightarrow{g} G$ exists but at least one of the conditions fails.
+  Since pushouts are unique up to an isomorphism commuting with the pushout injections, we may by~\cref{def:pushout_hyp} assume that $V_{G} = V_{L} \coprod V_{L^{\bot}} / {\sim}$ and $E_{G} = E_{L} \coprod E_{L^{\bot}} / {\sim}$, with $f$ and $g$ the composites of the coproduct injections with the quotient projections.
+  We first record a consequence of this description: if $w \in V_{L}$ and $\iota^{V}_{1}(w)$ is related by $\sim$ to any element of the coproduct other than itself, then $w \in i(V_{K})$.
+  Indeed, every generating pair of $\sim$ is of the form $\iota^{V}_{1}(i_{V}(z)) \sim \iota^{V}_{2}(c_{V}(z))$, so a non-trivial chain of generating pairs passing through $\iota^{V}_{1}(w)$ must contain a generator whose left component is $\iota^{V}_{1}(w)$ itself, forcing $w = i_{V}(z)$ for some $z \in V_{K}$.
+  The same holds for edges.
+
+  Suppose the no-identification condition fails: there are distinct items of $L$, say vertices $w_{1} \neq w_{2}$ (the case of edges is identical), with $f_{V}(w_{1}) = f_{V}(w_{2})$ and at least one of them outside the image of $i$.
+  Then $\iota^{V}_{1}(w_{1})$ and $\iota^{V}_{1}(w_{2})$ are distinct elements of the coproduct in the same $\sim$-class, so both are related by $\sim$ to an element other than themselves, and by the consequence above both lie in the image of $i_{V}$---a contradiction.
+
+  Suppose the no-dangling condition fails: there is a hyperedge $e \in E_{G}$ outside the image of $f$ with a source or target $v \in f(V_{L}) \setminus f(i(V_{K}))$, say $v = f_{V}(w)$ with $w \notin i(V_{K})$.
+  Since $f$ and $g$ are jointly surjective on edges and $e \notin f(E_{L})$, we have $e = g_{E}(e')$ for some $e' \in E_{L^{\bot}}$.
+  As $g$ is a homomorphism, $g_{V}^{*}(s_{L^{\bot}}(e')) = s_{G}(e)$ and likewise for targets, so the corresponding source or target $z$ of $e'$ satisfies $g_{V}(z) = v = f_{V}(w)$.
+  Then $\iota^{V}_{1}(w)$ and $\iota^{V}_{2}(z)$ are distinct elements of the coproduct in the same $\sim$-class, so $\iota^{V}_{1}(w)$ is related by $\sim$ to an element other than itself, and by the consequence above $w \in i(V_{K})$, so we, again, reach a contradiction.
+\end{proof}
+
+Traditionally, the objects in the diagram~\ref{eq:dpo_rewriting} are (hyper-)graphs, but in the context of string diagrams we have hypergraphs with interfaces, prescribing which vertices are the inputs and outputs of the hypergraph.
+To maintain the input and output interfaces of the hypergraph during DPO rewriting, the formalism has been extended to the one of DPOI rewriting, with \emph{I} standing for \emph{interfaces}, where in addition to the preservation of $K$ in the rewriting step, the interfaces of the source graph must be preserved.
+\begin{definition}[DPOI rewriting~{\cite[p. 27]{bonchi_string_2022-1}}]\label{def:dpoi_rewriting}
+Given a category $\mathcal{C}$ with pushouts, and given morphisms $G \xleftarrow{} J$ and $H \xleftarrow{} J$, $G$ rewrites into $H$ with interface $J$---written $G \xleftarrow{} J \rightsquigarrow_{\mathcal{R}} H \xleftarrow{} J$---if there exists a rule $L \xleftarrow{} K \xrightarrow{} R$ and an object $L^{\bot}$ such that the following diagram commutes and the two marked squares are pushouts.
+\[\begin{tikzcd}
+	L && K && R \\
+	\\
+	G && {L^{\bot}} && H \\
+	&& J
+	\arrow[from=1-1, to=3-1]
+	\arrow[from=1-3, to=1-1]
+	\arrow[from=1-3, to=1-5]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow[from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow[from=4-3, to=3-1]
+	\arrow[from=4-3, to=3-3]
+	\arrow[from=4-3, to=3-5]
+\end{tikzcd}\]
+\end{definition}
+\begin{remark}
+The above formulation may cause suspicion as to why it may apply to morphisms in $\catname{HypI}(\Sigma)$ since the latter have two separate interfaces.
+Given a morphism $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$, we note that the cospan $0 \xrightarrow{} \mathcal{G} \xleftarrow{[f,g]} m \coprod n$ conveys the same data so in the context of DPOI rewriting when applied to hypergraphs with interfaces we pick $J$ to be the coproduct of the input and output interface and the corresponding morphism to be the copairing of the two interface morphisms, i.e., the same applies to morphisms in $\catname{MHypI}(\Sigma)$.
+\end{remark}
+The corresponding pushout complement must further respect the interfaces.
+\begin{example}[{\cite[Ex. 3.21]{bonchi_string_2022-1}}]
+Consider the same rule as in~\cref{example:dpo}
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/dpo_example_1}}~,
+\]
+and the same hypergraph, this time accompanied by the interface
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/dpoi_example_2}}~.
+\]
+The corresponding DPOI rewriting step is then given by the following diagram
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/dpoi_example_3}}~.
+\]
+The diagram is not much different from the one in~\cref{example:dpo} except for the additional interface $J$ and the corresponding morphisms to the source and target hypergraphs, however, the presence of the interface may affect the existence of the pushout complement.
+For example, if the source was instead
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/dpoi_example_4}}~,
+\]
+there would be no pushout complement and therefore no match of the rule in the source hypergraph.
+\end{example}
+We will first recall the rewriting as it applies to $\catname{HypI}(\Sigma)$ and then will turn our attention to the case of $\catname{MHypI}(\Sigma)$.
+The ultimate goal is to reconcile the rewriting of string diagrams as defined in~\cref{def:rewriting_prop} and~\cref{def:rewriting_frob}.
+String diagrams in $\mathbf{H}_{\Sigma}$ have two interfaces as well as their image under $\llangle - \rrangle$.
+For the cospans we managed to reduce to a single interface by considering a copairing, but it turns out that a similar \enquote{reduction} is posible in the syntactic domain.
+
+Recall the structure of Frobenius algebra from~\cref{def:frobenius_prop}, we can abreviate the following combinations as $\cap : 2 \to 0$ and $\cup : 0 \to 2$:
+\[
+\adjustbox{scale=0.7}{
+\tikzfig{./figures/string/cap_definition} \qquad \tikzfig{./figures/string/cup_definition}}~.
+\]
+The $n$-ary versions of the above are defined by interspersing multiple $\cap$ and $\cup$ with symmetries, for example, $\cup : 0 \to n + n$ is given by
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_4_definition}}~.
+\]
+And using the equations of Frobenius algebra, we can show that the following holds
+\begin{gather}
+\adjustbox{scale=0.7}{
+\tikzfig{./figures/string/cup_cap_interaction} \qquad \tikzfig{./figures/string/cup_sym} \qquad \tikzfig{./figures/string/cap_sym}}\label{eq:cup_cap_interaction}~.
+\end{gather}
+\begin{remark}
+The first equality above follows from the following chain
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_cap_interaction_proof}}~.
+\]
+Where the first $=$ follows by the first equation of~\cref{eq:frobenius_frob} and the last two are unit and counit for monoid and comonoid from~\cref{eq:monoid_frob} and~\cref{eq:comonoid_frob}, respectively.
+This can also be established by simply computing the composition in $\catname{HypI}(\Sigma)$---the payoff of the characterisation we discussed earlier.
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_cap_interaction_proof_hypergraph}}~.
+\]
+As the theory is commutative, we also have the equality
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cap_cup_interaction}}~.
+\]
+\end{remark}
+
+These allow us to bend the inputs of string diagrams into outputs by defining the operation $\corner{-}$.
+\begin{definition}
+$\corner{-} : \mathbf{H}_{\Sigma}(m,n) \to \mathbf{H}_{\Sigma}(0,m + n)$ is given by  $\corner{a} = \cup_{m} \fatsemi (\id_{m} \otimes a)$, or, diagrammatically,
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/bending_wires}}~.
+\]
+\end{definition}
+This operation can be inverted by post-composing with $\cap_{m} \otimes \id_{n}$ and applying the first equation of Equations~\ref{eq:cup_cap_interaction}.
+\begin{proposition}[{\cite[Prop. 4.8]{bonchi_string_2022-1}}]
+  Suppose $\llangle a \rrangle = m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$, then $\llangle \corner{a} \rrangle$ produces a cospan isomorphic to $0 \xrightarrow{} \mathcal{G} \xleftarrow{[f,g]} m \coprod n$.
+\end{proposition}
+Using $\corner{-}$ allows us to pass freely between syntactic rewriting of $\Sigma$-terms withj non-trivial inputs and rewriting of $\Sigma$-terms that have only outputs. 
+\begin{theorem}[{\cite[Thm. 4.9]{bonchi_string_2022-1}}] \label{theorem:dpoi_rewriting}
+  Let $\langle l, r \rangle$ be a rewrite rule in $\mathbf{H}_{\Sigma}$.
+  Then,
+  \[
+  a \rewriteArrow{\langle l, r \rangle} b \quad \iff \quad \llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle
+  \]
+\end{theorem}
+\begin{proof}
+For the only-if direction, $a \rewriteArrow{\langle l, r \rangle} b$ by definition means that there exists decomposition of $a$ and $b$ as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/decomposition}}~. 
+\]
+Applying $\corner{-}$ to the above gives us the decomposition of $\corner{a}$ as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition}}~,
+\]
+or, by abbreviating
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_2}}~,
+\]
+as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_3}}~.
+\]
+Analogously, we also get
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_4}}~.
+\]
+The dashed lines result in the following
+\begin{equation}
+\corner{a} = \corner{l} \fatsemi \tilde{a} \qquad \corner{b} = \corner{r} \fatsemi \tilde{a}\label{eq:tilde_decomposition}~,
+\end{equation}
+where $\tilde{a} = (\id_{i} \otimes \cup_{k} \otimes \id_{j}) \fatsemi (a_1^{\star} \otimes a_2)$.
+Applying the functor $\llangle - \rrangle$ to the above gives us the following cospans
+\begin{gather*}\label{gather:cospans_frobenius_rewriting}
+\llangle \corner{l} \rrangle = 0 \xrightarrow{} L \xleftarrow{} i \coprod j \qquad \llangle \corner{r} \rrangle = 0 \xrightarrow{} R \xleftarrow{} i \coprod j\\
+\llangle \tilde{a} \rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n\\
+\llangle \corner{a} \rrangle = 0 \xrightarrow{} G \xleftarrow{} m \coprod n \qquad \llangle \corner{b} \rrangle = 0 \xrightarrow{} H \xleftarrow{} m \coprod n~.
+\end{gather*}
+By functoriality and by~\cref{eq:tilde_decomposition}, we have
+\[
+\llangle \corner{a} \rrangle = \llangle \corner{l} \rrangle \fatsemi \llangle \tilde{a} \rrangle \qquad \llangle \corner{b} \rrangle = \llangle \corner{r} \rrangle \fatsemi \llangle \tilde{a} \rrangle~,
+\]
+since composition of cospans is given by pushouts, we get the diagram
+\[\begin{tikzcd}
+	L && {i \coprod j} && R \\
+	\\
+	G && {L^{\bot}} && H \\
+	&& {m \coprod n}
+	\arrow[from=1-1, to=3-1]
+	\arrow[from=1-3, to=1-1]
+	\arrow[from=1-3, to=1-5]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow[from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow[from=4-3, to=3-1]
+	\arrow[from=4-3, to=3-3]
+	\arrow[from=4-3, to=3-5]
+\end{tikzcd}\]
+and by~\cref{def:dpoi_rewriting} we have $\llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle$.
+
+For the if direction, suppose $\llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle$.
+Then, by~\cref{def:dpoi_rewriting}, there exists a pushout complement $L^{\bot}$ such that the diagram as above commutes with two squares being pushouts.
+We denote the cospans involved in the DPOI square as in~\cref{gather:cospans_frobenius_rewriting}.
+Given $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$ pick $\hat{a}$ in $\mathbf{H}_{\Sigma}$ such that $\llangle \hat{a} \rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$, which exists by fullness of $\llangle - \rrangle$.
+Because composition in $\catname{HypI}(\Sigma)$ is given by pushouts, we have
+\begin{equation}\label{eq:only_if_direction}
+\adjustbox{scale=0.85}{$\displaystyle
+\begin{gathered}
+  \llangle \corner{a} \rrangle = (0 \to G \leftarrow m \coprod n)
+  = (0 \to L \leftarrow i \coprod j) \fatsemi (i \coprod j \to L^{\bot} \leftarrow m \coprod n)
+  = \llangle \corner{l} \rrangle \fatsemi \llangle \hat{a} \rrangle = \llangle \corner{l} \fatsemi \hat{a} \rrangle\\
+  \llangle \corner{b} \rrangle = (0 \to H \leftarrow m \coprod n)
+  = (0 \to R \leftarrow i \coprod j) \fatsemi (i \coprod j \to L^{\bot} \leftarrow m \coprod n)
+  = \llangle \corner{r} \rrangle \fatsemi \llangle \hat{a} \rrangle = \llangle \corner{r} \fatsemi \hat{a} \rrangle
+\end{gathered}
+$}
+\end{equation}
+By faithfulness of $\llangle - \rrangle$, the decompositions in~\cref{eq:only_if_direction} lift to decompositions of $\corner{a} = \corner{l} \fatsemi \hat{a}$ and $\corner{b} = \corner{r} \fatsemi \hat{a}$:
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/cup_decomposition_5}}~.
+\]
+By inverting $\corner{-}$, we get the decompositions of $a$ and $b$ as
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/cup_decomposition_6}}~,
+\]
+with dashed lines outlining the parts relevant to~\cref{def:rewriting_frop}, i.e. the part above the top dashed line corresponds to $a_2$ and the part below the bottom dashed line corresponds to $a_1$. 
+This, by definition, means that $a \rewriteArrow{\langle l, r \rangle} b$.
+\end{proof}
+\begin{corollary}
+\[
+\mathbf{H}_{\Sigma, \mathcal{E}} \cong \catname{HypI}(\Sigma) / \mathcal{R}~,
+\]
+where
+\[
+\mathcal{R} = \{ \langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle \mid l = r \in \mathcal{E} \} \cup \{ \langle \llangle r \rrangle, \llangle l \rrangle \rangle \mid l = r \in \mathcal{E}\}~,
+\]
+and $/ \mathcal{R}$ denotes the quotient of $\catname{HypI}(\Sigma)$ by the rewriting rules $\rightsquigarrow_\mathcal{R}^{*}$ with $\rightsquigarrow^{*}$ being the reflexive transitive closure of $\rightsquigarrow$.
+Namely, we say that $m_1 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} n_1 \rightsquigarrow_{\mathcal{R}} m_2 \xrightarrow{} \mathcal{G}_2 \xleftarrow{} n_2$ if $0 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} m_1 \coprod n_1 \rightsquigarrow 0 \xrightarrow{}_{\mathcal{R}} \mathcal{G}_2 \xleftarrow{} m_2 \coprod n_2$.
+\end{corollary}
+This is similar to how $\mathbf{T}_{\Sigma, \mathcal{E}}$ is the quotient of $\mathbf{T}_{\Sigma}$ by the equations $\mathcal{E}$.
+
+Before we recall a similar result for rewriting in $\catname{MHypI}(\Sigma)$ and $\mathbf{S}_{\Sigma}$ we note that DPOI rewriting as formulated in~\cref{def:dpoi_rewriting} is too general for the case of $\catname{MHypI}(\Sigma)$ and in order to make sure that rewriting is sound and complete for rewriting in $\mathbf{S}_{\Sigma}$ the notion of pushout complement and the notion of a match must be adjusted.
+
+\begin{example}[{\cite[Ex. 29]{bonchi_string_2022-2}}]
+Consider $\Sigma_1 = \{\alpha_1 : 0 \to 1, \alpha_2 : 1 \to 0, \alpha_3 : 1 \to 1\}$ and a PROP rewriting system $\mathcal{R} = \{\;\adjustbox{scale=0.7}{\tikzfig{./figures/string/id_expression}} \Rightarrow{} \adjustbox{scale=0.7}{\tikzfig{./figures/string/alpha_3}}\}$.
+It gets interpreted in $\catname{HypI}(\Sigma)$ as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_mda_rewrite_example}}~.
+\]
+The feature of this rule is that there exist several pushout complements for it, for example, the following two are possible
+
+\begin{minipage}{0.45\textwidth}
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_mda_rewrite_example_2}}
+\]
+\vspace{0.5em}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_mda_rewrite_example_3}}
+\]
+\vspace{0.5em}
+\end{minipage}
+
+The target of the first DPOI square is a valid morphism in $\catname{MHypI}(\Sigma)$ and hence in $\mathbf{S}_{\Sigma}$, while the target of the second DPOI square is not---it fails to be a mda-cospan as vertex $w_1$ has in-degree $2$.
+The target of the second DPOI square is instead a morpfism in $\catname{HypI}(\Sigma)$ and corresponds to the following syntactic rewrite in $\mathbf{H}_{\Sigma}$, recall that rewriting in $\mathbf{H}_{\Sigma}$ is modulo SMC equations and equations of Frobenius algebra,
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/frobenius_rewrite_example}}~.
+\]
+\end{example}
+
+To mitigate the above issue, we will restrict the notion of a pushout complement.
+\begin{definition}[{\cite[Def. 30]{bonchi_string_2022-2}}]
+For mda-cospans $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $m \xrightarrow{b_1} G \xleftarrow{b_2} n$ and mono $f : L \to G$, a pushout complement
+% https://q.uiver.app/#q=WzAsNSxbMCwwLCJMIl0sWzIsMCwiaSBcXGNvcHJvZCBqIl0sWzAsMiwiRyJdLFsyLDIsIkxee1xcYm90fSJdLFsyLDMsIm0gXFxjb3Byb2QgbiJdLFsxLDAsIlthXzEsYV8yXSIsMl0sWzAsMiwiZiIsMl0sWzMsMl0sWzEsMywiW2NfMSxjXzJdIl0sWzIsMSwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzQsMiwiW2JfMSxiXzJdIiwxXSxbNCwzLCJbZF8xLGRfMl0iLDJdXQ==
+\[\begin{tikzcd}
+	L && {i \coprod j} \\
+	\\
+	G && {L^{\bot}} \\
+	&& {m \coprod n}
+	\arrow["f"', from=1-1, to=3-1]
+	\arrow["{[a_1,a_2]}"', from=1-3, to=1-1]
+	\arrow["{[c_1,c_2]}", from=1-3, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow["{[b_1,b_2]}"{description}, from=4-3, to=3-1]
+	\arrow["{[d_1,d_2]}"', from=4-3, to=3-3]
+\end{tikzcd}\]
+is called a \emph{boundary} pushout complement if $[c_1,c_2]$ is mono and there exist $d_1 : m \to L^{\bot}$ and $d_2 : n \to L^{\bot}$ making the above triangle commute and such that
+\[
+m \coprod j \xrightarrow{[d_1, c_2]} L^{\bot} \xleftarrow{[d_2, c_1]} n \coprod i
+\] 
+is an mda-cospan.
+\end{definition}
+Intuitively, the above definition ensures that after the second pushout is computed between the right-hand side of the rewrite rule and the pushout complement, outputs are glued to the inputs of the complement and vice versa, avoiding the problem we saw above.
+
+\begin{proposition}[{\cite[Prop. 31]{bonchi_string_2022-2}}]
+  Let $i \xrightarrow{a_1} L \xleftarrow{a_2} j$ and $m \xrightarrow{b_1} G \xleftarrow{b_2} n$ be mda-cospans and mono $f : L \to G$.
+  If a boundary pushout complement exists, then it is unique up to isomorphism.
+\end{proposition}
+
+The final obstacle that needs to be resolved is that not all sub-hypergraphs of a carrier of a cospan in $\catname{MHypI}(\Sigma)$ correspond to a sub-string diagram in $\mathbf{S}_{\Sigma}$.
+\begin{example}[{\cite[Ex. 32]{bonchi_string_2022-2}}]
+Consider $\Sigma_1 = \{e_1 : 1 \to 2, e_2 : 2 \to 1, e_3 : 1 \to 1, e_4 : 1 \to 1\}$ and the following rewrite rule in $\mathbf{S}_{\Sigma}$:
+\[
+\big\langle \adjustbox{scale=0.6}{\tikzfig{./figures/string/non_convex_match_left}} : 2 \to 2, \adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_right}} : 2 \to 2 \big\rangle~.
+\]
+They are interpreted as the following cospans in $\catname{MHypI}(\Sigma)$:
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_left_2}} \qquad \adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_right_2}}~.
+\]
+Then, given the following diagram and its interpretation in $\catname{MHypI}(\Sigma)$
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_source_diagram}} \; \xrightarrow{\llbracket - \rrbracket} \; \adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_source}}~,
+\]
+we can get a DPOI square like below:
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_dpoi}}~.
+\]
+The problem is that despite the pushout complement being a boundary complement and all the components being monogamous, the rewrite does not correspond to any rewrite in $\mathbf{S}_{\Sigma}$.
+For this to be a rewrite in $\mathbf{S}_{\Sigma}$, $e_3$ must be moved either before $e_1$ or after $e_2$, but there is not enough structure to do this.
+Of course, by~\cref{theorem:dpoi_rewriting} the rewrite exists in $\mathbf{H}_{\Sigma}$:
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_diagram_rewrite}}~.
+\]
+\end{example}
+
+To fix the above issue, the notion of a match must be restricted to a \emph{convex match}.
+\begin{definition}[{\cite[Def. 33]{bonchi_string_2022-2}}]
+  A morphism $f : L \to G$ in $\catname{Hyp}(\Sigma)$ is a \emph{convex match} if it is mono and its image is a convex sub-hypergraph of $G$.
+\end{definition}
+
+\begin{definition}
+Given $D \xleftarrow{} m \coprod n$ and $H \xleftarrow{} m \coprod n$ in $\catname{Hyp}(\Sigma)$, $D$ rewrites \emph{convexly} into $E$ with interface $m \coprod n$---written $D \Rrightarrow_{\mathcal{R}} E$---if there exist a rule $L \xleftarrow{} i \coprod j \xrightarrow{} R$ in $\mathcal{R}$ and an object $L^{\bot}$ and cospan arrows $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} n \coprod m$ such that the diagram below commutes and the marked squares are pushouts,
+% https://q.uiver.app/#q=WzAsNyxbMCwwLCJMIl0sWzIsMCwiaSBcXGNvcHJvZCBqIl0sWzAsMiwiRyJdLFsyLDIsIkxee1xcYm90fSJdLFsyLDMsIm0gXFxjb3Byb2QgbiJdLFs0LDAsIlIiXSxbNCwyLCJIIl0sWzEsMCwiW2FfMSxhXzJdIiwyXSxbMCwyLCJmIiwyXSxbMywyXSxbMSwzLCJbY18xLGNfMl0iXSxbMiwxLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCwyLCJbcV8xLHFfMl0iXSxbNCwzLCJbZF8xLGRfMl0iLDFdLFsxLDUsIltiXzEsYjJdIl0sWzQsNiwiW3BfMSxwXzJdIiwyXSxbNSw2XSxbMyw2XSxbNiwxLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\[\begin{tikzcd}
+	L && {i \coprod j} && R \\
+	\\
+	G && {L^{\bot}} && H \\
+	&& {m \coprod n}
+	\arrow["f"', from=1-1, to=3-1]
+	\arrow["{[a_1,a_2]}"', from=1-3, to=1-1]
+	\arrow["{[b_1,b2]}", from=1-3, to=1-5]
+	\arrow["{[c_1,c_2]}", from=1-3, to=3-3]
+	\arrow[from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow[from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow["{[q_1,q_2]}", from=4-3, to=3-1]
+	\arrow["{[d_1,d_2]}"{description}, from=4-3, to=3-3]
+	\arrow["{[p_1,p_2]}"', from=4-3, to=3-5]
+\end{tikzcd}~,\]
+and the following conditions hold:
+\begin{enumerate}
+  \item $f : L \to G$ is a convex match;
+  \item $i \coprod j \xrightarrow{} L^{\bot}$ is a boundary complement in the leftmost pushout.
+\end{enumerate}
+\end{definition}
+Note that $\Rrightarrow$ is contained in $\rightsquigarrow$ as some of the pushout complements in $\rightsquigarrow$ happen to be boundary complements and some of the matches happen to be convex.
+Now we have all the ingredients to recall the soundness and completeness of rewriting $\Rrightarrow$ for $\Rightarrow$ in $\mathbf{S}_{\Sigma}$.
+\begin{theorem}[{\cite[Thm. 35]{bonchi_string_2022-2}}]\label{theorem:convex_dpoi_rewriting}
+Let $\mathcal{R}$ be any rewriting system on $\mathbf{S}_{\Sigma}$, then
+\[
+a \Rightarrow_{\mathcal{R}} b \qquad \iff \qquad \llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~.
+\]
+\end{theorem}
+\begin{proof}
+For the only-if direction,~\cref{theorem:dpoi_rewriting} implies that 
+\[
+\llangle \corner{a} \rrangle \rightsquigarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~,
+\]
+which gives us an analogous decomposition as in the proof of~\cref{theorem:dpoi_rewriting}.
+In particular, we have that
+\[
+\big\llangle \adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition}}\big\rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n~.
+\]
+We can check that $m \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} n \coprod i$ is an mda-cospan by \enquote{unbending} the wires:
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition_2}}~.
+\]
+This is indeed monogamous as $a_1$ and $a_2$ are morphisms in $\mathbf{S}_{\Sigma}$.
+Then, we have
+\[
+\llangle \corner{a} \rrangle
+= (0 \xrightarrow{} G \xleftarrow{} m \coprod n)
+= (0 \xrightarrow{} L \xleftarrow{} i \coprod j) \fatsemi (i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n)
+= \llangle \corner{l} \rrangle \fatsemi \llangle \tilde{a} \rrangle
+\]
+and let $f : L \to G$ be the pushout injection of the composition; we check that $f$ is mono and that its image is a convex sub-hypergraph of $G$.
+
+For monicity, recall that the composition is computed by the pushout of
+$L \xleftarrow{[a_1,a_2]} i \coprod j \xrightarrow{[c_1,c_2]} L^{\bot}$,
+of which $f$ is the injection opposite to $[c_1,c_2]$.
+Since $[c_1,c_2]$ is mono, as established when verifying the boundary
+complement conditions, and pushouts along monos in $\catname{Hyp}(\Sigma)$
+are mono, $f$ is mono.
+
+For convexity, first observe that, by monogamy of $G$, a path that leaves
+$f(L)$ can only do so through a vertex shared with $L^{\bot}$ whose unique
+out-hyperedge lies in $L^{\bot}$, and can only re-enter $f(L)$ through a
+shared vertex whose unique in-hyperedge lies in $L^{\bot}$.
+The shared vertices are exactly $i \coprod j$; every $i$-vertex has its
+out-hyperedge in $f(L)$, and every $j$-vertex has its in-hyperedge in
+$f(L)$, so convexity reduces to the claim that $L^{\bot}$ contains no path
+from a $j$-vertex to an $i$-vertex.
+This is where we use that $\llangle \tilde{a} \rrangle$ arises from the
+decomposition: the carrier $L^{\bot}$ is the carrier of $\llangle a_1
+\rrangle$ glued to the carrier of $\llangle a_2 \rrangle$ along the
+$k$-vertices only, with the $i$-vertices lying in the $a_1$-part and the
+$j$-vertices in the $a_2$-part.
+Assign rank $0$ to the hyperedges of the $a_1$-part and rank $1$ to those
+of the $a_2$-part.
+By monogamy of the two layers, every vertex of $L^{\bot}$ whose in- and
+out-hyperedges both exist within $L^{\bot}$ has the in-hyperedge of rank
+at most the out-hyperedge: internal vertices of a layer have both in the
+same layer, and $k$-vertices have their in-hyperedge in the $a_1$-part and
+out-hyperedge in the $a_2$-part.
+Hence ranks are non-decreasing along paths.
+A path starting at a $j$-vertex begins with a hyperedge of rank $1$, since
+$j$-vertices are inputs of the $a_2$-part and carry no hyperedge of the
+$a_1$-part; a path ending at an $i$-vertex ends with a hyperedge of rank
+$0$, since the unique in-hyperedge of an $i$-vertex within $L^{\bot}$ lies
+in the $a_1$-part.
+No path can therefore lead from a $j$-vertex to an $i$-vertex, and $f(L)$
+is convex.
+That is, we have that $\llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle$.
+
+For the if direction, suppose $\llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle$.
+Then, by definition, there exists a convex match $f : L \to G$ and a boundary pushout complement $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$ such that the diagram commutes and the marked squares are pushouts, for some rule $\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle$ in $\llangle \corner{\mathcal{R}} \rrangle$ with $\langle l, r \rangle : i \to j$ in $\mathcal{R}$.
+
+Since $a$ is a morphism of $\mathbf{S}_{\Sigma}$, the unfolded cospan $m \xrightarrow{q_1} G \xleftarrow{q_2} n = \llbracket a \rrbracket$ is an mda-cospan by~\cref{prop:monogamous_isomorphism}.
+The match $f$ is mono with convex image, so~\cref{lemma:decomposition} yields $k \in \mathbb{N}$ and a factorisation into mda-cospans
+\[
+(m \xrightarrow{} C_1 \xleftarrow{} k \coprod i)
+\;\fatsemi\;
+\bigl((k \xrightarrow{\id} k \xleftarrow{\id} k) \oplus (i \xrightarrow{} L \xleftarrow{} j)\bigr)
+\;\fatsemi\;
+(k \coprod j \xrightarrow{} C_2 \xleftarrow{} n)~,
+\]
+where the middle factor restricts to the unique cospan structure on $f(L) \cong L$ guaranteed by the lemma, compatible with the interface $i \coprod j \to L$ of the rule.
+Applying~\cref{prop:monogamous_isomorphism} once more, this time using fullness, we obtain morphisms $a_1 : m \to k \coprod i$ and $a_2 : k \coprod j \to n$ in $\mathbf{S}_{\Sigma}$ with
+\[
+\llbracket a_1 \rrbracket = (m \xrightarrow{} C_1 \xleftarrow{} k \coprod i)
+\qquad
+\llbracket a_2 \rrbracket = (k \coprod j \xrightarrow{} C_2 \xleftarrow{} n)~.
+\]
+By functoriality, $\llbracket a \rrbracket = \llbracket a_1 \fatsemi (\id_k \otimes l) \fatsemi a_2 \rrbracket$, and since $\llbracket - \rrbracket$ is faithful, $a = a_1 \fatsemi (\id_k \otimes l) \fatsemi a_2$ already in $\mathbf{S}_{\Sigma}$.
+This exhibits a redex, so the rule applies syntactically: setting $b' \defeq a_1 \fatsemi (\id_k \otimes r) \fatsemi a_2$, we have $a \Rightarrow_{\mathcal{R}} b'$.
+
+It remains to show that $b' = b$.
+The factorisation above assembles, exactly as in the only-if direction, into a second convex DPOI square for the same match $f$ and the same rule leg $i \coprod j \to L$, whose pushout complement is the folded context $i \coprod j \xrightarrow{} L^{\bot\prime} \xleftarrow{} m \coprod n$ built from $a_1$ and $a_2$, and whose result is $\llangle \corner{b'} \rrangle$.
+By~\cref{prop:boundary_complement_uniqueness}, boundary complements are unique, so $L^{\bot\prime}$ and $L^{\bot}$ are isomorphic as pushout complements, i.e.\ via an isomorphism commuting with the arrows from $i \coprod j$ and to $G$.
+Pushing out $R \xleftarrow{} i \coprod j$ along the two isomorphic complements yields isomorphic cospans, hence
+\[
+\llangle \corner{b} \rrangle = (0 \xrightarrow{} E \xleftarrow{} m \coprod n) = \llangle \corner{b'} \rrangle~.
+\]
+Since $\llangle - \rrangle$ is an isomorphism of PROPs by~\cref{theorem:frobenius_isomorphism}, it follows that $\corner{b} = \corner{b'}$ in $\mathbf{H}_{\Sigma}$; unfolding, and using that $\mathbf{S}_{\Sigma} \to \mathbf{H}_{\Sigma}$ is faithful, $b = b'$ in $\mathbf{S}_{\Sigma}$.
+Hence $a \Rightarrow_{\mathcal{R}} b$, as required.
+\end{proof}
+
+\begin{corollary}
+\[
+\mathbf{S}_{\Sigma, \mathcal{E}} \cong \catname{MHypI}(\Sigma) / \mathcal{R}~,
+\]
+where
+\[
+\mathcal{R} = \{ \langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle \mid l = r \in \mathcal{E} \} \cup \{ \langle \llangle r \rrangle, \llangle l \rrangle \rangle \mid l = r \in \mathcal{E}\}~,
+\]
+and $/ \mathcal{R}$ denotes the quotient of $\catname{MHypI}(\Sigma)$ by the rewriting rules $\rightsquigarrow_\mathcal{R}^{*}$ with $\rightsquigarrow^{*}$ being the reflexive transitive closure of $\rightsquigarrow$.
+Namely, we say that $m_1 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} n_1 \rightsquigarrow_{\mathcal{R}} m_2 \xrightarrow{} \mathcal{G}_2 \xleftarrow{} n_2$ if $0 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} m_1 \coprod n_1 \rightsquigarrow 0 \xrightarrow{}_{\mathcal{R}} \mathcal{G}_2 \xleftarrow{} m_2 \coprod n_2$.
+\end{corollary}
+
+Hopefully the analogy between rewriting in a Lawvere theory (via $\mathbf{T}_{\Sigma}$) and rewriting in a PROP (via $\mathbf{S}_{\Sigma}$) is now clear and that hypegraphs, once equipped with an ability to express equivelences, are a natural representation for \emph{generalised} e-graphs, i.e. e-graphs for symmetric monoidal theories.
+We lay out the foundations for this in the next chapter.
+
+Notably, the machinery of DPOI rewriting as presented in this section has been further extended by either relaxing or restricting the class of cospans to accomodate morphisms in categories between $\mathbf{H}_{\Sigma}$ and $\mathbf{S}_{\Sigma}$.
+This include rewriting in $\mathbf{S}_{\Sigma}$ together with commutative (co)monoid structures---exactly half of the Frobenius algebra structure---presented by Milosavljevi\'{c}~\cite{zanassi_comonoid} who required monogamy on either input interface or output interface (and respectively restricted either in-degrees or out-degrees) together with an appropriate notion of a pushout complement.
+Another example is the work of Kaye~\cite{ghica_rewriting_2023} who considered rewriting in $\mathbf{Tr}_{\Sigma}$---a syntactic symmetric monoidal category with trace comonoid structure.
+The appropriate characterisation of morphisms as cospans considered parially monogamous cospans and traced boundary complements when performing DPOI rewriting.

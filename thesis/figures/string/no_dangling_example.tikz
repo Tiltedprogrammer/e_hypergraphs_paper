@@ -1,0 +1,60 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (12) at (10, 2) {};
+		\node [style=none] (13) at (17, 2) {};
+		\node [style=none] (14) at (10, -2) {};
+		\node [style=none] (15) at (17, -2) {};
+		\node [style=node, label={above:$v_1$}] (0) at (-5, -0.25) {};
+		\node [style=node, label={above:$v_2$}] (1) at (-4, -0.25) {};
+		\node [style=none] (2) at (-6, -1) {};
+		\node [style=none] (3) at (-6, 1) {};
+		\node [style=none] (4) at (-3, 1) {};
+		\node [style=none] (5) at (-3, -1) {};
+		\node [style=node, label={above:$v_1$}] (6) at (11.5, 0.75) {};
+		\node [style=node, label={above:$v_2$}] (7) at (15.5, 0.75) {};
+		\node [style=hedge] (8) at (13.5, 0.75) {$e_1$};
+		\node [style=node, label={above:$v_3$}] (9) at (11.5, -0.75) {};
+		\node [style=hedge] (10) at (13.5, -0.75) {$e_2$};
+		\node [style=node, label={above:$v_4$}] (11) at (15.5, -0.75) {};
+		\node [style=none] (16) at (-2, 0) {};
+		\node [style=none] (17) at (-1, 0) {};
+		\node [style=none] (18) at (0, 2) {};
+		\node [style=none] (19) at (7, 2) {};
+		\node [style=none] (20) at (0, -2) {};
+		\node [style=none] (21) at (7, -2) {};
+		\node [style=node, label={above:$v_1$}] (22) at (1.5, 0.75) {};
+		\node [style=node, label={above:$v_2$}] (23) at (5.5, 0.75) {};
+		\node [style=hedge] (24) at (3.5, 0.75) {$e_1$};
+		\node [style=node, label={above:$v_3$}] (25) at (1.5, -0.75) {};
+		\node [style=node, label={above:$v_4$}] (27) at (5.5, -0.75) {};
+		\node [style=none] (28) at (8, 0) {};
+		\node [style=none] (29) at (9, 0) {};
+		\node [style=none] (30) at (8.5, 0.5) {$f$};
+		\node [style=none] (31) at (-1.5, 0.5) {$i$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (14.center)
+			 to (12.center)
+			 to (13.center)
+			 to (15.center)
+			 to cycle;
+		\draw [style=boundary frame] (5.center)
+			 to (2.center)
+			 to (3.center)
+			 to (4.center)
+			 to cycle;
+		\draw (6) to (8);
+		\draw (8) to (7);
+		\draw (10) to (11);
+		\draw (10) to (9);
+		\draw [style=diredge] (16.center) to (17.center);
+		\draw [style=graph frame] (20.center)
+			 to (18.center)
+			 to (19.center)
+			 to (21.center)
+			 to cycle;
+		\draw (22) to (24);
+		\draw (24) to (23);
+		\draw [style=diredge] (28.center) to (29.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

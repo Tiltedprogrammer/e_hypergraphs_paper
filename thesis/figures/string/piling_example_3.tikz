@@ -1,0 +1,61 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=node, label={below:$v_1$}] (0) at (-1, -5.5) {};
+		\node [style=node, label={below:$v_2$}] (1) at (0, -5.5) {};
+		\node [style=none] (2) at (-1.5, -5) {};
+		\node [style=none] (3) at (-1.5, -6.75) {};
+		\node [style=none] (4) at (1.5, -6.75) {};
+		\node [style=none] (5) at (1.5, -5) {};
+		\node [style=node, label={below:$v_3$}] (6) at (1, -5.5) {};
+		\node [style=node, label={above:$z_4$}] (7) at (1, 1.5) {};
+		\node [style=node, label={above:$z_3$}] (8) at (-1, 1.5) {};
+		\node [style=node, label={above:$z_1$}] (9) at (-1, -1.5) {};
+		\node [style=node, label={above:$z_2$}] (10) at (1, -1.5) {};
+		\node [style=none] (11) at (-2, -3) {};
+		\node [style=none] (12) at (2, -3) {};
+		\node [style=none] (13) at (2, 3) {};
+		\node [style=none] (14) at (-2, 3) {};
+		\node [style=none] (15) at (0, -4.5) {};
+		\node [style=none] (16) at (0, -3.5) {};
+		\node [style=node, label={above:$u_1$}] (17) at (0.5, 5.5) {};
+		\node [style=node, label={above:$u_2$}] (18) at (1.5, 5.5) {};
+		\node [style=none] (19) at (-4, 6.75) {};
+		\node [style=none] (20) at (-4, 5) {};
+		\node [style=none] (21) at (4, 5) {};
+		\node [style=none] (22) at (4, 6.75) {};
+		\node [style=node, label={above:$u_3$}] (23) at (2.5, 5.5) {};
+		\node [style=node, label={above:$u_4$}] (24) at (3.5, 5.5) {};
+		\node [style=node, label={above:$z_1$}] (25) at (-3.5, 5.5) {};
+		\node [style=node, label={above:$z_2$}] (26) at (-2.5, 5.5) {};
+		\node [style=node, label={above:$z_3$}] (27) at (-1.5, 5.5) {};
+		\node [style=node, label={above:$z_4$}] (28) at (-0.5, 5.5) {};
+		\node [style=none] (29) at (0, 4.5) {};
+		\node [style=none] (30) at (0, 3.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=boundary frame] (3.center)
+			 to (2.center)
+			 to (5.center)
+			 to (4.center)
+			 to cycle;
+		\draw [style=graph frame] (11.center)
+			 to (14.center)
+			 to (13.center)
+			 to (12.center)
+			 to cycle;
+		\draw [style=diredge] (15.center) to (16.center);
+		\draw [style=boundary frame] (19.center)
+			 to (22.center)
+			 to (21.center)
+			 to (20.center)
+			 to cycle;
+		\draw [style=diredge] (29.center) to (30.center);
+		\draw [style={light_blue_arrow}, bend right, looseness=1.25] (17) to (9);
+		\draw [style={light_blue_arrow}, bend left] (23) to (9);
+		\draw [style={light_blue_arrow}] (0) to (9);
+		\draw [style={light_blue_arrow}] (1) to (9);
+		\draw [style={light_blue_arrow}] (6) to (10);
+		\draw [style={light_blue_arrow}, bend left=15] (24) to (10);
+		\draw [style={light_blue_arrow}] (18) to (8);
+	\end{pgfonlayer}
+\end{tikzpicture}
