@@ -1,0 +1,151 @@
+%!LW recipe=pdflatex -> bibtex -> pdflatex*2
+\documentclass[a4paper,UKenglish,cleveref, autoref, thm-restate, anonymous]{lipics-v2021}
+\usepackage[subtle,paragraphs=normal]{savetrees}
+%% ---------------------------------------------------------------------------
+%% Packages (LIPIcs already loads amsmath, amsthm, hyperref, cleveref, xcolor)
+%% ---------------------------------------------------------------------------
+\usepackage{amssymb}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=false}
+\usepackage{stmaryrd}
+\usepackage{mathpartir}      % inference rules
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{tikz-network}
+\usepackage{quiver}
+\usepackage{tikzit}
+\usepackage{adjustbox}
+\usepackage{xspace}
+\usepackage{listings}
+\usepackage{csquotes}
+\usepackage{microtype}
+% minted provides both the `minted` environment and the `listing` float used in
+% the intro. It needs -shell-escape (already in the workspace latexmk recipe) and
+% Pygments. (minted v3+ handles -output-directory itself; no `outputdir` option.)
+\usepackage{minted}
+\usepackage{subcaption}
+\DeclareCaptionSubType{listing}
+\usepackage{wrapfig}
+%% shared macros and tikz styles (repo root, one level up)
+\input{../macros}
+\input{../sample.tikzstyles}
+\input{../hypergraph.tikzstyles}
+\input{../hypergraph.tikzdefs}
+
+%% --- LIPIcs compatibility shims --------------------------------------------
+% LIPIcs forbids natbib/author-year citations. Provide a fallback so the
+% author-name citations from the source still compile as numeric [n].
+% TODO (C1): rewrite \citet{x} occurrences as "Author~\cite{x}" for readability.
+\providecommand{\citet}[2][]{\cite[#1]{#2}}
+\providecommand{\citep}[2][]{\cite[#1]{#2}}
+% mathtools usually provides these; guard just in case.
+\providecommand{\Coloneq}{\mathrel{\vcentcolon\mathrel{\mkern-1.2mu}=}}
+\providecommand{\Coloneqq}{\mathrel{\vcentcolon\mathrel{\mkern-1.2mu}=}}
+% \join is a *binary* operator: \DeclareMathOperator would give \operatorname spacing.
+\newcommand{\join}{\mathbin{\oplus}}
+\lstset{basicstyle=\ttfamily\small, columns=fullflexible, keepspaces=true,
+        breaklines=true, showstringspaces=false, frame=none}
+% \DeclareMathOperator{\id}{id}
+% \DeclareMathOperator{\sym}{sym}
+% \DeclareMathOperator{\I}{I}
+% Keyword styling used inside the minted listings via escapeinside, e.g. |\kw{letrec}|.
+\definecolor{pygreen}{HTML}{008000}
+\newcommand{\kw}[1]{\textcolor{pygreen}{\textbf{#1}}}
+
+% triangle for proof trees (from the original main document)
+\newcommand{\vcrule}[1]{\vcenter{\hbox{$#1$}}}
+\newcommand{\pitri}[1]{%
+\tikz[baseline=-0.5ex]{
+  \node[draw, isosceles triangle, isosceles triangle apex angle=60,
+        shape border rotate=270, inner sep=1pt] {\scriptsize $#1$};
+}}
+\providecommand{\bigboxplus}{\mathop{\boxplus}\displaylimits}
+\newcommand\rotpi{\rotatebox[origin=c]{180}{$\pi$}}
+\bibliographystyle{plainurl}% the mandatory LIPIcs bibstyle
+
+%% ---------------------------------------------------------------------------
+%% Metadata  --  TODO (A1/A2): fill in real authors, affiliations, CCS, keywords
+%% ---------------------------------------------------------------------------
+\title{Type Theory for Semilattice-Enriched Multicategories: A Syntax for E-Graphs}
+%\titlerunning{Type Theory for SLat-Multicategories}
+
+% TODO (A1): confirm affiliation and add any co-authors. Only the repo owner is
+% known; co-authors are NOT invented here.
+\author{Aleksei Tiurin}{University of Birmingham, UK}{}{}{}
+
+\authorrunning{A. Tiurin} % TODO (A1)
+\Copyright{Aleksei Tiurin} % TODO (A1)
+
+\ccsdesc[500]{Theory of computation~Type theory} % TODO (A2): confirm ACM 2012 class
+\ccsdesc[300]{Theory of computation~Categorical semantics}
+
+\keywords{e-graphs, equality saturation, type theory, multicategories, enriched category theory, semilattices} % TODO (A1)
+
+\category{}
+\relatedversion{}
+
+%% Editor-only macros (placeholders; supplied by the proceedings editors)
+\EventEditors{}
+\EventNoEds{2}
+\EventLongTitle{}
+\EventShortTitle{CSL 2027}
+\EventAcronym{CSL}
+\EventYear{2027}
+\EventDate{}
+\EventLocation{}
+\EventLogo{}
+\SeriesVolume{}
+\ArticleNo{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Just as the simply typed lambda calculus is an internal language for cartesian
+closed categories, many categorical structures admit type theories whose
+judgments present their morphisms. We give such a type theory for representable
+semilattice-enriched multicategories. Its distributive inference rules make
+multilinearity syntactic, at the cost of allowing a term to have more than one
+derivation. We define substitution on derivations, prove that it is independent
+of their choice up to the semilattice equations, and establish its unit,
+associativity, interchange, and multilinearity laws. We then prove that the
+resulting calculus presents the free representable
+$\catname{SLat}$-multicategory on a multigraph.
+
+Our motivating instance is the \emph{e-graph}, the data structure powering
+\emph{equality saturation}---a rewriting technique that mitigates the phase
+ordering problem by applying rewrite rules non-destructively until a fixed point
+is reached. E-graphs have recently been given a categorical account as string
+diagrams for semilattice-enriched cartesian categories. We present a way to
+render e-graphs as terms in the cartesian version of our calculus: semilattice
+join collects the representatives of an e-class, while equality saturation is
+expressed by rewriting modulo the structural equations. An explicit
+\textbf{let} records acyclic sharing without changing the presented category.
+A recursive \textbf{letrec}, in which joins in recursive definitions remain
+protected, captures cyclic e-graphs and presents the free traced cartesian
+representable $\catname{SLat}$-multicategory. These constructions suggest a
+foundation for programming languages with built-in equivalences.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/category_theory}
+\input{sections/cat_logic}
+\input{sections/conclusion}
+
+%%
+%% Bibliography
+%%
+\phantomsection\label{mark:refs}
+\bibliography{../bibliography}
+
+\appendix
+\phantomsection\label{mark:appendix}
+% Semilattices, enriched categories, and free enrichment:
+\input{sections/appendix_background}
+% Multicategories, structural actions, and enriched multicategories:
+\input{sections/appendix_multicategories}
+% Proofs already deferred from the categorical type theory; no new transfers in this pass:
+\input{sections/appendix_proofs}
+
+\end{document}

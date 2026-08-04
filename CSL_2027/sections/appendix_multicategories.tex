@@ -1,0 +1,589 @@
+\section{Multicategories and enriched multicategories}
+\label{app:multicategories}
+
+\providecommand\rotpi{\rotatebox[origin=c]{180}{$\pi$}}
+
+This appendix supplies the multicategorical background used in the main text.  We first describe structural actions on inputs, then enriched multicategories and their representability theory.
+
+\subsection{$\mathfrak{S}$-multicategories}
+\begin{definition}
+  Let $\catname{Fun}$ be the category of finite ordinals and functions.
+  That is, the objects are natural numbers $\underline{n}$ and morphisms are functions $a : \underline{n} \to \underline{m}$.
+  $\catname{Fun}$ is a cocartesian category with the coproduct given by addition of natural numbers and for $a : \underline{n} \to \underline{m}$ and $b : \underline{h} \to \underline{k}$
+  \[
+  a + b : \underline{n + h} \to \underline{m + k} = \begin{cases}
+    a(i) &\text{if}\; i \leq n\\
+    b(i - n) + m &\text{if}\; i > n
+  \end{cases}
+  \]
+We denote injections and copairings (for the families $(a_{i} : k_i \to m)_{i \in \underline{n}}$)
+\[
+\rotpi^{(k_i)_{i \in \underline{n}}}_j : k_j \to (\sum_{i \in \underline{n}} k_i) \qquad \langle a_1 | \ldots | a_n \rangle : (\sum_{i \in \underline{n}} k_{i}) \to m
+\]
+
+In particular, for every object $\underline{n}$ we have $\underline{n} = \sum_{i \in \underline{n}} 1$ and thus any $a : \underline{n} \to \underline{m}$ we have 
+\[
+a = \langle \rotpi^{(1)_{i \in \underline{m}}}_{a(1)} | \ldots | \rotpi^{(1)_{i \in \underline{m}}}_{a(n)} \rangle
+\]
+\end{definition}
+
+The latter \enquote{decomposition} is helpful when defining the $\wr$ (\textit{wreath}) product.
+Specifically, for each $a : \underline{n} \to \underline{m}$ in $\catname{Fun}$ and $k_1, \ldots, k_m \in \mathbb{N}$ we define their wreath product to be a morphism $a \wr (k_1, \ldots, k_m) : (\sum_{j \in \underline{n}}k_{a(j)}) \to (\sum_{i \in \underline{m}} k_i)$ of $\catname{Fun}$ as:
+\[
+a \wr (k_1, \ldots, k_m) = \langle \rotpi^{(1)_{i \in \underline{m}}}_{a(1)} | \ldots | \rotpi^{(1)_{i \in \underline{m}}}_{a(n)} \rangle \wr (k_1, \ldots, k_m) \coloneq \langle \rotpi^{(k_i)_{i \in \underline{m}}}_{a(1)} | \ldots | \rotpi^{(k_i)_{i \in \underline{m}}}_{a(n)} \rangle
+\]
+
+Intuitively, $i$-th output of $a$ gets copied $k_i$ times so that the new codomain is $(\sum_{i \in \underline{m}} k_i)$, then each input $j \in \underline{n}$ gets copied $k_{a(j)}$ times so that the new domain is $(\sum_{j \in \underline{n}} k_{a(j)})$.
+Finally, one \enquote{thickens} the line leaving each $i \in \underline{n}$ into $k_{a(i)}$ lines connecting to the respective $k_{j}$ copies.
+Consider an example below for a function $a : \underline{4} \to \underline{4} \wr (3,2,3,2) : \underline{9} \to \underline{10}$.
+The outputs are $\sum_{j \in \underline{4}} k_j = 3 + 2 + 3 + 2 = 10$ and the inputs are $\sum_{i \in \underline{4}} k_{a(i)} = k_2 + k_1 + k_4 + k_4 = 9$.
+\[
+\adjustbox{scale=0.45}{
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style={orange_red_v}] (0) at (-9.5, 20.5) {};
+		\node [style={forest_v}] (1) at (-9.5, 18.5) {};
+		\node [style={turquoise_v}] (2) at (-9.5, 16.5) {};
+		\node [style={turquoise_v}] (3) at (-9.5, 14.5) {};
+		\node [style={forest_v}] (4) at (-3.5, 20.5) {};
+		\node [style={orange_red_v}] (5) at (-3.5, 18.5) {};
+		\node [style=new style 1] (6) at (-3.5, 16.5) {};
+		\node [style={turquoise_v}] (7) at (-3.5, 14.5) {};
+		\node [style={orange_red_v}] (8) at (3.5, 22) {};
+		\node [style={orange_red_v}] (9) at (3.5, 21) {};
+		\node [style={forest_v}] (10) at (3.5, 19) {};
+		\node [style={forest_v}] (11) at (3.5, 18) {};
+		\node [style={forest_v}] (12) at (3.5, 17) {};
+		\node [style={turquoise_v}] (13) at (3.5, 15) {};
+		\node [style={turquoise_v}] (14) at (3.5, 14) {};
+		\node [style={turquoise_v}] (15) at (3.5, 13) {};
+		\node [style={turquoise_v}] (16) at (3.5, 12) {};
+		\node [style={forest_v}] (17) at (10, 22.5) {};
+		\node [style={forest_v}] (18) at (10, 21.5) {};
+		\node [style={forest_v}] (19) at (10, 20.5) {};
+		\node [style={orange_red_v}] (20) at (10, 18.5) {};
+		\node [style={orange_red_v}] (21) at (10, 17.5) {};
+		\node [style={turquoise_v}] (22) at (10, 14) {};
+		\node [style={turquoise_v}] (23) at (10, 13) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style={orange_red_e}] (0) to (5);
+		\draw [style={forest_e}] (1) to (4);
+		\draw [style={turquoise_e}] (2) to (7);
+		\draw [style={turquoise_e}] (3) to (7);
+		\draw [style={orange_red_e}] (8) to (20);
+		\draw [style={orange_red_e}] (9) to (21);
+		\draw [style={forest_e}] (10) to (17);
+		\draw [style={forest_e}] (18) to (11);
+		\draw [style={forest_e}] (12) to (19);
+		\draw [style={turquoise_e}] (13) to (22);
+		\draw [style={turquoise_e}] (14) to (23);
+		\draw [style={turquoise_e}] (15) to (22);
+		\draw [style={turquoise_e}] (16) to (23);
+	\end{pgfonlayer}
+\end{tikzpicture}}
+\]
+
+\begin{definition}
+  A faithful cartesian club is a subcategory $\mathfrak{S}$ of $\catname{Fun}$ such that
+  \begin{itemize}
+    \item $\mathfrak{S}$ contains all the objects of $\catname{Fun}$.
+    \item If morphisms $a$ and $b$ are in $\mathfrak{S}$ then so is $a + b$ (i.e. it is closed under cocartesian structure).
+    \item If $a$ is in $\mathfrak{S}$ then so is $a \wr (k_1, \ldots, k_n)$ (i.e. it is closed under $\wr$).
+  \end{itemize}
+\end{definition}
+
+Different functions in $\catname{Fun}$ give rise to different kind of clubs.
+Specifically, we have the following functions:
+\begin{itemize}
+  \item Transpositions
+  \[
+  \tau_{i}^{n}(x) = \begin{cases}
+    x + 1 &\text{if}\; x = i\\
+    x - 1 &\text{if}\; x = i + 1\\
+    x &\text{otherwise}
+  \end{cases}
+  \]
+  that swap $i$ and $i + 1$ and leave the rest unchanged.
+  \item degeneracy maps $\sigma_{i}^{n} : n + 1 \to n$
+  \[
+  \sigma_{i}^{n}(x) = 
+  \begin{cases}
+    x &\text{if}\; x \leq i\\
+    x - 1 &\text{if}\; x > i
+  \end{cases}
+  \]
+  which are monotone surjections;
+  \item face maps $\delta_{i}^{n} : n - 1 \to n$
+  \[
+  \delta_{i}^{n}(x) =
+  \begin{cases}
+    x &\text{if}\; x < i\\
+    x + 1 &\text{if}\; x \geq i
+  \end{cases}
+  \]
+  which are monotone injections.
+\end{itemize}
+
+\begin{definition}
+Let $\mathfrak{S}$ be a faithful cartesian club. A $\mathfrak{S}$-multicategory is a multicategory $\mathcal{M}$ together with an operation
+\[
+\mathcal{M}(A_{a(1)}, \ldots, A_{a(m)};B) \xrightarrow{[-](a)} \mathcal{M}(A_1,\ldots, A_n;B)
+\]
+for each $a : m \to n$ in $\mathfrak{S}$ such that
+\begin{itemize}
+  \item $[[f]a]b = [f](b \circ a)$
+  \item $[f]id_{\underline{n}} = f$
+  \item $g \circ ([f_1]a_1, \ldots, [f_n]a_n) = [(g \circ (f_1, \ldots, f_n))](a_1 + \ldots + a_n)$
+  \item $[g]a \circ (f_1, \ldots, f_n) = [(g \circ (f_{a(1)}, \ldots, f_{a(m)}))]a \wr (k_1, \ldots, k_n)$, where $k_i$ is the arity of $f_i$.
+\end{itemize}
+\end{definition}
+
+For a function $a : 4 \to 4$ depicted on the left, we can represent $[g]a$ as a diagram on the right.
+\[
+\adjustbox{scale=0.9}{
+\tikzfig{./figures/g_multicat_example}
+}
+\]
+Note how $a$ gets \enquote{reversed} as in a multicategory we have $A_{a(1)}, \ldots, A_{a(m)} \to A_{1}, \ldots, A_{m}$.
+
+
+The last condition above can be illustrated as follows for
+\[
+[g]a \circ (h,f,h,f) = [g \circ (h,f,h,f)](a \wr (3, 2, 3, 2))
+\]
+which is pictured as
+\[
+\adjustbox{scale=0.9}{
+\tikzfig{./figures/g_multicat_wreath_example}
+}
+\]
+
+\subsubsection{Structural actions in the type theory}
+
+To turn this into a type theory, we typically add structural rules such as
+\[
+\inferrule*[right=$ACT$]{a \in \mathfrak{S} \quad A_{a1}, \ldots, A_{a(m)} \vdash t : B}{x_1 : A_1, \ldots, x_n :A_n \vdash [t]a : B}
+\]
+
+where $[t]a$ is defined as
+\[
+t[a] = \begin{cases}
+  x_{a(i)} &\text{if}\; t = x_i\\
+  f([t_1]a, \ldots, [t_n]a) &\text{if}\; t = f(t_1, \ldots, t_n)
+\end{cases}
+\]
+\subsubsection{Equivalent finite-set presentation}
+
+\begin{definition}
+  Let $\mathfrak{N}$ be a full subcategory of $\catname{Set}$ whose objects are sets ${1, \ldots, n}$ for all integers $n \geq 0$.
+  We regard it as a cocartesian strict monoidal category, under the disjoint union operation $\{1, \ldots, n\} \sqcup \{1,\ldots,m\} = \{1, \ldots, n + m\}$.
+  Moreover, for any $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ and $k_1, \ldots, k_n$, let $\sigma \wr (k_1, \ldots, k_n)$ denote the composite function
+  \[
+  \{1, \ldots, \sum_{i=1}^{m}k_{\sigma i}\} \xrightarrow{\sim} \bigsqcup_{i=1}^{m}\{1, \ldots, k_{\sigma i}\} \xrightarrow{\hat{\sigma}} \bigsqcup_{j=1}^{n}\{1, \ldots, k_j\} \xrightarrow{\sim} \{1, \ldots, \sum_{j=1}^{n} k_j\}
+  \]
+  where $\hat{\sigma}$ acts as an identity from the $i$-th summand to the $(\sigma i)^{\text{th}}$ summand.
+  A \textbf{faithful cartesian club} is a category $\mathfrak{S} \subseteq \mathfrak{N}$ such that 
+  \begin{enumerate}
+    \item $\mathfrak{S}$ contains all the objects of $\mathfrak{N}$.
+    \item $\mathfrak{S}$ is closed under the cocartesian structure, i.e. if $\sigma$ and $\tau$ are morphisms of $\mathfrak{S}$ then so is $\sigma \sqcup \tau$.
+    \item $\mathfrak{S}$ is closed under $\wr$, i.e. whenever it contains $\sigma$ it also contains $\sigma \wr (k_1, \ldots, k_n)$
+  \end{enumerate}
+\end{definition}
+
+The strange-looking $\sigma \wr (k_1, \ldots, k_n)$. 
+Here's what's happening: Start with a function $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ which says that each $i$ gets assigned one of the $n$ slots.
+Now, instead of just $n$ slots, suppose each slot $j$ is \enquote{blown up} into $k_j$ copies.
+The construction $\sigma \wr (k_1, \ldots, k_n)$ gives a new function
+\[
+\{1, \ldots, \sum_{i=1}^{m}k_{\sigma i}\} \to \{1, \ldots, \sum_{j=1}^{n}k_j\}
+\]
+which is what you get when you first group the inputs according to $\sigma$, and then send them into the right block of the \enquote{expanded} target.
+
+
+We get symmetric monoidal category when $\mathfrak{S}$ consists of all bijections and cartesian structure when it consists of all functions.
+
+\begin{definition}
+  Let $\mathfrak{S}$ be a faithful cartesian club. An $\mathfrak{S}$-multicategory is a multicategory $\mathcal{M}$ together with operations
+  \[
+  \mathcal{M}(A_{\sigma 1}, \ldots, A_{\sigma m};B) \to \mathcal{M}(A_1, \ldots, A_n;B)
+  \]
+  \[
+  f \mapsto f \circ \sigma^{*}
+  \]
+  for all functions $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ in $\mathfrak{S}$, satisfying the following axioms:
+  \begin{enumerate}
+    \item $f\sigma^{*}\tau^{*} = f(\tau \sigma)^{*}$
+    \item $f(id_n) = f$
+    \item $g \circ (f_1\sigma^{*}_{1}, \ldots, f_{n}\sigma^{*}_n) = (g \circ (f_1, \ldots, f_n))(\sigma_1 \sqcup \ldots \sqcup)^{*}$
+    \item $g \sigma^{*} \circ (f_1, \ldots, f_n) = (g \circ (f_{\sigma 1}, \ldots, f_{\sigma_m}))(\sigma \wr (k_1, \ldots, k_n))^{*}$, where $k_i$ is arity of $f_i$.
+  \end{enumerate}
+\end{definition}
+
+Finally, we observe that closedness can be naturally characterized multicategorically.
+Suppose for simplicity that $\mathfrak{S}$ contains at least all bijections. 
+Then we say an $\mathfrak{S}$-multicategory is closed if for each pair of objects $A$ and $B$ there is a
+specified object $A \multimap B$ and a morphism $\chi : A \multimap B \to B $ postcomposition
+with which defines bijections
+\[
+(\chi \circ -) \mathcal{M}(C_1, \ldots, C_n; A \multimap B) \to \mathcal{M}(C_1, \ldots, C_n, A; B)
+\]
+
+\subsection{$\mathfrak{S}$-multicategories: the symmetric case}
+
+Here we verify the claim of~\Cref{ex:symmetric_S_multicategory}.
+
+\begin{example}
+    If $\mathfrak{S}$ consists of all bijections, then representable $\mathfrak{S}$-multicategories are 2-equivalent to symmetric monoidal categories.
+    Symmetries $\sigma_{A,B} : A \otimes B \to B \otimes A$ are given by unique morphism $\sigma_{A,B}$ such that $\sigma_{A,B} \circ \xi_{A,B} = [\xi_{B,A}](a)$, where $[\xi_{B,A}](a)$ is given by $\mathcal{M}(B,A; B \otimes A) \xrightarrow{[-](a)} \mathcal{M}(A,B; B \otimes A)$ and $a : \underline{2} \to \underline{2} = \{1 \mapsto 2, 2 \mapsto 1\}$.
+    We can easily check that $\sigma_{A,B} \circ \sigma_{B,A} = id_{B \otimes A}$.
+    Again, it suffices to check if precomposing with $\xi_{B,A}$ gives us an equality $\sigma_{A,B} \circ \sigma_{B,A} \circ \xi_{B,A} = id_{B \otimes A} \circ \xi_{B,A} = \xi_{B,A}$.
+    Since $\sigma_{B,A} \circ \xi_{B,A} = [\xi_{A,B}](a)$, we have that $\sigma_{A,B} \circ \sigma_{B,A} \circ \xi_{B,A} = \sigma_{A,B} \circ [\xi_{A,B}](a) = [\sigma_{A,B} \circ \xi_{A,B}](a) = [[\xi_{A,B}](a)](a) = [\xi_{A,B}](a \circ a) = [\xi_{A,B}](id_{\underline{2}}) = \xi_{A,B}$.
+    By injectivity of $- \circ \xi_{B,A}$ we are done. 
+    The other direction follows analogously.
+    Similarly, we can check the naturality condition, namely that $\sigma_{B,D} \circ (f \otimes g) = (g \otimes f) \circ \sigma_{A,C}$ for $f \in \mathcal{M}(A;B)$ and $g \in \mathcal{M}(C;D)$.
+    Again, it suffices to check if the following equality holds: $\sigma_{B,D} \circ (f \otimes g) \circ \xi_{A,C} = (g \otimes f) \circ \sigma_{A,C} \circ \xi_{A,C}$.
+    We have that $(f \otimes g) \circ \xi_{A,C} = \xi_{B,D} \circ (f,g)$, and therefore we get $\sigma_{B,D} \circ (f \otimes g) \circ \xi_{A,C} = \sigma_{B,D} \circ \xi_{B,D} \circ (f,g)$.
+    By definition of $\sigma_{B,D}$, we have that $\sigma_{B,D} \circ \xi_{B,D} \circ (f,g) = [\xi_{D,B}](a) \circ (f,g) = [\xi_{D,B} \circ (g,f)]a$ since $a \wr (1,1) = a$.
+    On the other hand, $\sigma_{A,C} \circ \xi_{A,C} = [\xi_{C,A}]a$ and $(g \otimes f) \circ \sigma_{A,C} \circ \xi_{A,C} = (g \otimes f) \circ [\xi_{C,A}]a = [(g \otimes f) \circ \xi_{C,A}]a = [\xi_{D,B} \circ (g,f)]a$ and we are done.
+\end{example}
+
+\subsection{Enriched multicategories}
+
+Assume that $\mathcal{V} = \{V, \otimes, \mathbf{1}, \alpha, \lambda, \rho, \sigma \}$ is a symmetric monoidal category.
+The definitions in this section are due to~Johnson and Yau~\cite{johnson2023homotopytheoryenrichedmackey}.
+
+\begin{definition}[Definition C.1.1 in~Johnson and Yau~\cite{johnson2023homotopytheoryenrichedmackey}]
+Suppose $S$ is a set.
+\paragraph{Profiles.} The set of all finite tuples of elements of $S$ is denoted by $\text{Prof}(S) = \bigcup_{k \geq 0}S^{k}$.
+\begin{itemize}
+  \item An element of $\text{Prof}(S)$ is called a \emph{profile}.
+  \item An $S$-profile of length $n = \text{len}\langle x \rangle$ is denoted by $\langle x \rangle = (x_1, \ldots, x_n) = \langle x_j \rangle_{j=1}^{n} \in S^{n}$.
+  The empty $S$-profile is denoted by $\langle \rangle$.
+  \item An element in $\text{Prof}(S) \times S$ is denoted by $\langle \langle x \rangle, y \rangle$ with $\langle x \rangle \in \text{Prof}(S)$ and $y \in S$.
+\end{itemize}
+\paragraph{Concatenation.} For two $S$-profiles $\langle x \rangle = \langle x_j \rangle_{j=1}^{n}$ and $\langle y \rangle = \langle y_{i} \rangle_{i=1}^{m}$, their concatenation is the $S$-profile
+\[
+\langle x \rangle \oplus \langle y \rangle = (x_1, \ldots, x_n, y_1, \ldots, y_m).
+\]
+Concatenation is associative with the unit $\langle \rangle$.
+\end{definition}
+
+\begin{definition}[Definition C.1.3 in~Johnson and Yau~\cite{johnson2023homotopytheoryenrichedmackey}]
+A (small) $\mathcal{V}$-enriched multicategory $\mathcal{M}$ consists of the following data:
+\paragraph{Objects:} 
+  a set of objects $\obj(\mathcal{M})$, that we identify with $\mathcal{M}$ when it is clear from the context;
+\paragraph{Morphisms:} for $\langle \langle x \rangle, x' \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ and $\langle x \rangle = \langle x_j \rangle_{j=1}^{n}$, it is equipped with an object in $\mathcal{V}$ 
+  \[
+  \mathcal{M}(\langle x \rangle; x') = \mathcal{M}(x_1, \ldots, x_n; x')
+  \]
+\paragraph{Identities:} for each object $x \in \obj(\mathcal{M})$, a morphism $id_x$:
+  \[
+  \mathbf{1} \to \mathcal{M}(x;x)
+  \]
+  in $\mathcal{V}$;
+\paragraph{Composition:}
+\begin{itemize}
+  \item given $\langle \langle x' \rangle, y \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ with $\langle x' \rangle = \langle x'_j \rangle_{j=1}^{n} \in \text{Prof}(\mathcal{M})$ and
+  \item $\langle x_j \rangle = \langle x_{ji} \rangle_{i=1}^{m_j}$ for each $j \in \{1, \ldots, n\}$ with $\langle x \rangle = \bigoplus_{j=1}^{n} \langle x_j \rangle$,
+\end{itemize}
+then $\mathcal{M}$ is equipped with a morphism in $\mathcal{V}$
+\[
+\mathcal{M}(\langle x'\rangle; y) \otimes \bigotimes_{j=1}^{n} \mathcal{M}(\langle x_{j} \rangle; x'_{j}) \xrightarrow{\circ} \mathcal{M}(\langle x \rangle; y)
+\]
+such that the appropriate diagrams commute for the above data.
+\end{definition}
+
+\begin{remark}
+    We can similarly define a $\mathcal{V}$-enriched multicategory by using a placed composition:
+    \[
+    \mathcal{M}(\langle x' \rangle; y) \otimes \mathcal{M}(\langle x'' \rangle; x'_{i}) \xrightarrow{\circ_{i}} \mathcal{M}((x_{1}, \ldots, x_{i-1}, x''_{1}, \ldots, x''_{m}, \ldots, x_{n}); y)
+    \]
+    where $\langle x \rangle = \langle x_{i} \rangle_{i=1}^{n}$ and $\langle x'' \rangle = \langle x''_{j} \rangle_{j=1}^{m}$, subject to the same conditions as in~\autoref{remark:placed_composition} phrased in terms of morphisms in $\mathcal{V}$.
+\end{remark}
+
+\begin{example}
+    In the case when $\mathcal{V} = \catname{SLat}$, the above definition tells us, that in particular, the following holds
+\[
+(f \join g) \circ (h, k) = (f \circ (h,k)) \join (g \circ (h,k))
+\]
+\end{example}
+
+\begin{definition}[Definition C.1.19 in~Johnson and Yau~\cite{johnson2023homotopytheoryenrichedmackey}]
+
+    Given two $\mathcal{V}$-multicategories $\mathcal{M}$ and $\mathcal{N}$, a $\mathcal{V}$-enriched multifunctor 
+    \[F : \mathcal{M} \to \mathcal{N}\] 
+    consists of the following data:
+    \paragraph{Function on objects:} a function $F : \obj{\mathcal{M}} \to \obj{\mathcal{N}}$;
+    \paragraph{Function on morphisms:} for each $\langle \langle x \rangle, y \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ a morphism in $\mathcal{V}$:
+    \[
+    \mathcal{M}(\langle x \rangle; y) \xrightarrow{F} \mathcal{N}(\langle F(x_j) \rangle_{j=1}^{n}; F(y))
+    \]
+    such that the following diagrams commute:
+% https://q.uiver.app/#q=WzAsMyxbMCwxLCJJIl0sWzIsMCwiXFxtYXRoY2Fse019KHg7eCkiXSxbMiwyLCJcXG1hdGhjYWx7Tn0oRng7RngpIl0sWzAsMSwiaWRfe3h9Il0sWzAsMiwiaWRfe0Z4fSIsMl0sWzEsMiwiRiJdXQ==
+\[\begin{tikzcd}
+	&& {\mathcal{M}(x;x)} \\
+	I \\
+	&& {\mathcal{N}(Fx;Fx)}
+	\arrow["F", from=1-3, to=3-3]
+	\arrow["{id_{x}}", from=2-1, to=1-3]
+	\arrow["{id_{Fx}}"', from=2-1, to=3-3]
+\end{tikzcd}\]
+
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCcgXFxyYW5nbGU7IHkpIFxcb3RpbWVzIFxcYmlnb3RpbWVzX3tqPTF9XntufSBcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeF9qIFxccmFuZ2xlOyB4X2onKSJdLFswLDIsIlxcbWF0aGNhbHtNfShcXGxhbmdsZSB4IFxccmFuZ2xlOyB5KSJdLFsyLDAsIlxcbWF0aGNhbHtOfShcXGxhbmdsZSBGeCdcXHJhbmdsZTtGeSkgXFxvdGltZXMgXFxiaWdvdGltZXNfe2o9MX1ee259XFxtYXRoY2Fse019KFxcbGFuZ2xlIEZ4X2pcXHJhbmdsZSA7IEZ4J19qKSJdLFsyLDIsIlxcbWF0aGNhbHtOfShcXGxhbmdsZSBGeCBcXHJhbmdsZTsgRnkpIl0sWzAsMSwiXFxjaXJjIl0sWzAsMiwiRlxcb3RpbWVzKFxcYmlnb3RpbWVzX2ogRikiXSxbMiwzLCJcXGNpcmMiXSxbMSwzLCJGIl1d
+\[\begin{tikzcd}
+	{\mathcal{M}(\langle x' \rangle; y) \otimes \bigotimes_{j=1}^{n} \mathcal{M}(\langle x_j \rangle; x_j')} && {\mathcal{N}(\langle Fx'\rangle;Fy) \otimes \bigotimes_{j=1}^{n}\mathcal{M}(\langle Fx_j\rangle ; Fx'_j)} \\
+	\\
+	{\mathcal{M}(\langle x \rangle; y)} && {\mathcal{N}(\langle Fx \rangle; Fy)}
+	\arrow["{F\otimes(\bigotimes_j F)}", from=1-1, to=1-3]
+	\arrow["\circ", from=1-1, to=3-1]
+	\arrow["\circ", from=1-3, to=3-3]
+	\arrow["F", from=3-1, to=3-3]
+\end{tikzcd}
+\]
+\end{definition}
+
+\begin{definition}[Definition C.1.25 in~Johnson and Yau~\cite{johnson2023homotopytheoryenrichedmackey}]
+    Given two $\mathcal{V}$-multifunctors $F,G : \mathcal{M} \to \mathcal{N}$, a $\mathcal{V}$-enriched multinatural transformation $\theta : F \Rightarrow G$ consists of the following data:
+    \paragraph{Components:} for each object $x$ of $\mathcal{M}$, a morphism $\theta_x$ in $\mathcal{V}$:
+    \[
+    \mathbf{1} \to \mathcal{N}(Fx; Gx)
+    \]
+    such that the following diagram commutes for each $\langle \langle x' \rangle, y \rangle \in \text{Prof}(\mathcal{M}) \times \mathcal{M}$ with $\langle x' \rangle = \langle x'_j \rangle_{j=1}^{n}$ and $\langle x_j \rangle = \langle x_{ji} \rangle_{i=1}^{m_j}$ for each $j$ with $\langle x \rangle = \bigoplus_{j=1}^{n} \langle x_j \rangle$:
+    % https://q.uiver.app/#q=WzAsNixbMCwyLCJcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCBcXHJhbmdsZTsgeSkiXSxbMSwwLCJcXG1hdGhiZnsxfSBcXG90aW1lcyBcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCBcXHJhbmdsZTsgeSkiXSxbNCwwLCJcXG1hdGhjYWx7Tn0oRnk7R3kpIFxcb3RpbWVzIFxcbWF0aGNhbHtOfShcXGxhbmdsZSBGeCBcXHJhbmdsZTsgRnkpIl0sWzUsMiwiXFxtYXRoY2Fse059KFxcbGFuZ2xlIEZ4IFxccmFuZ2xlOyBHeSkiXSxbMSw0LCJcXG1hdGhjYWx7TX0oXFxsYW5nbGUgeCBcXHJhbmdsZTsgeSkgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tqPTF9XntufSBcXG1hdGhiZnsxfSkiXSxbNCw0LCJOKFxcbGFuZ2xlIEd4IFxccmFuZ2xlOyBHeSkgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tqPTF9XntufVxcbWF0aGNhbHtOfShGeF9qO0d4X2opKSJdLFswLDEsIlxcbGFtYmRhXnstMX0iXSxbMSwyLCJcXHRoZXRhX3kgXFxvdGltZXMgRiJdLFsyLDMsIlxcY2lyYyJdLFswLDQsIlxccmhvXnstMX0iLDJdLFs0LDUsIkcgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tqPTF9XntufVxcdGhldGFfe3hfan0pIiwyXSxbNSwzLCJcXGNpcmMiLDJdXQ==
+\[
+\adjustbox{width=\textwidth}{
+\begin{tikzcd}
+	& {\mathbf{1} \otimes \mathcal{M}(\langle x \rangle; y)} &&& {\mathcal{N}(Fy;Gy) \otimes \mathcal{N}(\langle Fx \rangle; Fy)} & \\
+	\\
+	{\mathcal{M}(\langle x \rangle; y)} &&&&& {\mathcal{N}(\langle Fx \rangle; Gy)} \\
+	\\
+	& {\mathcal{M}(\langle x \rangle; y) \otimes (\bigotimes_{j=1}^{n} \mathbf{1})} &&& {N(\langle Gx \rangle; Gy) \otimes (\bigotimes_{j=1}^{n}\mathcal{N}(Fx_j;Gx_j))}
+	\arrow["{\theta_y \otimes F}", from=1-2, to=1-5]
+	\arrow["\circ", from=1-5, to=3-6]
+	\arrow["{\lambda^{-1}}", from=3-1, to=1-2]
+	\arrow["{\rho^{-1}}"', from=3-1, to=5-2]
+	\arrow["{G \otimes (\bigotimes_{j=1}^{n}\theta_{x_j})}"', from=5-2, to=5-5]
+	\arrow["\circ"', from=5-5, to=3-6]
+\end{tikzcd}}
+\]
+\end{definition}
+One can also define vertical and horizontal composition of $\mathcal{V}$-enriched multinatural transformations.
+The data above define a 2-category $\mathcal{V}\text{-}\catname{Multicat}$ of $\mathcal{V}$-enriched multicategories, $\mathcal{V}$-enriched multifunctors and $\mathcal{V}$-enriched multinatural transformations.
+
+\begin{definition}
+    Given a monoidal functor $F : \mathcal{V} \to \mathcal{W}$, we can define the induced functor $\hat{F} : \mathcal{V}\text{-}\catname{Multicat} \to \mathcal{W}\text{-}\catname{Multicat}$ between the 2-categories of $\mathcal{V}$-enriched and $\mathcal{W}$-enriched multicategories respectively akin to the usual change of base functor.
+    Suppose $\mathcal{M}$ is a $\mathcal{V}$-multicategory.
+    \paragraph{Objects.} The objects of $\hat{F}(\mathcal{M})$ are the same as those of $\mathcal{M}$.
+    \paragraph{Hom-objects.} The hom-objects of $\hat{F}(\mathcal{M})$ are given by $\hat{F}(\mathcal{M})(\langle x \rangle; y) = F(\mathcal{M}(\langle x \rangle; y))$ for $(\langle x \rangle y) \in \text{Prof}(\mathcal{M} \times \mathcal{M})$.
+    \paragraph{Identities.} The identities of $\hat{F}(\mathcal{M})$ are given by the composite:
+    \[
+    \mathbf{1}_{\mathcal{W}} \xrightarrow{\cong} F(\mathbf{1}_{\mathcal{V}}) \xrightarrow{F(id_x)} F(\mathcal{M}(x;x)) = \hat{F}(\mathcal{M})(x;x)
+    \]
+    \paragraph{Composition.} The composition of $\hat{F}(\mathcal{M})$ is given by the composite:
+    \[
+	\adjustbox{width=\textwidth}{
+    $\hat{F}(\mathcal{M})(\langle x' \rangle; y) \otimes \bigotimes_{j=1}^{n} \hat{F}(\mathcal{M})(\langle x_j \rangle; x'_j) \xrightarrow{\cong} F(\mathcal{M}(\langle x' \rangle; y) \otimes \bigotimes_{j=1}^{n}(\mathcal{M}(\langle x_j \rangle; x'_j))) \xrightarrow{F(\circ)} F(\mathcal{M}(\langle x \rangle; y)) = \hat{F}(\mathcal{M})(\langle x \rangle; y)$
+	}
+    \]
+    \paragraph{Multifunctors.} Given a $\mathcal{V}$-enriched multifunctor $G : \mathcal{M} \to \mathcal{N}$, we define $\hat{F}(G) : \hat{F}(\mathcal{M}) \to \hat{F}(\mathcal{N})$ by letting $\hat{F}(G)(x) = G(x)$ for each object $x$ of $\mathcal{M}$ and 
+    \[
+    \hat{F}(G) : \hat{F}(\mathcal{M})(\langle x \rangle; y) \xrightarrow{FG} \hat{F}(\mathcal{N})(\langle G(x_j) \rangle; G(y)).
+    \]
+    \paragraph{Multinatural transformations.} Given a $\mathcal{V}$-enriched multinatural transformation $\theta : G \Rightarrow H$ between $\mathcal{V}$-multifunctors $G,H : \mathcal{M} \to \mathcal{N}$, we define $\hat{F}(\theta) : \hat{F}(G) \Rightarrow \hat{F}(H)$ by letting $\hat{F}(\theta)_x$ be the composite:
+    \[
+    \mathbf{1}_{\mathcal{W}} \xrightarrow{\cong} F(\mathbf{1}_{\mathcal{V}}) \xrightarrow{F(\theta_{x})} F(\mathcal{N}(Gx; Hx))
+    \]
+    The required diagrams commute by appealing to~Cruttwell~\cite[Lemma 4.1.1 -- Lemma 4.1.4]{cruttwell2008normed}, with the only difference being the number of tensor products.
+\end{definition}
+
+\begin{proposition}
+$\hat{F}$ is a 2-functor.
+\end{proposition}
+
+\begin{proposition}
+\label{prop:enriched_representability_preserved}
+If $F:\mathcal{V}\to\mathcal{W}$ is a strong monoidal functor, then change of enrichment along $F$ sends representable $\mathcal{V}$-multicategories to representable $\mathcal{W}$-multicategories.
+\end{proposition}
+
+\begin{proposition}
+\label{prop:representabilities_agree}
+The equivalence between representable multicategories and monoidal categories is compatible with change of enrichment.  In particular, the two composites
+\[
+\catname{RepMultCat}
+\longrightarrow \catname{SLat}\text{-}\catname{RepMultCat}
+\longrightarrow \catname{SLat}\text{-}\catname{MonCat}
+\]
+and
+\[
+\catname{RepMultCat}
+\longrightarrow \catname{MonCat}
+\longrightarrow \catname{SLat}\text{-}\catname{MonCat}
+\]
+are canonically isomorphic; with the chosen constructions used here, they agree strictly.
+\end{proposition}
+
+\subsubsection{Composition of enriched multinatural transformations}
+
+\begin{definition}[Definition C.1.28 in~Johnson and Yau~\cite{johnson2023homotopytheoryenrichedmackey}]
+    Suppose $\mathcal{M}$ and $\mathcal{N}$ are $\mathcal{V}$-multicategories.
+\paragraph{Vertical composition.} Suppose $\theta$ and $\phi$ are $\mathcal{V}$-multinatural transformations as in the following diagram:
+% https://q.uiver.app/#q=WzAsMixbMCwwLCJcXG1hdGhjYWx7TX0iXSxbMiwwLCJcXG1hdGhjYWx7Tn0iXSxbMCwxLCJGIiwwLHsiY3VydmUiOi0zfV0sWzAsMSwiSCIsMix7ImN1cnZlIjozfV0sWzAsMSwiRyIsMCx7ImxhYmVsX3Bvc2l0aW9uIjozMH1dLFsyLDQsIlxcdGhldGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzQsMywiXFxwaGkiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+\[\begin{tikzcd}
+	{\mathcal{M}} && {\mathcal{N}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-1, to=1-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "H"', curve={height=18pt}, from=1-1, to=1-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "G"{pos=0.3}, from=1-1, to=1-3]
+	\arrow["\theta", between={0.2}{0.8}, Rightarrow, from=0, to=2]
+	\arrow["\phi", between={0.2}{0.8}, Rightarrow, from=2, to=1]
+\end{tikzcd}\]
+The \emph{vertical} composition $\phi \cdot \theta$, is the $\mathcal{V}$-multinatural transformation with component at each $x \in \mathcal{M}$ given by the following composite in $\mathcal{V}$:
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhiZnsxfSJdLFszLDAsIlxcbWF0aGNhbHtOfShGeDtIeCkiXSxbMCwyLCIxIFxcb3RpbWVzIDEiXSxbMywyLCJcXG1hdGhjYWx7Tn0oR3g7SHgpIFxcb3RpbWVzIFxcbWF0aGNhbHtOfShGeDtHeCkiXSxbMCwxLCIoXFx0aGV0YVxccGhpKV97eH0iXSxbMCwyLCJcXGxhbWJkYV57LTF9IiwyXSxbMywxLCJcXGNpcmMiLDJdLFsyLDMsIlxcdGhldGFfe3h9IFxcb3RpbWVzIFxccGhpX3t4fSIsMl1d
+\[\begin{tikzcd}
+	{\mathbf{1}} &&& {\mathcal{N}(Fx;Hx)} \\
+	\\
+	{1 \otimes 1} &&& {\mathcal{N}(Gx;Hx) \otimes \mathcal{N}(Fx;Gx)}
+	\arrow["{(\theta \cdot \phi)_{x}}", from=1-1, to=1-4]
+	\arrow["{\lambda^{-1}}"', from=1-1, to=3-1]
+	\arrow["{\theta_{x} \otimes \phi_{x}}"', from=3-1, to=3-4]
+	\arrow["\circ"', from=3-4, to=1-4]
+\end{tikzcd}\]
+\paragraph{Horizontal composition.} Suppose $\theta$ and $\phi$ are $\mathcal{V}$-multinatural transformations as in the following diagram:
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXG1hdGhjYWx7TX0iXSxbMiwwLCJcXG1hdGhjYWx7Tn0iXSxbNCwwLCJcXG1hdGhjYWx7UH0iXSxbMCwxLCJGXzEiLDAseyJjdXJ2ZSI6LTN9XSxbMCwxLCJGXzIiLDIseyJjdXJ2ZSI6M31dLFsxLDIsIkdfMSIsMCx7ImN1cnZlIjotM31dLFsxLDIsIkdfMiIsMix7ImN1cnZlIjozfV0sWzMsNCwiXFx0aGV0YSIsMix7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XSxbNSw2LCJcXHBoaSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+\[\begin{tikzcd}
+	{\mathcal{M}} && {\mathcal{N}} && {\mathcal{P}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{F_1}", curve={height=-18pt}, from=1-1, to=1-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{G_1}"', curve={height=18pt}, from=1-1, to=1-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{F_2}", curve={height=-18pt}, from=1-3, to=1-5]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{G_2}"', curve={height=18pt}, from=1-3, to=1-5]
+	\arrow["\theta"', between={0.2}{0.8}, Rightarrow, from=0, to=1]
+	\arrow["\phi", between={0.2}{0.8}, Rightarrow, from=2, to=3]
+\end{tikzcd}\]
+The \emph{horizontal} composition $\phi * \theta$ is the $\mathcal{V}$-multinatural transformation with component at each $x \in \mathcal{M}$ given by the following composite in $\mathcal{V}$:
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhiZnsxfSJdLFsyLDAsIlxcbWF0aGNhbHtQfShGXzJGMXg7R18yR18xeCkiXSxbMCwyLCJcXG1hdGhiZnsxfSBcXG90aW1lcyBcXG1hdGhiZnsxfSJdLFsyLDIsIlxcbWF0aGNhbHtQfShGXzJHXzF4O0dfMkdfMXgpXFxvdGltZXMgXFxtYXRoY2Fse059KEZfMkZfMXg7Rl8yR18xeCkiXSxbMCwyLCJcXGxhbWJkYV57LTF9IiwyXSxbMCwxLCIoXFxwaGkqXFx0aGV0YSlfe3h9Il0sWzIsMywiXFxwaGlfe0dfMXh9IFxcb3RpbWVzIEZfMlxcdGhldGFfe3h9IiwyXSxbMywxLCJcXGNpcmMiLDJdXQ==
+\[\begin{tikzcd}
+	{\mathbf{1}} && {\mathcal{P}(F_2F1x;G_2G_1x)} \\
+	\\
+	{\mathbf{1} \otimes \mathbf{1}} && {\mathcal{P}(F_2G_1x;G_2G_1x)\otimes \mathcal{N}(F_2F_1x;F_2G_1x)}
+	\arrow["{(\phi*\theta)_{x}}", from=1-1, to=1-3]
+	\arrow["{\lambda^{-1}}"', from=1-1, to=3-1]
+	\arrow["{\phi_{G_1x} \otimes F_2\theta_{x}}"', from=3-1, to=3-3]
+	\arrow["\circ"', from=3-3, to=1-3]
+\end{tikzcd}\]
+\end{definition}
+
+\begin{proposition}
+\label{prop:representable_enriched}
+    There is a 2-equivalence
+    \[
+    \mathcal{V}\text{-}\catname{RepMultCat} \simeq \mathcal{V}\text{-}\catname{MonCat}
+    \]
+    between the 2-category of representable $\mathcal{V}$-multicategories and the 2-category of $\mathcal{V}$-enriched monoidal categories and strong monoidal $\mathcal{V}$-functors.
+\end{proposition}
+\begin{proof}
+	Below we will distinguish the tensor of $\mathcal{V}$ and the tensor of $\mathcal{C}$ by writing $\otimes$ and  $\enriched{\otimes}$ respectively.
+    The $\mathcal{V}\text{-}\catname{MonCat} \to \mathcal{V}\text{-}\catname{RepMultCat}$ direction is given by the following construction.
+    Given a $\mathcal{V}$-enriched monoidal category $\mathcal{C}$, we construct a $\mathcal{V}$-multicategory $\catname{Mult}\text{-}\mathcal{C}$ by letting:
+    \begin{itemize}
+        \item $\obj{\catname{Mult}\text{-}\mathcal{C}} = \obj{\mathcal{C}}$,
+        \item $\catname{Mult}\text{-}\mathcal{C}(A_1, \ldots, A_n; B) = \mathcal{C}(((A_1 \otimes A_2) \otimes \ldots) \otimes A_n, B)$,
+        \item identities are those of $\mathcal{C}$
+        \item composition $\catname{Mult}\text{-}\mathcal{C}(\langle B \rangle; C) \otimes (\bigotimes_{i=1}^{n} \catname{Mult}\text{-}\mathcal{C}(\langle A_i \rangle; B)) \to \catname{Mult}\text{-}\mathcal{C}(A_{11}, \ldots, A_{1m_{1}}, \ldots, A_{n1}, \ldots, A_{nm_{n}}; C)$ is given by the following composite in $\mathcal{V}$:
+        % https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXG1hdGhjYWx7Q30oKEJfMSBcXGVucmljaGVke1xcb3RpbWVzfSBCXzIpIFxcbGRvdHMgQl97bn0sQykgXFxvdGltZXMgKFxcYmlnb3RpbWVzX3tpPTF9XntufVxcbWF0aGNhbHtDfSgoQV97aTF9IFxcZW5yaWNoZWR7XFxvdGltZXN9IEFfe2kyfSkgXFxsZG90cyBBX3tpbV9pfSxCX3tpfSkpIl0sWzMsMiwiXFxtYXRoY2Fse0N9KChBX3sxMX0gXFxvdGltZXMgQV97MTJ9KSBcXGxkb3RzIEFfezFtXzF9KSBcXG90aW1lcyBcXGxkb3RzIFxcb3RpbWVzIEFfe25tX259LEMpIl0sWzAsMiwiXFxtYXRoY2Fse0N9KChCXzEgXFxlbnJpY2hlZHtcXG90aW1lc30gQl8yKSBcXGxkb3RzIEJfe259LEMpIFxcb3RpbWVzXFxtYXRoY2Fse0N9KChBX3sxMX0gXFxlbnJpY2hlZHtcXG90aW1lc31BX3sxMn0pIFxcbGRvdHMgQV97MW1fezF9fSkgXFxlbnJpY2hlZHtcXG90aW1lc30gXFxsZG90cyBcXGVucmljaGVke1xcb3RpbWVzfSBBX3tubV97bn19LCBcXGVucmljaGVke1xcYmlnb3RpbWVzX3tpPTF9XntufX1CX3tpfSkiXSxbMCwyLCJcXGlkIFxcb3RpbWVzIFxcZW5yaWNoZWR7XFxvdGltZXN9IiwyXSxbMiwxLCJcXGNpcmMiXV0=
+\[
+\adjustbox{width=\textwidth}{
+\begin{tikzcd}
+	{\mathcal{C}((B_1 \enriched{\otimes} B_2) \ldots B_{n},C) \otimes (\bigotimes_{i=1}^{n}\mathcal{C}((A_{i1} \enriched{\otimes} A_{i2}) \ldots A_{im_i},B_{i}))} &&& \\
+	\\
+	{\mathcal{C}((B_1 \enriched{\otimes} B_2) \ldots B_{n},C) \otimes\mathcal{C}((A_{11} \enriched{\otimes}A_{12}) \ldots A_{1m_{1}}) \enriched{\otimes} \ldots \enriched{\otimes} A_{nm_{n}}, \enriched{\bigotimes}_{i=1}^{n}B_{i})} &&& {\mathcal{C}((A_{11} \otimes A_{12}) \ldots A_{1m_1}) \otimes \ldots \otimes A_{nm_n},C)}
+	\arrow["{\id \otimes \enriched{\otimes}}"', from=1-1, to=3-1]
+	\arrow["\circ", from=3-1, to=3-4]
+\end{tikzcd}}
+\]
+using the property that $\enriched{\otimes}$ distributes over $\otimes$~(\cref{def:monoidal_enriched_category}).
+$\enriched{\otimes}$ in the map $\id \otimes \enriched{\otimes}$ implicitly includes the necessary symmetries and associators so that the arrow makes sense.
+    \end{itemize}
+    This construction induces a corresponding 2-functor.
+    The other direction is given by the following construction.
+    Given a representable $\mathcal{V}$-multicategory $\mathcal{M}$, we construct a $\mathcal{V}$-enriched monoidal category $\mathcal{M}_c$ by letting:
+    \begin{itemize}
+        \item $\obj{\mathcal{M}_c} = \obj{\mathcal{M}}$,
+        \item $\mathcal{M}_c(A, B) = \mathcal{M}(A; B)$,
+        \item for objects $A$ and $B$, we let $A \enriched{\otimes} B$ be the representing object for the universal morphism
+        \[
+        \I \xrightarrow{\xi_{A,B}} \mathcal{M}(A, B; A \enriched{\otimes} B)
+        \]
+        in $\mathcal{V}$, and similarly $\I$ is the representing object for the universal morphism $\I \xrightarrow{\xi_{()}} \mathcal{M}(;\I)$.
+    \end{itemize}
+    The bifunctor $\enriched{\otimes}$ on $\mathcal{M}_c$ is defined on hom-objects as follows. 
+	Given objects $A,B,C,D$, the action of $\enriched{\otimes}$ on morphisms is the morphism in $\mathcal{V}$
+	\[
+	\mathcal{M}_c(A,B) \otimes \mathcal{M}_c(C,D) \to \mathcal{M}_c(A \enriched{\otimes} C, B \enriched{\otimes} D)
+	\]
+	which is given by the following composite in $\mathcal{V}$:
+	% https://q.uiver.app/#q=WzAsNCxbMCw0LCJcXG1hdGhjYWx7TX1fYyhCLEQ7QiBcXGVucmljaGVke1xcb3RpbWVzfSBEKSBcXG90aW1lcyAoXFxtYXRoY2Fse019X2MoQSxCKSBcXG90aW1lcyBcXG1hdGhjYWx7TX1fYyhDLEQpKSJdLFswLDAsIlxcbWF0aGNhbHtNfV9jKEEsQikgXFxvdGltZXMgXFxtYXRoY2Fse019X2MoQyxEKSJdLFswLDIsIlxcSSBcXG90aW1lcyBcXG1hdGhjYWx7TX1fYyhBLEIpIFxcb3RpbWVzIFxcbWF0aGNhbHtNfV9jKEMsRCkiXSxbMiw0LCJcXG1hdGhjYWx7TX1fYyhBLEM7IEIgXFxlbnJpY2hlZHtcXG90aW1lc30gRCkgXFxjb25nIFxcbWF0aGNhbHtNfV9jKEEsQzsgQSBcXGVucmljaGVke1xcb3RpbWVzfSBDKSBcXG90aW1lcyBcXG1hdGhjYWx7TX1fYyhBIFxcZW5yaWNoZWR7XFxvdGltZXN9IEM7IEIgXFxlbnJpY2hlZHtcXG90aW1lc30gRCkiXSxbMSwyLCJcXGxhbWJkYV57LTF9IiwyXSxbMiwwLCJcXHhpX3tCLER9IFxcb3RpbWVzIFxcaWQiLDJdLFswLDMsIlxcY2lyYyJdXQ==
+\[
+\adjustbox{width=\textwidth}{
+\begin{tikzcd}
+	{\mathcal{M}(A;B) \otimes \mathcal{M}(C;D)} && \\
+	\\
+	{\I \otimes \mathcal{M}(A;B) \otimes \mathcal{M}(C;D)} \\
+	\\
+	{\mathcal{M}(B;D;B \enriched{\otimes} D) \otimes (\mathcal{M}(A;B) \otimes \mathcal{M}(C;D))} && {\mathcal{M}(A,C; B \enriched{\otimes} D) \cong \mathcal{M}(A,C; A \enriched{\otimes} C) \otimes \mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes} D)}
+	\arrow["{\lambda^{-1}}"', from=1-1, to=3-1]
+	\arrow["{\xi_{B,D} \otimes \id}"', from=3-1, to=5-1]
+	\arrow["\circ", from=5-1, to=5-3]
+\end{tikzcd}},
+\]
+that is, it is given by the unique hom-object $\mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes} D) = \mathcal{M}_{c}(A \enriched{\otimes} C; B \enriched{\otimes} D)$, such that tensoring on the left with $\mathcal{M}(A,C; A \enriched{\otimes} C)$ is isomorphic to $\mathcal{M}(A,C; B \enriched{\otimes} D)$.
+All of the properties follow similarly to~\autoref{prop:representable_multicategories} generalising to morphisms in $\mathcal{V}$.
+\end{proof}
+
+\subsection{Proof of the representability equivalence}
+
+\begin{proof}[Proof of \Cref{prop:representable_multicategories}]
+    The $\catname{MonCat} \to \catname{RepMultCat}$ direction of the equivalence is given by the following construction.
+    Given a monoidal category $\mathcal{V} = (\mathcal{V}, \otimes, \mathbf{1}_{V}, \lambda, \rho, \alpha)$, we can construct a representable multicategory $\catname{Mult}-\mathcal{V}$ as follows:
+    \begin{itemize}
+        \item $\obj{\catname{Mult}-\mathcal{V}} = \obj{\mathcal{V}}$;
+        \item $\catname{Mult}-\mathcal{V}(A_1, \ldots, A_n; B) = \mathcal{V}(((A_1 \otimes A_2) \ldots \otimes A_n), B)$, \emph{i.e.}, given by a morphism from the tensor product associated from the left to $B$;
+        \item identities are those of $\mathcal{V}$;
+        \item composition $g \circ (f_1, \ldots, f_m) : \catname{Mult}-\mathcal{V}(A_{11}, \ldots, A_{mn_m}; B)$ for $f_i \in \catname{Mult}-\mathcal{V}(A_{i1}, \ldots, A_{in_i};B)$ and $g \in \catname{Mult}-\mathcal{V}(B_1, \ldots, B_m;C)$ is given by the following composition in $\mathcal{V}$:
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCIoKEFfezExfSBcXG90aW1lcyBBX3sxMn0pIFxcb3RpbWVzIFxcbGRvdHMgXFxvdGltZXMgQV97bW5fbX0pIl0sWzAsMiwiKEFfezExfSBcXG90aW1lcyBcXGxkb3RzIFxcb3RpbWVzIEFfezFuXzF9KVxcbGRvdHMoQV97bTF9IFxcb3RpbWVzIFxcbGRvdHMgXFxvdGltZXMgQV97bW5fbX0pIl0sWzIsMiwiQl8xIFxcb3RpbWVzIFxcbGRvdHMgXFxvdGltZXMgQl9tIl0sWzQsMiwiQiJdLFswLDEsIlxcc2ltZXEiXSxbMSwyLCJmXzEgXFxvdGltZXMgXFxsZG90cyBcXG90aW1lcyBmX20iXSxbMiwzLCJnIl1d
+\[\begin{tikzcd}
+	{((A_{11} \otimes A_{12}) \otimes \ldots \otimes A_{mn_m})} \\
+	\\
+	{(A_{11} \otimes \ldots \otimes A_{1n_1})\ldots(A_{m1} \otimes \ldots \otimes A_{mn_m})} && {B_1 \otimes \ldots \otimes B_m} && B
+	\arrow["\simeq", from=1-1, to=3-1]
+	\arrow["{f_1 \otimes \ldots \otimes f_m}", from=3-1, to=3-3]
+	\arrow["g", from=3-3, to=3-5]
+\end{tikzcd}\]
+    \end{itemize}
+    The universal morphisms $\xi$ are then given by the corresponding identity maps.
+    This construction induces a corresponding 2-functor.
+    The other direction is given by the following construction.
+    Given a representable multicategory $\mathcal{M}$, we construct a monoidal category $\mathcal{M}_{c}$ by letting:
+    \begin{itemize}
+        \item $\obj{\mathcal{M}_{c}} = \obj{\mathcal{M}}$
+        \item $\mathcal{M}_{c}(A, B) = \mathcal{M}(A; B)$
+        \item for objects $A$ and $B$, we let $A \otimes B$ be the object in the codomain of the universal arrow $(A,B) \to A \otimes B$ in $\mathcal{M}$, and $\mathbf{1}_{\mathcal{M}_{c}}$ be the object in the codomain of the universal arrow $() \to \mathbf{1}$.
+    \end{itemize}
+    This construction, in particular, induces a bifunctor $\otimes$ on $\mathcal{M}_{c}$ whose action on morphisms is given as follows.
+    Let $f \in \mathcal{M}(A;B)$ and $g \in \mathcal{M}(C;D)$, then we first get a morphism $\xi_{B,D} \circ (f,g) \in \mathcal{M}(A,C; B \otimes D)$, and then we get a morphism $f \otimes g \in \mathcal{M}(A \otimes C; B \otimes D)$ as the unique morphism given by $(f \otimes g) \circ \xi_{A,C} = \xi_{B,D} \circ (f,g)$.
+    We need to check that thus obtained $\otimes$ preserves identities and composition.
+    \begin{itemize}
+        \item For identities, we need to check that $id_{A} \otimes id_{B} = id_{A \otimes B}$. By definition, $(id_{A} \otimes id_{B}) \circ \xi_{A,B} = \xi_{A,B} \circ (id_{A},id_{B}) = \xi_{A,B}$.
+        On the other hand, $id_{A \otimes B} \circ \xi_{A,B} = \xi_{A,B}$ and hence $id_{A} \otimes id_{B} = id_{A \otimes B}$ because $- \circ \xi_{A,B}$ is injective.
+        \item For composition, we need to check that $(h \otimes k) \circ (f \otimes g) = (h \circ f) \otimes (k \circ g)$ for $f \in \mathcal{M}(A;B)$, $g \in \mathcal{M}(C;D)$, $h \in \mathcal{M}(B;E)$, and $k \in \mathcal{M}(D;F)$.
+        By definition, we have $(f \otimes g) \circ \xi_{A,C} = \xi_{B,D} \circ (f,g)$ and $(h \otimes k) \circ \xi_{B,D} = \xi_{E,F} \circ (h,k)$.
+        Then, $((h \circ f) \otimes (k \circ g)) \circ \xi_{A,C} = \xi_{E,F} \circ (h \circ f, k \circ g) = \xi_{E,F} \circ (h,k) \circ (f,g) = (h \otimes k) \circ \xi_{B,D} \circ (f,g) = (h \otimes k) \circ (f \otimes g) \circ \xi_{A,C}$ and we get the desired equality by injectivity of $- \circ \xi_{A,C}$. 
+    \end{itemize}
+    The coherence isomorphisms $\lambda, \rho, \alpha$ are constructed by using the universal property of representability.
+    Namely, given a morphism $f \in \mathcal{M}(A,B,C; D)$ the universal property says that there is a unique morphism $g \in \mathcal{M}(A, (B \otimes C); D)$ such that $f = g \circ (id_{A}, \xi_{B,C})$.
+    Now consider the morphisms $\mathcal{M}(A,B,C; A \otimes (B \otimes C))$ and $\mathcal{M}(A,B,C; (A \otimes B) \otimes C)$ given by $\xi_{A, B \otimes C} \circ (id_{A}, \xi_{B,C})$, and $\xi_{A \otimes B, C} \circ (\xi_{A,B}, id_{C})$ respectively.
+    Then, by the universal property, there exists a unique $\alpha' \in \mathcal{M}(A, B \otimes C; (A \otimes B) \otimes C)$ such that $\alpha' \circ (id_{A}, \xi_{B,C}) = \xi_{A \otimes B, C} \circ (\xi_{A, B}, id_{C})$ and there exists $\alpha'' \in \mathcal{M}(A \otimes (B \otimes C); (A \otimes B) \otimes C)$ such that $\alpha'' \circ \xi_{A, B \otimes C} = \alpha'$ and we have $\alpha'' \circ \xi_{A, B \otimes C} \circ (id_{A}, \xi_{B,C}) = \xi_{A \otimes B,C} \circ (\xi_{A,B}, id_{C})$.
+    Similarly, we can get a unique $\alpha''^{-1} \in \mathcal{M}((A \otimes B) \otimes C; A \otimes (B \otimes C))$ such that $\xi_{A, B \otimes C} \circ (id_{A}, \xi_{B,C}) = \alpha''^{-1} \circ \xi_{A \otimes B, C} \circ (\xi_{A,B}, id_{C})$ and $\alpha'' \circ \alpha''^{-1} \circ \xi_{A \otimes B, C} \circ (\xi_{A,B}, id_{C}) = \xi_{A \otimes B,C} \circ (\xi_{A,B},id_{C})$.
+    Since $\xi_{A \otimes B, C} \circ (\xi_{A,B}, id_{C})$ is a universal arrow, precomposing with it is injective and since both $id_{(A \otimes B) \otimes C}$ and $\alpha'' \circ \alpha''^{-1}$ satisfy the equality, it is necessarily the case that $\alpha'' \circ \alpha''^{-1} = id_{(A \otimes B) \otimes C}$.
+    We get the morphisms for $\lambda$ and $\rho$ similarly.
+    The coherence conditions for $\lambda, \rho, \alpha$ follow from the uniqueness of the above morphisms.
+\end{proof}

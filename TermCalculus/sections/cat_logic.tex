@@ -661,7 +661,7 @@ We get type theories for generalised e-graphs by considering different structure
   The corresponding multigraph $\mathcal{G}$ is given by objects natural numbers and multi-edges $(*) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N}), (<\!\!<) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N}), (/) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})$.
   The type theory is given by~\autoref{def:s_lat_type_theory} (with additional constants for all natural numbers and the constant $a$, and with the rules for cartesian structure from~\autoref{eq:cartesian_structure}) together with $\mathcal{E}$:
   \begin{gather*}
-    x : \mathbb{N} \vdash (x * 2) / 2 \equiv x <\!\!< 1 : \mathbb{N}\\
+    x : \mathbb{N} \vdash x * 2 \equiv x <\!\!< 1 : \mathbb{N}\\
     x : \mathbb{N}, y : \mathbb{N}, z : \mathbb{N} \vdash (x * y) / z \equiv x * (y / z) : \mathbb{N}\\
     x : \mathbb{N} \vdash x / x \equiv 1 : \mathbb{N}\\
     x : \mathbb{N} \vdash x * 1 \equiv x
@@ -672,13 +672,13 @@ We get type theories for generalised e-graphs by considering different structure
   \] 
   we can derive first that (by using $N \equiv N + N$ and the congruence)
   \[
-  \vdash (a * 2) / 2 \equiv \vdash ((a * 2) + (a * 2)) / 2 : \mathbb{N},
+  \vdash (a * 2) / 2 \equiv ((a * 2) + (a * 2)) / 2 : \mathbb{N},
   \]
-  then that (by using the substitution congruence)
+  then, using
   \[
   \vdash (a * 2) \equiv a <\!\!< 1 : \mathbb{N},
   \]
-  and finally that 
+  and the substitution congruence, we have that
   \[
   \vdash (a * 2) / 2 \equiv ((a * 2) + a <\!\!< 1) / 2 : \mathbb{N}.
   \]
@@ -704,31 +704,40 @@ We get type theories for generalised e-graphs by considering different structure
   This approach formalises our examples in~\autoref{lst:terms-e-graph}.
 
   Consider the example (b).
+  The $+$-introduction is induced by the equation $x * 2 \equiv x <\!\!< 1$, so its premises must be the literal-$2$ terms $x * 2$ and $x <\!\!< 1$.
+  We first derive the term with $2$ as a literal constant, then use the $\beta$-let equation in reverse to abstract the two occurrences of $2$ into a single \textbf{let}-binding, making the sharing of the constant explicit in the syntax.
   We have the following terms.
   \begin{gather*}
   \inferrule*[]{\;}{\vdash 2 : \mathbb{N}} \qquad \inferrule*[]{\;}{\vdash a : \mathbb{N}} \qquad \inferrule*[]{\;}{\vdash 1 : \mathbb{N}}\\
-  \inferrule*[right=intro $*$, left=$\pi_{y * x}$]{
-    y : \mathbb{N}, x : \mathbb{N} \vdash x : \mathbb{N} \quad 
-    y : \mathbb{N}, x : \mathbb{N} \vdash y : \mathbb{N} \quad  
+  \inferrule*[right=intro $*$, left=$\pi_{x * 2}$]{
+    x : \mathbb{N} \vdash x : \mathbb{N} \quad
+    x : \mathbb{N} \vdash 2 : \mathbb{N} \quad
     (*) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
-  {y : \mathbb{N}, x : \mathbb{N} \vdash y * x : \mathbb{N}}\\
-  \inferrule*[right=intro $<\!\!<$, left=$\pi_{y <\!\!< 1}$]{
-    y : \mathbb{N}, x : \mathbb{N} \vdash y : \mathbb{N} \quad 
-    y : \mathbb{N}, x : \mathbb{N} \vdash 1 : \mathbb{N} \quad  
+  {x : \mathbb{N} \vdash x * 2 : \mathbb{N}}\\
+  \inferrule*[right=intro $<\!\!<$, left=$\pi_{x <\!\!< 1}$]{
+    x : \mathbb{N} \vdash x : \mathbb{N} \quad
+    x : \mathbb{N} \vdash 1 : \mathbb{N} \quad
     (<\!\!<) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
-  {y : \mathbb{N}, x : \mathbb{N} \vdash y <\!\!< 1 : \mathbb{N}}\\
-  \inferrule*[right=intro $+$, left=$\pi_E$]{\pitri{\pi_{y * x}} \quad \pitri{\pi_{y <\!\!< 1}}}
-  {y : \mathbb{N}, x : \mathbb{N} \vdash (y * x) + (y <\!\!< 1) : \mathbb{N}}\\
-  \inferrule*[right=intro $/$, left=$\pi_{E/x}$]{
+  {x : \mathbb{N} \vdash x <\!\!< 1 : \mathbb{N}}\\
+  \inferrule*[right=intro $+$, left=$\pi_E$]{\pitri{\pi_{x * 2}} \quad \pitri{\pi_{x <\!\!< 1}}}
+  {x : \mathbb{N} \vdash (x * 2) + (x <\!\!< 1) : \mathbb{N}}\\
+  \inferrule*[right=intro $/$, left=$\pi_{E/2}$]{
     \pitri{\pi_{E}} \quad
-    y : \mathbb{N}, x : \mathbb{N} \vdash x : \mathbb{N} \quad
+    x : \mathbb{N} \vdash 2 : \mathbb{N} \quad
     (/) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
-  {y : \mathbb{N}, x : \mathbb{N} \vdash ((y * x) + (y <\!\!< 1)) / x : \mathbb{N}}\\
-  \inferrule*[left=$\pi_{x = 2}$]{\vdash 2 : \mathbb{N} \quad \pitri{\pi_{E/x}}}
-  {y : \mathbb{N} \vdash \textbf{let } x = 2 \textbf{ in } ((y * x) + (y <\!\!< 1)) / x : \mathbb{N}}\\
-  \inferrule*[left=$\pi_{y = a}$]{\vdash a : \mathbb{N} \quad \pitri{\pi_{x=2}}}
-  {\vdash \textbf{let } y = a \textbf{ in } (\textbf{let } x = 2 \textbf{ in } ((y * x) + (y <\!\!< 1)) / x) : \mathbb{N}}
+  {x : \mathbb{N} \vdash ((x * 2) + (x <\!\!< 1)) / 2 : \mathbb{N}}
 \end{gather*}
+By the $\beta$-let equation $\textbf{let } z = 2 \textbf{ in } N \equiv N[2/z]$ applied in reverse, the derived term is equivalent to a form in which the two occurrences of $2$ are shared by a single binder:
+\[
+x : \mathbb{N} \vdash ((x * 2) + (x <\!\!< 1)) / 2 \;\equiv\; \textbf{let } z = 2 \textbf{ in } ((x * z) + (x <\!\!< 1)) / z : \mathbb{N}.
+\]
+The right-hand side may equivalently be derived using the typing rule for \textbf{let} with body $x : \mathbb{N}, z : \mathbb{N} \vdash ((x * z) + (x <\!\!< 1)) / z : \mathbb{N}$.
+Wrapping the outer binding for $a$ gives the final term:
+\[
+\inferrule*[left=$\pi_{x = a}$]{\vdash a : \mathbb{N} \quad x : \mathbb{N} \vdash \textbf{let } z = 2 \textbf{ in } ((x * z) + (x <\!\!< 1)) / z : \mathbb{N}}
+{\vdash \textbf{let } x = a \textbf{ in } (\textbf{let } z = 2 \textbf{ in } ((x * z) + (x <\!\!< 1)) / z) : \mathbb{N}}
+\]
+Substituting $x \mapsto a$ and $z \mapsto 2$ yields $((a * 2) + (a <\!\!< 1)) / 2$, which matches the term derived in example~(a) after applying the equation $x * 2 \equiv x <\!\!< 1$.
 
 Then, we can extend the type theory with a fixed point operator
 \[
@@ -740,25 +749,25 @@ together with the equation
 \]
 Or, alternatively, written as a possibly recursive let
 \[
-\inferrule*[]{\Gamma, x : A \vdash M : A \quad \Gamma, x : A \vdash N : B}
-{\Gamma \vdash \textbf{letrec } x = M \textbf{ in } N : B},
+\inferrule*[]{\Gamma, x_1 : A_1, \ldots x_n : A_n \vdash M_i : A_i \quad \Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash N : B}
+{\Gamma \vdash \textbf{letrec } x_1 = M_1, \ldots, x_n = M_n \textbf{ in } N : B},
 \]
+note that $M_i$ and $N$ use the same context $\Gamma$.
+Intuitively, it defines a block of possibly mutually recursive $M_i$'s where $x_i$ bind the output of $M_i$ and can be then used in any other $M_j$ (or even in the same $M_i$) and in $N$.
 
-note that $M$ and $N$ use the same context $\Gamma$.
 
+Let a \emph{declaration} list $D$ be $x_1 = M_1, \ldots, x_n = M_n$ with each $x_i$ distinct.
+Write $dom(D) = \{x_1, \ldots, x_n \}$.
 We then define the substitution on a let as
 \[
-(\textbf{letrec } x = M \textbf{ in } N) [P/y] = \textbf{ letrec } x = M[P/y] \textbf{ in } N[P/y].
-\]
-and use a syntactic sugar for multi-variable let as follows:
-\[
-\textbf{letrec } (x,y) = M \textbf{ in } N \coloneqq \textbf{letrec } z = \textbf{match}(z, xy.M) \textbf{ in } \textbf{match}(z, xy.N).
+(\textbf{letrec } D \textbf{ in } N) [P/y] = \textbf{ letrec } D[P/y] \textbf{ in } N[P/y].
 \]
 Then we require the following equations to hold:
+\begin{subequations}\label{eq:let_equations}
 \begin{gather}
-  \textbf{letrec } x = M \textbf{ in } N \equiv \textbf{letrec } x = M \textbf{ in } N[M / x]\label{eq:let_equations:subst}\\
-\textbf{letrec } x = N(M(x)) \textbf{ in } M(x) \equiv \textbf{letrec } y = M(N(y)) \textbf{ in } y\label{eq:let_equations:dinaturality}\\
-\textbf{letrec } x = (letrec y = Q \textbf{ in } P) \textbf{ in } N \equiv \textbf{letrec } (x,y) = \{P,Q\} \textbf{ in } N\label{eq:let_equations:merge}\\
+\textbf{letrec } D, x = M, D' \textbf{ in } N  \equiv  \textbf{letrec } D[M/x], x = M, D'[M/x] \textbf{ in } N[M/x]\label{eq:let_equations:subst}\\
+\textbf{letrec } D \textbf{ in } (\textbf{letrec } D' \textbf{ in } P) \equiv \textbf{letrec } D,D' \textbf{ in } P \label{eq:let_equations:merge_body}\\
+\textbf{letrec } D, x = \textbf{letrec } D' \textbf{ in } M, D'' \textbf{ in } N \equiv \textbf{letrec } D,D',x = M, D'' \textbf{ in } N\label{eq:let_equations:merge_bind}\\
   \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...)\label{eq:let_equations:congruence}\\ 
   \textbf{letrec } x = M \textbf{ in } \{P, N\} \equiv \{P,\; \textbf{letrec } x = M \textbf{ in } N\},
     \quad x \notin FV(P) \label{eq:let_equations:float-tensor-R}\\
@@ -771,9 +780,12 @@ Then we require the following equations to hold:
     \textbf{match}(\textbf{letrec } x = M \textbf{ in } P,\; uv.N),
     \quad x \notin FV(N),\; \{u,v\}\cap\{x\}=\varnothing \label{eq:let_equations:float-match-scrutinee}\\
   \textbf{letrec } x = M \textbf{ in } N \equiv N,\;x \not \in FV(N)\label{eq:let_equations:gc}\\
-\textbf{letrec } z = \textbf{match}(z, xy. \{w, Q(w, y)\}) \textbf{ in } M[w/x]  \equiv  \textbf{letrec } y = Q(w, y) \textbf{ in } M \qquad w \not \in \{x,y,z\}\label{eq:let_equations:qvar}
+\textbf{letrec } D, z = M, D' \textbf{ in } N \equiv\notag\\
+\equiv \textbf{letrec } D[\{x,y\}/z], x = \pi_{X}(M[\{x,y\}/z]), y = \pi_{Y}(M[\{x,y\}/z]), D'[\{x,y\}/z] \textbf{ in } N[\{x,y\} / z],\notag\\
+\text{where $\pi_{X}(P) = \textbf{match}(P, uv.u)$ and $\pi_{Y}(P) = \textbf{match}(P, uv.v)$}\label{eq:let_equations:unpair}\\
+\textbf{letrec } D, y = M, y' = M[y'/y], D' \textbf{ in } N \equiv \textbf{letrec } D, y = M, D'[y/y'] \textbf{ in } N[y/y']\label{eq:let_equations:diag}
 \end{gather}
-
+\end{subequations}
 We then define trace as
 \[
 Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{match}(M, uv.v) \textbf{ in } \textbf{match}(M, uv.u) \rrbracket
@@ -1007,7 +1019,60 @@ Note that we denote the monoidal tensor as $\text{tr}$.
   \end{align*}
 \end{proof}
 
+\begin{lemma}\label{lemma:letrec}
+Using the equations~\cref{eq:let_equations} we can show the following terms are identified
+\[
+g(M) \equiv \textbf{letrec } x = M \textbf{ in } g(x), y \not \in FV(M,g)
+\]
+\end{lemma}
+\begin{proof}
+\begin{align*}
+\textbf{letrec } x = M \textbf{ in } g(x) &\equiv \text{by~\cref{eq:let_equations:subst}} \equiv \textbf{letrec } x = M \textbf{ in } g(M) \equiv \text{by~\cref{eq:let_equations:gc}} \equiv g(M)
+\end{align*}
+\end{proof}
+
+\begin{lemma}\label{lemma:match-comm}
+  We have that
+  \[
+ \textbf{match}(\textbf{match}(M, xy.N), xy.P) \equiv \textbf{match}(M, xy.\textbf{match}(N, uv.P)).
+  \]
+\end{lemma}
+\begin{proof}
+Let $K(c) \coloneqq \textbf{match}(\textbf{match}(c, x'y'.N[x'/x, y'/y]), uv.P)$.
+Then
+\[
+K[\{x,y\}/c] = \textbf{match}(\textbf{match}(\{x,y\}, x'y'.N[x'/x,y'/y]), uv.P) \stackrel{\beta_\otimes}{\equiv} \textbf{match}(N, uv.P),
+\]
+and
+\[
+K[M/c] = \textbf{match}(\textbf{match}(M, x'y'.N[x'/x,y'/y]), uv.P) \equiv \textbf{match}(\textbf{match}(M, xy.N), uv.P).
+\]
+By $\eta$ rule, we have that
+\[
+\textbf{match}(M, xy.K[\{x,y\}/c]) \equiv K[M/c],
+\]
+and therefore,
+\[
+\textbf{match}(M, xy.\textbf{match}(N, uv.P)) \equiv \textbf{match}(\textbf{match}(M, xy.N), uv.P).
+\]
+\end{proof}
 \begin{proposition}
+\begin{lemma}\label{lemma:match-gc}
+Using the $\eta$-eqution we can derive the following
+\[
+\textbf{match}(M, xy.N) \equiv N, \quad \text{if } x,y \not \in FV(N).
+\]
+\end{lemma}
+\begin{proof}
+We have that $N$ must be defined in a context $\Gamma, x : A, y : B \vdash N : C$, for some $\Gamma, A, B, C$, such that $N$ does not contain $x$ and $y$.
+Let $N'$ be the same term as $N$ but with the context $\Gamma, z : A \otimes B \vdash N' : C$, such that $z$ is fresh for $\Gamma$.
+Then we have that $N'[\{x,y\}/z] = N$ and $N'[M/z] = N$.
+Therefore,
+\[
+\textbf{match}(M, xy.N) = \textbf{match}(M, xy.N'[\{x,y\}/z]) \stackrel{\eta}{\equiv} N'[M/z] = N.
+\]
+\end{proof}
+
 The construction
 \[
 \text{Tr}_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{ match}(M, uv.v) \textbf{ in } \textbf{match}(M, uv.u)\rrbracket
@@ -1097,17 +1162,15 @@ Hence,
 \begin{align*}
   a : A \vdash &\textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,x), uv.\{u,g(v)\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(a,x), uv. \{u, g(v)\}), uv.u) : B \equiv\\
   &\equiv \textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha) : B\\
-  &\text{by \autoref{eq:let_equations:congruence}}\\
-  &\equiv \textbf{match}(f(a,\textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } x), \alpha\beta.\alpha) : B\\
-  &\text{by \autoref{eq:let_equations:subst}}\\
-  &\equiv \textbf{match}(f(a,\textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } g(\textbf{match}(f(a,x), \alpha\beta.\beta))), \alpha\beta.\alpha) : B\\
-  &\text{by \autoref{eq:let_equations:congruence}}\\
-  &\equiv \textbf{match}(f(a, g(\textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\beta))), \alpha\beta.\alpha) : B\\
-  &\text{by \autoref{eq:let_equations:dinaturality}}\\
-  &\equiv \textbf{match}(f(a,g(\textbf{letrec } y = \textbf{match}(f(a,g(y)), \alpha\beta.\beta) \textbf{ in } \textbf{y}), \alpha\beta.\alpha) : B\\
-  &\text{by \autoref{eq:let_equations:congruence}}\\
-  &\equiv \textbf{letrec } y = \textbf{match}(f(a,g(y)),\alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,g(y)), \alpha\beta.\alpha) : B
-\end{align*}
+  &\text{by \cref{lemma:letrec}}\\
+  &\equiv \textbf{letrec } x = (\textbf{letrec } y = \textbf{match}(f(a,x),\alpha\beta.\beta)) \textbf{ in } g(y)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha)\\
+  &\text{by \cref{eq:let_equations:merge_bind}}\\
+  &\equiv \textbf{letrec } x = g(y), y = \textbf{match}(f(a,g(x)), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha) : B\\
+  &\text{by \cref{eq:let_equations:subst}}\\
+  &\equiv \textbf{letrec } x = g(y), y = \textbf{match}(f(a,g(y)), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,g(y)), \alpha\beta.\alpha) : B\\
+  &\text{by \cref{eq:let_equations:gc}}\\
+  &\equiv \textbf{letrec } y = \textbf{match}(f(a,g(y)), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,g(y)), \alpha\beta.\alpha) : B
+  \end{align*}
 Up to $\alpha$-equivalence this is what we needed.
 \item \textbf{Vanishing I}: For all $f : (A;B)$,
 \[
@@ -1147,19 +1210,155 @@ By congruence, for any $y : Y \vdash P : B \otimes X$, we have the following
 \]
 Let $x : X, y : Y \vdash B_y(x,y) = \textbf{match}(f'(a,x,y), uv.v) : Y$ and $A(x,y) = \textbf{match}(f'(a,x,y), uv.u) : B \otimes X$,
 where $f' = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}))$.
-Let $A_x = \textbf{match}(A,\gamma\delta.\delta)$ and $A_B = \textbf{match}(A, \gamma\delta.\gamma) : B$.
 Then we can rewrite the right-hand side as
 \begin{align*}
 a : A \vdash \textbf{letrec } x &= \textbf{match}(\textbf{letrec } y = B_{y}(x,y) \textbf{ in } A(x,y), \gamma\delta.\delta) \textbf{ in }\\
 &\hspace{6em}\textbf{match}(\textbf{letrec } y = B_{y}(x,y) \textbf{ in } A(x,y), \gamma\delta.\gamma) : B \equiv\\
-&\text{by \autoref{eq:let_equations:congruence}}\\
+&\text{by \cref{eq:let_equations:congruence}}\\
 &\equiv \textbf{letrec } x = \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y),\gamma\delta.\delta) \textbf{ in }\\
 &\hspace{6em} \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y),\gamma\delta.\gamma) : B \equiv\\
-\text{TODO}
+&\text{by \cref{eq:let_equations:merge_bind}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(A(x,y'), \gamma\delta.\delta), y' = B_{y'}(x,y') \textbf{ in } \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y), \gamma\delta.\gamma) : B\\
+&\text{by \cref{eq:let_equations:merge_body}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(A(x,y'), \gamma\delta.\delta), y' = B_{y'}(x,y'), y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y), \gamma\delta.\gamma) : B\\
+&\text{by \cref{eq:let_equations:diag}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(A(x,y), \gamma\delta.\delta), y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y), \gamma\delta.\gamma) : B
+\end{align*}
+We can then unfold $A(x,y)$ and $B_y(x,y)$
+\begin{align*}
+&a : A \vdash \textbf{letrec } x = \textbf{match}(\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.q) \textbf{ in }\\
+&\hspace{10em} \textbf{match}(\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p), \gamma\delta.\gamma) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\}), pq.p)), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\}), pq.q)) \textbf{ in }\\
+&\hspace{10em} \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\}), pq.p)), \gamma\delta.\gamma) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\textbf{match}(\{\{u,\alpha\},\beta\}, pq.p))), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\textbf{match}(\{\{u,\alpha\},\beta\}, pq.q))) \textbf{ in }\\
+&\hspace{10em} \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\textbf{match}(\{\{u,\alpha\},\beta\}, pq.p))), \gamma\delta.\gamma)) : B\\
+&\text{by $\beta$}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{u,\alpha\})), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\{u,\alpha\}))), \gamma\delta.\gamma)) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{u,\alpha\}), \gamma\delta.\delta)),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{u,\alpha\}), \gamma\delta.\gamma)) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\textbf{match}(\{u,\alpha\}, \gamma\delta.\delta))),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\textbf{match}(\{u,\alpha\}, \gamma\delta.\gamma)) : B\\
+&\text{by $\beta$}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\alpha)),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.u))) : B\\
+\end{align*}
+By \cref{lemma:match-gc}, we have that $\textbf{match}(v, \alpha\beta.u) \equiv u$ and therefore, the right-hand side is given by
+\begin{align*}
+a : A \vdash &\textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\alpha)),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v,\alpha\beta.\beta))) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.u) : B
+\end{align*}
+On the other hand, for the left-hand side, we have that
+\begin{align*}
+a : A \vdash \textbf{letrec } z &= \textbf{match}(f(a,z), uv.v) \textbf{ in } \textbf{match}(f(a,z), uv.u) : B\\
+&\text{by \cref{eq:let_equations:unpair}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.v), \alpha\beta.\alpha),\\
+& \hspace{3em}y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.v), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.u) : B\\ 
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\alpha)),\\
+& \hspace{3em}y = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.u) : B\\ 
+\end{align*}
+We can see that the left-hand side and the right-hand side are the same, so we are done.
+\item \textbf{Strength}:  For all $A,B,C,D,X \in \mathcal{C}$, $f : (C,X;D \otimes X)$, $g : (A;B)$
+\[
+\text{Tr}^{X}(\alpha_{B,D,X}^{-1} \circ \xi_{B, D \otimes X} \circ (g,f)) = \xi_{B,D} \circ (g, \text{Tr}^{X}(f))
+\]
+where $\alpha_{B,X,Y}^{-1}$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B,X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B \otimes X, Y} \circ (\xi_{B,X}, \id_{Y})$.
+We are given $c : C, x : X \vdash f(c,x) : D \otimes X$ and $a : A \vdash g(a) : B$.
+$\xi_{B, D}$ is given by $b : B, d : D \vdash \{b, d\} : B \otimes D$ and $\xi_{B, D \otimes X}$ is given by $b : B, dx : D \otimes X \vdash \{b, dx\} : B \otimes (D \otimes X)$.
+$\alpha_{B,D,X}^{-1}$ is given by $w : B \otimes (D \otimes X) \vdash  match(w, uv. match(v, \alpha\beta.\{\{u,\alpha\},\beta\})) : (B \otimes D) \otimes X$ as before. 
+Therefore, we need to show that
+\begin{align*}
+a : A, c : C \vdash \textbf{letrec } x &= \textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.q) \textbf{ in }\\
+&\textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p) : B \otimes D \equiv\\
+&\equiv \{g(a), \textbf{letrec } x = \textbf{match}(f(c,x), uv.v) \textbf{ in } \textbf{match}(f(c,x), uv.u)\} : B \otimes D
+\end{align*}
+We start with the left-hand side.
+\begin{align*}
+a : A, c : C \vdash \textbf{letrec } x &= \textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.q) \textbf{ in }\\
+&\textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p) : B \otimes D \equiv\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}), pq.q)) \textbf{ in }\\
+&\textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}), pq.p))\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(v,\alpha\beta.\textbf{match}(\{\{u,\alpha\}, \beta\}, pq.q))) \textbf{ in }\\
+&\textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(v,\alpha\beta.\textbf{match}(\{\{u,\alpha\}, \beta\}, pq.p)))\\
+&\text{by $\beta$ twice}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(c,x), \alpha\beta.\beta) \textbf{ in }\\
+&\textbf{match}(f(c,x),\alpha\beta.\{g(a), \alpha\})\\
+\end{align*}
+Let $K(z) = \{g(a), \textbf{match}(z, \alpha'\beta'.\alpha')\}$ for fresh $\alpha', \beta'$.
+We have $K[\{\alpha,\beta\}/z] \equiv \{g(a), \alpha\}$ (by $\beta_\otimes$) and 
+$K[f(c,x)/z] \equiv \{g(a), \textbf{match}(f(c,x), \alpha'\beta'.\alpha')\}$.
+Therefore, by the $\eta_\otimes$-equation,
+\[
+\textbf{match}(f(c,x), \alpha\beta.\{g(a), \alpha\}) \equiv \{g(a), \textbf{match}(f(c,x), \alpha\beta.\alpha)\},
+\]
+\textnormal{after $\alpha$-renaming $\alpha'\beta' \to \alpha\beta$.}
+
+Therefore, by $\eta$-equation, we have that
+\[
+\textbf{match}(f(c,x), \alpha\beta.\{g(a), \alpha\}) \equiv \{g(a), \textbf{match}(f(c,x), \alpha\beta.\alpha)\},
+\]
+and can write the left-hand side as
+\begin{align*}
+\textbf{letrec } x &= \textbf{match}(f(c,x), \alpha\beta.\beta) \textbf{ in }\\
+&\{g(a), \textbf{match}(f(c,x), \alpha\beta.\alpha)\}\\
+&\text{by \cref{eq:let_equations:float-tensor-R}}\\
+&\equiv \{g(a), \textbf{letrec } x = \textbf{match}(f(c,x), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(c,x), \alpha\beta.\alpha)\} 
+\end{align*}
+Up to $\alpha$-equivalence, this is exactly the right-hand side.
+\item \textbf{Yanking}: 
+\[
+\text{Tr}^{X}([\xi_{X,X}]) = \id_{X},
+\]
+where $[-](a) : \mathcal{C}(B,A;B \otimes A) \to \mathcal{C}(A,B;B \otimes A)$.
+$\xi_{X,X}$ is given by $x_1 : X, x_2 : X \vdash \{x_1, x_2\} : X \otimes X$, and $[\xi_{X,X}]$ is thus given by $x_1 : X, x_2 : X \vdash \{x_2, x_1\} : X \otimes X$.
+Therefore, we need to show that
+\[
+x_1 : X \vdash \textbf{letrec } x_2 = \textbf{match}(\{x_2,x_1\}, uv.v) \textbf{ in } \textbf{match}(\{x_2,x_1\}, uv.u) : X \equiv x_1 : X
+\]
+\begin{align*}
+x_1 : X \vdash \textbf{letrec } x_2 &= \textbf{match}(\{x_2,x_1\}, uv.v) \textbf{ in } \textbf{match}(\{x_2,x_1\}, uv.u) : X \equiv\\
+&\text{by $\beta$}\\
+&\equiv \textbf{letrec } x_2 = x_1 \textbf{ in } x_2 : X\\
+&\text{by \cref{eq:let_equations:subst}}\\
+&\equiv \textbf{letrec } x_2 = x_1 \textbf{ in } x_1 : X\\
+&\text{by \cref{eq:let_equations:gc}}\\ 
+&\equiv x_1 : X
 \end{align*}
 \end{itemize}
 \end{proof}
 
+To account for $\catname{SLat}$-enrichment, we consider the following rule for \textbf{letrec}:
+\[
+\inferrule*[]{\Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash M_i : A_i \quad \Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash \sum_{k=1}^{m}N_{k} : B}
+{\Gamma \vdash \sum_{k=1}^{m}\textbf{letrec } x_1 = M_1, \ldots, x_n = M_n \textbf{ in } N_k : B}.
+\]
+Equivalently, sums distribute over the body of a \textbf{letrec} but \emph{not} over the recursive bindings:
+\[
+\textbf{letrec } D \textbf{ in } \sum_{k=1}^{m} N_k \;\equiv\; \sum_{k=1}^{m} \textbf{letrec } D \textbf{ in } N_k.
+\]
+
+In contrast to the rules for the other constructors, we deliberately do not allow distribution over the binding right-hand sides.
+Composition in a $\catname{SLat}$-enriched multicategory is bilinear by definition of the enrichment, so distributing sums out of operator arguments or the body of a \textbf{letrec} is automatic.
+Trace, however, is an iterative operation, and additivity in its argument --- $\text{Tr}^X(f \vee g) = \text{Tr}^X(f) \vee \text{Tr}^X(g)$ --- is not implied by $\catname{SLat}$-enrichment.
+
+The canonical $\catname{SLat}$-enriched traced monoidal category $\catname{Rel}$ of sets and relations (with disjoint union as tensor) witnesses this failure.
+Take $X = \{x_0, x_1\}$ and consider the relations $R_1, R_2 : X \to X$ given by $R_1 = \{(x_0, x_1)\}$ and $R_2 = \{(x_1, x_0)\}$.
+Neither $R_1$ nor $R_2$ admits a fixed point in $X$, so $\text{Tr}^X(R_1) = \text{Tr}^X(R_2) = \varnothing$, and hence $\text{Tr}^X(R_1) \cup \text{Tr}^X(R_2) = \varnothing$.
+However, $R_1 \cup R_2$ contains the 2-cycle $x_0 \mapsto x_1 \mapsto x_0$, so $\text{Tr}^X(R_1 \cup R_2)$ is non-empty.
+Operationally, a trace path through $R_1 \cup R_2$ may interleave steps from $R_1$ and $R_2$, producing fixed-point trajectories that neither summand admits in isolation.
+Composition cannot exhibit this behaviour because it is a single-step operation, but iteration can, and so additivity of trace is a strictly stronger requirement than $\catname{SLat}$-enrichment of composition.
+
+Restricting distribution to the body of \textbf{letrec} keeps the term calculus sound for all cartesian $\catname{SLat}$-enriched traced multicategories, including $\catname{Rel}$ and its variants.
 Since a representable multicategory is equivalent to a monoidal category by~\autoref{prop:representable_multicategories}, the trace operation on hom-objects
 \[
 \text{Tr}_{A,B}^X : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A, B)
@@ -1175,60 +1374,65 @@ giving
 where the output lands in the unary hom-object $\mathcal{M}(A; B)$.
 Thus, the type theory with recursive \texttt{let} is modelled by cartesian $\catname{SLat}$-multicategories with trace in the above sense which are equivalent to cartesian traced $\catname{SLat}$-categories.
 
-With this at hand, we can justify the example (d):
+With this at hand, we can justify the example (d).
+Unlike example (b), this term is recursive: the variable $x$ playing the role of the equation's $x$ is defined by a fixed-point equation, so we use $\textbf{letrec}$.
+As before, we keep $2$ and $1$ as literal constants in the derivation so that the $+$-introductions are justified directly by the equation $x * 2 \equiv x <\!\!< 1$, and we apply the $\beta$-let equation in reverse at the end to share the four occurrences of $2$ and the two occurrences of $1$.
 \begin{gather*}
 \inferrule*[]{\;}{\vdash 2 : \mathbb{N}} \qquad
 \inferrule*[]{\;}{\vdash a : \mathbb{N}} \qquad
 \inferrule*[]{\;}{\vdash 1 : \mathbb{N}}\\
 %
-\inferrule*[left=$\pi_{y*x}$]{
-  y:\mathbb{N},x:\mathbb{N} \vdash y : \mathbb{N} \quad
-  y:\mathbb{N},x:\mathbb{N} \vdash x : \mathbb{N} \quad
+\inferrule*[left=$\pi_{x*2}$]{
+  x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  x:\mathbb{N} \vdash 2 : \mathbb{N} \quad
   {*} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
-}{y:\mathbb{N},x:\mathbb{N} \vdash y * x : \mathbb{N}}\\
+}{x:\mathbb{N} \vdash x * 2 : \mathbb{N}}\\
 %
-\inferrule*[left=$\pi_{y\mathbin{<\!\!<}1}$]{
-  \inferrule*[]{}{y:\mathbb{N},x:\mathbb{N} \vdash y : \mathbb{N}} \quad
-  y:\mathbb{N},x:\mathbb{N} \vdash 1 : \mathbb{N} \quad
+\inferrule*[left=$\pi_{x\mathbin{<\!\!<}1}$]{
+  x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  x:\mathbb{N} \vdash 1 : \mathbb{N} \quad
   {\mathbin{<\!\!<}} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
-}{y:\mathbb{N},x:\mathbb{N} \vdash y \mathbin{<\!\!<} 1 : \mathbb{N}}\\
+}{x:\mathbb{N} \vdash x \mathbin{<\!\!<} 1 : \mathbb{N}}\\
 %
 \inferrule*[left=$\pi_E$]{
-  \pitri{\pi_{y*x}} \qquad \pitri{\pi_{y\mathbin{<\!\!<}1}}
-}{y:\mathbb{N},x:\mathbb{N} \vdash y*x + y\mathbin{<\!\!<}1 : \mathbb{N}}\\
+  \pitri{\pi_{x*2}} \qquad \pitri{\pi_{x\mathbin{<\!\!<}1}}
+}{x:\mathbb{N} \vdash x*2 + x\mathbin{<\!\!<}1 : \mathbb{N}}\\
 %
-\inferrule*[left=$\pi_{E/x}$]{
+\inferrule*[left=$\pi_{E/2}$]{
   \pitri{\pi_E} \quad
-  y:\mathbb{N},x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  x:\mathbb{N} \vdash 2 : \mathbb{N} \quad
   {/} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
-}{y:\mathbb{N},x:\mathbb{N} \vdash (y*x+y\mathbin{<\!\!<}1)/x : \mathbb{N}}\\
+}{x:\mathbb{N} \vdash (x*2+x\mathbin{<\!\!<}1)/2 : \mathbb{N}}\\
 %
 \inferrule*[left=$\pi_W$]{
   \inferrule*[]{
-    y:\mathbb{N},x:\mathbb{N} \vdash x:\mathbb{N} \quad
-    y:\mathbb{N},x:\mathbb{N} \vdash x:\mathbb{N} \quad
+    x:\mathbb{N} \vdash 2:\mathbb{N} \quad
+    x:\mathbb{N} \vdash 2:\mathbb{N} \quad
     {/} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
-  }{y:\mathbb{N},x:\mathbb{N} \vdash x/x : \mathbb{N}} \quad
-  y:\mathbb{N},x:\mathbb{N} \vdash 1 : \mathbb{N}
-}{y:\mathbb{N},x:\mathbb{N} \vdash x/x+1 : \mathbb{N}}\\
+  }{x:\mathbb{N} \vdash 2/2 : \mathbb{N}} \quad
+  x:\mathbb{N} \vdash 1 : \mathbb{N}
+}{x:\mathbb{N} \vdash 2/2+1 : \mathbb{N}}\\
 %
-\inferrule*[left=$\pi_{y \cdot W}$]{
-  y:\mathbb{N},x:\mathbb{N} \vdash y:\mathbb{N} \quad
+\inferrule*[left=$\pi_{x \cdot W}$]{
+  x:\mathbb{N} \vdash x:\mathbb{N} \quad
   \pitri{\pi_W} \quad
   {*} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
-}{y:\mathbb{N},x:\mathbb{N} \vdash y*(x/x+1) : \mathbb{N}}\\
+}{x:\mathbb{N} \vdash x*(2/2+1) : \mathbb{N}}\\
 %
 \inferrule*[left=$\pi_Z$]{
   \inferrule*[]{
-    \pitri{\pi_{E/x}} \qquad \pitri{\pi_{y \cdot W}}
-  }{y:\mathbb{N},x:\mathbb{N} \vdash (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) : \mathbb{N}} \quad
-  y:\mathbb{N},x:\mathbb{N} \vdash a:\mathbb{N}
-}{y:\mathbb{N},x:\mathbb{N} \vdash (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) + a : \mathbb{N}}\\
-\inferrule*[left=$\pi_y$]{
-  \pitri{\pi_Z} \qquad y:\mathbb{N} \vdash y : \mathbb{N}
-}{x:\mathbb{N} \vdash \textbf{letrec}\ y\ \textbf{be}\ (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) + a\ \textbf{in}\ y : \mathbb{N}}\\
-\inferrule*[]{
-  x:\mathbb{N} \vdash 2 : \mathbb{N} \qquad \pitri{\pi_y}
-}{\vdash \textbf{letrec}\ x\ \textbf{be}\ 2\ \textbf{in}\ (\textbf{letrec}\ y\ \textbf{be}\ (y*x+y\mathbin{<\!\!<}1)/x + y*(x/x+1) + a\ \textbf{in}\ y) : \mathbb{N}}
+    \pitri{\pi_{E/2}} \qquad \pitri{\pi_{x \cdot W}}
+  }{x:\mathbb{N} \vdash (x*2+x\mathbin{<\!\!<}1)/2 + x*(2/2+1) : \mathbb{N}} \quad
+  x:\mathbb{N} \vdash a:\mathbb{N}
+}{x:\mathbb{N} \vdash (x*2+x\mathbin{<\!\!<}1)/2 + x*(2/2+1) + a : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_x$]{
+  \pitri{\pi_Z} \qquad x:\mathbb{N} \vdash x : \mathbb{N}
+}{\vdash \textbf{letrec}\ x\ =\ (x*2+x\mathbin{<\!\!<}1)/2 + x*(2/2+1) + a\ \textbf{in}\ x : \mathbb{N}}
 \end{gather*}
+The four occurrences of $2$ in the body --- one in $x*2$ (the LHS of the equation), one in the outer division $/\,2$, and two in $2/2$ --- all refer to the same constant morphism $\vdash 2 : \mathbb{N}$ in the multicategorical interpretation; likewise, the two occurrences of $1$ --- one in $x \mathbin{<\!\!<} 1$ and one in $2/2 + 1$ --- both refer to $\vdash 1 : \mathbb{N}$.
+Applying the $\beta$-let equation $\textbf{let}\ v = M\ \textbf{in}\ N \equiv N[M/v]$ in reverse twice, the derived term is equivalent to a form in which this sharing is made explicit by single binders for $2$ and $1$:
+\[
+\vdash \textbf{letrec}\ x\ =\ (x*2+x\mathbin{<\!\!<}1)/2 + x*(2/2+1) + a\ \textbf{in}\ x \;\equiv\; \textbf{let}\ z = 2\ \textbf{in}\ \textbf{let}\ w = 1\ \textbf{in}\ \textbf{letrec}\ x = (x*z+x\mathbin{<\!\!<}w)/z + x*(z/z+w) + a\ \textbf{in}\ x : \mathbb{N}.
+\]
 \end{example}

@@ -1082,31 +1082,6 @@ t[a] = \begin{cases}
   f([t_1]a, \ldots, [t_n]a) &\text{if}\; t = f(t_1, \ldots, t_n)
 \end{cases}
 \]
-\begin{definition}
-  Let $\mathfrak{N}$ be a full subcategory of $\catname{Set}$ whose objects are sets ${1, \ldots, n}$ for all integers $n \geq 0$.
-  We regard it as a cocartesian strict monoidal category, under the disjoint union operation $\{1, \ldots, n\} \sqcup \{1,\ldots,m\} = \{1, \ldots, n + m\}$.
-  Moreover, for any $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ and $k_1, \ldots, k_n$, let $\sigma \wr (k_1, \ldots, k_n)$ denote the composite function
-  \[
-  \{1, \ldots, \sum_{i=1}^{m}k_{\sigma i}\} \xrightarrow{\sim} \bigsqcup_{i=1}^{m}\{1, \ldots, k_{\sigma i}\} \xrightarrow{\hat{\sigma}} \bigsqcup_{j=1}^{n}\{1, \ldots, k_j\} \xrightarrow{\sim} \{1, \ldots, \sum_{j=1}^{n} k_j\}
-  \]
-  where $\hat{\sigma}$ acts as an identity from the $i$-th summand to the $(\sigma i)^{\text{th}}$ summand.
-  A \textbf{faithful cartesian club} is a category $\mathfrak{S} \subseteq \mathfrak{N}$ such that 
-  \begin{enumerate}
-    \item $\mathfrak{S}$ contains all the objects of $\mathfrak{N}$.
-    \item $\mathfrak{S}$ is closed under the cocartesian structure, i.e. if $\sigma$ and $\tau$ are morphisms of $\mathfrak{S}$ then so is $\sigma \sqcup \tau$.
-    \item $\mathfrak{S}$ is closed under $\wr$, i.e. whenever it contains $\sigma$ it also contains $\sigma \wr (k_1, \ldots, k_n)$
-  \end{enumerate}
-\end{definition}
-
-The strange-looking $\sigma \wr (k_1, \ldots, k_n)$. 
-Here's what's happening: Start with a function $\sigma : \{1, \ldots, m\} \to \{1, \ldots, n\}$ which says that each $i$ gets assigned one of the $n$ slots.
-Now, instead of just $n$ slots, suppose each slot $j$ is \enquote{blown up} into $k_j$ copies.
-The construction $\sigma \wr (k_1, \ldots, k_n)$ gives a new function
-\[
-\{1, \ldots, \sum_{i=1}^{m}k_{\sigma i}\} \to \{1, \ldots, \sum_{j=1}^{n}k_j\}
-\]
-which is what you get when you first group the inputs according to $\sigma$, and then send them into the right block of the \enquote{expanded} target.
-
 
 We get symmetric monoidal category when $\mathfrak{S}$ consists of all bijections and cartesian structure when it consists of all functions.
 

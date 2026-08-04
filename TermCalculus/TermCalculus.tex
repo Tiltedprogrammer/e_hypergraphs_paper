@@ -129,6 +129,30 @@
 
 \begin{document}
 
+\begin{abstract}
+Just as the simply typed lambda calculus is the internal language of cartesian
+closed categories, many categorical structures admit a type theory whose
+derivations are precisely their morphisms. In this work we give such a type
+theory for \emph{semilattice-enriched multicategories}. We define a type theory
+for (representable) $\catname{SLat}$-multicategories and show that it enjoys the
+standard desirable properties: terms uniquely determine their derivations, and
+substitution is admissible and satisfies associativity and interchange. We prove
+that this type theory correctly presents the free (representable)
+$\catname{SLat}$-multicategory over a multigraph.
+
+Our motivating instance is the \emph{e-graphs}, the data structures powering
+\emph{equality saturation}---a rewriting technique that mitigates the phase
+ordering problem by applying rewrite rules non-destructively until a fixed point
+is reached. E-graphs have recently been given a categorical account as string
+diagrams for semilattice-enriched cartesian categories. We present a way to
+render e-graphs as terms in our type theory, under which the semilattice join
+corresponds directly to e-class membership and equality saturation becomes a
+term rewriting problem modulo the structural equations of the theory. In
+particular, we show how the explicit \textbf{let} and recursive \textbf{letrec}
+constructs capture, respectively, the sharing structure of e-graphs and cyclic
+e-graphs modelled by traced cartesian $\catname{SLat}$-categories. This may lay
+the foundations for programming languages with equivalences built in.
+\end{abstract}
 \maketitle
 
 \section{Introduction}

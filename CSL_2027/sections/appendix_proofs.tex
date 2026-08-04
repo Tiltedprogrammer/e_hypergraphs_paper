@@ -1,0 +1,2273 @@
+\section{Proofs for the categorical type theory}
+\label{app:proofs}
+
+This appendix contains the supplementary derivations and proofs of results stated in the categorical type theory of the main text.  As in the main text, $\join$ is the binary semilattice operation, and $\sum_{i=1}^{n}M_i$ abbreviates the iterated join $M_1\join\cdots\join M_n$ under an arbitrary bracketing.
+
+\subsection{Illustrative derivations}
+\label{app:derivations}
+
+\begin{example}
+With the type theory above we can prove that $A \otimes \I$ is isomorphic to $A$ in any monoidal category.
+For this we need to construct two morphisms $A \otimes \I \to A$ and $A \to A \otimes \I$ and show that their composition is identity.
+First, let's build a morphism from $A \to A \otimes \I$
+\[
+\inferrule*{
+  x : A \vdash x : A \qquad () \vdash \star : \I
+}{x : A \vdash \{x,\star\} : A \otimes \I}
+\]
+the morphism $A \otimes \I \to A$ is then
+\[
+\inferrule*{
+\inferrule*{}{z : A \otimes \I \vdash z : A \otimes \I}
+\qquad
+\inferrule*{y : \I \vdash y : \I \qquad x : A \vdash x : A}{x : A, y : \I \vdash \text{match}_{\I}(y,x) : A}}
+{z : A \otimes \I \vdash \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)) : A}
+\]
+Then we have
+\begin{itemize}
+  \item \[
+  \inferrule*{
+            \inferrule*{
+  w : A \vdash w : A \qquad () \vdash \star : \I
+}{w : A \vdash \{w,\star\} : A \otimes \I}
+\qquad
+\inferrule*{
+\inferrule*{}{z : A \otimes \I \vdash z : A \otimes \I}
+\qquad
+\inferrule*{y : \I \vdash y : \I \qquad x : A \vdash x : A}{x : A, y : \I \vdash \text{match}_{\I}(y,x) : A}}
+{z : A \otimes \I \vdash \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)) : A}}
+{w : A \vdash \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x))[\{w, \star\}/z]}
+\]
+
+\begin{align*}
+  \text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x))[\{w, \star\}/z] &\equiv \text{match}_{A \otimes \I}(\{w, \star\}, xy.\text{match}_{\I}(y,x))\\
+  &\equiv_{\beta_{\otimes}} \text{match}_{\I}(\star,w)\\
+  &\equiv_{\beta_{\I}} w
+\end{align*}
+
+  \item The other direction is substitution 
+  \[
+  \inferrule*{z : A \otimes \I \vdash \{w, \star\}[\text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)) / w]}
+{z : A \otimes \I \vdash \{\text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,x)), \star\}}
+  \]
+
+\begin{align*}
+  \underbrace{\{\text{match}_{A \otimes \I}(\underbrace{z}_{M}, xy.\text{match}_{\I}(y,x)), \star\}}_{N} &\equiv_{\eta_{\otimes}} \text{match}_{A \otimes \I}(z, xy.\{\text{match}_{A \otimes \I}(\{x,y\}, x'y'.\text{match}_{\I}(y',x')), \star\})\\ 
+  &\equiv_{\beta_{\otimes}} \text{match}_{A \otimes \I}(z,xy.\{{\text{match}_{\I}(y,x), \star}\})\\
+  &\equiv_{\eta_{\I}}\text{match}_{A \otimes \I}(z, xy.\text{match}_{\I}(y,\{\text{match}_{\I}(\star,x), \star\}))\\
+  &\equiv_{\beta_{\I}} \text{match}_{A \otimes \I}(z, xy.\{x, y\})\\
+  &\equiv_{\eta_{\otimes}} z\\
+\end{align*}
+\end{itemize}
+\end{example}
+
+\begin{remark}
+  Technically, to define $\equiv$ on terms, the type theory must be extended to include the equality judgement of the form:
+  \[
+  \inferrule*[]{\vdots}{\Gamma \vdash M \equiv N : A}.
+  \]
+  That is, two terms $\Gamma \vdash M : A$ and $\Gamma \vdash N : A$ are identified, if we can derive the corresponding equality judgement.
+  For the equalities in~\Cref{def:s_lat_type_theory}, the corresponding rules for the judgements must be
+  \begin{gather*}
+    \inferrule*[right=refl]{\;}{\Gamma \vdash M \equiv M : A} \qquad \inferrule*[right=symm]{\Gamma \vdash M \equiv N : A}{\Gamma \vdash N \equiv M : A} \quad \inferrule*[right=trans]{\Gamma \vdash M \equiv N : A \qquad \Gamma \vdash N \equiv P : A}{\Gamma \vdash M \equiv P : A}\\
+    \inferrule*[right=cong $f$]{f \in \mathcal{G}(A_1, \ldots, A_n; B) \quad \Gamma_1 \vdash M_1 \equiv N_1 : A_1 \ldots \Gamma_n \vdash M_n \equiv N_n : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash f(M_1, \ldots, M_n) \equiv f(N_1, \ldots, N_n) : B}\\
+    \inferrule*[right=cong $\otimes$]{\Gamma \vdash M \equiv N : A \quad \Delta \vdash P \equiv Q : B}{\Gamma, \Delta \vdash \{M \otimes P\} \equiv \{N \otimes Q\} : A \otimes B}\\
+    \inferrule*[right=cong match $A \otimes B$]{\Psi \vdash M_1 \equiv M_2 : A \otimes B \qquad \Gamma, x : A, y : B, \Delta \vdash N_1 \equiv N_2 : C}{\Gamma, \Psi, \Delta \vdash \text{match}_{A \otimes B}(M_1, xy.N_1) \equiv \text{match}_{A \otimes B}(M_2, xy.N_2)}\\
+    \inferrule*[right=cong match $\I$]{\Psi \vdash M_1 \equiv M_2 : \I \qquad \Gamma, \Delta \vdash N_1 \equiv N_2 : A}{\Gamma, \Psi, \Delta \vdash \text{match}_{\I}(M_1, N_1) \equiv \text{match}_{\I}(M_2, N_2) : A}\\
+    \inferrule*[right=cong $\multimap_\text{intro}$]{\Gamma, x : A \vdash M \equiv N : B}{\Gamma \vdash \lambda x . M \equiv \lambda x . N : A \multimap B} \quad \inferrule*[right=cong $\multimap_\text{elim}$]{\Gamma \vdash M_1 \equiv M_2 : A \multimap B \qquad \Delta \vdash N_1 \equiv N_2 : A}{\Gamma, \Delta \vdash M_1N_1 \equiv M_2N_2 : B}\\
+    \inferrule*[right=$\beta_{\otimes}$]{x' : A \vdash x' : A \quad y' : A \vdash y' : A \quad \Gamma_1, x : A, y : B, \Gamma_2 \vdash P : C}{\Gamma_1, x': A, y' : B, \Gamma_2 \vdash \text{match}_{\otimes}(\{x',y'\}, xy.P) \equiv P : C} \quad \inferrule*[right=$\eta_{\otimes}$]{u : A \otimes B \vdash u : A \otimes B \quad \Delta_1, u : A \otimes B, \Delta_2 \vdash N : C}{\Delta_1, u : A \otimes B, \Delta_2 \vdash \text{match}_{\otimes}(u, xy.N[\{x,y\}/ u]) \equiv N : C}\\
+    \inferrule*[right=$\beta_{\I}$]{\Gamma \vdash N : A}{\Gamma \vdash \text{match}_{\I}(\star, N) \equiv N : A} \quad \inferrule*[right=$\eta_{\I}$]{u : \I \vdash u : \I \qquad \Delta_1, u : \I, \Delta_2 \vdash N : A}{\Delta_1, u : \I, \Delta_2 \vdash \text{match}_{\I}(u, N[\star / u]) \equiv N}\\
+    \inferrule*[right=$\beta_{\multimap}$]{\Gamma, x : A \vdash M : B \quad y : A \vdash y : A}{\Gamma, y : A \vdash (\lambda x . M) y \equiv M[y / x] : B} \quad \inferrule*[right=$\eta_{\multimap}$]{\Gamma \vdash M : A \multimap B \quad x : A \vdash x : A}{\Gamma \vdash (\lambda x . M x) \equiv M : A \multimap B}\\
+    \inferrule*[right=cong subst]{\Gamma_1, x : A, \Gamma_2 \vdash M_1 \equiv M_2 : B \quad \Delta \vdash P : A}{\Gamma_1, \Delta, \Gamma_2 \vdash M_1[P / x] \equiv M_2[P / x] : B}
+\end{gather*}
+That is, the rules saying that $\equiv$ is an equivalence relation which is preserved by all contexts and is stable under substitution with $\beta$ and $\eta$ being the generating rules.
+We leave such rules implicit in~\Cref{def:s_lat_type_theory}.
+\end{remark}
+
+\subsection{Traced and recursive structure}
+
+\begin{proof}[Proof of \Cref{prop:traced_representable}]
+  We check the axioms for $\text{tr}^{X}$ in $\mathcal{M}_{c}$.
+  \begin{itemize}
+    \item \textbf{Tightening}: We need to show that for all $A,B,C,D,X \in \mathcal{C}$, $h : A \to B$, $f : B \otimes X \to C \otimes X, g : C \to D$
+    \[
+    \text{tr}^{X}((g \otimes \id_{X}) \circ f \circ (h \otimes \id_{X})) = g \circ \text{tr}^{X}(f) \circ h
+    \]
+    $h \otimes \id_{X}$ is given by the unique morphism $h'$ such that $h' \circ \xi_{A,X} = \xi_{B,X} \circ (h, \id_{X})$ and $g \otimes \id_{X}$ is given by the unique morphism $g'$ such that $g' \circ \xi_{C,X} = \xi_{D,X} \circ (g, \id_{X})$.
+    Then, we have that 
+    \[
+    \text{tr}^{X}(g' \circ f \circ h') = \text{Tr}^{X}(k)
+    \]
+    where $k$ is the unique morphism such that $k = g' \circ f \circ h' \circ \xi_{A,X}$.
+    \begin{align*}
+      k &= g' \circ f \circ h' \circ \xi_{A,X}\\
+      &= g' \circ f \circ \xi_{B,X} \circ (h, \id_{X})\\
+      &= g' \circ f'' \circ (h, \id_{X})\\
+      &= g' \circ f'' \circ_{1} h\\
+    \end{align*}
+    where $f''$ is the unique morphism such that $f'' = f \circ \xi_{B,X}$.
+    Then, by tightening in $\mathcal{C}$ we have
+    \[
+    \text{Tr}^{X}(k) = \text{Tr}^{X}(g' \circ f'' \circ_{1} h) = g \circ \text{Tr}^{X}(f'') \circ h = g \circ \text{tr}^{X}(f) \circ h.
+    \]
+    \item \textbf{Sliding}: We need to show that for all $A,B,X,Y \in \mathcal{C}$, $f : A \otimes X \to B \otimes Y$, $g : Y \to X$
+    \[
+    \text{tr}^{X}((\id_{B} \otimes g) \circ f) = \text{tr}^{Y}(f \circ (\id_{A} \otimes g))
+    \]
+    $\id_{B} \otimes g$ is given by the unique morphism $g_{B}$ such that $g_{B} \circ \xi_{B,Y} = \xi_{B,X} \circ (\id_{B}, g)$.
+    $\id_{A} \otimes g$ is given by the unique morphism $g_{A}$ such that $g_{A} \circ \xi_{A,Y} = \xi_{A,X} \circ (\id_{A}, g)$.
+    Then, we have that
+    \[
+    \text{tr}^{X}(g_{B} \circ f) = \text{Tr}^{X}(k),
+    \]
+    where $k$ is the unique morphism such that $k = g_{B} \circ f \circ \xi_{A,X}$.
+    Let $f'$ be the unique morphism such that $f' = f \circ \xi_{A,X}$.
+    Then, we have that
+    \[
+    \text{Tr}^{X}(k) = \text{Tr}^{X}(g_{B} \circ f \circ \xi_{A,X}) = \text{Tr}^{X}(g_{B} \circ f') = \text{Tr}^{Y}(f' \circ_{2} g) = \text{Tr}^{Y}(f \circ \xi_{A,X} \circ (id_{A}, g))
+    \]
+    By definition, $\text{tr}^{Y}(f \circ (\id_{A} \otimes g)) = \text{tr}^{Y}(f \circ g_{A}) = \text{Tr}^{Y}(f \circ g_{A} \circ \xi_{A,Y}) = \text{Tr}^{Y}(f \circ \xi_{A,X} \circ (\id_{A},g)) = \text{Tr}^{X}(k) = \text{tr}^{X}(g_{B} \circ f)$.
+    \item \textbf{Vanishing I}: We need to show that for all $f : A \to B$,
+    \[
+    \text{tr}^{\I}(f \otimes \id_{\I}) = f
+    \]
+    By definition, $f \otimes \id_{\I}$ is the unique morphism such that $(f \otimes \id_{\I}) \circ \xi_{A,\I} = \xi_{B,\I} \circ (f, \id_{\I})$.
+    Then, also by definition,
+    \[
+    \text{tr}^{\I}(f \otimes \id_{\I}) = \text{Tr}^{\I}(f \otimes \id_{\I} \circ \xi_{A,\I}) = \text{Tr}^{\I}(\xi_{B,\I} \circ (f, \id_{\I})).
+    \]
+    By multicategorical vanishing, we have that $\text{Tr}^{\I}(\xi_{B,\I} \circ (f, \id_{\I})) = f$.
+    Hence, $\text{tr}^{\I}(f \otimes \id_{\I}) = f$.
+    \item \textbf{Vanishing II}: We need to show that for all $f : A \otimes (X \otimes Y) \to B \otimes (X \otimes Y)$,
+    \[
+    \text{tr}^{X \otimes Y}(f) = \text{tr}^{X}(\text{tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y}))
+    \]
+    By definition, 
+    \[
+    \text{tr}^{X \otimes Y}(f) = \text{Tr}^{X \otimes Y}(f \circ \xi_{A, X \otimes Y}).
+    \]
+    $\alpha_{A,X,Y}$ is the unique morphism such that $\alpha_{A,X,Y} \circ \xi_{A \otimes X, Y} \circ (\xi_{A,X}, \id_{Y}) = \xi_{A, X \otimes Y} \circ (\id_{A}, \xi_{X,Y})$.
+    By multicategorical vanishing, we have that
+    \[
+    \text{Tr}^{X \otimes Y}(f \circ \xi_{A, X \otimes Y}) = \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \xi_{A, X \otimes Y} \circ (\id_{A}, \xi_{X,Y}))),
+    \]
+    On the other hand, by definition, we have that
+    \begin{align*}
+    \text{tr}^{X}(\text{tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y})) &= \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y}))\\
+    &= \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y}) \circ \xi_{A,X})
+    \end{align*}
+    By tightening, we have that
+    \[
+    \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y}) \circ \xi_{A,X} = \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y} \circ (\xi_{A,X}, \id_{Y}))
+    \]
+    By the definition of $\alpha_{A,X,Y}$, we have that
+    \[
+    \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y} \circ \xi_{A \otimes X, Y} \circ (\xi_{A,X}, \id_{Y})) = \text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \xi_{A,X \otimes Y} \circ (\id_{A}, \xi_{X,Y})).
+    \]
+    and therefore,
+    \[
+    \text{tr}^{X \otimes Y}(f) = \text{tr}^{X}(\text{tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ \alpha_{A,X,Y}))
+    \]
+    \item \textbf{Strength}: We need to show that for all $f : C \otimes X \to D \otimes X$ and $g : A \to B$,
+    \[
+    \text{tr}_{A \otimes C,B \otimes D}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = g \otimes \text{tr}_{C,D}^{X}(f)
+    \]
+    By definition, $\alpha_{A,C,X}$ is the unique morphism such that
+    \[
+   \alpha_{A,C,X} \circ \xi_{A \otimes C, X} \circ (\xi_{A,C}, \id_{X}) = \xi_{A, C \otimes X} \circ (\id_{A}, \xi_{C,X}),
+    \]
+    and
+    \begin{equation}\label{eq:strength-proof}
+    \text{tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = \text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X} \circ \xi_{A \otimes C, X}),
+    \end{equation}
+    and $g \otimes f$ is the unique morphism such that $(g \otimes f) \circ \xi_{A, C \otimes X} = \xi_{B,D \otimes X} \circ (g, f)$,
+    with $f$ being the unique morphism such that $f \circ \xi_{C,X} = f'$ for $f' : (C,X; D \otimes X)$.
+    We proceed by precomposing~\autoref{eq:strength-proof} with $\xi_{A,C}$:
+    \begin{align*}
+     \text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X} \circ \xi_{A \otimes C, X}) \circ \xi_{A,C} &=\\
+     &\text{by tightening}\\
+     &= \text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X} \circ \xi_{A \otimes C, X} \circ (\xi_{A,C}, \id_{X}))\\
+     &\text{by the definition of $\alpha_{A,C,X}$}\\
+     &=\text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \xi_{A, C \otimes X} \circ (\id_{A}, \xi_{C,X}))\\
+     &\text{by the definition of $g \otimes f$}\\
+     &=\text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ \xi_{B,D \otimes X} \circ (g , f) \circ (\id_{A}, \xi_{C,X}))\\
+     &=\text{Tr}^{X}(\alpha^{-1}_{B,D,X} \circ \xi_{B,D \otimes X} \circ (g , f'))\\
+     &=\text{by multicategorical strength}\\
+     &=\xi_{B,D} \circ (g,\text{Tr}^{X}(f'))\\
+    \end{align*}
+  By definition, we also have that $g \otimes \text{tr}^{X}(f)$ is the unique morphism such that
+  \[
+  (g \otimes \text{tr}^{X}(f)) \circ \xi_{A,C} = \xi_{B,D} \circ (g, \text{tr}^{X}(f)),
+  \]
+  and $\text{tr}^{X}(f)$ is given by $\text{Tr}^{X}(f \circ \xi_{C,X}) = \text{Tr}^{X}(f')$.
+  Hence, we have that
+  \[
+  \text{tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) \circ \xi_{A,C} = (g \otimes \text{tr}^{X}(f)) \circ \xi_{A,C}, 
+  \]
+  and since precomposition with $\xi_{A,C}$ is a bijection, we have that
+  \[
+   \text{tr}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = g \otimes \text{tr}^{X}(f)
+  \]
+  \item \textbf{Yanking}: We need to show that for all $X \in \mathcal{C}$,
+  \[
+  \text{tr}^{X}(\sym_{X,X}) = \id_{X}
+  \]
+  By definition, $\sym_{X,X}$ is the unique morphism such that $\sym_{X,X} \circ \xi_{X,X} = [\xi_{X,X}](a)$, where $[-](a) : \mathcal{C}(X,X; X \otimes X) \to \mathcal{C}(X,X; X \otimes X)$.
+  Then, also by definition, we have that
+  \begin{align*}
+    \text{tr}^{X}(\sym_{X,X}) &= \text{Tr}^{X}(\sym_{X,X} \circ \xi_{X,X})\\
+    &=\text{by definition above}\\
+    &=\text{Tr}^{X}([\xi_{X,X}](a))\\
+    &=\text{by multicategorical yanking}\\
+    &= \id_{X}.
+  \end{align*}
+  \end{itemize}
+\end{proof}
+
+\begin{proof}[Proof of \Cref{prop:trace_construction}]
+\begin{itemize}
+\item \textbf{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : (A;B)$, $f : (B,X; C \otimes X)$, $g : (C;D)$
+\[
+\text{Tr}^{X}(g' \circ f \circ_{1} h) = g \circ \text{Tr}^{X}(f) \circ h,
+\]
+where $g' : (C \otimes X; D \otimes X)$ is the unique morphism such that $g' \circ \xi_{C,X} = \xi_{D,X} \circ  (g, id_{X})$.
+We have that $y : B, x : X \vdash f(y, x) : C \otimes X$, $z : C \vdash g(z) : D$, and $w : C \otimes X \vdash \text{match}(w, uv.\{g(u), v\}) : D \otimes X$.
+Ultimately, we need to show that
+\begin{align*}
+a : A &\vdash \textbf{letrec } x = \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u), v\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u), v\}), uv.u) : D\\
+&\equiv\\
+&\equiv g(\textbf{letrec } x = \textbf{match}(f(h(a),x), uv.v) \textbf{ in } \textbf{match}(f(h(a),x), uv.u)) : D
+\end{align*}
+We first show that
+\[
+\textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u), v\}), uv.v) \equiv \textbf{match}(f(h(a),x), uv.v)
+\]
+We have that
+\begin{align*}
+\{g(u), v\} &\equiv\\
+&\text{by $\beta$}\\
+&\equiv\{g(\textbf{match}(u', \alpha\beta.\alpha)), \textbf{match}(u', \alpha\beta.\beta)\}[\{u,v\}/u'].
+\end{align*}
+And therefore,
+\begin{align*}
+\textbf{match}(f(h(a),x), uv.\{g(u),v\}) &\equiv\\
+&\text{by $\eta$}\\
+&\equiv \{g(\textbf{match}(u', \alpha\beta.\alpha)), \textbf{match}(u', \alpha\beta.\beta)\}[f(h(a),x) / u']\\
+&\equiv \{g(\textbf{match}(f(h(a),x),\alpha\beta.\alpha)), \textbf{match}(f(h(a),x),\alpha\beta.\beta)\}
+\end{align*}
+\begin{align*}
+\textbf{match}(\{g(\textbf{match}(f(h(a),x), \alpha\beta.\alpha)), \textbf{match}(f(h(a),x), \alpha\beta.\beta)\}, uv.v) \equiv\\
+\text{by $\beta$}\\
+\equiv \textbf{match}(f(h(a),x), \alpha\beta.\beta)
+\end{align*}
+We similarly have that
+\[
+\textbf{match}(\textbf{match}(f(h(a),x),uv.\{g(u),v\}), uv.u) \equiv g(\textbf{match}(f(h(a),x), \alpha\beta.\alpha)),
+\]
+and hence
+\begin{align*}
+\textbf{letrec } x = \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u),v\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(h(a),x), uv.\{g(u),v\}),uv.u) \equiv\\
+\equiv \textbf{letrec } x = \textbf{match}(f(h(a),x), uv.v) \textbf{ in } g(\textbf{match}(f(h(a),x), uv.u))\\
+\equiv g(\textbf{letrec } x = \textbf{match}(f(h(a),x), uv.v) \textbf{ in } \textbf{match}(f(h(a),x), uv.u))
+\end{align*}
+\item \textbf{Sliding}: For all $A,B,X,Y \in \mathcal{C}$, $f : (A,X;B \otimes Y)$, $g : (Y;X)$
+\[
+\text{Tr}^{X}((g_{B}) \circ f) = \text{Tr}^{Y}(f \circ_2 g)
+\]
+We have that $a : A, x : X \vdash f(a,x) : B \otimes Y$ and $y : Y \vdash g(y) : X$.
+$g_{B}$ is then given by $w : B \otimes Y \vdash \textbf{match}(w, uv. \{u, g(v)\}) : B \otimes X$.
+Therefore, we need to show that
+\begin{align*}
+a : A \vdash &\textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,x), uv.\{u,g(v)\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(a,x), uv. \{u, g(v)\}), uv.u) : B\\
+&\equiv\\ 
+&\textbf{letrec } y = \textbf{match}(f(a,g(y)), uv.v) \textbf{ in } \textbf{match}(f(a,g(y)), uv.u): B
+\end{align*}
+As before, we have that
+\[
+\{u, g(v)\} \equiv \{\textbf{match}(u', \alpha\beta.\alpha), g(\textbf{match}(u', \alpha\beta.\beta))\}[\{u,v\}/u'].
+\]
+And therefore,
+\begin{align*}
+\textbf{match}(f(a,x), uv.\{u,g(v)\}) &\equiv\\
+&\text{by $\eta$}\\
+&\equiv \{\textbf{match}(u', \alpha\beta.\alpha), g(\textbf{match}(u', \alpha\beta.\beta))\}[f(a,x) / u']\\
+&\equiv \{\textbf{match}(f(a,x), \alpha\beta.\alpha), g(\textbf{match}(f(a,x), \alpha\beta.\beta))\}.
+\end{align*}
+Then,
+\begin{align*}
+  \textbf{match}(\textbf{match}(f(a,x),uv.\{u,g(v)\}), uv.v) &\equiv \textbf{match}(\{\textbf{match}(f(a,x), \alpha\beta.\alpha), g(\textbf{match}(f(a,x), \alpha\beta.\beta))\}, uv.v)\\
+  &\equiv g(\textbf{match}(f(a,x), \alpha\beta.\beta))
+\end{align*}
+and
+\begin{align*}
+  \textbf{match}(\textbf{match}(f(a,x),uv.\{u,g(v)\}), uv.u) &\equiv \textbf{match}(\{\textbf{match}(f(a,x), \alpha\beta.\alpha), g(\textbf{match}(f(a,x), \alpha\beta.\beta))\}, uv.u)\\
+  &\equiv \textbf{match}(f(a,x), \alpha\beta.\alpha).
+\end{align*}
+Hence,
+\begin{align*}
+a : A \vdash &\textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,x), uv.\{u,g(v)\}), uv.v) \textbf{ in } \textbf{match}(\textbf{match}(f(a,x), uv. \{u, g(v)\}), uv.u) : B \equiv\\
+&\equiv \textbf{letrec } x = g(\textbf{match}(f(a,x), \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha) : B\\
+&\text{by \cref{lemma:letrec}}\\
+&\equiv \textbf{letrec } x = (\textbf{letrec } y = \textbf{match}(f(a,x),\alpha\beta.\beta)) \textbf{ in } g(y)) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha)\\
+&\text{by \cref{eq:let_equations:merge_bind}}\\
+&\equiv \textbf{letrec } x = g(y), y = \textbf{match}(f(a,g(x)), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,x), \alpha\beta.\alpha) : B\\
+&\text{by \cref{eq:let_equations:subst}}\\
+&\equiv \textbf{letrec } x = g(y), y = \textbf{match}(f(a,g(y)), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,g(y)), \alpha\beta.\alpha) : B\\
+&\text{by \cref{eq:let_equations:gc}}\\
+&\equiv \textbf{letrec } y = \textbf{match}(f(a,g(y)), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,g(y)), \alpha\beta.\alpha) : B
+  \end{align*}
+Up to $\alpha$-equivalence this is what we needed.
+\item \textbf{Vanishing I}: For all $f : (A;B)$,
+\[
+\text{Tr}^{I}(f') = f,
+\]
+where $f' = \xi_{B,I} \circ (f,id_{I})$.
+We have that $a : A \vdash f(a) : B$ and $f'$ is given by $a : A, x : I \vdash \{f(a), x\} : B \otimes I$.
+Therefore, we need to show that
+\[
+a : A \vdash \textbf{letrec } x = \textbf{match}(\{f(a), x\}, uv.v) \textbf{ in } \textbf{match}(\{f(a), x\}, uv.u) : B \equiv f(a) : B
+\]
+We have that
+\begin{align*}
+  a : A \vdash &\textbf{letrec } x = \textbf{match}(\{f(a), x\}, uv.v) \textbf{ in } \textbf{match}(\{f(a), x\}, uv.u) : B\\
+  &\text{by $\beta$}\\
+  &\textbf{letrec } x = x \textbf{ in } f(a) : B\\
+  &\text{by \autoref{eq:let_equations:gc}}\\
+  &\equiv f(a): B
+\end{align*}
+\item \textbf{Vanishing II}: For all $f : (A, X \otimes Y; B \otimes (X \otimes Y))$,
+\[
+\text{Tr}^{X \otimes Y}(f) = \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ (\id_{A}, \xi_{X,Y}))),
+\]
+where $\alpha_{B,X,Y}^{-1} : (B, X \otimes Y; B \otimes (X \otimes Y))$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B, X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B, X \otimes Y} \circ (\id_{B}, \xi_{X,Y})$.
+As a term, it is given by $w : B \otimes (X \otimes Y) \vdash \textbf{match}(w, uv. \textbf{match}(v, \alpha\beta.\{\{u, \alpha\},\beta\})) : (B \otimes X) \otimes Y)$.
+Therefore, we need to show that
+\begin{align*}
+a : A \vdash &\textbf{letrec } z = \textbf{match}(f(a,z), uv.v) \textbf{ in } \textbf{match}(f(a,z), uv.u) : B \equiv\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{letrec } y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.v) \textbf{ in }\\
+&\hspace{6em}\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.u), \gamma\delta.\delta) \textbf{ in }\\
+&\hspace{10em}\textbf{match}(\textbf{letrec } y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.v) \textbf{ in }\\
+&\hspace{14em}\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\}, \beta\})), uv.u), \gamma\delta.\gamma) : B
+\end{align*}
+By congruence, for any $y : Y \vdash P : B \otimes X$, we have the following
+\[
+\textbf{match}(\textbf{letrec } y = B_{y} \textbf{ in } P, \gamma\delta.\delta) \equiv \textbf{letrec } y = B_{y} \textbf{ in } \textbf{match}(P, \gamma\delta.\delta).
+\]
+Let $x : X, y : Y \vdash B_y(x,y) = \textbf{match}(f'(a,x,y), uv.v) : Y$ and $A(x,y) = \textbf{match}(f'(a,x,y), uv.u) : B \otimes X$,
+where $f' = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}))$.
+Then we can rewrite the right-hand side as
+\begin{align*}
+a : A \vdash \textbf{letrec } x &= \textbf{match}(\textbf{letrec } y = B_{y}(x,y) \textbf{ in } A(x,y), \gamma\delta.\delta) \textbf{ in }\\
+&\hspace{6em}\textbf{match}(\textbf{letrec } y = B_{y}(x,y) \textbf{ in } A(x,y), \gamma\delta.\gamma) : B \equiv\\
+&\text{by \cref{eq:let_equations:congruence}}\\
+&\equiv \textbf{letrec } x = \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y),\gamma\delta.\delta) \textbf{ in }\\
+&\hspace{6em} \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y),\gamma\delta.\gamma) : B \equiv\\
+&\text{by \cref{eq:let_equations:merge_bind}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(A(x,y'), \gamma\delta.\delta), y' = B_{y'}(x,y') \textbf{ in } \textbf{letrec } y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y), \gamma\delta.\gamma) : B\\
+&\text{by \cref{eq:let_equations:merge_body}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(A(x,y'), \gamma\delta.\delta), y' = B_{y'}(x,y'), y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y), \gamma\delta.\gamma) : B\\
+&\text{by \cref{eq:let_equations:diag}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(A(x,y), \gamma\delta.\delta), y = B_{y}(x,y) \textbf{ in } \textbf{match}(A(x,y), \gamma\delta.\gamma) : B
+\end{align*}
+We can then unfold $A(x,y)$ and $B_y(x,y)$
+\begin{align*}
+&a : A \vdash \textbf{letrec } x = \textbf{match}(\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.q) \textbf{ in }\\
+&\hspace{10em} \textbf{match}(\textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p), \gamma\delta.\gamma) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\}), pq.p)), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\}), pq.q)) \textbf{ in }\\
+&\hspace{10em} \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\}), pq.p)), \gamma\delta.\gamma) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\textbf{match}(\{\{u,\alpha\},\beta\}, pq.p))), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\textbf{match}(\{\{u,\alpha\},\beta\}, pq.q))) \textbf{ in }\\
+&\hspace{10em} \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\textbf{match}(\{\{u,\alpha\},\beta\}, pq.p))), \gamma\delta.\gamma)) : B\\
+&\text{by $\beta$}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\{u,\alpha\})), \gamma\delta.\delta),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\{u,\alpha\}))), \gamma\delta.\gamma)) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{u,\alpha\}), \gamma\delta.\delta)),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(\textbf{match}(v, \alpha\beta.\{u,\alpha\}), \gamma\delta.\gamma)) : B\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\textbf{match}(\{u,\alpha\}, \gamma\delta.\delta))),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\textbf{match}(\{u,\alpha\}, \gamma\delta.\gamma)) : B\\
+&\text{by $\beta$}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\alpha)),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.u))) : B\\
+\end{align*}
+By \cref{lemma:match-gc}, we have that $\textbf{match}(v, \alpha\beta.u) \equiv u$ and therefore, the right-hand side is given by
+\begin{align*}
+a : A \vdash &\textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\alpha)),\\
+&\hspace{4em} y = \textbf{match}(f(a,\{x,y\}), uv.(\textbf{match}(v,\alpha\beta.\beta))) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.u) : B
+\end{align*}
+On the other hand, for the left-hand side, we have that
+\begin{align*}
+a : A \vdash \textbf{letrec } z &= \textbf{match}(f(a,z), uv.v) \textbf{ in } \textbf{match}(f(a,z), uv.u) : B\\
+&\text{by \cref{eq:let_equations:unpair}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.v), \alpha\beta.\alpha),\\
+& \hspace{3em}y = \textbf{match}(\textbf{match}(f(a,\{x,y\}), uv.v), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.u) : B\\ 
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\alpha)),\\
+& \hspace{3em}y = \textbf{match}(f(a,\{x,y\}), uv.\textbf{match}(v, \alpha\beta.\beta)) \textbf{ in } \textbf{match}(f(a,\{x,y\}), uv.u) : B\\ 
+\end{align*}
+We can see that the left-hand side and the right-hand side are the same, so we are done.
+\item \textbf{Strength}:  For all $A,B,C,D,X \in \mathcal{C}$, $f : (C,X;D \otimes X)$, $g : (A;B)$
+\[
+\text{Tr}^{X}(\alpha_{B,D,X}^{-1} \circ \xi_{B, D \otimes X} \circ (g,f)) = \xi_{B,D} \circ (g, \text{Tr}^{X}(f))
+\]
+where $\alpha_{B,X,Y}^{-1}$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B,X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B \otimes X, Y} \circ (\xi_{B,X}, \id_{Y})$.
+We are given $c : C, x : X \vdash f(c,x) : D \otimes X$ and $a : A \vdash g(a) : B$.
+$\xi_{B, D}$ is given by $b : B, d : D \vdash \{b, d\} : B \otimes D$ and $\xi_{B, D \otimes X}$ is given by $b : B, dx : D \otimes X \vdash \{b, dx\} : B \otimes (D \otimes X)$.
+$\alpha_{B,D,X}^{-1}$ is given by $w : B \otimes (D \otimes X) \vdash  match(w, uv. match(v, \alpha\beta.\{\{u,\alpha\},\beta\})) : (B \otimes D) \otimes X$ as before. 
+Therefore, we need to show that
+\begin{align*}
+a : A, c : C \vdash \textbf{letrec } x &= \textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.q) \textbf{ in }\\
+&\textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p) : B \otimes D \equiv\\
+&\equiv \{g(a), \textbf{letrec } x = \textbf{match}(f(c,x), uv.v) \textbf{ in } \textbf{match}(f(c,x), uv.u)\} : B \otimes D
+\end{align*}
+We start with the left-hand side.
+\begin{align*}
+a : A, c : C \vdash \textbf{letrec } x &= \textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.q) \textbf{ in }\\
+&\textbf{match}(\textbf{match}(\{g(a), f(c,x)\}, uv.\textbf{match}(v, \alpha\beta.\{\{u,\alpha\},\beta\})), pq.p) : B \otimes D \equiv\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}), pq.q)) \textbf{ in }\\
+&\textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(\textbf{match}(v,\alpha\beta.\{\{u,\alpha\}, \beta\}), pq.p))\\
+&\text{by \cref{lemma:match-comm}}\\
+&\equiv \textbf{letrec } x = \textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(v,\alpha\beta.\textbf{match}(\{\{u,\alpha\}, \beta\}, pq.q))) \textbf{ in }\\
+&\textbf{match}(\{g(a),f(c,x)\}, uv.\textbf{match}(v,\alpha\beta.\textbf{match}(\{\{u,\alpha\}, \beta\}, pq.p)))\\
+&\text{by $\beta$ twice}\\
+&\equiv \textbf{letrec } x = \textbf{match}(f(c,x), \alpha\beta.\beta) \textbf{ in }\\
+&\textbf{match}(f(c,x),\alpha\beta.\{g(a), \alpha\})\\
+\end{align*}
+Let $K(z) = \{g(a), \textbf{match}(z, \alpha'\beta'.\alpha')\}$ for fresh $\alpha', \beta'$.
+We have $K[\{\alpha,\beta\}/z] \equiv \{g(a), \alpha\}$ (by $\beta_\otimes$) and 
+$K[f(c,x)/z] \equiv \{g(a), \textbf{match}(f(c,x), \alpha'\beta'.\alpha')\}$.
+Therefore, by the $\eta_\otimes$-equation,
+\[
+\textbf{match}(f(c,x), \alpha\beta.\{g(a), \alpha\}) \equiv \{g(a), \textbf{match}(f(c,x), \alpha\beta.\alpha)\},
+\]
+\textnormal{after $\alpha$-renaming $\alpha'\beta' \to \alpha\beta$.}
+
+Therefore, by $\eta$-equation, we have that
+\[
+\textbf{match}(f(c,x), \alpha\beta.\{g(a), \alpha\}) \equiv \{g(a), \textbf{match}(f(c,x), \alpha\beta.\alpha)\},
+\]
+and can write the left-hand side as
+\begin{align*}
+\textbf{letrec } x &= \textbf{match}(f(c,x), \alpha\beta.\beta) \textbf{ in }\\
+&\{g(a), \textbf{match}(f(c,x), \alpha\beta.\alpha)\}\\
+&\text{by \cref{eq:let_equations:float-tensor-R}}\\
+&\equiv \{g(a), \textbf{letrec } x = \textbf{match}(f(c,x), \alpha\beta.\beta) \textbf{ in } \textbf{match}(f(c,x), \alpha\beta.\alpha)\} 
+\end{align*}
+Up to $\alpha$-equivalence, this is exactly the right-hand side.
+\item \textbf{Yanking}: 
+\[
+\text{Tr}^{X}([\xi_{X,X}]) = \id_{X},
+\]
+where $[-](a) : \mathcal{C}(B,A;B \otimes A) \to \mathcal{C}(A,B;B \otimes A)$.
+$\xi_{X,X}$ is given by $x_1 : X, x_2 : X \vdash \{x_1, x_2\} : X \otimes X$, and $[\xi_{X,X}]$ is thus given by $x_1 : X, x_2 : X \vdash \{x_2, x_1\} : X \otimes X$.
+Therefore, we need to show that
+\[
+x_1 : X \vdash \textbf{letrec } x_2 = \textbf{match}(\{x_2,x_1\}, uv.v) \textbf{ in } \textbf{match}(\{x_2,x_1\}, uv.u) : X \equiv x_1 : X
+\]
+\begin{align*}
+x_1 : X \vdash \textbf{letrec } x_2 &= \textbf{match}(\{x_2,x_1\}, uv.v) \textbf{ in } \textbf{match}(\{x_2,x_1\}, uv.u) : X \equiv\\
+&\text{by $\beta$}\\
+&\equiv \textbf{letrec } x_2 = x_1 \textbf{ in } x_2 : X\\
+&\text{by \cref{eq:let_equations:subst}}\\
+&\equiv \textbf{letrec } x_2 = x_1 \textbf{ in } x_1 : X\\
+&\text{by \cref{eq:let_equations:gc}}\\ 
+&\equiv x_1 : X
+\end{align*}
+\end{itemize}
+\end{proof}
+
+
+\subsection{Compatibility of representability and enrichment}
+
+\begin{proof}[Proof of \Cref{prop:representabilities_agree}]
+    We need to show that the two composite 2-functors
+    \[
+    \catname{RepMultCat} \xrightarrow{\hat{F}_{\catname{SLat}}} \catname{SLat}\text{-}\catname{RepMultCat} \xrightarrow{\mathcal{M} \mapsto \mathcal{M}_c} \catname{SLat}\text{-}\catname{MonCat}
+    \]
+    and
+    \[
+    \catname{RepMultCat} \xrightarrow{\mathcal{M} \mapsto \mathcal{M}_c} \catname{MonCat} \xrightarrow{\tilde{F}_{\catname{SLat}}} \catname{SLat}\text{-}\catname{MonCat}
+    \]
+    are equal. We check agreement on objects, 1-cells, and 2-cells.
+
+    \paragraph{Objects.} Let $\mathcal{M}$ be a representable multicategory. Both composites produce a $\catname{SLat}$-enriched monoidal category with:
+    \begin{itemize}
+        \item objects $\obj{\mathcal{M}}$, since neither $\hat{F}_{\catname{SLat}}$, $\tilde{F}_{\catname{SLat}}$, nor $(-)_c$ change the underlying objects;
+        \item hom-objects $F_{\catname{SLat}}(\mathcal{M}(A;B))$ for each pair $A,B$, since both paths apply $F_{\catname{SLat}}$ to the hom-sets of $\mathcal{M}$;
+        \item the same tensor product on objects, namely the representing object for $\xi_{A,B}$, since $\hat{F}_{\catname{SLat}}$ and $\tilde{F}_{\catname{SLat}}$ do not change objects and both $(-)_c$ functors use the same chosen representing objects from $\mathcal{M}$.
+    \end{itemize}
+    It remains to check that the tensor on hom-objects and the coherence isomorphisms agree.
+
+    The tensor on hom-objects in $\mathcal{M}_c$ is, by~\autoref{prop:representable_multicategories}, given by the following composite in $\catname{Set}$:
+    \[\begin{tikzcd}
+    	{\mathcal{M}(A;B) \times \mathcal{M}(C;D)} && {\mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes}D) \times \mathcal{M}(A,C;A \enriched{\otimes} C)} \\
+    	\\
+    	{\I_{\catname{Set}} \times (\mathcal{M}(A;B) \times \mathcal{M}(C;D))} \\
+    	\\
+    	{\mathcal{M}(B,D; B \enriched{\otimes} D) \times (\mathcal{M}(A;B) \times \mathcal{M}(C;D))} && {\mathcal{M}(A,C; B \enriched{\otimes} D)}
+    	\arrow["{\lambda^{-1}}", from=1-1, to=3-1]
+    	\arrow["{\xi_{B,D} \times \id}", from=3-1, to=5-1]
+    	\arrow["\circ", from=5-1, to=5-3]
+    	\arrow["\cong", from=5-3, to=1-3]
+    \end{tikzcd}\]
+    Applying $\tilde{F}_{\catname{SLat}}$ to $\mathcal{M}_c$ turns each $\times$ into $\otimes_{\catname{SLat}}$ via the monoidal structure of $F_{\catname{SLat}}$, turns $\I_{\catname{Set}}$ into $\I_{\catname{SLat}}$ via $F_{\catname{SLat}}(\I_{\catname{Set}}) \cong \I_{\catname{SLat}}$, and turns $\xi_{B,D}$ into $F_{\catname{SLat}}(\xi_{B,D})$, giving the following composite in $\catname{SLat}$:
+    \[\adjustbox{width=\textwidth}{
+      \begin{tikzcd}
+    	{F_{\catname{SLat}}(\mathcal{M}(A;B)) \otimes F_{\catname{SLat}}(\mathcal{M}(C;D))} && {F_{\catname{SLat}}(\mathcal{M}(A \enriched{\otimes} C; B \enriched{\otimes} D)) \otimes F_{\catname{SLat}}(\mathcal{M}(A,C; A \enriched{\otimes} C))} \\
+    	\\
+    	{\I_{\catname{SLat}} \otimes F_{\catname{SLat}}(\mathcal{M}(A;B)) \otimes F_{\catname{SLat}}(\mathcal{M}(C;D))} \\
+    	\\
+    	{F_{\catname{SLat}}(\mathcal{M}(B,D; B \enriched{\otimes} D)) \otimes F_{\catname{SLat}}(\mathcal{M}(A;B)) \otimes F_{\catname{SLat}}(\mathcal{M}(C;D))} && {F_{\catname{SLat}}(\mathcal{M}(A,C; B \enriched{\otimes} D))}
+    	\arrow["{\lambda^{-1}}", from=1-1, to=3-1]
+    	\arrow["{F_{\catname{SLat}}(\xi_{B,D}) \otimes \id}", from=3-1, to=5-1]
+    	\arrow["{F_{\catname{SLat}}(\circ)}", from=5-1, to=5-3]
+    	\arrow["\cong", from=5-3, to=1-3]
+    \end{tikzcd}}
+    \]
+    On the other hand, the tensor on hom-objects in $\hat{F}_{\catname{SLat}}(\mathcal{M})_c$ is, by~\autoref{prop:representable_enriched}, given by exactly the same composite in $\catname{SLat}$, since $\hat{F}_{\catname{SLat}}(\mathcal{M})$ has hom-objects $F_{\catname{SLat}}(\mathcal{M}(A;B))$ and universal morphisms $F_{\catname{SLat}}(\xi_{A,B})$, and the composition in $\hat{F}_{\catname{SLat}}(\mathcal{M})$ is given by $F_{\catname{SLat}}(\circ)$ by definition of $\hat{F}_{\catname{SLat}}$.
+    Hence the tensors on hom-objects agree.
+
+    The coherence isomorphisms $\lambda, \rho, \alpha$ are in both composites constructed by the same chain of universal properties applied internally in $\catname{SLat}$, as described in~\autoref{prop:representable_multicategories} and~\autoref{prop:representable_enriched}: applying $F_{\catname{SLat}}$ to the universal properties of $\mathcal{M}$ gives the universal properties of $\hat{F}_{\catname{SLat}}(\mathcal{M})$, and the coherence isomorphisms are the unique morphisms determined by these universal properties. Hence they agree.
+
+    \paragraph{1-cells.} Let $G : \mathcal{M} \to \mathcal{N}$ be a multifunctor. Both composites send $G$ to a $\catname{SLat}$-enriched strong monoidal functor with:
+    \begin{itemize}
+        \item action on objects given by $G$ on $\obj{\mathcal{M}}$,
+        \item action on hom-objects given by $F_{\catname{SLat}}(G_{A,B}) : F_{\catname{SLat}}(\mathcal{M}(A;B)) \to F_{\catname{SLat}}(\mathcal{N}(GA;GB))$.
+    \end{itemize}
+    The monoidal structure maps are in both cases obtained by applying $F_{\catname{SLat}}$ to the monoidal structure maps of $G_c : \mathcal{M}_c \to \mathcal{N}_c$, which are constructed in~\autoref{prop:representable_multicategories} as the unique morphisms making the appropriate diagrams commute with respect to $\xi$. Since both paths apply $F_{\catname{SLat}}$ to the same morphisms, they agree.
+
+    \paragraph{2-cells.} Let $\theta : G \Rightarrow H$ be a multinatural transformation between multifunctors $G, H : \mathcal{M} \to \mathcal{N}$. Both composites send $\theta$ to a $\catname{SLat}$-enriched monoidal natural transformation whose component at each object $A$ is
+    \[
+    \I_{\catname{SLat}} \xrightarrow{\cong} F_{\catname{SLat}}(\I_{\catname{Set}}) \xrightarrow{F_{\catname{SLat}}(\theta_A)} F_{\catname{SLat}}(\mathcal{N}(GA;HA))
+    \]
+    since both paths apply $F_{\catname{SLat}}$ to the same underlying multinatural transformation components. Hence they agree on 2-cells.
+
+    Therefore the two composite 2-functors are equal, and the diagram commutes strictly.
+\end{proof}
+
+\begin{proof}[Proof of \Cref{prop:enriched_representability_preserved}]
+    In a representable $\mathcal{V}$-multicategory $\mathcal{M}$ the universal morphism $\xi$ is a morphism in $\mathcal{V}$:
+    \[
+    \mathbf{1}_{\mathcal{V}} \xrightarrow{\xi} \mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i).
+    \]
+    The universal property is then that precomoposing with $\xi$ induces an isomorphism below
+    \begin{equation}\label{eq:m_representable}
+\begin{adjustbox}{max width=\textwidth}
+$\begin{aligned}
+\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)
+&\xrightarrow{\rho^{-1}} \mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathbf{1}_{\mathcal{V}}\\
+&\xrightarrow{\mathrm{id} \otimes \xi} \mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathcal{M}(A_1, \ldots, A_n; \textstyle\bigotimes_{i=1}^{n}A_i)\\
+&\xrightarrow{\circ} \mathcal{M}(B_1, \ldots, B_m, A_1, \ldots, A_n, C_1, \ldots, C_k; D).
+\end{aligned}$
+\end{adjustbox}
+\end{equation}
+    We define the universal morphism for $\hat{F}(\mathcal{M})$ as the following composite in $\mathcal{W}$:
+    \[
+    \mathbf{1}_{\mathcal{W}} \xrightarrow{\cong} F(\mathbf{1}_{\mathcal{V}}) \xrightarrow{F(\xi)} F(\mathcal{M}(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i)) = \hat{F}(\mathcal{M})(A_1, \ldots, A_n; \bigotimes_{i=1}^{n}A_i).
+    \]
+    It remains to show that precomposing with this morphism induces an isomorphism in $\mathcal{W}$.
+    Applying $F$ to the composite~\eqref{eq:m_representable} gives us the following composite in $\mathcal{W}$:
+   \begin{equation*}
+\adjustbox{max width=\textwidth}{$\begin{aligned}
+F(\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D))
+&\xrightarrow{F(\rho^{-1})} F\!\left(\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathbf{1}_{\mathcal{V}}\right) \\
+&\xrightarrow{\cong} F(\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) \otimes F(\mathbf{1}_{\mathcal{V}}) \\
+&\xrightarrow{\cong} F(\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) \otimes \mathbf{1}_{\mathcal{W}} \\
+&\xrightarrow{\mathrm{id} \otimes F(\xi)} F(\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D)) \otimes F(\mathcal{M}(A_1, \ldots, A_n; \textstyle\bigotimes_{i=1}^{n}A_i)) \\
+&\xrightarrow{\cong} F\!\left(\mathcal{M}(B_1, \ldots, B_m, \textstyle\bigotimes_{i=1}^{n}A_i, C_1, \ldots, C_k; D) \otimes \mathcal{M}(A_1, \ldots, A_n; \textstyle\bigotimes_{i=1}^{n}A_i)\right) \\
+&\xrightarrow{F(\circ_i)} F(\mathcal{M}(B_1, \ldots, B_m, A_1, \ldots, A_n, C_1, \ldots, C_k; D)).
+\end{aligned}$}
+\end{equation*}
+    This composite is an isomorphism in $\mathcal{W}$ since each step is an isomorphism---$F(\rho^{-1})$ because $F$ preserves isomorphisms, the monoidal structure maps because $F$ is monoidal, $\mathrm{id} \otimes F(\xi)$ because $F(\xi)$ is the composite of isomorphisms $\mathbf{1}_\mathcal{W} \xrightarrow{\cong} F(\mathbf{1}_\mathcal{V}) \xrightarrow{F(\xi)} F(\mathcal{M}(A_1,\ldots,A_n;\bigotimes A_i))$, and $F(\circ_i)$ because $F$ preserves isomorphisms. Finally, by definition of $\hat{F}(\mathcal{M})$ we have $F(\mathcal{M}(\langle x \rangle; y)) = \hat{F}(\mathcal{M})(\langle x \rangle; y)$ for all $\langle x \rangle, y$, so the above isomorphism is exactly the representability condition for $\hat{F}(\mathcal{M})$. Since $\mathcal{M}$ and $\hat{F}(\mathcal{M})$ share the same objects, we are done.
+\end{proof}
+
+\subsection{Technical development moved from the main text}
+
+The following material supplies the precise derivation-level definitions and proofs summarized in the main text.
+
+\subsection{Core coherence and substitution}
+\label{app:core-coherence}
+
+\begin{lemma}[Structural invariants]
+\label{lemma:slat_structural}
+Let $\Gamma \vdash M : A$ be derivable.  Then
+\begin{enumerate}
+  \item\label{slat_structural:top_level} $M = M_1 \join \cdots \join M_n$ ($n \geq 1$, under some bracketing) where every $M_i$ is join-free; in other words, $\join$ never occurs under another term former;
+  \item\label{slat_structural:linear} every $M_i$ contains every variable of $\Gamma$ free exactly once, and no other free variables.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Both claims are proved simultaneously by induction on the derivation.
+For $\id$ and $\I_{\text{intro}}$ they are immediate.
+The conclusion of every other rule is a bracketed sum whose summands are either the join-free premise summands themselves (for $\join_{\text{intro}}$) or terms $f(M_{1 k_1}, \ldots, M_{n k_n})$, $\{M_i, N_j\}$, $\text{match}_{A \otimes B}(M_i, xy.N_j)$, $\text{match}_{\I}(M_i, N_j)$ built from one join-free summand of each premise; these are join-free because their arguments are, which proves~\ref{slat_structural:top_level}.
+For~\ref{slat_structural:linear} consider, e.g., the $f$-rule: by the induction hypothesis the summand $M_{l k_l}$ of the $l$-th premise contains each variable of $\Gamma_l$ exactly once and no others, so $f(M_{1 k_1}, \ldots, M_{n k_n})$ contains each variable of $\Gamma_1, \ldots, \Gamma_n$ exactly once and no others.
+The same argument applies to $\otimes_{\text{intro}}$ and, discounting the bound variables, to the elimination rules; for $\join_{\text{intro}}$ the premises share the context of the conclusion.
+\end{proof}
+
+By \Cref{lemma:slat_structural}, the conclusion of every derivation can be displayed as
+\[
+\Gamma \vdash M_1 \join \cdots \join M_n : A \qquad (n \geq 1),
+\]
+and flattening the top-level occurrences of $\join$ decomposes it \emph{uniquely} into an ordered list of join-free \emph{summands}; when a derivable judgment is used as the premise of a rule, the displayed summands refer to this list, so the requirement that they be join-free is no restriction.
+For a derivable term $M$, let $\operatorname{supp}(M)$ denote the finite non-empty \emph{set} of its summands, forgetting order, bracketing, and multiplicity.
+We write $M \equiv_{\join} N$ if $\operatorname{supp}(M) = \operatorname{supp}(N)$; this is exactly the equivalence generated by associativity, commutativity, and idempotence of $\join$.
+Finally, we adopt the \emph{extended application} convention: for derivable terms $S_1, \ldots, S_n$ of the appropriate judgments, we write $f(S_1, \ldots, S_n)$, $\{S, T\}$, $\text{match}_{A \otimes B}(S, xy.T)$ and $\text{match}_{\I}(S, T)$ for the conclusion terms of the corresponding rules applied to premises with these conclusion terms.
+When all arguments are join-free this coincides with the plain term former; in general it denotes the distributed sum, e.g.\ $f(S_1, \ldots, S_n) = \sum f(Q_1, \ldots, Q_n)$ with each $Q_l$ ranging over the summands of $S_l$.
+Extended application is an operation on \emph{terms}: it does not depend on a choice of derivations of its arguments.
+
+\begin{remark}[Why the rules are distributive]
+\label{remark:distributive_rules}
+There is another natural presentation in which $\join_{\mathrm{intro}}$ is the
+only rule that can introduce a sum, while all the other rules have simpler,
+non-distributive conclusions.  In that presentation, however, substitution
+would not satisfy multilinearity by construction.  For example, substituting
+a sum into an argument of a generator would produce an expression of the form
+$f(\ldots,M_1\join M_2,\ldots)$ rather than
+$f(\ldots,M_1,\ldots)\join f(\ldots,M_2,\ldots)$.  The latter would therefore have
+to be imposed by an additional equation, and similarly for every other term
+former.
+
+The rules chosen above instead produce the sum over all choices of premise
+summands directly.  In this sense the syntax absorbs the multilinearity
+equations, much as a well-chosen graphical syntax can absorb structural
+equations; this is the design principle advocated in related categorical type
+theories such as~\cite{shulman2016categorical}.  The price is that conclusion
+terms no longer determine derivations, for two distinct reasons.
+First, the same sum may be assembled by $\join_{\mathrm{intro}}$ or produced
+directly by another rule: for $f \in \mathcal{G}(A;B)$, the term
+$x : A \vdash f(x) \join f(x) : B$ is the conclusion both of the $f$-rule applied
+to $x : A \vdash x \join x : A$ and of $\join_{\mathrm{intro}}$ applied to two copies
+of $x : A \vdash f(x) : B$.
+Second, a rule with several premises does not determine them: for
+$g \in \mathcal{G}(A,B;C)$, the $g$-rule applied to $x : A \vdash x \join x : A$
+and $y : B \vdash y : B$, and the $g$-rule applied to $x : A \vdash x : A$
+and $y : B \vdash y \join y : B$, both conclude
+$x : A, y : B \vdash g(x,y) \join g(x,y) : C$.
+Note also that the terms $x : A \vdash f(x) : B$ and
+$x : A \vdash f(x) \join f(x) : B$ are distinct but must denote the same morphism
+by idempotence, so no relation on derivations can make \emph{literal} terms
+determine derivations; the correspondence can only be exact modulo
+$\equiv_{\join}$.
+
+Our strategy is therefore as follows.  We introduce a \emph{permutation
+equivalence} $\sim$ on derivations (\Cref{def:perm_equiv}), generated by
+commuting $\join_{\mathrm{intro}}$ past the other rules together with
+associativity, commutativity, and idempotence of $\join_{\mathrm{intro}}$ itself,
+and prove a coherence theorem (\Cref{theorem:coherence}): terms modulo
+$\equiv_{\join}$ uniquely determine derivations modulo $\sim$.  Substitution is
+then defined on derivations and shown to respect $\sim$
+(\Cref{lemma:subst_respects_perm}), hence it descends to terms modulo
+$\equiv_{\join}$ (\Cref{prop:subst_derivation_independence}) and finally to
+$\equiv$-classes (\Cref{prop:subst_respects_equiv}).
+\end{remark}
+
+\begin{lemma}[The join-free fragment]
+\label{lemma:join_free}
+\leavevmode
+\begin{enumerate}
+  \item\label{join_free:no_plus} If $\Gamma \vdash Q : A$ is derivable and $Q$ is join-free, then every derivation of it contains no instance of $\join_{\text{intro}}$, and every judgment occurring in it is join-free.
+  \item\label{join_free:unique} A derivable join-free judgment $\Gamma \vdash Q : A$ has exactly one derivation, which we denote $\pi_{Q}$ (leaving the judgment implicit).
+  \item\label{join_free:summands} If $\Gamma \vdash M : A$ is derivable and $Q \in \operatorname{supp}(M)$, then $\Gamma \vdash Q : A$ is derivable.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\ref{join_free:no_plus} The summand list of the conclusion of $\join_{\text{intro}}$ has length at least $2$, so the last rule of a derivation of a join-free judgment is not $\join_{\text{intro}}$.
+For every other rule the summand list of the conclusion has length $i_1 \cdots i_n$, the product of the lengths of the premise lists, so a join-free conclusion forces every premise to have a single, join-free summand, i.e.\ to be join-free.
+The claim follows by induction on the derivation.
+
+\ref{join_free:unique} By induction on $Q$.
+By~\ref{join_free:no_plus} and inspection of the rules, the last rule is determined by the head of $Q$: a variable is the conclusion of $\id$; $\star$ of $\I_{\text{intro}}$; $f(Q_1, \ldots, Q_n)$ of the $f$-rule; $\{Q_1, Q_2\}$ of $\otimes_{\text{intro}}$; $\text{match}_{A \otimes B}(Q_1, xy.Q_2)$ of $\otimes_{\text{elim}}$; and $\text{match}_{\I}(Q_1, Q_2)$ of $\I_{\text{elim}}$.
+The premises of that rule are the judgments of the displayed immediate subterms, and they are determined by the conclusion: the premise terms are the subterms; the premise contexts are determined because, by \Cref{lemma:slat_structural}(\ref{slat_structural:linear}), each subterm receives precisely the sublist of the conclusion context consisting of its own free variables (extended with the bound variables $x : A$, $y : B$ in the body of a $\text{match}_{A \otimes B}$); and the premise types are determined by the signature of $f$, the type annotation on $\text{match}$, and the conclusion type.
+By the induction hypothesis the premises have unique derivations, hence so does $\Gamma \vdash Q : A$.
+
+\ref{join_free:summands} By induction on a derivation of $\Gamma \vdash M : A$.
+For $\id$ and $\I_{\text{intro}}$ the support is a singleton.
+For $\join_{\text{intro}}$, $Q$ is a summand of one of the two premises, which share the context $\Gamma$, and the induction hypothesis applies.
+For any other rule, $Q$ is built from one summand of each premise; by the induction hypothesis each of those summands is derivable in its premise judgment, and applying the same rule to these single-summand judgments derives $\Gamma \vdash Q : A$.
+\end{proof}
+
+\begin{definition}[Permutation equivalence]
+\label{def:perm_equiv}
+We write $R(\mathcal{D}_1, \ldots, \mathcal{D}_n)$ for the derivation obtained by applying a rule $R$ to premise derivations $\mathcal{D}_1, \ldots, \mathcal{D}_n$, and $\mathcal{D} \boxplus \mathcal{E}$ for the derivation obtained by applying $\join_{\text{intro}}$ to $\mathcal{D}$ and $\mathcal{E}$.
+\emph{Permutation equivalence} $\sim$ is the least equivalence relation on derivations containing the pairs
+\begin{align}
+  R(\mathcal{D}_1, \ldots, \mathcal{E} \boxplus \mathcal{E}', \ldots, \mathcal{D}_n) &\sim R(\mathcal{D}_1, \ldots, \mathcal{E}, \ldots, \mathcal{D}_n) \boxplus R(\mathcal{D}_1, \ldots, \mathcal{E}', \ldots, \mathcal{D}_n) \tag{perm}\\
+  (\mathcal{D} \boxplus \mathcal{E}) \boxplus \mathcal{F} &\sim \mathcal{D} \boxplus (\mathcal{E} \boxplus \mathcal{F}) \tag{assoc}\\
+  \mathcal{D} \boxplus \mathcal{E} &\sim \mathcal{E} \boxplus \mathcal{D} \tag{comm}\\
+  \mathcal{D} \boxplus \mathcal{D} &\sim \mathcal{D} \tag{idem}
+\end{align}
+where in (perm) $R$ ranges over the $f$-, $\otimes_{\text{intro}}$-, $\otimes_{\text{elim}}$- and $\I_{\text{elim}}$-rules and over the premise positions of $R$, and which is closed under all rule applications: if $\mathcal{D}_l \sim \mathcal{D}'_l$ for every premise of a rule $R$, then $R(\mathcal{D}_1, \ldots, \mathcal{D}_n) \sim R(\mathcal{D}'_1, \ldots, \mathcal{D}'_n)$.
+\end{definition}
+
+The pairs (perm) are the formal statement that $\join_{\text{intro}}$ commutes with the other rules.
+The analogous law for $\join_{\text{intro}}$ itself, $(\mathcal{E} \boxplus \mathcal{E}') \boxplus \mathcal{F} \sim (\mathcal{E} \boxplus \mathcal{F}) \boxplus (\mathcal{E}' \boxplus \mathcal{F})$, is derivable: duplicate $\mathcal{F}$ with (idem) and rearrange with (assoc) and (comm).
+Note that $\sim$-related derivations may have distinct conclusion \emph{terms}---by \Cref{remark:distributive_rules} this is unavoidable---but, as we show next, their conclusions are always $\equiv_{\join}$-equivalent.
+
+\begin{lemma}
+\label{lemma:perm_supp}
+For every rule, the support of the conclusion is determined by the supports of the premises:
+\[
+\operatorname{supp}\bigl(R(S_1, \ldots, S_n)\bigr) = \{ R(Q_1, \ldots, Q_n) \mid Q_l \in \operatorname{supp}(S_l) \}
+\]
+for the extended application $R(S_1,\ldots,S_n)$ of an $f$-, $\otimes$-, or $\I$-rule to derivable terms $S_l$, and
+$\operatorname{supp}(S \join T) = \operatorname{supp}(S) \cup \operatorname{supp}(T)$.
+Consequently, if $\mathcal{D} \sim \mathcal{D}'$, then $\mathcal{D}$ and $\mathcal{D}'$ derive judgments with the same context and type, and $|\mathcal{D}| \equiv_{\join} |\mathcal{D}'|$.
+\end{lemma}
+\begin{proof}
+The first claim holds because the summand list of the conclusion consists precisely of the terms $R(Q_1, \ldots, Q_n)$, one for each tuple of premise summands (respectively, of the concatenation of the two premise lists for $\join_{\text{intro}}$).
+For the second claim it suffices to check the generating pairs and the two closure properties.
+Every generating pair relates derivations with the same conclusion context and type.
+For (perm), the summand list of the $l$-th premise on the left-hand side is the concatenation of the lists of $\mathcal{E}$ and $\mathcal{E}'$, so by the first claim both sides have conclusion support
+$\{ R(Q_1, \ldots, Q_n) \mid Q_l \in \operatorname{supp}|\mathcal{E}| \cup \operatorname{supp}|\mathcal{E}'|,\ Q_j \in \operatorname{supp}|\mathcal{D}_j| \text{ for } j \neq l \}$.
+For (assoc) and (comm) both sides have support $\operatorname{supp}|\mathcal{D}| \cup \operatorname{supp}|\mathcal{E}| \,(\cup \operatorname{supp}|\mathcal{F}|)$, and for (idem) both sides have support $\operatorname{supp}|\mathcal{D}|$.
+Closure under rule application preserves the property by the first claim, and closure under equivalence preserves it trivially.
+\end{proof}
+
+\begin{lemma}[Sums of derivations]
+\label{lemma:sum_combinations}
+Call a \emph{combination} of a non-empty finite list of derivations of judgments with a common context and type any derivation obtained by combining its entries with $\boxplus$, in some order and bracketing.
+If two such lists have the same underlying \emph{set} of derivations, then any combination of the first is $\sim$-equivalent to any combination of the second.
+For a finite non-empty set $S$ of such derivations we write $\bigboxplus S$, or $\bigboxplus_{\mathcal{D} \in S} \mathcal{D}$, for a combination of its elements; by the above it is well defined up to $\sim$.
+\end{lemma}
+\begin{proof}
+By the usual normalisation argument for an associative and commutative operation, the pairs (assoc) and (comm), together with closure of $\sim$ under $\boxplus$, relate any two combinations of the same list.
+It remains to remove duplicate entries: if a derivation $\mathcal{D}$ occurs twice in the list, reorder and rebracket the combination into the form $(\mathcal{D} \boxplus \mathcal{D}) \boxplus \mathcal{C}$ (or $\mathcal{D} \boxplus \mathcal{D}$ if the list has length two) and apply (idem); iterate.
+\end{proof}
+
+\begin{theorem}[Coherence]
+\label{theorem:coherence}
+Every derivation $\mathcal{D} :: \Gamma \vdash M : A$ satisfies
+\[
+\mathcal{D} \;\sim\; \bigboxplus_{Q \in \operatorname{supp}(M)} \pi_{Q}.
+\]
+Consequently, for derivations $\mathcal{D} :: \Gamma \vdash M : A$ and $\mathcal{D}' :: \Gamma \vdash M' : A$,
+\[
+\mathcal{D} \sim \mathcal{D}' \quad\Longleftrightarrow\quad M \equiv_{\join} M',
+\]
+that is, terms modulo $\equiv_{\join}$ uniquely determine derivations modulo $\sim$: the map $\mathcal{D} \mapsto |\mathcal{D}|$ induces a bijection between derivations of type $A$ in context $\Gamma$ up to $\sim$ and derivable terms of that judgment up to $\equiv_{\join}$.
+\end{theorem}
+\begin{proof}
+The right-hand side of the first claim is well formed: each $\Gamma \vdash Q : A$ is derivable by \Cref{lemma:join_free}(\ref{join_free:summands}), its derivation $\pi_Q$ is unique by \Cref{lemma:join_free}(\ref{join_free:unique}), and the combination is well defined up to $\sim$ by \Cref{lemma:sum_combinations}.
+We prove the first claim by induction on $\mathcal{D}$.
+\begin{itemize}
+  \item If $\mathcal{D}$ is an instance of $\id$ or $\I_{\text{intro}}$, then $M$ is join-free, $\operatorname{supp}(M) = \{M\}$, and $\mathcal{D} = \pi_{M}$.
+  \item If $\mathcal{D} = \mathcal{D}_1 \boxplus \mathcal{D}_2$, then by the induction hypothesis and closure of $\sim$ under $\boxplus$,
+  \[
+  \mathcal{D} \sim \Bigl(\bigboxplus_{Q \in \operatorname{supp}|\mathcal{D}_1|} \pi_Q\Bigr) \boxplus \Bigl(\bigboxplus_{Q \in \operatorname{supp}|\mathcal{D}_2|} \pi_Q\Bigr),
+  \]
+  which is a combination of the list of all $\pi_Q$ with $Q \in \operatorname{supp}|\mathcal{D}_1| \cup \operatorname{supp}|\mathcal{D}_2| = \operatorname{supp}(M)$, so \Cref{lemma:sum_combinations} concludes.
+  \item Let $\mathcal{D} = R(\mathcal{D}_1, \ldots, \mathcal{D}_n)$ for one of the remaining rules $R$.
+  By the induction hypothesis and closure under rule application,
+  $\mathcal{D} \sim R\bigl(\bigboxplus_{Q \in S_1} \pi_Q, \ldots, \bigboxplus_{Q \in S_n} \pi_Q\bigr)$ where $S_l \Coloneqq \operatorname{supp}|\mathcal{D}_l|$.
+  We claim that for arbitrary non-empty lists $L_1, \ldots, L_n$ of derivations (of the appropriate judgments) and arbitrary combinations $\mathcal{C}(L_l)$ of them,
+  \[
+  R\bigl(\mathcal{C}(L_1), \ldots, \mathcal{C}(L_n)\bigr) \;\sim\; \mathcal{C}'\bigl( \bigl( R(\mathcal{C}_1, \ldots, \mathcal{C}_n) \bigr)_{\mathcal{C}_1 \in L_1, \ldots, \mathcal{C}_n \in L_n} \bigr)
+  \]
+  for some (hence, by \Cref{lemma:sum_combinations}, any) combination $\mathcal{C}'$ of the list of all $R(\mathcal{C}_1, \ldots, \mathcal{C}_n)$ indexed by tuples of entries.
+  We induct on the total length of the lists: if every list is a singleton there is nothing to prove; otherwise pick $l$ with $|L_l| \geq 2$; then $\mathcal{C}(L_l) = \mathcal{E} \boxplus \mathcal{E}'$ where $\mathcal{E}, \mathcal{E}'$ are combinations of two shorter lists partitioning $L_l$; apply (perm) at position $l$ and the induction hypothesis to both resulting derivations, and recombine with \Cref{lemma:sum_combinations}.
+  Applying the claim with $L_l$ an enumeration of $\{\pi_Q \mid Q \in S_l\}$ yields
+  \[
+  \mathcal{D} \;\sim\; \bigboxplus_{(Q_1, \ldots, Q_n) \in S_1 \times \cdots \times S_n} R(\pi_{Q_1}, \ldots, \pi_{Q_n}).
+  \]
+  Each derivation $R(\pi_{Q_1}, \ldots, \pi_{Q_n})$ has join-free premises, hence the join-free conclusion $R(Q_1, \ldots, Q_n)$, and is therefore \emph{the} derivation $\pi_{R(Q_1, \ldots, Q_n)}$ by \Cref{lemma:join_free}(\ref{join_free:unique}).
+  By \Cref{lemma:perm_supp}, $\operatorname{supp}(M) = \{ R(Q_1, \ldots, Q_n) \mid Q_l \in S_l \}$, so \Cref{lemma:sum_combinations} turns the combination indexed by tuples into $\bigboxplus_{Q \in \operatorname{supp}(M)} \pi_Q$.
+\end{itemize}
+For the second claim: if $M \equiv_{\join} M'$, then $\operatorname{supp}(M) = \operatorname{supp}(M')$ and both derivations are $\sim$-equivalent to the same combination; the converse implication is \Cref{lemma:perm_supp}.
+Together with the surjectivity of $\mathcal{D} \mapsto |\mathcal{D}|$ onto derivable terms, this gives the stated bijection.
+\end{proof}
+
+We now define substitution, the intended composition operation, on derivations, and use \Cref{theorem:coherence} to transfer it to terms.
+
+\begin{definition}[Substitution of derivations]
+\label{def:substitution}
+Let
+\[
+\mathcal{D} :: \Gamma \vdash M : A
+\qquad\text{and}\qquad
+\mathcal{E} :: \Delta_1,x:A,\Delta_2 \vdash N:B
+\]
+be derivations.  We define a derivation
+\[
+\mathsf{sub}_x(\mathcal{E},\mathcal{D})
+  :: \Delta_1,\Gamma,\Delta_2 \vdash |\mathsf{sub}_x(\mathcal{E},\mathcal{D})| : B
+\]
+by induction on $\mathcal{E}$; the bound variables of $\mathcal{E}$ are first renamed away from the variables of $\Gamma$.
+\begin{itemize}
+  \item If $\mathcal{E}$ is the identity derivation $x : A \vdash x : A$, return $\mathcal{D}$.
+  \item If $\mathcal{E}$ ends in an $f$-, $\otimes$-, or $\I$-rule, then the context of exactly one premise contains $x$, since the conclusion context of each such rule is assembled from the premise contexts (minus the bound variables) with every variable landing in exactly one premise; recursively substitute $\mathcal{D}$ into that premise and reapply the same rule.
+  The nullary $\I_{\text{intro}}$ case cannot occur, because the conclusion context of $\mathcal{E}$ contains $x$.
+  \item If $\mathcal{E} = \mathcal{E}_1 \boxplus \mathcal{E}_2$, whose premises share the context $\Delta_1, x : A, \Delta_2$, recursively substitute $\mathcal{D}$ into both premises:
+  $\mathsf{sub}_x(\mathcal{E}_1 \boxplus \mathcal{E}_2, \mathcal{D}) = \mathsf{sub}_x(\mathcal{E}_1, \mathcal{D}) \boxplus \mathsf{sub}_x(\mathcal{E}_2, \mathcal{D})$.
+\end{itemize}
+\end{definition}
+
+\begin{lemma}[Join-free substitution]
+\label{lemma:join_free_subst}
+If $\mathcal{D} :: \Gamma \vdash P : A$ and $\mathcal{E} :: \Delta_1, x : A, \Delta_2 \vdash Q : B$ are join-free derivations, then $\mathsf{sub}_x(\mathcal{E}, \mathcal{D})$ is join-free.
+Writing $Q[P/x] \Coloneqq |\mathsf{sub}_x(\pi_Q, \pi_P)|$, this operation on join-free terms satisfies
+\begin{align*}
+x[P/x] &= P\\
+f(Q_1, \ldots, Q_n)[P/x] &= f(Q_1, \ldots, Q_i[P/x], \ldots, Q_n) &&\text{if } x \in FV(Q_i)\\
+\{Q_1, Q_2\}[P/x] &= \{Q_1[P/x], Q_2\} &&\text{if } x \in FV(Q_1)\\
+\{Q_1, Q_2\}[P/x] &= \{Q_1, Q_2[P/x]\} &&\text{if } x \in FV(Q_2)\\
+\text{match}_{\tau}(Q_1, yz.Q_2)[P/x] &= \text{match}_{\tau}(Q_1[P/x], yz.Q_2) &&\text{if } x \in FV(Q_1)\\
+\text{match}_{\tau}(Q_1, yz.Q_2)[P/x] &= \text{match}_{\tau}(Q_1, yz.Q_2[P/x]) &&\text{if } x \in FV(Q_2)
+\end{align*}
+for $\tau \in \{A \otimes B, \I\}$ (in the $\I$ case there is no binder).
+By \Cref{lemma:slat_structural}(\ref{slat_structural:linear}) a join-free term contains each variable of its context exactly once, so in each clause exactly one case applies, and no clause for variables other than $x$ is needed.
+\end{lemma}
+\begin{proof}
+By induction on $\mathcal{E}$: the recursion of \Cref{def:substitution} replaces the identity leaf at $x$ by $\mathcal{D}$ and reapplies the remaining rules of $\mathcal{E}$; no $\join_{\text{intro}}$ occurs in $\mathcal{E}$ or $\mathcal{D}$ by \Cref{lemma:join_free}(\ref{join_free:no_plus}), so none occurs in the result, and every rule in the result is applied to single-summand premises, so every judgment in it is join-free.
+The displayed clauses restate this recursion on conclusion terms; the operation is well defined on terms by the uniqueness of join-free derivations (\Cref{lemma:join_free}(\ref{join_free:unique})).
+\end{proof}
+
+\begin{lemma}[Substitution respects $\sim$]
+\label{lemma:subst_respects_perm}
+Let $\mathcal{D} \sim \mathcal{D}'$ derive judgments $\Gamma \vdash - : A$, and let $\mathcal{E} \sim \mathcal{E}'$ derive judgments $\Delta_1, x : A, \Delta_2 \vdash - : B$ (recall from \Cref{lemma:perm_supp} that $\sim$-related derivations share their context and type).  Then
+\[
+\mathsf{sub}_x(\mathcal{E}, \mathcal{D}) \sim \mathsf{sub}_x(\mathcal{E}', \mathcal{D}').
+\]
+\end{lemma}
+\begin{proof}
+By transitivity it suffices to prove
+(a) $\mathsf{sub}_x(\mathcal{E}, \mathcal{D}) \sim \mathsf{sub}_x(\mathcal{E}, \mathcal{D}')$ for a fixed $\mathcal{E}$, and
+(b) $\mathsf{sub}_x(\mathcal{E}, \mathcal{D}) \sim \mathsf{sub}_x(\mathcal{E}', \mathcal{D})$ for a fixed $\mathcal{D}$.
+
+(a) By induction on $\mathcal{E}$.
+If $\mathcal{E}$ is the identity leaf, the two sides are $\mathcal{D}$ and $\mathcal{D}'$.
+If $\mathcal{E} = R(\mathcal{E}_1, \ldots, \mathcal{E}_n)$ with $x$ in the context of the $l$-th premise, then the two sides are $R(\mathcal{E}_1, \ldots, \mathsf{sub}_x(\mathcal{E}_l, \mathcal{D}), \ldots, \mathcal{E}_n)$ and $R(\mathcal{E}_1, \ldots, \mathsf{sub}_x(\mathcal{E}_l, \mathcal{D}'), \ldots, \mathcal{E}_n)$; the induction hypothesis and closure of $\sim$ under rule application conclude.
+If $\mathcal{E} = \mathcal{E}_1 \boxplus \mathcal{E}_2$, apply the induction hypothesis to both premises and closure under $\boxplus$.
+
+(b) Since $\sim$ is generated by the pairs (perm)--(idem) under closure by rule application and by equivalence, $\mathcal{E}'$ is obtained from $\mathcal{E}$ by a finite chain of single steps, each applying one generating pair (in either direction) at one position; all intermediate derivations share the context and type of the judgment by \Cref{lemma:perm_supp}, so $\mathsf{sub}_x(-, \mathcal{D})$ is defined throughout the chain.
+It therefore suffices to treat a single step, by induction on the depth of the position at which the pair is applied.
+
+\emph{Base case: the pair is applied at the root of $\mathcal{E}$.}
+\begin{itemize}
+  \item (assoc), (comm): substitution distributes over $\boxplus$ by definition, e.g.\ $\mathsf{sub}_x((\mathcal{F} \boxplus \mathcal{G}) \boxplus \mathcal{H}, \mathcal{D}) = (\mathsf{sub}_x(\mathcal{F},\mathcal{D}) \boxplus \mathsf{sub}_x(\mathcal{G},\mathcal{D})) \boxplus \mathsf{sub}_x(\mathcal{H},\mathcal{D})$, so the two results are related by the same pair.
+  \item (idem): $\mathsf{sub}_x(\mathcal{F} \boxplus \mathcal{F}, \mathcal{D}) = \mathsf{sub}_x(\mathcal{F}, \mathcal{D}) \boxplus \mathsf{sub}_x(\mathcal{F}, \mathcal{D}) \sim \mathsf{sub}_x(\mathcal{F}, \mathcal{D})$: the two copies are literally the same derivation, because the same $\mathcal{D}$ is substituted into both.
+  \item (perm): let $\mathcal{E} = R(\mathcal{D}_1, \ldots, \mathcal{F} \boxplus \mathcal{F}', \ldots, \mathcal{D}_n)$ with the sum in position $l$, and $\mathcal{E}'$ the right-hand side of the pair.
+  If $x$ occurs in the $l$-th premise, then
+  \[
+  \mathsf{sub}_x(\mathcal{E}, \mathcal{D}) = R\bigl(\mathcal{D}_1, \ldots, \mathsf{sub}_x(\mathcal{F},\mathcal{D}) \boxplus \mathsf{sub}_x(\mathcal{F}',\mathcal{D}), \ldots, \mathcal{D}_n\bigr),
+  \]
+  while $\mathsf{sub}_x(\mathcal{E}', \mathcal{D}) = R(\ldots, \mathsf{sub}_x(\mathcal{F},\mathcal{D}), \ldots) \boxplus R(\ldots, \mathsf{sub}_x(\mathcal{F}',\mathcal{D}), \ldots)$; these are related by (perm).
+  If $x$ occurs in the $j$-th premise with $j \neq l$, then
+  $\mathsf{sub}_x(\mathcal{E},\mathcal{D}) = R(\ldots, \mathsf{sub}_x(\mathcal{D}_j, \mathcal{D}), \ldots, \mathcal{F} \boxplus \mathcal{F}', \ldots)$
+  and
+  $\mathsf{sub}_x(\mathcal{E}',\mathcal{D}) = R(\ldots, \mathsf{sub}_x(\mathcal{D}_j, \mathcal{D}), \ldots, \mathcal{F}, \ldots) \boxplus R(\ldots, \mathsf{sub}_x(\mathcal{D}_j, \mathcal{D}), \ldots, \mathcal{F}', \ldots)$,
+  again an instance of (perm).
+\end{itemize}
+
+\emph{Inductive case: the pair is applied inside a proper subderivation.}
+Let $\mathcal{E} = R(\ldots, \mathcal{E}_l, \ldots)$ and $\mathcal{E}' = R(\ldots, \mathcal{E}'_l, \ldots)$ with the pair applied inside $\mathcal{E}_l$, so that $\mathcal{E}_l \sim \mathcal{E}'_l$ by a step at smaller depth.
+If $x$ occurs in the $l$-th premise, then $\mathsf{sub}_x(\mathcal{E},\mathcal{D}) = R(\ldots, \mathsf{sub}_x(\mathcal{E}_l, \mathcal{D}), \ldots)$ and $\mathsf{sub}_x(\mathcal{E}',\mathcal{D}) = R(\ldots, \mathsf{sub}_x(\mathcal{E}'_l, \mathcal{D}), \ldots)$, and we conclude by the induction hypothesis and closure under rule application.
+Otherwise substitution leaves the $l$-th premise untouched, so the two results differ only in that premise ($\mathcal{E}_l$ versus $\mathcal{E}'_l$), and closure under rule application concludes directly.
+The case $\mathcal{E} = \mathcal{E}_1 \boxplus \mathcal{E}_2$ is analogous: substitution enters both premises, the step sits in one of them, and the induction hypothesis together with closure under $\boxplus$ concludes.
+\end{proof}
+
+\begin{lemma}[Normal form of a substitution]
+\label{lemma:subst_normal_form}
+Let $\mathcal{D} :: \Gamma \vdash M : A$ and $\mathcal{E} :: \Delta_1, x : A, \Delta_2 \vdash N : B$.  Then
+\[
+\mathsf{sub}_x(\mathcal{E},\mathcal{D}) \;\sim\; \bigboxplus_{\substack{Q \in \operatorname{supp}(N)\\ P \in \operatorname{supp}(M)}} \pi_{Q[P/x]},
+\qquad\text{and hence}\qquad
+\operatorname{supp}\bigl(|\mathsf{sub}_x(\mathcal{E},\mathcal{D})|\bigr) = \{ Q[P/x] \mid Q \in \operatorname{supp}(N),\, P \in \operatorname{supp}(M) \}.
+\]
+\end{lemma}
+\begin{proof}
+Write $\mathcal{D}_0 \Coloneqq \bigboxplus_{P \in \operatorname{supp}(M)} \pi_P$.
+By \Cref{theorem:coherence} and \Cref{lemma:subst_respects_perm},
+$\mathsf{sub}_x(\mathcal{E}, \mathcal{D}) \sim \mathsf{sub}_x\bigl(\bigboxplus_{Q} \pi_Q, \mathcal{D}_0\bigr)$.
+By the $\boxplus$-clause of \Cref{def:substitution}, substitution into a combination is the combination of the substitutions, so the latter is a combination of the derivations $\mathsf{sub}_x(\pi_Q, \mathcal{D}_0)$ for $Q \in \operatorname{supp}(N)$.
+We claim
+\[
+\mathsf{sub}_x(\pi_Q, \mathcal{D}_0) \;\sim\; \bigboxplus_{P \in \operatorname{supp}(M)} \pi_{Q[P/x]},
+\]
+by induction on $\pi_Q$.
+If $\pi_Q$ is the identity leaf at $x$, then $\mathsf{sub}_x(\pi_Q, \mathcal{D}_0) = \mathcal{D}_0$ and $Q[P/x] = P$.
+If $\pi_Q = R(\pi_1, \ldots, \pi_n)$ with $x$ in the $l$-th premise, whose conclusion is the join-free term $Q_l$, then
+\[
+\mathsf{sub}_x(\pi_Q, \mathcal{D}_0) = R\bigl(\pi_1, \ldots, \mathsf{sub}_x(\pi_l, \mathcal{D}_0), \ldots, \pi_n\bigr)
+\sim R\Bigl(\pi_1, \ldots, \bigboxplus_{P} \pi_{Q_l[P/x]}, \ldots, \pi_n\Bigr)
+\sim \bigboxplus_{P} R\bigl(\pi_1, \ldots, \pi_{Q_l[P/x]}, \ldots, \pi_n\bigr),
+\]
+using the induction hypothesis with closure under rule application, and then the distribution claim from the proof of \Cref{theorem:coherence}.
+Finally $R(\pi_1, \ldots, \pi_{Q_l[P/x]}, \ldots, \pi_n) = \pi_{Q[P/x]}$: it is a join-free derivation, its conclusion is $Q[P/x]$ by the recursive clauses of \Cref{lemma:join_free_subst}, and join-free derivations are unique.
+Assembling, $\mathsf{sub}_x(\mathcal{E},\mathcal{D})$ is $\sim$-equivalent to a combination of the list of all $\pi_{Q[P/x]}$, which \Cref{lemma:sum_combinations} normalises to the displayed form.
+The support statement then follows from \Cref{lemma:perm_supp}, since the conclusion of the displayed combination has support $\{Q[P/x] \mid Q \in \operatorname{supp}(N), P \in \operatorname{supp}(M)\}$.
+\end{proof}
+
+\begin{corollary}[Substitution descends to terms]
+\label{prop:subst_derivation_independence}
+The $\equiv_{\join}$-class of $|\mathsf{sub}_x(\mathcal{E},\mathcal{D})|$ depends only on the $\equiv_{\join}$-classes of $|\mathcal{E}|$ and $|\mathcal{D}|$, and not on the chosen derivations.
+For derivable $\Gamma \vdash M : A$ and $\Delta_1, x : A, \Delta_2 \vdash N : B$ we may therefore define
+\[
+N[M/x] \Coloneqq |\mathsf{sub}_x(\mathcal{E}, \mathcal{D})| \qquad \text{for any derivations $\mathcal{E}$, $\mathcal{D}$ of the two judgments,}
+\]
+a term well defined up to $\equiv_{\join}$, with
+\[
+\operatorname{supp}\bigl(N[M/x]\bigr) = \{ Q[P/x] \mid Q \in \operatorname{supp}(N),\, P \in \operatorname{supp}(M) \}.
+\]
+\end{corollary}
+\begin{proof}
+The support formula of \Cref{lemma:subst_normal_form} depends only on $\operatorname{supp}(N)$ and $\operatorname{supp}(M)$, and join-free substitution is derivation-independent by \Cref{lemma:join_free}\ref{join_free:unique}.
+\end{proof}
+
+\begin{lemma}[Admissibility of substitution]
+\label{lemma:subst_admissible}
+If $\Gamma \vdash M : A$ and $\Delta_1, x : A, \Delta_2 \vdash N : B$ are derivable, then so is
+$\Delta_1, \Gamma, \Delta_2 \vdash N[M/x] : B$.
+\end{lemma}
+\begin{proof}
+Choose derivations of the two premises and apply \Cref{def:substitution}.
+\end{proof}
+
+\begin{lemma}[Properties of join-free substitution]
+\label{lemma:join_free_subst_properties}
+Let all terms below be join-free and derivable in the displayed judgments.
+\begin{enumerate}
+  \item\label{jf_prop:unit} $x[P/x] = P$, and $Q[x'/x]$ is $Q$ with the free variable $x$ renamed to $x'$.
+  \item\label{jf_prop:assoc} (associativity) If $\Gamma \vdash N : B$, $\Delta_1, y : B, \Delta_2 \vdash P : A$, and $\Psi_1, x : A, \Psi_2 \vdash Q : C$, then
+  \[
+  (Q[P/x])[N/y] = Q[P[N/y]/x].
+  \]
+  \item\label{jf_prop:inter} (interchange) If $\Gamma \vdash P : A$, $\Delta \vdash N : B$, and $\Psi_1, x : A, \Psi_2, y : B, \Psi_3 \vdash Q : C$, then
+  \[
+  (Q[P/x])[N/y] = (Q[N/y])[P/x].
+  \]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Throughout we use \Cref{lemma:slat_structural}(\ref{slat_structural:linear}): a join-free term contains each variable of its context free exactly once, so each substitution enters exactly one argument of each term former on its way to the unique occurrence of the substituted variable.
+
+\ref{jf_prop:unit} The first identity is the first clause of \Cref{lemma:join_free_subst}; the second follows by induction on $Q$, since every clause preserves the claim.
+
+\ref{jf_prop:assoc} By induction on $Q$.
+Note that $y$ occurs free in $P$ (it is a variable of $P$'s context), hence in $P[N/y]$'s position after the first substitution; and $y$ does not occur in $Q$ (it is not a variable of $Q$'s context).
+\begin{itemize}
+  \item $Q = x$: both sides equal $P[N/y]$.
+  \item $Q = f(Q_1, \ldots, Q_n)$ with $x \in FV(Q_i)$: then $Q[P/x] = f(\ldots, Q_i[P/x], \ldots)$, and since $y \in FV(P) \subseteq FV(Q_i[P/x])$, the second substitution enters the same argument:
+  \[
+  (Q[P/x])[N/y] = f(\ldots, (Q_i[P/x])[N/y], \ldots) = f(\ldots, Q_i[P[N/y]/x], \ldots) = Q[P[N/y]/x],
+  \]
+  using the induction hypothesis in the middle step.
+  \item $Q = \{Q_1, Q_2\}$, $Q = \text{match}_{A' \otimes B'}(Q_1, uv.Q_2)$, or $Q = \text{match}_{\I}(Q_1, Q_2)$: the same argument, with the substitutions entering the unique component $Q_i$ containing $x$ (the bound variables $u, v$ are renamed away from the contexts of $P$ and $N$).
+  \item $Q$ cannot be $\star$ or a variable other than $x$, since $x \in FV(Q)$.
+\end{itemize}
+
+\ref{jf_prop:inter} By induction on $Q$; note $x \neq y$, both occur free in $Q$ exactly once, and $x \notin FV(N)$, $y \notin FV(P)$ since the contexts $\Gamma$ and $\Delta$ are disjoint from $\Psi_1, x, \Psi_2, y, \Psi_3$.
+\begin{itemize}
+  \item $Q$ cannot be a variable or $\star$, since it has at least two free variables.
+  \item $Q = f(Q_1, \ldots, Q_n)$ with $x \in FV(Q_w)$ and $y \in FV(Q_u)$.
+  If $w = u$, both substitutions enter argument $w$ and the induction hypothesis applies.
+  If $w \neq u$, then
+  \[
+  (Q[P/x])[N/y] = f(\ldots, Q_w[P/x], \ldots, Q_u[N/y], \ldots) = (Q[N/y])[P/x],
+  \]
+  since the two substitutions act on different arguments.
+  \item $Q = \{Q_1, Q_2\}$ or $Q = \text{match}_{\tau}(Q_1, uv.Q_2)$: the same case split on whether $x$ and $y$ occur in the same component.
+\end{itemize}
+\end{proof}
+
+\begin{lemma}[Properties of substitution]
+\label{lemma:subst_properties}
+For derivable terms in the displayed judgments, with $N[M/x]$ as in \Cref{prop:subst_derivation_independence}:
+\begin{enumerate}
+  \item\label{subst_prop:unit} (unitality) $x[M/x] \equiv_{\join} M$, and $N[x'/x]$ is $N$ with the free variable $x$ renamed to $x'$, up to $\equiv_{\join}$;
+  \item\label{subst_prop:b} (associativity) if $\Gamma \vdash N : B$, $\Delta_1, y : B, \Delta_2 \vdash M : A$, and $\Psi_1, x : A, \Psi_2 \vdash P : C$, then
+  \[
+  (P[M/x])[N/y] \equiv_{\join} P[M[N/y]/x];
+  \]
+  \item\label{subst_prop:c} (interchange) if $\Gamma \vdash M : A$, $\Delta \vdash N : B$, and $\Psi_1, x : A, \Psi_2, y : B, \Psi_3 \vdash P : C$, then
+  \[
+  P[M/x][N/y] \equiv_{\join} P[N/y][M/x];
+  \]
+  \item\label{subst_prop:multilin} (multilinearity) if $N = N_1 \join \ldots \join N_n$ and $M = M_1 \join \ldots \join M_m$ with the displayed terms the summands, then
+  \[
+  N[M/x] \equiv_{\join} \sum_{i=1}^{n} \sum_{j=1}^{m} N_i[M_j/x].
+  \]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\ref{subst_prop:multilin} is the support formula of \Cref{prop:subst_derivation_independence}.
+
+\ref{subst_prop:b} Compute supports, using the formula of \Cref{prop:subst_derivation_independence} twice on each side (for the left-hand side note that $y$ occurs in the context of $P[M/x]$, and for the right-hand side that $y$ occurs in the context of $M$):
+\begin{align*}
+\operatorname{supp}\bigl((P[M/x])[N/y]\bigr) &= \{ (q[m/x])[n/y] \mid q \in \operatorname{supp}(P),\, m \in \operatorname{supp}(M),\, n \in \operatorname{supp}(N) \},\\
+\operatorname{supp}\bigl(P[M[N/y]/x]\bigr) &= \{ q[(m[n/y])/x] \mid q \in \operatorname{supp}(P),\, m \in \operatorname{supp}(M),\, n \in \operatorname{supp}(N) \}.
+\end{align*}
+These sets are equal elementwise by \Cref{lemma:join_free_subst_properties}(\ref{jf_prop:assoc}), whose hypotheses hold: $q$, $m$, $n$ are join-free and derivable in the judgments of $P$, $M$, $N$ by \Cref{lemma:join_free}(\ref{join_free:summands}), and in particular $y$ occurs free in every $m$ by \Cref{lemma:slat_structural}(\ref{slat_structural:linear}).
+
+\ref{subst_prop:c} The same computation with \Cref{lemma:join_free_subst_properties}(\ref{jf_prop:inter}):
+both supports equal $\{ (q[m/x])[n/y] \mid \ldots \} = \{ (q[n/y])[m/x] \mid \ldots \}$.
+
+\ref{subst_prop:unit} $\operatorname{supp}(x[M/x]) = \{x[m/x] \mid m \in \operatorname{supp}(M)\} = \operatorname{supp}(M)$, and $\operatorname{supp}(N[x'/x]) = \{q[x'/x] \mid q \in \operatorname{supp}(N)\}$, which by \Cref{lemma:join_free_subst_properties}(\ref{jf_prop:unit}) is $\operatorname{supp}(N)$ with $x$ renamed to $x'$.
+\end{proof}
+
+\Cref{lemma:subst_properties} provides exactly the equations required of the composition of an $\catname{SLat}$-multicategory, but so far only up to $\equiv_{\join}$.
+To obtain a \emph{representable} $\catname{SLat}$-multicategory we further impose $\beta$- and $\eta$-equations for $\otimes$ and $\I$; the semilattice equations generating $\equiv_{\join}$ are imposed at the same time.
+
+\begin{definition}[Equality]
+\label{def:slat_equality_details}
+
+The \emph{equality judgement} $\Gamma \vdash M \equiv N : A$, relating pairs of derivable judgments $\Gamma \vdash M : A$ and $\Gamma \vdash N : A$, is generated by the following rules.
+Equivalence and congruence rules---one congruence rule for each term-forming rule, written using extended application, so that, e.g., $f(S_1, \ldots, S_n)$ denotes the distributed sum:
+\begin{gather*}
+  \inferrule*[right=refl]{\;}{\Gamma \vdash S \equiv S : A} \qquad
+  \inferrule*[right=symm]{\Gamma \vdash S \equiv T : A}{\Gamma \vdash T \equiv S : A} \qquad
+  \inferrule*[right=trans]{\Gamma \vdash S \equiv T : A \quad \Gamma \vdash T \equiv U : A}{\Gamma \vdash S \equiv U : A}\\
+  \inferrule*[right=cong $f$]{f \in \mathcal{G}(A_1, \ldots, A_n; B) \quad \Gamma_1 \vdash S_1 \equiv S'_1 : A_1 \;\ldots\; \Gamma_n \vdash S_n \equiv S'_n : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash f(S_1, \ldots, S_n) \equiv f(S'_1, \ldots, S'_n) : B}\\
+  \inferrule*[right=cong $\otimes_{\text{intro}}$]{\Gamma \vdash S \equiv S' : A \quad \Delta \vdash T \equiv T' : B}{\Gamma, \Delta \vdash \{S, T\} \equiv \{S', T'\} : A \otimes B}\\
+  \inferrule*[right=cong $\otimes_{\text{elim}}$]{\Gamma \vdash S \equiv S' : A \otimes B \quad \Delta_1, y : A, z : B, \Delta_2 \vdash T \equiv T' : C}{\Delta_1, \Gamma, \Delta_2 \vdash \text{match}_{A \otimes B}(S, yz.T) \equiv \text{match}_{A \otimes B}(S', yz.T') : C}\\
+  \inferrule*[right=cong $\I_{\text{elim}}$]{\Gamma \vdash S \equiv S' : \I \quad \Delta_1, \Delta_2 \vdash T \equiv T' : A}{\Delta_1, \Gamma, \Delta_2 \vdash \text{match}_{\I}(S, T) \equiv \text{match}_{\I}(S', T') : A}\\
+  \inferrule*[right=cong $\join$]{\Gamma \vdash S \equiv S' : A \quad \Gamma \vdash T \equiv T' : A}{\Gamma \vdash S \join T \equiv S' \join T' : A}
+\end{gather*}
+Semilattice axioms, for derivable $S$, $T$, $U$ over a common judgment:
+\begin{gather*}
+  \inferrule*[right=assoc]{\;}{\Gamma \vdash S \join (T \join U) \equiv (S \join T) \join U : A} \qquad
+  \inferrule*[right=comm]{\;}{\Gamma \vdash S \join T \equiv T \join S : A} \qquad
+  \inferrule*[right=idem]{\;}{\Gamma \vdash S \equiv S \join S : A}
+\end{gather*}
+$\beta$- and $\eta$-axioms, in which the metavariables $P$, $Q$, $R$, $S$ range over \emph{join-free} derivable terms and the substitutions are those of \Cref{lemma:join_free_subst}:
+\begin{gather*}
+  \inferrule*[right=$\beta_{\otimes}$]{\Gamma_1 \vdash P : A \quad \Gamma_2 \vdash Q : B \quad \Delta_1, y : A, z : B, \Delta_2 \vdash R : C}{\Delta_1, \Gamma_1, \Gamma_2, \Delta_2 \vdash \text{match}_{A \otimes B}(\{P, Q\}, yz.R) \equiv R[P/y][Q/z] : C}\\
+  \inferrule*[right=$\eta_{\otimes}$]{\Gamma \vdash S : A \otimes B \quad \Delta_1, u : A \otimes B, \Delta_2 \vdash R : C}{\Delta_1, \Gamma, \Delta_2 \vdash \text{match}_{A \otimes B}(S, yz.R[\{y,z\}/u]) \equiv R[S/u] : C}\\
+  \inferrule*[right=$\beta_{\I}$]{\Delta_1, \Delta_2 \vdash R : C}{\Delta_1, \Delta_2 \vdash \text{match}_{\I}(\star, R) \equiv R : C} \qquad
+  \inferrule*[right=$\eta_{\I}$]{\Gamma \vdash S : \I \quad \Delta_1, u : \I, \Delta_2 \vdash R : C}{\Delta_1, \Gamma, \Delta_2 \vdash \text{match}_{\I}(S, R[\star/u]) \equiv R[S/u] : C}
+\end{gather*}
+\end{definition}
+
+\begin{remark}
+\label{remark:slat_equality}
+Some comments on \Cref{def:slat_equality}.
+\begin{enumerate}
+  \item Both sides of every rule are derivable: the congruence rules produce extended applications of derivable premises, and the right-hand sides of the $\beta$- and $\eta$-axioms are derivable by \Cref{lemma:subst_admissible}.
+  In $\beta_{\otimes}$, the order of the two substitutions is irrelevant by \Cref{lemma:join_free_subst_properties}\ref{jf_prop:inter}.
+  \item $M \equiv_{\join} N$ implies $\Gamma \vdash M \equiv N : A$: any two bracketings and orderings of the same support are related by the semilattice axioms, applied under $\join$-congruence and closed under transitivity.
+  We use this silently below.
+  \item The $\beta$- and $\eta$-axioms are stated for join-free instances only, since, e.g., $\text{match}_{A \otimes B}(\{P, Q\}, yz.R)$ is not a term when $P$ is a sum ($\join$ occurs only at the top level of derivable terms).
+  The general forms are derivable: for arbitrary derivable $M$, $N$, $P$, both sides of $\text{match}_{A \otimes B}(\{M, N\}, yz.P) \equiv P[M/y][N/z]$ (read via extended application and \Cref{prop:subst_derivation_independence}) decompose by multilinearity into matching sums of join-free instances, which are related axiom-by-axiom and recombined with the congruence rule for $\join$.
+  \item No rule making $\equiv$ stable under substitution is included, in contrast with the usual presentations of equality judgements: stability is \emph{admissible}, which is the content of \Cref{prop:subst_respects_equiv} below.
+\end{enumerate}
+\end{remark}
+
+\begin{proposition}[Substitution respects equality]
+\label{prop:subst_respects_equiv}
+If
+\[
+\Gamma \vdash M \equiv M' : A
+\qquad\text{and}\qquad
+\Delta_1, x : A, \Delta_2 \vdash N \equiv N' : B,
+\]
+then
+\[
+\Delta_1, \Gamma, \Delta_2 \vdash N[M/x] \equiv N'[M'/x] : B
+\]
+for any representatives of the $\equiv_{\join}$-classes $N[M/x]$ and $N'[M'/x]$.
+Consequently, substitution defines a well-defined composition operation on $\equiv$-classes of terms (equivalently, of derivations).
+\end{proposition}
+\begin{proof}
+Since $\equiv_{\join}$-equivalent terms are $\equiv$-equivalent (\Cref{remark:slat_equality}), the statement does not depend on the chosen representatives, and by transitivity it suffices to prove
+\begin{center}
+(Step 1) $N[M/x] \equiv N[M'/x]$
+\qquad and \qquad
+(Step 2) $N[M'/x] \equiv N'[M'/x]$.
+\end{center}
+
+\emph{Step 1.}
+Choose derivations $\mathcal{E} :: \Delta_1, x : A, \Delta_2 \vdash N : B$, $\mathcal{D} :: \Gamma \vdash M : A$ and $\mathcal{D}' :: \Gamma \vdash M' : A$; by \Cref{prop:subst_derivation_independence} it suffices to show $|\mathsf{sub}_x(\mathcal{E}, \mathcal{D})| \equiv |\mathsf{sub}_x(\mathcal{E}, \mathcal{D}')|$, which we do by induction on $\mathcal{E}$.
+If $\mathcal{E}$ is the identity leaf, the two conclusions are $M$ and $M'$, and $M \equiv M'$ is assumed.
+If $\mathcal{E} = R(\mathcal{E}_1, \ldots, \mathcal{E}_n)$ with $x$ in the $l$-th premise, then the two conclusions are the extended applications
+$R(|\mathcal{E}_1|, \ldots, |\mathsf{sub}_x(\mathcal{E}_l, \mathcal{D})|, \ldots, |\mathcal{E}_n|)$
+and
+$R(|\mathcal{E}_1|, \ldots, |\mathsf{sub}_x(\mathcal{E}_l, \mathcal{D}')|, \ldots, |\mathcal{E}_n|)$;
+the induction hypothesis and the congruence rule for $R$ (with \textsc{refl} for the other premises) conclude.
+If $\mathcal{E} = \mathcal{E}_1 \boxplus \mathcal{E}_2$, the two conclusions are sums, related by the induction hypotheses and the congruence rule for $\join$.
+
+\emph{Step 2.}
+Fix $\Gamma \vdash M' : A$; to lighten notation we write $M$ for $M'$ in this step.
+We show $N[M/x] \equiv N'[M/x]$ by induction on the derivation of $N \equiv N'$.
+Throughout we use the support formula of \Cref{prop:subst_derivation_independence} and comment (2) of \Cref{remark:slat_equality} to pass between $\equiv_{\join}$-equivalent terms.
+
+\emph{Equivalence rules.}
+For \textsc{refl} use \textsc{refl}; for \textsc{symm} and \textsc{trans} apply the induction hypotheses and the same rule (in the \textsc{trans} case the middle term is derivable over the same judgment, so its substitution instance is defined).
+
+\emph{Congruence rules.}
+Suppose the last rule is the congruence rule for a term-forming rule $R$, with $N = R(S_1, \ldots, S_k)$, $N' = R(S'_1, \ldots, S'_k)$ and premises $S_l \equiv S'_l$.
+The variable $x$ occurs in the context of exactly one premise position $l_0$ (the same on both sides, since the premises of a congruence rule relate terms over a common judgment).
+We first record the identity
+\[
+N[M/x] \;\equiv_{\join}\; R(S_1, \ldots, S_{l_0}[M/x], \ldots, S_k):
+\]
+by \Cref{prop:subst_derivation_independence} and \Cref{lemma:perm_supp}, both sides have support $\{ R(q_1, \ldots, q_{l_0}[P/x], \ldots, q_k) \mid q_l \in \operatorname{supp}(S_l),\, P \in \operatorname{supp}(M) \}$, using that join-free substitution enters the component containing $x$ (\Cref{lemma:join_free_subst}).
+By the induction hypothesis, $S_{l_0}[M/x] \equiv S'_{l_0}[M/x]$, so the congruence rule for $R$, applied to this equation and the premises $S_l \equiv S'_l$ for $l \neq l_0$, yields
+$R(S_1, \ldots, S_{l_0}[M/x], \ldots, S_k) \equiv R(S'_1, \ldots, S'_{l_0}[M/x], \ldots, S'_k)$, and the recorded identity on both sides concludes.
+For the congruence rule for $\join$, the variable $x$ occurs in the context of both premises; the identity $N[M/x] \equiv_{\join} S[M/x] \join T[M/x]$ (supports are unions) together with the two induction hypotheses and the congruence rule for $\join$ concludes.
+
+\emph{Semilattice axioms.}
+If $N \equiv N'$ is an instance of \textsc{assoc}, \textsc{comm} or \textsc{idem}, then $\operatorname{supp}(N) = \operatorname{supp}(N')$, hence $\operatorname{supp}(N[M/x]) = \operatorname{supp}(N'[M/x])$ by the support formula, and $N[M/x] \equiv_{\join} N'[M/x]$.
+
+\emph{Axiom $\beta_{\otimes}$.}
+Here $N = \text{match}_{A' \otimes B'}(\{P, Q\}, yz.R)$ and $N' = R[P/y][Q/z]$ with join-free $\Gamma_1 \vdash P : A'$, $\Gamma_2 \vdash Q : B'$, $\Delta'_1, y : A', z : B', \Delta'_2 \vdash R : C$.
+Both $N$ and $N'$ are join-free, so by multilinearity (\Cref{lemma:subst_properties}(\ref{subst_prop:multilin}))
+\[
+N[M/x] \equiv_{\join} \sum_{m \in \operatorname{supp}(M)} N[m/x],
+\qquad
+N'[M/x] \equiv_{\join} \sum_{m \in \operatorname{supp}(M)} N'[m/x],
+\]
+and by the congruence rule for $\join$ it suffices to show $N[m/x] \equiv N'[m/x]$ for each join-free $m$.
+We distinguish where $x$ occurs.
+\begin{itemize}
+  \item $x \in FV(P)$: by the clauses of \Cref{lemma:join_free_subst}, $N[m/x] = \text{match}_{A' \otimes B'}(\{P[m/x], Q\}, yz.R)$, which is an instance of $\beta_{\otimes}$ for the join-free term $P[m/x]$, so
+  $N[m/x] \equiv R[P[m/x]/y][Q/z]$
+  By associativity of join-free substitution (\Cref{lemma:join_free_subst_properties}(\ref{jf_prop:assoc})), $R[P[m/x]/y] = (R[P/y])[m/x]$, and by interchange (\Cref{lemma:join_free_subst_properties}\ref{jf_prop:inter}, as $x \neq z$ and $z \notin FV(m)$, $x \notin FV(Q)$),
+  $(R[P/y])[m/x][Q/z] = (R[P/y][Q/z])[m/x] = N'[m/x]$.
+  \item $x \in FV(Q)$: symmetric, using interchange for the $y$-substitution and associativity for the $z$-substitution.
+  \item $x \in FV(R)$ (i.e.\ $x$ lies in $\Delta'_1$ or $\Delta'_2$): $N[m/x] = \text{match}_{A' \otimes B'}(\{P, Q\}, yz.R[m/x])$, an instance of $\beta_{\otimes}$ for the join-free term $R[m/x]$, so $N[m/x] \equiv (R[m/x])[P/y][Q/z]$, which equals $(R[P/y][Q/z])[m/x] = N'[m/x]$ by interchange applied twice.
+\end{itemize}
+
+\emph{Axiom $\eta_{\otimes}$.}
+Here $N = \text{match}_{A' \otimes B'}(S, yz.R[\{y,z\}/u])$ and $N' = R[S/u]$ with join-free $\Gamma' \vdash S : A' \otimes B'$ and $\Delta'_1, u : A' \otimes B', \Delta'_2 \vdash R : C$.
+As above it suffices to relate the instances at each join-free summand $m$ of $M$.
+\begin{itemize}
+  \item $x \in FV(S)$: $N[m/x] = \text{match}_{A' \otimes B'}(S[m/x], yz.R[\{y,z\}/u])$, an $\eta_{\otimes}$-instance for the join-free term $S[m/x]$, so $N[m/x] \equiv R[S[m/x]/u] = (R[S/u])[m/x] = N'[m/x]$ by associativity.
+  \item $x \in FV(R)$: by interchange at the distinct variables $u$ and $x$ of $R$, $(R[\{y,z\}/u])[m/x] = (R[m/x])[\{y,z\}/u]$, so $N[m/x] = \text{match}_{A' \otimes B'}(S, yz.(R[m/x])[\{y,z\}/u])$, an $\eta_{\otimes}$-instance for the join-free term $R[m/x]$, whence $N[m/x] \equiv (R[m/x])[S/u] = (R[S/u])[m/x] = N'[m/x]$, again by interchange.
+\end{itemize}
+
+\emph{Axioms $\beta_{\I}$ and $\eta_{\I}$.}
+The same two computations with $\text{match}_{\I}$ in place of $\text{match}_{A' \otimes B'}$ and $\star$ in place of $\{y, z\}$: for $\beta_{\I}$ the variable $x$ necessarily occurs in $R$, and $N[m/x] = \text{match}_{\I}(\star, R[m/x]) \equiv R[m/x] = N'[m/x]$; for $\eta_{\I}$ use associativity when $x \in FV(S)$ and interchange (at $u$ and $x$) when $x \in FV(R)$.
+
+This exhausts the rules of \Cref{def:slat_equality} and completes Step 2.
+
+Finally, composing the two steps by transitivity gives $N[M/x] \equiv N'[M'/x]$.
+For the last claim: morphisms are $\equiv$-classes of derivable terms (equivalently, by \Cref{theorem:coherence}, $\equiv$-classes of derivations modulo $\sim$, as $\equiv_{\join} \subseteq \equiv$), and the composite of classes $[M]$ and $[N]$ at $x$ may be computed as $[N[M/x]]$: this is independent of the derivations chosen by \Cref{prop:subst_derivation_independence} and of the representatives chosen by the present proposition.
+Unitality, associativity, interchange, and preservation of joins for this composition follow from \Cref{lemma:subst_properties}, again using $\equiv_{\join} \subseteq \equiv$.
+\end{proof}
+
+\subsection{Initiality and multicategorical presentations}
+\label{app:initiality-details}
+
+\begin{theorem}
+
+  Recall the adjunction 
+  \[
+  F_{\catname{RepMultCat}} \dashv U_{\catname{Multigraph}} : \catname{Multigraph} \to \catname{RepMultCat}.
+  \]
+  It extends to an adjunction
+  \[
+  \hat{F}_{\catname{SLat}} \circ F_{\catname{RepMultCat}} \dashv U_{\catname{Multigraph}} \circ \hat{U}_{\catname{Set}} : \catname{Multigraph} \to \catname{SLat}\text{-}\catname{RepMultCat},
+  \]
+  where $\hat{F}_{\catname{SLat}} \dashv \hat{U}_{\catname{Set}}$ is the change-of-base 2-adjunction induced by the monoidal adjunction $F_{\catname{SLat}} \dashv U_{\catname{Set}}$ of~\Cref{prop:free_slat}.
+  For a multigraph $\mathcal{G}$, the free (representable) $\catname{SLat}$-multicategory over $\mathcal{G}$ is given by the type theory in~\autoref{def:s_lat_type_theory}.
+\end{theorem}
+\begin{proof}
+Throughout, a \emph{morphism} of ($\catname{SLat}$-)representable multicategories is a ($\catname{SLat}$-enriched) multifunctor---for the enriched case, one whose actions on hom-semilattices preserve $\join$---that preserves the chosen representations strictly: it sends chosen tensors and units to chosen tensors and units, and chosen universal morphisms $\xi$ to chosen universal morphisms.
+We comment at the end on multifunctors that merely preserve representability.
+We write $F(\mathcal{G}) \Coloneqq F_{\catname{SLatType}}(\mathcal{G})$ for the structure built from the type theory, and $U \Coloneqq U_{\catname{Multigraph}} \circ \hat{U}_{\catname{Set}}$ for the underlying-multigraph functor.
+
+\paragraph{Step 1: the syntactic $\catname{SLat}$-multicategory.}
+Objects of $F(\mathcal{G})$ are the types.
+For types $A_1, \ldots, A_n, B$, fix distinct variables $x_1, \ldots, x_n$ and let
+\[
+F(\mathcal{G})(A_1, \ldots, A_n; B) \Coloneqq \{\, [M] \mid x_1 : A_1, \ldots, x_n : A_n \vdash M : B \text{ derivable} \,\},
+\]
+the derivable terms modulo $\equiv$; by \Cref{theorem:coherence} (and $\equiv_{\join} \subseteq \equiv$) these are equivalently the derivations modulo $\sim$ and $\equiv$.
+By the renaming property (\Cref{lemma:subst_properties}(\ref{subst_prop:unit})) this is independent of the choice of variables.
+The join $[M] \join [N] \Coloneqq [M \join N]$ is well defined by the congruence rule for $\join$, and the semilattice axioms of \Cref{def:slat_equality} make each hom-set a semilattice.
+The identity on $A$ is $[x : A \vdash x : A]$, and the placed composition of \Cref{remark:placed_composition} is substitution,
+\[
+[N] \circ_{i} [M] \Coloneqq [N[M/x_i]]
+\]
+(the variables of $M$ renamed fresh), well defined on $\equiv$-classes by \Cref{prop:subst_derivation_independence} and \Cref{prop:subst_respects_equiv}.
+The unit laws are \Cref{lemma:subst_properties}(\ref{subst_prop:unit}); the associativity law is \Cref{lemma:subst_properties}(\ref{subst_prop:b}) (there the inner composition substitutes into a variable of $M$); the two interchange laws are \Cref{lemma:subst_properties}(\ref{subst_prop:c}) (the two substitutions target distinct variables of $N$); in each case $\equiv_{\join} \subseteq \equiv$ turns the $\equiv_{\join}$-equations into equalities of morphisms.
+By \Cref{remark:placed_composition} this yields a multicategory, and it is $\catname{SLat}$-enriched because composition preserves joins in each argument separately, by multilinearity (\Cref{lemma:subst_properties}(\ref{subst_prop:multilin}), which covers the outer and inner arguments simultaneously).
+
+\paragraph{Step 2: representability.}
+For types $A, B$ take the chosen tensor to be the type $A \otimes B$ with universal morphism $\xi_{A,B} \Coloneqq [\, x : A, y : B \vdash \{x, y\} : A \otimes B \,]$, and the chosen unit to be $\I$ with $\xi_{\I} \Coloneqq [\, () \vdash \star : \I \,]$.
+Fix a hom-set with a distinguished position $u : A \otimes B$ and consider
+\begin{align*}
+- \circ_{u} \xi_{A,B} : F(\mathcal{G})(\Gamma, A \otimes B, \Delta; C) \to F(\mathcal{G})(\Gamma, A, B, \Delta; C), &\qquad [M] \mapsto [M[\{x,y\}/u]],\\
+\Phi : F(\mathcal{G})(\Gamma, A, B, \Delta; C) \to F(\mathcal{G})(\Gamma, A \otimes B, \Delta; C), &\qquad [N] \mapsto [\text{match}_{A \otimes B}(u, xy.N)].
+\end{align*}
+$\Phi$ is well defined by the congruence rule for $\otimes_{\text{elim}}$, and both maps preserve joins: the first by multilinearity, the second because $\text{match}_{A \otimes B}(u, xy.(N \join N')) \equiv_{\join} \text{match}_{A \otimes B}(u, xy.N) \join \text{match}_{A \otimes B}(u, xy.N')$ (extended application).
+The composites are identities.
+In one direction, for each join-free summand $N_i$ of $N$,
+\[
+\text{match}_{A \otimes B}(u, xy.N_i)[\{x',y'\}/u] = \text{match}_{A \otimes B}(\{x',y'\}, xy.N_i) \equiv_{\beta_{\otimes}} N_i[x'/x][y'/y],
+\]
+which is $N_i$ up to renaming; summing with the congruence rule for $\join$ gives $\Phi([N]) \circ_u \xi_{A,B} = [N]$.
+In the other, for each join-free summand $M_j$ of $M$,
+\[
+\text{match}_{A \otimes B}(u, xy.M_j[\{x,y\}/u]) \equiv_{\eta_{\otimes}} M_j[u/u] = M_j
+\]
+($\eta_{\otimes}$ instantiated at $S \Coloneqq u$), so $\Phi([M] \circ_u \xi_{A,B}) = [M]$.
+Thus $- \circ_u \xi_{A,B}$ is an isomorphism of semilattices; its (multi)naturality is an instance of the associativity and interchange laws, as in any multicategory.
+The unit is analogous, with inverse $[N] \mapsto [\text{match}_{\I}(u, N)]$ and the equations $\beta_{\I}$, $\eta_{\I}$.
+Hence $F(\mathcal{G})$ is a representable $\catname{SLat}$-multicategory.
+Below, in $F(\mathcal{G})$ or in any representable target, $\widetilde{h}$ denotes the unique morphism with $\widetilde{h} \circ_u \xi = h$, i.e.\ the image of $h$ under the inverse of $- \circ_u \xi$.
+
+\paragraph{Step 3: the extension $\hat{P}$.}
+Let $\mathcal{M}$ be a representable $\catname{SLat}$-multicategory and $P : \mathcal{G} \to U(\mathcal{M})$ a map of multigraphs.
+On objects, set $\hat{P}(A) \Coloneqq P(A)$ for $A \in \obj{\mathcal{G}}$, $\hat{P}(A \otimes B) \Coloneqq \hat{P}(A) \otimes \hat{P}(B)$ (the chosen tensor in $\mathcal{M}$) and $\hat{P}(\I) \Coloneqq \I$.
+On morphisms, define $\hat{P}$ first on \emph{derivations}, by induction:
+\begin{itemize}
+  \item $\hat{P}(x : A \vdash x : A) \Coloneqq \id_{\hat{P}(A)}$;
+  \item $\hat{P}$ of the $f$-rule applied to premise derivations $\mathcal{D}_1, \ldots, \mathcal{D}_n$ is $P(f) \circ (\hat{P}(\mathcal{D}_1), \ldots, \hat{P}(\mathcal{D}_n))$;
+  \item $\hat{P}$ of $\otimes_{\text{intro}}$ applied to $\mathcal{D}, \mathcal{E}$ is $\xi_{\hat{P}(A), \hat{P}(B)} \circ (\hat{P}(\mathcal{D}), \hat{P}(\mathcal{E}))$;
+  \item $\hat{P}$ of $\I_{\text{intro}}$ is $\xi_{\I}$;
+  \item $\hat{P}$ of an elimination rule with scrutinee derivation $\mathcal{D}$ and body derivation $\mathcal{E}$ is $\widetilde{\hat{P}(\mathcal{E})} \circ_u \hat{P}(\mathcal{D})$, where $u$ is the position of the scrutinee's type;
+  \item $\hat{P}(\mathcal{D}_1 \boxplus \mathcal{D}_2) \Coloneqq \hat{P}(\mathcal{D}_1) \join \hat{P}(\mathcal{D}_2)$.
+\end{itemize}
+$\hat{P}$ is invariant under the permutation equivalence of \Cref{def:perm_equiv}.
+A (perm) pair whose sum sits in a premise of an $f$- or $\otimes_{\text{intro}}$-rule, or in the scrutinee of an elimination, is sent to an instance of multilinearity of composition in $\mathcal{M}$; when the sum sits in the body of an elimination we use additionally that $\widetilde{(-)}$ preserves joins, being the inverse of the semilattice isomorphism $- \circ_u \xi$.
+The (assoc), (comm) and (idem) pairs are sent to the semilattice equations of the hom-objects, and closure under rule application is respected because $\hat{P}$ is defined compositionally.
+By \Cref{theorem:coherence}, $\hat{P}(\mathcal{D})$ therefore depends only on $|\mathcal{D}|$ up to $\equiv_{\join}$, and we write $\hat{P}(M)$ for a derivable term $M$.
+
+\paragraph{Step 4: $\hat{P}$ maps substitution to composition.}
+We claim that for derivable $\Gamma \vdash M : A$ and $\Delta_1, x : A, \Delta_2 \vdash N : B$,
+\[
+\hat{P}(N[M/x]) = \hat{P}(N) \circ_{x} \hat{P}(M),
+\]
+where $\circ_x$ is placed composition at the position of $x$.
+We induct on a derivation $\mathcal{E}$ of $N$; the choice is irrelevant by Step 3, since substitution respects $\sim$ (\Cref{lemma:subst_respects_perm}).
+\begin{itemize}
+  \item If $\mathcal{E}$ is the identity leaf, both sides equal $\hat{P}(M)$ by the unit law of $\mathcal{M}$.
+  \item If $\mathcal{E}$ ends in an $f$-rule, an $\otimes_{\text{intro}}$-rule, or an elimination rule with $x$ in the scrutinee premise, let $l$ be the premise containing $x$.
+  By the definition of $\mathsf{sub}_x$, the induction hypothesis, and the associativity law of $\mathcal{M}$ applied in the $l$-th slot,
+  \[
+  \hat{P}(\mathsf{sub}_x(\mathcal{E}, \mathcal{D})) = h \circ (\ldots, \hat{P}(\mathcal{E}_l) \circ_x \hat{P}(M), \ldots) = \bigl( h \circ (\ldots, \hat{P}(\mathcal{E}_l), \ldots) \bigr) \circ_x \hat{P}(M),
+  \]
+  where $h$ is $P(f)$, $\xi$, or $\widetilde{\hat{P}(\text{body})}$, respectively.
+  \item Suppose $\mathcal{E}$ ends in an elimination rule with scrutinee $\mathcal{E}_s$ and body $\mathcal{E}_b$, and $x$ lies in the body's context (in $\Delta_1$ or $\Delta_2$).
+  We first record that
+  \[
+  \widetilde{h \circ_x m} = \widetilde{h} \circ_x m
+  \]
+  whenever $x$ is a position of the ambient context, distinct from the positions filled by $\xi$: indeed $(\widetilde{h} \circ_x m) \circ_u \xi = (\widetilde{h} \circ_u \xi) \circ_x m = h \circ_x m$ by interchange, and $- \circ_u \xi$ is injective.
+  Hence, by the induction hypothesis, this identity, and interchange,
+  \[
+  \hat{P}(\mathsf{sub}_x(\mathcal{E}, \mathcal{D}))
+  = \widetilde{\hat{P}(\mathcal{E}_b) \circ_x \hat{P}(M)} \circ_u \hat{P}(\mathcal{E}_s)
+  = \bigl( \widetilde{\hat{P}(\mathcal{E}_b)} \circ_x \hat{P}(M) \bigr) \circ_u \hat{P}(\mathcal{E}_s)
+  = \bigl( \widetilde{\hat{P}(\mathcal{E}_b)} \circ_u \hat{P}(\mathcal{E}_s) \bigr) \circ_x \hat{P}(M).
+  \]
+  \item If $\mathcal{E} = \mathcal{E}_1 \boxplus \mathcal{E}_2$, then by the induction hypotheses and multilinearity in the outer argument,
+  \[
+  \hat{P}(\mathsf{sub}_x(\mathcal{E}, \mathcal{D})) = \bigl( \hat{P}(\mathcal{E}_1) \circ_x \hat{P}(M) \bigr) \join \bigl( \hat{P}(\mathcal{E}_2) \circ_x \hat{P}(M) \bigr) = \bigl( \hat{P}(\mathcal{E}_1) \join \hat{P}(\mathcal{E}_2) \bigr) \circ_x \hat{P}(M).
+  \]
+\end{itemize}
+(Here and below, iterating the claim shows that simultaneous substitution goes to simultaneous composition.)
+
+\paragraph{Step 5: $\hat{P}$ respects $\equiv$.}
+By induction on the derivation of $\Gamma \vdash N \equiv N' : B$ we show $\hat{P}(N) = \hat{P}(N')$.
+The equivalence rules are immediate.
+For the congruence rule of a term-forming rule, $\hat{P}$ of both sides is the same operation of $\mathcal{M}$ applied to the images of the premises, which agree by the induction hypotheses.
+The semilattice axioms hold because the hom-objects of $\mathcal{M}$ are semilattices.
+For the $\beta$- and $\eta$-axioms, write $p \Coloneqq \hat{P}(P)$, and so on:
+\begin{itemize}
+  \item ($\beta_{\otimes}$)
+  $\hat{P}(\text{match}_{A \otimes B}(\{P, Q\}, yz.R))
+  = \widetilde{r} \circ_u \bigl( \xi \circ (p, q) \bigr)
+  = \bigl( (\widetilde{r} \circ_u \xi) \circ_y p \bigr) \circ_z q
+  = (r \circ_y p) \circ_z q
+  = \hat{P}(R[P/y][Q/z])$,
+  using the associativity law and Step 4.
+  \item ($\eta_{\otimes}$) By Step 4, $\hat{P}(R[\{y,z\}/u]) = r \circ_u \hat{P}(\{y,z\}) = r \circ_u \bigl( \xi \circ (\id, \id) \bigr) = r \circ_u \xi$, so $\widetilde{\hat{P}(R[\{y,z\}/u])} = r$ by the uniqueness defining $\widetilde{(-)}$, and
+  $\hat{P}(\text{match}_{A \otimes B}(S, yz.R[\{y,z\}/u])) = r \circ_u \hat{P}(S) = \hat{P}(R[S/u])$, again by Step 4.
+  \item ($\beta_{\I}$) $\hat{P}(\text{match}_{\I}(\star, R)) = \widetilde{r} \circ_u \xi_{\I} = r = \hat{P}(R)$.
+  \item ($\eta_{\I}$) As for $\eta_{\otimes}$: $\hat{P}(R[\star/u]) = r \circ_u \xi_{\I}$, so its lift is $r$, and $\hat{P}(\text{match}_{\I}(S, R[\star/u])) = r \circ_u \hat{P}(S) = \hat{P}(R[S/u])$.
+\end{itemize}
+Hence $\hat{P}$ descends to the morphisms of $F(\mathcal{G})$.
+
+\paragraph{Step 6: $\hat{P}$ is a morphism extending $P$.}
+$\hat{P}$ preserves identities by definition and placed composition by Step 4, hence is a multifunctor (\Cref{remark:placed_composition}); it preserves joins by the $\join_{\text{intro}}$ clause.
+It preserves the chosen representations strictly: on objects by definition, and
+\[
+\hat{P}(\xi_{A,B}) = \hat{P}(\{x, y\}) = \xi_{\hat{P}(A), \hat{P}(B)} \circ (\id, \id) = \xi_{\hat{P}(A), \hat{P}(B)}, \qquad \hat{P}(\xi_{\I}) = \xi_{\I}.
+\]
+Define $\eta_{\mathcal{G}} : \mathcal{G} \to U(F(\mathcal{G}))$ by $A \mapsto A$ on objects and $f \mapsto [f(x_1, \ldots, x_n)]$ on multi-edges.
+Then $U(\hat{P})(\eta_{\mathcal{G}}(f)) = P(f) \circ (\id, \ldots, \id) = P(f)$, so $U(\hat{P}) \circ \eta_{\mathcal{G}} = P$.
+
+\paragraph{Step 7: uniqueness.}
+Let $Q : F(\mathcal{G}) \to \mathcal{M}$ be any morphism with $U(Q) \circ \eta_{\mathcal{G}} = P$; we show $Q = \hat{P}$.
+On objects, $Q(A) = P(A) = \hat{P}(A)$ for $A \in \obj{\mathcal{G}}$, and strict preservation of tensors and units extends the equality to all types by induction.
+On morphisms, both functors preserve joins and every class decomposes as $[M] = [Q_1] \join \ldots \join [Q_k]$ where $\operatorname{supp}(M) = \{Q_1, \ldots, Q_k\}$, so it suffices to prove agreement on classes of join-free terms $N$, by induction on $N$:
+\begin{itemize}
+  \item $[x]$ is the identity, preserved by both functors.
+  \item $[f(N_1, \ldots, N_n)] = [f(x_1, \ldots, x_n)] \circ ([N_1], \ldots, [N_n])$ in $F(\mathcal{G})$, since $f(x_1, \ldots, x_n)[N_1/x_1] \cdots [N_n/x_n] = f(N_1, \ldots, N_n)$ by the clauses of \Cref{lemma:join_free_subst}.
+  Both functors preserve composition and send $[f(x_1, \ldots, x_n)] = \eta_{\mathcal{G}}(f)$ to $P(f)$, and they agree on the $[N_i]$ by induction.
+  \item $[\{N_1, N_2\}] = \xi_{A,B} \circ ([N_1], [N_2])$ and $[\star] = \xi_{\I}$, and both functors send chosen $\xi$'s to chosen $\xi$'s.
+  \item $[\text{match}_{A \otimes B}(N_1, xy.N_2)] = \widetilde{[N_2]} \circ_u [N_1]$ in $F(\mathcal{G})$: indeed $[\text{match}_{A \otimes B}(u, xy.N_2)] \circ_u \xi_{A,B} = [\text{match}_{A \otimes B}(\{x,y\}, xy.N_2)] = [N_2]$ by $\beta_{\otimes}$, so $[\text{match}_{A \otimes B}(u, xy.N_2)] = \widetilde{[N_2]}$, while $\text{match}_{A \otimes B}(u, xy.N_2)[N_1/u] = \text{match}_{A \otimes B}(N_1, xy.N_2)$.
+  Moreover, any multifunctor preserving composition and the chosen $\xi$'s commutes with $\widetilde{(-)}$: from $Q(\widetilde{h}) \circ_u \xi = Q(\widetilde{h} \circ_u \xi) = Q(h)$ and injectivity of $- \circ_u \xi$ in $\mathcal{M}$ we get $Q(\widetilde{h}) = \widetilde{Q(h)}$.
+  The induction hypothesis on $[N_1], [N_2]$ then gives agreement; the $\I$-elimination case is analogous.
+\end{itemize}
+
+\paragraph{Step 8: the adjunctions.}
+Steps 3--7 exhibit $\eta_{\mathcal{G}}$ as a universal arrow from $\mathcal{G}$ to $U$, for every multigraph $\mathcal{G}$; by the standard theory of universal arrows, $F_{\catname{SLatType}}$ therefore extends to a functor left adjoint to $U$ with unit $\eta$.
+On the other hand, the monoidal adjunction $F_{\catname{SLat}} \dashv U_{\catname{Set}}$ of \Cref{prop:free_slat} induces by change of base a 2-adjunction $\hat{F}_{\catname{SLat}} \dashv \hat{U}_{\catname{Set}}$ between multicategories and $\catname{SLat}$-multicategories, and it restricts to representable ones: $\hat{F}_{\catname{SLat}}$ preserves representability by \Cref{prop:enriched_representability_preserved}, while $\hat{U}_{\catname{Set}}$ does because it carries the semilattice isomorphisms $- \circ_i \xi$ of \Cref{def:multicat_tensor} to bijections.
+Composing with the recalled adjunction $F_{\catname{RepMultCat}} \dashv U_{\catname{Multigraph}}$ yields
+$\hat{F}_{\catname{SLat}} \circ F_{\catname{RepMultCat}} \dashv U_{\catname{Multigraph}} \circ \hat{U}_{\catname{Set}}$.
+Since left adjoints to the same functor are naturally isomorphic, $F_{\catname{SLatType}} \cong \hat{F}_{\catname{SLat}} \circ F_{\catname{RepMultCat}}$: the type theory computes the free construction.
+Finally, by \Cref{prop:representable_multicategories} and \Cref{prop:representabilities_agree}, transporting along $\mathcal{M} \mapsto \mathcal{M}_c$ shows that the type theory equally presents the free monoidal $\catname{SLat}$-category over $\mathcal{G}$, agreeing with the free enrichment of the free monoidal category obtained from the join-free fragment of~\Cref{def:s_lat_type_theory}.
+
+For multifunctors that merely preserve representability---sending chosen universal morphisms to some universal morphisms---the extension $\hat{P}$ still exists as above, and it is unique up to a unique invertible multinatural transformation, obtained by transporting along the canonical comparison isomorphisms between representing objects; under \Cref{prop:representable_multicategories} this is the expected statement for strong (rather than strict) monoidal functors.
+\end{proof}
+\begin{remark}
+  Removing the rules for $\otimes$ and $\I$ we get the adjunction between multigraphs and (not representable) $\catname{SLat}$-multicategories.
+  Similarly, by adding the rules for $\multimap$ and corresponding $\mathfrak{S}$-multicategories we can derive $\catname{SLat}$-multicategories (and monoidal categories) with more structure.
+  In particular, the following rules (replacing the identity rule) define a free cartesian multicategory (and therefore a free cartesian category):
+  \begin{gather*}
+  \inferrule*[right=$\id$]{\vdash A\;\text{type} \quad x \in \Gamma}{\Gamma \vdash x : A}\\
+  \inferrule*[]{\;}{\Gamma \vdash \star : \I}
+  \end{gather*}
+\end{remark}
+
+So far, we actually defined a type theory for e-graphs with empty set of equations.
+This is because, while we have the ability to express \enquote{multiple} terms using $\join$, writing $f(x) \join g(x)$ does not tell us whether $f(x)$ and $g(x)$ are actually equivalent.
+We recover e-graphs, if instead of multigraphs we consider \emph{multicategorical presentations}.
+
+\begin{definition}[Definition 1.7.1 in~\cite{shulman2016categorical}]
+  A multicategory presentation $\mathcal{P}$ is a pair $(\mathcal{G}, \mathcal{E})$ where $\mathcal{G}$ is a multigraph and $\mathcal{E}$ is a set of generating equalities, each of which is a pair of derivations $A_1, \ldots, A_n \vdash B$ for $A_1, \ldots, A_n,B \in \mathcal{G}$.
+  These presentations define a category $\catname{PrCat}$ where morphisms are multigraph homomorphisms such that equalities are preserved.
+\end{definition}
+Equivalently, we can think of $\mathcal{E}$ as a set of pairs of terms $x_1 : A_1, \ldots, x_n : A_n \vdash M : B$ and $x_1 : A_1, \ldots, x_n : A_n \vdash N : B$ which define two parallel morphisms in a free $\catname{SLat}$-multicategory on $\mathcal{G}$.
+
+\begin{definition}[Definition 1.7.2 in~\cite{shulman2016categorical}]
+For an $\catname{SLat}$-multicategory $\mathcal{C}$, its underlying presentation is a multigraph of $\mathcal{G}$ with, as generating equalities, the set of all parallel pairs of morphisms in $F_{\catname{SLatType}}(\mathcal{G})$ that become equal after applying the counit functor $F_{\catname{SLatType}}(\mathcal{G}) \to \mathcal{C}$.
+\end{definition}
+
+\begin{definition}
+
+  A type theory under a multicategorical presentation $\mathcal{P} = (\mathcal{G}, \mathcal{E})$ is given by the type theory under $\mathcal{G}$ together with the following rule:
+  \begin{align*}
+    \inferrule*[]{(M,N) \in \mathcal{E}(\Gamma; B)}{\Gamma \vdash M \equiv N : B}
+  \end{align*}
+  where $\mathcal{E}(\Gamma; B)$ is the set of pairs $\Gamma \vdash M : B, \Gamma \vdash N : B$.
+\end{definition}
+
+\begin{proposition}[Theorem 1.7.3 in~\cite{shulman2016categorical}]
+  For any multicategory presentation $\mathcal{P}$, the free multicategory generated by $\mathcal{P}$ (i.e. the image of $\mathcal{P}$ under the left adjoint to the underlying-presentation functor) is described by the type theory for categories under $\mathcal{P}$: its objects are those of $\mathcal{P}$, and its morphisms are the derivations of $\Gamma \vdash M : B$ modulo the equivalence relation $\equiv$.
+\end{proposition}
+
+Thus, given an e-graph over a signature $\Sigma$ and equations $\mathcal{E}$, the corresponding type theory is defined by a multicategory presentation $(\Sigma, \mathcal{E})$.
+Note that just like in the case of PROPs, type theories for usual e-graphs need to have cartesian structure. 
+We get type theories for generalised e-graphs by considering different structures.
+
+\begin{example}
+  Recall the e-graphs from~\autoref{fig:e-graph-example}.
+  The corresponding multigraph $\mathcal{G}$ is given by objects natural numbers and multi-edges $(*) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N}), (<\!\!<) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N}), (/) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})$.
+  The type theory is given by~\autoref{def:s_lat_type_theory} (with additional constants for all natural numbers and the constant $a$, and with the rules for cartesian structure from~\autoref{eq:cartesian_structure}) together with $\mathcal{E}$:
+  \begin{gather*}
+    x : \mathbb{N} \vdash x * 2 \equiv x <\!\!< 1 : \mathbb{N}\\
+    x : \mathbb{N}, y : \mathbb{N}, z : \mathbb{N} \vdash (x * y) / z \equiv x * (y / z) : \mathbb{N}\\
+    x : \mathbb{N} \vdash x / x \equiv 1 : \mathbb{N}\\
+    x : \mathbb{N} \vdash x * 1 \equiv x
+  \end{gather*}
+  In this and the following examples we display terms using the extended application convention, so that, e.g., $((a * 2) \join (a * 2)) / 2$ denotes the distributed core term $(a * 2)/2 \join (a * 2)/2$ (recall that in core terms $\join$ occurs only at the top level, \Cref{lemma:slat_structural}).
+  Starting from the term
+  \[
+  \vdash (a * 2) / 2 : \mathbb{N},
+  \] 
+  we can derive first that (by using $N \equiv N \join N$ and the congruence)
+  \[
+  \vdash (a * 2) / 2 \equiv ((a * 2) \join (a * 2)) / 2 : \mathbb{N},
+  \]
+  then, using
+  \[
+  \vdash (a * 2) \equiv a <\!\!< 1 : \mathbb{N},
+  \]
+  and stability of $\equiv$ under substitution (\Cref{prop:subst_respects_equiv}), we have that
+  \[
+  \vdash (a * 2) / 2 \equiv ((a * 2) \join a <\!\!< 1) / 2 : \mathbb{N}.
+  \]
+\end{example}
+
+\begin{example}
+  Instead of identifying $M \equiv N$ for each $(M,N) \in \mathcal{E}(\Gamma; B)$, we can instead render them as rewrite rules $\mathcal{R} =\{ M \to N \join M, N \to M \join N \; | \; (M,N) \in \mathcal{E}(\Gamma; B) \; \}$.
+  Then, we can define equality saturation as a \emph{fixed point} of term rewriting modulo $\equiv$ (the quotienting of our original type theory).
+  Given terms $\Gamma \vdash M : A$ and $\Gamma \vdash N : A$, we say $M \Rrightarrow_{\mathcal{R}} N$ if there exist $M' \equiv M$ and $N' \equiv N$, a rule $L \to R \in \mathcal{R}$ where $\Delta \vdash L : B$ and $\Delta \vdash R : B$, and a context (a term $z : B, \Phi \vdash C : A$ with a distinguished free variable $z$ such that $\Gamma = \Delta, \Phi$) such that $M' = C[L/z]$ and $N' = C[R/z]$, using the substitution of~\autoref{def:substitution}.
+  The rewriting relation $\Rrightarrow_{\mathcal{R}}^{*}$ is the reflexive-transitive closure of $\Rrightarrow_{\mathcal{R}}$.
+  We can also write $[M]_{\equiv} \Rrightarrow_{\mathcal{R}}^{*} [N]_{\equiv}$ to highlight that we are rewriting equivalence classes of terms.
+  $[M]_{\equiv}$ is a fixed point of $\Rrightarrow_{\mathcal{R}}^{*}$ if there is no $[N]_{\equiv} \not = [M]_{\equiv}$ such that $[M]_{\equiv} \Rrightarrow_{\mathcal{R}}^{*} [N]_{\equiv}$.
+\end{example}
+
+\subsection{Full development of explicit sharing and trace}
+\label{app:sharing-trace-details}
+
+For e-graphs we work in the cartesian $\mathfrak S$-calculus, where
+$\mathfrak S$ contains all functions between finite cardinals.  The identity
+and unit rules are those of~\eqref{eq:cartesian_structure}, all premises of a
+term-forming rule have the same ambient context, and substitution is
+simultaneous.  Thus, from $\Gamma\vdash M_i:A_i$ and
+$\Gamma,\vec x:\vec A\vdash N:B$ we obtain
+$\Gamma\vdash N[\vec M/\vec x]:B$.  For
+$\Gamma\vdash M:A$, $\Gamma,x:A\vdash N:B$, and
+$\Gamma,x:A,y:B\vdash P:C$, its associativity and interchange laws combine as
+\[
+P[N/y][M/x]\equiv_{\join}P[M/x][N[M/x]/y],
+\]
+and its compatibility with the $\mathfrak S$-action says precisely that it
+commutes with weakening, exchange, and contraction; compare
+Shulman~\cite{shulman2016categorical}.  Since cut is admissible in this
+cartesian calculus, we may expose it as an explicit-substitution constructor:
+  \[
+  \inferrule*[right=let]{\Gamma \vdash M : A \qquad \Gamma, x : A \vdash N : B}
+  {\Gamma \vdash \textbf{let } x = M \textbf{ in } N : B},
+  \]
+  together with the $\beta$-let equation
+  \[
+  \textbf{let } x = M \textbf{ in } N \equiv N[M/x]
+  \]
+  and congruence rules for both positions of \textbf{let}.
+  Three points deserve emphasis, all downstream of the results above.
+  First, the right-hand side $N[M/x]$ is a term defined only up to $\equiv_{\join}$ (\Cref{prop:subst_derivation_independence}), so it is the coherence development that makes $\beta$-let well posed as an equation between $\equiv$-classes; its stability under further substitution is \Cref{prop:subst_respects_equiv}.
+  Second, the extension is \emph{definitional}: $\beta$-let, read left to right, strictly removes binders, so every \textbf{let}-term normalises to a term of the core calculus, and the extended theory presents the same free $\catname{SLat}$-multicategory.
+  The coherence theorem (\Cref{theorem:coherence}) applies to \textbf{let}-terms only through these normal forms, and deliberately so: two \textbf{let}-terms with the same normal form may encode different \emph{sharing}, which is precisely the information an e-graph carries.
+  Third, since $\join$ occurs only at the top level of core terms (\Cref{lemma:slat_structural}), a sum in an argument position is expressed by binding it: $\textbf{let } z = M \join M' \textbf{ in } f(\ldots, z, \ldots)$.
+  The \textbf{let}-rule is therefore \emph{not} distributive in its binding premise---the binding is kept whole, which is what makes a binder the syntactic counterpart of an e-class node---while the distributed variant is derivable from $\beta$-let and multilinearity (\Cref{lemma:subst_properties}\ref{subst_prop:multilin}).
+  This approach formalises our examples in~\autoref{lst:terms-e-graph}; the examples below also use the cartesian structural rules of~\autoref{eq:cartesian_structure}, under which variables may be shared and dropped.
+
+  Consider the example (b).
+  We first derive the e-class $\{x * 2,\; x <\!\!< 1\}$ and the division node consuming it, then use the $\beta$-let equation in reverse to make the sharing explicit.
+  In the displayed derivations, conclusion terms are written using the extended application convention; e.g., the conclusion of $\pi_{E/2}$ below denotes the distributed core term $(x * 2)/2 \join (x <\!\!< 1)/2$.
+  We have the following terms.
+  \begin{gather*}
+  \inferrule*[]{\;}{\vdash 2 : \mathbb{N}} \qquad \inferrule*[]{\;}{\vdash a : \mathbb{N}} \qquad \inferrule*[]{\;}{\vdash 1 : \mathbb{N}}\\
+  \inferrule*[right=intro $*$, left=$\pi_{x * 2}$]{
+    x : \mathbb{N} \vdash x : \mathbb{N} \quad
+    x : \mathbb{N} \vdash 2 : \mathbb{N} \quad
+    (*) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
+  {x : \mathbb{N} \vdash x * 2 : \mathbb{N}}\\
+  \inferrule*[right=intro $<\!\!<$, left=$\pi_{x <\!\!< 1}$]{
+    x : \mathbb{N} \vdash x : \mathbb{N} \quad
+    x : \mathbb{N} \vdash 1 : \mathbb{N} \quad
+    (<\!\!<) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
+  {x : \mathbb{N} \vdash x <\!\!< 1 : \mathbb{N}}\\
+  \inferrule*[right=intro $\join$, left=$\pi_E$]{\pitri{\pi_{x * 2}} \quad \pitri{\pi_{x <\!\!< 1}}}
+  {x : \mathbb{N} \vdash (x * 2) \join (x <\!\!< 1) : \mathbb{N}}\\
+  \inferrule*[right=intro $/$, left=$\pi_{E/2}$]{
+    \pitri{\pi_{E}} \quad
+    x : \mathbb{N} \vdash 2 : \mathbb{N} \quad
+    (/) \in \mathcal{G}(\mathbb{N}, \mathbb{N}; \mathbb{N})}
+  {x : \mathbb{N} \vdash ((x * 2) \join (x <\!\!< 1)) / 2 : \mathbb{N}}
+\end{gather*}
+By the $\beta$-let equation applied in reverse---twice---the derived term is equivalent to a form in which both the constant $2$ and the e-class are shared by binders:
+\[
+x : \mathbb{N} \vdash ((x * 2) \join (x <\!\!< 1)) / 2 \;\equiv\; \textbf{let } z = 2 \textbf{ in } \textbf{let } e = (x * z) \join (x <\!\!< 1) \textbf{ in } e / z : \mathbb{N}.
+\]
+On the left, by extended application, the term abbreviates the core term $(x * 2)/2 \join (x <\!\!< 1)/2$; on the right the sum is a genuine subterm---the binding of $e$, the syntactic e-class consumed by the division node---which is well formed because \textbf{let}-bindings, unlike argument positions, may be sums.
+The right-hand side may equivalently be derived using the typing rule for \textbf{let} with binding $\pi_{E}$ and body $x : \mathbb{N}, z : \mathbb{N}, e : \mathbb{N} \vdash e / z : \mathbb{N}$.
+Wrapping the outer binding for $a$ gives the final term:
+\[
+\vdash \textbf{let } x = a \textbf{ in } \textbf{let } z = 2 \textbf{ in } \textbf{let } e = (x * z) \join (x <\!\!< 1) \textbf{ in } e / z : \mathbb{N}.
+\]
+Eliminating the binders with $\beta$-let yields the core term $(a * 2)/2 \join (a <\!\!< 1)/2$, which matches the term derived in example~(a) after applying the equation $x * 2 \equiv x <\!\!< 1$.
+
+Then, we can extend the type theory with a fixed point operator written as a possibly recursive let
+\[
+\inferrule*[]{\Gamma, x_1 : A_1, \ldots x_n : A_n \vdash M_i : A_i \quad \Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash N : B}
+{\Gamma \vdash \textbf{letrec } x_1 = M_1, \ldots, x_n = M_n \textbf{ in } N : B},
+\]
+note that $M_i$ and $N$ use the same context $\Gamma$.
+Intuitively, it defines a block of possibly mutually recursive $M_i$'s where $x_i$ bind the output of $M_i$ and can be then used in any other $M_j$ (or even in the same $M_i$) and in $N$.
+
+
+Let a \emph{declaration} list $D$ be $x_1 = M_1, \ldots, x_n = M_n$ with each $x_i$ distinct.
+Write $dom(D) = \{x_1, \ldots, x_n \}$.
+Substitution through a recursive binder requires some care in the enriched
+calculus.  If the substituted term $P$ has no join outside binding positions,
+the expected capture-avoiding clause is
+\[
+(\textbf{letrec } D \textbf{ in } N) [P/y]
+  = \textbf{letrec } D[P/y] \textbf{ in } N[P/y].
+\]
+For a general $P$, however, using this clause as the definition moves exposed
+joins into protected binding premises, so multilinearity and independence of
+the chosen derivations no longer follow from permutation equivalence.  The
+general substitution operation is therefore defined in
+\Cref{def:letrec_substitution} below by first separating only the joins that
+occur \emph{outside} binding positions.
+Then we require the following equations to hold:
+\begin{subequations}\label{eq:let_equations}
+\begin{gather}
+\textbf{letrec } D, x = M, D' \textbf{ in } N  \equiv  \textbf{letrec } D[M/x], x = M, D'[M/x] \textbf{ in } N[M/x]\label{eq:let_equations:subst}\\
+\textbf{letrec } D \textbf{ in } (\textbf{letrec } D' \textbf{ in } P) \equiv \textbf{letrec } D,D' \textbf{ in } P \label{eq:let_equations:merge_body}\\
+\textbf{letrec } D, x = \textbf{letrec } D' \textbf{ in } M, D'' \textbf{ in } N \equiv \textbf{letrec } D,D',x = M, D'' \textbf{ in } N\label{eq:let_equations:merge_bind}\\
+  \textbf{letrec } x = M \textbf{ in } F(..., N, ...) \equiv F(..., \textbf{letrec } x = M \textbf{ in } N, ...)\label{eq:let_equations:congruence}\\ 
+  \textbf{letrec } x = M \textbf{ in } \{P, N\} \equiv \{P,\; \textbf{letrec } x = M \textbf{ in } N\},
+    \quad x \notin FV(P) \label{eq:let_equations:float-tensor-R}\\
+  \textbf{letrec } x = M \textbf{ in } \{N, Q\} \equiv \{\textbf{letrec } x = M \textbf{ in } N,\; Q\},
+    \quad x \notin FV(Q) \label{eq:let_equations:float-tensor-L}\\
+  \textbf{letrec } x = M \textbf{ in } \textbf{match}(N, uv.P) \equiv
+    \textbf{match}(N,\; uv.\textbf{letrec } x = M \textbf{ in } P),
+    \quad x \notin FV(N),\; \{u,v\}\cap\{x\}=\varnothing \label{eq:let_equations:float-match-body}\\
+  \textbf{letrec } x = M \textbf{ in } \textbf{match}(P, uv.N) \equiv
+    \textbf{match}(\textbf{letrec } x = M \textbf{ in } P,\; uv.N),
+    \quad x \notin FV(N),\; \{u,v\}\cap\{x\}=\varnothing \label{eq:let_equations:float-match-scrutinee}\\
+  \textbf{letrec } x = M \textbf{ in } N \equiv N,\;x \not \in FV(N)\label{eq:let_equations:gc}\\
+\textbf{letrec } D, z = M, D' \textbf{ in } N \equiv\notag\\
+\equiv \textbf{letrec } D[\{x,y\}/z], x = \pi_{X}(M[\{x,y\}/z]), y = \pi_{Y}(M[\{x,y\}/z]), D'[\{x,y\}/z] \textbf{ in } N[\{x,y\} / z],\notag\\
+\text{where $\pi_{X}(P) = \textbf{match}(P, uv.u)$ and $\pi_{Y}(P) = \textbf{match}(P, uv.v)$}\label{eq:let_equations:unpair}\\
+\textbf{letrec } D, y = M, y' = M[y'/y], D' \textbf{ in } N \equiv \textbf{letrec } D, y = M, D'[y/y'] \textbf{ in } N[y/y']\label{eq:let_equations:diag}
+\end{gather}
+\end{subequations}
+We then define trace as
+\[
+Tr_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{match}(M, uv.v) \textbf{ in } \textbf{match}(M, uv.u) \rrbracket
+\]
+
+
+Type theories with fixed points are modelled by (cartesian) traced monoidal categories as described by~Hasegawa~\cite{hasegawa_models_1999}.
+E-graphs are similar to sharing graphs (with the addition of equivalence classes) and the latter were given models in traced monoidal categories by~Hasegawa~\cite{hasegawa_models_1999}.
+We recall a notion of a traced (symmetric) monoidal category, according to~Joyal, Street and Verity~\cite{Joyal_Street_Verity_1996}, next.
+
+\begin{remark}
+  Below we will give the definition of a traced monoidal category when the tensor is not necessarily strict.
+  This might seem surprising, but it makes things easier when making a multicategorical account of the trace as the corresponding monoidal categories for representable multicategories are canonically non-strict.
+  It is possible to give a fully strict account using the language of multicategories, but it requires additional quotienting.
+\end{remark}
+
+\begin{definition}
+  A symmetric monoidal category $(\mathcal{C}, \otimes, \alpha, \lambda, \rho, \sym)$ is traced if it is equipped with a family of operations 
+  \[
+  \text{tr}_{A,B}^{X} : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A,B),
+  \]
+  satisfying the following axioms.
+  \paragraph{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : A \to B$, $f : B \otimes X \to C \otimes X, g : C \to D$
+\[
+\text{tr}_{A,D}^{X}((g \otimes \id_{X}) \circ f \circ (h \otimes \id_{X})) = g \circ tr_{B,C}^{X}(f) \circ h
+\]
+\paragraph{Sliding} For all $A,B,X,Y \in \mathcal{C}$, $f : A \otimes X \to B \otimes Y$, $g : Y \to X$
+\[
+\text{tr}_{A,B}^{X}((\id_{B} \otimes g) \circ f) = \text{tr}_{A,B}^{Y}(f \circ (\id_{A} \otimes g))
+\]
+\paragraph{Vanishing} For all $A,B,X,Y \in \mathcal{C}$
+\[
+\text{tr}_{A,B}^{\I}(f \otimes \id_{\I}) = f, \forall f : A \to B
+\]
+and
+\[
+\text{tr}_{A,B}^{X \otimes Y}(f) = \text{tr}_{A,B}^{X}(\text{tr}_{A \otimes X, B \otimes X}^{Y}(\alpha^{-1}_{B,X,Y} \circ f \circ \alpha_{A,X,Y})), \forall f : A \otimes X \otimes Y \to B \otimes X \otimes Y
+\]
+\paragraph{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : C \otimes X \to D \otimes X$, $g : A \to B$
+\[
+\text{tr}_{A \otimes C,B \otimes D}^{X}(\alpha^{-1}_{B,D,X} \circ (g \otimes f) \circ \alpha_{A,C,X}) = g \otimes \text{tr}_{C,D}^{X}(f)
+\]
+\paragraph{Yanking} For all $X \in \mathcal{C}$
+\[
+\text{tr}_{X,X}^{X}(\sym_{X,X}) = \id_{X}
+\]
+\end{definition}
+
+We can translate this to the multicategorical setting, by letting the trace be an operation on hom-objects
+\[
+\text{Tr}^{X} : \mathcal{C}(A,X; B \otimes X) \to \mathcal{C}(A; B)
+\]
+The axioms then take the following form.
+\paragraph{Tightening} For all $A,B,C,D,X \in \mathcal{C}$, $h : (A;B)$, $f : (B,X; C \otimes X)$, $g : (C;D)$
+\[
+\text{Tr}^{X}(g' \circ f \circ_{1} h) = g \circ \text{Tr}^{X}(f) \circ h,
+\]
+where $g' : (C \otimes X; D \otimes X)$ is the unique morphism such that $g' \circ \xi_{C,X} = \xi_{D,X} \circ  (g, id_{X})$.
+\paragraph{Sliding} For all $A,B,X,Y \in \mathcal{C}$, $f : (A,X;B \otimes Y)$, $g : (Y;X)$
+\[
+\text{Tr}^{X}((g_{B}) \circ f) = \text{Tr}^{Y}(f \circ_2 g),
+\]
+where we let $g_{B}$ be the unique morphism with $g_{B} \circ \xi_{B,Y} = \xi_{B,X} \circ (\id_{B}, g)$.
+\paragraph{Vanishing I} For all $A,B,X,Y \in \mathcal{C}$ and $f : (A;B)$
+\[
+\text{Tr}^{\I}(f') = f,
+\]
+where $f' : (A,\I; B \otimes \I) = \xi_{B,\I} \circ (f, \id_{I})$.
+
+\paragraph{Vanishing II} For all $A,B,X,Y \in \mathcal{C}$ and $f : (A,X \otimes Y;B \otimes (X \otimes Y))$
+\[
+\text{Tr}^{X \otimes Y}(f) = \text{Tr}^{X}(\text{Tr}^{Y}(\alpha_{B,X,Y}^{-1} \circ f \circ (\id_{A}, \xi_{X,Y}))),
+\]
+where $\alpha_{B,X,Y}^{-1}$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B,X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B \otimes X, Y} \circ (\xi_{B,X}, \id_{Y})$. 
+\paragraph{Strength} For all $A,B,C,D,X \in \mathcal{C}$, $f : (C,X;D \otimes X)$, $g : (A;B)$
+\[
+\text{Tr}^{X}(\alpha_{B,D,X}^{-1} \circ \xi_{B, D \otimes X} \circ (g,f)) = \xi_{B,D} \circ (g, \text{Tr}^{X}(f))
+\]
+where $\alpha_{B,X,Y}^{-1}$ is the unique morphism such that $\alpha_{B,X,Y}^{-1} \circ \xi_{B,X \otimes Y} \circ (\id_{B}, \xi_{X,Y}) = \xi_{B \otimes X, Y} \circ (\xi_{B,X}, \id_{Y})$. 
+\paragraph{Yanking} Recall that the symmetry in a representable multicategory is given by the unique morphism $\sym_{A,B}$ such that $\sym_{A,B} \circ \xi_{A,B} = [\xi_{B,A}](a)$, where $[-](a) : \mathcal{C}(B,A; B \otimes A) \to \mathcal{C}(A,B; B \otimes A)$.
+The axiom then becomes
+\[
+\text{Tr}^{X}([\xi_{X,X}](a)) = \id_{X}.
+\]
+We call the (symmetric) representable multicategories with the structure above \emph{traced} (symmetric) representable multicategories.
+
+\begin{proposition}
+
+There is a $2$-equivalence between traced (symmetric) representable
+multicategories and traced (symmetric) monoidal categories.
+The monoidal structure is not affected by the trace and therefore the monoidal part of the equivalence is given by the same argument as in~\autoref{prop:representable_multicategories}.
+We only need to translate the trace operation and check that the axioms are satisfied.
+For a traced (symmetric) representable multicategory $\mathcal{C}$ we define the corresponding traced (symmetric) monoidal category $\mathcal{M}_{c}$ as in~\autoref{prop:representable_multicategories}.
+A morphism $f : \mathcal{M}_{c}(A \otimes X, B \otimes X)$ is given by a morphism $f : \mathcal{C}(A \otimes X; B \otimes X)$ for which there exists a unique $f' : \mathcal{C}(A, X; B \otimes X)$ such that $f \circ \xi_{A,X} = f'$.
+We then let $\text{tr}^{X}(f) = \text{Tr}^{X}(f')$.
+Note that we denote the monoidal trace as $\text{tr}$.
+\end{proposition}
+\begin{proof}
+  Deferred to \Cref{app:proofs} (proof of \Cref{prop:traced_representable}).
+\end{proof}
+
+\begin{lemma}\label{lemma:letrec}
+Using the equations~\cref{eq:let_equations} we can show the following terms are identified
+\[
+g(M) \equiv \textbf{letrec } x = M \textbf{ in } g(x), x \not \in FV(M,g)
+\]
+\end{lemma}
+\begin{proof}
+\begin{align*}
+\textbf{letrec } x = M \textbf{ in } g(x) &\equiv \text{by~\cref{eq:let_equations:subst}} \equiv \textbf{letrec } x = M \textbf{ in } g(M) \equiv \text{by~\cref{eq:let_equations:gc}} \equiv g(M)
+\end{align*}
+\end{proof}
+
+\begin{lemma}\label{lemma:match-comm}
+  We have that
+  \[
+ \textbf{match}(\textbf{match}(M, xy.N), xy.P) \equiv \textbf{match}(M, xy.\textbf{match}(N, uv.P)).
+  \]
+\end{lemma}
+\begin{proof}
+Let $K(c) \coloneqq \textbf{match}(\textbf{match}(c, x'y'.N[x'/x, y'/y]), uv.P)$.
+Then
+\[
+K[\{x,y\}/c] = \textbf{match}(\textbf{match}(\{x,y\}, x'y'.N[x'/x,y'/y]), uv.P) \stackrel{\beta_\otimes}{\equiv} \textbf{match}(N, uv.P),
+\]
+and
+\[
+K[M/c] = \textbf{match}(\textbf{match}(M, x'y'.N[x'/x,y'/y]), uv.P) \equiv \textbf{match}(\textbf{match}(M, xy.N), uv.P).
+\]
+By $\eta$ rule, we have that
+\[
+\textbf{match}(M, xy.K[\{x,y\}/c]) \equiv K[M/c],
+\]
+and therefore,
+\[
+\textbf{match}(M, xy.\textbf{match}(N, uv.P)) \equiv \textbf{match}(\textbf{match}(M, xy.N), uv.P).
+\]
+\end{proof}
+\begin{lemma}\label{lemma:match-gc}
+Using the $\eta$-equation we can derive the following
+\[
+\textbf{match}(M, xy.N) \equiv N, \quad \text{if } x,y \not \in FV(N).
+\]
+\end{lemma}
+\begin{proof}
+We have that $N$ must be defined in a context $\Gamma, x : A, y : B \vdash N : C$, for some $\Gamma, A, B, C$, such that $N$ does not contain $x$ and $y$.
+Let $N'$ be the same term as $N$ but with the context $\Gamma, z : A \otimes B \vdash N' : C$, such that $z$ is fresh for $\Gamma$.
+Then we have that $N'[\{x,y\}/z] = N$ and $N'[M/z] = N$.
+Therefore,
+\[
+\textbf{match}(M, xy.N) = \textbf{match}(M, xy.N'[\{x,y\}/z]) \stackrel{\eta}{\equiv} N'[M/z] = N.
+\]
+\end{proof}
+
+\begin{proposition}
+The construction
+\[
+\text{Tr}_{\Gamma,B}^{X}(\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket) = \llbracket \Gamma \vdash \textbf{letrec } x = \textbf{ match}(M, uv.v) \textbf{ in } \textbf{match}(M, uv.u)\rrbracket
+\]
+together with the equations~\autoref{eq:let_equations} defines a multicategorical trace.
+\end{proposition}
+\begin{proof}
+  Deferred to \Cref{app:proofs} (proof of \Cref{prop:trace_construction}).
+\end{proof}
+
+To account for $\catname{SLat}$-enrichment, we consider the following rule for \textbf{letrec}:
+\[
+\inferrule*[]{\Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash M_i : A_i \quad \Gamma, x_1 : A_1, \ldots, x_n : A_n \vdash \sum_{k=1}^{m}N_{k} : B}
+{\Gamma \vdash \sum_{k=1}^{m}\textbf{letrec } x_1 = M_1, \ldots, x_n = M_n \textbf{ in } N_k : B}.
+\]
+Equivalently, sums distribute over the body of a \textbf{letrec} but \emph{not} over the recursive bindings:
+\[
+\textbf{letrec } D \textbf{ in } \sum_{k=1}^{m} N_k \;\equiv\; \sum_{k=1}^{m} \textbf{letrec } D \textbf{ in } N_k.
+\]
+
+In contrast to the rules for the other constructors, we deliberately do not allow distribution over the binding right-hand sides.
+Composition in a $\catname{SLat}$-enriched multicategory is bilinear by definition of the enrichment, so distributing sums out of operator arguments or the body of a \textbf{letrec} is automatic.
+Trace, however, is an iterative operation, and additivity in its argument---$\text{Tr}^X(f \join g) = \text{Tr}^X(f) \join \text{Tr}^X(g)$---is not implied by $\catname{SLat}$-enrichment.
+
+The canonical $\catname{SLat}$-enriched traced cartesian category $\catname{Rel}$ of sets and relations (with disjoint union as tensor and union as join) witnesses this failure.
+Take $A = \{a\}$, $B = \{b\}$, and $X = \{0,1\}$, and consider the relations $R_1,R_2 : A \sqcup X \to B \sqcup X$ given by
+\[
+R_1 = \{(a,0),(1,b)\},
+\qquad
+R_2 = \{(0,1)\}.
+\]
+Neither relation contains a feedback path from $a$ to $b$: in $R_1$ the vertices $0$ and $1$ are not connected, while $R_2$ has neither an entrance from $A$ nor an exit to $B$.
+Consequently, $\text{Tr}^X(R_1) = \text{Tr}^X(R_2) = \varnothing$.
+Their union, however, contains the path
+\[
+a \xrightarrow{R_1} 0 \xrightarrow{R_2} 1 \xrightarrow{R_1} b,
+\]
+and hence $(a,b) \in \text{Tr}^X(R_1 \cup R_2)$.
+Thus a trace path through a join may interleave steps from its two summands and need not occur in either summand separately.
+Bilinearity controls each fixed composition, whereas trace permits arbitrarily long internal paths whose successive steps may be drawn from different summands; additivity of trace is therefore a strictly stronger requirement than $\catname{SLat}$-enrichment of composition.
+
+This failure is, however, invisible on the sums that e-graphs actually form.
+Under a presentation $(\mathcal{G}, \mathcal{E})$, the members of any class are provably equal---this is the congruence-closure invariant---and then distribution over the binding is derivable outright: from $M \equiv M'$ we get $M \join M' \equiv M \join M \equiv M$ by congruence and idempotence, hence
+\[
+\textbf{letrec } x = M \join M' \textbf{ in } N \;\equiv\; \textbf{letrec } x = M \textbf{ in } N \;\equiv\; (\textbf{letrec } x = M \textbf{ in } N) \join (\textbf{letrec } x = M' \textbf{ in } N).
+\]
+Operationally, each \emph{mixed} unfolding of the loop, choosing a different class member at every pass, is $\equiv$-equal to a pure one by rewriting one occurrence at a time along $M \equiv M'$; this is exactly why extraction from a cyclic e-graph may pick class members independently at each unrolling.
+In the free theory over a bare multigraph, where $\join$ carries no equational commitment, mixed and pure unfoldings are genuinely distinct morphisms, and keeping them distinct is what the freeness theorem below (\Cref{theorem:free_traced_slat}) requires.
+
+Restricting distribution to the body of \textbf{letrec} keeps the term calculus sound for all cartesian $\catname{SLat}$-enriched traced multicategories, including $\catname{Rel}$ and its variants.
+Since a representable multicategory is equivalent to a monoidal category by~\autoref{prop:representable_multicategories}, the trace operation on hom-objects
+\[
+\text{Tr}_{A,B}^X : \mathcal{C}(A \otimes X, B \otimes X) \to \mathcal{C}(A, B)
+\]
+translates directly to the multicategorical setting via the representability isomorphism
+\[
+\mathcal{C}(A \otimes X, B \otimes X) \cong \mathcal{M}(A, X; B \otimes X)
+\]
+giving
+\[
+\text{Mult-Tr}_{A,B}^X : \mathcal{M}(A, X; B \otimes X) \to \mathcal{M}(A; B)
+\]
+where the output lands in the unary hom-object $\mathcal{M}(A; B)$.
+Thus, the type theory with recursive \texttt{let} is modelled by cartesian $\catname{SLat}$-multicategories with trace in the above sense which are equivalent to cartesian traced $\catname{SLat}$-categories.
+
+With this at hand, we can justify the example (e)---the cycle is created by the merge in the step $(d) \to (e)$ of~\autoref{fig:e-graph-example}.
+Unlike example (b), this term is recursive: the variable $x$ playing the role of the equation's $x$ is defined by a fixed-point equation, so we use $\textbf{letrec}$.
+As before, we keep $2$ and $1$ as literal constants in the derivation, and we apply the $\beta$-let equation in reverse at the end to share the constants and the two inner e-classes.
+Conclusion terms in the derivations are again displayed using the extended application convention; e.g., the conclusion of $\pi_{x \cdot W}$ denotes the distributed core term $x * (2/2) \join x * 1$.
+\begin{gather*}
+\inferrule*[]{\;}{\vdash 2 : \mathbb{N}} \qquad
+\inferrule*[]{\;}{\vdash a : \mathbb{N}} \qquad
+\inferrule*[]{\;}{\vdash 1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{x*2}$]{
+  x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  x:\mathbb{N} \vdash 2 : \mathbb{N} \quad
+  {*} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{x:\mathbb{N} \vdash x * 2 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{x\mathbin{<\!\!<}1}$]{
+  x:\mathbb{N} \vdash x : \mathbb{N} \quad
+  x:\mathbb{N} \vdash 1 : \mathbb{N} \quad
+  {\mathbin{<\!\!<}} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{x:\mathbb{N} \vdash x \mathbin{<\!\!<} 1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_E$]{
+  \pitri{\pi_{x*2}} \qquad \pitri{\pi_{x\mathbin{<\!\!<}1}}
+}{x:\mathbb{N} \vdash x*2 \join x\mathbin{<\!\!<}1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{E/2}$]{
+  \pitri{\pi_E} \quad
+  x:\mathbb{N} \vdash 2 : \mathbb{N} \quad
+  {/} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{x:\mathbb{N} \vdash (x*2\join x\mathbin{<\!\!<}1)/2 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_W$]{
+  \inferrule*[]{
+    x:\mathbb{N} \vdash 2:\mathbb{N} \quad
+    x:\mathbb{N} \vdash 2:\mathbb{N} \quad
+    {/} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+  }{x:\mathbb{N} \vdash 2/2 : \mathbb{N}} \quad
+  x:\mathbb{N} \vdash 1 : \mathbb{N}
+}{x:\mathbb{N} \vdash 2/2\join 1 : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_{x \cdot W}$]{
+  x:\mathbb{N} \vdash x:\mathbb{N} \quad
+  \pitri{\pi_W} \quad
+  {*} \in \mathcal{G}(\mathbb{N},\mathbb{N};\mathbb{N})
+}{x:\mathbb{N} \vdash x*(2/2\join 1) : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_Z$]{
+  \inferrule*[]{
+    \pitri{\pi_{E/2}} \qquad \pitri{\pi_{x \cdot W}}
+  }{x:\mathbb{N} \vdash (x*2\join x\mathbin{<\!\!<}1)/2 \join x*(2/2\join 1) : \mathbb{N}} \quad
+  x:\mathbb{N} \vdash a:\mathbb{N}
+}{x:\mathbb{N} \vdash (x*2\join x\mathbin{<\!\!<}1)/2 \join x*(2/2\join 1) \join a : \mathbb{N}}\\
+%
+\inferrule*[left=$\pi_x$]{
+  \pitri{\pi_Z} \qquad x:\mathbb{N} \vdash x : \mathbb{N}
+}{\vdash \textbf{letrec}\ x\ =\ (x*2\join x\mathbin{<\!\!<}1)/2 \join x*(2/2\join 1) \join a\ \textbf{in}\ x : \mathbb{N}}
+\end{gather*}
+The four occurrences of $2$ in the body---one in $x*2$ (the LHS of the equation), one in the outer division $/\,2$, and two in $2/2$---all refer to the same constant morphism $\vdash 2 : \mathbb{N}$ in the multicategorical interpretation; likewise, the two occurrences of $1$---one in $x \mathbin{<\!\!<} 1$ and one in $2/2 \join 1$---both refer to $\vdash 1 : \mathbb{N}$.
+Applying the $\beta$-let equation in reverse, the derived term is equivalent to a form in which this sharing---of the constants and of the two inner e-classes---is made explicit by binders:
+\begin{gather*}
+\vdash \textbf{letrec}\ x\ =\ (x*2\join x\mathbin{<\!\!<}1)/2 \join x*(2/2\join 1) \join a\ \textbf{in}\ x \;\equiv\;\\
+\equiv\; \textbf{let}\ z = 2\ \textbf{in}\ \textbf{let}\ w = 1\ \textbf{in}\ \textbf{letrec}\ x = (\textbf{let}\ e = x*z \join x\mathbin{<\!\!<}w\ \textbf{in}\ e/z) \join (\textbf{let}\ c = z/z \join w\ \textbf{in}\ x*c) \join a\ \textbf{in}\ x : \mathbb{N},
+\end{gather*}
+where the binders $e$ and $c$ name the e-classes $\{x * z,\, x \mathbin{<\!\!<} w\}$ and $\{z/z,\, w\}$, so that, as in the e-graph, the division and multiplication nodes each consume a single shared class.
+
+\subsection{Coherence and substitution with recursive bindings}
+\label{app:recursive-binding-details}
+
+The normal-form argument of \Cref{theorem:coherence} cannot be applied by
+simply decomposing a derivation into derivations containing no
+$\join_{\mathrm{intro}}$.  A join in the right-hand side of a recursive binding
+must remain inside that binding: moving it outside would amount to assuming
+that trace preserves joins.  We therefore distinguish joins visible at the
+current level from those protected by a binding.
+
+\begin{definition}[Binding-atomic derivations]
+\label{def:binding_atomic}
+An occurrence of $\join_{\mathrm{intro}}$ in a derivation is \emph{exposed} if the
+path from that occurrence to the root of the derivation does not enter a
+binding premise of a \textbf{let} or \textbf{letrec} rule.  A derivation is
+\emph{binding-atomic} if it contains no exposed occurrence of
+$\join_{\mathrm{intro}}$.  Thus its conclusion has no join outside binding
+positions, although its binding premises may be arbitrary derivations.
+
+For every derivation $\mathcal{D}$, define its finite non-empty family
+$\operatorname{At}(\mathcal{D})$ of binding-atomic components by induction on
+$\mathcal{D}$:
+\begin{enumerate}
+  \item
+  $\operatorname{At}(\mathcal{D}_1 \boxplus \mathcal{D}_2)$ is the
+  concatenation of $\operatorname{At}(\mathcal{D}_1)$ and
+  $\operatorname{At}(\mathcal{D}_2)$ whenever this occurrence of
+  $\boxplus$ is exposed;
+  \item
+  for an ordinary distributed rule (including its common-context cartesian
+  variant)
+  $R(\mathcal{D}_1,\ldots,\mathcal{D}_n)$, its components are
+  \[
+  R(\mathcal{E}_1,\ldots,\mathcal{E}_n)
+  \qquad
+  (\mathcal{E}_i\in\operatorname{At}(\mathcal{D}_i));
+  \]
+  \item
+  if $L(\mathcal{B}_1,\ldots,\mathcal{B}_r;\mathcal{E})$ is an instance of
+  \textbf{let} or \textbf{letrec}, with binding premises
+  $\mathcal{B}_i$ and body premise $\mathcal{E}$, its components are
+  \[
+  L(\mathcal{B}_1,\ldots,\mathcal{B}_r;\mathcal{E}_0)
+  \qquad
+  (\mathcal{E}_0\in\operatorname{At}(\mathcal{E})).
+  \]
+  In particular, the binding premises are not decomposed at this level.
+\end{enumerate}
+The identity, constant, and other nullary cases give singleton families.
+We initially write $\operatorname{bsupp}(\mathcal D)$ for the set of
+conclusion terms of $\operatorname{At}(\mathcal D)$, recursively identifying
+the terms occurring in binding positions as described below.  After
+\Cref{theorem:binding_coherence} we may write this as
+$\operatorname{bsupp}(M)$, since it then depends only on the conclusion term
+modulo $\equiv_{\join}^{\mathrm b}$.
+\end{definition}
+
+Let $\equiv_{\join}^{\mathrm b}$ be the least congruence on conclusions generated
+by associativity, commutativity, and idempotence of every permitted occurrence
+of $\join$, including occurrences inside binding premises.  Equivalently, two
+terms are $\equiv_{\join}^{\mathrm b}$-equivalent when they have the same set of
+binding-atomic components and corresponding binding terms are recursively
+$\equiv_{\join}^{\mathrm b}$-equivalent.  This relation agrees with
+$\equiv_{\join}$ on the core calculus.
+
+\begin{definition}[Binding permutation equivalence]
+\label{def:binding_perm_equiv}
+The relation $\sim_{\mathrm b}$ is the least congruence on extended
+derivations which contains the generators of $\sim$ from
+\Cref{def:perm_equiv} and, for $L\in\{\textbf{let},\textbf{letrec}\}$, the
+additional pair
+\[
+L(\vec{\mathcal B};\mathcal E\boxplus\mathcal E')
+\;\sim_{\mathrm b}\;
+L(\vec{\mathcal B};\mathcal E)
+  \boxplus L(\vec{\mathcal B};\mathcal E').
+\tag{binding-perm}
+\]
+There is deliberately no corresponding generator for a binding premise.
+Congruence nevertheless allows a binding derivation to be replaced by a
+$\sim_{\mathrm b}$-equivalent derivation; it merely does not move the join out
+of the binding.
+\end{definition}
+
+\begin{theorem}[Binding coherence]
+\label{theorem:binding_coherence}
+Every extended derivation $\mathcal D$ is $\sim_{\mathrm b}$-equivalent to a
+combination of its binding-atomic components:
+\[
+\mathcal D\;\sim_{\mathrm b}\;
+\bigboxplus_{\mathcal A\in\operatorname{At}(\mathcal D)}\mathcal A.
+\]
+Moreover, if $\mathcal D$ and $\mathcal D'$ have the same context and type,
+then
+\[
+\mathcal D\sim_{\mathrm b}\mathcal D'
+\quad\Longleftrightarrow\quad
+|\mathcal D|\equiv_{\join}^{\mathrm b}|\mathcal D'|.
+\]
+Thus conclusions modulo $\equiv_{\join}^{\mathrm b}$ uniquely determine extended
+derivations modulo $\sim_{\mathrm b}$.
+\end{theorem}
+\begin{proof}
+The first claim is proved by induction on $\mathcal D$.  The ordinary rules
+use the same (perm) argument as \Cref{theorem:coherence}.  If the last rule is
+$L(\vec{\mathcal B};\mathcal E)$, apply the induction hypothesis to the body
+$\mathcal E$ and commute the resulting exposed sums past $L$ using
+(binding-perm); the binding premises $\vec{\mathcal B}$ are left in place.
+
+It remains to compare binding-atomic components with the same conclusion.
+We prove the comparison simultaneously with the corresponding statement for
+arbitrary shorter derivations, by strong induction on the sum of the heights
+of the two derivations; arbitrary derivations are first replaced by the
+combinations given by the first part of the proof.
+Their last rules are determined by the outer constructor of their common
+conclusion.  For an ordinary rule, corresponding premise conclusions agree,
+and the induction hypothesis identifies their derivations.  For a
+\textbf{let} or \textbf{letrec} rule, the conclusion determines both the body
+and every binding conclusion.  All corresponding premise derivations are
+strictly shorter, so the induction hypothesis identifies them, including
+binding premises which may themselves contain exposed joins.  Congruence of
+$\sim_{\mathrm b}$ then identifies the two binding-atomic derivations.
+
+Consequently a combination is determined, up to associativity,
+commutativity, and idempotence of $\boxplus$, by the set of its
+binding-atomic components, recursively modulo the same relation in binding
+positions.  This gives both implications of the second claim.
+\end{proof}
+
+We next define substitution.  The atomic operation below substitutes one
+chosen summand simultaneously at every use of a variable.  This is important
+in the cartesian calculus: contraction duplicates the use of an input, not
+the choice of a summand of that input.
+
+\begin{definition}[Substitution with bindings]
+\label{def:letrec_substitution}
+Let
+\[
+\mathcal D::\Gamma\vdash M:A,
+\qquad
+\mathcal E::\Delta,y:A\vdash N:B
+\]
+be extended derivations, with the evident variant for a placed occurrence of
+$y$ in the context.
+
+First suppose that $\mathcal D$ and $\mathcal E$ are binding-atomic.  Define
+$\mathsf{asub}_y(\mathcal E,\mathcal D)$ by induction on $\mathcal E$.
+The variable case at $y$ returns $\mathcal D$; the other variable and nullary
+cases are rederived in the substituted ambient context.  For an ordinary
+rule, recursively substitute the same $\mathcal D$ simultaneously into every
+premise whose ambient context contains $y$, and reapply the rule.  Bound
+variables are first renamed fresh.  For a binding rule, put
+\[
+\mathsf{asub}_y
+  (L(\mathcal B_1,\ldots,\mathcal B_r;\mathcal F),\mathcal D)
+\;\Coloneqq\;
+L(\mathsf{Sub}_y(\mathcal B_1,\mathcal D),\ldots,
+  \mathsf{Sub}_y(\mathcal B_r,\mathcal D);
+  \mathsf{asub}_y(\mathcal F,\mathcal D)).
+\]
+This display is for the cartesian calculus, in which every premise has the
+same ambient context and hence receives the same substituted derivation.  In
+the linear \textbf{let} fragment, a premise whose context does not contain
+$y$ is instead left unchanged, and the recursive call is made only in the
+unique premise whose context contains $y$.
+Here a recursive call to $\mathsf{Sub}$ in a binding premise is made on a
+strict subderivation of $\mathcal E$, so this and the following clause form a
+well-founded mutual definition.
+
+For arbitrary derivations define
+\[
+\mathsf{Sub}_y(\mathcal E,\mathcal D)
+\;\Coloneqq\;
+\bigboxplus_{\substack{
+  \mathcal E_0\in\operatorname{At}(\mathcal E)\\
+  \mathcal D_0\in\operatorname{At}(\mathcal D)}}
+\mathsf{asub}_y(\mathcal E_0,\mathcal D_0).
+\]
+We write $N[M/y]$ for its conclusion once derivation independence has been
+established.
+\end{definition}
+
+For example, when $P=P_1\join \cdots\join P_m$ has binding-atomic summands and the body
+is binding-atomic, the definition gives
+\[
+(\textbf{letrec }D\textbf{ in }N)[P/y]
+\;\equiv_{\join}^{\mathrm b}\;
+\sum_{j=1}^{m}
+ \textbf{letrec }D[P_j/y]\textbf{ in }N[P_j/y],
+\]
+rather than taking
+$\textbf{letrec }D[P/y]\textbf{ in }N[P/y]$ as its defining form.  This
+choice exposes the multilinearity of ambient substitution without imposing a
+rule that distributes an arbitrary join already present in a recursive
+binding.
+
+\begin{lemma}[Atomic substitution]
+\label{lemma:letrec_atomic_substitution}
+Substitution of a binding-atomic derivation into a binding-atomic derivation
+is binding-atomic.  On conclusion terms it is ordinary simultaneous,
+capture-avoiding substitution, treating each binding right-hand side as a
+subterm.  It is unital and satisfies associativity and interchange (up to
+$\alpha$-renaming).
+\end{lemma}
+\begin{proof}
+By well-founded induction on the derivation into which substitution is made.
+The ordinary-rule cases are the usual substitution proof, except that in the
+cartesian calculus the same substituted derivation is sent simultaneously to
+all premises containing the variable.  This preserves binding-atomicity
+because the substituted derivation has no exposed join.  In a binding case,
+the induction hypotheses apply to the body and to every binding premise; any
+joins produced in the latter remain protected by that binding.  The unit,
+associativity, and interchange equations follow by the same induction, after
+renaming bound variables away from the substituted contexts.
+\end{proof}
+
+\begin{lemma}[Substitution respects binding permutation]
+\label{lemma:letrec_subst_respects_perm}
+If $\mathcal D\sim_{\mathrm b}\mathcal D'$ and
+$\mathcal E\sim_{\mathrm b}\mathcal E'$, then
+\[
+\mathsf{Sub}_y(\mathcal E,\mathcal D)
+\sim_{\mathrm b}
+\mathsf{Sub}_y(\mathcal E',\mathcal D').
+\]
+\end{lemma}
+\begin{proof}
+By \Cref{theorem:binding_coherence}, $\sim_{\mathrm b}$-equivalent
+derivations have the same set of binding-atomic components up to
+$\sim_{\mathrm b}$.  Atomic substitution respects equivalence of such
+components by induction on the generating equivalence.  A core (perm)
+generator and (binding-perm) both leave unchanged the set of atomic
+components obtained from their premises.  If the generating equivalence occurs in a
+binding premise, the induction hypothesis applies inside that premise and
+congruence keeps the result under the binder.  Associativity, commutativity,
+and idempotence of $\boxplus$ then identify the two combinations in
+\Cref{def:letrec_substitution}.
+\end{proof}
+
+\begin{corollary}[Derivation independence]
+\label{prop:letrec_subst_derivation_independence}
+The $\equiv_{\join}^{\mathrm b}$-class of
+$|\mathsf{Sub}_y(\mathcal E,\mathcal D)|$ depends only on the
+$\equiv_{\join}^{\mathrm b}$-classes of $|\mathcal E|$ and $|\mathcal D|$.
+Moreover,
+\[
+\operatorname{bsupp}(N[M/y])
+=
+\{\,Q[P/y]\mid Q\in\operatorname{bsupp}(N),\;
+                    P\in\operatorname{bsupp}(M)\,\},
+\]
+where the same $P$ is substituted simultaneously at all occurrences of $y$
+in $Q$.
+\end{corollary}
+\begin{proof}
+Choose derivations and use \Cref{theorem:binding_coherence} to replace them by
+their binding-atomic components.  The displayed support is then exactly the
+definition of $\mathsf{Sub}$, and independence of the component derivations is
+\Cref{lemma:letrec_subst_respects_perm}.
+\end{proof}
+
+\begin{theorem}[Properties of substitution with bindings]
+\label{theorem:letrec_subst_properties}
+The substitution of \Cref{def:letrec_substitution} is admissible, unital,
+associative, interchanging, and multilinear modulo
+$\equiv_{\join}^{\mathrm b}$.  More explicitly, the unit, associativity, and
+interchange equations are those of \Cref{lemma:subst_properties}, with
+$\equiv_{\join}^{\mathrm b}$ in place of $\equiv_{\join}$, and if
+$N=N_1\join \cdots\join N_n$ and $M=M_1\join \cdots\join M_m$ are their binding-atomic
+decompositions, then
+\[
+N[M/y]
+\equiv_{\join}^{\mathrm b}
+\sum_{i=1}^{n}\sum_{j=1}^{m}N_i[M_j/y].
+\]
+These equations hold for arbitrary derivations of the displayed judgments.
+\end{theorem}
+\begin{proof}
+Admissibility is part of the construction.  Compute binding supports using
+\Cref{prop:letrec_subst_derivation_independence}.  The unit, associativity,
+and interchange equations hold componentwise by
+\Cref{lemma:letrec_atomic_substitution}; equality of the resulting support
+sets gives the corresponding $\equiv_{\join}^{\mathrm b}$-equations.
+Multilinearity follows because the binding support of a sum is the union of
+the binding supports of its summands, in either substitution argument.
+Derivation independence is
+\Cref{prop:letrec_subst_derivation_independence}.
+\end{proof}
+
+Finally, substitution must descend through the equations of the extended
+calculus, not merely through binding permutation equivalence.
+
+\begin{lemma}[Atomic decomposition of equality]
+\label{lemma:letrec_equality_decomposition}
+If $\Gamma\vdash M\equiv M':A$ is derivable, there are finite non-empty
+families of binding-atomic derivable terms $(P_i)_{i\in I}$ and
+$(P'_i)_{i\in I}$ such that
+\[
+M\equiv_{\join}^{\mathrm b}\sum_{i\in I}P_i,
+\qquad
+M'\equiv_{\join}^{\mathrm b}\sum_{i\in I}P'_i,
+\qquad
+\Gamma\vdash P_i\equiv P'_i:A
+\quad(i\in I).
+\]
+Repeated entries are allowed.  Moreover, equality between binding-atomic
+terms is stable under atomic substitution: if
+$\Gamma\vdash P\equiv P':A$ and
+$\Delta,y:A\vdash Q\equiv Q':B$ have binding-atomic endpoints, then
+\[
+\Delta,\Gamma\vdash
+|\mathsf{asub}_y(\mathcal Q,\mathcal P)|
+\equiv
+|\mathsf{asub}_y(\mathcal Q',\mathcal P')|:B,
+\]
+where $\mathcal P,\mathcal P',\mathcal Q,\mathcal Q'$ are any derivations of
+the four endpoints.
+\end{lemma}
+\begin{proof}
+The first statement is proved by induction on the equality derivation.
+Reflexivity and the generating binding equations give singleton families
+after decomposing any exposed joins in their conclusions.  Symmetry reverses
+the component equations.  For transitivity, decompose the common middle term
+on both sides; binding coherence, together with idempotence, permits the two
+finite families to be duplicated and reindexed to a common refinement, after
+which the component equations compose by transitivity.  The semilattice
+axioms merely reindex, rebracket, or duplicate components.  For a congruence
+rule, take all tuples of components of its premise equalities and reapply the
+same congruence rule.  In a binding congruence the body components are treated
+in this way while each binding premise remains protected; its premise
+equality is retained recursively inside the resulting binding-atomic
+endpoint.  These are all the cases.
+
+For the second statement, first hold $Q$ fixed and induct on its
+binding-atomic derivation.  At a use of $y$ the claim is the assumed equation
+$P\equiv P'$; an ordinary cartesian rule uses this same equation in every
+premise containing $y$ and then applies congruence.  In a binding rule use the
+induction hypothesis in the body and, recursively, the first part of the
+lemma in each binding premise.  Next hold $P'$ fixed and induct on the
+derivation of $Q\equiv Q'$.  Congruence is immediate; a generating core or
+binding equation remains an instance of that equation after simultaneous
+capture-avoiding atomic substitution.  Associativity and interchange from
+\Cref{lemma:letrec_atomic_substitution} reconcile nested substitutions.
+Equivalence and semilattice cases follow by the corresponding equality rules.
+This is a simultaneous well-founded induction on the equality derivation and
+the heights of the term derivations; all recursive calls made under a binding
+have smaller height.  Binding coherence makes the result independent of the
+chosen endpoint derivations.
+\end{proof}
+
+\begin{proposition}[Substitution respects extended equality]
+\label{prop:letrec_subst_respects_equiv}
+If
+\[
+\Gamma\vdash M\equiv M':A,
+\qquad
+\Delta,y:A\vdash N\equiv N':B,
+\]
+then
+\[
+\Delta,\Gamma\vdash N[M/y]\equiv N'[M'/y]:B.
+\]
+Consequently, \Cref{def:letrec_substitution} defines composition on
+equivalence classes of extended derivations.
+\end{proposition}
+\begin{proof}
+Apply \Cref{lemma:letrec_equality_decomposition} to $M\equiv M'$ and to
+$N\equiv N'$.  Thus, up to $\equiv_{\join}^{\mathrm b}$, write
+\[
+M=\sum_{i\in I}P_i,\quad M'=\sum_{i\in I}P'_i,
+\qquad
+N=\sum_{j\in J}Q_j,\quad N'=\sum_{j\in J}Q'_j,
+\]
+with binding-atomic equations $P_i\equiv P'_i$ and
+$Q_j\equiv Q'_j$.  Multilinearity gives
+\[
+N[M/y]\equiv_{\join}^{\mathrm b}
+  \sum_{j\in J}\sum_{i\in I}Q_j[P_i/y],
+\qquad
+N'[M'/y]\equiv_{\join}^{\mathrm b}
+  \sum_{j\in J}\sum_{i\in I}Q'_j[P'_i/y].
+\]
+The second part of \Cref{lemma:letrec_equality_decomposition} relates the
+corresponding summands.  Repeated use of $\join$-congruence, followed by the
+semilattice equations and transitivity, proves the displayed conclusion.
+\end{proof}
+
+The equations~\eqref{eq:let_equations} are read, like the $\beta$- and
+$\eta$-axioms of \Cref{def:slat_equality}, with binding-atomic instantiations
+of their metavariables outside binding positions; their general forms follow
+by congruence and \Cref{theorem:letrec_subst_properties}.  Finally, the
+\textbf{letrec} calculus lives over the cartesian structural rules of
+\autoref{eq:cartesian_structure}.  The freeness theorem below also uses the
+cartesian analogue of \Cref{theorem:free_slat_multicat}, with the corresponding
+clauses for the $\mathfrak S$-action.
+
+In contrast with \textbf{let}, the \textbf{letrec} extension is \emph{not} definitional: the unfolding equation~\eqref{eq:let_equations:subst} does not terminate, and \textbf{letrec}-terms denote genuinely new morphisms, which exist only in traced targets.
+Accordingly, its freeness theorem targets a different class of models.
+
+\begin{theorem}[Freeness for the \textbf{letrec} calculus]
+\label{theorem:letrec_freeness_details}
+
+Call a \emph{morphism} of traced cartesian representable $\catname{SLat}$-multicategories a morphism in the sense of \Cref{theorem:free_slat_multicat} that moreover preserves the $\mathfrak{S}$-action and the trace.
+Let $F_{\textbf{letrec}}(\mathcal{G})$ denote the syntactic category of the cartesian type theory under a multigraph $\mathcal{G}$ extended with \textbf{letrec} and the equations~\eqref{eq:let_equations}.
+Then $F_{\textbf{letrec}}(\mathcal{G})$ is the free traced cartesian representable $\catname{SLat}$-multicategory over $\mathcal{G}$: for every traced cartesian representable $\catname{SLat}$-multicategory $\mathcal{M}$ and map of multigraphs $P : \mathcal{G} \to U(\mathcal{M})$ there is a unique morphism $\hat{P} : F_{\textbf{letrec}}(\mathcal{G}) \to \mathcal{M}$ with $U(\hat{P}) \circ \eta_{\mathcal{G}} = P$.
+Equivalently (\Cref{prop:traced_representable}), the \textbf{letrec} calculus presents the free $\catname{SLat}$-enriched traced cartesian monoidal category over $\mathcal{G}$.
+\end{theorem}
+\begin{proof}
+We freely use \Cref{theorem:binding_coherence,theorem:letrec_subst_properties} and the cartesian analogue of \Cref{theorem:free_slat_multicat}, and we pass without comment between a traced cartesian representable $\catname{SLat}$-multicategory $\mathcal{M}$ and its monoidal form $\mathcal{M}_c$ (\Cref{prop:traced_representable}); in $\mathcal{M}_c$ we write $\langle -, - \rangle$ for cartesian pairing, $\pi_1, \pi_2$ for the projections, and, for $m : \Gamma \times X \to X$,
+\[
+m^{\dagger} \Coloneqq \text{tr}^{X}(\Delta_X \circ m) : \Gamma \to X,
+\]
+the fixed point of $m$.
+By Hasegawa's theorem, a trace on a cartesian category is the same thing as a Conway fixed-point operator $(-)^{\dagger}$, and under this correspondence $\text{tr}^{X}(\langle n, m \rangle) = n \circ \langle \id_{\Gamma}, m^{\dagger} \rangle$~\cite{hasegawa_models_1999}.
+
+\paragraph{Step 1: $F_{\textbf{letrec}}(\mathcal{G})$ lives in the target.}
+The composition, enrichment, cartesian action, and representability are as in the proof of \Cref{theorem:free_slat_multicat}; composition on extended derivations is the substitution of \Cref{def:letrec_substitution}, with its required laws supplied by \Cref{theorem:letrec_subst_properties} and well-definedness on equation classes by \Cref{prop:letrec_subst_respects_equiv}.  The trace is the construction of \Cref{prop:trace_construction}.
+
+\paragraph{Step 2: definition of $\hat{P}$.}
+Extend the inductive clauses of Step 3 of the proof of \Cref{theorem:free_slat_multicat} by $\hat{P}(\sigma^{*}\mathcal{D}) \Coloneqq [\hat{P}(\mathcal{D})](\sigma)$ for the structural rules and, for the \textbf{letrec} rule with a single binding $\mathcal{D} :: \Gamma, x : X \vdash M : X$ and body $\mathcal{E} :: \Gamma, x : X \vdash N : B$,
+\[
+\hat{P}(\textbf{letrec } x = M \textbf{ in } N) \Coloneqq \text{tr}^{\hat{P}(X)}\bigl( \langle \hat{P}(\mathcal{E}), \hat{P}(\mathcal{D}) \rangle \bigr) = \hat{P}(\mathcal{E}) \circ \langle \id, \hat{P}(\mathcal{D})^{\dagger} \rangle,
+\]
+computed in $\mathcal{M}_c$; the second equality is the Conway correspondence.
+A block of $n$ bindings is interpreted with loop object $X_1 \otimes (X_2 \otimes \cdots)$ and the pairing of its bindings; Vanishing II makes the bracketing immaterial, and the Beki\'{c} identity of Conway operators makes this agree with iterated single bindings.
+
+\paragraph{Step 3: $\hat{P}$ is well defined.}
+The new generator of $\sim_{\mathrm b}$ is (binding-perm), distributing a sum over the \emph{body} of a \textbf{let(rec)}; it is respected because in the Conway form the body sits outside the trace:
+\[
+\text{tr}^{X}(\langle n \join n', m \rangle) = (n \join n') \circ \langle \id, m^{\dagger} \rangle = n \circ \langle \id, m^{\dagger} \rangle \join n' \circ \langle \id, m^{\dagger} \rangle
+\]
+by multilinearity of composition---no additivity of the trace itself is used, in accordance with the discussion above.
+$\hat{P}$ respects the equations~\eqref{eq:let_equations}:
+\begin{itemize}
+  \item \eqref{eq:let_equations:congruence} and the floating equations \eqref{eq:let_equations:float-tensor-R}--\eqref{eq:let_equations:float-match-scrutinee} are instances of Tightening (naturality of the trace in $\Gamma$ and $B$), since the floated material does not touch the loop;
+  \item \eqref{eq:let_equations:merge_body} and \eqref{eq:let_equations:merge_bind} are the Beki\'{c} identity, equivalently Vanishing II together with Tightening;
+  \item \eqref{eq:let_equations:unpair} is Vanishing II, splitting a loop of type $X \otimes Y$ into two loops;
+  \item \eqref{eq:let_equations:gc} is the weakening law of Conway operators (a loop not read by the body may be discarded), derivable from Tightening and Vanishing in the cartesian setting;
+  \item \eqref{eq:let_equations:subst} is the fixed-point identity $m^{\dagger} = m \circ \langle \id, m^{\dagger} \rangle$ together with naturality: substituting a binding into the body and the remaining bindings replaces each read of the loop output by one unfolding of the loop;
+  \item \eqref{eq:let_equations:diag} is the diagonal (double-dagger) identity of Conway operators;
+  \item distribution over the body was verified above.
+\end{itemize}
+The identities named are precisely those constituting a Conway operator, which Hasegawa's theorem identifies with a trace on a cartesian category~\cite{hasegawa_models_1999}; the $\beta$-, $\eta$-, semilattice, and congruence cases are as in the proof of \Cref{theorem:free_slat_multicat}, and invariance under $\sim_{\mathrm b}$ together with \Cref{theorem:binding_coherence} makes $\hat{P}$ well defined on terms and on $\equiv$-classes.
+
+\paragraph{Step 4: $\hat{P}$ preserves the trace.}
+The syntactic trace of $\llbracket \Gamma, x : X \vdash M : B \otimes X \rrbracket$ is $\textbf{letrec } x = \text{match}(M, uv.v) \textbf{ in } \text{match}(M, uv.u)$, so by Step 2
+\[
+\hat{P}(\text{Tr}^{X}(\llbracket M \rrbracket)) = \text{tr}^{X}\bigl( \langle \pi_1 \circ \hat{P}(M),\; \pi_2 \circ \hat{P}(M) \rangle \bigr) = \text{tr}^{X}(\hat{P}(M)),
+\]
+where the last step is the product $\eta$-law $\langle \pi_1 \circ h, \pi_2 \circ h \rangle = h$ of $\mathcal{M}_c$---the image of the equation $\{\text{match}(M, uv.u), \text{match}(M, uv.v)\} \equiv M$, which is derivable from $\beta_{\otimes}$, $\eta_{\otimes}$ and congruence in the presence of contraction, by the method of \Cref{lemma:match-comm}.
+
+\paragraph{Step 5: uniqueness.}
+Let $Q$ be a morphism with $U(Q) \circ \eta_{\mathcal{G}} = P$.
+For a single binding with binding-atomic binding and body, $\beta_{\otimes}$ gives $\text{match}(\{N, M\}, uv.u) \equiv N$ and $\text{match}(\{N, M\}, uv.v) \equiv M$, whence, by the congruence rules and the definition of the syntactic trace,
+\[
+\textbf{letrec } x = M \textbf{ in } N \;\equiv\; \textbf{letrec } x = \text{match}(\{N, M\}, uv.v) \textbf{ in } \text{match}(\{N, M\}, uv.u) \;=\; \text{Tr}^{X}\bigl( \llbracket \{N, M\} \rrbracket \bigr).
+\]
+Thus every \textbf{letrec}-class is the syntactic trace of a class containing one fewer \textbf{letrec}-former, blocks having first been reduced to single bindings by \eqref{eq:let_equations:merge_body}--\eqref{eq:let_equations:merge_bind} and \eqref{eq:let_equations:unpair}.
+By induction on the number of \textbf{letrec}-formers, using that $Q$ and $\hat{P}$ both preserve the trace and that they agree on \textbf{letrec}-free classes (Step 7 of the proof of \Cref{theorem:free_slat_multicat}, extended with the $\mathfrak{S}$-action clause), $Q = \hat{P}$.
+
+\paragraph{Step 6: conclusion.}
+As in \Cref{theorem:free_slat_multicat}, $\eta_{\mathcal{G}}$ is a universal arrow for every $\mathcal{G}$, so the construction extends to a left adjoint of the underlying-multigraph functor on traced cartesian representable $\catname{SLat}$-multicategories, and \Cref{prop:traced_representable} transports the statement to $\catname{SLat}$-enriched traced cartesian monoidal categories.
+\end{proof}
+
+\begin{remark}[No factorisation through free enrichment]
+
+Unlike \Cref{theorem:free_slat_multicat}, this freeness does not factor as \enquote{free traced category, then free enrichment}: the pointwise free enrichment $\hat{F}_{\catname{SLat}}$ of a traced category carries no canonical trace, since $\text{Tr}(f \join g)$ is not determined by $\text{Tr}(f)$ and $\text{Tr}(g)$---this is the non-additivity witnessed in $\catname{Rel}$ above.
+The \textbf{letrec} calculus constructs the free traced $\catname{SLat}$-category directly, which is what makes it more than a convenience layer over \Cref{theorem:free_slat_multicat}.
+\end{remark}

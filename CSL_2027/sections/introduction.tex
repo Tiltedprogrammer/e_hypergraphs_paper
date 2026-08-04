@@ -1,0 +1,137 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\emph{Equality saturation} mitigates the phase-ordering problem in term
+rewriting: applying one rule may enable or disable another, so the order of
+application can determine the quality of the final term.  Equality saturation
+instead applies rules non-destructively until reaching a fixed point or a
+resource limit.  It is powered by \emph{e-graphs}~\cite{nelson1980techniques},
+which compactly represent a congruence by grouping equivalent terms into
+\emph{e-classes} and sharing their common subterms.
+
+Most work on e-graphs concerns algorithms and applications.  Their semantics
+is commonly described through an equality-saturation algorithm~\cite{EggPaper},
+a Datalog program~\cite{zhang_relational_2022}, or tree
+automata~\cite{tree_automata_e_graphs}.  These accounts explain how saturation
+is computed, but a semantics as merely a set of equivalent terms forgets the
+sharing and cycles present in the e-graph itself.
+
+Tiurin et al.~\cite{tiurin2025equivalencehypergraphsdporewriting} instead
+interpret e-graphs as string diagrams for semilattice-enriched cartesian
+categories.  E-classes are represented by joins, sharing by cartesian copying,
+and cycles by trace.  
+E-graph operations are then interpreted as string-diagram rewriting,
+formalised as double-pushout rewriting of hypergraphs.  This account allows
+e-graphs to be generalised from cartesian theories to symmetric monoidal
+theories with genuinely multi-output generators, such as functions returning
+joint probability distributions.  Hypergraphs are particularly useful in
+this setting because their isomorphisms absorb many of the structural
+equations of symmetric monoidal categories.
+
+We develop the type-theoretic counterpart of this account: a calculus in which
+an e-graph is a term and equality saturation is term rewriting.  The
+semilattice join $M\join N$ records two members of an e-class; an explicit
+\textbf{let} records sharing; and \textbf{letrec} records cyclic sharing.
+Unlike a point-free syntax with explicit identities and composition, the
+calculus absorbs the unit and associativity laws of composition into variables
+and substitution. 
+
+\begin{figure}[t]
+  \centering
+  \adjustbox{width=\textwidth}{
+    \tikzfig{figures/e-graph-example-2}
+  }
+  \caption{Equality saturation, conventional e-graphs, and their
+    string-diagram representations~\cite[Fig.~1]{tiurin2025equivalencehypergraphsdporewriting}.}
+  \label{fig:e-graph-example}
+\end{figure}
+
+\Cref{fig:e-graph-example} recalls a standard equality-saturation example.
+Each column shows a term (or rewrite rule), its e-graph, and the corresponding
+string diagram.  An e-class, drawn as a dashed box, represents a set of
+equivalent terms.  Its e-nodes---the round boxes within it---record the
+possible root operations and refer to other e-classes as children.
+Choosing one e-node from each e-class extracts a term.  In column~(b), the rule
+$x*2\rightsquigarrow x\mathbin{<\!\!<}1$ creates a non-singleton class while
+retaining the shared occurrences of $a$ and $2$.
+Each rewrite rule instantiates its variables with matching e-classes.  In
+column~(b), for example, $x$ is instantiated with the class containing $a$;
+the other classes are matched by their e-nodes.  The right-hand side is then
+added using the same instantiation, and its root class is merged with that of
+the left-hand side.  In string diagrams, dashed boxes represent the
+semilattice structure on hom-sets, while the cartesian copy $\comonoid$ and
+delete $\counit$ generators express sharing and discarded inputs.  Every
+component of a dashed box consequently has the same context.
+
+The merge from (d) to (e) makes the class containing $a$ recursive.  The
+resulting e-graph represents infinitely many finite unfoldings, including
+$a$, $a*1$, and $((a*2)/2)*1$.  In the string diagram this feedback is a
+trace.  Thus the two features that are invisible in a plain set-of-terms
+semantics---sharing and cyclic sharing---are explicit categorical structure.
+Extracting a term from an e-graph means choosing an e-node and recursively
+following its children.  In a string diagram one instead extracts a component
+by rewriting; following its wires may require, for example, sliding for the
+trace and naturality of deletion.
+
+Our terms expose the same structure syntactically.  The two most illustrative
+columns of \Cref{fig:e-graph-example} become the terms in
+\Cref{lst:terms-e-graph}.
+\begin{listing*}[t]
+\centering
+\begin{minipage}[t]{0.43\textwidth}
+  \begin{minted}[escapeinside=||]{haskell}
+let x = a in
+let z = 2 in
+let e = x * z |$\join$| x << 1 in
+  e / z
+  \end{minted}
+  \subcaption*{(b) Acyclic sharing}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.53\textwidth}
+  \begin{minted}[escapeinside=||]{haskell}
+let z = 2 in
+let w = 1 in
+|\kw{letrec}| x =
+  (let e = x * z |$\join$| x << w in e / z)
+  |$\join$| (let c = z / z |$\join$| w in x * c)
+  |$\join$| a
+in x
+  \end{minted}
+  \subcaption*{(e) Cyclic sharing}
+\end{minipage}
+\caption{Terms for e-graphs (b) and (e) of
+  \Cref{fig:e-graph-example}.}
+\label{lst:terms-e-graph}
+\end{listing*}
+In~(b), the binding of $e$ names a whole e-class, so the division consumes one
+shared class rather than two duplicated alternatives.  In~(e), the variable
+$x$ occurs in its own defining class, and \textbf{letrec} makes that cycle
+finite in the syntax.  These examples motivate the two principal extensions
+of the core calculus developed below.  We work with representable
+semilattice-enriched multicategories, encompassing both the symmetric
+monoidal and cartesian settings used by Tiurin et
+al.~\cite{tiurin2025equivalencehypergraphsdporewriting}.
+
+\subsection{Contributions}
+
+We make the following contributions.
+\begin{itemize}
+  \item We give a type theory for representable $\catname{SLat}$-multicategories
+  (\Cref{def:s_lat_type_theory}).  Although its distributive rules make
+  derivations non-unique, we prove coherence modulo permutation of join
+  introduction, define substitution on derivations, and prove derivation
+  independence, the substitution laws, and multilinearity
+  (\Cref{theorem:coherence},
+  \Cref{prop:subst_derivation_independence}, and
+  \Cref{lemma:subst_properties}).
+  The resulting calculus presents the free representable
+  $\catname{SLat}$-multicategory (\Cref{theorem:free_slat_multicat}).
+
+  \item We extend the calculus with \textbf{let} for explicit sharing and
+  \textbf{letrec} for cyclic sharing
+  (\Cref{def:explicit_sharing,def:recursive_sharing}).  The latter is
+  interpreted by trace; because trace need not preserve joins, we develop a
+  binding-sensitive coherence and substitution argument and prove the
+  corresponding freeness theorem (\Cref{theorem:free_traced_slat}).
+\end{itemize}

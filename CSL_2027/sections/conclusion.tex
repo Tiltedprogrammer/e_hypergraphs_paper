@@ -1,0 +1,38 @@
+\section{Conclusion}
+
+We have developed an internal language for representable
+semilattice-enriched multicategories.  Its distributive rules absorb
+multilinearity into the syntax, at the cost of non-unique derivations.  We
+identify derivations by permutation equivalence and define substitution on
+them; its result is derivation-independent up to the semilattice equations and
+satisfies the multicategory laws.  The quotient calculus presents the free
+representable $\catname{SLat}$-multicategory on a multigraph.
+
+In the cartesian instance, $\join$ collects the representatives belonging to
+an e-class, and the equations of an e-graph presentation become equations or
+rewrite rules in the calculus.  Equality saturation can therefore be viewed
+as term rewriting modulo the structural equations of the type theory.
+
+The definitional extension \textbf{let} records acyclic sharing without
+changing the category.  The recursive \textbf{letrec} captures cyclic
+e-graphs; its recursive joins remain protected because trace need not preserve
+joins.  This calculus presents the free traced cartesian representable
+$\catname{SLat}$-multicategory, equivalently its traced cartesian monoidal
+form.
+
+This gives a syntactic counterpart to the string-diagram semantics of Tiurin
+et al.~\cite{tiurin2025equivalencehypergraphsdporewriting}, and a foundation
+for further type-theoretic accounts of e-graphs and equality saturation.
+
+\paragraph{Future work.}
+Finally, we speculate that this work may lay some of the mathematical groundwork 
+for programming languages with e-graphs built in as a primitive concept.
+Just as the simply typed lambda calculus underlies the design of functional 
+programming languages, a type theory of the kind developed here could inform the 
+design of a language where equality saturation is not an external optimization 
+pass but an intrinsic part of the language's evaluation semantics---one where 
+terms natively denote equivalence classes of programs rather than individual 
+programs.
+Adding functions to our type theory is routine as they only require a corresponding quotioenting for the universal property of a closed multicategory.
+We leave the development of such a language as an ambitious direction for future 
+work.
