@@ -6,18 +6,21 @@ Therefore, the missing ingredient is the categorical interpretation of a term de
 Since two terms can be identified only if they have the same type, this amounts to extra structure on the hom-set in which these terms live.
 This is where we appeal to enriched category theory.
 
-Enriched categories were introduced by~\cite{EilenbergKellyClosedCategories} as a generalisation of ordinary categories in which hom-sets (ignoring the size issues) are replaced by objects of a monoidal category $\mathcal{V}$, called the base of enrichment. 
-The first striking example of enrichment is the category of metric spaces, which is enriched over $([0,\infty], \ge)$, the extended non-negative reals with the reversed order, with addition as the monoidal product and $0$ as the unit.
-It resulted in a formulation of more general metric spaces and provided categorical insights into the theory of metric spaces and feeds ideas back into category theory~\cite{lawvere_metric_1973}.
-In this thesis the base is the category of join-semilattices, which we argue is a natural setting for interpreting several equivalent terms simultaneously.
-None of the category theory in this chapter is new: our purpose is to assemble standard results---enriched categories and their monoidal, closed, and change-of-base structure---for this specific base, and to record the concrete form each takes for join-semilattices, since that is what the later chapters rely on.
+Enriched categories were introduced by Eilenberg and Kelly~\cite{EilenbergKellyClosedCategories} as a generalisation of ordinary categories in which hom-sets (ignoring the size issues) are replaced by objects of a monoidal category $\mathcal{V}$, called the base of enrichment. 
+An early striking example of enrichment is given by the categories of generalised metric spaces, with each seen as a category enriched over $([0,\infty], \ge, +, 0)$---the extended non-negative reals with the reversed order, with addition as the monoidal product and $0$ as the unit.
+In addition to allowing for a more general formulation of metric spaces, this view provided categorical insights into the theory of metric spaces and fed ideas back into category theory~\cite{lawvere_metric_1973}.
+In this thesis the base for enrichment is the category of join-semilattices, which we argue is a natural setting for interpreting several equivalent terms simultaneously.
+None of the general category theory in this chapter is new, but the particular case study using this base is novel. 
+Our purpose is to assemble standard results---enriched categories and their monoidal, closed, and change-of-base structures---for this specific base, and to record the concrete form each takes for join-semilattices, since that is what the later chapters rely on.
 We assume familiarity with basic category theory and monoidal categories.
 
 \paragraph{Notation.}
 We use standard categorical notation: $\mathcal{C}$ denotes a category, $A,B,C$
 its objects and $f,g,h$ its morphisms, with $\obj{\mathcal{C}}$ for the
 collection of objects and $\mathcal{C}(A,B)$ for the hom-set of morphisms
-$A \to B$. Composition is written $g \circ f$ (for $f : A \to B$ and
+$A \to B$. 
+We will also occasionally use $\mor{\mathcal{C}}$ for the collection of morphisms of $\mathcal{C}$.
+Composition is written $g \circ f$ (for $f : A \to B$ and
 $g : B \to C$) and the identity on $A$ is $\id_A$. We write $\defeq$ for
 ``is defined to be'', and set category names in sans serif, as in
 $\catname{Set}$ and $\catname{SLat}$.
@@ -27,14 +30,15 @@ for the associator and the left and right unitors, and $\sym$ for the symmetry.
 To distinguish enriched categories from ordinary ones, where it matters, we
 write $\enriched{C}$, and $\enriched{C}(A,B)$ for its hom-object (an object of
 the base $\mathcal{V}$ rather than a set).
+Finally, given functors $F : \mathcal{C} \to \mathcal{D}$ and $G : \mathcal{D} \to \mathcal{C}$, we denote the fact that $F$ is left adjoint to $G$ by writing $F,G : \mathcal{C} \rightleftarrows \mathcal{D} \quad F \dashv G$.
+The rest of the notation will be defined inplace as needed.
 
-
-We start with the definition of a category of semilattices.
+We start with the definition of the category of semilattices.
 
 \section{Category of Semilattices}
 
-\begin{definition}[Semilattice]
-	A \textit{semilattice} $(S,\join)$ is a set $S$ equipped with a binary operation $\join : S \times S \to S$ satisfying the following properties:
+\begin{definition}[Semilattice]\label{def:slat}
+	A \textit{semilattice} $(S,\join)$ is a set $S$ equipped with a binary operation $\join : S \times S \to S$ satisfying the following properties for all $a,b,c \in S$:
     \begin{align*}
         a \join (b \join c) &\equiv (a \join b) \join c \quad \text{(associativity)}\\
         a \join b &\equiv b \join a \quad \text{(commutativity)}\\
@@ -42,7 +46,7 @@ We start with the definition of a category of semilattices.
     \end{align*}
 \end{definition}
 
-We will use semilattices to model e-classes of e-graphs, with $a \join b \join c$ intuitively representing an e-class with three terms $a$, $b$, and $c$.
+We will use semilattices to model e-classes of our generalised e-graphs, with $a \join b \join c$ intuitively representing an e-class with three terms $a$, $b$, and $c$.
 We do not require a unit (bottom element) for $\join$.
 A unit $u$ would satisfy $a \join b \join c \join u = a \join b \join c$ for every e-class, so $u$ would be a term belonging to every e-class of a given type---equivalently, a term equivalent to every other term of that type---and no term plays this role. 
 Requiring a unit would moreover force every hom-semilattice to contain $u$, hence to be non-empty, outlawing empty hom-objects. 
@@ -69,7 +73,7 @@ is the least upper bound.
 \end{remark}
 
 \begin{example}
-A typical example of a (non-bounded) semilattice is the set of all non-empty subsets of a given set $X$ with $\join \defeq \cup$.
+A typical example of a (unbounded) semilattice is the set of all non-empty subsets of a given set $X$ with $\join \defeq \cup$.
 \end{example}
 \begin{definition}[Semilattice homomorphism]
 	A homomorphism between two semilattices $S_{1}$ and $S_{2}$ is a map $\phi : S_1 \to S_2$ such that $\phi(s \join_{S_{1}} s') = \phi(s) \join_{S_{2}} \phi(s')$ for all $s,s' \in S_{1}$.
@@ -78,10 +82,19 @@ A typical example of a (non-bounded) semilattice is the set of all non-empty sub
 \begin{definition}[Category of semilattices]
 	Semilattices with their respective homomorphisms form a category that we denote $\catname{SLat}$.
 \end{definition}
+\begin{remark}
+    This is the same data as the category $\catname{Alg}(\Sigma_{\catname{SLat}}, \mathcal{E})$ for $\Sigma_{\catname{SLat}}$ given by a single operator $\Sigma_{\catname{SLat}}(2) = \{ \join \}$ and 
+    \begin{align*}
+    \mathcal{E} = \{
+    x \join (y \join z) &\equiv (x \join y) \join z,\\
+    x \join y &\equiv y \join x,\\
+    x \join x &\equiv x\}~.
+    \end{align*}
+\end{remark}
 
 \begin{definition}\label{def:slat-tensor}
 We define a tensor product of semilattices $S_1$ and $S_2$ as follows.
-$S_1 \otimes S_2$ is the free semilattice on the set $S_1 \times S_2$ --- finite non-empty formal joins of pairs $(s_1,s_2)$ with $s_{1} \in S_{1}$, $s_2 \in S_{2}$ --- quotiented by the following bilinearity relations
+$S_1 \otimes S_2$ is the free semilattice on the set $S_1 \times S_2$---finite non-empty formal joins of pairs $(s_1,s_2)$ with $s_{1} \in S_{1}$, $s_2 \in S_{2}$---quotiented by the following bilinearity relations
 \begin{itemize}
     \item $(s_1 \join_{S_{1}} s_1', s_2) \equiv (s_1,s_2) \join_{S_{1} \otimes S_{2}} (s'_1, s_2)$
     \item $(s_1, s_2 \join_{S_{2}} s'_2) \equiv (s_1, s_2) \join_{S_{1} \otimes S_{2}} (s_1,s'_2)$
@@ -91,7 +104,7 @@ On morphisms, given $f : S_1 \to T_1$ and $g : S_2 \to T_2$, the composite $\eta
 \[
 (f \otimes g) \circ \eta_{S_1,S_2} = \eta_{T_1,T_2} \circ (f \times g).
 \]
-The unit for this tensor product is $\I = \{*\}$ --- a one-element semilattice.
+The unit for this tensor product is $\I_{\catname{SLat}} = \{*\}$---a one-element semilattice.
 \end{definition}
 
 \begin{remark}\label{rem:slat-tensor-functorial}
@@ -111,13 +124,13 @@ Both equations follow from the uniqueness in the universal property, since each 
 which is exactly the bimorphism defining $(f \circ h) \otimes (g \circ k)$. By the same reasoning the unitors $S \otimes \I \cong S$ (given by $(s,*) \mapsto s$), the associators and the symmetry are the unique homomorphisms induced by the evident bimorphisms, and the coherence axioms hold because the corresponding diagrams already commute at the level of bimorphisms, where they reduce to coherence for the cartesian product in $\catname{Set}$. This equips $\catname{SLat}$ with a symmetric monoidal structure.
 \end{remark}
 
-\begin{remark}
-    The above definition of a tensor product should not be confused with a tensor given by $\times$, which is constructed in the same vein as the tensor product above with the additional quotienting
-    \[
-        (s_1,s_2) \join_{S_1 \times S_2} (s_1',s_2') \equiv (s_1 \join_{S_1} s_1', s_2 \join_{S_2} s_2')~.
-    \]
-    The reason for using the former construction is that it has better theoretical properties, in particular, the free semilattice functor is strong monoidal (\cref{cor:slat-free-monoidal}).
-\end{remark}
+% \begin{remark}\label{remark:slat-cartesian-product}
+%     The above definition of a tensor product should not be confused with a tensor given by the binary product $\times$, which is constructed in the same vein as the tensor product above with the additional quotienting
+%     \[
+%         (s_1,s_2) \join_{S_1 \times S_2} (s_1',s_2') \equiv (s_1 \join_{S_1} s_1', s_2 \join_{S_2} s_2')~.
+%     \]
+%     The reason for using the former construction is that it has better theoretical properties, in particular, the free semilattice functor is strong monoidal (\cref{cor:slat-free-monoidal}).
+% \end{remark}
 
 \begin{definition}\label{def:slat-internal-hom}
 For semilattices $S_1$ and $S_2$, the \emph{internal hom} $[S_1, S_2]$ is the set $\catname{SLat}(S_1, S_2)$ of homomorphisms $S_1 \to S_2$, made into a semilattice by the pointwise join
@@ -154,26 +167,105 @@ The above is a special case of the result by Keigher~\cite{keigher_symmetric_nod
 
 Intuitively, the above functor returns the underlying set of a given semilattice $S$ as each morphism from $\{*\} \to S$ picks out an element of $S$.
 
+\begin{proposition}
+The category $\catname{SLat}$ is complete and cocomplete and $U$ creates limits.
+\end{proposition}
+\begin{proof}
+$\catname{SLat} = \catname{Alg}(\Sigma_{\catname{SLat}}, \mathcal{E})$, whose signature has a single operation of finite arity.
+Categories of algebras for a finitary signature are complete and cocomplete, with limits created by the forgetful functor; see, for example~\cite[Thm. 3.4.5, Prop. 3.4.1]{Borceux_1994}.
+\end{proof}
+\begin{remark}
+The above presentation makes computing limits in $\catname{SLat}$ straightforward.
+Let $(S_1, s_1)$ and $(S_2, s_2)$ be two semilattices in the sense of~\cref{def:sigma-alg}.
+Their underlying sets are $S_1$ and $S_2$ respectively, and their product in $\catname{SLat}$ is induced by the product $P \defeq S_1 \times S_2$ in $\catname{Set}$.
+$P$ has as elements pairs $(s_1, s_2)$ with $s_1 \in S_1$ and $s_2 \in S_2$.
+The structure of a $\Sigma$-algebra on $P$, i.e., the map $\Sigma(2) \times P^2 \to P$ is given by the pairing $\langle s^2_1, s^2_2 \rangle$ or maps $s^2_1 : \Sigma(2) \times S_1^2 \to S_1$ and $s^2_2 : \Sigma(2) \times S_2^2 \to S_2$.
+This is given by the universal property of the product in $\catname{Set}$ since 
+% https://q.uiver.app/#q=WzAsNixbMSwwLCJcXFNpZ21hKDIpIFxcdGltZXMgU14yXzEiXSxbMywwLCJTXzEiXSxbMCwxLCJcXFNpZ21hKDIpIFxcdGltZXMgUF4yIl0sWzEsMiwiXFxTaWdtYSgyKVxcdGltZXMgU14yXzIiXSxbMywyLCJTXzIiXSxbMiwxLCJQIl0sWzAsMSwic18xIl0sWzIsMCwiXFxpZCBcXHRpbWVzXFxwaV8xXjIiXSxbMiwzLCJcXGlkIFxcdGltZXMgXFxwaV4yXzIiLDJdLFszLDQsInNfMiJdLFsyLDUsIlxcbGFuZ2xlIHNfMV4yLCBzXzJeMlxccmFuZ2xlIl0sWzUsMSwiXFxwaV8xIl0sWzUsNCwiXFxwaV8yIiwyXV0=
+\[\begin{tikzcd}
+	& {\Sigma(2) \times S^2_1} && {S_1} \\
+	{\Sigma(2) \times P^2} && P \\
+	& {\Sigma(2)\times S^2_2} && {S_2}
+	\arrow["{s_1}", from=1-2, to=1-4]
+	\arrow["{\id \times\pi_1^2}", from=2-1, to=1-2]
+	\arrow["{\langle s_1^2, s_2^2\rangle}", from=2-1, to=2-3]
+	\arrow["{\id \times \pi^2_2}"', from=2-1, to=3-2]
+	\arrow["{\pi_1}", from=2-3, to=1-4]
+	\arrow["{\pi_2}"', from=2-3, to=3-4]
+	\arrow["{s_2}", from=3-2, to=3-4]
+\end{tikzcd}\]
+is a cone over a diagram $D$ with the apex $\Sigma(2) \times P^2$; the same universal property shows that $\pi_1$ and $\pi_2$ are homomorphisms.
+This, in particular, means that $\join$ in $P$ is given componentwise, i.e., $(a_1, a_2) \join (b_1, b_2) = (a_1 \join_{S_1} b_1, a_2 \join_{S_2} b_2)$.
+Associativity, commutativity and idempotence of $\join$ in $P$ then follow componentwise from those of $S_i$: $\pi_i \circ \llbracket x \join (y \join z) \rrbracket_{P} = \llbracket x \join (y \join z) \rrbracket_{S_i} \circ \pi_i^3 = \llbracket (x \join y) \join z \rrbracket_{S_i} \circ \pi_i^3 = \pi_i \circ \llbracket (x \join y) \join z \rrbracket_{P}$ and since $\pi_i$ are jointly monic, we have $\llbracket x \join (y \join z) \rrbracket_{P} = \llbracket (x \join y) \join z \rrbracket_{P}$.
+\end{remark}
+\begin{remark}
+Same reasoning gives us that $\I_{\catname{SLag}}$ is the terminal object in $\catname{SLat}$, since one element set $\{*\}$ is the terminal object in $\catname{Set}$.
+\end{remark}
+Colimits, however, are a different story: the result above proves that they exist, but gives no easy recipe to construct them.
+We will not be interested in arbitrary colimits, but we will need to understand what form the coproducts have for what follows.
+\begin{definition}[(Arbitrary) Coproduct of semilattices]
+    Let $(S_i)_{i \in X}$ be semilattices, indexed by some set $X$, and let $G \defeq \bigcoprod_{i \in X} U(S_i)$ be the disjoint union of their underlying sets.
+    Consider formal joins
+    \[
+    x_1 \join \ldots \join x_n \qquad n \geq 1,
+    \]
+    of elements $x_i$ drawn from $G$.
+    We define $\bigcoprod_{i \in X} S_i$ to be the semilattice consisting of the formal joins above, quotiented by the congruence generated by associativity, commutativity, idempotence and by the following family of relations:
+    \begin{itemize}
+        \item $s_1 \join_{S_i} s_2 \equiv s_1 \join s_2, \qquad s_1, s_2 \in S_i$,
+    \end{itemize}
+    treating $\join$ on the left as a formal symbol and $\join_{S_i}$ as an operation in $S_i$.
+    Given $[x]$ and $[y]$, equivalence classes of formal joins, we define $[x] \join [y] \defeq [x \join y]$.
+    Injections $\iota_i : S_i \to \bigcoprod_{i \in X} S_i$ are then given by sending $s \mapsto [s]$, i.e., sending to the equivalence classes induced by $\equiv$.
+    The family of relations above ensure that $\iota_i$ are homomorphisms.
+\end{definition}
+
+\begin{proposition}
+Given any other semilattice $Q$ with homomorphisms $j_i : S_i \to Q$, there is a unique homomorphism $u : \bigcoprod_{i \in X} S_i \to Q$ such that $u \circ \iota_i = j_i$ for all $i$.
+\end{proposition}
+\begin{proof}
+First note that the construction above gives certain normal forms of formal joins, in particular, the components of the join can be rearranged so that for each $i$ the components $x^{i}_j \in S_i$ are grouped together and each such a group can be viewed as a single element of $S_i$.
+That is, every equivalence class $[x]$ of formal joins has a representative of the form $s_{i_1} \join \ldots \join s_{i_n}$ picking some ordering on $X$.
+We define $u([x])$ by its action on the representives $u([x]) = u([s_{i_1} \join \ldots \join s_{i_n}]) \defeq j_{i_1}(s_{i_1}) \join \ldots \join j_{i_n}(s_{i_n})$ for $s_{i_k} \in S_{i_k}$. by noting that $[s_i] \not = [s_k]$ for $i \not = k$ and extend $u$ to formal joins componentwise: $u([s_i \join s_k]) = u([s_i] \join [s_k]) = u([s_i]) \join u([s_k]) = j_i(s_i) \join j_k(s_k)$.
+Now suppose there exists $u' \not = u$, such that $u' \circ \iota_i = j_i$ for all $i$.
+Without loss of generality, suppose $u'$ and $u$ disagree on $[s_{i_1}] \join \ldots \join [s_{i_n}]$ that is 
+\begin{align*}
+u([s_{i_1}] \join \ldots \join [s_{i_n}]) &= u([s_{i_1}]) \join \ldots \join u([s_{i_n}])\\ 
+&= j_{i_1}(s_{i_1}) \join \ldots \join j_{i_n}(s_{i_n})\\
+&\not = u'([s_{i_1}] \join \ldots \join [s_{i_n}])~.
+\end{align*}
+Since $u'$ is a homomorphism, we have
+\[
+u'([s_{i_1}] \join \ldots \join [s_{i_n}]) = u'([s_{i_1}]) \join \ldots \join u'([s_{i_n}])~,
+\]
+and therefore there exists $k$ such that $u'([s_{i_k}]) \not = j_{i_k}(s_{i_k})$.
+Recall that $[s_{i_k}] = \iota_{i_k}(s_{i_k})$, so $u'([s_{i_kj}]) = u' \circ \iota_{i_k}(s_{i_k})$.
+We have $u' \circ \iota_{i_k} = j_{i_k}$, so $u'([s_{i_k}]) = j_{i_k}(s_{i_k})$, a contradiction.
+\end{proof}
+\begin{corollary}
+In the case when $X$ is a finite set ${1, \ldots, n}$ and each $S_i = \I_{\catname{SLat}}$, the resulting coproduct is a free semilattice on $n$ generators.
+\end{corollary}
+
+So far, we have used the term \emph{free semilattice} informally, but we can now make it precise.
 \begin{proposition}[Special case of Proposition 6.4.6~\cite{Borceux_1994}]\label{prop:slat-free}
 	The forgetful functor $U : \catname{SLat} \to \catname{Set}$ has a left adjoint free functor $F : \catname{Set} \to \catname{SLat}$.
 \end{proposition}
 \begin{proof}
-	The functor $F$ is defined by letting $F(A) = \coprod_{A} \I_{\catname{SLat}}$, the coproduct of $A$-many copies of the unit semilattice.
-	The coproduct $S_{1} \coprod S_{2}$ of two semilattices has as elements the formal joins $s_{1} \join s_{2} \join \ldots \join s_{n}$ with each $s_{i}$ drawn from $S_{1}$ or $S_{2}$, quotiented by the semilattice axioms together with the relations of $S_{1}$ and $S_{2}$.
+	The functor $F$ is defined by letting $F(A) = \bigcoprod_{A} \I_{\catname{SLat}}$, the coproduct of $A$-many copies of the unit semilattice.
 	The adjunction is then given by the following natural isomorphisms
 	\begin{align*}
-		\catname{SLat}(\coprod_{A}(\I_{\catname{SLat}}), B) & \cong \prod_{A}(\catname{SLat}(\I_{\catname{SLat}}, B))       \\
+		\catname{SLat}(\bigcoprod_{A}(\I_{\catname{SLat}}), B) & \cong \prod_{A}(\catname{SLat}(\I_{\catname{SLat}}, B))       \\
 		                                                   & \cong \catname{Set}(A,\catname{SLat}(\I_{\catname{SLat}}, B)) \\
 		                                                   & \cong \catname{Set}(A, U(B))
 	\end{align*}
 	The first isomorphism holds because the contravariant hom-functor sends colimits in its first argument to limits, so the coproduct becomes a product.
-	The second is the isomorphism $\prod_{A} X \cong \catname{Set}(A, X)$. By the Yoneda lemma it suffices to give a bijection natural in $Y$:
+	The second is the isomorphism $\prod_{A} X \cong \catname{Set}(A, X)$ established by the Yoneda lemma:
 	\[
-	\catname{Set}\big(Y, \textstyle\prod_A X\big) \cong \prod_A \catname{Set}(Y, X) \cong \catname{Set}\big(\textstyle\coprod_A Y, X\big) \cong \catname{Set}(Y \times A, X) \cong \catname{Set}\big(Y, \catname{Set}(A,X)\big),
+	\catname{Set}\big(Y, \textstyle\prod_A X\big) \cong \prod_A \catname{Set}(Y, X) \cong \catname{Set}\big(\textstyle\bigcoprod_A Y, X\big) \cong \catname{Set}(Y \times A, X) \cong \catname{Set}\big(Y, \catname{Set}(A,X)\big),
 	\]
-	using, in order, the universal property of the product, that of the coproduct (with $\coprod_A Y \cong Y \times A$), and currying.
+	using, in order, the universal property of the product, that of the coproduct, and currying.
     The last bijection is the definition of $U$.
-	As all three bijections are natural in $B$, their composite exhibits $F \dashv U$.
+	As all three bijections are natural in $Y$, their composite exhibits $F \dashv U$.
 \end{proof}
 
 \begin{corollary}\label{cor:slat-free-monoidal}
@@ -182,21 +274,22 @@ Intuitively, the above functor returns the underlying set of a given semilattice
 \begin{proof}
 	We have $F(\I_{\catname{Set}}) \cong \I_{\catname{SLat}}$, and
 	\begin{align*}
-		F(A) \otimes F(B) & \cong (\coprod_{A} \I_{\catname{SLat}}) \otimes (\coprod_{B} \I_{\catname{SLat}}) \\
-		                  & \cong \coprod_{A} (\I_{\catname{SLat}} \otimes \coprod_{B} \I_{\catname{SLat}})   \\
-		                  & \cong \coprod_{A} (\coprod_{B} (\I_{\catname{SLat}} \otimes \I_{\catname{SLat}})) \\
-		                  & \cong \coprod_{A} (\coprod_{B} \I_{\catname{SLat}})                              \\
-		                  & \cong \coprod_{A \times B} \I_{\catname{SLat}}                                   \\
+		F(A) \otimes F(B) & \cong (\bigcoprod_{A} \I_{\catname{SLat}}) \otimes (\bigcoprod_{B} \I_{\catname{SLat}}) \\
+		                  & \cong \bigcoprod_{A} (\I_{\catname{SLat}} \otimes \bigcoprod_{B} \I_{\catname{SLat}})   \\
+		                  & \cong \bigcoprod_{A} (\bigcoprod_{B} (\I_{\catname{SLat}} \otimes \I_{\catname{SLat}})) \\
+		                  & \cong \bigcoprod_{A} (\bigcoprod_{B} \I_{\catname{SLat}})                              \\
+		                  & \cong \bigcoprod_{A \times B} \I_{\catname{SLat}}                                   \\
 		                  & \cong F(A \times B),
 	\end{align*}
 	naturally in $A$ and $B$, where we used that $- \otimes X$ and $X \otimes -$ preserve colimits, being left adjoints by the symmetry and monoidal closedness of $\catname{SLat}$ (\cref{prop:slat-smcc}).
 \end{proof}
 
-While a monoidal base suffices to define enriched categories, we assume that the base is symmetric monoidal closed, so that the standard category-theoretic machinery (such as the tensoring of enriched categories) is available in the enriched setting.
+All of the above properties of $\catname{SLat}$ are essentail to use it as a base for enrichment.
+We recall the notions and results of enriched category theory next.
 
 \section{Enriched Categories}
 
-\begin{definition}[Definition 6.2.1 in~\cite{Borceux_1994}]
+\begin{definition}[Def. 6.2.1 in~\cite{Borceux_1994}]
   Let $\mathcal{V} = (\mathcal{V}_{0}, \I_{\mathcal{V}}, \otimes, \lambda, \rho, \alpha)$ be a monoidal category where $\lambda$ and $\rho$ are left and right unitors and $\alpha$ is the associator.
   We define a (small) $\mathcal{V}$-enriched category $\enriched{C}$ consisting of the following data
   \begin{enumerate}
@@ -357,62 +450,209 @@ This in particular means that we can define adjunction as in any 2-category in t
 If the base of the enrichment is closed monoidal (like in our case), it is moreover possible to prove the enriched version of the Yoneda lemma and establish an equivalent definition of adjunction in terms of isomorphism of hom-objects.
 See Kelly's \textit{Basic Concepts of Enriched Category Theory}~\cite{Kelly2022BASICCO} for more details.
 
-\begin{definition}[Page 12 in~\cite{Kelly2022BASICCO}]
+\begin{definition}[{\cite[p. 12]{Kelly2022BASICCO}}, {\cite[Sec. 5.5]{cruttwell2008normed}}]\label{def:tensor_category}
     Let $\mathcal{V}$ be a symmetric monoidal category.
-    Then, for any $\mathcal{V}$-categories $\mathcal{M}$ and $\mathcal{N}$ we can define the product category $\mathcal{M} \times \mathcal{N}$ defined by the following data.
-    \paragraph{Objects.} $\obj{\mathcal{M} \times \mathcal{N}} = \obj{\mathcal{M}} \times \obj{\mathcal{N}}$.
-    \paragraph{Hom-objects.} $\mathcal{M} \times \mathcal{N}((A,B), (C,D)) = \mathcal{M}(A,C) \otimes \mathcal{N}(B,D)$.
+    Then, for any $\mathcal{V}$-categories $\mathcal{M}$ and $\mathcal{N}$ we can define the tensor $\mathcal{V}$-category $\mathcal{M} \boxtimes \mathcal{N}$ by the following data.
+    \paragraph{Objects.} $\obj{\mathcal{M} \boxtimes \mathcal{N}} = \obj{\mathcal{M}} \times \obj{\mathcal{N}}$.
+    \paragraph{Hom-objects.} $\mathcal{M} \boxtimes \mathcal{N}((A,B), (C,D)) = \mathcal{M}(A,C) \otimes \mathcal{N}(B,D)$.
     The composition is given by the top arrow in
     % https://q.uiver.app/#q=WzAsMyxbMCwwLCIoXFxtYXRoY2Fse019KEIsRSkgXFxvdGltZXMgXFxtYXRoY2Fse059KEQsRikpIFxcb3RpbWVzIChcXG1hdGhjYWx7TX0oQSxCKSBcXG90aW1lcyBcXG1hdGhjYWx7Tn0oQyxEKSkiXSxbMCwyLCIoXFxtYXRoY2Fse019KEIsRSkgXFxvdGltZXMgXFxtYXRoY2Fse019KEEsQikpIFxcb3RpbWVzIChcXG1hdGhjYWx7Tn0oRCxGKSBcXG90aW1lcyBcXG1hdGhjYWx7Tn0oQyxEKSkiXSxbMiwwLCJcXG1hdGhjYWx7TX0oQSxFKSBcXG90aW1lcyBcXG1hdGhjYWx7Tn0oQyxGKSJdLFswLDEsIm0iLDJdLFsxLDIsIlxcY2lyY197XFxtYXRoY2Fse019fSBcXG90aW1lcyBcXGNpcmNfe1xcbWF0aGNhbHtOfX0iLDJdLFswLDIsIlxcY2lyY197XFxtYXRoY2Fse019IFxcdGltZXMgXFxtYXRoY2Fse059fSJdXQ==
 \[\begin{tikzcd}
 	{(\mathcal{M}(B,E) \otimes \mathcal{N}(D,F)) \otimes (\mathcal{M}(A,B) \otimes \mathcal{N}(C,D))} && {\mathcal{M}(A,E) \otimes \mathcal{N}(C,F)} \\
 	\\
 	{(\mathcal{M}(B,E) \otimes \mathcal{M}(A,B)) \otimes (\mathcal{N}(D,F) \otimes \mathcal{N}(C,D))}
-	\arrow["{\circ_{\mathcal{M} \times \mathcal{N}}}", from=1-1, to=1-3]
+	\arrow["{\circ_{\mathcal{M} \boxtimes \mathcal{N}}}", from=1-1, to=1-3]
 	\arrow["m"', from=1-1, to=3-1]
 	\arrow["{\circ_{\mathcal{M}} \otimes \circ_{\mathcal{N}}}"', from=3-1, to=1-3]
 \end{tikzcd}
 \]
 where $m$ is the canonical isomorphism that interchanges the two middle factors, built from the associator $\alpha$ and the symmetry $\sym$.
-The identity is given by the morphism
-\[
-\I \xrightarrow{\cong} \I \otimes \I \xrightarrow{j_{\mathcal{M}} \otimes j_{\mathcal{N}}} \mathcal{M}(A,A) \otimes \mathcal{N}(B,B)
-\]
+    The identity is given by the morphism
+    \[
+    \I \xrightarrow{\cong} \I \otimes \I \xrightarrow{j_{\mathcal{M}} \otimes j_{\mathcal{N}}} \mathcal{M}(A,A) \otimes \mathcal{N}(B,B)
+    \]
+    \paragraph{Functors.}
+    Given $\mathcal{V}$-functors $F : \mathcal{M} \to \mathcal{M}'$ and
+    $G : \mathcal{N} \to \mathcal{N}'$, their tensor
+    \[
+        F \boxtimes G : \mathcal{M} \boxtimes \mathcal{N}
+        \to \mathcal{M}' \boxtimes \mathcal{N}'
+    \]
+    is defined on objects by $(F \boxtimes G)(A,B) = (FA,GB)$ and on
+    hom-objects by
+    \[
+        F_{A,C} \otimes G_{B,D} :
+        \mathcal{M}(A,C) \otimes \mathcal{N}(B,D)
+        \to
+        \mathcal{M}'(FA,FC) \otimes \mathcal{N}'(GB,GD).
+    \]
+    \paragraph{Natural transformations.}
+    Given $\mathcal{V}$-natural transformations $\alpha : F \Rightarrow F'$
+    and $\beta : G \Rightarrow G'$, define
+    $\alpha \boxtimes \beta : F \boxtimes G \Rightarrow F' \boxtimes G'$ by
+    the components
+    \[
+        \I_{\mathcal{V}}
+        \xrightarrow{\cong}
+        \I_{\mathcal{V}} \otimes \I_{\mathcal{V}}
+        \xrightarrow{\alpha_A \otimes \beta_B}
+        \mathcal{M}'(FA,F'A) \otimes \mathcal{N}'(GB,G'B).
+    \]
+    These assignments define a 2-functor
+    \[
+        \boxtimes :
+        \mathcal{V}\text{-}\catname{Cat} \times
+        \mathcal{V}\text{-}\catname{Cat}
+        \to
+        \mathcal{V}\text{-}\catname{Cat}.
+    \]
+    Its unit is the one-object $\mathcal{V}$-category $\enriched{I}$ whose
+    unique hom-object is $\I_{\mathcal{V}}$, with identity
+    $\id_{\I_{\mathcal{V}}}$ and composition given by either unitor
+    $\I_{\mathcal{V}} \otimes \I_{\mathcal{V}} \cong \I_{\mathcal{V}}$.
+    The associator
+    \[
+        \mathfrak{a}_{\mathcal{L},\mathcal{M},\mathcal{N}} :
+        (\mathcal{L} \boxtimes \mathcal{M}) \boxtimes \mathcal{N}
+        \to
+        \mathcal{L} \boxtimes (\mathcal{M} \boxtimes \mathcal{N})
+    \]
+    reassociates triples of objects and acts on hom-objects by the
+    associator of $\mathcal{V}$. The left and right unitors are defined
+    analogously from those of $\mathcal{V}$.
+
+    The symmetry
+    \[
+        \mathfrak{s}_{\mathcal{M},\mathcal{N}} :
+        \mathcal{M} \boxtimes \mathcal{N}
+        \to
+        \mathcal{N} \boxtimes \mathcal{M}
+    \]
+    sends $(A,B)$ to $(B,A)$ and acts on hom-objects by
+    \[
+        \sym_{\mathcal{M}(A,C),\mathcal{N}(B,D)} :
+        \mathcal{M}(A,C) \otimes \mathcal{N}(B,D)
+        \to
+        \mathcal{N}(B,D) \otimes \mathcal{M}(A,C).
+    \]
+    The associators, unitors and symmetries above assemble into 2-natural
+    isomorphisms. Their naturality and coherence axioms follow from the
+    corresponding axioms in $\mathcal{V}$. Thus
+    $\boxtimes$, $\enriched{I}$, and the induced associators, unitors and
+    symmetry make $\mathcal{V}\text{-}\catname{Cat}$ a symmetric monoidal
+    2-category.
 \end{definition}
 
 \begin{remark}
-    Note that symmetry of $\mathcal{V}$ is essential to define a tensor product in a $\mathcal{V}$-category.
+    A braiding on $\mathcal{V}$ suffices to define the tensor product
+    $\boxtimes$, since the composition above only needs to interchange the
+    two middle factors. Symmetry of $\mathcal{V}$ makes the resulting
+    monoidal structure on $\mathcal{V}\text{-}\catname{Cat}$ symmetric.
 \end{remark}
+
+A \emph{product} category is then a special case of a tensor category.
+\begin{definition}\label{def:product_category}
+A product category of two $\mathcal{V}$-categories $\enriched{M}$ and $\enriched{N}$ is a $\mathcal{V}$-category $\enriched{M} \times \enriched{N}$ given by the following data.
+\paragraph{Objects.} $\obj(\enriched{M} \times \enriched{N}) = \obj(\enriched{M}) \times \obj(\enriched{N})$.
+\paragraph{Hom-objects.} $(\enriched{M} \times \enriched{N})((A,B), (C,D)) = \enriched{M}(A,C) \times_{\mathcal{V}} \enriched{N}(B,D)$.
+Composition is given by the top arrow in
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCIoXFxtYXRoY2Fse019KEIsRSkgXFx0aW1lcyBcXG1hdGhjYWx7Tn0oRCxGKSkgXFxvdGltZXMgKFxcbWF0aGNhbHtNfShBLEIpIFxcdGltZXMgXFxtYXRoY2Fse059KEMsRCkpIl0sWzEsMCwiXFxtYXRoY2Fse019KEEsRSkgXFx0aW1lcyBcXG1hdGhjYWx7Tn0oQyxGKSBcXGRlZmVxIFxcbWF0aGNhbHtNfVxcdGltZXNcXG1hdGhjYWx7Tn0oKEEsQyksKEUsRikpIl0sWzAsMiwiKFxcbWF0aGNhbHtNfShCLEUpIFxcb3RpbWVzXFxtYXRoY2Fse019KEEsQikpIFxcdGltZXMgKFxcbWF0aGNhbHtOfShELEYpIFxcb3RpbWVzIFxcbWF0aGNhbHtOfShDLEQpKSJdLFswLDEsIlxcY2lyY197XFxtYXRoY2Fse019XFx0aW1lc1xcbWF0aGNhbHtOfX0iXSxbMCwyLCJcXGxhbmdsZSBcXHBpXzEgXFxvdGltZXMgXFxwaV8xLCBcXHBpXzIgXFxvdGltZXMgXFxwaV8yICBcXHJhbmdsZSIsMl0sWzIsMSwiXFxjaXJjX3tcXG1hdGhjYWx7TX19IFxcdGltZXMgXFxjaXJjX3tcXG1hdGhjYWx7Tn19IiwyXV0=
+\[\begin{tikzcd}
+	{(\mathcal{M}(B,E) \times \mathcal{N}(D,F)) \otimes (\mathcal{M}(A,B) \times \mathcal{N}(C,D))} & {\mathcal{M}(A,E) \times \mathcal{N}(C,F) \defeq \mathcal{M}\times\mathcal{N}((A,C),(E,F))} \\
+	\\
+	{(\mathcal{M}(B,E) \otimes\mathcal{M}(A,B)) \times (\mathcal{N}(D,F) \otimes \mathcal{N}(C,D))}
+	\arrow["{\circ_{\mathcal{M}\times\mathcal{N}}}", from=1-1, to=1-2]
+	\arrow["{\langle \pi_1 \otimes \pi_1, \pi_2 \otimes \pi_2  \rangle}"', from=1-1, to=3-1]
+	\arrow["{\circ_{\mathcal{M}} \times \circ_{\mathcal{N}}}"', from=3-1, to=1-2]
+\end{tikzcd}\]
+The identity is given by the morphism
+\[
+\I \xrightarrow{\langle \id_{\mathcal{M}}, \id_{\mathcal{N}} \rangle} \mathcal{M}(A,A) \times \mathcal{N}(B,B).
+\]
+The rest follows similarly to the tensor category case.
+\end{definition}
 
 \begin{definition}
 \label{def:monoidal_enriched_category}
-    Let $\enriched{C}$ be a $\mathcal{V}$-category.
-    $\enriched{C}$ is a monoidal $\mathcal{V}$-category if it is equipped with the following functors
+    Let $\mathcal{V}$ be a symmetric monoidal category and let
+    $\enriched{C}$ be a $\mathcal{V}$-category.
+    A monoidal structure on $\enriched{C}$ consists of $\mathcal{V}$-functors
     \[
-    \enriched{C} \times \enriched{C} \xrightarrow{\enriched{\otimes}} \enriched{C} \qquad \enriched{I} \xrightarrow{I_{\enriched{C}}} \enriched{C}
+        \enriched{C} \boxtimes \enriched{C}
+        \xrightarrow{\enriched{\otimes}}
+        \enriched{C}
+        \qquad
+        \enriched{I}
+        \xrightarrow{I_{\enriched{C}}}
+        \enriched{C},
     \]
-    together with appropriate associators and unitors, where $\enriched{I}$ is the unit $\mathcal{V}$-category with one object and hom-object given by $\I_{\mathcal{V}}$.
-    The definition of composition in $\enriched{C} \times \enriched{C}$ together with functoriality of $\enriched{\otimes}$ results in the following diagram
+    together with invertible $\mathcal{V}$-natural transformations whose
+    components are the associators and unitors
+    \[
+        a_{A,B,C} :
+        (A \enriched{\otimes} B) \enriched{\otimes} C
+        \to
+        A \enriched{\otimes} (B \enriched{\otimes} C),
+        \qquad
+        \ell_A : I_{\enriched{C}} \enriched{\otimes} A \to A,
+        \qquad
+        r_A : A \enriched{\otimes} I_{\enriched{C}} \to A,
+    \]
+    satisfying the pentagon and triangle axioms. Here $\enriched{I}$ is
+    the unit $\mathcal{V}$-category defined above, and the unit functor
+    selects the object $I_{\enriched{C}}$ of $\enriched{C}$.
+
+    A symmetric monoidal $\mathcal{V}$-category is additionally equipped
+    with an invertible $\mathcal{V}$-natural transformation
+    \[
+        \gamma :
+        \enriched{\otimes}
+        \Rightarrow
+        \enriched{\otimes} \circ
+        \mathfrak{s}_{\enriched{C},\enriched{C}},
+    \]
+    with components
+    \[
+        \gamma_{A,B} :
+        A \enriched{\otimes} B
+        \to
+        B \enriched{\otimes} A,
+    \]
+    satisfying the usual hexagon axioms and the symmetry equation
+    \[
+        \gamma_{B,A} \circ \gamma_{A,B}
+        =
+        \id_{A \enriched{\otimes} B}.
+    \]
+
+    The definition of composition in
+    $\enriched{C} \boxtimes \enriched{C}$ together with functoriality of
+    $\enriched{\otimes}$ results in the following diagram
     % https://q.uiver.app/#q=WzAsNCxbMCwwLCIoXFxlbnJpY2hlZHtDfShCLEUpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oRCxGKSkgXFxvdGltZXMgKFxcZW5yaWNoZWR7Q30oQSxCKSBcXG90aW1lcyBcXGVucmljaGVke0N9KEMsRCkpIl0sWzMsMCwiXFxlbnJpY2hlZHtDfShBLEUpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQyxGKSJdLFswLDIsIlxcZW5yaWNoZWR7Q30oQiBcXGVucmljaGVke1xcb3RpbWVzfSBELCBFIFxcZW5yaWNoZWR7XFxvdGltZXN9IEYpIFxcb3RpbWVzIFxcZW5yaWNoZWR7Q30oQSBcXGVucmljaGVke1xcb3RpbWVzfSBDLCBCIFxcZW5yaWNoZWR7XFxvdGltZXN9IEQpIl0sWzMsMiwiXFxlbnJpY2hlZHtDfShBIFxcZW5yaWNoZWR7XFxvdGltZXN9IEMsIEUgXFxlbnJpY2hlZHtcXG90aW1lc30gRikiXSxbMCwxLCJcXGNpcmN7XFxlbnJpY2hlZHtDfSBcXHRpbWVzIFxcZW5yaWNoZWR7Q319Il0sWzAsMiwiXFxlbnJpY2hlZHtcXG90aW1lc30gXFxvdGltZXMgXFxlbnJpY2hlZHtcXG90aW1lc30iLDJdLFsxLDMsIlxcZW5yaWNoZWR7XFxvdGltZXN9Il0sWzIsMywiXFxjaXJjX3tcXGVucmljaGVke0N9fSIsMl1d
 \[\begin{tikzcd}
 	{(\enriched{C}(B,E) \otimes \enriched{C}(D,F)) \otimes (\enriched{C}(A,B) \otimes \enriched{C}(C,D))} &&& {\enriched{C}(A,E) \otimes \enriched{C}(C,F)} \\
 	\\
 	{\enriched{C}(B \enriched{\otimes} D, E \enriched{\otimes} F) \otimes \enriched{C}(A \enriched{\otimes} C, B \enriched{\otimes} D)} &&& {\enriched{C}(A \enriched{\otimes} C, E \enriched{\otimes} F)}
-	\arrow["{\circ_{\enriched{C} \times \enriched{C}}}", from=1-1, to=1-4]
+	\arrow["{\circ_{\enriched{C} \boxtimes \enriched{C}}}", from=1-1, to=1-4]
 	\arrow["{\enriched{\otimes} \otimes \enriched{\otimes}}"', from=1-1, to=3-1]
 	\arrow["{\enriched{\otimes}}", from=1-4, to=3-4]
 	\arrow["{\circ_{\enriched{C}}}"', from=3-1, to=3-4]
 \end{tikzcd}\]
-meaning that $\enriched{\otimes}$ distributes over $\otimes$.
+    This is the enriched interchange law expressing that
+    $\enriched{\otimes}$ preserves composition.
 \end{definition}
 
 \begin{example}
-    For an $\catname{SLat}$-category $\enriched{C}$, the hom-objects of $\enriched{C} \times \enriched{C}$ are tensor products of semilattices.
+    For an $\catname{SLat}$-category $\enriched{C}$, the hom-objects of
+    $\enriched{C} \boxtimes \enriched{C}$ are tensor products of
+    semilattices.
     This, together with the tensor being a homomorphism of semilattices, means that we have the following property for the tensor product
     \[
     (f \join g) \otimes h = f \otimes h \join g \otimes h,
     \]
-    because in a tensor product of semilattices we have that $(f \join g, h) = (f,h) \join (g,h)$ so the action of the tensor product functor must agree on both sides.
+    because in a tensor product of semilattices we have
+    $[(f \join g, h)] = [(f,h)] \join [(g,h)]$, so the action of the
+    tensor product functor must agree on both sides.
 \end{example}
 
 \begin{definition}
@@ -441,7 +681,7 @@ meaning that $\enriched{\otimes}$ distributes over $\otimes$.
 \end{corollary}
 
 Given an ordinary $\catname{Set}$-enriched category $\mathcal{C}$, it is possible to turn it into an $\catname{SLat}$-enriched category $\enriched{C}$ in a canonical way, which is an instance of a more general translation defined below.
-Recalling the interpretation of terms as morphisms in a category with finite products, the application of this canonical translation extends the interpretation with the notion of multiple equivalent terms within a single morphism.
+Recalling the interpretation of terms as morphisms in a given category, the application of this canonical translation extends the interpretation with the notion of multiple equivalent terms within a single morphism.
 
 \begin{definition}[Change of base. Proposition 6.4.7~\cite{Borceux_1994}]
     Let $\mathcal{V}$ and $\mathcal{W}$ be monoidal categories and let $F : \mathcal{V} \to \mathcal{W}$ be a (strong) monoidal functor.
@@ -494,8 +734,475 @@ Since in our case functor $F$ is strong monoidal, we write down the definition w
     Then, the induced 2-functor $\tilde{F} : \mathcal{V}\text{-}\catname{Cat} \to \mathcal{W}\text{-}\catname{Cat}$ maps monoidal $\mathcal{V}$-categories to monoidal $\mathcal{W}$-categories.
 \end{proposition}
 
-All the above properties are essential to give semantics to (generalised) e-graphs.
-Looking ahead, while e-graphs are interpreted as morphisms in a freely enriched category with finite products that interprets the terms over a given signature, we get the interpretation of more general notions of e-graphs by considering arbitrary tensors instead of finite products and/or by adding extra structure such as closure: the properties above ensure that this structure is preserved by the free enrichment.
+Even though the free enrichment functor $\tilde{F}$ preserves adjunctions, in general it does not guarantee that the translated adjunction corresponds to the same limit or colimit, although the latter is true if the base for enrichment is a cartesian closed category.
+To illustrate this, we need to digress into a discussion of limits in a $\mathcal{V}$-category.
+First recall the definition of an ordinary categorical limit in 1-category.
+\begin{definition}[Limit]
+Let $\mathcal{C}$ be a category and let $D : \mathcal{J} \to \mathcal{C}$ be a functor, also called a diagram.
+Let $L$ be an object of $\mathcal{C}$ and let $\Delta L : \mathcal{J} \to \mathcal{C}$ be the constant functor that maps every object of $\mathcal{J}$ to $L$ and every morphism of $\mathcal{J}$ to the $\id_{L}$.
+A cone with apex $L$ in $D$ is a natural transformation $\lambda : \Delta L \to D$, with each component being in $\mathcal{C}(L,D(j))$.
+Such natural transformations form a set $\mathrm{Cone}(L,D)$.
+A limit of $D$ is then an object $\lim D$ such that there exists an isomorphism $\mathcal{C}(L, \lim D) \cong \mathrm{Cone}(L, D)$, natural in $L$.
+Now, the set of cones $\mathrm{Cone}(L,D)$ can be equivalently expressed as a limit in $\catname{Set}$, by noting that a functor $\mathcal{C}(L,D-)$ takes each $j \in \mathcal{J}$ to the set $\mathcal{C}(L,D(j))$ and each morphism $f : j \to k$ to $\mathcal{C}(L,Di) \to \mathcal{C}(L,Dk)$ given by $Df \circ -$. 
+Take $\I$ in $\catname{Set}$ as the apex of the cone for $\mathcal{C}(L,D-)$, then it picks a single morphism out of $\mathcal{C}(L,D(j))$ and $\mathcal{C}(L,D(k))$, say $h$ and $g$ and then $Df \circ h = g$ holds iff $D$ forms a cone with apex $L$, so $D$ being a cone with apex $L$ is equivalent to $\mathcal{C}(L,D-)$ being a cone with apex $\I$.
+By the definition of a limit, we have that $\catname{Set}(S, \lim \mathcal{C}(L,D-)) \cong \mathrm{Cone}(\Delta S, \mathcal{C}(L,D-))$ and in particular we have $\catname{Set}(\I, \lim \mathcal{C}(L,D-)) \cong \mathrm{Cone}(\Delta \I, \mathcal{C}(L,D-)) \cong \mathrm{Cone}(L,D)$ and therefore $\mathrm{Cone}(L,D) \cong \lim \mathcal{C}(L,D-)$ since maps from $\I \to X$ are isomorphic to $X$.
+So we can equivalently say that $\lim D$ is an object such that 
+\[
+\mathcal{C}(L, \lim D) \cong \lim \mathcal{C}(L,D-),
+\]
+natural in $L$ and the latter is a limit in $\catname{Set}$.
+That is, an arbitrary limit in a category $\mathcal{C}$ can be characterised as a limit in $\catname{Set}$; this principle will be essential when generalising to enriched categories.
+\end{definition}
+
+\begin{remark}
+It is also possible to leverage the category of $\catname{Set}$ to compute limits in $\mathcal{C}$.
+Recall the Yoneda embedding $Y : \mathcal{C} \to [\mathcal{C}^{op}, \catname{Set}]$ that is fully faithful and reflects limits.
+Given a diagram $D : \mathcal{J} \to \mathcal{C}$, we can obtain a diagram in $[\mathcal{C}^{op}, \catname{Set}]$ by $Y \circ D : \mathcal{J} \to [\mathcal{C}^{op}, \catname{Set}]$.
+Limits in $[\mathcal{C}^{op}, \catname{Set}]$ are computed pointwise, so we can compute the limit of $Y \circ D$ in $\catname{Set}$, call it $\lim Y$; then if $\lim Y$ is representable, that is there exists an object $P$ such that $\lim Y \cong \mathcal{C}(-, P)$, then $\lim D \cong P$.
+\end{remark}
+
+\begin{example}
+Lets recall how product of two objects is defined as a limit.
+It is given by the limit of a diagram $D : \mathcal{J} \to \mathcal{C}$ where $\mathcal{J}$ has two objects $1$ and $2$ and no non-identity morphisms, so $D(1) = A$ and $D(2) = B$.
+The Yoneda says that to compute the limit of $D$ we can compute the limit of $Y \circ D$, that is the product of  $\mathcal{C}(-,A)$ and $\mathcal{C}(-,B)$.
+The latter is given by a functor mapping $X$ in $\mathcal{C}$ to the set $\mathcal{C}(X,A) \times \mathcal{C}(X,B)$.
+The requirement of representability says that $\lim D \defeq A \times B$ is an object such that
+\[
+\mathcal{C}(L, A \times B) \cong \mathcal{C}(L, A) \times \mathcal{C}(L, B).
+\]
+This is a reminiscent of the definition of a product as an adjunction: on the right is the hom-set of $\mathcal{C} \times \mathcal{C}((L, L), (A, B))$ given by a diagonal functor $\Delta : \mathcal{C} \to \mathcal{C} \times \mathcal{C}$ so that the righthand side is of the form $\mathcal{C} \times \mathcal{C}(\Delta L, (A, B))$ and the left-hand side is of the form $\mathcal{C}(L, A \times B)$ for a functor $\times : \mathcal{C} \times \mathcal{C} \to \mathcal{C}$.
+\end{example}
+
+\begin{example}
+The terminal object of $\mathcal{C}$ is then a limit of an empty diagram $D : \mathcal{J} \to \mathcal{C}$ where $\mathcal{J}$ has no objects.
+By Yoneda, this is the limit of an empty diagram in $[\mathcal{C}^{op}, \catname{Set}]$, given by a terminal object in $[\mathcal{C}^{op}, \catname{Set}]$, which is a presheaf sending each object $X$ to an singleton set $\I$---a terminal object in $\catname{Set}$.
+Representability then amounts to $\mathcal{C}(X, \lim D) \cong \I$ naturally in $X$, i.e. saying that constant functor is left adjoint to the terminal object functor.
+\end{example}
+
+Before we generalise the above discussion to enriched categories, let us note that the traditional definition of a limit using limiting cones cannot be directly generalised to the enriched setting.
+Such a definition requires a notion of a constant functor $\Delta L$, which in the unenriched case sends every object of $\mathcal{J}$ to $L \in \mathcal{C}$ and every morphism to $\id_{L}$.
+Mapping objects when $\mathcal{J}$ and $\mathcal{C}$ are $\mathcal{V}$-categories is no issue, however, the action of $\Delta$ on hom-objects must then be $\Delta_{X,Y} : \mathcal{J}(X,Y) \to \mathcal{C}(L,L)$, such that it factors as $\mathcal{J}(X,Y) \to \I_{\mathcal{V}} \xrightarrow{\id_{L}} \mathcal{C}(L,L)$.
+The maps $\mathcal{J}(X,Y) \to \I_{V}$ must furthemore be compatible with composition and identities, thus amounting to a $\mathcal{V}$-functor $\mathcal{J} \to \widebar{\mathcal{I}}$ to the unit $\mathcal{V}$-category(~\cref{def:tensor_category}).
+Such a functor exists when $\widebar{\mathcal{I}}$ is also a terminal category in $\mathcal{V}\text{-}\catname{Cat}$, but may not exist in general.
+
+The correct generalisation proceeds by considering two $\mathcal{V}$-functors $F : \mathcal{J} \to \mathcal{V}$ and $G : \mathcal{J} \to \mathcal{C}$, with $F$ being called a \emph{weight} and $G$ being a diagram.
+The apex of a cone is then an object $X$ of $\mathcal{C}$ and all cones are then given by the object of natural transformations $[F, \mathcal{C}(X, G-)]$ as per~\cref{def:enriched_natural_object}.
+Each leg of the cone is then given by the hom-object $[FK, \mathcal{C}(X, GK)]$, roughly an object of morphisms $B \to GX$ indexed by $FX$, i.e., each leg potentially contains a whole family of morphisms in the enriched case.
+The limit of $G$ weighted by $F$, written ${F,G}$ is then given by the $\mathcal{V}$-natural isomorphism
+\[
+\mathcal{C}(B, \{F,G\}) \cong [\mathcal{J}, \mathcal{V}](F, \mathcal{C}(B, G-))~.
+\]
+We will not need the full generality of weighted limits and we will focus on the special case of \emph{conical limits} below.
+
+\begin{definition}[Conical limit~{\cite[Sec. 3.8]{Kelly2022BASICCO}}]
+Let $\mathcal{C}$ be a $\mathcal{V}$-category and let $\mathcal{J}$ be an ordinary $\catname{Set}$-category.
+Let $\mathcal{C}_0 = \mathcal{V}(\I, \mathcal{C})$ be the underlying ordinary category of $\mathcal{C}$ and let $D : \mathcal{J} \to \mathcal{C}_0$ be a functor.
+A conical limit of $D$ is an object $\lim D$ such that there is a $\mathcal{V}$-natural isomorphism
+\[
+\mathcal{C}(B, \lim D) \cong \lim_{i \in \mathcal{J}} \mathcal{C}(B, D(i))~,
+\]
+with the limit on the right-hand side being the usual limit in $\mathcal{V}$.
+\end{definition}
+\begin{remark}
+The above definition can be seen as an instance of a weighted limit, by taking the weight $F : \mathcal{J}_{\mathcal{V}} \to \mathcal{V}$ be the transpose of the constant functor $\Delta\I : \mathcal{J} \to \mathcal{V}_{0}$ under the adjunction $\catname{Cat} \leftrightarrows \mathcal{V}\text{-}\catname{Cat}$, where $\mathcal{J}_{\mathcal{V}}$ is the free $\mathcal{V}$-category on $\mathcal{J}$ and $(-)_{0}$ being the underlying category 2-functor.
+The diagram $G : \mathcal{J}_{\mathcal{V}} \to \mathcal{C}$ is then obtained as a transpose of $D : \mathcal{J} \to \mathcal{C}_0$ along the same adjunction.
+By the definition of a weighted limit above, we have that
+\[
+\mathcal{C}(B, \{F,G\}) \cong [\mathcal{J}_{\mathcal{V}}, \mathcal{V}](F, \mathcal{C}(B, G-))~.
+\]
+The conical limit, on the other hand, is given by
+\begin{align}\label{eq:conical_limit_remark}
+\mathcal{C}(B, \lim D) \cong \lim_{i \in \mathcal{J}} \mathcal{C}(B, D(i))~.
+\end{align}
+Both constructions on the right-hand sides are characterised as equalizers: the first being the definition of the object of natural transformations as per~\cref{def:enriched_natural_object}, while the other being the usual limit in $\mathcal{V}_{0}$ seen as an equalizer, so we just need to conclude that the equalizers are isomorphic.
+Substituting $F$ and $\mathcal{C}(B, G-)$ for $F$ and $G$ in~\cref{def:enriched_natural_object}, we get
+\[
+\mathcal{C}(B, \{F,G\}) \cong [F, \mathcal{C}(B, G-)] \rightarrowtail \prod_{z \in \mathcal{J}} [Fz, \mathcal{C}(B, Gz)] \rightrightarrows \prod_{x,y \in \mathcal{J}_{\mathcal{V}}} [\mathcal{J}_{\mathcal{V}}(x,y), [Fx, \mathcal{C}(B, Gy)]]~,
+\]
+where the category $\mathcal{D}$ is taken to be $\mathcal{V}$ and therefore $\mathcal{D}(Fz, Gz)$ is given by the internal hom of $\mathcal{V}$.
+Recalling that $Fz = \I$ for all $z \in \mathcal{J}_{\mathcal{V}}$, we have that 
+\[
+[Fz, \mathcal{C}(B, Gz)] \cong [\I, \mathcal{C}(B, Gz)] \cong (\text{by the enriched Yoneda lemma~\ref{theorem:enriched_yoneda}}) \cong \mathcal{C}(B, Gz)~.
+\]
+Similarly, $[\mathcal{J}_{\mathcal{V}}(x,y), [Fx, \mathcal{C}(B, Gy)]] \cong [\mathcal{J}_{\mathcal{V}}(x,y) \otimes Fx, \mathcal{C}(B, Gy)] \cong [\mathcal{J}_{\mathcal{V}}(x,y), \mathcal{C}(B, Gy)]$.
+Finally recall that $\mathcal{J}_{\mathcal{V}}(x,y) \defeq \bigcoprod_{\mathcal{J}(x,y)} \I$ and therefore we have 
+\begin{align*}
+[\mathcal{J}_{\mathcal{V}}(x,y), \mathcal{C}(B, Gy)] &\cong [\bigcoprod_{\mathcal{J}(x,y)} \I, \mathcal{C}(B, Gy)]\\ 
+&\cong \\
+\text{right adjoint }& \text{preserves limits}\\
+&\cong \prod_{\mathcal{J}(x,y)} \mathcal{C}(B, Gy)
+\end{align*}
+Bringing all of this together, we have the following equalizer diagram
+\[
+[F, \mathcal{C}(B, G-)] \rightarrowtail \prod_{z \in \mathcal{J}} \mathcal{C}(B, Gz) \rightrightarrows \prod_{x,y \in \mathcal{J}} \prod_{\mathcal{J}(x,y)} \mathcal{C}(B, Gy)~.
+\]
+Computing the limit on the right in~\ref{eq:conical_limit_remark} as an equalizer gives us
+\[
+\lim_{i \in \mathcal{J}} \mathcal{C}(B, D(i)) \rightarrowtail \prod_{z \in \mathcal{J}} \mathcal{C}(B, D(z)) \rightrightarrows \prod_{u : x \to y \in \mathcal{J}} \mathcal{C}(B, D(y))~.
+\]
+Therefore, $\mathcal{C}(B, \{F, G\}) \cong [F, \mathcal{C}(B, G-)] \cong \lim_{i \in \mathcal{J}} \mathcal{C}(B, D(i))$ being equalizers over the same diagram, noting that $\prod_{x,y \in \mathcal{J}} \prod_{\mathcal{J}(x,y)} = \prod_{u : x \to y \in \mathcal{J}}$ and we have that $\{F,G\} \cong \lim D$.
+\end{remark}
+We can now generalise the above discussion to enriched categories.
+Assume that the base of enrichment $\mathcal{V}$ is a symmetric monoidal closed category that is additionally complete and cocomplete: this is the case for our running $\catname{SLat}$ base.
+In this case, $\mathcal{V}$ itself can be considered as a $\mathcal{V}$-category, taking hom-objects to be internal homs of $\mathcal{V}$.
+
+\begin{definition}[{\cite[Def. A.3.8]{Riehl_2014}}]\label{def:enriched_natural_object}
+Let $F,G : \mathcal{C} \to \mathcal{D}$ be $\mathcal{V}$-functors.
+The the $\mathcal{V}$-object for the $\mathcal{V}$-natural transformations between $F$ and $G$ is defined by the equalizer diagram
+\[
+[F,G] \rightarrowtail \prod_{z \in \mathcal{C}} \mathcal{D}(Fz,Gz) \rightrightarrows \prod_{x,y \in \mathcal{C}} [\mathcal{C}(x,y), \mathcal{D}(Fx,Gy)]
+\]
+where the two parallel arrows are given by
+% https://q.uiver.app/#q=WzAsNixbMCwxLCJcXHByb2Rfe3ogXFxpbiBcXG1hdGhjYWx7Q319XFxtYXRoY2Fse0R9KEZ6LEd6KSJdLFsyLDAsIlxcbWF0aGNhbHtEfShGeCxHeCkiXSxbMiwyLCJcXG1hdGhjYWx7RH0oRnksRHkpIl0sWzQsMCwiW1xcbWF0aGNhbHtEfShHeCxHeSksXFxtYXRoY2Fse0R9KEZ4LEd5KV0iXSxbNCwyLCJbXFxtYXRoY2Fse0R9KEZ4LEZ5KSxcXG1hdGhjYWx7RH0oRngsR3kpXSJdLFs2LDEsIltcXG1hdGhjYWx7Q30oeCx5KSxcXG1hdGhjYWx7RH0oRngsR3kpXSJdLFsxLDMsIlxcY2lyYyJdLFswLDEsIlxccGkiXSxbMCwyLCJcXHBpIiwyXSxbMiw0LCJcXGNpcmMiLDJdLFszLDUsIi0gXFxjaXJjIEdfe3gseX0iXSxbNCw1LCItIFxcY2lyYyBGX3t4LHl9IiwyXV0=
+\[\adjustbox{width=0.9\textwidth}{\begin{tikzcd}
+	&& {\mathcal{D}(Fx,Gx)} && {[\mathcal{D}(Gx,Gy),\mathcal{D}(Fx,Gy)]} && \\
+	{\prod_{z \in \mathcal{C}}\mathcal{D}(Fz,Gz)} &&&&&& {[\mathcal{C}(x,y),\mathcal{D}(Fx,Gy)]} \\
+	&& {\mathcal{D}(Fy,Dy)} && {[\mathcal{D}(Fx,Fy),\mathcal{D}(Fx,Gy)]}
+	\arrow["\circ", from=1-3, to=1-5]
+	\arrow["{- \circ G_{x,y}}", from=1-5, to=2-7]
+	\arrow["\pi", from=2-1, to=1-3]
+	\arrow["\pi"', from=2-1, to=3-3]
+	\arrow["\circ"', from=3-3, to=3-5]
+	\arrow["{- \circ F_{x,y}}"', from=3-5, to=2-7]
+\end{tikzcd}}\]
+\end{definition}
+This allows to define the enriched analogue of Yoneda lemma.
+\begin{theorem}[{\cite[Thm. A.3.11]{Riehl_2014}}]\label{theorem:enriched_yoneda}
+For any small $\mathcal{V}$-category $\mathcal{C}$, object $c \in \mathcal{C}$ and $\mathcal{V}$-functor $F : \mathcal{C} \to V$ there is a $\mathcal{V}$-natural isomorphism, natural in $c$ and $F$
+\[
+Fc \cong [\mathcal{C}(c,-), F]~.
+\]
+\end{theorem}
+Because the right-hand side is defined as a limit in $\mathcal{V}$, the $\mathcal{V}$-natural isomorphism may be established by showing that $F(c)$ is the limit for the same diagram.
+The isomorphism from right to left is given by a map
+% https://q.uiver.app/#q=WzAsNSxbMCwwLCJbXFxtYXRoY2Fse0N9KGMsLSksIEZdICJdLFsxLDAsIltcXG1hdGhjYWx7Q30oYywtKSxGXSBcXG90aW1lcyBcXEkiXSxbMywwLCJbXFxtYXRoY2Fse0N9KGMsLSksRl0gXFxvdGltZXMgXFxtYXRoY2Fse0N9KGMsYykiXSxbNCwwLCJbXFxtYXRoY2Fse0N9KGMsYyksRmNdIFxcb3RpbWVzIFxcbWF0aGNhbHtDfShjLGMpIl0sWzUsMCwiRmMiXSxbMCwxLCJcXGNvbmciLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwyLCJcXGlkX3tcXG1hdGhjYWx7Vn19IFxcb3RpbWVzIFxcaWRfe2N9Il0sWzIsMywiXFxwaV97Y30gXFxjaXJjIFxcbGFtYmRhIl0sWzMsNCwiXFxtYXRocm17ZXZ9Il1d
+\[\begin{tikzcd}
+	{[\mathcal{C}(c,-), F] } & {[\mathcal{C}(c,-),F] \otimes \I} && {[\mathcal{C}(c,-),F] \otimes \mathcal{C}(c,c)} & {[\mathcal{C}(c,c),Fc] \otimes \mathcal{C}(c,c)} & Fc
+	\arrow["\cong"{description}, draw=none, from=1-1, to=1-2]
+	\arrow["{\id_{\mathcal{V}} \otimes \id_{c}}", from=1-2, to=1-4]
+	\arrow["{\pi_{c} \circ \lambda}", from=1-4, to=1-5]
+	\arrow["{\mathrm{ev}}", from=1-5, to=1-6]
+\end{tikzcd}\]
+for a $[\mathcal{C}(c,-), F] \xrightarrow{\lambda} \prod_{z \in C} [Fz, \mathcal{C}(c,z)]$.
+This is a generalisation of a familiar notion of evaluating the natural transformation at identity.
+
+\begin{definition}[Conical limit]
+Let $\mathcal{C}$ be a $\mathcal{V}$-category and let $\mathcal{J}$ be an ordinary category with $D : \mathcal{J} \to \mathcal{C}_0$ a diagram and $\mathcal{C}_0$---the underlying category of $\mathcal{C}$.
+A conical limit of $D$ is an object $\lim D$ such that there is a $\mathcal{V}$-natural isomorphism in $\mathcal{V}$
+\[
+\mathcal{C}(L, \lim D) \cong \lim_{j \in \mathcal{J}} \mathcal{C}(L,Dj)
+\]
+with the limit on the right-hand side being taken in $\mathcal{V}$.
+\end{definition}
+The Yoneda lemma does the same job with respect to conical limits.
+One can compute the limit in the category $[\mathcal{C}^{op}, \mathcal{V}]$ which is a $\mathcal{V}$-category with objects contravariant $\mathcal{V}$-functors and hom-objects as in~\cref{def:enriched_natural_object}.
+
+\begin{example}
+Lets look at the product of two object through the lens of conical limits.
+That is, let $\mathcal{J}$ be a category with two objects $1$ and $2$ and no non-identity morphisms and let $\mathcal{C}$ be a $\mathcal{V}$-category.
+$C_0$ has the same objects as $\mathcal{C}$ and hom-sets $\mathcal{C}_0(A,B) \defeq \mathcal{V}(\I, \mathcal{C}(A,B))$.
+In particular, $\id_{A}$ in $\mathcal{C}$ is a map $\I \to \mathcal{C}(A,A)$ and therefore $\id_{A,0}$ is given by this exact element in $\mathcal{V}(\I, \mathcal{C}(A,A))$.
+The diagram is then given by a functor $D : \mathcal{J} \to \mathcal{C}_0$ mapping $1$ to $A$ and $2$ to $B$ and $\id_{1}$ and $\id_{2}$ to $\id_{A,0}$ and $\id_{B,0}$.
+By definition, we get that the product of $A$ and $B$ is an object $A \times B$ such that the following is a $\mathcal{V}$-natural isomorphism
+\[
+\mathcal{C}(L, A \times B) \cong \mathcal{C}(L, A) \times \mathcal{C}(L, B)~,
+\]
+with the product on the right-hand side being taken in $\mathcal{V}$.
+We can give it an adjunction interpretation, by recognising the right-hand side as a $\mathcal{V}$-functor $\mathcal{C} \to \mathcal{C} \times \mathcal{C}$ where the codomain is the product category of $\mathcal{C}$ (~\cref{def:product_category}).
+On the left we therefore have a $\mathcal{V}$-functor $\mathcal{C} \times \mathcal{C} \to \mathcal{C}$ which characterises the product.
+
+Now suppose $\mathcal{V} = \catname{SLat}$, then the product is given by an $\catname{SLat}$-functor $\mathcal{C} \times_{\catname{SLat}} \mathcal{C} \to \mathcal{C}$.
+For the product of semilattices we have that $(f \join g) \times (h \join k) = (f \times h) \join (g \times k)$, this therefore must be preserved by the product functor.
+\end{example}
+\begin{remark}
+Compare the behaviour of the product from the above example to the tensor product in an $\catname{SLat}$-category.
+As noted, for the product we have that $(f \join g) \times (h \join k) = (f \times h) \join (g \times k)$, while for the tensor product we have that $(f \join g) \otimes (h \join k) = (f \otimes h) \join (g \otimes k) \join (f \otimes k) \join (g \otimes h)$.
+That is, the tensor product distributes over joins in a more complex way than the product.
+\end{remark}
+
+\begin{example}
+We have a similar generalisation for the terminal object.
+The $\mathcal{V}$-natural isomorphism is then given by
+\[
+\mathcal{C}(L, 1) \cong 1_{\mathcal{V}}~,
+\]
+with the object on the right-hand side being the terminal object in $\mathcal{V}$.
+\end{example}
+
+\begin{proposition}
+Free $\catname{SLat}$-enrichment does not preserve all binary products.
+\end{proposition}
+\begin{proof}
+Let $\mathcal{C}$ be an ordinary category with binary products given by a functor $\mathcal{C} \times \mathcal{C} \to \mathcal{C}$ that constitutes an adjunction
+\[
+\mathcal{C}(X, A \times B) \cong \mathcal{C}(X, A) \times \mathcal{C}(X, B)~.
+\]
+The functor $\tilde{F} : \catname{Cat} \to \catname{SLat}\text{-}\catname{Cat}$ acts on $\times$ as follows.
+$\tilde{F}(\times)(A,B) = A \times B$ and
+\[
+\tilde{F}(\times) : \tilde{F}(\mathcal{C} \times \mathcal{C}((A,B), (C,D))) = \tilde{F}(\mathcal{C}(A,C) \times \mathcal{C}(B,D)) = \tilde{F}(\mathcal{C}(A,C)) \boxtimes \tilde{F}(\mathcal{C}(B,D)) \xrightarrow{\tilde{F}(\times)} \tilde{F}(\mathcal{C}(A \times B, C \times D))~.
+\]
+Componentwise, this maps each $(f,g) \mapsto f \times g$ and extends to a semilattice homomorphism by $(f_1 \join f_2, g_1 \join g_2) = (f_1, g_1) \join (f_1, g_2) \join (f_2, g_1) \join (f_2, g_2) \mapsto (f_1 \times g_1) \join (f_1 \times g_2) \join (f_2 \times g_1) \join (f_2 \times g_2)$.
+Most importantly, the induced adjunction takes the form
+\[
+\tilde{F}(\mathcal{C})(X, A \times B) \cong \tilde{F}(\mathcal{C})(X, A) \otimes \tilde{F}(\mathcal{C})(X, B)~,
+\]
+which does not characterise a product in $\catname{SLat}$-categories.
+\end{proof}
+
+\begin{proposition}
+Terminal objects are preserved by free $\catname{SLat}$-enrichment.
+\end{proposition}
+
+\begin{remark}
+The above propositions dualise to coproducts and initial objects, respectively.
+\end{remark}
+% All the above properties are essential to give semantics to generalised e-graphs.
+% Traditional e-graphs, however, require special treatment.
+% \paragraph{Cartesian $\catname{SLat}$-categories.} Sharing structure of e-graphs suggests that a cartesian structure should be present in the underlying category $\mathcal{C}$.
+% Whilst the free enrichment 2-functor $\tilde{F}$ preserves adjunctions, it does not preserve finite binary products.
+% Recall that binary products in a $\catname{Set}$-category $\mathcal{C}$ are
+% equivalently given by an adjunction
+% \[
+%     \Delta : \mathcal{C}
+%     \rightleftarrows
+%     \mathcal{C} \times \mathcal{C} : \Pi,
+%     \qquad
+%     \Delta \dashv \Pi,
+% \]
+% where $\Delta(X)=(X,X)$ and $\Pi(A,B)=A\times B$. The adjunction is
+% equivalently expressed by the natural isomorphisms
+% \begin{align*}
+%     (\mathcal{C}\times\mathcal{C})(\Delta(X),(A,B))
+%     &=
+%     \mathcal{C}(X,A)\times\mathcal{C}(X,B)\\
+%     &\cong
+%     \mathcal{C}(X,A\times B).
+% \end{align*}
+
+% Applying the 2-functor $\tilde{F}$ does preserve this adjunction and gives
+% \begin{equation}\label{eq:product_adjunction}
+%     \tilde{F}(\Delta) : \tilde{F}(\mathcal{C})
+%     \rightleftarrows
+%     \tilde{F}(\mathcal{C}\times\mathcal{C}) :
+%     \tilde{F}(\Pi),
+%     \qquad
+%     \tilde{F}(\Delta)\dashv\tilde{F}(\Pi).
+% \end{equation}
+% Since $F$ is strong monoidal,
+% \[
+%     \tilde{F}(\mathcal{C}\times\mathcal{C})
+%     \cong
+%     \enriched{C}\boxtimes\enriched{C},
+%     \qquad
+%     \enriched{C}\defeq\tilde{F}(\mathcal{C}),
+% \]
+% and the hom-object isomorphism of the lifted adjunction is
+% \begin{align*}
+%     (\enriched{C}\boxtimes\enriched{C})((X,X),(A,B))
+%     &\cong
+%     \enriched{C}(X,A\times B)\\
+%     &=
+%     F(\mathcal{C}(X,A\times B))\\
+%     &\cong
+%     F(\mathcal{C}(X,A)\times\mathcal{C}(X,B))\\
+%     &\cong
+%     F(\mathcal{C}(X,A))
+%     \otimes_{\catname{SLat}}
+%     F(\mathcal{C}(X,B))\\
+%     &=
+%     \enriched{C}(X,A)
+%     \otimes_{\catname{SLat}}
+%     \enriched{C}(X,B).
+% \end{align*}
+% Thus the lifted right adjoint is a monoidal product with respect to
+% $\boxtimes$. It need not be a cartesian product. Indeed, the categorical
+% product $\enriched{C}\times_{\mathrm{cat}}\enriched{C}$ in
+% $\catname{SLat}\text{-}\catname{Cat}$ instead has hom-objects
+% \[
+%     (\enriched{C}\times_{\mathrm{cat}}\enriched{C})
+%     ((X,X),(A,B))
+%     =
+%     \enriched{C}(X,A)
+%     \times_{\catname{SLat}}
+%     \enriched{C}(X,B),
+% \]
+% where the product on the right has componentwise join (see~\cref{remark:slat-cartesian-product}).
+% For $A\times B$ to
+% remain a binary product after free enrichment, postcomposition with the
+% projections would therefore have to induce an isomorphism
+% \begin{equation}\label{eq:enriched-product-comparison}
+%     \enriched{C}(X,A\times B)
+%     \longrightarrow
+%     \enriched{C}(X,A)
+%     \times_{\catname{SLat}}
+%     \enriched{C}(X,B).
+% \end{equation}
+
+% For a concrete counterexample, take $\mathcal{C}=\catname{FinSet}$,
+% $X=1$, and $A=B=2$. There are two maps $1\to2$ and four maps
+% $1\to2\times2$. Since the free semilattice on an $n$-element set consists
+% of its non-empty subsets and hence has $2^n-1$ elements, we obtain
+% \[
+%     \left|\enriched{C}(1,2\times2)\right|
+%     =
+%     2^4-1
+%     =
+%     15,
+%     \qquad
+%     \left|
+%         \enriched{C}(1,2)
+%         \times_{\catname{SLat}}
+%         \enriched{C}(1,2)
+%     \right|
+%     =
+%     (2^2-1)^2
+%     =
+%     9.
+% \]
+% Consequently, the comparison~\eqref{eq:enriched-product-comparison} cannot
+% be an isomorphism. Concretely, an element of its domain is a non-empty
+% relation $R\subseteq 2\times2$, and the comparison sends it to its pair of
+% projections $(\pi_1R,\pi_2R)$. For example,
+% \[
+%     \{(0,0),(1,1)\}
+%     \qquad\text{and}\qquad
+%     2\times2
+% \]
+% are distinct relations with the same pair of projections. The free
+% enrichment therefore retains correlations between paired morphisms, whereas
+% the cartesian product of the two free semilattices retains only two
+% independently chosen sets of morphisms.
+% Thus, cartesian structure must be imposed rather than inherited from the base category.
+% \begin{definition}[(Conical) limit]
+% Let $\mathcal{J}$, $\mathcal{C}$ be $\mathcal{V}$-categories for a complete and cocomplete symmetric monoidal closed category $\mathcal{V}$.
+% Let $D : \mathcal{J} \to \mathcal{C}$ be a $\mathcal{V}$-functor, also called a diagram.
+% A \emph{cone} over $D$ with vertex $X$ is a natural transformation $[\mathcal{J}, \mathcal{V}](\Delta\I, \mathcal{C}(X,D-))$ where
+% \begin{itemize}
+%      \item $[\mathcal{J}, \mathcal{V}]$ is the $\mathcal{V}$-functor category; 
+%      \item $\mathcal{\I}$ is a $\mathcal{V}$-category with a single object $\{*\}$ and hom-object $\I$---the terminal object of $\mathcal{V}$;
+%      \item $\Delta\I : \mathcal{J} \to \mathcal{\I}$ is a $\mathcal{V}$-functor that maps every object of $\mathcal{J}$ to $\{*\}$ and whose action on hom-objects is the unique morphism $\mathcal{J}(A,B) \to \I$ in $\mathcal{V}$;
+%      \item $\mathcal{C}(X,D-)$ is a $\mathcal{V}$-functor mapping each object of $\mathcal{J}$ to the hom-object for the \emph{leg} of the cone.
+% \end{itemize}
+% In the above, the natural transformation for each $j \in \mathcal{J}$ picks certain legs out out hom-object $\mathcal{C}(X,D(j))$.
+% When $\I$ is a singleton, the natural transformation picks a single leg akin to the ordinary notion of a cone.
+% A cone $\lim D$ is a \emph{limit} of $D$ if there is a $\mathcal{V}$-natural isomorphism
+% \[
+% \mathcal{C}(X, \lim D) \cong [\mathcal{J}, \mathcal{V}](\Delta\I, \mathcal{C}(X,D-))
+% \]
+% We get a notion of a \emph{weighted limit} be replacing $\Delta\I$ with an arbitrary $\mathcal{V}$-functor $W : \mathcal{J} \to \mathcal{V}$---this is something that is specific to enriched category theory and does not have an analogue in ordinary category theory unlike the conical limit above.
+% Colimits are defined dually.
+% \end{definition}
+% In the case of $\catname{SLat}$-categories, $\I$ is the one-element semilattice and therefore the natural transformation above pick a single leg.
+% \begin{definition}[Cartesian $\catname{SLat}$-category]
+% \label{def:cartesian-slat-category}
+% An $\catname{SLat}$-category $\enriched{C}$ is \emph{cartesian} if it has
+% finite conical $\catname{SLat}$-products. Explicitly, it is equipped with
+% the following data.
+% \begin{itemize}
+%     \item A terminal object $1$ such that, for every object $X$, the
+%     hom-object $\enriched{C}(X,1)$ is isomorphic to the one-element
+%     semilattice.
+%     \item For every pair of objects $A,B$, a product object $A\times B$
+%     and projections
+%     \[
+%         \pi_1 : A\times B\to A,
+%         \qquad
+%         \pi_2 : A\times B\to B,
+%     \]
+%     such that, for every object $X$, the comparison morphism
+%     \[
+%         \Phi_{X,A,B} :
+%         \enriched{C}(X,A\times B)
+%         \longrightarrow
+%         \enriched{C}(X,A)\times_{\catname{SLat}}\enriched{C}(X,B),
+%         \qquad
+%         h\longmapsto(\pi_1\circ h,\pi_2\circ h),
+%     \]
+%     is an isomorphism of semilattices, natural in $X$, $A$, and $B$.
+% \end{itemize}
+% Equivalently, the diagonal $\catname{SLat}$-functor
+% \[
+%     \Delta :
+%     \enriched{C}
+%     \longrightarrow
+%     \enriched{C}\times_{\mathrm{cat}}\enriched{C}
+% \]
+% has a right adjoint given on objects by $(A,B)\mapsto A\times B$, and the
+% terminal object is the enriched nullary product.
+% \end{definition}
+
+% The inverse of $\Phi_{X,A,B}$ is the pairing homomorphism
+% \[
+%     \langle-,-\rangle :
+%     \enriched{C}(X,A)\times_{\catname{SLat}}\enriched{C}(X,B)
+%     \longrightarrow
+%     \enriched{C}(X,A\times B).
+% \]
+% It satisfies the usual product equations
+% \[
+%     \pi_1\circ\langle f,g\rangle=f,
+%     \qquad
+%     \pi_2\circ\langle f,g\rangle=g,
+%     \qquad
+%     \langle\pi_1\circ h,\pi_2\circ h\rangle=h,
+% \]
+% and, because it is a semilattice homomorphism, it also obeys
+% \begin{equation}\label{eq:cartesian-slat-pairing}
+%     \langle f\join f',g\join g'\rangle
+%     =
+%     \langle f,g\rangle\join\langle f',g'\rangle.
+% \end{equation}
+% This expresses preservation of the componentwise, and hence joint, join in
+% the cartesian product semilattice. In particular, taking $g'=g$ or $f'=f$
+% shows that pairing preserves joins in each argument. Defining the product
+% of morphisms in the usual way,
+% \[
+%     f\times g
+%     \defeq
+%     \langle f\circ\pi_1,g\circ\pi_2\rangle,
+% \]
+% \cref{eq:cartesian-slat-pairing} gives
+% \[
+%     (f\join f')\times(g\join g')
+%     =
+%     (f\times g)\join(f'\times g').
+% \]
+% Thus the product functor
+% \[
+%     \times :
+%     \enriched{C}\times_{\mathrm{cat}}\enriched{C}
+%     \longrightarrow
+%     \enriched{C}
+% \]
+% is an $\catname{SLat}$-functor. Notice that this is stronger than the
+% separate join-preservation supplied by an enriched bifunctor out of
+% $\enriched{C}\boxtimes\enriched{C}$.
+
+% Finally, the underlying ordinary category of $\enriched{C}$ has finite
+% products. Hence every object has canonical copying and discarding morphisms
+% \[
+%     \delta_A\defeq\langle\id_A,\id_A\rangle:A\to A\times A,
+%     \qquad
+%     !_A:A\to1.
+% \]
+% They form a natural commutative comonoid structure: for every
+% $f:A\to B$,
+% \[
+%     \delta_B\circ f=(f\times f)\circ\delta_A,
+%     \qquad
+%     !_B\circ f=!_A,
+% \]
+% and the coassociativity, counitality and cocommutativity equations follow
+% from the product universal property.
+
+% Looking ahead, we will interpret e-graphs as morphisms in a free
+% $\catname{SLat}$-category with finite products, rather than in a free
+% enrichment of an ordinary cartesian category. More general notions of
+% e-graphs are interpreted by considering arbitrary tensors instead of finite
+% products and by adding structure such as closure; the preservation results
+% above ensure that this additional monoidal structure survives free
+% enrichment.
 
 \paragraph{Related work.}
 As noted above, this chapter recapitulates classical results of enriched
