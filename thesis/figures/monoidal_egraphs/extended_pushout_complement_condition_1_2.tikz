@@ -1,0 +1,139 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (16.5, -4) {};
+		\node [style=none] (1) at (2.5, -4) {};
+		\node [style=none] (2) at (2.5, 4) {};
+		\node [style=none] (3) at (16.5, 4) {};
+		\node [style=none] (4) at (3.5, 3) {};
+		\node [style=none] (5) at (15.5, 3) {};
+		\node [style=none] (6) at (15.5, -3) {};
+		\node [style=none] (7) at (3.5, -3) {};
+		\node [style=none] (8) at (10.5, 2.25) {};
+		\node [style=none] (9) at (14.5, 2.25) {};
+		\node [style=none] (10) at (14.5, -2.25) {};
+		\node [style=none] (11) at (10.5, -2.25) {};
+		\node [style=node, label={above:$v_1$}] (12) at (5.5, 0) {};
+		\node [style=node, label={above:$v_2$}] (13) at (7.5, 0) {};
+		\node [style=hedge] (14) at (11.75, 0) {$f$};
+		\node [style=hedge] (15) at (13.25, 0) {$g$};
+		\node [style=none] (16) at (4.5, 2.25) {};
+		\node [style=node, label={above:$w_3$}] (17) at (11.75, 1.25) {};
+		\node [style=node, label={above:$w_4$}] (18) at (13.25, 1.25) {};
+		\node [style=node, label={below:$w_1$}] (19) at (11.75, -1.25) {};
+		\node [style=node, label={below:$w_2$}] (20) at (13.25, -1.25) {};
+		\node [style=none] (21) at (8.5, 2.25) {};
+		\node [style=none] (22) at (8.5, -2.25) {};
+		\node [style=none] (23) at (4.5, -2.25) {};
+		\node [style=none] (24) at (8.5, -3) {};
+		\node [style=none] (25) at (10.5, -3) {};
+		\node [style=none] (28) at (8.5, 3) {};
+		\node [style=none] (29) at (10.5, 3) {};
+		\node [style=none] (32) at (8, -1.75) {$E_1$};
+		\node [style=none] (33) at (14, -1.75) {$E_2$};
+		\node [style=none] (34) at (15, -2.5) {$E_3$};
+		\node [style=none] (35) at (16, -3.5) {$\top$};
+		\node [style=none] (72) at (-1.5, 0) {};
+		\node [style=none] (73) at (1.5, 0) {};
+		\node [style=none] (74) at (0, 0.5) {$m$};
+		\node [style=none] (75) at (-2.75, -4) {};
+		\node [style=none] (76) at (-20.25, -4) {};
+		\node [style=none] (77) at (-20.25, 4) {};
+		\node [style=none] (78) at (-2.75, 4) {};
+		\node [style=none] (79) at (-19.25, 3) {};
+		\node [style=none] (80) at (-3.75, 3) {};
+		\node [style=none] (81) at (-3.75, -3) {};
+		\node [style=none] (82) at (-19.25, -3) {};
+		\node [style=none] (83) at (-8.75, 2.25) {};
+		\node [style=none] (84) at (-4.75, 2.25) {};
+		\node [style=none] (85) at (-4.75, -2.25) {};
+		\node [style=none] (86) at (-8.75, -2.25) {};
+		\node [style=node, label={above:$v_1$}] (87) at (-17.25, 0) {};
+		\node [style=node, label={above:$v_2$}] (88) at (-15.25, 0) {};
+		\node [style=hedge] (89) at (-7.5, 0) {$f$};
+		\node [style=hedge] (90) at (-6, 0) {$g$};
+		\node [style=none] (91) at (-18.25, 2.25) {};
+		\node [style=node, label={above:$w_3$}] (92) at (-7.5, 1.25) {};
+		\node [style=node, label={above:$w_4$}] (93) at (-6, 1.25) {};
+		\node [style=node, label={below:$w_1$}] (94) at (-7.5, -1.25) {};
+		\node [style=node, label={below:$w_2$}] (95) at (-6, -1.25) {};
+		\node [style=none] (96) at (-14.25, 2.25) {};
+		\node [style=none] (97) at (-14.25, -2.25) {};
+		\node [style=none] (98) at (-18.25, -2.25) {};
+		\node [style=none] (99) at (-14.25, -3) {};
+		\node [style=none] (100) at (-8.75, -3) {};
+		\node [style=none] (101) at (-14.25, 3) {};
+		\node [style=none] (102) at (-8.75, 3) {};
+		\node [style=none] (103) at (-14.75, -1.75) {$E_1$};
+		\node [style=none] (104) at (-5.25, -1.75) {$E_2$};
+		\node [style=none] (105) at (-4.25, -2.5) {$E_3$};
+		\node [style=none] (106) at (-3.25, -3.5) {$\top$};
+		\node [style=node, label={above:$u_1$}] (107) at (-12.5, 0) {};
+		\node [style=node, label={above:$u_2$}] (108) at (-10.5, 0) {};
+		\node [style=none] (109) at (-9.5, -2.25) {};
+		\node [style=none] (110) at (-13.5, -2.25) {};
+		\node [style=none] (111) at (-10, -1.75) {$E_1'$};
+		\node [style=none] (112) at (-13.5, 2.25) {};
+		\node [style=none] (113) at (-9.5, 2.25) {};
+		\node [style=none, label={below:$u_1$}] (114) at (5.5, 0) {};
+		\node [style=none, label={below:$u_2$}] (115) at (7.5, 0) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (0.center)
+			 to (1.center)
+			 to (2.center)
+			 to (3.center)
+			 to cycle;
+		\draw [style={e_hyperedge}] (5.center)
+			 to (6.center)
+			 to (7.center)
+			 to (4.center)
+			 to cycle;
+		\draw [style=graph frame] (9.center)
+			 to (10.center)
+			 to (11.center)
+			 to (8.center)
+			 to cycle;
+		\draw (18) to (15);
+		\draw (17) to (14);
+		\draw (20) to (15);
+		\draw (14) to (19);
+		\draw [style=graph frame] (21.center)
+			 to (22.center)
+			 to (23.center)
+			 to (16.center)
+			 to cycle;
+		\draw [style=diredge] (72.center) to (73.center);
+		\draw [style=graph frame] (75.center)
+			 to (76.center)
+			 to (77.center)
+			 to (78.center)
+			 to cycle;
+		\draw [style={e_hyperedge}] (80.center)
+			 to (81.center)
+			 to (82.center)
+			 to (79.center)
+			 to cycle;
+		\draw [style=graph frame] (84.center)
+			 to (85.center)
+			 to (86.center)
+			 to (83.center)
+			 to cycle;
+		\draw (93) to (90);
+		\draw (92) to (89);
+		\draw (95) to (90);
+		\draw (89) to (94);
+		\draw [style=graph frame] (96.center)
+			 to (97.center)
+			 to (98.center)
+			 to (91.center)
+			 to cycle;
+		\draw [style=graph frame] (113.center)
+			 to (109.center)
+			 to (110.center)
+			 to (112.center)
+			 to cycle;
+		\draw [style={light_red_arrow}, bend right] (103.center) to (32.center);
+		\draw [style={light_red_arrow}, bend right=15] (111.center) to (32.center);
+		\draw [style={light_red_arrow}, bend right=15] (104.center) to (33.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

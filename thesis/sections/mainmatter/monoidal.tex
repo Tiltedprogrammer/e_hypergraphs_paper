@@ -2038,30 +2038,139 @@ since $\widehat{D}$ is strict monoidal by~\cref{remark:discrete_functor_strict}.
 % the foot.
 % \end{remark}
 
-As noted in~\cref{example:non_isomorphic_cospans}, the isomorphism of extended cospans does not capture all equalities between morphisms in $\mathbf{S}^{\join}$.
-To establish the equivalence between $\mathbf{S}^{\join}$ and $\catname{EHypI}_{\bullet}(\Sigma)$ and moreover establish the equivalence of rewriting in both, we will need to quotient the morphisms (i.e., cospans) of the latter.
-For this, we will need to introduce a rewriting framework for extended cospans which we abusively call \emph{DPOI} rewriting.
+As noted in~\cref{example:non_isomorphic_cospans}, isomorphism of extended
+cospans does not capture all the equations between the corresponding
+morphisms of $\mathbf{S}^{\join}_{\Sigma}$. To establish an equivalence with
+$\mathbf{S}^{\join}_{\Sigma}$, and subsequently to compare rewriting in the
+two formalisms, we must therefore quotient the morphisms of
+$\catname{EHypI}_{\bullet}(\Sigma)$ by an additional rewriting relation. We
+introduce the required adaptation of DPOI rewriting below.
 
 \section{DPOI rewriting for e-hypergraphs}
 
-Because extended cospans have a more general notion of interface,  including \textit{internal} vertices,  DPOI rewriting as presented in~\cref{def:dpoi_rewriting} needs some adjustments.
-We do not expect internal interfaces to be preserved during rewriting: replacing $\boxsort$-edge with another $\boxsort$-edge may arbitrary change the internal interface.
-Thus,  we wish for a rewrite rule to be a pair of \textit{extended} cospans of e-hypergraphs with matching \textit{external} (but not necessarily internal) interfaces,  as follows: 
+Extended cospans carry both external and internal interfaces, so DPOI
+rewriting as presented in~\cref{def:dpoi_rewriting} must be adapted to this
+setting. The external interface is to be preserved by rewriting, whereas the
+internal interface need not be: replacing a $\boxsort$-edge may arbitrarily
+change the internal interfaces associated with its components.
+
+Accordingly, a rewrite rule consists of two extended cospans with the same
+external interfaces but potentially different internal interfaces:
 \[
-    n \xrightarrow{} n' \xrightarrow{} \mathcal{L} \xleftarrow{} m' \xleftarrow{} m,
+n \longrightarrow n' \longrightarrow \mathcal{L}
+  \longleftarrow m' \longleftarrow m,
 \qquad
-    n \xrightarrow{} n'' \xrightarrow{} \mathcal{R} \xleftarrow{} m'' \xleftarrow{} m.
-\] 
-Analogously to~\cref{remark:dpoi_interface_swap}, observing that the following extended cospans express the same data:
-\[
-    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{L} \xleftarrow{} n'' \sqcup m'' \xleftarrow{} n \sqcup m
+n \longrightarrow n'' \longrightarrow \mathcal{R}
+  \longleftarrow m'' \longleftarrow m.
 \]
+
+As in~\cref{remark:dpoi_interface_swap}, these extended cospans may be folded
+along their input and output interfaces. Namely, the left- and right-hand
+sides may respectively be represented as
 \[
-    0 \xrightarrow{} 0 \xrightarrow{} \mathcal{R} \xleftarrow{} n' \sqcup m' \xleftarrow{} n \sqcup m
-\] allows us to encode rewrite rules as extended cospans of the following form:
+0
+\longrightarrow
+0
+\longrightarrow
+\mathcal{L}
+\longleftarrow
+n'\sqcup m'
+\longleftarrow
+n\sqcup m
+\]
+and
 \[
-\mathcal{L} \xleftarrow{} n' \sqcup m' \xleftarrow{} n \sqcup m \xrightarrow{} n'' \sqcup m'' \xrightarrow{} \mathcal{R},
-\] which will fit into the DPO formalism. We make this identification throughout,  without further mention. 
+0
+\longrightarrow
+0
+\longrightarrow
+\mathcal{R}
+\longleftarrow
+n''\sqcup m''
+\longleftarrow
+n\sqcup m~,
+\]
+recalling that we elide the functor $D$ from the notation and write $0$ for the rooted e-hypergraph $D([0]) = \mathfrak{T}$.
+The pair can therefore be encoded by the span
+\[
+\mathcal{L}
+\longleftarrow
+n'\sqcup m'
+\longleftarrow
+n\sqcup m
+\longrightarrow
+n''\sqcup m''
+\longrightarrow
+\mathcal{R},
+\]
+which has the form required by the DPO construction. We use this encoding
+throughout.
+
+\begin{remark}
+More explicitly, given an extended cospan
+\[
+n
+\xrightarrow{f_{\mathrm{ext}}}
+n'
+\xrightarrow{f_{\mathrm{int}}}
+\mathcal{G}
+\xleftarrow{g_{\mathrm{int}}}
+m'
+\xleftarrow{g_{\mathrm{ext}}}
+m,
+\]
+its folded presentation is
+\[
+0
+\xrightarrow{\id_{0}}
+0
+\xrightarrow{!_{\mathcal{G}}}
+\mathcal{G}
+\xleftarrow{[f_{\mathrm{int}},g_{\mathrm{int}}]}
+n'\sqcup m'
+\xleftarrow{f_{\mathrm{ext}}\sqcup g_{\mathrm{ext}}}
+n\sqcup m,
+\]
+where
+$!_{\mathcal{G}}:\mathfrak{T}\to\mathcal{G}$ is the unique strict
+homomorphism sending $\top_{\mathfrak{T}}$ to $\top_{\mathcal{G}}$.
+
+Here and below, we use $[f,g]$ for the morphism induced by the universal
+property of the pushout~\cref{lemma:pushout_universal}.
+That is, given the unique morphisms $!_{n} : 0 \to n$ and $!_{m} : 0 \to m$, and morphisms $f : n \to Q$ and $g : m \to Q$ satisfying $!_{n} \fatsemi f = !_{m} \fatsemi g$, there is a unique morphism $[f,g]$ given by the following diagram
+% https://q.uiver.app/#q=WzAsNSxbMSwwLCIwIl0sWzAsMSwibiJdLFsyLDEsIm0iXSxbMSwyLCJuIFxcY29wcm9kX3tcXG1hdGhmcmFre1R9fSBtIl0sWzEsMywiUSJdLFswLDEsIiFfbiIsMl0sWzAsMiwiIV9tIl0sWzEsM10sWzIsM10sWzIsNCwiZyIsMCx7ImN1cnZlIjotM31dLFsxLDQsImYiLDIseyJjdXJ2ZSI6M31dLFszLDQsIltmLGddIl0sWzMsMCwiIiwyLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+\[\begin{tikzcd}
+	& 0 & \\
+	n && m \\
+	& {n \coprod_{0} m} \\
+	& Q
+	\arrow["{!_n}"', from=1-2, to=2-1]
+	\arrow["{!_m}", from=1-2, to=2-3]
+	\arrow[from=2-1, to=3-2]
+	\arrow["f"', curve={height=18pt}, from=2-1, to=4-2]
+	\arrow[from=2-3, to=3-2]
+	\arrow["g", curve={height=-18pt}, from=2-3, to=4-2]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=135}, draw=none, from=3-2, to=1-2]
+	\arrow["{[f,g]}", from=3-2, to=4-2]
+\end{tikzcd}\]
+The condition  $!_{n} \fatsemi f = !_{m} \fatsemi g$ can be equivalently seen as
+\[
+f_E(\top_n)=g_E(\top_m)~.
+\]
+
+In the folded presentation above this condition holds automatically:
+because
+$f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}}$ and
+$g_{\mathrm{ext}}\fatsemi g_{\mathrm{int}}$ are strict, we have
+\[
+f_{\mathrm{int},E}(\top_{n'})
+=
+\top_{\mathcal G}
+=
+g_{\mathrm{int},E}(\top_{m'}).
+\]
+Consequently $[f_{\mathrm{int}},g_{\mathrm{int}}]$ is well defined.
+\end{remark}
 
 We will also need to restrict the set of candidate sub-e-hypergraphs that will constitute a \emph{match}.
 
@@ -2159,60 +2268,379 @@ Finally note that we are forced to map the edge $f$ together with its source and
 % even though the interface legs of the surrounding extended cospans are merely
 % lax.
 % \end{remark}
+\begin{definition}[Re-anchored interface map]
+\label{def:reanchored_interface_map}
+Let $p$ be a pointed discrete ordered e-hypergraph, let $\mathcal G$ be a
+rooted e-hypergraph, let $a\in E_{\mathcal G}$ be a $\cmpsort$-edge, and let
+\[
+u:V_p\longrightarrow V_{\mathcal G}
+\]
+be a function such that
+\[
+a<_{\mathcal G}u(v)
+\qquad
+\text{for every }v\in V_p.
+\]
+We write
+\[
+\langle a;u\rangle:
+p\longrightarrow\mathcal G
+\]
+for the lax homomorphism defined by
+\[
+\langle a;u\rangle_E(\top_p)\defeq a,
+\qquad
+\langle a;u\rangle_V\defeq u.
+\]
+We call this the interface map with vertex component $u$ re-anchored at $a$.
+\end{definition}
 
-\begin{definition}[Extended pushout complement]\label{def:extended_complement}
+\begin{remark}
+The map $\langle a;u\rangle$ is anchored precisely when
+\[
+a<^\mu_{\mathcal G}u(v)
+\]
+for every $v\in V_p$, and it is strict precisely when it is anchored and
+$a=\top_{\mathcal G}$.
+\end{remark}
+
+\begin{definition}[Extended pushout complement]
+\label{def:extended_complement}
 Let
 \[
-\mathcal{L} \xleftarrow{f_{\mathrm{int}}} i' \sqcup j' \xleftarrow{f_{\mathrm{ext}}} i \sqcup j
+\mathcal L
+\xleftarrow{f_{\mathrm{int}}}
+i'\sqcup j'
+\xleftarrow{f_{\mathrm{ext}}}
+i\sqcup j
 \qquad\text{and}\qquad
-\mathcal{G} \xleftarrow{g_{\mathrm{int}}} n' \sqcup k' \xleftarrow{g_{\mathrm{ext}}} n \sqcup k
+\mathcal G
+\xleftarrow{g_{\mathrm{int}}}
+n'\sqcup k'
+\xleftarrow{g_{\mathrm{ext}}}
+n\sqcup k
 \]
-be well-typed extended cospans, write $f \defeq f_{\mathrm{ext}} \fatsemi f_{\mathrm{int}}$,
-and let $m : \mathcal{L} \to \mathcal{G}$ be an anchored homomorphism with
-anchor $a \defeq m_{E}(\top_{\mathcal{L}})$.
-An \emph{extended pushout complement} of $(f, m)$ is a pushout complement
-$i \sqcup j \xrightarrow{c} \mathcal{L}^{\bot} \xrightarrow{l^{\bot}} \mathcal{G}$
-of $(f, m)$, as in the diagram below
-% https://q.uiver.app/#q=WzAsNyxbMCwwLCJcXG1hdGhjYWx7TH0iXSxbMSwwLCJpJyBcXGNvcHJvZCBqJyJdLFsyLDAsImkgXFxjb3Byb2QgaiJdLFswLDIsIlxcbWF0aGNhbHtHfSJdLFsyLDIsIlxcbWF0aGNhbHtMfV57XFxib3R9Il0sWzIsNCwibiBcXGNvcHJvZCBrIl0sWzEsMywibicgXFxjb3Byb2QgayciXSxbMCwzLCJtIiwyXSxbMSwwXSxbMiwxXSxbMiw0LCJjIl0sWzQsM10sWzUsNl0sWzYsM10sWzUsNCwiZCIsMl0sWzMsMiwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
-\[\begin{tikzcd}
-	{\mathcal{L}} & {i' \coprod j'} & {i \coprod j} \\
-	\\
-	{\mathcal{G}} && {\mathcal{L}^{\bot}} \\
-	& {n' \coprod k'} \\
-	&& {n \coprod k}
-	\arrow["m"', from=1-1, to=3-1]
-	\arrow[from=1-2, to=1-1]
-	\arrow[from=1-3, to=1-2]
-	\arrow["c", from=1-3, to=3-3]
-	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
-	\arrow[from=3-3, to=3-1]
-	\arrow[from=4-2, to=3-1]
-	\arrow["d"', from=5-3, to=3-3]
-	\arrow[from=5-3, to=4-2]
-\end{tikzcd}~,\]
-such that
+be well-typed extended cospans. Since the external legs are monic, we identify
+$i,j,n,k$ with their respective images in $i',j',n',k'$. Thus, for example,
+$i'\setminus i$ denotes the pointed discrete e-hypergraph obtained by removing
+the vertices in the image of $i$ while retaining the root, as in the
+definition of composition. We suppress the evident inclusions whenever a map
+is restricted to one of these subinterfaces.
+
+Write
+\[
+f
+\defeq
+f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}}
+:
+i\sqcup j\longrightarrow\mathcal L,
+\]
+and let
+\[
+m:\mathcal L\longrightarrow\mathcal G
+\]
+be an anchored homomorphism with anchor
+\[
+a\defeq m_E(\top_{\mathcal L}).
+\]
+
+Put
+\[
+i'_{\circ}\defeq i'\setminus i,
+\qquad
+j'_{\circ}\defeq j'\setminus j,
+\]
+and define
+\[
+M^{\circ}
+\defeq
+m_V\left(
+f_{\mathrm{int},V}
+\bigl(V_{i'_{\circ}}\coprod V_{j'_{\circ}}\bigr)
+\right)
+\subseteq V_{\mathcal G}.
+\]
+Thus \(M^\circ\) is the image in \(\mathcal G\) of the strictly internal
+interface vertices of \(\mathcal L\).
+
+Let $S_n$ be the pointed discrete sub-e-hypergraph of $n'$ whose root is
+$\top_{n'}$ and whose vertex set is
+\[
+V_{S_n}
+\defeq
+\left\{
+x\in V_{n'\setminus n}
+\;\middle|\;
+g_{\mathrm{int},V}(x)\in M^\circ
+\right\}.
+\]
+Dually, let $S_k$ be the pointed discrete sub-e-hypergraph of $k'$ whose root
+is $\top_{k'}$ and whose vertex set is
+\[
+V_{S_k}
+\defeq
+\left\{
+x\in V_{k'\setminus k}
+\;\middle|\;
+g_{\mathrm{int},V}(x)\in M^\circ
+\right\}.
+\]
+
+An \emph{extended pushout complement} of $(f,m)$ consists of:
+\begin{itemize}
+\item an object $\mathcal L^\bot$ and morphisms
+\[
+i\sqcup j
+\xrightarrow{c}
+\mathcal L^\bot
+\xrightarrow{l^\bot}
+\mathcal G;
+\]
+\item morphisms
+\[
+g_n^\bot:
+n'\setminus S_n\longrightarrow\mathcal L^\bot,
+\qquad
+g_k^\bot:
+k'\setminus S_k\longrightarrow\mathcal L^\bot;
+\]
+\item morphisms of pointed discrete interfaces
+\[
+\alpha_n:i'_{\circ}\longrightarrow S_n,
+\qquad
+\alpha_k:j'_{\circ}\longrightarrow S_k;
+\]
+\end{itemize}
+satisfying the following conditions.
+
 \begin{enumerate}
-  \item for every $e \in E_{\mathcal{L}}$ with $e \neq \top_{\mathcal{L}}$ and
-        every $x \in V_{\mathcal{G}} \coprod E_{\mathcal{G}}$ with
-        $m_{E}(e) <^{\mu}_{\mathcal{G}} x$, the element $x$ lies in the image of
-        $m$;
-  \item writing
-        $S \defeq g_{\mathrm{int}}^{-1}\bigl(m(f_{\mathrm{int}}(i' \setminus i))
-          \sqcup m(f_{\mathrm{int}}(j' \setminus j))\bigr)$,
-        the restriction of $g_{\mathrm{int}}$ to $(n' \sqcup k') \setminus S$
-        factors through $l^{\bot}$.
+\item The square
+\[
+\begin{tikzcd}
+i\sqcup j
+  \arrow[r,"f"]
+  \arrow[d,"c"']
+&
+\mathcal L
+  \arrow[d,"m"]
+\\
+\mathcal L^\bot
+  \arrow[r,"l^\bot"']
+&
+\mathcal G
+  \arrow[ul,phantom,very near start,"\ulcorner"]
+\end{tikzcd}
+\]
+is a pushout in $\catname{EHyp}_{\bullet}(\Sigma)$, with $c$ anchored.
+
+\item The image of $m$ is closed under successors below every matched
+non-root edge: for every $e\in E_{\mathcal L}$ with
+$e\neq\top_{\mathcal L}$ and every
+$x\in V_{\mathcal G}\coprod E_{\mathcal G}$,
+\[
+m_E(e)<^\mu_{\mathcal G}x
+\quad\Longrightarrow\quad
+x\in\operatorname{im}(m).
+\]
+
+\item The match is injective on the contents of every $\boxsort$-edge.
+Explicitly, for every $\boxsort$-edge $b\in E_{\mathcal L}$, let
+\[
+V_b
+\defeq
+\{v\in V_{\mathcal L}\mid b<_{\mathcal L}v\},
+\qquad
+E_b
+\defeq
+\{e\in E_{\mathcal L}\mid b<_{\mathcal L}e\}.
+\]
+Then
+\[
+m_V\restriction_{V_b}
+\qquad\text{and}\qquad
+m_E\restriction_{E_b}
+\]
+are injective.
+
+\item The retained interfaces equip $\mathcal L^\bot$ with a well-typed
+extended cospan
+\[
+n
+\xrightarrow{\overline g_{\mathrm{ext}}^{\,n}}
+n'\setminus S_n
+\xrightarrow{g_n^\bot}
+\mathcal L^\bot
+\xleftarrow{g_k^\bot}
+k'\setminus S_k
+\xleftarrow{\overline g_{\mathrm{ext}}^{\,k}}
+k,
+\]
+where $\overline g_{\mathrm{ext}}^{\,n}$ and
+$\overline g_{\mathrm{ext}}^{\,k}$ are the evident corestrictions of the
+external legs of $\mathcal G$.
+
+Writing
+\[
+\overline I_{\mathcal G}
+\defeq
+(n'\setminus S_n)\sqcup(k'\setminus S_k),
+\]
+let
+\[
+\jmath:
+\overline I_{\mathcal G}
+\hookrightarrow
+n'\sqcup k'
+\]
+be the morphism induced by the evident inclusions, and put
+\[
+\overline g_{\mathrm{ext}}
+\defeq
+\overline g_{\mathrm{ext}}^{\,n}
+\sqcup
+\overline g_{\mathrm{ext}}^{\,k},
+\qquad
+g^\bot\defeq[g_n^\bot,g_k^\bot].
+\]
+We require the diagram
+\[
+\begin{tikzcd}[column sep=large]
+n\sqcup k
+  \arrow[r,"g_{\mathrm{ext}}"]
+  \arrow[d,equal]
+&
+n'\sqcup k'
+  \arrow[r,"g_{\mathrm{int}}"]
+&
+\mathcal G
+\\
+n\sqcup k
+  \arrow[r,"\overline g_{\mathrm{ext}}"']
+&
+\overline I_{\mathcal G}
+  \arrow[u,hook,"\jmath"]
+  \arrow[r,"g^\bot"']
+&
+\mathcal L^\bot
+  \arrow[u,"l^\bot"']
+\end{tikzcd}
+\]
+to commute. Equivalently,
+\[
+\overline g_{\mathrm{ext}}\fatsemi\jmath
+=
+g_{\mathrm{ext}}
+\]
+and
+\[
+g^\bot\fatsemi l^\bot
+=
+\jmath\fatsemi g_{\mathrm{int}}.
+\]
+
+\item Define the re-anchored interface maps
+\[
+\widehat g_n^{\,a}
+\defeq
+\left\langle
+a;
+g_{\mathrm{int},V}\restriction_{V_{S_n}}
+\right\rangle
+:
+S_n\longrightarrow\mathcal G
+\]
+and
+\[
+\widehat g_k^{\,a}
+\defeq
+\left\langle
+a;
+g_{\mathrm{int},V}\restriction_{V_{S_k}}
+\right\rangle
+:
+S_k\longrightarrow\mathcal G.
+\]
+Then the diagrams
+\[
+\begin{tikzcd}
+i'_{\circ}
+  \arrow[r,"{f_{\mathrm{int}}\restriction}"]
+  \arrow[d,"\alpha_n"']
+&
+\mathcal L
+  \arrow[d,"m"]
+\\
+S_n
+  \arrow[r,"\widehat g_n^{\,a}"']
+&
+\mathcal G
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+j'_{\circ}
+  \arrow[r,"{f_{\mathrm{int}}\restriction}"]
+  \arrow[d,"\alpha_k"']
+&
+\mathcal L
+  \arrow[d,"m"]
+\\
+S_k
+  \arrow[r,"\widehat g_k^{\,a}"']
+&
+\mathcal G
+\end{tikzcd}
+\]
+commute.
+
+Moreover, $\alpha_n$ and $\alpha_k$ preserve the interface order within
+blocks: whenever two vertices of $i'_{\circ}$, respectively $j'_{\circ}$,
+have images with the same immediate parent in $\mathcal L$, their images
+under $\alpha_n$, respectively $\alpha_k$, lie in the corresponding block
+of the ambient interface and occur in the same relative order.
+
+The above data may be summarised by the following commutative diagram
+% https://q.uiver.app/#q=WzAsMTAsWzIsMCwiXFxtYXRoY2Fse0x9Il0sWzQsMCwiaSBcXGNvcHJvZCBqIl0sWzMsMCwiaScgXFxjb3Byb2QgaiciXSxbMiwyLCJcXG1hdGhjYWx7R30iXSxbNCwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFs0LDUsIm4gXFxjb3Byb2QgayJdLFszLDMsIm4nIFxcY29wcm9kIGsnIl0sWzQsMywiKG4nIFxcc2V0bWludXMgU19uKSBcXGNvcHJvZCAoaycgXFxzZXRtaW51cyBTX2spIl0sWzAsMCwiaSdfe1xcY2lyY30gXFxjb3Byb2Qgaidfe1xcY2lyY30iXSxbMCwyLCJTX24gXFxjb3Byb2QgU19rIl0sWzAsMywibSIsMl0sWzIsMCwiZl97XFxtYXRocm17aW50fX0iLDJdLFsxLDIsImZfe1xcbWF0aHJte2V4dH19IiwyXSxbNCwzLCJsXntcXGJvdH0iLDJdLFsxLDQsImMiXSxbNiwzLCJnX3tcXG1hdGhybXtpbnR9fSJdLFs1LDYsImdfe1xcbWF0aHJte2V4dH19Il0sWzUsNywiXFxvdmVybGluZXtnfV97XFxtYXRocm17ZXh0fX0iLDJdLFs3LDQsImdee1xcYm90fSJdLFszLDEsIiIsMix7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFs3LDYsIlxcam1hdGgiLDJdLFs4LDAsIltmX3tcXG1hdGhybXtpbnR9fVxccmVzdHJpY3Rpb24sIGZfe1xcbWF0aHJte2ludH19XFxyZXN0cmljdGlvbl0iXSxbOSwzLCJbXFxoYXR7Z31fe259XnthfSwgXFxoYXR7Z31fe2t9XnthfV0iXSxbOCw5LCJcXGFscGhhX24gXFxjb3Byb2QgXFxhbHBoYV9rXSIsMl1d
+\[\begin{tikzcd}
+	{i'_{\circ} \coprod j'_{\circ}} && {\mathcal{L}} & {i' \coprod j'} & {i \coprod j} \\
+	\\
+	{S_n \coprod S_k} && {\mathcal{G}} && {\mathcal{L}^{\bot}} \\
+	&&& {n' \coprod k'} & {(n' \setminus S_n) \coprod (k' \setminus S_k)} \\
+	\\
+	&&&& {n \coprod k}
+	\arrow["{[f_{\mathrm{int}}\restriction, f_{\mathrm{int}}\restriction]}", from=1-1, to=1-3]
+	\arrow["{\alpha_n \coprod \alpha_k}"', from=1-1, to=3-1]
+	\arrow["m"', from=1-3, to=3-3]
+	\arrow["{f_{\mathrm{int}}}"', from=1-4, to=1-3]
+	\arrow["{f_{\mathrm{ext}}}"', from=1-5, to=1-4]
+	\arrow["c", from=1-5, to=3-5]
+	\arrow["{[\hat{g}_{n}^{a}, \hat{g}_{k}^{a}]}", from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-3, to=1-5]
+	\arrow["{l^{\bot}}"', from=3-5, to=3-3]
+	\arrow["{g_{\mathrm{int}}}", from=4-4, to=3-3]
+	\arrow["{g^{\bot}}", from=4-5, to=3-5]
+	\arrow["\jmath"', from=4-5, to=4-4]
+	\arrow["{g_{\mathrm{ext}}}", from=6-5, to=4-4]
+	\arrow["{\overline{g}_{\mathrm{ext}}}"', from=6-5, to=4-5]
+\end{tikzcd}\]
 \end{enumerate}
 \end{definition}
 
 \begin{remark}\label{remark:complement_cases}
-Condition (1) forbids the following matches
+Condition (2) forbids the following matches
 \[
 \adjustbox{max width=0.75\textwidth}{
   \tikzfig{./figures/monoidal_egraphs/extended_pushout_complement_condition_1}
+}~,
+\]
+whereas condition (3) forbids the following matches
+\[
+\adjustbox{max width=0.75\textwidth}{
+  \tikzfig{./figures/monoidal_egraphs/extended_pushout_complement_condition_1_2}
 }~.
 \]
-Intuitively, the image must contain all successors of every $\boxsort$-edge and hence all $\cmpsort$-edges and their successors if they have a $\boxsort$-edge as a predecessor.
-Condition (2) disables the following matches
+Intuitively, the image must contain all successors of every $\boxsort$-edge and hence all $\cmpsort$-edges and their successors if they have a $\boxsort$-edge as a predecessor; furthermore, the content of $\boxsort$-edges must not be merged by $m$.
+
+Condition (4) disallows the following matches
 \[
 \adjustbox{max width=0.65\textwidth}{
   \tikzfig{./figures/monoidal_egraphs/extended_pushout_complement_condition_2}
@@ -2231,32 +2659,750 @@ The reason for removing only the portion of strictly internal interface can be g
 This time the internal interface of $\mathcal{L}$ is not empty.
 Computing $S$ gives us $v_3, v_4, v_5$ and this factors through the depicted pushout complement.
 Had we removed the entire internal interface, we would have been left with $v_4, v_5$ with no way to recover that interface if we were to glue something to $v_3$.
+
+Finally, condition (5) disallows the following match
+\[
+\adjustbox{max width=0.75\textwidth}{
+  \tikzfig{./figures/monoidal_egraphs/extended_pushout_complement_condition_dagger}
+}~.
+\]
+Say we were to map $u_{2,X}$ of $X$ to $u_{2,Y}$ of $Y$, then $u_{3,X}$ must be mapped to $u_{3,Y}$ but we have that $f_{\mathrm{int}^{X}}(w_{2,X}) = u_{2,X}$ and $f_{\mathrm{int}^{Y}}(w_{2,Y}) = u_{3,Y}$, so we would have to map $w_{2,X}$ to $w_{2,Y}$ and $w_{3,X}$ to $w_{2,Y}$ which does not preserve the ordering within the block.
+The left cospan corresponds to a morphism
+\[
+(\counit \otimes \counit) \join (\sym \fatsemi (f \otimes g) \fatsemi (\counit \otimes \counit))
+\] 
+whereas the right cospan corresponds to a morphism 
+\[
+h \fatsemi ((\sym \fatsemi (\counit \otimes \counit)) \join (\sym \fatsemi (f \otimes g) \fatsemi (\counit \otimes \counit)))~.
+\]
+There is no occurrence of the first morphism in the second one modulo $\catname{SLat}$-equations: the left component of the join of the first morphism has an even number of symmetries, whereas the left component of the join of the second morphism has an odd number of symmetries.
 \end{remark}
 
-\begin{definition}[EDPOI rewriting]\label{def:dpoi_rooted}
-A \emph{rewrite rule} is a span of extended cospans with matching external
-interfaces,
-\begin{align*}
-\mathcal{L} \xleftarrow{} i' \sqcup j' \xleftarrow{} i \sqcup j
-  \xrightarrow{} i'' \sqcup j'' \xrightarrow{} \mathcal{R}~. \tag{$*$}
-\end{align*}
-Given an extended span
+\begin{definition}[EDPOI rewriting]
+\label{def:dpoi_rooted}
+A \emph{rewrite rule} is a pair of well-typed extended cospans with
+common external interfaces, displayed together as
 \[
-\mathcal{G} \xleftarrow{} n' \sqcup k' \xleftarrow{} n \sqcup k
-  \xrightarrow{} n'' \sqcup k'' \xrightarrow{} \mathcal{H}~,
+\mathcal L
+\xleftarrow{f_{\mathrm{int}}}
+i'\sqcup j'
+\xleftarrow{f_{\mathrm{ext}}}
+i\sqcup j
+\xrightarrow{p_{\mathrm{ext}}}
+i''\sqcup j''
+\xrightarrow{p_{\mathrm{int}}}
+\mathcal R.\tag{$\ast$}
 \]
-we say that $\mathcal{G}$ \emph{rewrites to} $\mathcal{H}$ with external
-interface $n \sqcup k$, taking internal interface $n' \sqcup k'$ to
-$n'' \sqcup k''$---written $\mathcal{G} \;\overline{\rightsquigarrow}\; \mathcal{H}$---via the rule $(*)$ if
-there exist an anchored homomorphism $m : \mathcal{L} \to \mathcal{G}$, an
-object $\mathcal{L}^{\bot}$, and morphisms completing the following commutative
-diagram
-% https://q.uiver.app/#q=WzAsMTEsWzAsMCwiXFxtYXRoY2Fse0x9Il0sWzEsMCwiaScgXFxjb3Byb2QgaiciXSxbMiwwLCJpIFxcY29wcm9kIGoiXSxbMCwyLCJcXG1hdGhjYWx7R30iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFsyLDQsIm4gXFxjb3Byb2QgayJdLFsxLDMsIm4nIFxcY29wcm9kIGsnIl0sWzQsMiwiXFxtYXRoY2Fse0h9Il0sWzQsMCwiXFxtYXRoY2Fse1J9Il0sWzMsMywibicnIFxcY29wcm9kIGsnJyJdLFszLDAsImknJ1xcY29wcm9kIGonJyJdLFswLDMsIm0iLDJdLFsxLDAsImZfe1xcbWF0aHJte2ludH19IiwyXSxbMiwxLCJmX3tcXG1hdGhybXtleHR9fSIsMl0sWzIsNCwiYyJdLFs0LDMsImxee1xcYm90fSIsMl0sWzUsNiwiZ197XFxtYXRocm17ZXh0fX0iXSxbNiwzLCJnX3tcXG1hdGhybXtpbnR9fSJdLFs1LDQsImQiLDJdLFszLDIsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFs0LDcsIlxcd2lkZXRpbGRle1xcaW90YV97XFxtYXRoY2Fse0x9XntcXGJvdH19fSJdLFs4LDcsIlxcd2lkZXRpbGRle1xcaW90YV97XFxtYXRoY2Fse1J9fX0iXSxbNSw5LCJoX3tcXG1hdGhybXtleHR9fSIsMl0sWzksNywiaF97XFxtYXRocm17aW50fX0iLDJdLFs3LDIsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFsyLDEwLCJwX3tcXG1hdGhybXtleHR9fSJdLFsxMCw4LCJwX3tcXG1hdGhybXtpbnR9fSJdXQ==
+Write
+\[
+f\defeq
+f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}}
+:
+i\sqcup j\longrightarrow\mathcal L
+\]
+and
+\[
+p\defeq
+p_{\mathrm{ext}}\fatsemi p_{\mathrm{int}}
+:
+i\sqcup j\longrightarrow\mathcal R.
+\]
+Both \(f\) and \(p\) are strict because the two halves of the rule are
+extended cospans.
+
+Let
+\[
+\mathcal G
+\xleftarrow{g_{\mathrm{int}}}
+n'\sqcup k'
+\xleftarrow{g_{\mathrm{ext}}}
+n\sqcup k
+\]
+be a well-typed extended cospan. An \emph{EDPOI rewrite} of
+\(\mathcal G\) via the above rule consists of the following data.
+
+First, it consists of an anchored match
+\[
+m:\mathcal L\longrightarrow\mathcal G
+\]
+and an extended pushout complement of \((f,m)\), in the sense
+of~\cref{def:extended_complement}. Thus, in particular, it provides
+\[
+i\sqcup j
+\xrightarrow{c}
+\mathcal L^\bot
+\xrightarrow{l^\bot}
+\mathcal G,
+\]
+the affected subinterfaces \(S_n\) and \(S_k\), and the retained-interface
+maps
+\[
+g_n^\bot:
+n'\setminus S_n\longrightarrow\mathcal L^\bot,
+\qquad
+g_k^\bot:
+k'\setminus S_k\longrightarrow\mathcal L^\bot.
+\]
+
+Second, the following diagram with both squares being pushouts
+% https://q.uiver.app/#q=WzAsMTAsWzAsMCwiXFxtYXRoY2Fse0x9Il0sWzIsMCwiaSBcXGNvcHJvZCBqIl0sWzAsMiwiXFxtYXRoY2Fse0d9Il0sWzIsMiwiXFxtYXRoY2Fse0x9XntcXGJvdH0iXSxbNCwwLCJcXG1hdGhjYWx7Un0iXSxbNCwyLCJcXG1hdGhjYWx7SH0iXSxbMiw1LCJuIFxcY29wcm9kIGsiXSxbMSwzLCJuJyBcXGNvcHJvZCBrJyJdLFsyLDMsIihuJyBcXHNldG1pbnVzIFNfbikgXFxjb3Byb2QgKGsnIFxcc2V0bWludXMgU19rKSJdLFszLDMsIm4nJyBcXGNvcHJvZCBrJyciXSxbMCwyLCJtIiwyXSxbMSwzLCJjIl0sWzMsMiwibF57XFxib3R9IiwyXSxbNCw1LCJcXGlvdGFfe1xcbWF0aGNhbHtSfX0iXSxbMyw1LCJcXGlvdGFfe1xcbWF0aGNhbHtMfV57XFxib3R9fSJdLFsxLDAsImYiLDJdLFsxLDQsInAiXSxbNSwxLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMiwxLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNywyXSxbNiw3XSxbNiw4XSxbOCwzXSxbNiw5LCJbaF97XFxtYXRocm17ZXh0fX1ee259LCBoX3tcXG1hdGhybXtleHR9fV57a31dIiwyXSxbOSw1LCJbaF9uLCBoX2tdIiwyXV0=
 \[\begin{tikzcd}
-	{\mathcal{L}} & {i' \coprod j'} & {i \coprod j} & {i''\coprod j''} & {\mathcal{R}} \\
+	{\mathcal{L}} && {i \coprod j} && {\mathcal{R}} \\
 	\\
 	{\mathcal{G}} && {\mathcal{L}^{\bot}} && {\mathcal{H}} \\
-	& {n' \coprod k'} && {n'' \coprod k''} \\
+	& {n' \coprod k'} & {(n' \setminus S_n) \coprod (k' \setminus S_k)} & {n'' \coprod k''} \\
+	\\
+	&& {n \coprod k}
+	\arrow["m"', from=1-1, to=3-1]
+	\arrow["f"', from=1-3, to=1-1]
+	\arrow["p", from=1-3, to=1-5]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow["{\iota_{\mathcal{R}}}", from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow["{l^{\bot}}"', from=3-3, to=3-1]
+	\arrow["{\iota_{\bot}}", from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow[from=4-2, to=3-1]
+	\arrow[from=4-3, to=3-3]
+	\arrow["{[h_n, h_k]}"', from=4-4, to=3-5]
+	\arrow[from=6-3, to=4-2]
+	\arrow[from=6-3, to=4-3]
+	\arrow["{h_{\mathrm{ext}}^{n} \coprod h_{\mathrm{ext}}^{k}}"', from=6-3, to=4-4]
+\end{tikzcd}~,\]
+
+where the left-hand square is the pushout supplied by the extended
+pushout complement.
+
+Since \(p\) is strict and \(c\) is anchored, the latter pushout exists
+by~\cref{prop:pushout_exists}. Moreover,
+\(\widetilde\iota_{\bot}\) is strict, whereas
+\(\widetilde\iota_{\mathcal R}\) is anchored.
+
+Identify \(i\) and \(j\) with their images under the monic external
+interface maps of \(\mathcal R\), and put
+\[
+i''_{\circ}\defeq i''\setminus i,
+\qquad
+j''_{\circ}\defeq j''\setminus j.
+\]
+The internal interfaces of the result are
+\[
+n''
+\defeq
+(n'\setminus S_n)\sqcup i''_{\circ},
+\qquad
+k''
+\defeq
+(k'\setminus S_k)\sqcup j''_{\circ}.
+\]
+
+Let
+\[
+\nu_n:n'\setminus S_n\longrightarrow n'',
+\qquad
+\nu_i:i''_{\circ}\longrightarrow n''
+\]
+and
+\[
+\nu_k:k'\setminus S_k\longrightarrow k'',
+\qquad
+\nu_j:j''_{\circ}\longrightarrow k''
+\]
+denote the corresponding coprojections.
+
+The new strictly internal interface maps are obtained by retaining the
+vertex components coming from \(\mathcal R\) and re-anchoring them at
+\(\top_{\mathcal H}\). Namely, define
+\[
+\rho_i
+\defeq
+\left\langle
+\top_{\mathcal H};
+\bigl(
+p_{\mathrm{int}}\fatsemi
+\widetilde\iota_{\mathcal R}
+\bigr)_V
+\restriction_{V_{i''_{\circ}}}
+\right\rangle
+:
+i''_{\circ}\longrightarrow\mathcal H
+\]
+and
+\[
+\rho_j
+\defeq
+\left\langle
+\top_{\mathcal H};
+\bigl(
+p_{\mathrm{int}}\fatsemi
+\widetilde\iota_{\mathcal R}
+\bigr)_V
+\restriction_{V_{j''_{\circ}}}
+\right\rangle
+:
+j''_{\circ}\longrightarrow\mathcal H.
+\]
+
+The internal legs of the resulting extended cospan are
+\[
+h_n
+\defeq
+\left[
+g_n^\bot\fatsemi\widetilde\iota_{\bot},
+\rho_i
+\right]
+:
+n''\longrightarrow\mathcal H
+\]
+and
+\[
+h_k
+\defeq
+\left[
+g_k^\bot\fatsemi\widetilde\iota_{\bot},
+\rho_j
+\right]
+:
+k''\longrightarrow\mathcal H.
+\]
+These copairings are well-defined: the first map in each copairing sends
+the root to \(\top_{\mathcal H}\), because
+\(\widetilde\iota_{\bot}\) is strict, and the second does so by its
+definition as a re-anchored map.
+
+Finally, the external legs are
+\[
+h_{\mathrm{ext}}^n
+\defeq
+\overline g_{\mathrm{ext}}^{\,n}\fatsemi\nu_n
+:
+n\longrightarrow n''
+\]
+and
+\[
+h_{\mathrm{ext}}^k
+\defeq
+\overline g_{\mathrm{ext}}^{\,k}\fatsemi\nu_k
+:
+k\longrightarrow k''.
+\]
+The resulting candidate extended cospan is therefore
+\[
+n
+\xrightarrow{h_{\mathrm{ext}}^n}
+n''
+\xrightarrow{h_n}
+\mathcal H
+\xleftarrow{h_k}
+k''
+\xleftarrow{h_{\mathrm{ext}}^k}
+k.
+\]
+
+We then write
+\[
+\mathcal G
+\;\overline{\rightsquigarrow}\;
+\mathcal H
+\]
+and say that \(\mathcal G\) rewrites to \(\mathcal H\) (with external interface $n \coprod k$ and sending internal interface $n' \coprod k'$ to $n'' \coprod k''$) via the rule $(\ast)$. 
+
+Given a set \(\mathfrak R\) of rewrite rules, we write
+\[
+\mathcal G
+\;\overline{\rightsquigarrow}_{\mathfrak R}\;
+\mathcal H
+\]
+when the rewrite is induced by some rule in \(\mathfrak R\).
+We write $\;\overline{\rightsquigarrow}_{\mathfrak{R}}^{*}\;$ for the transitive closure of $\;\overline{\rightsquigarrow}_{\mathfrak{R}}\;$.
+\end{definition}
+
+\begin{lemma}\label{lemma:rewrite_yields_ecospan}
+Suppose $\mathcal{G} \;\overline{\rightsquigarrow}\; \mathcal{H}$ as in~\cref{def:dpoi_rooted},
+via a rule with well-typed extended cospans $\mathcal{L}$ and $\mathcal{R}$ and
+a well-typed $\mathcal{G}$.
+Then
+\[
+n \xrightarrow{} n'' \xrightarrow{} \mathcal{H}
+  \xleftarrow{} k'' \xleftarrow{} k
+\]
+is a well-typed extended cospan.
+\end{lemma}
+\begin{proof}
+  Let $a$ be the anchor of $m$.
+  Computing a pushout complement removes all $\boxsort$-edges of $\mathcal{L}$ and their successors from $\mathcal{G}$, thus the only source of possible not-well-typedness is the anchor $a$ with respect to its predecessor $\boxsort$-edge. 
+  No verticies of $a$ are removed that were in the image of $n' \coprod k'$ as otherwise the required factorisation of $g_{\mathrm{int}}$ through $l^{\bot}$ and $g^{\bot}$ would not exist.
+  Also no new vertices are added to the portion of the internal interface that corresponds to the anchor.
+  Thus the resulting cospan is well-typed.
+\end{proof}
+
+Unlike the case of $\catname{HypI}(\Sigma)$ where the underlying category $\catname{Hyp}(\Sigma)$ was adhesive, our categories of interest $\catname{EHyp}_{\leq}$ and $\catname{EHyp}_{\bullet}$ are not adhesive.
+Given a rewrite rule $\mathcal{L} \xleftarrow{f} i \coprod j$ in $\catname{Hyp}(\Sigma)$ such that $f$ is monic, the corresponding pushout complement is unique when it exists: this is one of the consequences of the category being adhesive.
+In our case, showing that this property holds becomes a proof obligation.
+As seen in~\cref{prop:pushout_complement_exists}, a pushout complement of a span $I \xrightarrow{} L \xrightarrow{} G$ exists if and only if the no-dangling and no-identification conditions hold.
+Below we will show that in the case of $\catname{EHyp}_{\leq}$ and spans of the form $i \coprod j \xrightarrow{f} \mathcal{L} \xrightarrow{m} G$ such that $f$ is strict, $m$ is anchored, the pushout complement exists if and only if the no-dangling (~\cref{def:no_dangling}), no-identification (~\cref{def:no_identification}) and condition (2) of~\cref{def:extended_complement} for $m$ hold.
+Then we will show that the pushout complement along the same span is further unique if $f$ is mono.
+
+\begin{proposition}\label{prop:e_pushout_complement_exists}
+Let $i \coprod j \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ be
+morphisms of $\catname{EHyp}_{\bullet}(\Sigma)$ with $i \coprod j$ pointed
+discrete, $f$ strict and $m$ anchored, and write
+$a \defeq m_{E}(\top_{\mathcal{L}})$ for the anchor of $m$.
+A pushout complement
+$i \coprod j \xrightarrow{c} \mathcal{L}^{\bot} \xrightarrow{l^{\bot}} \mathcal{G}$
+exists if and only if the following hold.
+\begin{description}
+  \item[(ND)] \emph{No dangling.}
+        For every $e \in E_{\mathcal{G}} \setminus m(E_{\mathcal{L}})$ and every
+        $v$ occurring in $s_{\mathcal{G}}(e)$ or $t_{\mathcal{G}}(e)$: if
+        $v \in m(V_{\mathcal{L}})$ then $v \in m(f(V_{i \coprod j}))$.
+  \item[(NI)] \emph{No identification.}
+        If $x_{1} \neq x_{2}$ are both vertices or both edges of $\mathcal{L}$
+        with $m(x_{1}) = m(x_{2})$, then both lie in the image of $f$.
+  \item[(NO)] \emph{No orphans.}
+        For every $e \in E_{\mathcal{L}}$ with $e \neq \top_{\mathcal{L}}$ and
+        every $x \in V_{\mathcal{G}} \coprod E_{\mathcal{G}}$ with
+        $m_{E}(e) <^{\mu}_{\mathcal{G}} x$, the element $x$ lies in the image of
+        $m$.
+\end{description}
+\end{proposition}
+\begin{proof}
+Since $i \coprod j$ is pointed discrete, $E_{i \coprod j} = \{\top_{i \coprod j}\}$;
+as $f$ is strict, $f_{E}(\top_{i \coprod j}) = \top_{\mathcal{L}}$, so
+$m(f(E_{i \coprod j})) = \{a\}$, and \textbf{(NI)} for edges says exactly that
+$m_{E}$ is injective.
+We record two consequences of $m$ being anchored, used repeatedly below.
+\begin{enumerate}
+  \item[(i)] Every element of the image of $m$ is $a$ or a strict descendant of
+        $a$.
+  \item[(ii)] For $x \in V_{\mathcal{L}} \coprod E_{\mathcal{L}}$ with
+        $x \neq \top_{\mathcal{L}}$, the parent ${<^{\mu}_{\mathcal{L}}}(x)$ is
+        defined and
+        ${<^{\mu}_{\mathcal{G}}}(m(x)) = m_{E}\bigl({<^{\mu}_{\mathcal{L}}}(x)\bigr)$,
+        so the parent of $m(x)$ lies in $m(E_{\mathcal{L}})$.
+\end{enumerate}
+
+\emph{The if direction.}
+Assume the three conditions and define
+\begin{gather*}
+  V_{\mathcal{L}^{\bot}} \defeq \bigl(V_{\mathcal{G}} \setminus m(V_{\mathcal{L}})\bigr) \cup m(f(V_{i \coprod j}))~,
+  \qquad
+  E_{\mathcal{L}^{\bot}} \defeq \bigl(E_{\mathcal{G}} \setminus m(E_{\mathcal{L}})\bigr) \cup \{a\}~,
+\end{gather*}
+with $s_{\mathcal{L}^{\bot}}, t_{\mathcal{L}^{\bot}}, l_{\mathcal{L}^{\bot}}$
+and $<^{\mu}_{\mathcal{L}^{\bot}}$ the restrictions of those of $\mathcal{G}$,
+and $\top_{\mathcal{L}^{\bot}} \defeq \top_{\mathcal{G}}$.
+
+First, $\top_{\mathcal{G}} \in E_{\mathcal{L}^{\bot}}$: either
+$a = \top_{\mathcal{G}}$, and it lies in the second summand; or
+$a \neq \top_{\mathcal{G}}$, and by (i) the root is neither $a$ nor a strict
+descendant of $a$, hence not in $m(E_{\mathcal{L}})$.
+
+\emph{$\mathcal{L}^{\bot}$ is a rooted e-hypergraph.}
+Sources and targets are well defined: an edge of $\mathcal{L}^{\bot}$ either
+lies outside $m(E_{\mathcal{L}})$, in which case \textbf{(ND)} places each of its
+sources and targets in $V_{\mathcal{L}^{\bot}}$; or it equals $a$, whose source
+and target are empty, $a$ being a $\cmpsort$-edge because $m$ preserves labels.
+Typing, alternation and incidence are inherited from $\mathcal{G}$.
+
+For the hierarchy we show that every
+$x \in V_{\mathcal{L}^{\bot}} \coprod E_{\mathcal{L}^{\bot}}$ with
+$x \neq \top_{\mathcal{G}}$ satisfies
+${<^{\mu}_{\mathcal{G}}}(x) \in E_{\mathcal{L}^{\bot}}$.
+\begin{itemize}
+  \item Suppose $x = m_{V}(f_{V}(z))$ for some $z \in V_{i \coprod j}$.
+        Since $i \coprod j$ is pointed discrete,
+        $\top_{i \coprod j} <^{\mu} z$; since $f$ is strict,
+        $\top_{\mathcal{L}} <^{\mu}_{\mathcal{L}} f_{V}(z)$; and since $m$ is
+        anchored, $a <^{\mu}_{\mathcal{G}} x$.
+        So the parent of $x$ is $a \in E_{\mathcal{L}^{\bot}}$.
+  \item Suppose $x = a$ and $a \neq \top_{\mathcal{G}}$, and let
+        $b_{0} \defeq {<^{\mu}_{\mathcal{G}}}(a)$.
+        By (i) $b_{0}$ is not in the image of $m$ and hence in $E_{\mathcal{L}}^{\bot}$.
+  \item Otherwise $x \notin m(V_{\mathcal{L}}) \cup m(E_{\mathcal{L}})$.
+        Its parent in $\mathcal{G}$ is either outside $m(E_{\mathcal{L}})$, hence
+        retained; or equal to $a$, hence retained. 
+        The parent can not be in the image of $m$ and not equal to $a$ as otherwise by condition (\textbf{NO}) $x$ must be in the image of $m$.
+\end{itemize}
+Thus $<^{\mu}_{\mathcal{L}^{\bot}}$ is defined at every element other than
+$\top_{\mathcal{G}}$ and takes values in $E_{\mathcal{L}^{\bot}}$, and it is
+undefined at $\top_{\mathcal{G}}$ because $<^{\mu}_{\mathcal{G}}$ is; so
+$\top_{\mathcal{G}}$ is the unique parentless element.
+The relation is acyclic, being a restriction of an acyclic one, and iterating it
+from any $x$ follows the $<^{\mu}_{\mathcal{G}}$-chain from $x$, which reaches
+$\top_{\mathcal{G}}$ and, by the above, never leaves $\mathcal{L}^{\bot}$.
+Hence $\bigl(V_{\mathcal{L}^{\bot}} \coprod E_{\mathcal{L}^{\bot}}, <^{\mu}_{\mathcal{L}^{\bot}}\bigr)$
+is a tree rooted at $\top_{\mathcal{G}}$.
+
+For non-degeneracy, let $b \in E_{\mathcal{L}^{\bot}}$ be a $\boxsort$-edge and
+let $c$ be a component of $b$ in $\mathcal{G}$; we show $c$ is retained.
+Since $a$ is a $\cmpsort$-edge, $b \neq a$, so $b \notin m(E_{\mathcal{L}})$.
+If $c \notin m(E_{\mathcal{L}})$ then $c$ is retained by construction.
+If $c \in m(E_{\mathcal{L}})$,  let $c = m_{E}(e)$.
+When $e \neq \top_{\mathcal{L}}$, consequence (ii) gives
+$b = {<^{\mu}_{\mathcal{G}}}(c) = m_{E}\bigl({<^{\mu}_{\mathcal{L}}}(e)\bigr) \in m(E_{\mathcal{L}})$,
+contradicting $b \notin m(E_{\mathcal{L}})$.
+When $e = \top_{\mathcal{L}}$ we have $c = a$, which lies in
+$E_{\mathcal{L}^{\bot}}$ by construction.
+In every case $c$ is retained, so $b$ keeps all the components it had in
+$\mathcal{G}$, of which there are at least two.
+
+Let $l^{\bot} : \mathcal{L}^{\bot} \hookrightarrow \mathcal{G}$ be the induced inclusion, and let $i \coprod j \xrightarrow{c} \mathcal{L}^{\bot}$ be the corestriction of $f \fatsemi m$.
+We will show that the square on $(f, c, m, l^{\bot})$ is a pushout.
+Note that $l^{\bot}$ is strict and $c$ is anchored: for a vertex $z$ we saw above that
+${<^{\mu}_{\mathcal{G}}}\bigl(m_{V}(f_{V}(z))\bigr) = a$ and
+$a \in E_{\mathcal{L}^{\bot}}$, so the parent computed in $\mathcal{L}^{\bot}$
+agrees with the one computed in $\mathcal{G}$; and
+$c_{E}(\top_{i \coprod j}) = a$.
+Moreover $c \fatsemi l^{\bot} = f \fatsemi m$.
+
+The span
+$\mathcal{L} \xleftarrow{f} i \coprod j \xrightarrow{c} \mathcal{L}^{\bot}$
+satisfies the hypotheses of~\cref{prop:pushout_exists}, so its pushout $P$
+exists; let $u : P \to \mathcal{G}$ be the morphism induced by $m$ and
+$l^{\bot}$, which is strict by~\cref{lemma:pushout_universal} since $l^{\bot}$
+is.
+The construction above can be seen as a pushout complement in $\catname{Hyp}(\Sigma)$ by forgetting the hierrachical structure.
+As noted in the proof of~\cref{prop:pushout_complement_exists}, the above data induce the pushout complements on the corresponding sets of edges and vertices and thus the functions $u_{V}$ and $u_{V}$ are bijections.
+A strict homomorphism of rooted e-hypergraphs which is bijective on
+vertices and on edges is an isomorphism: $u$ preserves $s$, $t$, $l$ and the
+root, and strictness gives
+$u\bigl({<^{\mu}_{P}}(x)\bigr) = {<^{\mu}_{\mathcal{G}}}\bigl(u(x)\bigr)$ for
+every non-root $x$, so applying $u^{-1}$ to both sides shows $u^{-1}$ is a
+strict homomorphism as well.
+Hence the square is a pushout and $\mathcal{L}^{\bot}$ is a pushout complement.
+
+\emph{The only if direction.}
+Suppose a pushout complement exists.
+Conditions \textbf{(ND)} and \textbf{(NI)} hold as otherwise there would be no pushout complements on sets of edges and vertices, again see the proof of~\cref{prop:pushout_exists}.
+
+For \textbf{(NO)}, suppose towards a contradiction that
+$e \in E_{\mathcal{L}}$ with $e \neq \top_{\mathcal{L}}$ and
+$m_{E}(e) <^{\mu}_{\mathcal{G}} x$ with $x$ outside the image of $m$.
+We may assume, replacing $\mathcal{G}$ by an isomorphic copy
+along an isomorphism commuting with the coprojections, that $\mathcal{G}$ is the
+pushout constructed in~\cref{prop:pushout_exists}; so
+$V_{\mathcal{G}} = V_{\mathcal{L}} \coprod V_{\mathcal{L}^{\bot}} / R_{V}$ and
+$E_{\mathcal{G}} = E_{\mathcal{L}} \coprod E_{\mathcal{L}^{\bot}} / R_{E}$, with
+$m$ and $l^{\bot}$ the composites of the coproduct injections with the quotient
+projections; in particular they are jointly surjective. 
+So $x = l^{\bot}(x')$ for some $x'$, and
+$x' \neq \top_{\mathcal{L}^{\bot}}$ because $x$ has a parent whereas
+$l^{\bot}(\top_{\mathcal{L}^{\bot}}) = \top_{\mathcal{G}}$ does not, $l^{\bot}$
+being strict.
+Strictness then gives
+\[
+l^{\bot}_{E}\bigl({<^{\mu}_{\mathcal{L}^{\bot}}}(x')\bigr)
+= {<^{\mu}_{\mathcal{G}}}\bigl(l^{\bot}(x')\bigr)
+= m_{E}(e)~,
+\]
+so $m_{E}(e)$ lies in the images of both $m_{E}$ and $l^{\bot}_{E}$.
+By pushout construction, the edge set of $\mathcal{G}$ is
+$E_{\mathcal{L}} \coprod E_{\mathcal{L}^{\bot}} / R_{E}$, and every generating
+pair of $R_{E}$ has the form
+$\bigl(\iota_{1}(f_{E}(z)), \iota_{2}(c_{E}(z))\bigr)$; hence a non-trivial
+$R_{E}$-chain through $\iota_{1}(e)$ forces $e \in f_{E}(E_{i \coprod j})$, that
+is $e = \top_{\mathcal{L}}$, a contradiction.
+\end{proof}
+
+
+\begin{lemma}[Shape of a complement]\label{lemma:complement_shape}
+Let $i \coprod j \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ be as
+in~\cref{prop:e_pushout_complement_exists} and let
+$i \coprod j \xrightarrow{c} \mathcal{L}^{\bot} \xrightarrow{l^{\bot}} \mathcal{G}$
+be a pushout complement.
+Then
+\begin{enumerate}
+  \item $l^{\bot}$ is strict;
+  \item $l^{\bot}_{V}\bigl(V_{\mathcal{L}^{\bot}}\bigr)
+        = \bigl(V_{\mathcal{G}} \setminus m(V_{\mathcal{L}})\bigr) \cup m\bigl(f(V_{i \coprod j})\bigr)$
+        and
+        $l^{\bot}_{E}\bigl(E_{\mathcal{L}^{\bot}}\bigr)
+        = \bigl(E_{\mathcal{G}} \setminus m(E_{\mathcal{L}})\bigr) \cup \{a\}$;
+  \item if $f$ is a monomorphism, then so is $l^{\bot}$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Throughout we may assume, by the observation made in the proof of~\cref{prop:pushout_complement_exists}, that $\mathcal{G}$ is the constructed pushout, so
+that $V_{\mathcal{G}} = V_{\mathcal{L}} \coprod V_{\mathcal{L}^{\bot}} / R_{V}$
+and $E_{\mathcal{G}} = E_{\mathcal{L}} \coprod E_{\mathcal{L}^{\bot}} / R_{E}$,
+with $m$ and $l^{\bot}$ the composites of the coproduct injections with the
+quotient projections, and that every generating pair of $R_{V}$, respectively
+$R_{E}$, has the form
+$\bigl(\iota_{1}(f(z)), \iota_{2}(c(z))\bigr)$.
+
+\begin{enumerate}
+\item The span
+$\mathcal{L} \xleftarrow{f} i \coprod j \xrightarrow{c} \mathcal{L}^{\bot}$
+has $f$ strict and $c$ anchored, so by~\cref{prop:pushout_exists} the
+coprojection out of $\mathcal{L}^{\bot}$ is the strict one.
+
+\item For the inclusion $\supseteq$: an element outside the image of $m$ lies in
+the image of $l^{\bot}$ by joint surjectivity; and
+$f \fatsemi m = c \fatsemi l^{\bot}$ puts $m(f(V_{i \coprod j}))$ and
+$a = m_{E}(f_{E}(\top_{i \coprod j}))$ in the image of $l^{\bot}$.
+For $\subseteq$, consider $y = l^{\bot}(x)$, if $y$ is a vertex and $y \not \in m(V_{\mathcal{L}})$ then $y \in V_{\mathcal{G}} \setminus m(V_{\mathcal{L}})$ and similarly if $y$ is an edge. 
+So assume $y = m(w)$ for $w$ in $\mathcal{L}$ and suppose $x$ and $w$ are vertices.
+Since they are identified in the quotient, there must be an element $z \in V_{i \coprod j}$ such that $\iota_{1}(f(z)) = x$ and $\iota_{2}(c(z)) = w$ and therefore $l^{\bot}(x) \in m(f(V_{i \coprod j}))$.
+Now if $y$ was an edge, then $y = a$.
+
+\item Since $f$ is monic, its vertex and edge components are injective. Fix one
+sort $S \in \{V,E\}$ and suppose
+$l^{\bot}_{S}(x_{1}) = l^{\bot}_{S}(x_{2})$. Then
+$\iota_{2}(x_{1})$ and $\iota_{2}(x_{2})$ are joined by an alternating
+$R_{S}$-chain. Every portion of this chain passing from the
+$\mathcal{L}^{\bot}$-summand back to that summand has the form
+\[
+\iota_{2}(c_{S}(z_{1}))
+\sim
+\iota_{1}(f_{S}(z_{1}))
+=
+\iota_{1}(f_{S}(z_{2}))
+\sim
+\iota_{2}(c_{S}(z_{2})).
+\]
+Injectivity of $f_{S}$ gives $z_{1}=z_{2}$, and hence
+$c_{S}(z_{1})=c_{S}(z_{2})$. Thus every term of the chain lying in the
+$\mathcal{L}^{\bot}$-summand is equal to $x_{1}$, so $x_{2}=x_{1}$.
+Consequently both components of $l^{\bot}$ are injective, and therefore
+$l^{\bot}$ is a monomorphism.
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[Uniqueness of pushout complements]\label{thm:complement_unique}
+Let $i \coprod j \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ be as
+in~\cref{prop:e_pushout_complement_exists} with $f$ a monomorphism, and let
+$(\mathcal{L}^{\bot}, c, l^{\bot})$ and $(\mathcal{K}, c', k)$ be pushout
+complements of $(f, m)$.
+Then there is a unique isomorphism $\phi : \mathcal{L}^{\bot} \to \mathcal{K}$
+in $\catname{EHyp}_{\mathrm{s}}(\Sigma)$ with $\phi \fatsemi k = l^{\bot}$, and
+it satisfies $c \fatsemi \phi = c'$.
+\end{theorem}
+\begin{proof}
+By~\cref{lemma:complement_shape}, $l^{\bot}$ and $k$ are strict monomorphisms
+with the same image, which is described in part (2) of that lemma without
+reference to the complement.
+Define
+\[
+\phi_{V} \defeq l^{\bot}_{V} \fatsemi (k_{V})^{-1}~,
+\qquad
+\phi_{E} \defeq l^{\bot}_{E} \fatsemi (k_{E})^{-1}~,
+\]
+the inverses being taken on that common image; these are bijections and satisfy
+$\phi \fatsemi k = l^{\bot}$ by construction.
+
+\emph{$\phi$ is a homomorphism.}
+For sources, using that $l^{\bot}$ and $k$ are homomorphisms,
+\[
+k_{V}^{*}\bigl(s_{\mathcal{K}}(\phi_{E}(e))\bigr)
+= s_{\mathcal{G}}\bigl(k_{E}(\phi_{E}(e))\bigr)
+= s_{\mathcal{G}}\bigl(l^{\bot}_{E}(e)\bigr)
+= (l^{\bot}_{V})^{*}\bigl(s_{\mathcal{L}^{\bot}}(e)\bigr)
+= k_{V}^{*}\bigl(\phi_{V}^{*}(s_{\mathcal{L}^{\bot}}(e))\bigr)~,
+\]
+and $k_{V}$ is injective, so
+$s_{\mathcal{K}}(\phi_{E}(e)) = \phi_{V}^{*}(s_{\mathcal{L}^{\bot}}(e))$.
+Targets are identical, and labels follow from
+$l_{\mathcal{K}}(\phi_{E}(e)) = l_{\mathcal{G}}(k_{E}(\phi_{E}(e)))
+= l_{\mathcal{G}}(l^{\bot}_{E}(e)) = l_{\mathcal{L}^{\bot}}(e)$.
+
+\emph{$\phi$ is strict.}
+Both $l^{\bot}$ and $k$ are strict, so
+$k_{E}(\phi_{E}(\top_{\mathcal{L}^{\bot}})) = l^{\bot}_{E}(\top_{\mathcal{L}^{\bot}})
+= \top_{\mathcal{G}} = k_{E}(\top_{\mathcal{K}})$, and $k_{E}$ is injective,
+whence $\phi_{E}(\top_{\mathcal{L}^{\bot}}) = \top_{\mathcal{K}}$.
+For $x \neq \kappa^{E}(\top_{\mathcal{L}^{\bot}})$,
+\[
+k_{E}\Bigl(\phi_{E}\bigl({<^{\mu}_{\mathcal{L}^{\bot}}}(x)\bigr)\Bigr)
+= l^{\bot}_{E}\bigl({<^{\mu}_{\mathcal{L}^{\bot}}}(x)\bigr)
+= {<^{\mu}_{\mathcal{G}}}\bigl(l^{\bot}(x)\bigr)
+= {<^{\mu}_{\mathcal{G}}}\bigl(k(\phi(x))\bigr)
+= k_{E}\bigl({<^{\mu}_{\mathcal{K}}}(\phi(x))\bigr)~,
+\]
+using strictness of $l^{\bot}$ and of $k$, and injectivity of $k_{E}$ gives
+$\phi_{E}({<^{\mu}_{\mathcal{L}^{\bot}}}(x)) = {<^{\mu}_{\mathcal{K}}}(\phi(x))$.
+The same argument with the roles of $\mathcal{L}^{\bot}$ and $\mathcal{K}$
+exchanged shows that $\phi^{-1} = k \fatsemi (l^{\bot})^{-1}$ is a strict
+homomorphism, so $\phi$ is an isomorphism of
+$\catname{EHyp}_{\mathrm{s}}(\Sigma)$.
+
+\emph{Compatibility with the interface.}
+For $z \in V_{i \coprod j} \coprod E_{i \coprod j}$,
+\[
+k\bigl(\phi(c(z))\bigr) = l^{\bot}\bigl(c(z)\bigr) = m\bigl(f(z)\bigr) = k\bigl(c'(z)\bigr)~,
+\]
+and $k$ is injective, so $c \fatsemi \phi = c'$.
+
+\emph{Uniqueness.}
+If $\psi$ also satisfies $\psi \fatsemi k = l^{\bot}$, then
+$\psi \fatsemi k = \phi \fatsemi k$ and $k$ is monic, so $\psi = \phi$.
+\end{proof}
+%% =========================================================================
+%% Soundness and completeness
+%% Revised section. Replaces the material from \section{Soundness and
+%% completeness.} onwards.
+%%
+%% Dependencies on unfinished material are flagged inline with
+%% \dependency{...}; define this macro or delete the calls before compiling:
+%%   \newcommand{\dependency}[1]{\medskip\noindent\textbf{Dependency.} #1\medskip}
+%% =========================================================================
+
+\section{Soundness and completeness}
+
+\subsection{Joins}
+
+We first define the $\join$ of extended cospans, i.e.\ of morphisms in
+$\catname{EHypI}_{\bullet}(\Sigma)$.
+The construction adjoins a fresh root above a fresh $\boxsort$-edge whose
+components are the roots of the operands; the operands' external interfaces
+become blocks of the internal interface of the result, and a fresh copy of the
+external interface is created at the new root.
+
+\begin{definition}[Join of extended cospans]\label{def:join_of_extended_cospans}
+Let $p \geq 2$ and, for $1 \leq r \leq p$, let
+\[
+n \xrightarrow{f^{r}_{\mathrm{ext}}} n^{r} \xrightarrow{f^{r}_{\mathrm{int}}}
+\mathcal{F}^{r}
+\xleftarrow{g^{r}_{\mathrm{int}}} m^{r} \xleftarrow{g^{r}_{\mathrm{ext}}} m
+\]
+be well-typed extended cospans with common feet $n$ and $m$, where
+$V_{n} = \{x_{1} < \cdots < x_{u}\}$ and $V_{m} = \{y_{1} < \cdots < y_{w}\}$.
+Their \emph{join} $\mathcal{F}^{1} \join \cdots \join \mathcal{F}^{p}$ is
+defined as follows.
+
+\emph{Carrier.}
+Take the disjoint union of the vertex sets $V_{\mathcal{F}^{r}}$ and of the edge
+sets $E_{\mathcal{F}^{r}}$, and adjoin
+\begin{itemize}
+  \item a fresh $\cmpsort$-edge $\top$, which is the root of the result;
+  \item a fresh $\boxsort$-edge $b$ with $\top <^{\mu} b$;
+  \item fresh vertices $s_{1}, \ldots, s_{u}$ and $t_{1}, \ldots, t_{w}$, with
+        $\top <^{\mu} s_{i}$ and $\top <^{\mu} t_{i}$, and with
+        $s(b) \defeq (s_{1}, \ldots, s_{u})$ and
+        $t(b) \defeq (t_{1}, \ldots, t_{w})$.
+\end{itemize}
+Sources, targets and labels of the inherited edges are unchanged, and
+$<^{\mu}$ is inherited except that each $\top_{\mathcal{F}^{r}}$, which retains
+its label $\cmpsort$, acquires $b <^{\mu} \top_{\mathcal{F}^{r}}$; these become
+the $p$ components of $b$.
+
+\emph{Interface objects.}
+Write $S$ for the pointed discrete ordered e-hypergraph with vertices
+$s_{1} < \cdots < s_{u}$ and root $\top_{S}$, and $T$ for the one with vertices
+$t_{1} < \cdots < t_{w}$ and root $\top_{T}$.
+The feet of the join are $n$ and $m$; its internal interface objects are
+\[
+N \defeq S \sqcup n^{1} \sqcup \cdots \sqcup n^{p}~,
+\qquad
+M \defeq T \sqcup m^{1} \sqcup \cdots \sqcup m^{p}~,
+\]
+so that $N$ is again pointed discrete ordered, with the vertices of $S$ preceding those
+of $n^{1}$, and so on.
+
+\emph{Interface legs.}
+The external input leg $F_{\mathrm{ext}} : n \to N$ sends $\top_{n}$ to
+$\top_{N}$ and $x_{i}$ to $s_{i}$.
+The internal input leg $F_{\mathrm{int}} : N \to \mathcal{F}^{1} \join \cdots \join \mathcal{F}^{p}$
+sends $\top_{N}$ to $\top$, each $s_{i}$ to itself, and each $v \in n^{r}$ to
+$f^{r}_{\mathrm{int}}(v)$.
+The output legs $G_{\mathrm{ext}}$ and $G_{\mathrm{int}}$ are defined dually.
+The resulting extended cospan is then
+\[
+n \xrightarrow{F_{\mathrm{ext}}} N \xrightarrow{F_{\mathrm{int}}} \mathcal{F}^{1} \join \cdots \join \mathcal{F}^{p} \xleftarrow{G_{\mathrm{int}}} M \xleftarrow{G_{\mathrm{ext}}} m~.
+\]
+\end{definition}
+
+An example of a binary join can be seen in~\cref{fig:join_of_extended_cospans}.
+\begin{figure}
+\[
+\adjustbox{max width=0.55\textwidth}{
+  \tikzfig{./figures/monoidal_egraphs/f_plus_g_new}
+}
+\]
+\caption{The join of two extended cospans.}
+\label{fig:join_of_extended_cospans}
+\end{figure}
+
+\subsection{The structural rewriting system}
+
+\begin{definition}[Structural rules]\label{def:structural_rules}
+For each equation of~\cref{fig:string-equations} other than commutativity, and
+for each instantiation of its variables by well-typed extended cospans of
+matching type, let $\mathcal{L} \leftarrow i \sqcup j \rightarrow \mathcal{R}$
+be the EDPOI rewrite rule of~\cref{def:dpoi_rooted} whose feet are the two sides
+of that instance and whose apex is their common external interface.
+We write $\mathfrak{R}_{\downarrow}$ for the set of all such rules, oriented
+from left to right as displayed in~\cref{fig:string-equations}, and
+$\mathfrak{R}$ for $\mathfrak{R}_{\downarrow}$ together with the reversed rule
+$\mathcal{R} \leftarrow i \sqcup j \rightarrow \mathcal{L}$ of each of its
+members.
+\end{definition}
+
+\begin{remark}
+
+The rule schema corresponding to the very first equation of~\cref{fig:string-equations} is the following
+\[
+\adjustbox{max width=0.65\textwidth}{
+  \tikzfig{./figures/monoidal_egraphs/semilattice_rule_1}~.
+}
+\]
+It instances include, in particular, the rule
+\[
+\adjustbox{max width=0.75\textwidth}{
+  \tikzfig{./figures/monoidal_egraphs/structural_rewrite_instance}~.
+}
+\]
+The rule corresponds to the equation $\sym \fatsemi (\sym \join (\sym \fatsemi (f \otimes g))) = (\id \otimes \id) \join (f \otimes g)$ and performs a form of \enquote{reindexing}.
+In general, the external interface may be viewed as a function $f = f_{\mathrm{ext}} \fatsemi f_{\mathrm{int}} : n \to k$ and each block of the internal interface for some $\boxsort$-edge $b$ is a set of functions $f_{\mathrm{int},1} : k \to m, \ldots, f_{\mathrm{int},p} : k \to m$ and the rewrite performs their composition to yield the identity external interface $g_{\mathrm{ext}} \fatsemi g_{\mathrm{int}} : n \to n$ and internal interfaces given by $g_{\mathrm{int},1} = f \fatsemi f_{\mathrm{int},1} : n \to m, \ldots, g_{\mathrm{int},p} = f \fatsemi f_{\mathrm{int},p} : n \to m$.
+\end{remark}
+
+\begin{remark}\label{remark:commutativity_absorbed}
+Commutativity of $\join$ is not among the rules.
+The components of a $\boxsort$-edge carry no order, so
+by~\cref{def:isomorphic_ecospans} two joins differing only in the order of their
+operands are isomorphic, and commutativity is absorbed by the representation in
+the same way as the equations of a symmetric monoidal category.
+\end{remark}
+
+\begin{definition}
+For $\mathcal{G}, \mathcal{H}$ in $\catname{EHypI}_{\bullet}(\Sigma)$ we write
+$\mathcal{G} \sim_{\mathfrak{R}} \mathcal{H}$ for
+$\mathcal{G} \;\overline{\leftrightsquigarrow}^{*}_{\mathfrak{R}}\; \mathcal{H}$,
+the reflexive, symmetric and transitive closure
+of~$\overline{\rightsquigarrow}_{\mathfrak{R}}$ of~\cref{def:dpoi_rooted}.
+\end{definition}
+
+\begin{lemma}[Congruence]\label{lemma:rewriting_congruence}
+Let $\mathfrak{S}$ be any set of EDPOI rewrite rules and suppose
+$\mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G}$.
+Then, whenever the composites are defined,
+\begin{enumerate}
+  \item $\mathcal{E} \fatsemi \mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{E} \fatsemi \mathcal{G}$
+        and $\mathcal{F} \fatsemi \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G} \fatsemi \mathcal{E}$;
+  \item $\mathcal{E} \otimes \mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{E} \otimes \mathcal{G}$
+        and $\mathcal{F} \otimes \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G} \otimes \mathcal{E}$;
+  \item $\mathcal{F}^{1} \join \cdots \join \mathcal{F} \join \cdots \join \mathcal{F}^{p}
+        \;\overline{\rightsquigarrow}_{\mathfrak{S}}\;
+        \mathcal{F}^{1} \join \cdots \join \mathcal{G} \join \cdots \join \mathcal{F}^{p}$.
+\end{enumerate}
+Consequently $\sim_{\mathfrak{S}}$ is a congruence for $\fatsemi$, $\otimes$ and
+$\join$.
+\end{lemma}
+\begin{proof}
+Let $\mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G}$. 
+By~\cref{def:dpoi_rooted} there is a rule 
+\[
+\mathcal{L} \xleftarrow{f_{\mathrm{int}}} i' \coprod j' \xleftarrow{f_{\mathrm{ext}}} i \coprod j \xrightarrow{p_{\mathrm{ext}}} i'' \coprod j'' \xrightarrow{p_{\mathrm{int}}} \mathcal{R}~,
+\]
+such that the following diagram commutes, satisfying the conditions of~\cref{def:dpoi_rooted}.
+% https://q.uiver.app/#q=WzAsMTIsWzAsMCwiXFxtYXRoY2Fse0x9Il0sWzEsMCwiaScgXFxjb3Byb2QgaiciXSxbMiwwLCJpIFxcY29wcm9kIGoiXSxbMCwyLCJcXG1hdGhjYWx7Rn0iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFsyLDUsIm4gXFxjb3Byb2QgayJdLFsxLDMsIm4nIFxcY29wcm9kIGsnIl0sWzQsMiwiXFxtYXRoY2Fse0d9Il0sWzQsMCwiXFxtYXRoY2Fse1J9Il0sWzMsMywibicnIFxcY29wcm9kIGsnJyJdLFszLDAsImknJ1xcY29wcm9kIGonJyJdLFsyLDMsIihuJyBcXHNldG1pbnVzIFNfbikgXFxjb3Byb2QgKGsgXFxzZXRtaW51cyBTX2spIl0sWzAsMywibSIsMl0sWzEsMCwiZl97XFxtYXRocm17aW50fX0iLDJdLFsyLDEsImZfe1xcbWF0aHJte2V4dH19IiwyXSxbMiw0LCJjIl0sWzQsMywibF57XFxib3R9IiwyXSxbNSw2LCJnX3tcXG1hdGhybXtleHR9fSJdLFs2LDMsImdfe1xcbWF0aHJte2ludH19Il0sWzMsMiwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzQsNywiXFx3aWRldGlsZGV7XFxpb3RhX3tcXGJvdH19Il0sWzgsNywiXFx3aWRldGlsZGV7XFxpb3RhX3tcXG1hdGhjYWx7Un19fSJdLFs1LDksImhfe1xcbWF0aHJte2V4dH19IiwyXSxbOSw3LCJoX3tcXG1hdGhybXtpbnR9fSIsMl0sWzcsMiwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzIsMTAsInBfe1xcbWF0aHJte2V4dH19Il0sWzEwLDgsInBfe1xcbWF0aHJte2ludH19Il0sWzUsMTEsIlxcb3ZlcmxpbmV7Z31fe1xcbWF0aHJte2V4dH19IiwyXSxbMTEsNCwiZ157XFxib3R9IiwyXV0=
+\begin{equation}\label{eq:extended_complement_diagram}
+  \begin{tikzcd}
+	{\mathcal{L}} & {i' \coprod j'} & {i \coprod j} & {i''\coprod j''} & {\mathcal{R}} \\
+	\\
+	{\mathcal{F}} && {\mathcal{L}^{\bot}} && {\mathcal{G}} \\
+	& {n' \coprod k'} & {(n' \setminus S_n) \coprod (k' \setminus S_k)} & {n'' \coprod k''} \\
+	\\
 	&& {n \coprod k}
 	\arrow["m"', from=1-1, to=3-1]
 	\arrow["{f_{\mathrm{int}}}"', from=1-2, to=1-1]
@@ -2267,370 +3413,1560 @@ diagram
 	\arrow["{\widetilde{\iota_{\mathcal{R}}}}", from=1-5, to=3-5]
 	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
 	\arrow["{l^{\bot}}"', from=3-3, to=3-1]
-	\arrow["{\widetilde{\iota_{\mathcal{L}^{\bot}}}}", from=3-3, to=3-5]
+	\arrow["{\widetilde{\iota_{\bot}}}", from=3-3, to=3-5]
 	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
 	\arrow["{g_{\mathrm{int}}}", from=4-2, to=3-1]
-	\arrow["{h_{\mathrm{int}}}"', from=4-4, to=3-5]
-	\arrow["d"', from=5-3, to=3-3]
-	\arrow["{g_{\mathrm{ext}}}", from=5-3, to=4-2]
-	\arrow["{h_{\mathrm{ext}}}"', from=5-3, to=4-4]
-\end{tikzcd}\]
-such that the two marked squares are pushouts and the following conditions
-hold.
-\begin{enumerate}
-  \item $i \sqcup j \xrightarrow{c} \mathcal{L}^{\bot} \xrightarrow{l^{\bot}} \mathcal{G}$
-        is an extended pushout complement of $(f, m)$, with chosen
-        factorisation $g_{1} \sqcup g_{2}$, where
-        \[
-        S_{n} \defeq g_{\mathrm{int}}^{-1}\bigl(m(f_{\mathrm{int}}(i' \setminus i))\bigr)~,
-        \qquad
-        S_{k} \defeq g_{\mathrm{int}}^{-1}\bigl(m(f_{\mathrm{int}}(j' \setminus j))\bigr)~,
-        \]
-        so that $g_{1} : n' \setminus S_{n} \to \mathcal{L}^{\bot}$ and
-        $g_{2} : k' \setminus S_{k} \to \mathcal{L}^{\bot}$.
-  \item The internal interfaces of $\mathcal{H}$ are
-        \[
-        n'' = (n' \setminus S_{n}) \sqcup (i'' \setminus i)~,
-        \qquad
-        k'' = (k' \setminus S_{k}) \sqcup (j'' \setminus j)~.
-        \]
-  \item The internal legs of $\mathcal{H}$ are
-        \[
-        h_{\mathrm{int}} \restriction_{n''}
-          = [\, g_{1} \fatsemi \widetilde{\iota_{\mathcal{L}^{\bot}}},\;
-                (p_{\mathrm{int}} \fatsemi \widetilde{\iota_{\mathcal{R}}}) \restriction_{i'' \setminus i} \,]~,
-        \]
-        and dually on $k''$, and its external legs are
-        $h_{\mathrm{ext}} = g_{\mathrm{ext}}$ followed by the evident inclusion
-        of $n \sqcup k$ into $n'' \sqcup k''$.
-\end{enumerate}
-Given a set $\mathfrak{R}$ of rewrite rules and extended cospans $\mathcal{G}$
-and $\mathcal{H}$, we write $\mathcal{G} \;\overline{\rightsquigarrow}_{\mathfrak{R}}\; \mathcal{H}$
-if $\mathcal{G}$ rewrites to $\mathcal{H}$ via some rule of $\mathfrak{R}$, and
-$\mathcal{G} \;\overline{\rightsquigarrow}^{*}_{\mathfrak{R}}\; \mathcal{H}$ for the reflexive,
-symmetric and transitive closure of $\rightsquigarrow_{\mathfrak{R}}$.
-\end{definition}
+	\arrow["{g^{\bot}}"', from=4-3, to=3-3]
+	\arrow["{[h_{n}, h_{k}]}"', from=4-4, to=3-5]
+	\arrow["{g_{\mathrm{ext}}}", from=6-3, to=4-2]
+	\arrow["{\overline{g}_{\mathrm{ext}}}"', from=6-3, to=4-3]
+	\arrow["{h^{n}_{\mathrm{ext}} \coprod h^{k}_{\mathrm{ext}}}"', from=6-3, to=4-4]
+\end{tikzcd}~.
+\end{equation}
 
-\begin{lemma}\label{lemma:rewrite_yields_ecospan}
-Suppose $\mathcal{G} \;\overline{\rightsquigarrow}\; \mathcal{H}$ as in~\cref{def:dpoi_rooted},
-via a rule with well-typed extended cospans $\mathcal{L}$ and $\mathcal{R}$ and
-a well-typed $\mathcal{G}$.
-Then
+\begin{enumerate}[parsep=\parskip,
+    listparindent=\parindent]
+\item We prove
 \[
-n \xrightarrow{} n'' \xrightarrow{f_{1}} \mathcal{H}
-  \xleftarrow{f_{2}} k'' \xleftarrow{} k
+\mathcal E\fatsemi\mathcal F
+\;\overline{\rightsquigarrow}_{\mathfrak S}\;
+\mathcal E\fatsemi\mathcal G.
 \]
-is a well-typed extended cospan.
-\end{lemma}
-\begin{proof}
-  TODO
-\end{proof}
 
-\section{Soundness and completeness.}
-
-First, let us define $\join$ of two extended cospans, i.e., morphisms in $\catname{EHypI}_{\bullet}(\Sigma)$.
-\begin{definition}[Join of extended cospans]\label{def:join_of_extended_cospans}
-Given two extended cospans 
+Write the extended cospans representing \(\mathcal E\) and \(\mathcal F\) as
 \[
-n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m
+n_1
+\xrightarrow{f_{1,\mathrm{ext}}}
+n_1'
+\xrightarrow{f_{1,\mathrm{int}}}
+\mathcal E
+\xleftarrow{g_{1,\mathrm{int}}}
+k_1'
+\xleftarrow{g_{1,\mathrm{ext}}}
+n
 \]
 and
 \[
-n \xrightarrow{} n'' \xrightarrow{} \mathcal{G} \xleftarrow{} m'' \xleftarrow{} m
+n
+\xrightarrow{f_{2,\mathrm{ext}}}
+n'
+\xrightarrow{f_{2,\mathrm{int}}}
+\mathcal F
+\xleftarrow{g_{2,\mathrm{int}}}
+k'
+\xleftarrow{g_{2,\mathrm{ext}}}
+k,
 \]
-we define their \emph{join} as the extended cospan of~\cref{fig:join_of_extended_cospans},
-whose carrier is obtained from the disjoint union of the underlying vertex and
-edge sets of $\mathcal{F}$ and $\mathcal{G}$ by adjoining a fresh root $\top$, a
-$\boxsort$-edge $b$ with $\top <^{\mu} b$ and $b <^{\mu} \top_{\mathcal{F}}$,
-$b <^{\mu} \top_{\mathcal{G}}$, and fresh vertices $s(b)$ and $t(b)$ with
-$|s(b)| = |V_{n}|$ and $|t(b)| = |V_{m}|$, also children of $\top$;
-the labels, sources and targets are inherited, with $\top_{\mathcal{F}}$ and
-$\top_{\mathcal{G}}$ retaining their label $\cmpsort$ and becoming the two
-components of $b$.
+so that $g_{\mathrm{ext}} = f_{2,\mathrm{ext}} \coprod g_{2,\mathrm{ext}}$ and $g_{\mathrm{int}} = [f_{2, \mathrm{int}}, g_{2, \mathrm{int}}]$.
 
-Its external input leg sends $n$ isomorphically onto $s(b)$, and dually for $m$
-and $t(b)$; its internal input interface is $s(b) \sqcup n' \sqcup n''$, with
-the block of $\top_{\mathcal{F}}$ ordered so that its $k$-th vertex is
-$f_{\mathrm{ext}}$ of the $k$-th vertex of $n$, and likewise for
-$\top_{\mathcal{G}}$ via $g_{\mathrm{ext}}$; dually for the outputs.
-This generalises to $k$ summands in the obvious way.
-\end{definition}
-
-\begin{figure}
+Let
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJrXzEiXSxbMiwwLCJcXG1hdGhjYWx7Rn0iXSxbMCwyLCJcXG1hdGhjYWx7RX0iXSxbMiwyLCJcXG1hdGhjYWx7RX0gXFxjb3Byb2Rfe2tfMX0gXFxtYXRoY2Fse0Z9Il0sWzAsMSwidiJdLFswLDIsInUiLDJdLFsyLDMsIlxcdmFyZXBzaWxvbiIsMl0sWzEsMywiXFxwaGkiXSxbMywwLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\begin{equation}\label{eq:pushout_square_e_circ_f}
+  \begin{tikzcd}
+	{n} && {\mathcal{F}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E} \coprod_{n} \mathcal{F}}
+	\arrow["f_{2,\mathrm{ext}} \fatsemi f_{2, \mathrm{int}}", from=1-1, to=1-3]
+	\arrow["g_{1,\mathrm{ext}} \fatsemi g_{1,\mathrm{int}}"', from=1-1, to=3-1]
+	\arrow["\phi", from=1-3, to=3-3]
+	\arrow["\varepsilon"', from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-1]
+\end{tikzcd}
+\end{equation}
+be the pushout computing the carrier of
+\(\mathcal E\fatsemi\mathcal F\). 
+The composite $\mathcal{E} \fatsemi \mathcal{F}$ is then given by the following extended cospan
 \[
-\adjustbox{max width=0.65\textwidth}{
-\tikzfig{./figures/monoidal_egraphs/f_plus_g_new}
-}
+n_1 \xrightarrow{f_{1,\mathrm{ext}} \fatsemi \iota_{1}} n_1' \coprod (n' \setminus n) \xrightarrow{q_1} \mathcal{E} \coprod_{n} \mathcal{F} \xleftarrow{q_2} k' \coprod (k'_1 \setminus n) \xleftarrow{g_{2,\mathrm{ext}} \fatsemi \iota_{1}} k~,
 \]
-\caption{The join of two extended cospans.}
-\label{fig:join_of_extended_cospans}
-\end{figure}
+where 
+\[
+q_1 = [f_{1, \mathrm{int}} \fatsemi \varepsilon, (f_{2, \mathrm{int}} \fatsemi \phi) \restriction_{(n' \setminus n)}]
+\]
+and
+\[
+q_2 = [g_{2,\mathrm{int}} \fatsemi \phi, (g_{1, \mathrm{int}} \fatsemi \varepsilon) \restriction_{(k_1' \setminus n)}]~.
+\]
 
-\begin{definition}[Structural rules]\label{def:structural_rules}
-Let $\mathcal{R}$ be the set of EDPOI rewrite rules $\langle \mathcal{L}, \mathcal{R} \rangle$
-and $\langle \mathcal{R}, \mathcal{L} \rangle$ obtained from the equations
-of~\cref{fig:string-equations}.
-\end{definition}
+Writing
+\[
+n \xrightarrow{\overline{g}^{n}_{\mathrm{ext}}} (n' \setminus S_n) \xrightarrow{g^{\bot}_{n}} \mathcal{L}^{\bot} \xleftarrow{g^{\bot}_{k}} (k' \setminus S_k) \xleftarrow{\overline{g}^{k}_{\mathrm{ext}}} k~,
+\]
+we similarly get a composite $\mathcal{E} \fatsemi \mathcal{L}^{\bot}$ given by the extended cospan
+\begin{equation}\label{eq:extended_complement_composite_cospan}
+n_1 \xrightarrow{f_{1, \mathrm{ext}} \fatsemi \iota_{1}} n'_1 \coprod ((n' \setminus S_n) \setminus n) \xrightarrow{q_1^{\bot}} \mathcal{E} \coprod_{n} \mathcal{L}^{\bot} \xleftarrow{q_2^{\bot}} (k' \setminus S_k) \coprod (k'_1 \setminus n) \xleftarrow{\overline{g}^{k}_{\mathrm{ext}} \fatsemi \iota_{1}} k~,
+\end{equation}
+with 
+\[
+q_1^{\bot} = [f_{1, \mathrm{int}} \fatsemi \varepsilon^{\bot}, (g_{n}^{\bot} \fatsemi \phi^{\bot}) \restriction_{((n' \setminus S_{n}) \setminus n)}]
+\] 
+and 
+\[
+q_2^{\bot} = [g_{k}^{\bot} \fatsemi \phi^{\bot}, (g_{1,\mathrm{int}} \fatsemi \varepsilon^{\bot}) \restriction_{((k_1' \setminus n))}]~,
+\]
+where $(\mathcal{E} \coprod_{n} \mathcal{L}^{\bot}, \phi^{\bot}, \varepsilon^{\bot})$ is the pushout 
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJrXzEiXSxbMiwwLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFswLDIsIlxcbWF0aGNhbHtFfSJdLFsyLDIsIlxcbWF0aGNhbHtFfSBcXGNvcHJvZF97a18xfSBcXG1hdGhjYWx7Rn0iXSxbMCwxLCJnX3sxLFxcbWF0aHJte2V4dH19XFxmYXRzZW1pIGdfezF9XntcXGJvdH0iXSxbMCwyLCJnX3sxLFxcbWF0aHJte2V4dH19IFxcZmF0c2VtaSBnX3sxLFxcbWF0aHJte2ludH19IiwyXSxbMiwzLCJcXHZhcmVwc2lsb25ee1xcYm90fSIsMl0sWzEsMywiXFxwaGlee1xcYm90fSJdLFszLDAsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+\begin{equation}\label{eq:pushout_square_e_circ_lbot}
+  \begin{tikzcd}
+	{n} && {\mathcal{L}^{\bot}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E} \coprod_{n} \mathcal{L}^{\bot}}
+	\arrow["{\overline{g}^{n}_{\mathrm{ext}}\fatsemi g_{n}^{\bot}}", from=1-1, to=1-3]
+	\arrow["{g_{1,\mathrm{ext}} \fatsemi g_{1,\mathrm{int}}}"', from=1-1, to=3-1]
+	\arrow["{\phi^{\bot}}", from=1-3, to=3-3]
+	\arrow["{\varepsilon^{\bot}}"', from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-1]
+\end{tikzcd}
+\end{equation}
+
+We claim that
+\[
+i\sqcup j
+\xrightarrow{c\fatsemi\phi^\bot}
+\mathcal E\coprod_n\mathcal L^\bot
+\xrightarrow{\id_{\mathcal{E}} \coprod l^{\bot}}
+\mathcal E\coprod_n\mathcal F
+\]
+is an extended pushout complement of \(f\) and
+\(m\fatsemi\phi\).
+
+% https://q.uiver.app/#q=WzAsOCxbMCwxLCJuIl0sWzEsMSwiXFxtYXRoY2FsIExeXFxib3QiXSxbMiwxLCJcXG1hdGhjYWwgRiJdLFswLDIsIlxcbWF0aGNhbCBFIl0sWzEsMiwiXFxtYXRoY2FsIEVcXGNvcHJvZF9uXFxtYXRoY2FsIExeXFxib3QiXSxbMiwyLCJcXG1hdGhjYWwgRVxcY29wcm9kX25cXG1hdGhjYWwgRi4iXSxbMSwwLCJpIFxcY29wcm9kIGoiXSxbMiwwLCJcXG1hdGhjYWx7TH0iXSxbMCwxLCJcXG92ZXJsaW5lIGdfe1xcbWF0aHJte2V4dH19XntcXCxufVxuICAgICAgXFxmYXRzZW1pIGdfbl5cXGJvdCJdLFswLDMsImdfezEsXFxtYXRocm17ZXh0fX1cXGZhdHNlbWkgZ197MSxcXG1hdGhybXtpbnR9fSIsMl0sWzEsMiwibF5cXGJvdCJdLFsxLDQsIlxccGhpXlxcYm90Il0sWzIsNSwiXFxwaGkiXSxbMyw0LCJcXHZhcmVwc2lsb25eXFxib3QiLDJdLFs0LDUsIlxcaWRfe1xcbWF0aGNhbCBFfVxcY29wcm9kX24gbF5cXGJvdCIsMl0sWzQsMCwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzUsMSwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzEsMywiKDEpIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzIsNCwiKDIpIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzYsMSwiYyIsMl0sWzYsNywiZiJdLFs3LDIsIm0iXSxbMiw2LCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNywxLCIoMykiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+\begin{equation}\label{eq:stacked_pushout_diagram}
+\begin{tikzcd}
+	& {i \coprod j} & {\mathcal{L}} \\
+	n & {\mathcal L^\bot} & {\mathcal F} \\
+	{\mathcal E} & {\mathcal E\coprod_n\mathcal L^\bot} & {\mathcal E\coprod_n\mathcal F.}
+	\arrow["f", from=1-2, to=1-3]
+	\arrow["c"', from=1-2, to=2-2]
+	\arrow["{(3)}"{description}, draw=none, from=1-3, to=2-2]
+	\arrow["m", from=1-3, to=2-3]
+	\arrow["{\overline g_{\mathrm{ext}}^{\,n}
+	      \fatsemi g_n^\bot}", from=2-1, to=2-2]
+	\arrow["{g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}}"', from=2-1, to=3-1]
+	\arrow["{l^\bot}", from=2-2, to=2-3]
+	\arrow["{(1)}"{description}, draw=none, from=2-2, to=3-1]
+	\arrow["{\phi^\bot}", from=2-2, to=3-2]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+	\arrow["{(2)}"{description}, draw=none, from=2-3, to=3-2]
+	\arrow["\phi", from=2-3, to=3-3]
+	\arrow["{\varepsilon^\bot}"', from=3-1, to=3-2]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-2, to=2-1]
+	\arrow["{\id_{\mathcal E}\coprod_n l^\bot}"', from=3-2, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=2-2]
+\end{tikzcd}~.
+\end{equation}
+The square (1) is a pushout by the diagram~\ref{eq:pushout_square_e_circ_lbot}.
+From the extended pushout complement~\ref{eq:extended_complement_diagram} we have that $\overline g_{\mathrm{ext}}^{n} \fatsemi g_{n}^{\bot} \fatsemi l^{\bot} = f_{2,\mathrm{ext}} \fatsemi f_{2, \mathrm{int}}$.
+Consider maps $\varepsilon : \mathcal{E} \to \mathcal{E} \coprod_{n} \mathcal{F}$ and $l^{\bot} \fatsemi \phi : \mathcal{L}^{\bot} \to \mathcal{E} \coprod_{n} \mathcal{F}$, they agree on $n$ since
+\begin{align*}
+g_{1,\mathrm{ext}} \fatsemi g_{1,\mathrm{int}} \fatsemi \varepsilon &= f_{2,\mathrm{ext}} \fatsemi f_{2, \mathrm{int}} \fatsemi \phi\\
+&= \overline{g}_{\mathrm{ext}}^{n} \fatsemi g_{n}^{\bot} \fatsemi l^{\bot} \fatsemi \phi~,
+\end{align*}
+and therefore the universal property of the pushout $\mathcal{E} \coprod_{n} \mathcal{L}^{\bot}$ gives us a unique map $\id_{\mathcal{E}} \coprod l^{\bot} : \mathcal{E} \coprod_{n} \mathcal{L}^{\bot} \to \mathcal{E} \coprod_{n} \mathcal{F}$ so that the square (2) commutes.
+From the same universal property we have that $\varepsilon^{\bot} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) = \varepsilon$ and the outermost rectangle is a pushout by the diagram~\ref{eq:pushout_square_e_circ_f}.
+By the cancellation property of pushouts, the data above implies that the square (2) is a pushout.
+Square (3) is a pushout given by the extended pushout complement~\ref{eq:extended_complement_diagram} and by the pasting property of pushouts, the rectangle (3)--(2) is a pushout.
+Both maps out of $n$ in the pushout defining
+$\mathcal E\coprod_n\mathcal F$ are strict, so $\phi$ is strict.
+Likewise,
+\[
+g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}
+\qquad\text{and}\qquad
+\overline g_{\mathrm{ext}}^{\,n}\fatsemi g_n^\bot
+\]
+are strict, so $\phi^\bot$ is strict.
+Since $m$ and $c$ are anchored, it follows that
+\[
+m\fatsemi\phi
+\qquad\text{and}\qquad
+c\fatsemi\phi^\bot
+\]
+are anchored.
+Together with the pushout property of the outer rectangle, this establishes
+condition~(1) of~\cref{def:extended_complement}.
+
+We next verify condition~(2). Since \(i\sqcup j\) is pointed discrete and
+\(f:i\sqcup j\to\mathcal L\) is strict, the explicit construction of the
+outer pushout identifies only the root and top-level interface vertices of
+\(\mathcal L\) with elements of
+\(\mathcal E\coprod_n\mathcal L^\bot\). In particular, it introduces no new
+immediate children below the image of a non-root edge of \(\mathcal L\).
+
+Hence, if \(e\in E_{\mathcal L}\) with
+\(e\neq\top_{\mathcal L}\) and
+\[
+(m\fatsemi\phi)_E(e)
+<^\mu_{\mathcal E\coprod_n\mathcal F}
+x,
+\]
+then \(x=(m\fatsemi\phi)(y)\) for some
+\(y\in V_{\mathcal L}\sqcup E_{\mathcal L}\) satisfying
+\[
+e<^\mu_{\mathcal L}y.
+\]
+Consequently,
+\[
+x\in\operatorname{im}(m\fatsemi\phi),
+\]
+as required.
+
+The same principle applies to condition (3); since $m \fatsemi \phi$ is a pushout coprojection over pointed discrete $i \coprod j$, the only vertices that get identified come from $i \coprod j$ and since $f$ is strict are necessary top-level.
+
+We next verify condition~(4). 
+The internal input and output interfaces of
+\(\mathcal E\fatsemi\mathcal F\) are
+\[
+n_1'\coprod(n'\setminus n)
+\qquad\text{and}\qquad
+k'\coprod(k_1'\setminus n),
+\]
+respectively. According to condition~(4), the retained interfaces must
+therefore be obtained by removing from these interfaces the affected
+subinterfaces determined by the transported match \(m\fatsemi\phi\).
+Under $m \fatsemi \phi$ the images of the original subinterfaces $S_n$ and $S_k$ lie in $n'$ and $k'$ of the above, respectively.
+
+Write \(S_{\mathrm{in}}\) and \(S_{\mathrm{out}}\) for these affected
+subinterfaces, hence
+\[
+S_{\mathrm{in}}=\iota_2(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}=\iota_1(S_k)~.
+\]
+
+Consequently, the retained input interface required by condition~(4) is
+\[
+\begin{aligned}
+\bigl(n_1'\coprod(n'\setminus n)\bigr)\setminus S_{\mathrm{in}}
+&=
+\bigl(n_1'\coprod(n'\setminus n)\bigr)\setminus\iota_2(S_n)\\
+&\cong
+n_1'\coprod\bigl((n'\setminus n)\setminus S_n\bigr)\\
+&=
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr).
+\end{aligned}
+\]
+The last equality holds because
+\(S_n\subseteq n'\setminus n\), so the vertex sets of \(S_n\) and \(n\)
+are disjoint.
+
+Similarly, the retained output interface required by condition~(4) is
+\[
+\begin{aligned}
+\bigl(k'\coprod(k_1'\setminus n)\bigr)\setminus S_{\mathrm{out}}
+&=
+\bigl(k'\coprod(k_1'\setminus n)\bigr)\setminus\iota_1(S_k)\\
+&\cong
+(k'\setminus S_k)\coprod(k_1'\setminus n).
+\end{aligned}
+\]
+These are precisely the internal interfaces of the previously constructed
+composite extended cospan in
+\eqref{eq:extended_complement_composite_cospan}. This retained extended
+cospan is well-typed because it is the composite of the well-typed extended
+cospan \(\mathcal E\) with the well-typed retained extended cospan of
+\(\mathcal L^\bot\).
+
+Let
+\[
+\jmath_{\mathrm{in}} : n'_{1} \coprod ((n' \setminus S_n) \setminus n) \hookrightarrow n'_{1} \coprod (n' \setminus n) \quad \text{and} \quad \jmath_{\mathrm{out}} : (k' \setminus S_k) \coprod (k'_{1} \setminus n) \hookrightarrow k' \coprod (k'_{1} \setminus n)
+\]
+be the evident inclusions of the retained internal interfaces.
+We need to check that
+\[
+\begin{aligned}
+&
+\Bigl(
+(f_{1,\mathrm{ext}}\fatsemi\iota_1)
+\coprod
+(\overline g_{\mathrm{ext}}^{\,k}\fatsemi\iota_1)
+\Bigr)
+\fatsemi
+(\jmath_{\mathrm{in}}\coprod\jmath_{\mathrm{out}})
+\\
+&\qquad =
+(f_{1,\mathrm{ext}}\fatsemi\iota_1)
+\coprod
+(g_{2,\mathrm{ext}}\fatsemi\iota_1),
+\end{aligned}
+\]
+and
+\[
+[q_1^\bot,q_2^\bot]
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+=
+(\jmath_{\mathrm{in}}\coprod\jmath_{\mathrm{out}})
+\fatsemi
+[q_1,q_2].
+\]
+These can be verified componentwise.
+These equalities can be verified componentwise. Consider, for example,
+\[
+(\overline g_{\mathrm{ext}}^{\,k}\fatsemi\iota_1)
+\fatsemi\jmath_{\mathrm{out}}
+=
+g_{2,\mathrm{ext}}\fatsemi\iota_1.
+\]
+This is the commutativity enforced by the original extended pushout
+complement, noting that \(\jmath_{\mathrm{out}}\) restricts on the first
+summand to the inclusion \(k'\setminus S_k\hookrightarrow k'\).
+The input component is immediate because \(\jmath_{\mathrm{in}}\) restricts
+to the identity on the \(n_1'\)-summand.
+The other component follows analogously.
+
+For the second equation, consider, for example,
+\[
+q^{\bot}_{1} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) = \jmath_{\mathrm{in}} \fatsemi q_1~.
+\]
+Recall that 
+\[
+q^{\bot}_{1} = [f_{1, \mathrm{int}} \fatsemi \varepsilon^{\bot}, (g_{n}^{\bot} \fatsemi \phi^{\bot}) \restriction_{((n' \setminus S_{n}) \setminus n)}]
+\]
+and
+\[
+q_{1} = [f_{1, \mathrm{int}} \fatsemi \varepsilon, (f_{2, \mathrm{int}} \fatsemi \phi) \restriction_{(n' \setminus n)}]~.
+\]
+The original extended pushout complement gives us
+\[
+g_{n}^{\bot} \fatsemi l^{\bot} = \jmath_{n} \fatsemi f_{2, \mathrm{int}}~,
+\]
+where $\jmath_{n} : (n' \setminus S_{n}) \hookrightarrow n'$.
+Now, compute
+\[
+  q^{\bot}_{1} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) = \bigl(f_{1,\mathrm{int}} \fatsemi \varepsilon^{\bot} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot})\bigr) \coprod \bigl( (g_{n}^{\bot} \fatsemi \phi^{\bot}) \restriction_{((n' \setminus S_{n}) \setminus n)} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) \bigr)~. 
+\]
+For the first component, we have
+\[
+(f_{1,\mathrm{int}} \fatsemi \varepsilon^{\bot}) \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) = f_{1, \mathrm{int}} \fatsemi \varepsilon~.
+\]
+For the second component, put
+\[
+D\defeq(n'\setminus S_n)\setminus n.
+\]
+Then
+\[
+\begin{aligned}
+&
+\left(
+(g_n^\bot\fatsemi\phi^\bot)\restriction_D
+\right)
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+\\
+&\qquad =
+\left(
+g_n^\bot
+\fatsemi\phi^\bot
+\fatsemi(\id_{\mathcal E}\coprod l^\bot)
+\right)
+\restriction_D
+\\
+&\qquad =
+\left(
+g_n^\bot\fatsemi l^\bot\fatsemi\phi
+\right)
+\restriction_D
+\\
+&\qquad =
+\left(
+\jmath_n\fatsemi f_{2,\mathrm{int}}\fatsemi\phi
+\right)
+\restriction_D~,
+\end{aligned}
+\]
+using the equalities recalled above and the one established in diagram~\ref{eq:stacked_pushout_diagram}.
+
+Now, the first component of $\jmath_{\mathrm{in}} \fatsemi q_1$ is $\id_{n'_1} \fatsemi f_{1, \mathrm{int}} \fatsemi \varepsilon = f_{1,\mathrm{int}} \fatsemi \varepsilon$.
+On the other hand, the second component of
+\(\jmath_{\mathrm{in}}\fatsemi q_1\) is
+\[
+\begin{aligned}
+&
+\bigl(D\hookrightarrow n'\setminus n\bigr)
+\fatsemi
+\left(
+f_{2,\mathrm{int}}\fatsemi\phi
+\right)
+\restriction_{n'\setminus n}
+\\
+&\qquad = (D \hookrightarrow n' \setminus n) \fatsemi (n' \setminus n \hookrightarrow n') \fatsemi f_{2, \mathrm{int}} \fatsemi \phi\\
+&\qquad = (D \hookrightarrow n' \setminus S_n) \fatsemi \jmath_{n} \fatsemi f_{2, \mathrm{int}} \fatsemi \phi\\
+&\qquad = (\jmath_{n} \fatsemi f_{2, \mathrm{in}} \fatsemi \phi) \restriction_{D}
+\end{aligned}
+\]
+Thus both components agree and we conclude that 
+\[
+q^{\bot}_{1} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) = \jmath_{\mathrm{in}} \fatsemi q_1~.
+\]
+The remaining equality can be verified analogously.
+
+It remains to check condition~(5).
+The transported match \(m\fatsemi\phi\) has anchor
+\[
+a'\defeq\phi_E(a).
+\]
+Recall that the affected subinterfaces of the composite are
+\[
+S_{\mathrm{in}}=\iota_2(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}=\iota_1(S_k).
+\]
+The maps required by condition~(5) are therefore
+\[
+\alpha_n\fatsemi\iota_2:
+i'\setminus i\longrightarrow S_{\mathrm{in}}
+\qquad\text{and}\qquad
+\alpha_k\fatsemi\iota_1:
+j'\setminus j\longrightarrow S_{\mathrm{out}},
+\]
+where \(\iota_2\) and \(\iota_1\) denote the corestrictions of the
+coprojections to \(S_{\mathrm{in}}\) and \(S_{\mathrm{out}}\),
+respectively.
+
+Define the re-anchored interface maps
+\[
+\widehat q_1^{\,a'}
+\defeq
+\left\langle
+a';
+q_{1,V}\restriction_{V_{S_{\mathrm{in}}}}
+\right\rangle
+:
+S_{\mathrm{in}}
+\longrightarrow
+\mathcal E\coprod_n\mathcal F
+\]
+and
+\[
+\widehat q_2^{\,a'}
+\defeq
+\left\langle
+a';
+q_{2,V}\restriction_{V_{S_{\mathrm{out}}}}
+\right\rangle
+:
+S_{\mathrm{out}}
+\longrightarrow
+\mathcal E\coprod_n\mathcal F.
+\]
+It is sufficient to show that the following pasted diagrams commute:
+\[
+\begin{tikzcd}
+	{i'\setminus i} && {\mathcal{L}} \\
+	\\
+	{S_n} && {\mathcal{F}} \\
+	\\
+	{S_{\mathrm{in}}} && {\mathcal{E}\coprod_{n}\mathcal{F}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_n}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat{g}_{n}^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_{2}}"', from=3-1, to=5-1]
+	\arrow["\phi"', from=3-3, to=5-3]
+	\arrow["{\widehat{q}^{\,a'}_1}", from=5-1, to=5-3]
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+	{j'\setminus j} && {\mathcal{L}} \\
+	\\
+	{S_k} && {\mathcal{F}} \\
+	\\
+	{S_{\mathrm{out}}} && {\mathcal{E}\coprod_{n}\mathcal{F}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_k}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat{g}_{k}^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_{1}}"', from=3-1, to=5-1]
+	\arrow["\phi"', from=3-3, to=5-3]
+	\arrow["{\widehat{q}^{\,a'}_2}", from=5-1, to=5-3]
+\end{tikzcd}
+\]
+We will check the left diagram; the right diagram is analogous.
+The upper square commutes by condition~(5) for the original extended
+pushout complement. 
+We check the lower square.
+
+The maps $(\hat{g}_{n}^{\,a})_{E} \fatsemi \phi_{E}$ and $(\iota_{2})_{E} \fatsemi \hat{g}_{1}^{\,a'}$ agree on the $\top_{S_n}$ by construction: $a' = \phi_{E}(a)$.
+For every \(x\in V_{S_n}\), since \(S_n\subseteq n'\setminus n\) and
+the second component of \(q_1\) is
+\[
+(f_{2,\mathrm{int}}\fatsemi\phi)
+\restriction_{n'\setminus n},
+\]
+we have
+\[
+\begin{aligned}
+\bigl(
+\widehat g_n^{\,a}\fatsemi\phi
+\bigr)_V(x)
+&=
+\phi_V\bigl(f_{2,\mathrm{int},V}(x)\bigr)
+\\
+&=
+q_{1,V}\bigl(\iota_{2,V}(x)\bigr)
+\\
+&=
+\bigl(
+\iota_2\fatsemi\widehat q_1^{\,a'}
+\bigr)_V(x).
+\end{aligned}
+\]
+Thus
+\[
+\widehat g_n^{\,a}\fatsemi\phi
+=
+\iota_2\fatsemi\widehat q_1^{\,a'},
+\]
+and we get that the whole diagram commutes.
+
+Finally, \(\alpha_n\) and \(\alpha_k\) preserve the interface order
+within blocks by condition~(5) for the original complement. The
+coprojections \(\iota_2\) and \(\iota_1\) preserve the order within
+their respective summands, and hence
+\(\alpha_n\fatsemi\iota_2\) and
+\(\alpha_k\fatsemi\iota_1\) have the required order-preservation
+property. This proves condition~(5).
+
+We have now verified all five conditions of \cref{def:extended_complement}. 
+Hence
+\[
+i\sqcup j
+\xrightarrow{c\fatsemi\phi^\bot}
+\mathcal E\coprod_n\mathcal L^\bot
+\xrightarrow{\id_{\mathcal E}\coprod l^\bot}
+\mathcal E\coprod_n\mathcal F
+\]
+is an extended pushout complement of \(f\) and \(m\fatsemi\phi\).
+It remains to show that completing this complement with the right-hand
+pushout produces \(\mathcal E\fatsemi\mathcal G\).
+First, recall the morphisms
+\[
+h^{n}_{\mathrm{ext}} : n \to n'', \qquad h_{n} : n'' \to \mathcal{G}
+\]
+\[
+h_{\mathrm{ext}}^{k} : k \to k'', \qquad h_{k} : k'' \to \mathcal{G}
+\]
+We then have the following pushout diagram
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJuIl0sWzIsMCwiXFxtYXRoY2Fse0d9Il0sWzAsMiwiXFxtYXRoY2Fse0V9Il0sWzIsMiwiXFxtYXRoY2Fse0V9IFxcY29wcm9kX3tufVxcbWF0aGNhbHtHfSJdLFswLDEsImhfe24sXFxtYXRocm17ZXh0fX1cXGZhdHNlbWkgaF97bicnLCBcXG1hdGhybXtpbnR9fSJdLFswLDIsImdfezEsXFxtYXRocm17ZXh0fX1cXGZhdHNlbWkgZ197MSxcXG1hdGhybXtpbnR9fSIsMl0sWzEsMywiXFxwc2kiXSxbMiwzLCJcXHZhcmVwc2lsb24nIiwyXSxbMywwLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\[\begin{tikzcd}
+	n && {\mathcal{G}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E} \coprod_{n}\mathcal{G}}
+	\arrow["{h^{n}_\mathrm{ext} \fatsemi h_{n}}", from=1-1, to=1-3]
+	\arrow["{g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}}"', from=1-1, to=3-1]
+	\arrow["\psi", from=1-3, to=3-3]
+	\arrow["{\varepsilon'}"', from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-1]
+\end{tikzcd}\]
+and the composite diagram below
+% https://q.uiver.app/#q=WzAsOCxbMiwwLCJpIFxcY29wcm9kIGoiXSxbNCwwLCJcXG1hdGhjYWx7Un0iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFs0LDIsIlxcbWF0aGNhbHtHfSJdLFsyLDQsIlxcbWF0aGNhbHtFfVxcY29wcm9kX3tufVxcbWF0aGNhbHtMfV57XFxib3R9Il0sWzQsNCwiXFxtYXRoY2Fse0V9XFxjb3Byb2RfblxcbWF0aGNhbHtHfSJdLFswLDIsIm4iXSxbMCw0LCJcXG1hdGhjYWx7RX0iXSxbMCwxLCJwIl0sWzEsMywiXFx3aWRldGlsZGV7XFxpb3RhX3tcXG1hdGhjYWx7Un19fSJdLFsyLDMsIlxcd2lkZXRpbGRle1xcaW90YV97XFxib3R9fSJdLFswLDIsImMiXSxbMiw0LCJcXHBoaV57XFxib3R9Il0sWzMsNSwiXFxwc2kiXSxbMywwLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNSwyLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCw1LCJcXGlkX3tcXG1hdGhjYWx7RX19XFxjb3Byb2RcXHdpZGV0aWxkZXtcXGlvdGFfe1xcYm90fX0iLDJdLFs2LDIsIlxcb3ZlcmxpbmV7Z31eeyBufV97XFxtYXRocm17ZXh0fX0gXFxmYXRzZW1pIGdfe259XntcXGJvdH0iXSxbNiw3LCJnX3sxLFxcbWF0aHJte2V4dH19XFxmYXRzZW1pIGdfezEsXFxtYXRocm17aW50fX0iLDJdLFs3LDQsIlxcdmFyZXBzaWxvbl57XFxib3R9IiwyXSxbNCw2LCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMiw3LCIoMSkiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMyw0LCIoMikiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwyLCIoMykiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+\[\begin{tikzcd}
+	&& {i \coprod j} && {\mathcal{R}} \\
+	\\
+	n && {\mathcal{L}^{\bot}} && {\mathcal{G}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E}\coprod_{n}\mathcal{L}^{\bot}} && {\mathcal{E}\coprod_n\mathcal{G}}
+	\arrow["p", from=1-3, to=1-5]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow["{(3)}"{description}, draw=none, from=1-5, to=3-3]
+	\arrow["{\widetilde{\iota_{\mathcal{R}}}}", from=1-5, to=3-5]
+	\arrow["{\overline{g}^{ n}_{\mathrm{ext}} \fatsemi g_{n}^{\bot}}", from=3-1, to=3-3]
+	\arrow["{g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}}"', from=3-1, to=5-1]
+	\arrow["{\widetilde{\iota_{\bot}}}", from=3-3, to=3-5]
+	\arrow["{(1)}"{description}, draw=none, from=3-3, to=5-1]
+	\arrow["{\phi^{\bot}}", from=3-3, to=5-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow["{(2)}"{description}, draw=none, from=3-5, to=5-3]
+	\arrow["\psi", from=3-5, to=5-5]
+	\arrow["{\varepsilon^{\bot}}"', from=5-1, to=5-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=5-3, to=3-1]
+	\arrow["{\id_{\mathcal{E}}\coprod\widetilde{\iota_{\bot}}}"', from=5-3, to=5-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=5-5, to=3-3]
+\end{tikzcd}\]
+By a similar argument to the one before, 
+\begin{align*}
+\overline g_{\mathrm{ext}}^{\,n}
+\fatsemi g_n^\bot
+\fatsemi\widetilde\iota_{\bot}
+\fatsemi\psi
+&=
+h_{\mathrm{ext}}^n
+\fatsemi h_n
+\fatsemi\psi
+\\
+&=
+g_{1,\mathrm{ext}}
+\fatsemi g_{1,\mathrm{int}}
+\fatsemi\varepsilon',
+\end{align*}
+and $\id_{\mathcal{E}} \coprod \widetilde{\iota_{\bot}}$ with $\varepsilon^{\bot} \fatsemi (\id_{\mathcal{E}} \coprod \widetilde{\iota_{\bot}}) = \varepsilon'$ is the unique morphism induced by the universal property.
+So the diagram (2) commutes and is a pushout by the cancellation property and the stacked rectangle (3)--(2) is a pushout by the pasting property.
+
+The composite \(\mathcal E\fatsemi\mathcal G\) is represented by
+\[
+n_1
+\xrightarrow{f_{1,\mathrm{ext}}\fatsemi\iota_1}
+n_1'\coprod(n''\setminus n)
+\xrightarrow{q_3}
+\mathcal E\coprod_n\mathcal G
+\xleftarrow{q_4}
+k''\coprod(k_1'\setminus n)
+\xleftarrow{h_{\mathrm{ext}}^k\fatsemi\iota_1}
+k,
+\]
+where
+\[
+q_3
+=
+\left[
+f_{1,\mathrm{int}}\fatsemi\varepsilon',
+\;
+(h_n\fatsemi\psi)\restriction_{n''\setminus n}
+\right]
+\]
+and
+\[
+q_4
+=
+\left[
+h_k\fatsemi\psi,
+\;
+(g_{1,\mathrm{int}}\fatsemi\varepsilon')
+\restriction_{k_1'\setminus n}
+\right].
+\]
+
+On the other hand, by the EDPOI rewriting definition, the internal interfaces of the
+resulting extended cospan are
+\[
+\overline n''
+\defeq
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ
+\]
+and
+\[
+\overline k''
+\defeq
+\left(
+(k'\setminus S_k)\coprod(k_1'\setminus n)
+\right)
+\coprod j''_\circ,
+\]
+where
+\[
+i''_\circ=i''\setminus i,
+\qquad
+j''_\circ=j''\setminus j.
+\]
+
+Let
+\[
+\mu_n:
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\longrightarrow
+\overline n'',
+\qquad
+\mu_i:i''_\circ\longrightarrow\overline n''
+\]
+be the corresponding coprojections.
+
+The new strictly internal input interface map contributed by the right-hand
+side of the rule is
+\[
+\overline\rho_i
+\defeq
+\left\langle
+\top_{\mathcal E\coprod_n\mathcal G};
+\left(
+p_{\mathrm{int}}
+\fatsemi\widetilde\iota_{\mathcal R}
+\fatsemi\psi
+\right)_V
+\restriction_{V_{i''_\circ}}
+\right\rangle
+:
+i''_\circ
+\longrightarrow
+\mathcal E\coprod_n\mathcal G
+\]
+Equivalently, since \(\psi\) is strict,
+\[
+\overline\rho_i=\rho_i\fatsemi\psi~.
+\]
+
+The internal input leg produced by the EDPOI construction is therefore
+\[
+\overline h_{n_1}
+\defeq
+\left[
+q_1^\bot
+\fatsemi
+\bigl(
+\id_{\mathcal E}\coprod\widetilde\iota_\bot
+\bigr),
+\;
+\overline\rho_i
+\right]
+:
+\overline n''
+\longrightarrow
+\mathcal E\coprod_n\mathcal G
+\]
+The corresponding external input leg is
+\[
+\overline h_{\mathrm{ext}}^{\,n_1}
+\defeq
+f_{1,\mathrm{ext}}
+\fatsemi\iota_1
+\fatsemi\mu_n
+:
+n_1\longrightarrow\overline n''
+\]
+where \(\iota_1\) is the first coprojection into the corresponding
+retained interface.
+Likewise we have the morphisms corresponding to the external and internal output interfaces
+\[
+\overline h_{\mathrm{ext}}^{\,k} : k\longrightarrow\overline k''\\
+\]
+and
+\[
+\overline h_k : \overline k'' \longrightarrow \mathcal E\coprod_n\mathcal G.
+\]
+
+It remains to show that the extended cospan representing the composite,
+\[
+n_1
+\xrightarrow{f_{1,\mathrm{ext}}\fatsemi\iota_1}
+n_1'\coprod(n''\setminus n)
+\xrightarrow{q_3}
+\mathcal E\coprod_n\mathcal G
+\xleftarrow{q_4}
+k''\coprod(k_1'\setminus n)
+\xleftarrow{h_{\mathrm{ext}}^k\fatsemi\iota_1}
+k,
+\]
+is isomorphic to the extended cospan produced by the EDPOI construction,
+\[
+n_1
+\xrightarrow{\overline h_{\mathrm{ext}}^{\,n_1}}
+\overline n''
+\xrightarrow{\overline h_{n_1}}
+\mathcal E\coprod_n\mathcal G
+\xleftarrow{\overline h_k}
+\overline k''
+\xleftarrow{\overline h_{\mathrm{ext}}^{\,k}}
+k.
+\]
+We consider the input side; the output side is analogous. 
+From the original EDPOI square we have 
+\[
+n'' = (n' \setminus S_n) \coprod i''_\circ,
+\]
+thus checking $\overline n'' \cong n_1' \coprod (n'' \setminus n)$ reduces to checking
+\[
+n_1' \coprod (((n' \setminus S_n) \coprod i''_\circ) \setminus n) \cong 
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ
+\]
+Since \(n\) lies in the \(n'\setminus S_n\)-summand and is disjoint
+from \(i''_\circ\), we have
+\[
+\begin{aligned}
+n_1'\coprod(n''\setminus n)
+&=
+n_1'\coprod
+\left(
+\bigl((n'\setminus S_n)\coprod i''_\circ\bigr)\setminus n
+\right)
+\\
+&\cong
+n_1'\coprod
+\left(
+\bigl((n'\setminus S_n)\setminus n\bigr)
+\coprod i''_\circ
+\right)
+\\
+&\cong
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ
+\\
+&=
+\overline n''.
+\end{aligned}
+\]
+Let
+\[
+\beta_n:\overline n''
+\longrightarrow
+n_1'\coprod(n''\setminus n)
+\]
+denote the resulting canonical isomorphism.
+We need to check that
+\[
+f_{1,\mathrm{ext}} \fatsemi \iota_1 = \overline{h}_{\mathrm{ext}}^{\,n_1} \fatsemi \beta_n.
+\]
+By definition of \(\overline h_{\mathrm{ext}}^{\,n_1}\), we have
+\[
+\begin{aligned}
+\overline h_{\mathrm{ext}}^{\,n_1}\fatsemi\beta_n
+&=
+f_{1,\mathrm{ext}}
+\fatsemi\iota_1
+\fatsemi\mu_n
+\fatsemi\beta_n
+\\
+&=
+f_{1,\mathrm{ext}}\fatsemi\iota_1.
+\end{aligned}
+\]
+The last equality follows from the definition of \(\beta_n\).
+Note that the first $\iota_{1}$ sends $n_1' \to n'_1 \coprod ((n' \setminus S_n) \setminus n)$, and the second $\iota_{1}$ sends $n_1' \to n_1' \coprod (n'' \setminus n)$.
+
+It remains to verify compatibility with the internal input legs, that is,
+\[
+\overline h_{n_1}
+=
+\beta_n\fatsemi q_3.
+\]
+Since
+\[
+\overline n''
+=
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ,
+\]
+it is sufficient to check this equality on its three summands.
+
+On the \(n_1'\)-summand, the left-hand side is
+\[
+f_{1,\mathrm{int}}
+\fatsemi\varepsilon^\bot
+\fatsemi
+\bigl(
+\id_{\mathcal E}\coprod\widetilde\iota_\bot
+\bigr)
+=
+f_{1,\mathrm{int}}\fatsemi\varepsilon',
+\]
+which is the first component of \(q_3\).
+
+Put
+\[
+D\defeq(n'\setminus S_n)\setminus n.
+\]
+On the \(D\)-summand, the left-hand side is
+\[
+\begin{aligned}
+&
+\left(
+g_n^\bot\fatsemi\phi^\bot
+\right)\restriction_D
+\fatsemi
+\bigl(
+\id_{\mathcal E}\coprod\widetilde\iota_\bot
+\bigr)
+\\
+&\qquad =
+\left(
+g_n^\bot
+\fatsemi\widetilde\iota_\bot
+\fatsemi\psi
+\right)\restriction_D.
+\end{aligned}
+\]
+The original EDPOI construction gives
+\[
+\nu_n\fatsemi h_n
+=
+g_n^\bot\fatsemi\widetilde\iota_\bot.
+\]
+On $D$, the map $\beta_n$ lands in the second summand $n'' \setminus n$, thus selecting the second component of $q_3$:
+\[
+(\beta_{n} \fatsemi q_3) \restriction_{D} = ((h_n \fatsemi \psi) \restriction_{n'' \setminus n}) \restriction_{D} = (h_n \fatsemi \psi) \restriction_{D}~,
+\]
+since $D \subseteq n'' \setminus n$.
+We then have that
+\[
+(\nu_n \fatsemi h_n) \restriction_{D} = h_n \restriction_{D} = (g_{n}^{\bot} \fatsemi \widetilde{\iota_{\bot}}) \restriction_{D}
+\]
+identifying $D$ with its image under $\nu_n$,
+and
+\[
+(h_n \fatsemi \psi) \restriction_{D} = (g_{n}^{\bot} \fatsemi \widetilde{\iota_{\bot}} \fatsemi \psi) \restriction_{D}
+\]
+
+Finally, on the \(i''_\circ\)-summand, the left-hand side is
+\[
+\overline\rho_i
+=
+\rho_i\fatsemi\psi
+=
+\nu_i\fatsemi h_n\fatsemi\psi.
+\]
+The map \(\beta_n\)
+sends \(i''_\circ\) into the \(n''\setminus n\)-summand.
+Therefore the second component of \(q_3\) is selected, and
+\[
+\begin{aligned}
+(\beta_n\fatsemi q_3)\restriction_{i''_\circ}
+&=
+\nu_i\fatsemi h_n\fatsemi\psi
+\\
+&=
+\rho_i\fatsemi\psi
+\\
+&=
+\overline\rho_i
+\\
+&=
+\overline h_{n_1}\restriction_{i''_\circ}.
+\end{aligned}
+\]
+Here the second equality follows from the copairing equation
+\[
+\nu_i\fatsemi h_n=\rho_i,
+\]
+and the third follows from
+\[
+\overline\rho_i=\rho_i\fatsemi\psi.
+\]
+
+For the output side, let
+\[
+\beta_k:
+\overline k''
+\longrightarrow
+k''\coprod(k_1'\setminus n)
+\]
+be the canonical isomorphism which sends the
+\(k'\setminus S_k\)- and \(j''_\circ\)-summands into \(k''\), and sends
+the \(k_1'\setminus n\)-summand into the second summand. The same
+componentwise calculation gives
+\[
+\overline h_{\mathrm{ext}}^{\,k}\fatsemi\beta_k
+=
+h_{\mathrm{ext}}^k\fatsemi\iota_1
+\]
+and
+\[
+\overline h_k
+=
+\beta_k\fatsemi q_4.
+\]
+Although \(\beta_k\) moves the \(j''_\circ\)-summand past the
+\(k_1'\setminus n\)-summand, it preserves the order within every block.
+Thus \(\beta_n\), the identity on
+\(\mathcal E\coprod_n\mathcal G\), and \(\beta_k\) define an isomorphism
+of extended cospans. Hence the right-hand pushout produces a
+representative of \(\mathcal E\fatsemi\mathcal G\), as required, and we have that $\mathcal{E} \fatsemi \mathcal{F} \overline{\rightsquigarrow} \mathcal{E} \fatsemi \mathcal{G}$.
+The case $\mathcal{F} \fatsemi \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}} \mathcal{G} \fatsemi \mathcal{E}$ is analogous.
+
+\item The cases of $\mathcal{E} \otimes \mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{E} \otimes \mathcal{G}$ and $\mathcal{F} \otimes \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G} \otimes \mathcal{E}$ are also analogous to the above, noting that the tensor is given by a pushout.
+\item We will prove $\mathcal{F}^{1} \join \cdots \join \mathcal{F} \join \cdots \mathcal{F}^{p} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{F}^{1} \join \cdots \join \mathcal{G} \join \cdots \join \mathcal{F}^{p}$.
+
+Put
+\[
+\mathcal J_{\mathcal F}
+\defeq
+\mathcal F^1\join\cdots\join
+\mathcal F^{r-1}\join\mathcal F\join
+\mathcal F^{r+1}\join\cdots\join\mathcal F^p
+\]
+and
+\[
+\mathcal J_{\mathcal G}
+\defeq
+\mathcal F^1\join\cdots\join
+\mathcal F^{r-1}\join\mathcal G\join
+\mathcal F^{r+1}\join\cdots\join\mathcal F^p.
+\]
+Using the retained extended cospan carried by \(\mathcal L^\bot\), put
+\[
+\mathcal J_{\bot}
+\defeq
+\mathcal F^1\join\cdots\join
+\mathcal F^{r-1}\join\mathcal L^\bot\join
+\mathcal F^{r+1}\join\cdots\join\mathcal F^p.
+\]
+
+Let
+\[
+\jmath_{\mathcal F}:\mathcal F\longrightarrow\mathcal J_{\mathcal F}
+\qquad\text{and}\qquad
+\jmath_{\bot}:\mathcal L^\bot\longrightarrow\mathcal J_{\bot}
+\]
+denote the inclusions of the \(r\)-th components. The transported match is
+\[
+m^{\join}
+\defeq
+m\fatsemi\jmath_{\mathcal F}:
+\mathcal L\longrightarrow\mathcal J_{\mathcal F},
+\]
+with anchor
+\[
+a^{\join}
+\defeq
+\jmath_{\mathcal F,E}(a).
+\]
+
+Choose the fresh root, the fresh \(\boxsort\)-edge, and the remaining
+components of \(\mathcal J_{\bot}\) and \(\mathcal J_{\mathcal F}\)
+compatibly. There is then a homomorphism
+\[
+l_{\join}^{\bot}:
+\mathcal J_{\bot}\longrightarrow\mathcal J_{\mathcal F}
+\]
+which acts as \(l^\bot\) on the distinguished component
+\(\mathcal L^\bot\), and as the identity on the fresh join structure and
+all the other components. In particular,
+\[
+\jmath_{\bot}\fatsemi l_{\join}^{\bot}
+=
+l^\bot\fatsemi\jmath_{\mathcal F}.
+\]
+
+Define
+\[
+c^{\join}
+\defeq
+c\fatsemi\jmath_{\bot}:
+i\sqcup j\longrightarrow\mathcal J_{\bot}.
+\]
+We claim that
+\[
+i\sqcup j
+\xrightarrow{c^{\join}}
+\mathcal J_{\bot}
+\xrightarrow{l_{\join}^{\bot}}
+\mathcal J_{\mathcal F}
+\]
+is an extended pushout complement of \(f\) and \(m^{\join}\).
+Consider the following diagram
+% https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG1hdGhjYWx7TH0iXSxbMiwwLCJpIFxcY29wcm9kIGoiXSxbMCwyLCJcXG1hdGhjYWx7Rn0iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFswLDQsIlxcbWF0aGNhbHtKfV97XFxtYXRoY2Fse0Z9fSJdLFsyLDQsIlxcbWF0aGNhbHtKfV97XFxib3R9Il0sWzAsMiwibSIsMl0sWzEsMCwiZiIsMl0sWzEsMywiYyJdLFszLDIsImxeXFxib3QiXSxbMiw0LCJcXGptYXRoX3tcXG1hdGhjYWx7Rn19IiwyXSxbMyw1LCJcXGptYXRoX3tcXGJvdH0iXSxbNSw0LCJsXntcXGJvdH1fe1xcam9pbn0iXSxbMiwxLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCwzLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\[\begin{tikzcd}
+	{\mathcal{L}} && {i \coprod j} \\
+	\\
+	{\mathcal{F}} && {\mathcal{L}^{\bot}} \\
+	\\
+	{\mathcal{J}_{\mathcal{F}}} && {\mathcal{J}_{\bot}}
+	\arrow["m"', from=1-1, to=3-1]
+	\arrow["f"', from=1-3, to=1-1]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow["{\jmath_{\mathcal{F}}}"', from=3-1, to=5-1]
+	\arrow["{l^\bot}", from=3-3, to=3-1]
+	\arrow["{\jmath_{\bot}}", from=3-3, to=5-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=5-1, to=3-3]
+	\arrow["{l^{\bot}_{\join}}", from=5-3, to=5-1]
+\end{tikzcd}\]
+We will show that the bottom square is a pushout.
+The square commutes by construction, so it remains to check the universal property.
+Let $Q$ be a rooted e-hypergraph and let $j_1$ and $j_2$ be homomorphisms such that $l^{\bot} \fatsemi j_1 = \jmath_{\bot} \fatsemi j_2$.
+We need to check that there is a unique map $w : \mathcal{J}_{\mathcal{F}} \longrightarrow Q$ such that
+\[
+\jmath_{\mathcal{F}} \fatsemi w = j_1 \qquad \text{and} \qquad l^{\bot}_{\join} \fatsemi w = j_2~.
+\]
+Define \(w\) on the image of \(\jmath_{\mathcal F}\) by
+\[
+w(\jmath_{\mathcal F}(x))\defeq j_1(x),
+\]
+and on the image of $l^{\bot}_{\join}$ by
+\[
+w(l^{\bot}_{\join}(y))\defeq j_2(y).
+\]
+These two images jointly contain every vertex and edge of
+\(\mathcal J_{\mathcal F}\).
+
+The definition is well-defined because \(l^{\bot}_{\join}\) is the identity
+on the fresh join structure and on every component other than the
+distinguished one, while on the image of \(\jmath_\bot\) it acts as
+\(l^\bot\). On the overlap of the two images, the two prescriptions
+agree by
+\[
+l^\bot\fatsemi j_1=\jmath_\bot\fatsemi j_2.
+\]
+Moreover, if
+\[
+l^{\bot}_{\join}(y)=l^{\bot}_{\join}(y'),
+\]
+the only non-trivial case is when \(y=\jmath_\bot(z)\) and
+\(y'=\jmath_\bot(z')\) with \(l^\bot(z)=l^\bot(z')\). In that case,
+\[
+j_2(y)
+=
+j_1(l^\bot(z))
+=
+j_1(l^\bot(z'))
+=
+j_2(y'),
+\]
+so the value of \(w\) is independent of the chosen preimage.
+
+Since \(j_1\) and \(j_2\) are homomorphisms and agree on the overlap,
+\(w\) is a homomorphism. By construction,
+\[
+\jmath_{\mathcal F}\fatsemi w=j_1
+\qquad\text{and}\qquad
+l^{\bot}_{\join}\fatsemi w=j_2.
+\]
+The two images jointly cover \(\mathcal J_{\mathcal F}\), so these
+equations also make \(w\) unique.
+The upper square is a pushout by the original EDPOI square, and by the pasting property, the whole rectangle is a pushout.
+By construction, $m^{\join}$ is anchored and therefore we sucessfully checked condition (1) of~\cref{def:extended_complement}.
+
+We next verify condition~(2). Let
+\[
+e\in E_{\mathcal L},
+\qquad
+e\neq\top_{\mathcal L},
+\]
+and let
+\[
+x\in
+V_{\mathcal J_{\mathcal F}}
+\coprod
+E_{\mathcal J_{\mathcal F}}
+\]
+satisfy
+\[
+(m^{\join})_{E}(e)
+<^\mu_{\mathcal J_{\mathcal F}}
+x.
+\]
+We must show that \(x\in\operatorname{im}(m^{\join})\).
+By construction, $x$ has a preimage in $\mathcal{F}$, say $x = \jmath_{\mathcal{F}}(x')$, and $\jmath_{\mathcal{F}}$ reflects the immediate predecessor relation.
+Therefore, $m_{E}(e) <^{\mu}_{\mathcal{F}} x'$ and by condition (2) of the original extended pushout complement, $x' \in \operatorname{im}(m)$ and hence $x = \jmath_{\mathcal{F}}(x') \in \operatorname{im}(m^{\join})$.
+
+By construction, \(\jmath_{\mathcal F}\) is injective on vertices and
+edges, while \(m\) is injective on the contents of each
+\(\boxsort\)-edge of \(\mathcal L\).
+Thus \(m^{\join} = m \fatsemi \jmath_{\mathcal F}\) is injective on the
+contents of each \(\boxsort\)-edge of \(\mathcal L\), establishing
+condition~(3).
+
+We now check condition~(4).
+Let
+\[
+N_{\mathcal{F}} = S \coprod n^{1} \coprod \cdots \coprod n' \coprod \cdots \coprod n^{p}
+\]
+and
+\[
+K_{\mathcal{F}} = T \coprod k^{1} \coprod \cdots \coprod k' \coprod \cdots \coprod k^{p}
+\]
+be the internal interfaces of $\mathcal{J}_{\mathcal{F}}$ according to the definition of~\cref{def:join_of_extended_cospans}.
+The transported match $m^{\join}$ affects only the distinguished component $\mathcal{F}$, and therefore
+\[
+N_{\bot} \defeq N_{\mathcal{F}} \setminus S_{n} \cong S \coprod n^{1} \coprod \cdots \coprod (n' \setminus S_n) \coprod \cdots \coprod n^{p}
+\]
+and
+\[
+K_{\bot} \defeq K_{\mathcal{F}} \setminus S_{k} \cong  T \coprod k^{1} \coprod \cdots \coprod (k' \setminus S_{k}) \coprod \cdots \coprod k^{p}~.
+\]
+This makes
+\[
+n \xrightarrow{\mathcal{J}^{n}_{\bot, \mathrm{ext}}} N_{\bot} \xrightarrow{\mathcal{J}^{n}_{\bot, \mathrm{int}}} \mathcal{J}_{\bot} \xleftarrow{\mathcal{J}^{k}_{\bot, \mathrm{int}}} K_{\bot} \xleftarrow{\mathcal{J}^{k}_{\bot, \mathrm{ext}}} k
+\]
+a well-typed extended cospan, since every component is well-typed.
+Let $\xi_n : N_{\bot} \hookrightarrow N_{\mathcal{F}}$ and $\xi_k : K_{\bot} \hookrightarrow K_{\mathcal{F}}$ be the evident inclusions and let 
+\[
+n \xrightarrow{\mathcal{J}^{n}_{\mathcal{F}, \mathrm{ext}}} N_{\mathcal{F}} \xrightarrow{\mathcal{J}^{n}_{\mathcal{F}, \mathrm{int}}} \mathcal{J}_{\mathcal{F}} \xleftarrow{\mathcal{J}^{k}_{\mathcal{F}, \mathrm{int}}} K_{\mathcal{F}} \xleftarrow{\mathcal{J}^{k}_{\mathcal{F}, \mathrm{ext}}} k
+\]
+be the corresponding cospan for $\mathcal{J}_{\mathcal{F}}$.
+For the input interfaces, condition~(4) requires
+\[
+\mathcal{J}^{n}_{\bot, \mathrm{ext}} \fatsemi \xi_n = \mathcal{J}^{n}_{\mathcal{F}, \mathrm{ext}} \qquad \text{and} \qquad \mathcal{J}^{n}_{\bot, \mathrm{int}} \fatsemi l^{\bot}_{\join} = \xi_n \fatsemi \mathcal{J}^{n}_{\mathcal{F}, \mathrm{int}}~.
+\]
+The first equation is immediate: both sides send the root to
+$\top_{N_{\mathcal F}}$ and send each external input vertex to the
+corresponding vertex of the unchanged block $S$.
+
+For the second equation, note that
+$\mathcal{J}^{n}_{\bot,\mathrm{int}}$ and
+$\mathcal{J}^{n}_{\mathcal F,\mathrm{int}}$ agree on $S$ and on every
+block $n^i\neq n'$. Moreover, $\xi_n$ is the identity on these blocks,
+and $l^\bot_{\join}$ is the identity on their images.
+
+It remains to consider the vertices of the retained block
+$n'\setminus S_n$. For every $v\in V_{n'\setminus S_n}$, we have
+\[
+\begin{aligned}
+l^\bot_{\join,V}
+\bigl(\mathcal{J}^{n}_{\bot,\mathrm{int},V}(v)\bigr)
+&=
+\jmath_{\mathcal F,V}
+\bigl(l^\bot_V(g^\bot_{n,V}(v))\bigr)
+\\
+&=
+\jmath_{\mathcal F,V}
+\bigl(g_{\mathrm{int},V}(\jmath_{n,V}(v))\bigr)
+\\
+&=
+\mathcal{J}^{n}_{\mathcal F,\mathrm{int},V}
+\bigl(\xi_{n,V}(v)\bigr),
+\end{aligned}
+\]
+where the second equality is condition~(4) for the original extended
+pushout complement, restricted to the input interface.
+
+Finally, on the root,
+\[
+\begin{aligned}
+l^\bot_{\join,E}
+\bigl(
+\mathcal{J}^{n}_{\bot,\mathrm{int},E}
+(\top_{N_\bot})
+\bigr)
+&=
+l^\bot_{\join,E}(\top_{\mathcal J_\bot})
+=
+\top_{\mathcal J_{\mathcal F}},
+\\
+\mathcal{J}^{n}_{\mathcal F,\mathrm{int},E}
+\bigl(\xi_{n,E}(\top_{N_\bot})\bigr)
+&=
+\mathcal{J}^{n}_{\mathcal F,\mathrm{int},E}
+(\top_{N_{\mathcal F}})
+=
+\top_{\mathcal J_{\mathcal F}}.
+\end{aligned}
+\]
+Thus the second equation holds. The output-interface equations follow
+by the same argument.
+
+It remains to check condition~(5).
+The transported match \(m\fatsemi\jmath_{\mathcal{F}}\) has anchor $a' = \jmath_{\mathcal{F},E}(a)$.
+
+Let the affected subinterfaces of $\mathcal{J}_{\mathcal{F}}$ be
+\[
+S_{\mathrm{in}}=\iota_n(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}=\iota_k(S_k),
+\]
+where $\iota_n$ and $\iota_k$ are appropriate coprojections.
+The maps required by condition~(5) are therefore
+\[
+\alpha_n\fatsemi\iota_n:
+i'\setminus i \longrightarrow S_{\mathrm{in}}
+\qquad\text{and}\qquad
+\alpha_k\fatsemi\iota_k:
+j'\setminus j \longrightarrow S_{\mathrm{out}},
+\]
+again taking corestrictions to the affected subinterfaces.
+
+Define the re-anchored interface maps
+\[
+\widehat{(\mathcal{J}^{n}_{\mathcal{F},\mathrm{int}})}^{\,a'}
+\defeq
+\left\langle
+a';
+\mathcal{J}^{n}_{\mathcal{F},\mathrm{int}, V} \restriction_{V_{S_{\mathrm{in}}}}
+\right\rangle
+:
+S_{\mathrm{in}}
+\longrightarrow
+\mathcal{J}_{\mathcal{F}}
+\]
+and
+\[
+\widehat{(\mathcal{J}^{k}_{\mathcal{F},\mathrm{int}})}^{\,a'}
+\defeq
+\left\langle
+a';
+\mathcal{J}^{k}_{\mathcal{F}, \mathrm{int}, V}\restriction_{V_{S_{\mathrm{out}}}}
+\right\rangle
+:
+S_{\mathrm{out}}
+\longrightarrow
+\mathcal{J}_{\mathcal{F}}.
+\]
+It is sufficient to show that the following pasted diagrams commute:
+\[
+\begin{tikzcd}
+	{i'\setminus i} && {\mathcal{L}} \\
+	\\
+	{S_n} && {\mathcal{F}} \\
+	\\
+	{S_{\mathrm{in}}} && {\mathcal{J}_{\mathcal{F}}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_n}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat{g}_{n}^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_{n}}"', from=3-1, to=5-1]
+	\arrow["\jmath_{\mathcal{F}}"', from=3-3, to=5-3]
+	\arrow["{\widehat{(\mathcal{J}^{n}_{\mathcal{F},\mathrm{int}})}^{\,a'}}", from=5-1, to=5-3]
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+	{j'\setminus j} && {\mathcal{L}} \\
+	\\
+	{S_k} && {\mathcal{F}} \\
+	\\
+	{S_{\mathrm{out}}} && {\mathcal{J}_{\mathcal{F}}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_k}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat{g}_{k}^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_{k}}"', from=3-1, to=5-1]
+	\arrow["\jmath_{\mathcal{F}}"', from=3-3, to=5-3]
+	\arrow["{\widehat{(\mathcal{J}^{k}_{\mathcal{F},\mathrm{int}})}^{\,a'}}", from=5-1, to=5-3]
+\end{tikzcd}
+\]
+We check the left diagram; the right diagram is analogous.
+The upper square commutes by condition~(5) for the original extended
+pushout complement. It remains to check the lower square.
+
+On the root, both composites have value $a'$. Indeed,
+\[
+\jmath_{\mathcal F,E}
+\bigl(\widehat g_{n,E}^{\,a}(\top_{S_n})\bigr)
+=
+\jmath_{\mathcal F,E}(a)
+=
+a',
+\]
+whereas
+\[
+\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}_E
+\bigl(\iota_{n,E}(\top_{S_n})\bigr)
+=
+\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}_E
+(\top_{S_{\mathrm{in}}})
+=
+a'.
+\]
+
+For every $x\in V_{S_n}$, the definition of the join gives
+\[
+\begin{aligned}
+\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}_V
+\bigl(\iota_{n,V}(x)\bigr)
+&=
+\mathcal J^n_{\mathcal F,\mathrm{int},V}
+\bigl(\iota_{n,V}(x)\bigr)
+\\
+&=
+\jmath_{\mathcal F,V}
+\bigl(g_{\mathrm{int},V}(x)\bigr)
+\\
+&=
+\jmath_{\mathcal F,V}
+\bigl(\widehat g_{n,V}^{\,a}(x)\bigr).
+\end{aligned}
+\]
+Thus the lower square, and hence the whole left rectangle, commutes.
+Finally, \(\alpha_n\) and \(\alpha_k\) preserve the interface order
+within blocks by condition~(5) for the original complement. The
+coprojections \(\iota_n\) and \(\iota_k\) preserve the order within
+their respective summands, and hence
+\(\alpha_n\fatsemi\iota_n\) and
+\(\alpha_k\fatsemi\iota_k\) have the required order-preservation
+property. This proves condition~(5).
+Thus, we have proved that
+\[
+i \coprod j \xrightarrow{c^{\join}} \mathcal{J}_{\bot} \xrightarrow{l^{\bot}_{\join}} \mathcal{J}_{\mathcal{F}}
+\]
+is an extended pushout complement.
+
+It remains to construct the second pushout and identify the resulting
+extended cospan with $\mathcal J_{\mathcal G}$.
+
+Let
+\[
+\jmath_{\mathcal G}:
+\mathcal G\longrightarrow\mathcal J_{\mathcal G}
+\]
+denote the inclusion of the distinguished component. Choosing the fresh
+join structure compatibly, define
+\[
+\widetilde{\iota_{\bot}}^{\join}:
+\mathcal J_{\bot}\longrightarrow\mathcal J_{\mathcal G}
+\]
+to act as $\widetilde{\iota_{\bot}}:\mathcal L^\bot\to\mathcal G$
+on the distinguished component and as the identity on the fresh join
+structure and every other component. In particular,
+\[
+\jmath_{\bot}\fatsemi
+\widetilde{\iota_{\bot}}^{\join}
+=
+\widetilde{\iota_{\bot}}\fatsemi
+\jmath_{\mathcal G}.
+\]
+
+Consider the commutative diagram
+% https://q.uiver.app/#q=WzAsNixbMCwwLCJpXFxjb3Byb2QgaiJdLFsxLDAsIlxcbWF0aGNhbCBSIl0sWzAsMSwiXFxtYXRoY2FsIExeXFxib3QiXSxbMSwxLCJcXG1hdGhjYWwgRyJdLFswLDIsIlxcbWF0aGNhbCBKX3tcXGJvdH0iXSxbMSwyLCJcXG1hdGhjYWwgSl97XFxtYXRoY2FsIEd9LiJdLFswLDEsInAiXSxbMCwyLCJjIiwyXSxbMSwzLCJcXHdpZGV0aWxkZXtcXGlvdGFfe1xcbWF0aGNhbCBSfX0iXSxbMiwzLCJcXHdpZGV0aWxkZXtcXGlvdGFfe1xcYm90fX0iLDJdLFsyLDQsIlxcam1hdGhfe1xcYm90fSIsMl0sWzMsNSwiXFxqbWF0aF97XFxtYXRoY2FsIEd9Il0sWzQsNSwiXFx3aWRldGlsZGV7XFxpb3RhX3tcXGJvdH19XntcXGpvaW59IiwyXSxbMywwLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNSwyLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\[\begin{tikzcd}
+	{i\coprod j} & {\mathcal R} \\
+	{\mathcal L^\bot} & {\mathcal G} \\
+	{\mathcal J_{\bot}} & {\mathcal J_{\mathcal G}.}
+	\arrow["p", from=1-1, to=1-2]
+	\arrow["c"', from=1-1, to=2-1]
+	\arrow["{\widetilde{\iota_{\mathcal R}}}", from=1-2, to=2-2]
+	\arrow["{\widetilde{\iota_{\bot}}}"', from=2-1, to=2-2]
+	\arrow["{\jmath_{\bot}}"', from=2-1, to=3-1]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+	\arrow["{\jmath_{\mathcal G}}", from=2-2, to=3-2]
+	\arrow["{\widetilde{\iota_{\bot}}^{\join}}"', from=3-1, to=3-2]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-2, to=2-1]
+\end{tikzcd}\]
+The upper square is the second pushout square of the original EDPOI
+rewrite. The lower square is a pushout by the same argument as before: by checking the universal property for $\mathcal{J}_{\mathcal{G}}$.
+Therefore, the whole rectangle is a pushout.
+
+By definition, the extended cospan for $\mathcal{J}_{\mathcal{G}}$ is given by
+\[
+n
+\xrightarrow{\mathcal J^n_{\mathcal G,\mathrm{ext}}}
+N_{\mathcal G}
+\xrightarrow{\mathcal J^n_{\mathcal G,\mathrm{int}}}
+\mathcal J_{\mathcal G}
+\xleftarrow{\mathcal J^k_{\mathcal G,\mathrm{int}}}
+K_{\mathcal G}
+\xleftarrow{\mathcal J^k_{\mathcal G,\mathrm{ext}}}
+k,
+\]
+where
+\[
+N_{\mathcal{G}} = S \coprod n^{1} \coprod \cdots \coprod n'' \coprod \cdots \coprod n^{p}
+\]
+and
+\[
+K_{\mathcal{G}} = T \coprod k^{1} \coprod \cdots \coprod k'' \coprod \cdots \coprod k^{p}.
+\]
+with evident interface maps.
+The EDPOI square, on the other hand, gives
+\[
+N_{\mathcal{G}}' = N_{\bot} \coprod (i'' \setminus i)
+\]
+and
+\[
+K_{\mathcal{G}}' = K_{\bot} \coprod (j'' \setminus j).
+\]
+Let
+\[
+\beta_n:N'_{\mathcal G}\longrightarrow N_{\mathcal G}
+\qquad\text{and}\qquad
+\beta_k:K'_{\mathcal G}\longrightarrow K_{\mathcal G}
+\]
+be the canonical isomorphisms which are the identity on the fresh join
+blocks and on every unaffected component block, and which identify
+\[
+(n'\setminus S_n)\coprod(i''\setminus i)
+\quad\text{with}\quad n''
+\]
+and
+\[
+(k'\setminus S_k)\coprod(j''\setminus j)
+\quad\text{with}\quad k'',
+\]
+respectively. Equivalently, they move the newly introduced summands
+$i''\setminus i$ and $j''\setminus j$ into the distinguished component.
+These isomorphisms preserve the order within every interface block.
+
+The external legs commute with $\beta_n$ and $\beta_k$ because these
+isomorphisms are the identity on the fresh blocks $S$ and $T$. For the
+internal legs, compatibility holds on the fresh join structure and the
+unaffected components by construction; on the retained part of the
+distinguished component it follows from
+\[
+h_n\restriction_{n'\setminus S_n}
+=
+g_n^\bot\fatsemi\widetilde{\iota_\bot},
+\qquad
+h_k\restriction_{k'\setminus S_k}
+=
+g_k^\bot\fatsemi\widetilde{\iota_\bot},
+\]
+and on the newly introduced parts it follows from
+\[
+h_n\restriction_{i''\setminus i}=\rho_i,
+\qquad
+h_k\restriction_{j''\setminus j}=\rho_j.
+\]
+The maps also agree on the roots by strictness. Therefore
+$\beta_n$, the identity on $\mathcal J_{\mathcal G}$, and $\beta_k$
+define an isomorphism of extended cospans.
+
+Thus, we conclude that $\mathcal{J}_{\mathcal{G}} \;\overline{\rightsquigarrow}\; \mathcal{J}_{\mathcal{G}}$.
+\end{enumerate}
+\end{proof}
+
+% \dependency{The proof of~\cref{lemma:rewriting_congruence} uses the explicit
+% description of the pushout in~\cref{prop:pushout_exists} and the statement
+% of~\cref{lemma:rewrite_yields_ecospan}, whose proof is still outstanding.}
 
 \begin{definition}[Quotient by rewrites]\label{def:quotient_by_rewrites}
-$\catname{EHypI}_{\bullet}(\Sigma) / \mathcal{R}$ is the category with the same
+$\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ is the category with the same
 objects as $\catname{EHypI}_{\bullet}(\Sigma)$ and, as morphisms $n \to m$, the
-equivalence classes of morphisms under $\overline{\rightsquigarrow}^{*}_{\mathcal{R}}$.
+$\sim_{\mathfrak{R}}$-equivalence classes of morphisms $n \to m$.
+Composition and $\otimes$ are induced by those of
+$\catname{EHypI}_{\bullet}(\Sigma)$, and $\join$ descends likewise; this is
+well defined by~\cref{lemma:rewriting_congruence}.
 \end{definition}
 
-Let $\mathbf{H}^{\join}_{\Sigma}$ be the Frobenius PROP obtained by applying $\widetilde{F}$ to $\mathbf{H}_{\Sigma}$.
-\begin{definition}\label{not:component_cospan}
-Let $\mathcal{G}$ be a well-typed extended cospan and $c$ a $\cmpsort$-edge of
-its carrier.
-We write $\mathcal{G}_{c}$ for the extended cospan whose carrier is the
-sub-e-hypergraph consisting of $c$ and all its descendants, with root $c$, whose
-external interfaces are the blocks $\pi_{f}^{-1}(c)$ and $\pi_{g}^{-1}(c)$
-of~\cref{def:isomorphic_ecospans}, ordered so that their $k$-th elements
-correspond to the $k$-th source and target of the $\boxsort$-edge above $c$, and
-whose internal interfaces are the restrictions of $n'$ and $m'$ to the vertices
-lying strictly below $c$.
-In particular $\mathcal{G}_{\top_{\mathcal{G}}} = \mathcal{G}$, and $\Phi(c_{i})$
-in~\cref{def:comparison_functor} abbreviates $\Phi(\mathcal{G}_{c_{i}})$.
-If $c$ is a component of a $\boxsort$-edge $b$, then $\mathcal{G}_{c}$ has type
-$|s(b)| \to |t(b)|$ by well-typedness.
-\end{definition}
-
-\begin{lemma}\label{lemma:component_cospan_wf}
-$\mathcal{G}_{c}$ is a well-typed extended cospan.
-\end{lemma}
+\begin{proposition}\label{prop:quotient_is_slat}
+The quotient $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ is an $\catname{SLat}$-PROP.
+\end{proposition}
 \begin{proof}
-The carrier satisfies the conditions of~\cref{def:sub_ehypergraph}: condition
-(1) holds since a vertex incident to an edge shares that edge's immediate
-parent, so it is a descendant of $c$ whenever the edge is; condition (2) holds
-with $r = c$ because the set is closed downwards, so every element other than
-$c$ retains its immediate parent; and condition (3) is inherited from
-non-degeneracy in $\mathcal{G}$, since a $\boxsort$-edge below $c$ keeps all its
-children.
-The external legs are mono and order-preserving by construction.
-Their composites are strict: by~\cref{def:isomorphic_ecospans} the block
-$\pi_{f}^{-1}(c)$ consists precisely of the interface vertices whose immediate
-parent is $c$, which is the root of $\mathcal{G}_{c}$; the same fact shows that
-the vertices of the internal interface lying strictly below $c$ are not children
-of $c$, so the strictly internal interface of $\mathcal{G}_{c}$ is disjoint from
-its external one.
-Well-typedness of each $\boxsort$-edge below $c$ is the corresponding instance
-of well-typedness of $\mathcal{G}$, the blocks being unchanged.
+The objects of $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ are the same as those of $\catname{EHypI}_{\bullet}(\Sigma)$, which are the natural numbers.
+The hom-sets $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}(n, m)$ are then equipped with a $\join$ as per~\cref{def:join_of_extended_cospans}, which is associative and idempotent by~\cref{def:structural_rules} and commutative since isomorphism of extended cospans subsumes commutatitivity of $\join$ (~\cref{remark:commutativity_absorbed}).
+This $\join$ further distributes over $\otimes$ and $\fatsemi$ by the rules of~\cref{def:structural_rules}, noting that connecting a $\boxsort$-edge to some other sub-hypergraph corresponds to a composition and placing it on a side corresponds to a tensor product of cospans.
 \end{proof}
 
-\begin{definition}\label{def:comparison_functor}
-Define $\Phi : \catname{EHypI}_{\bullet}(\Sigma) \to \mathbf{H}^{\join}_{\Sigma}$
-by $\Phi(n) = |V_{n}|$ on objects and, on a well-typed extended cospan
-$\mathcal{G}$, by recursion on the depth of its hierarchy: $\Phi(\mathcal{G})$
-is the image of $\mathcal{G}^{\flat}$ under the isomorphism
-$\catname{HypI}(\Sigma) \cong \mathbf{H}_{\Sigma}$, with each box generator $b$
-interpreted as $\sum_{i} \Phi(c_{i})$, the join over the components of $b$.
-\end{definition}
-
-\begin{lemma}\label{lemma:phi_well_defined}
-$\Phi$ is constant on isomorphism classes of extended cospans.
-\end{lemma}
-\begin{proof}
-By induction on the depth of the hierarchy,
-using~\cref{def:depth}.
-Let $(\alpha, \beta, \gamma)$ be an isomorphism as
-in~\cref{def:isomorphic_ecospans}.
-Since $\beta$ is an isomorphism of $\catname{EHyp}_{\mathrm{s}}(\Sigma)$ it is
-strict, so it sends $\top_{\mathcal{G}}$ to $\top_{\mathcal{G}'}$, preserves
-$<^{\mu}$, and preserves labels; hence it restricts to a bijection between the
-children of the two roots and between their $\boxsort$-edges, inducing an
-isomorphism $\mathcal{G}^{\flat} \cong \mathcal{G}'^{\flat}$ under which a
-$\boxsort$-generator $b$ corresponds to $\beta(b)$.
-
-Next, $\alpha$ maps blocks to blocks: for $x \in n'$,
+\begin{proposition}\label{prop:embedding_hypi}
+There is a faithful identity-on-objects functor 
 \[
-\pi_{h}(\alpha(x))
-= {<^{\mu}_{\mathcal{G}'}}\bigl(h_{\mathrm{int}}(\alpha(x))\bigr)
-= {<^{\mu}_{\mathcal{G}'}}\bigl(\beta(f_{\mathrm{int}}(x))\bigr)
-= \beta\bigl({<^{\mu}_{\mathcal{G}}}(f_{\mathrm{int}}(x))\bigr)
-= \beta(\pi_{f}(x))~,
+\Xi : \catname{HypI}(\Sigma) \longrightarrow \catname{EHypI}_{\bullet}(\Sigma)~.
 \]
-using commutativity of the diagram and strictness of $\beta$; so $\alpha$
-restricts to a bijection from the block of $c$ to the block of $\beta(c)$, and
-by~\cref{def:isomorphic_ecospans} this restriction is order-preserving whenever
-$c \neq \top_{\mathcal{G}}$.
-Therefore $(\alpha, \beta, \gamma)$ restricts to an isomorphism
-$\mathcal{G}_{c} \cong \mathcal{G}'_{\beta(c)}$ for every $\cmpsort$-edge
-$c \neq \top_{\mathcal{G}}$, and by the inductive hypothesis
-$\Phi(\mathcal{G}_{c}) = \Phi(\mathcal{G}'_{\beta(c)})$.
-The two flattened cospans thus have equal images under the interpretation of
-their $\boxsort$-generators, so $\Phi(\mathcal{G}) = \Phi(\mathcal{G}')$.
-\end{proof}
-
-\begin{lemma}\label{lemma:phi_functor}
-$\Phi$ is a strict symmetric monoidal functor.
-\end{lemma}
+\end{proposition}
 \begin{proof}
-Write $B_{\mathcal{G}}$ for the set of $\boxsort$-edges of $\mathcal{G}$ that are
-children of $\top_{\mathcal{G}}$ and $\Sigma_{\mathcal{G}}$ for $\Sigma$ extended
-by a generator $\sigma_{b} : |s(b)| \to |t(b)|$ for each $b \in B_{\mathcal{G}}$,
-so that $\mathcal{G}^{\flat}$ is a morphism of
-$\catname{HypI}(\Sigma_{\mathcal{G}})$ and $\Phi(\mathcal{G})$ is its image under
-the PROP morphism $\mathbf{H}_{\Sigma_{\mathcal{G}}} \to \mathbf{H}^{\join}_{\Sigma}$
-which fixes $\Sigma$ and sends $\sigma_{b}$ to
-$\sum_{b <^{\mu} c} \Phi(\mathcal{G}_{c})$.
-
-Composition in~\cref{def:rooted_ehypi} is computed by a pushout along a pointed
-discrete foot.
-By the construction in the proof of~\cref{prop:pushout_exists} the only edges
-identified are the two roots, and no immediate parent below the root is changed;
-hence $B_{\mathcal{F} \fatsemi \mathcal{G}} = B_{\mathcal{F}} \sqcup B_{\mathcal{G}}$,
-each $\boxsort$-edge keeps its components, $(\mathcal{F} \fatsemi \mathcal{G})_{c}
-= \mathcal{F}_{c}$ or $\mathcal{G}_{c}$ accordingly, and
-$(\mathcal{F} \fatsemi \mathcal{G})^{\flat} = \mathcal{F}^{\flat} \fatsemi \mathcal{G}^{\flat}$
-in $\catname{HypI}(\Sigma_{\mathcal{F}} \cup \Sigma_{\mathcal{G}})$.
-Since $\catname{HypI}(-) \cong \mathbf{H}_{(-)}$ is functorial and the PROP
-morphism above restricts on each summand to the one used for $\mathcal{F}$ and
-for $\mathcal{G}$, we get
-$\Phi(\mathcal{F} \fatsemi \mathcal{G}) = \Phi(\mathcal{F}) \fatsemi \Phi(\mathcal{G})$.
-The argument for $\otimes$ is the same.
-Identities and symmetries are $\widehat{D}$-images
-by~\cref{def:discrete_functor,remark:discrete_functor_strict}, hence have no
-$\boxsort$-edges, so $\Phi$ sends them to identities and symmetries; and $\Phi$
-is strict on objects because $|V_{n \sqcup m}| = |V_{n}| + |V_{m}|$.
-\end{proof}
-
-\begin{lemma}\label{lemma:phi_join}
-$\Phi(\mathcal{F} + \mathcal{G}) = \Phi(\mathcal{F}) + \Phi(\mathcal{G})$, and
-similarly for $k$-ary joins.
-\end{lemma}
-\begin{proof}
-By~\cref{def:join_of_extended_cospans} the children of the root of
-$\mathcal{F} + \mathcal{G}$ are exactly the $\boxsort$-edge $b$ and the vertices
-$s(b) \sqcup t(b)$, so $(\mathcal{F} + \mathcal{G})^{\flat}$ is $\sigma_{b}$ with
-identity wiring and
+The functor is given by viewing each cospan
 \[
-\Phi(\mathcal{F} + \mathcal{G})
-= \Phi\bigl((\mathcal{F}+\mathcal{G})_{\top_{\mathcal{F}}}\bigr)
-+ \Phi\bigl((\mathcal{F}+\mathcal{G})_{\top_{\mathcal{G}}}\bigr)~.
+n \xrightarrow{f} F \xleftarrow{g} m~,
 \]
-The ordering of the blocks fixed in~\cref{def:join_of_extended_cospans} makes
-the block of $\top_{\mathcal{F}}$ correspond to $s(b)$ in the order induced by
-$\mathcal{F}$'s external leg, so
-$(\mathcal{F}+\mathcal{G})_{\top_{\mathcal{F}}} = \mathcal{F}$
-in the sense of~\cref{not:component_cospan}, and likewise for $\mathcal{G}$.
-\end{proof}
-
-\begin{definition}\label{def:expansion_weight}
-For a rooted e-hypergraph $\mathcal{G}$ define $\nu$ on component and box edges
-by mutual recursion:
+i.e., morphism of $\catname{HypI}(\Sigma)$, as an extended cospan
 \[
-\nu(c) = \bigl(a(c) + 2\bigr) \prod_{c \,<^{\mu}\, b,\; b \in E_{\boxsortsubscript}} \nu(b)~,
-\qquad
-\nu(b) = 1 + \sum_{b \,<^{\mu}\, c,\; c \in E_{\cmpsortsubscript}} \nu(c)~,
+n \xrightarrow{\id_{n}} n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m \xleftarrow{} m~,
 \]
-where $a(c)$ is the number of vertices and labelled edges that are immediate
-children of $c$, and the empty product is $1$.
-Set $\nu(\mathcal{G}) \defeq \nu(\top_{\mathcal{G}})$.
-\end{definition}
-
-\begin{lemma}\label{lemma:normal_form}
-Every morphism of $\catname{EHypI}_{\bullet}(\Sigma)$ rewrites under
-$\mathcal{R}$, applied left to right, to one whose carrier is either box-free or
-has a single box edge, a child of the root, whose components are box-free and
-pairwise non-isomorphic.
-\end{lemma}
-
-\begin{theorem}\label{thm:frobenius_equivalence}
-$\mathbf{H}^{\join}_{\Sigma} \simeq \catname{EHypI}_{\bullet}(\Sigma) / \mathcal{R}$.
-\end{theorem}
-
-
-\begin{lemma}[restatement of~\cref{lemma:normal_form}]\label{lemma:normal_form_precise}
-Every morphism of $\catname{EHypI}_{\bullet}(\Sigma)$ rewrites under
-$\mathcal{R}$, applied left to right, to one whose carrier either has no
-$\boxsort$-edge, or has exactly one $\boxsort$-edge $b$, a child of the root,
-such that the children of the root are exactly $b$ and the vertices
-$s(b) \sqcup t(b)$, and the $\mathcal{G}_{c}$ for the components $c$ of $b$ have
-no $\boxsort$-edges and are pairwise non-isomorphic.
-\end{lemma}
-\begin{proof}
-Every non-trivial left-to-right application of a rule
-of~\cref{def:structural_rules} strictly decreases $\nu$
-of~\cref{def:expansion_weight}, a positive integer.
-
-\emph{Distribution below the root.}
-Let $b$ have components $c_{1}, \ldots, c_{p}$ and $c <^{\mu} b$ with
-$c \neq \top$, and put $X \defeq (a(c)+2)\prod_{b' \neq b} \nu(b')$, so that
-$\nu(c) = X(1 + \sum_{i} \nu(c_{i}))$.
-The rule replaces $c$, among the children of its $\boxsort$-edge, by components
-$c^{(i)}$ carrying the remaining children of $c$ together with the children of
-$c_{i}$, whence
-$\nu(c^{(i)}) = \tfrac{a(c)+a(c_{i})+2}{a(c_{i})+2} \cdot \tfrac{X}{a(c)+2} \cdot \nu(c_{i})$.
-Since $2(a(c)+a(c_{i})+2) \leq (a(c)+2)(a(c_{i})+2)$, we get
-$\sum_{i}\nu(c^{(i)}) \leq X \sum_{i} \nu(c_{i}) < \nu(c)$.
-
-\emph{Distribution at the root.}
-With $c = \top$, the rule yields a root whose only child is a $\boxsort$-edge
-$B$ with components $c^{(i)}$, so $\nu$ becomes
-$2(1 + \sum_{i}\nu(c^{(i)})) \leq 2 + X\sum_{i}\nu(c_{i})$, against
-$X + X\sum_{i}\nu(c_{i})$ before; this is strict unless $X = 2$, that is unless
-$b$ and its ports are the only children of the root, in which case the rule does
-not apply.
-
-\emph{Associativity and idempotence.}
-If $b$ is the only child of a component $c$ with $a(c) = 0$, merging $b$ into
-$c$'s $\boxsort$-edge replaces the summand $\nu(c) = 2 + 2\sum_{i}\nu(c_{i})$ by
-$\sum_{i}\nu(c_{i})$; deleting a duplicate component removes a positive summand.
-
-As $\nu$ is built from sums and products with positive coefficients, a strict
-decrease in a subterm is a strict decrease of $\nu(\mathcal{G})$.
-The process terminates, and a terminal cospan admits no distribution, no merge
-and no duplicate component, which is the stated form.
+where $\mathcal{F}$ has the same vertices and edges as $F$ additionally adjoining a $\top$-edge.
+Let 
+\[
+n \xrightarrow{\id_{n}} n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m \xleftarrow{} m~,
+\]
+and
+\[
+n \xrightarrow{\id_{n}} n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m \xleftarrow{} m~,
+\]
+be two isomorphic cospans.
+Then there is an isomorphism $\phi : \mathcal{F} \to \mathcal{G}$ which reduces to the isomorphism of underlying hypergraphs $F$ and $G$ and therefore
+\[
+n \xrightarrow{} F \xleftarrow{} m \qquad \text{and} \qquad n \xrightarrow{} G \xleftarrow{} m
+\]
+are isomorphic in $\catname{HypI}(\Sigma)$ and the functor is faithful.
+The functor is obviously non-full since cospans whose carrier has $\boxsort$-edges do not have preimages in $\catname{HypI}(\Sigma)$.
 \end{proof}
 
-\begin{proof}[Proof of~\cref{thm:frobenius_equivalence}]
-By~\cref{lemma:phi_well_defined,lemma:phi_functor} $\Phi$ is a functor, and
-by~\cref{lemma:phi_sound} it identifies
-$\overline{\rightsquigarrow}_{\mathcal{R}}$-related morphisms, so it descends to
-$\overline{\Phi} : \catname{EHypI}_{\bullet}(\Sigma)/\mathcal{R} \to
-\mathbf{H}^{\join}_{\Sigma}$ by~\cref{def:quotient_by_rewrites}.
+\begin{proposition}[Canonical forms]
+\label{prop:canonical_forms}
+Each morphism of $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ can be turned into either of the following forms
+\begin{enumerate}
+\item a morphism in the image of $\Xi$;
+\item an extended cospan of the form
+\[
+n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m~,
+\]
+where $\mathcal{F}$ has a single $\boxsort$-edge $b$ such that $\top_{\mathcal{F}} <^{\mu}_{\mathcal{F}} b$ and the ordering of $n$ and $m$ coincide with the ordering of $s(b)$ and $t(b)$, respectively.
+\end{enumerate}
+\end{proposition}
 
-\emph{Essential surjectivity.}
-$\Phi(D[k]) = k$ by~\cref{def:discrete_functor}, and every object with $k$
-vertices is isomorphic to $D[k]$.
-
-\emph{Fullness.}
-By~\cref{prop:prop-adjunction} the free semilattice on a set is its set of
-non-empty finite subsets, so a morphism of $\mathbf{H}^{\join}_{\Sigma}(n,m)$ is
-a non-empty finite set $\{h_{1}, \ldots, h_{p}\}$ of morphisms of
-$\mathbf{H}_{\Sigma}(n,m)$.
-For $p = 1$ take the cospan corresponding to $h_{1}$ under
-$\catname{HypI}(\Sigma) \cong \mathbf{H}_{\Sigma}$; it has no $\boxsort$-edges,
-so its image is $\{h_{1}\}$.
-For $p \geq 2$ take the join of those $p$ cospans
-as in~\cref{def:join_of_extended_cospans}: it is well typed since the $h_{i}$
-are parallel, non-degenerate since $p \geq 2$, and has image
-$\{h_{1}, \ldots, h_{p}\}$ by~\cref{lemma:phi_join}.
-
-\emph{Faithfulness.}
-Suppose $\Phi(\mathcal{G}) = \Phi(\mathcal{H})$.
-By~\cref{lemma:normal_form_precise} they rewrite to normal forms $\mathcal{N}$,
-$\mathcal{N}'$, which have equal images by~\cref{lemma:phi_sound}.
-On cospans without $\boxsort$-edges $\Phi$ is the bijection
-$\catname{HypI}(\Sigma) \cong \mathbf{H}_{\Sigma}$ followed by the singleton
-map, so such a normal form has a singleton image, whereas one with a
-$\boxsort$-edge has image of cardinality its number of components, at least two,
-those components being pairwise non-isomorphic and hence, by the same bijection,
-of pairwise distinct image.
-So either both are $\boxsort$-edge-free and $\mathcal{N} \cong \mathcal{N}'$ by
-that bijection; or both have one $\boxsort$-edge, with components
-$\mathcal{N}_{1}, \ldots, \mathcal{N}_{p}$ and
-$\mathcal{N}'_{1}, \ldots, \mathcal{N}'_{q}$, and by~\cref{lemma:phi_join}
-together with the root having no other children,
-$\{\Phi(\mathcal{N}_{i})\}_{i} = \{\Phi(\mathcal{N}'_{j})\}_{j}$ with both
-families pairwise distinct.
-Hence $p = q$ and there is a permutation $\sigma$ with
-$\Phi(\mathcal{N}_{i}) = \Phi(\mathcal{N}'_{\sigma(i)})$, so
-$\mathcal{N}_{i} \cong \mathcal{N}'_{\sigma(i)}$.
-Since the components of a $\boxsort$-edge carry no order,
-by~\cref{def:isomorphic_ecospans} $\mathcal{N} \cong \mathcal{N}'$, and
-therefore $\mathcal{G} \;\overline{\rightsquigarrow}^{*}_{\mathcal{R}}\; \mathcal{H}$.
-\end{proof}
 
 \paragraph{Related work.}
 The rooted e-hypergraphs of~\cref{def:rooted_ehypergraph} belong to a broad

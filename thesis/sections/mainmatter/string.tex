@@ -1171,7 +1171,7 @@ Given a monoidal signature $\Sigma = (\{*\}, \Sigma_1)$, we define the interpret
 By~\cref{prop:prop-ump}, it induces a unique strong symmetric monoidal functor $\llbracket - \rrbracket : \mathbf{S}_{\Sigma} \to \catname{HypI}(\Sigma)$.
 \end{definition}
 
-So far, we have shown that every string diagram can be interpreted as a hypergraph, but it turns out that the definition of a $\catname{HypI}(\Sigma)$ is too general for every cospans to be interpreted as a string diagram.
+So far, we have shown that every string diagram can be interpreted as a hypergraph, but it turns out that the definition of a $\catname{HypI}(\Sigma)$ is too general for every cospan to be interpreted as a string diagram.
 Consider, for example, the following morphism in $\catname{HypI}(\Sigma)$:
 \[
 \adjustbox{scale=0.8}{\tikzfig{./figures/string/SMC_non_example}}~.
@@ -1472,7 +1472,7 @@ There is a well-known result that for a category of directed graphs a pushout co
 This result is usually cited verbatim for hypergraphs as well even though these are different objects.
 It is straightforward to adapt the notions to the case of hypergraphs and show that the same result holds.
 
-\begin{definition}[No-dangling condition (Definition 3.16~\cite{bonchi_string_2022-1})]
+\begin{definition}[No-dangling condition (Definition 3.16~\cite{bonchi_string_2022-1})]\label{def:no_dangling}
   Morphisms $K \xrightarrow{i} L \xrightarrow{f} G$ satisfy \emph{no-dangling} condition, if for every hyperedge $e$ not in the image of $f$, its sources and targets are either not in the image of $f$ or in the image of $f \circ i$.
 \end{definition}
 Intuitively, this condition ensures that when we should not delete vertices that are incident to hyperedges which are not being deleted.
@@ -1491,7 +1491,7 @@ An attempt to perform such a deletion would result in the following picture
 The alleged pushout complement is not a valid hypergraph as a hyperedge labelled $e_2$ must have a source and a target; a homomorphism between hypergraphs must also preserve the number of inputs and outputs, so there is simply no map from the alleged pushout complement to the source hypergraph. 
 \end{example}
 The other vital condition is the no-identification condition.
-\begin{definition}[No-identification condition~{\cite[Def. 3.17]{bonchi_string_2022-1}}]
+\begin{definition}[No-identification condition~{\cite[Def. 3.17]{bonchi_string_2022-1}}]\label{def:no_identification}
   Morphisms $K \xrightarrow{i} L \xrightarrow{f} G$ satisfy the \emph{no-identification} condition if any two distinct items of $L$ (vertices or hyperedges) identified by $f$ lie in the image of $i$.
 \end{definition}
 \begin{example}
@@ -1507,7 +1507,7 @@ Computing the alleged pushout complement by deleting the hyperedges and vertices
 Again, computing the pushout does not give us back the source hypergraph because there is no way to identify the vertices $v_3$ and $v_4$ using just the hypergraph $K$.
 \end{example}
 
-\begin{proposition}
+\begin{proposition}\label{prop:pushout_complement_exists}
   Let $K \xrightarrow{i} L \xrightarrow{f} G$ be morphisms in $\catname{Hyp}(\Sigma)$.
   A pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$ exists if and only if the no-dangling and no-identification conditions are satisfied.
 \end{proposition}
