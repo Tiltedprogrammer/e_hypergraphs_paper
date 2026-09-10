@@ -82,7 +82,7 @@ Even though the box is not functorial in the sense that it does not correspond t
 	\label{fig:string-equations}
 \end{figure}
 Similar to the cases of $\mathbf{H}_{\Sigma}$ and $\mathbf{S}_{\Sigma}$, we can define rewriting on $\mathbf{S}_{\Sigma}^{\join}$
-\begin{definition}
+\begin{definition}\label{def:enriched_prop_rewriting}
 A rewriting system $\mathcal{R}$ on an enriched PROP $\mathbb{A}$ consists of a set of rewrite rules, i.e, pairs $\langle l, r \rangle$ of morphisms $l, r : i \to j$ in $\mathbb{A}$ with the same domain and codomain.
 Given $a,b : m \to n \in \mathbb{A}$, we say that $a$ rewrites to $b$ via $\mathcal{R}$, written $a \Rightarrow_{\mathcal{R}} b$, if either they are decomposable as follows
  \[
@@ -1638,7 +1638,7 @@ images of external interfaces consist of top-level vertices.
 %% Extended cospans
 %% ---------------------------------------------------------------------------
 
-\begin{definition}
+\begin{definition}\label{def:extended_cospan}
   An \emph{extended cospan} is a diagram in $\catname{EHyp}_{\leq}(\Sigma)$ of the form
   \[
   n \xrightarrow{f_{\mathrm{ext}}} n' \xrightarrow{f_{\mathrm{int}}} \mathcal{G} \xleftarrow{g_{\mathrm{int}}} m' \xleftarrow{g_{\mathrm{ext}}} m~,
@@ -1889,7 +1889,6 @@ stand for $w_1$ and $w_2$ respectively.
 This bijection is what makes the order within a strictly internal block part of
 the data, whereas the order between blocks is not.
 The latter is what allows us to eventually absorb the commutativity of the $\catname{SLat}$-structure.
-
 % \begin{definition}[Category of rooted extended cospans]\label{def:rooted_ehypi}
 % The category $\catname{EHypI}_{\bullet}(\Sigma)$ has as objects pointed
 % discrete ordered e-hypergraphs, and as morphisms $m \to n$ the isomorphism
@@ -1918,9 +1917,9 @@ The latter is what allows us to eventually absorb the commutativity of the $\cat
 % \]
 % where $h_i$ are defined as follows,  using $|$ to denote the restriction of a function on a discrete e-hypergraph. 
 % \[
-%     h_1 = [ f_{int};p_1, ~(g_{int};p_2)|_{m'' \setminus m} ]
+%     h_1 = [ f_{int};p_1,~(g_{int};p_2)|_{m'' \setminus m} ]
 % \;
-%     h_2 = [ g'_{int};p_2, ~(f'_{int};p_1)|_{m' \setminus m} ]
+%     h_2 = [ g'_{int};p_2,~(f'_{int};p_1)|_{m' \setminus m} ]
 % \]
 % The identity of composition is given by the obvious extended cospan of identities. 
 % $\catname{EHypI}_{\bullet}(\Sigma)$ inherits a symmetric monoidal structure from the fibered coproduct (and the rooted e-hypergraph $\mathfrak{T}$) structure of $\catname{EHyp({\Sigma}})_{\leq}$.
@@ -1967,9 +1966,9 @@ where $\iota_{1}$ is the first coprojection of $\sqcup$ and, writing
 $\restriction$ for the restriction of a map to a sub-e-hypergraph of its
 pointed discrete domain,
 \[
-    h_{1} = [\, f_{\mathrm{int}} \fatsemi p_{1}, ~(g_{\mathrm{int}} \fatsemi p_{2}) \restriction_{m'' \setminus m} \,]~,
+    h_{1} = [\, f_{\mathrm{int}} \fatsemi p_{1},~(g_{\mathrm{int}} \fatsemi p_{2}) \restriction_{m'' \setminus m} \,]~,
 \qquad
-    h_{2} = [\, g'_{\mathrm{int}} \fatsemi p_{2}, ~(f'_{\mathrm{int}} \fatsemi p_{1}) \restriction_{m' \setminus m} \,]~.
+    h_{2} = [\, g'_{\mathrm{int}} \fatsemi p_{2},~(f'_{\mathrm{int}} \fatsemi p_{1}) \restriction_{m' \setminus m} \,]~.
 \]
 
 The identity on $n$ and the monoidal structure are inherited
@@ -1990,7 +1989,40 @@ and the symmetries are $\sym_{n,m} \defeq \widehat{D}(\sigma_{n,m})$, where
 $\sigma_{n,m} : [n+m] \to [m+n]$ is the block transposition.
 The symmetric monoidal axioms then follow from those of $(\mathbb{F}, +, [0])$,
 since $\widehat{D}$ is strict monoidal by~\cref{remark:discrete_functor_strict}.
+
+Every pointed discrete ordered e-hypergraph with \(n\) vertices is
+isomorphic to \(D([n])\). 
+Henceforth, we work with the full skeletal
+subcategory on the objects \(D([n])\), and write \(n\) for \(D([n])\).
+With this convention, \(\catname{EHypI}_{\bullet}(\Sigma)\) is a PROP.
 \end{definition}
+
+\begin{remark}
+For an extended cospan
+\[
+n \xrightarrow{f_{\mathrm{ext}}} n' \xrightarrow{f_{\mathrm{int}}} \mathcal{F} \xleftarrow{g_{\mathrm{int}}} m' \xleftarrow{g_{\mathrm{ext}}} m~,
+\]
+we will adopt a convention that the internal interface objects $n'$ and $m'$ are written as fibered coproducts 
+\[
+n \coprod n_1 \coprod \cdots \coprod n_k~,
+\]
+with each $n_i$ understood as $D([n_i])$, and each
+indexed by $\cmpsort$-edges of $\mathcal{F}$, so that maps $f_{\mathrm{ext}}$ and $g_{\mathrm{ext}}$ are first coprojections and each $f_{\mathrm{int}}$ and $g_{\mathrm{int}}$ are given by a suitable copairing of maps.
+This way isomorphisms $\alpha$ and $\gamma$ in~\cref{def:isomorphic_ecospans} are isomorphisms underlying assiciativity and commutativity of fibered coproducts.
+When necessary, we
+silently reassociate the fibre coproducts or permute entire blocks; these
+changes yield isomorphic extended cospans.
+
+With this convention,
+\[
+n'\setminus n=n_1\sqcup\cdots\sqcup n_k,
+\qquad
+m'\setminus m=m_1\sqcup\cdots\sqcup m_\ell.
+\]
+More generally, whenever a subinterface is a union of complete blocks,
+restriction to its complement amounts to omitting the corresponding
+components of the copairing.
+\end{remark}
 
 % \begin{remark}[Comparison with~\cite{tiurin2025equivalencehypergraphsdporewriting}]\label{remark:compare_ehypi}
 % The extended cospans of~\cite[Defs.~IV.5--IV.6]{tiurin2025equivalencehypergraphsdporewriting}
@@ -2065,46 +2097,34 @@ n \longrightarrow n'' \longrightarrow \mathcal{R}
 \]
 
 As in~\cref{remark:dpoi_interface_swap}, these extended cospans may be folded
-along their input and output interfaces. Namely, the left- and right-hand
-sides may respectively be represented as
+along their input and output interfaces.
+However, in the case of $\catname{HypI}(\Sigma)$, the folded cospans corresponded to morphisms pre-composed with a number of $\cup : 0 \to 2$, bending inputs into outputs.
+We will apply the same bending here, but only to the external interfaces: internal interfaces correspond to vertices inside $\cmpsort$-edges and well-typedness connects these with the sources and targets of preceding $\boxsort$-edges, simply folding the interface would require to modify each $\boxsort$-edge to turn sources into targets.
+That is, we will fold the external interfaces as
 \[
-0
-\longrightarrow
-0
-\longrightarrow
-\mathcal{L}
-\longleftarrow
-n'\sqcup m'
-\longleftarrow
-n\sqcup m
+0 \xrightarrow{} n' \setminus n \xrightarrow{} \mathcal{L} \xleftarrow{} n \coprod m' \xleftarrow{} n \coprod m,
 \]
 and
 \[
-0
-\longrightarrow
-0
-\longrightarrow
-\mathcal{R}
-\longleftarrow
-n''\sqcup m''
-\longleftarrow
-n\sqcup m~,
+0 \xrightarrow{} n'' \setminus n \xrightarrow{} \mathcal{R} \xleftarrow{} n \coprod m'' \xleftarrow{} n \coprod m,
 \]
 recalling that we elide the functor $D$ from the notation and write $0$ for the rooted e-hypergraph $D([0]) = \mathfrak{T}$.
-The pair can therefore be encoded by the span
-\[
-\mathcal{L}
-\longleftarrow
-n'\sqcup m'
-\longleftarrow
-n\sqcup m
-\longrightarrow
-n''\sqcup m''
-\longrightarrow
-\mathcal{R},
-\]
-which has the form required by the DPO construction. We use this encoding
-throughout.
+
+The pair can therefore be encoded by the span with some extra arrows
+% https://q.uiver.app/#q=WzAsNyxbMSwxLCJcXG1hdGhjYWx7TH0iXSxbMiwxLCJuIFxcY29wcm9kIG0nIl0sWzMsMSwibiBcXGNvcHJvZCBtIl0sWzQsMSwibiBcXGNvcHJvZCBtJyciXSxbNSwxLCJcXG1hdGhjYWx7Un0iXSxbMCwwLCJuJyBcXHNldG1pbnVzIG4iXSxbNiwwLCJuJycgXFxzZXRtaW51cyBuIl0sWzIsMV0sWzEsMF0sWzIsM10sWzMsNF0sWzUsMF0sWzYsNF1d
+\[\begin{tikzcd}[row sep=1pt, column sep=small]
+	{n' \setminus n} &&&&&& {n'' \setminus n} \\
+	& {\mathcal{L}} & {n \coprod m'} & {n \coprod m} & {n \coprod m''} & {\mathcal{R}}
+	\arrow[from=1-1, to=2-2]
+	\arrow[from=1-7, to=2-6]
+	\arrow[from=2-3, to=2-2]
+	\arrow[from=2-4, to=2-3]
+	\arrow[from=2-4, to=2-5]
+	\arrow[from=2-5, to=2-6]
+\end{tikzcd}\]
+which has the form required by the DPO construction.
+We use this encoding throughout.
+We also omit writing $0$ interfaces explicitly, understanding that $n' \setminus n$ and $n'' \setminus n$ are internal interfaces as writing $\setminus$ for the external interface makes no sense.
 
 \begin{remark}
 More explicitly, given an extended cospan
@@ -2119,21 +2139,37 @@ m'
 \xleftarrow{g_{\mathrm{ext}}}
 m,
 \]
-its folded presentation is
+put
+\[
+f \defeq f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}} : n \longrightarrow \mathcal G
+\]
+and
+\[
+f_{\mathrm{sint}} \defeq f_{\mathrm{int}}\restriction_{n'\setminus n} : n'\setminus n\longrightarrow\mathcal G.
+\]
+Under the convention
+\[
+n' = n \coprod (n' \setminus n),
+\]
+the internal leg is therefore the copairing
+\[
+f_{\mathrm{int}} = [f,f_{\mathrm{sint}}].
+\]
+The folded presentation of the above cospan is then
 \[
 0
-\xrightarrow{\id_{0}}
-0
-\xrightarrow{!_{\mathcal{G}}}
+\xrightarrow{!_{n' \setminus n}}
+n' \setminus n
+\xrightarrow{f_{\mathrm{sint}}}
 \mathcal{G}
-\xleftarrow{[f_{\mathrm{int}},g_{\mathrm{int}}]}
-n'\sqcup m'
-\xleftarrow{f_{\mathrm{ext}}\sqcup g_{\mathrm{ext}}}
+\xleftarrow{[f, g_{\mathrm{int}}]}
+n\sqcup m'
+\xleftarrow{\id_n \coprod g_{\mathrm{ext}}}
 n\sqcup m,
 \]
 where
-$!_{\mathcal{G}}:\mathfrak{T}\to\mathcal{G}$ is the unique strict
-homomorphism sending $\top_{\mathfrak{T}}$ to $\top_{\mathcal{G}}$.
+$!_{n' \setminus n} : \mathfrak{T} \to n' \setminus n$ is the unique strict
+homomorphism sending $\top_{\mathfrak{T}}$ to $\top_{n' \setminus n}$.
 
 Here and below, we use $[f,g]$ for the morphism induced by the universal
 property of the pushout~\cref{lemma:pushout_universal}.
@@ -2169,7 +2205,7 @@ f_{\mathrm{int},E}(\top_{n'})
 =
 g_{\mathrm{int},E}(\top_{m'}).
 \]
-Consequently $[f_{\mathrm{int}},g_{\mathrm{int}}]$ is well defined.
+Consequently $[f_{\mathrm{ext}},g_{\mathrm{int}}]$ is well defined.
 \end{remark}
 
 We will also need to restrict the set of candidate sub-e-hypergraphs that will constitute a \emph{match}.
@@ -2308,19 +2344,30 @@ $a=\top_{\mathcal G}$.
 \label{def:extended_complement}
 Let
 \[
+i
+\xrightarrow{f_{\mathrm{ext}}^{i}}
+i'
+\xrightarrow{f_{\mathrm{int}}^{i}}
 \mathcal L
-\xleftarrow{f_{\mathrm{int}}}
-i'\sqcup j'
-\xleftarrow{f_{\mathrm{ext}}}
-i\sqcup j
-\qquad\text{and}\qquad
-\mathcal G
-\xleftarrow{g_{\mathrm{int}}}
-n'\sqcup k'
-\xleftarrow{g_{\mathrm{ext}}}
-n\sqcup k
+\xleftarrow{f_{\mathrm{int}}^{j}}
+j'
+\xleftarrow{f_{\mathrm{ext}}^{j}}
+j
 \]
-be well-typed extended cospans. Since the external legs are monic, we identify
+and
+\[
+n
+\xrightarrow{g_{\mathrm{ext}}^{n}}
+n'
+\xrightarrow{g_{\mathrm{int}}^{n}}
+\mathcal G
+\xleftarrow{g_{\mathrm{int}}^{k}}
+k'
+\xleftarrow{g_{\mathrm{ext}}^{k}}
+k
+\]
+be well-typed extended cospans. 
+Since the external legs are monic, we identify
 $i,j,n,k$ with their respective images in $i',j',n',k'$. Thus, for example,
 $i'\setminus i$ denotes the pointed discrete e-hypergraph obtained by removing
 the vertices in the image of $i$ while retaining the root, as in the
@@ -2404,7 +2451,7 @@ n'\setminus S_n\longrightarrow\mathcal L^\bot,
 g_k^\bot:
 k'\setminus S_k\longrightarrow\mathcal L^\bot;
 \]
-\item morphisms of pointed discrete interfaces
+\item isomorphisms of pointed discrete interfaces
 \[
 \alpha_n:i'_{\circ}\longrightarrow S_n,
 \qquad
@@ -2590,13 +2637,10 @@ S_k
 \mathcal G
 \end{tikzcd}
 \]
-commute.
-
-Moreover, $\alpha_n$ and $\alpha_k$ preserve the interface order within
-blocks: whenever two vertices of $i'_{\circ}$, respectively $j'_{\circ}$,
-have images with the same immediate parent in $\mathcal L$, their images
-under $\alpha_n$, respectively $\alpha_k$, lie in the corresponding block
-of the ambient interface and occur in the same relative order.
+commute, where \(\alpha_n\) and \(\alpha_k\) preserve the order within
+each interface block. Equivalently, under the fibered coproduct convention
+of the preceding remark, they are the canonical isomorphisms obtained
+by reassociating and permuting whole interface blocks.
 
 The above data may be summarised by the following commutative diagram
 % https://q.uiver.app/#q=WzAsMTAsWzIsMCwiXFxtYXRoY2Fse0x9Il0sWzQsMCwiaSBcXGNvcHJvZCBqIl0sWzMsMCwiaScgXFxjb3Byb2QgaiciXSxbMiwyLCJcXG1hdGhjYWx7R30iXSxbNCwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFs0LDUsIm4gXFxjb3Byb2QgayJdLFszLDMsIm4nIFxcY29wcm9kIGsnIl0sWzQsMywiKG4nIFxcc2V0bWludXMgU19uKSBcXGNvcHJvZCAoaycgXFxzZXRtaW51cyBTX2spIl0sWzAsMCwiaSdfe1xcY2lyY30gXFxjb3Byb2Qgaidfe1xcY2lyY30iXSxbMCwyLCJTX24gXFxjb3Byb2QgU19rIl0sWzAsMywibSIsMl0sWzIsMCwiZl97XFxtYXRocm17aW50fX0iLDJdLFsxLDIsImZfe1xcbWF0aHJte2V4dH19IiwyXSxbNCwzLCJsXntcXGJvdH0iLDJdLFsxLDQsImMiXSxbNiwzLCJnX3tcXG1hdGhybXtpbnR9fSJdLFs1LDYsImdfe1xcbWF0aHJte2V4dH19Il0sWzUsNywiXFxvdmVybGluZXtnfV97XFxtYXRocm17ZXh0fX0iLDJdLFs3LDQsImdee1xcYm90fSJdLFszLDEsIiIsMix7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFs3LDYsIlxcam1hdGgiLDJdLFs4LDAsIltmX3tcXG1hdGhybXtpbnR9fVxccmVzdHJpY3Rpb24sIGZfe1xcbWF0aHJte2ludH19XFxyZXN0cmljdGlvbl0iXSxbOSwzLCJbXFxoYXR7Z31fe259XnthfSwgXFxoYXR7Z31fe2t9XnthfV0iXSxbOCw5LCJcXGFscGhhX24gXFxjb3Byb2QgXFxhbHBoYV9rXSIsMl1d
@@ -3338,7 +3382,7 @@ $\mathcal{R} \leftarrow i \sqcup j \rightarrow \mathcal{L}$ of each of its
 members.
 \end{definition}
 
-\begin{remark}
+\begin{remark}\label{remark:reindexing}
 
 The rule schema corresponding to the very first equation of~\cref{fig:string-equations} is the following
 \[
@@ -4895,13 +4939,9 @@ The maps also agree on the roots by strictness. Therefore
 $\beta_n$, the identity on $\mathcal J_{\mathcal G}$, and $\beta_k$
 define an isomorphism of extended cospans.
 
-Thus, we conclude that $\mathcal{J}_{\mathcal{G}} \;\overline{\rightsquigarrow}\; \mathcal{J}_{\mathcal{G}}$.
+Thus, we conclude that $\mathcal{J}_{\mathcal{F}} \;\overline{\rightsquigarrow}\; \mathcal{J}_{\mathcal{G}}$.
 \end{enumerate}
 \end{proof}
-
-% \dependency{The proof of~\cref{lemma:rewriting_congruence} uses the explicit
-% description of the pushout in~\cref{prop:pushout_exists} and the statement
-% of~\cref{lemma:rewrite_yields_ecospan}, whose proof is still outstanding.}
 
 \begin{definition}[Quotient by rewrites]\label{def:quotient_by_rewrites}
 $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ is the category with the same
@@ -4919,54 +4959,2598 @@ The quotient $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ is an $\catname{
 The objects of $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ are the same as those of $\catname{EHypI}_{\bullet}(\Sigma)$, which are the natural numbers.
 The hom-sets $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}(n, m)$ are then equipped with a $\join$ as per~\cref{def:join_of_extended_cospans}, which is associative and idempotent by~\cref{def:structural_rules} and commutative since isomorphism of extended cospans subsumes commutatitivity of $\join$ (~\cref{remark:commutativity_absorbed}).
 This $\join$ further distributes over $\otimes$ and $\fatsemi$ by the rules of~\cref{def:structural_rules}, noting that connecting a $\boxsort$-edge to some other sub-hypergraph corresponds to a composition and placing it on a side corresponds to a tensor product of cospans.
+Finally, $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ inherits composition and symmetric monoidal structure from $\catname{EHypI}_{\bullet}(\Sigma)$, which is respected by the quotient by~\cref{lemma:rewriting_congruence}.
 \end{proof}
 
-\begin{proposition}\label{prop:embedding_hypi}
-There is a faithful identity-on-objects functor 
+\begin{remark}
+We write
 \[
-\Xi : \catname{HypI}(\Sigma) \longrightarrow \catname{EHypI}_{\bullet}(\Sigma)~.
+Q:
+\catname{EHypI}_{\bullet}(\Sigma)
+\longrightarrow
+\widetilde U_{\catname{SLat}}
+\bigl(
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R
+\bigr),
+\qquad
+\mathcal G\longmapsto[\mathcal G],
 \]
+for the quotient functor.
+\end{remark}
+
+\begin{proposition}\label{prop:embedding_hypi}
+There is a faithful identity-on-objects strict symmetric monoidal functor
+\[
+\Xi:
+\catname{HypI}(\Sigma)
+\longrightarrow
+\catname{EHypI}_{\bullet}(\Sigma).
+\]
+Moreover, its image consists precisely of the box-free
+morphisms of \(\catname{EHypI}_{\bullet}(\Sigma)\).
 \end{proposition}
 \begin{proof}
-The functor is given by viewing each cospan
+On objects, put $\Xi(n)\defeq n$. Given a cospan
 \[
-n \xrightarrow{f} F \xleftarrow{g} m~,
+n\xrightarrow{f}F\xleftarrow{g}m
 \]
-i.e., morphism of $\catname{HypI}(\Sigma)$, as an extended cospan
+representing a morphism of $\catname{HypI}(\Sigma)$, let $\mathcal F$
+be the rooted e-hypergraph obtained from $F$ by adjoining a fresh edge
+$\top_{\mathcal F}$, with
 \[
-n \xrightarrow{\id_{n}} n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m \xleftarrow{} m~,
+s(\top_{\mathcal F})
+=
+t(\top_{\mathcal F})
+=
+\varepsilon,
+\qquad
+l(\top_{\mathcal F})=\cmpsort,
 \]
-where $\mathcal{F}$ has the same vertices and edges as $F$ additionally adjoining a $\top$-edge.
+and declaring
+\[
+\top_{\mathcal F}<^\mu_{\mathcal F}x
+\qquad
+\text{for every }x\in V_F\coprod E_F.
+\]
+Extend $f$ and $g$ to the roots by sending the roots of their domains
+to $\top_{\mathcal F}$. Define $\Xi$ on morphisms by
+\[
+\Xi
+\left(
+n\xrightarrow{f}F\xleftarrow{g}m
+\right)
+\defeq
+\left(
+n\xrightarrow{\id_n}n\xrightarrow{f}\mathcal F
+\xleftarrow{g}m\xleftarrow{\id_m}m
+\right).
+\]
+This is a well-typed extended cospan: its external legs are monic, its
+composite interface legs are strict, and it has no strictly internal
+interface vertices. An isomorphism of ordinary hypergraph cospans
+extends uniquely to an isomorphism of the associated rooted extended
+cospans by sending root to root, so this assignment is well defined on
+isomorphism classes.
+
+The identity cospan is sent to the identity extended cospan. Moreover,
+the rooted pushout used to compose two cospans in the image of $\Xi$ is
+obtained from their ordinary hypergraph pushout by adjoining a common
+root. Hence $\Xi$ preserves composition.
+
+Likewise, the rooted pushout of $\mathcal F$ and $\mathcal G$ over
+their roots is obtained by adjoining a common root to the ordinary
+coproduct $F\coprod G$. Thus $\Xi$ preserves tensor products, the
+monoidal unit, and the symmetries, and is therefore strict symmetric
+monoidal.
+
 Let 
 \[
-n \xrightarrow{\id_{n}} n \xrightarrow{f} \mathcal{F} \xleftarrow{g} m \xleftarrow{} m~,
+n \xrightarrow{} n \xrightarrow{} \Xi(F) \xleftarrow{} m \xleftarrow{} m~,
 \]
 and
 \[
-n \xrightarrow{\id_{n}} n \xrightarrow{f} \mathcal{G} \xleftarrow{g} m \xleftarrow{} m~,
+n \xrightarrow{} n \xrightarrow{} \Xi(G) \xleftarrow{} m \xleftarrow{} m~,
 \]
 be two isomorphic cospans.
-Then there is an isomorphism $\phi : \mathcal{F} \to \mathcal{G}$ which reduces to the isomorphism of underlying hypergraphs $F$ and $G$ and therefore
+Then there is an isomorphism $\phi : \Xi(F) \to \Xi(G)$ which reduces to the isomorphism of underlying hypergraphs $F$ and $G$ and therefore
 \[
 n \xrightarrow{} F \xleftarrow{} m \qquad \text{and} \qquad n \xrightarrow{} G \xleftarrow{} m
 \]
 are isomorphic in $\catname{HypI}(\Sigma)$ and the functor is faithful.
-The functor is obviously non-full since cospans whose carrier has $\boxsort$-edges do not have preimages in $\catname{HypI}(\Sigma)$.
+
+Finally, the functor is full when corestricted to box-free extended cospans in $\catname{EHypI}_{\bullet}(\Sigma)$.
+Consider an extended cospan
+\[
+n \xrightarrow{f_{\mathrm{ext}}} n' \xrightarrow{f_{\mathrm{int}}} \mathcal{F} \xleftarrow{g_{\mathrm{int}}} m' \xleftarrow{g_{\mathrm{ext}}} m~,
+\]
+such that $\mathcal{F}$ has no $\boxsort$-edges and thus its only $\cmpsort$-edge is $\top$.
+The condition on the strictly internal interfaces in~\cref{def:extended_cospan} therefore implies that the images of $f_{\mathrm{int},V}(V_{n'} \setminus f_{\mathrm{ext},V}(V_n)) = \varnothing$ and $g_{\mathrm{int},V}(V_{m'} \setminus g_{\mathrm{ext},V}(V_m)) = \varnothing$ and thus
+$V_{n'} \setminus f_{\mathrm{ext},V}(V_n) = \varnothing$ and $V_{m'} \setminus g_{\mathrm{ext},V}(V_m) = \varnothing$, so $n' \cong n$ and $m' \cong m$ with $f_{\mathrm{ext}}$ and $g_{\mathrm{ext}}$ being isomorphisms.
+Let \(F\) be the ordinary hypergraph obtained from \(\mathcal F\) by
+deleting \(\top_{\mathcal F}\) and forgetting the hierarchical
+relation. The vertex components of the strict composites determine
+the ordinary hypergraph cospan
+\[
+n
+\xrightarrow{
+  (f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}})_V
+}
+F
+\xleftarrow{
+  (g_{\mathrm{ext}}\fatsemi g_{\mathrm{int}})_V
+}
+m.
+\]
+Applying \(\Xi\) to this cospan gives an extended cospan isomorphic to
+the original one: the internal-interface isomorphisms are
+\(f_{\mathrm{ext}}\) and \(g_{\mathrm{ext}}\), and the carrier
+isomorphism identifies the newly adjoined root with
+\(\top_{\mathcal F}\). Hence every box-free morphism lies in the image of \(\Xi\).
 \end{proof}
 
-\begin{proposition}[Canonical forms]
-\label{prop:canonical_forms}
-Each morphism of $\catname{EHypI}_{\bullet}(\Sigma) / \mathfrak{R}$ can be turned into either of the following forms
-\begin{enumerate}
-\item a morphism in the image of $\Xi$;
-\item an extended cospan of the form
+\begin{definition}[Components and flat resolutions]
+\label{def:flat_resolutions}
+Let $\mathbf G:n\to m$ be the well-typed extended cospan
 \[
-n \xrightarrow{} n' \xrightarrow{} \mathcal{F} \xleftarrow{} m' \xleftarrow{} m~,
+\mathbf G
+=
+\left(
+n\xrightarrow{f_{\mathrm{ext}}}n'
+\xrightarrow{f_{\mathrm{int}}}\mathcal G
+\xleftarrow{g_{\mathrm{int}}}m'
+\xleftarrow{g_{\mathrm{ext}}}m
+\right),
 \]
-where $\mathcal{F}$ has a single $\boxsort$-edge $b$ such that $\top_{\mathcal{F}} <^{\mu}_{\mathcal{F}} b$ and the ordering of $n$ and $m$ coincide with the ordering of $s(b)$ and $t(b)$, respectively.
-\end{enumerate}
-\end{proposition}
+and let $b$ be a $\boxsort$-edge of its carrier. Write
+\[
+\operatorname{Comp}_{\mathcal G}(b)
+\defeq
+\left\{
+c\in E_{\mathcal G,\cmpsortsubscript}
+\;\middle|\;
+b<^\mu_{\mathcal G}c
+\right\}~,
+\]
+for the set of components of $b$.
 
+For $c\in\operatorname{Comp}_{\mathcal G}(b)$, let
+$\mathcal G_c$ be the sub-e-hypergraph consisting of $c$ and all its
+descendants, rooted at $c$. Let $I_c$ be the pointed discrete
+interface with
+\[
+V_{I_c}
+\defeq
+\left\{
+x\in V_{n'}
+\;\middle|\;
+c <_{\mathcal G}f_{\mathrm{int},V}(x)
+\right\},
+\]
+and define $O_c$ dually using $g_{\mathrm{int}}$. 
+
+The sets
+\[
+B_c^n
+\defeq
+\pi_f^{-1}(c),
+\qquad
+B_c^m
+\defeq
+\pi_g^{-1}(c)
+\]
+are the top input and output blocks of the component cospan. By
+well-typedness,
+\[
+|B_c^n|=|s(b)|,
+\qquad
+|B_c^m|=|t(b)|.
+\]
+Their orders therefore determine monomorphisms
+\[
+\lambda_c^n:D[|s(b)|]\longrightarrow I_c,
+\qquad
+\lambda_c^m:D[|t(b)|]\longrightarrow O_c
+\]
+whose images are $B_c^n$ and $B_c^m$, respectively.
+
+The \emph{component cospan} determined by $c$ is
+\[
+\mathbf G_c
+\defeq
+\left(
+D[|s(b)|]
+\xrightarrow{\lambda_c^n}
+I_c
+\xrightarrow{
+\left\langle
+c;
+f_{\mathrm{int},V}\restriction_{V_{I_c}}
+\right\rangle}
+\mathcal G_c
+\xleftarrow{
+\left\langle
+c;
+g_{\mathrm{int},V}\restriction_{V_{O_c}}
+\right\rangle}
+O_c
+\xleftarrow{\lambda_c^m}
+D[|t(b)|]
+\right),
+\]
+which is a well-typed extended cospan.
+
+Let
+\[
+c_0\defeq {<^\mu_{\mathcal G}}(b)
+\]
+be the immediate parent of $b$. The context $\mathbf C_b[-]$ is
+obtained by deleting $b$ along with its descendants, while retaining
+$s(b)$ and $t(b)$ as the boundary of a hole. The boundary map
+from
+\[
+D[|s(b)|] \coprod D[|t(b)|]
+\]
+to the carrier of $\mathbf C_b$ sends the root to $c_0$ and the
+ordered input and output vertices to $s(b)$ and $t(b)$, respectively.
+It is anchored, thus given any extended cospan with the same bondary $D[|s(b)|] \coprod D[|t(b)|]$, we can \emph{substitute} it into the hole by computing the pushout. 
+
+The internal input and output interfaces retained by the context are
+the pointed discrete objects determined by
+\[
+V_{n'_{\mathbf C_b}}
+\defeq
+V_{n'}\setminus
+\bigcup_{d\in\operatorname{Comp}_{\mathcal G}(b)}V_{I_d},
+\]
+and
+\[
+V_{m'_{\mathbf C_b}}
+\defeq
+V_{m'}\setminus
+\bigcup_{d\in\operatorname{Comp}_{\mathcal G}(b)}V_{O_d},
+\]
+with the roots retained.
+
+More generally, suppose
+\[
+\mathbf X
+=
+\left(
+D[|s(b)|]\to x'\to\mathcal X
+\leftarrow y'\leftarrow D[|t(b)|]
+\right)
+\]
+is substituted into the hole. Identifying the external interfaces with
+their images under their monic external legs, put
+\[
+x'_\circ\defeq x'\setminus D[|s(b)|],
+\qquad
+y'_\circ\defeq y'\setminus D[|t(b)|].
+\]
+The internal interfaces of $\mathbf C_b[\mathbf X]$ are
+\[
+n'_{\mathbf C_b[\mathbf X]}
+\defeq
+n'_{\mathbf C_b}\sqcup x'_\circ,
+\qquad
+m'_{\mathbf C_b[\mathbf X]}
+\defeq
+m'_{\mathbf C_b}\sqcup y'_\circ.
+\]
+The orders are inherited within each interface block; the relative
+placement of distinct blocks is immaterial up to isomorphism of
+extended cospans. The internal legs are induced by the context
+coprojection on the retained blocks and by the substituted-cospan
+coprojection on $x'_\circ$ and $y'_\circ$.
+
+For $c\in\operatorname{Comp}_{\mathcal G}(b)$, define the
+\emph{resolution of \(b\) at \(c\)} by
+\[
+\mathbf G[b\mapsto c]
+\defeq
+\mathbf C_b[\mathbf G_c].
+\]
+Its internal interfaces are therefore
+\[
+n'_{\mathbf G[b\mapsto c]}
+\cong
+n'_{\mathbf C_b}\sqcup(I_c\setminus B_c^n),
+\]
+and
+\[
+m'_{\mathbf G[b\mapsto c]}
+\cong
+m'_{\mathbf C_b}\sqcup(O_c\setminus B_c^m).
+\]
+
+On the other hand, if
+\[
+\mathbf B_b
+\defeq
+\bigjoin_{c\in\operatorname{Comp}_{\mathcal G}(b)}
+\mathbf G_c,
+\]
+then the strictly internal interfaces of $\mathbf B_b$ are
+\[
+\bigcoprod_{c\in\operatorname{Comp}_{\mathcal G}(b)} I_c
+\qquad\text{and}\qquad
+\bigcoprod_{c\in\operatorname{Comp}_{\mathcal G}(b)} O_c.
+\]
+Consequently,
+\[
+n'_{\mathbf C_b[\mathbf B_b]}\cong n',
+\qquad
+m'_{\mathbf C_b[\mathbf B_b]}\cong m',
+\]
+and we have that 
+\[
+\mathbf{G} \cong \mathbf{C}_{b}[\mathbf{B}_b] \cong \mathbf{C}_{b}[\bigjoin_{c\in\operatorname{Comp}_{\mathcal{G}}(b)}\mathbf{G}_{c}]~.
+\]
+
+A \emph{complete resolution} of $\mathbf G$ is obtained by repeatedly
+replacing an extended cospan $\mathbf H$ by
+$\mathbf H[b\mapsto c]$ until no box edges remain. Each step strictly
+decreases the number of box edges, so every such sequence terminates.
+
+Since a complete resolution has no box edges, by~\cref{prop:embedding_hypi}, every such a resolution is isomorphic
+to $\Xi(F)$ for a unique
+\[
+F\in\catname{HypI}(\Sigma)(n,m).
+\]
+We define
+\[
+\operatorname{Flat}(\mathbf G)
+\subseteq
+\catname{HypI}(\Sigma)(n,m)
+\]
+to be the set of all such \(F\) obtained from complete resolutions of
+$\mathbf G$.
+\end{definition}
+
+\begin{remark}
+The above construction is essentially the same as EDPOI rewriting, with the only difference being that we did not mention the rewrite rule explicitly and we are interested only in a particular pushout complement.
+The interfaces of the context and of the substitution result are computed just like in EDPOI rewriting.
+\end{remark}
+
+\begin{example}
+Consider the $\boxsort$-edge $b$  and its two components $c_1$ and $c_2$, shown together with their portion of the internal interface of some ambient extended cospan $\mathcal{G}$ below on the left.
+The component cospan $\mathbf{G}_{c_1}$ is then given by the extended cospan on the right.
+\[
+\adjustbox{scale=0.5}{
+  \tikzfig{./figures/monoidal_egraphs/flattening_example_1}~.
+}
+\qquad
+\adjustbox{scale=0.5}{
+  \tikzfig{./figures/monoidal_egraphs/flattening_example_4}~.
+}
+\]
+The context $\mathbf{C}_{b}[-]$ is then the extended cospan together with a boundary $D[|s(b)|]$, $D[|t(b)|]$ on the left, whereas $\mathbf{C}_{b}[\mathbf{C}_{c_1}]$ is the extended cospan on the right below, obtained by computing the pushout of the carriers of $\mathbf{C}_{c_1}$ and $\mathbf{C}_{b}$ along the common boundary and restoring the interfaces accordingly.
+\[
+\adjustbox{scale=0.5}{
+  \tikzfig{./figures/monoidal_egraphs/flattening_example_5}~.
+}\qquad\adjustbox{scale=0.5}{
+  \tikzfig{./figures/monoidal_egraphs/flattening_example_3}~.
+}
+\]
+\end{example}
+
+\begin{proposition}
+\label{prop:flattening}
+For well-typed extended cospans of appropriate types,
+\[
+\operatorname{Flat}(\Xi(F))=\{F\},
+\]
+\[
+\operatorname{Flat}(\mathcal F\join\mathcal G)
+=
+\operatorname{Flat}(\mathcal F)
+\cup
+\operatorname{Flat}(\mathcal G),
+\]
+\[
+\operatorname{Flat}(\mathcal F\fatsemi\mathcal G)
+=
+\left\{
+F\fatsemi G
+\;\middle|\;
+F\in\operatorname{Flat}(\mathcal F),\
+G\in\operatorname{Flat}(\mathcal G)
+\right\},
+\]
+and
+\[
+\operatorname{Flat}(\mathcal F\otimes\mathcal G)
+=
+\left\{
+F\otimes G
+\;\middle|\;
+F\in\operatorname{Flat}(\mathcal F),\
+G\in\operatorname{Flat}(\mathcal G)
+\right\}.
+\]
+\end{proposition}
+\begin{proof}
+The first equality follows because \(\Xi(F)\) is box-free and its
+underlying ordinary cospan is \(F\).
+The other equalities follow by the definition of $\operatorname{Flat}$ and the fact that $\boxsort$-edges do not span across composition and tensor products of cospans.
+\end{proof}
+
+\begin{lemma}[Canonical representative]\label{lemma:canonical_representative}
+  Every well-typed extended cospan $\mathcal{G}$ can be turned under $\mathfrak{R}_\arrowvert$ into either of the following forms:
+  \begin{enumerate}
+  \item A well-typed extended cospan $\Xi(F)$ for some $F \in \catname{HypI}(\Sigma)$,
+  \item A well-typed extended cospan  $\Xi(F_1) \join \cdots \join \Xi(F_n)$ for $F_i$ in $\catname{HypI}(\Sigma)$ and for each $i \not = j$, $\Xi(F_i) \not \cong \Xi(F_j)$.
+  \end{enumerate}
+  Moreover, such forms are unique up to isomorphism of extended cospans.
+\end{lemma}
+\begin{proof}
+Suppose $\mathcal{G}$ has no $\boxsort$-edges, then it is readily of the form (1), so we will consider the case when $\mathcal{G}$ has at least one $\boxsort$-edge.
+Start with the level $1$ of the hierarchy of $\mathcal{G}$, i.e., with those vertices and edges that have depth $1$ (~\cref{def:depth}).
+We apply rewrite rules corresponding to the two equations in the first row of~\cref{fig:string-equations} as long as the $f$ or $g$ part of these rules contain at least one edge---then this process terminates because the number of edges at level $1$ reduces.
+Then apply rewrite rules corresponding to the two equations in the second row of~\cref{fig:string-equations}; this again terminates as the number of edges and vertices at this level reduces.
+This step turns $\mathcal{G}$ into a well-typed extended cospan of the form
+\[
+n \xrightarrow{f_{\mathrm{ext}}} n' \xrightarrow{f_{\mathrm{int}}} \mathcal{G}' \xleftarrow{g_{\mathrm{int}}} m' \xleftarrow{g_{\mathrm{ext}}} m~,
+\]
+where $\mathcal{G}'$ has no edges or vertices at level $1$ other than a single $\boxsort$-edge $b$ and vertices $s(b)$ and $t(b)$.
+We repeat the same process recursively for each component of $b$.
+This process terminates when a $\boxsort$-edge at level $l$ has no decsendant $\boxsort$-edges.
+Consider such a $\boxsort$ edge $b'$ for a largest such $l$.
+Its nearest ancestor $\boxsort$-edge $b''$ at level $l-2$ has as components: a component $c$ containing $b'$ and other components $c_i$ such that they either contain $\boxsort$-edge with the same structure as $b'$ or contain no $\boxsort$-edges. 
+We can then apply the rewrite rule corresponding to the associativity equation in the third row of~\cref{fig:string-equations}.
+We repeat this recursively bottom-up.
+At this point our top-level $\boxsort$-edge $b$ has as components $c_i$ such that they do not contain any $\boxsort$-edges, so we can apply the idempotency rule to remove duplciate components.
+We then apply reindexing rules corresponding to $f_{\mathrm{ext}} \fatsemi f_{\mathrm{int}}$ and $g_{\mathrm{ext}} \fatsemi g_{\mathrm{int}}$ which turns $\mathcal{G}$ into a well-typed extended cospan of the form
+\[
+\mathbf{G}' = \bigl( n \xrightarrow{f'_{\mathrm{ext}}} n' \xrightarrow{f'_{\mathrm{int}}} \mathcal{G}' \xleftarrow{g'_{\mathrm{int}}} m' \xleftarrow{g'_{\mathrm{ext}}} m \bigr)~,
+\]
+such that $\mathcal{G}'$ has a single $\boxsort$-edge $b$ such that $\top_{\mathcal{G}'} <^{\mu}_{\mathcal{G}'} b$ and contains no other $\boxsort$-edges.
+The ordering on $n$ and $m$ then coincides with the ordering on $s(b)$ and $t(b)$, respectively.
+This way, every component of $b$ together with its portion of strictly internal input and output interfaces represent a cospan $\Xi(F_i)$ for some $F_i \in \catname{HypI}(\Sigma)$.
+By definition of $\join$, we then have that $\mathbf{G}' \cong \Xi(F_1) \join \cdots \join \Xi(F_n)$.
+
+Finally, observe that $\sim_{\mathcal{R}}$ preserves $\operatorname{Flat}$: this can be checked by comparing $\operatorname{Flat}(\mathcal{L})$ and $\operatorname{Flat}(\mathcal{R})$ for each induced rewrite rule.
+Suppose there are two well-typed extended cospans
+\[
+\mathbf{G}_1 = \Xi(F_1) \join \cdots \join \Xi(F_n)~, \qquad \mathbf{G}_2 = \Xi(G_1) \join \cdots \join \Xi(G_m)~,
+\]
+such that $\mathbf{G}_1 \sim_{\mathcal{R}} \mathbf{G}_2$.
+Then we have that $\operatorname{Flat}(\mathbf{G}_1) = \operatorname{Flat}(\mathbf{G}_2)$, which implies that $n = m$ and for each $i$, there exists a unique $j$ such that $\Xi(F_i) \cong \Xi(G_j)$.
+\end{proof}
+
+\begin{corollary}
+Every well-typed extended cospan $\mathcal{G}$ in $\catname{EHypI}_{\bullet}(\Sigma)$ satisfies
+\[
+[\mathcal G]
+=
+\bigjoin_{F\in\operatorname{Flat}(\mathcal G)}
+[\Xi(F)].
+\]
+\end{corollary}
+
+Put
+\[
+\mathbf H_{\Sigma}^{\join}
+\defeq
+\widetilde F_{\catname{SLat}}(\mathbf H_{\Sigma}).
+\]
+
+\begin{theorem}\label{theorem:ehypi_slat_isomorphism}
+There is an isomorphism of $\catname{SLat}$-PROPs
+\[
+\mathbf H_{\Sigma}^{\join}
+\cong
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R.
+\]
+\end{theorem}
+\begin{proof}
+By~\cref{theorem:frobenius_isomorphism}, there is an isomorphism of
+PROPs
+\[
+\llangle-\rrangle:
+\mathbf H_{\Sigma}
+\longrightarrow
+\catname{HypI}(\Sigma).
+\]
+Applying the free-enrichment functor gives an isomorphism of
+\(\catname{SLat}\)-PROPs
+\[
+\widetilde F_{\catname{SLat}}(\llangle-\rrangle):
+\mathbf H_{\Sigma}^{\join}
+\longrightarrow
+\widetilde F_{\catname{SLat}}
+\bigl(\catname{HypI}(\Sigma)\bigr).
+\]
+By~\cref{prop:quotient_is_slat},
+\[
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R
+\]
+is also an \(\catname{SLat}\)-PROP. It therefore suffices to construct
+an isomorphism
+\[
+\widetilde F_{\catname{SLat}}
+\bigl(\catname{HypI}(\Sigma)\bigr)
+\cong
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R.
+\]
+
+Put
+\[
+\overline\Xi
+\defeq
+\Xi\fatsemi Q:
+\catname{HypI}(\Sigma)
+\longrightarrow
+\widetilde U_{\catname{SLat}}
+\bigl(
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R
+\bigr).
+\]
+Both \(\Xi\) and \(Q\) are identity-on-objects strict symmetric
+monoidal functors. Hence, by the free-enrichment adjunction of
+\cref{prop:prop-adjunction}, \(\overline\Xi\) extends uniquely to an
+identity-on-objects strict symmetric monoidal
+\(\catname{SLat}\)-functor
+\[
+\Phi:
+\widetilde F_{\catname{SLat}}
+\bigl(\catname{HypI}(\Sigma)\bigr)
+\longrightarrow
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R.
+\]
+
+By~\cref{rem:slat-free-concrete}, a morphism of the source is a finite
+non-empty subset
+\[
+S=\{F_1,\ldots,F_p\}
+\subseteq
+\catname{HypI}(\Sigma)(n,m),
+\]
+and
+\[
+\Phi(S)
+=
+[\Xi(F_1)]\join\cdots\join[\Xi(F_p)].
+\]
+This is independent of the enumeration because \(\join\) is
+associative and commutative in the quotient.
+
+For every finite non-empty subset
+\[
+S\subseteq\catname{HypI}(\Sigma)(n,m),
+\]
+let \(\operatorname{Can}(S)\) denote its canonical flat-join
+representative:
+\[
+\operatorname{Can}(S)
+\defeq
+\begin{cases}
+\Xi(F),&S=\{F\},\\[1mm]
+\displaystyle\bigjoin_{F\in S}\Xi(F),&|S|\geq2,
+\end{cases}
+\]
+where the second line denotes the direct \(S\)-indexed join. This is
+well defined up to isomorphism of extended cospans because the
+components of a box carry no order. By construction,
+\[
+[\operatorname{Can}(S)]
+=
+\bigjoin_{F\in S}[\Xi(F)].
+\]
+Consequently,
+\[
+\Phi(S)=[\operatorname{Can}(S)].
+\]
+
+Define
+\[
+\Psi:
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R
+\longrightarrow
+\widetilde F_{\catname{SLat}}
+\bigl(\catname{HypI}(\Sigma)\bigr)
+\]
+to be the identity on objects and, on morphisms, put
+\[
+\Psi([\mathcal G])
+\defeq
+S,
+\]
+where \(S\) is the unique finite non-empty subset satisfying
+\[
+\mathcal G\sim_{\mathfrak R}\operatorname{Can}(S).
+\]
+Existence and uniqueness of \(S\) follow from
+\cref{lemma:canonical_representative}. In particular, if
+\([\mathcal G]=[\mathcal H]\), then \(\mathcal G\) and \(\mathcal H\)
+belong to the same \(\sim_{\mathfrak R}\)-class and therefore have the
+same canonical representative. Thus \(\Psi\) is well defined.
+
+We verify that \(\Psi\) is an \(\catname{SLat}\)-functor. Suppose
+\[
+\Psi([\mathcal F])=S,
+\qquad
+\Psi([\mathcal G])=T.
+\]
+Then
+\[
+[\mathcal F]
+=
+[\operatorname{Can}(S)]
+=
+\bigjoin_{F\in S}[\Xi(F)]
+\]
+and
+\[
+[\mathcal G]
+=
+[\operatorname{Can}(T)]
+=
+\bigjoin_{G\in T}[\Xi(G)].
+\]
+The semilattice equations in the quotient therefore give
+\[
+\begin{aligned}
+[\mathcal F]\join[\mathcal G]
+&=
+\left(
+\bigjoin_{F\in S}[\Xi(F)]
+\right)
+\join
+\left(
+\bigjoin_{G\in T}[\Xi(G)]
+\right)
+\\
+&=
+\bigjoin_{H\in S\cup T}[\Xi(H)]
+\\
+&=
+[\operatorname{Can}(S\cup T)].
+\end{aligned}
+\]
+By uniqueness of canonical representatives,
+\[
+\Psi([\mathcal F]\join[\mathcal G])
+=
+S\cup T
+=
+\Psi([\mathcal F])\cup\Psi([\mathcal G]).
+\]
+Thus every hom-map of \(\Psi\) is a semilattice homomorphism.
+
+Now suppose that the composite
+\([\mathcal F]\fatsemi[\mathcal G]\) is defined. By bilinearity of
+composition in the quotient,
+\[
+\begin{aligned}
+[\mathcal F]\fatsemi[\mathcal G]
+&=
+\left(
+\bigjoin_{F\in S}[\Xi(F)]
+\right)
+\fatsemi
+\left(
+\bigjoin_{G\in T}[\Xi(G)]
+\right)
+\\
+&=
+\bigjoin_{\substack{F\in S\\G\in T}}
+[\Xi(F)\fatsemi\Xi(G)]
+\\
+&=
+\bigjoin_{\substack{F\in S\\G\in T}}
+[\Xi(F\fatsemi G)],
+\end{aligned}
+\]
+where the last equality follows from functoriality of \(\Xi\). Put
+\[
+S\fatsemi T
+\defeq
+\left\{
+F\fatsemi G
+\;\middle|\;
+F\in S,\ G\in T
+\right\}.
+\]
+Associativity, commutativity and idempotence of \(\join\) now give
+\[
+\bigjoin_{\substack{F\in S\\G\in T}}
+[\Xi(F\fatsemi G)]
+=
+\bigjoin_{H\in S\fatsemi T}[\Xi(H)]
+=
+[\operatorname{Can}(S\fatsemi T)].
+\]
+Consequently,
+\[
+\Psi([\mathcal F]\fatsemi[\mathcal G])
+=
+S\fatsemi T
+=
+\Psi([\mathcal F])\fatsemi\Psi([\mathcal G]).
+\]
+
+Similarly, bilinearity of tensor and strict monoidality of \(\Xi\)
+give
+\[
+\begin{aligned}
+[\mathcal F]\otimes[\mathcal G]
+&=
+\bigjoin_{\substack{F\in S\\G\in T}}
+[\Xi(F)\otimes\Xi(G)]
+\\
+&=
+\bigjoin_{\substack{F\in S\\G\in T}}
+[\Xi(F\otimes G)]
+\\
+&=
+[\operatorname{Can}(S\otimes T)],
+\end{aligned}
+\]
+where
+\[
+S\otimes T
+\defeq
+\left\{
+F\otimes G
+\;\middle|\;
+F\in S,\ G\in T
+\right\}.
+\]
+Hence
+\[
+\Psi([\mathcal F]\otimes[\mathcal G])
+=
+\Psi([\mathcal F])\otimes\Psi([\mathcal G]).
+\]
+
+Moreover,
+\[
+\Psi([\id_n])
+=
+\Psi([\Xi(\id_n)])
+=
+\{\id_n\}.
+\]
+Since \(\Xi\) preserves the symmetries,
+\[
+\Psi([\sym_{n,m}])
+=
+\{\sym_{n,m}\}.
+\]
+The functor \(\Psi\) is identity-on-objects, so it also preserves the
+monoidal unit \(0\). It follows that \(\Psi\) is an identity-on-objects
+strict symmetric monoidal \(\catname{SLat}\)-functor.
+
+It remains to prove that \(\Phi\) and \(\Psi\) are inverse. For every
+finite non-empty subset \(S\),
+\[
+\Psi(\Phi(S))
+=
+\Psi([\operatorname{Can}(S)])
+=
+S.
+\]
+Conversely, let \([\mathcal G]\) be a morphism of the quotient and put
+\[
+S\defeq\Psi([\mathcal G]).
+\]
+By the definition of \(\Psi\),
+\[
+[\mathcal G]=[\operatorname{Can}(S)].
+\]
+Therefore
+\[
+\Phi(\Psi([\mathcal G]))
+=
+\Phi(S)
+=
+[\operatorname{Can}(S)]
+=
+[\mathcal G].
+\]
+Thus \(\Phi\) and \(\Psi\) are mutually inverse isomorphisms of
+\(\catname{SLat}\)-PROPs.
+
+Consequently, the composite
+\[
+\widetilde F_{\catname{SLat}}(\llangle-\rrangle)
+\fatsemi
+\Phi
+:
+\mathbf H_{\Sigma}^{\join}
+\longrightarrow
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R
+\]
+is the required isomorphism. Its inverse is
+\[
+\Psi
+\fatsemi
+\widetilde F_{\catname{SLat}}
+(\llangle-\rrangle^{-1}).
+\]
+\end{proof}
+
+Write
+\[
+\llangle-\rrangle_{\join}
+\defeq
+\widetilde F_{\catname{SLat}}(\llangle-\rrangle)
+\fatsemi
+\Phi
+:
+\mathbf H_{\Sigma}^{\join}
+\longrightarrow
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R
+\]
+for the isomorphism of
+\cref{theorem:ehypi_slat_isomorphism}.
+
+Given morphisms
+\[
+[\mathcal A],[\mathcal B]:n\longrightarrow m
+\qquad\text{and}\qquad
+[\mathcal L],[\mathcal R]:i\longrightarrow j
+\]
+of the quotient, write
+\[
+[\mathcal A]
+\;\overline{\rightsquigarrow}^{\,q}_{
+  \langle[\mathcal L],[\mathcal R]\rangle
+}
+[\mathcal B]
+\]
+if there exist representatives
+\(\mathcal A',\mathcal B',\mathcal L',\mathcal R'\) of the four
+displayed classes such that
+\[
+\mathcal A'
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L',\mathcal R'\rangle
+}
+\mathcal B'
+\]
+in the sense of~\cref{def:dpoi_rooted}.
+
+
+
+We can now state the $\catname{SLat}$-counterpart
+to~\cref{theorem:dpoi_rewriting_frob}.
+
+\begin{definition}[EDPOI rewriting modulo structural rules]
+\label{def:edpoi_modulo_structural}
+Let
+\(\mathcal A,\mathcal B:n\to m\) and
+\(\mathcal L,\mathcal R:i\to j\)
+be extended cospans. We write
+\[
+\mathcal A
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal B
+\]
+if there exist extended cospans
+\(\mathcal A',\mathcal B',\mathcal L',\mathcal R'\) such that
+\[
+\mathcal A\sim_{\mathfrak R}\mathcal A',
+\qquad
+\mathcal B'\sim_{\mathfrak R}\mathcal B,
+\qquad
+\mathcal L\sim_{\mathfrak R}\mathcal L',
+\qquad
+\mathcal R\sim_{\mathfrak R}\mathcal R',
+\]
+and
+\[
+\mathcal A'
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L',\mathcal R'\rangle
+}
+\mathcal B'
+\]
+is an EDPOI rewrite.
+\end{definition}
+
+\paragraph{Concrete interpretation of raw terms.}
+Whenever an \(\catname{SLat}\)-PROP or an
+\(\catname{SLat}\)-functor is compared with an ordinary category or
+functor, we implicitly regard it through its underlying ordinary
+category.
+Since the action of the underlying functor of an $\catname{SLat}$-functor is given by the action of the latter, the underlying functor in particular preserves joins and is isomorphism when the original functor is.
+
+For \(m,n\in\mathbb N\), let
+\(\operatorname{Tm}^{\join}_{\Sigma}(m,n)\) denote the set of raw
+well-typed \(\Sigma^{\join}\)-terms \(m\to n\). For
+\(t\in\operatorname{Tm}^{\join}_{\Sigma}(m,n)\), write
+\[
+[t]\in\mathbf H^{\join}_\Sigma(m,n)
+\]
+for the morphism represented by \(t\).
+We will define a concrete interpretation of raw terms as extended cospans, given by a function
+\[
+\mathcal{E}_{n,m} : \operatorname{Tm}^{\join}_{\Sigma}(m,n) \longrightarrow \catname{EHypI}_{\bullet}(\Sigma)(m,n)~,
+\]
+we will omit writing the subscripts moving forward.
+
+Let
+\[
+\Sigma^{+}
+\defeq
+\Sigma\sqcup\Sigma_{\mathrm{Frob}}
+\]
+be the signature containing the ordinary generators and the Frobenius
+generators. For every generator \(g:m\to n\) of \(\Sigma^{+}\), write
+\[
+\overline g:m\to n
+\]
+for its canonical image in \(\mathbf H_\Sigma\), and define
+\[
+\mathcal E(g)
+\defeq
+\Xi\bigl(\llangle\overline g\rrangle\bigr).
+\]
+The identities and symmetries are sent to the corresponding identities
+and symmetries in \(\catname{EHypI}_{\bullet}(\Sigma)\), and define
+\[
+\begin{aligned}
+\mathcal E(s\fatsemi t)
+  &\defeq\mathcal E(s)\fatsemi\mathcal E(t),\\
+\mathcal E(s\otimes t)
+  &\defeq\mathcal E(s)\otimes\mathcal E(t),\\
+\mathcal E(s\join t)
+  &\defeq\mathcal E(s)\join\mathcal E(t).
+\end{aligned}
+\]
+
+For a join-free raw term \(t\), let
+\[
+[t]_0\in\mathbf H_\Sigma
+\]
+denote its equivalence class modulo the symmetric monoidal and
+Frobenius equations. Then
+\[
+\mathcal E(t)
+=
+\Xi\bigl(\llangle[t]_0\rrangle\bigr).
+\]
+Thus the restriction of \(\mathcal E\) to join-free raw terms factors
+through the functor
+\[
+\mathbf H_\Sigma
+\xrightarrow{\llangle-\rrangle}
+\catname{HypI}(\Sigma)
+\xrightarrow{\Xi}
+\catname{EHypI}_{\bullet}(\Sigma).
+\]
+Put
+\[
+I\defeq\llangle-\rrangle_{\join}
+:
+\mathbf H^{\join}_\Sigma
+\longrightarrow
+\catname{EHypI}_{\bullet}(\Sigma)/\mathfrak R.
+\]
+
+\begin{lemma}[Compatibility with denotation]
+\label{lemma:concrete_interpretation_quotient}
+For every raw \(\Sigma^{\join}\)-term \(t\),
+\[
+Q(\mathcal E(t))=I([t]).
+\]
+\end{lemma}
+
+\begin{proof}
+For an ordinary generator \(g\),
+\[
+\begin{aligned}
+I([g])
+&=
+\Phi\bigl(\{\llangle g\rrangle\}\bigr)\\
+&=
+Q\bigl(\Xi(\llangle g\rrangle)\bigr)\\
+&=
+Q(\mathcal E(g)).
+\end{aligned}
+\]
+The remaining cases follow by induction on the construction of \(t\).
+The interpretation \(\mathcal E\) is compositional, \(I\) preserves
+composition, tensor and join, and the quotient map satisfies
+\[
+\begin{aligned}
+Q(\mathcal F\fatsemi\mathcal G)
+ &=Q(\mathcal F)\fatsemi Q(\mathcal G),\\
+Q(\mathcal F\otimes\mathcal G)
+ &=Q(\mathcal F)\otimes Q(\mathcal G),\\
+Q(\mathcal F\join\mathcal G)
+ &=Q(\mathcal F)\join Q(\mathcal G).
+\end{aligned}
+\]
+\end{proof}
+
+\begin{lemma}[Invariance under the underlying PROP equations]
+\label{lemma:concrete_interpretation_smc}
+Suppose raw \(\Sigma^{\join}\)-terms \(s,t:m\to n\) are equal using only
+the symmetric monoidal and Frobenius equations, including instances in
+contexts containing joins. Then
+\[
+\mathcal E(s)=\mathcal E(t)
+\]
+in \(\catname{EHypI}_{\bullet}(\Sigma)\).
+\end{lemma}
+
+\begin{proof}
+We proceed by induction on the equational derivation. Instances of the
+symmetric monoidal equations are preserved because
+\(\catname{EHypI}_{\bullet}(\Sigma)\) is a PROP. This remains true when
+the morphism variables in such an equation are instantiated by terms
+containing joins, since their interpretations are still morphisms of
+that PROP.
+
+The generating Frobenius equations are join-free. On their two sides,
+\(\mathcal E\) agrees with
+\(\llangle-\rrangle\fatsemi\Xi\), so the equations hold because
+\(\llangle-\rrangle\) interprets the Frobenius generators as the
+canonical Frobenius cospans and \(\Xi\) is strict symmetric monoidal.
+
+Finally, equality is preserved by composition and tensor, and join is
+well defined on morphisms of
+\(\catname{EHypI}_{\bullet}(\Sigma)\). Hence the equality remains valid
+when a generating equation is placed in any composition, tensor or
+join context.
+\end{proof}
+
+\begin{lemma}[Realisation of term equations]
+\label{lemma:term_equations_realised}
+If \(s,t:m\to n\) are raw \(\Sigma^{\join}\)-terms satisfying
+\[
+[s]=[t]
+\]
+in \(\mathbf H^{\join}_\Sigma\), then
+\[
+\mathcal E(s)\sim_{\mathfrak R}\mathcal E(t).
+\]
+\end{lemma}
+
+\begin{proof}
+By \cref{lemma:concrete_interpretation_quotient},
+\[
+Q(\mathcal E(s))
+=
+I([s])
+=
+I([t])
+=
+Q(\mathcal E(t)).
+\]
+By the definition of \(Q\), this equality holds precisely when
+\(\mathcal E(s)\) and \(\mathcal E(t)\) belong to the same
+\(\sim_{\mathfrak R}\)-class.
+
+Concretely, the symmetric monoidal and Frobenius equations are already
+preserved by \cref{lemma:concrete_interpretation_smc}, whereas the
+equations involving the semilattice structure are realised by the
+structural rules generating \(\mathfrak R\).
+\end{proof}
+
+\begin{lemma}[Compatibility with bending]
+\label{lemma:concrete_interpretation_bending}
+For every raw term \(t:m\to n\),
+\[
+[\corner t]=\corner{[t]}.
+\]
+Moreover, bending preserves joins:
+\[
+\corner{(s\join t)}
+=
+\corner s\join\corner t.
+\]
+\end{lemma}
+
+\begin{proof}
+The first equality follows because term denotation preserves
+composition and tensor and sends the Frobenius cup to the corresponding
+cup in \(\mathbf H^{\join}_\Sigma\). For the second,
+\[
+\begin{aligned}
+\corner{(s\join t)}
+&=
+\cup_m\fatsemi
+\bigl(\id_m\otimes(s\join t)\bigr)\\
+&=
+\cup_m\fatsemi
+\bigl(
+ (\id_m\otimes s)\join(\id_m\otimes t)
+\bigr)\\
+&=
+\corner s\join\corner t,
+\end{aligned}
+\]
+by bilinearity of tensor and composition.
+\end{proof}
+
+\begin{lemma}[Identity application]
+\label{lemma:edpoi_identity_application}
+Let \(l,r:i\to j\) be raw \(\Sigma^{\join}\)-terms. There is an EDPOI
+rewrite
+\[
+\mathcal E(\corner l)
+\;\overline{\rightsquigarrow}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+\mathcal E(\corner r).
+\]
+\end{lemma}
+
+\begin{proof}
+First observe that if \(\mathcal E(l)\) produces an extended cospan
+\[
+i
+\xrightarrow{f_{\mathrm{ext}}}
+i'
+\xrightarrow{f_{\mathrm{int}}}
+\mathcal L
+\xleftarrow{g_{\mathrm{int}}}
+j'
+\xleftarrow{g_{\mathrm{ext}}}
+j,
+\]
+then \(\mathcal E(\corner l)\) produces an extended cospan isomorphic to
+\[
+0
+\longrightarrow
+i'\setminus i
+\xrightarrow{f_{\mathrm{sint}}}
+\mathcal L
+\xleftarrow{[f,g_{\mathrm{int}}]}
+i\coprod j'
+\xleftarrow{\id_i\coprod g_{\mathrm{ext}}}
+i\coprod j.
+\]
+
+Say the source of the rule is given by the cospan
+\[
+0
+\xrightarrow{!_{i'\setminus i}}
+i'\setminus i
+\xrightarrow{f_{\mathcal L,\mathrm{sint}}}
+\mathcal L
+\xleftarrow{[f_{\mathcal L},g_{\mathcal L,\mathrm{int}}]}
+i\coprod j'
+\xleftarrow{\id_i\coprod g_{\mathcal L,\mathrm{ext}}}
+i\coprod j,
+\]
+and the target is given by
+\[
+0
+\xrightarrow{!_{i''\setminus i}}
+i''\setminus i
+\xrightarrow{f_{\mathcal R,\mathrm{sint}}}
+\mathcal R
+\xleftarrow{[f_{\mathcal R},g_{\mathcal R,\mathrm{int}}]}
+i\coprod j''
+\xleftarrow{\id_i\coprod g_{\mathcal R,\mathrm{ext}}}
+i\coprod j.
+\]
+
+Let
+\[
+J\defeq i\coprod j,
+\qquad
+I_1\defeq i'\setminus i,
+\qquad
+J_1\defeq i\coprod j',
+\qquad
+I_2\defeq i''\setminus i,
+\qquad
+J_2\defeq i\coprod j''.
+\]
+Write
+\[
+q_{\mathcal L,\mathrm{int}}
+\defeq
+[f_{\mathcal L,\mathrm{sint}},
+ f_{\mathcal L},
+ g_{\mathcal L,\mathrm{int}}]
+:
+I_1\coprod J_1\longrightarrow\mathcal L
+\]
+and
+\[
+q_{\mathcal R,\mathrm{int}}
+\defeq
+[f_{\mathcal R,\mathrm{sint}},
+ f_{\mathcal R},
+ g_{\mathcal R,\mathrm{int}}]
+:
+I_2\coprod J_2\longrightarrow\mathcal R.
+\]
+If \(\iota_{J_1}\) and \(\iota_{J_2}\) denote the corresponding
+coprojections, put
+\[
+q_{\mathcal L,\mathrm{ext}}
+\defeq
+(\id_i\coprod g_{\mathcal L,\mathrm{ext}})
+\fatsemi\iota_{J_1}
+:
+J\longrightarrow I_1\coprod J_1
+\]
+and
+\[
+q_{\mathcal R,\mathrm{ext}}
+\defeq
+(\id_i\coprod g_{\mathcal R,\mathrm{ext}})
+\fatsemi\iota_{J_2}
+:
+J\longrightarrow I_2\coprod J_2.
+\]
+Together they assemble into the top side of an EDPOI diagram as
+\[
+\mathcal L
+\xleftarrow{q_{\mathcal L,\mathrm{int}}}
+I_1\coprod J_1
+\xleftarrow{q_{\mathcal L,\mathrm{ext}}}
+J
+\xrightarrow{q_{\mathcal R,\mathrm{ext}}}
+I_2\coprod J_2
+\xrightarrow{q_{\mathcal R,\mathrm{int}}}
+\mathcal R.
+\]
+
+Take
+\[
+m\defeq\id_{\mathcal L}
+\]
+with the induced anchor \(\top_{\mathcal L}\), and put
+\[
+\lambda_{\mathcal L}
+\defeq
+q_{\mathcal L,\mathrm{ext}}
+\fatsemi q_{\mathcal L,\mathrm{int}},
+\qquad
+\lambda_{\mathcal R}
+\defeq
+q_{\mathcal R,\mathrm{ext}}
+\fatsemi q_{\mathcal R,\mathrm{int}}.
+\]
+We then get the following EDPOI diagram:
+\[
+\begin{tikzcd}
+{\mathcal L}
+&
+{I_1\coprod J_1}
+&
+J
+&
+{I_2\coprod J_2}
+&
+{\mathcal R}
+\\
+\\
+{\mathcal L}
+&&
+J
+&&
+{\mathcal R}
+\\
+&
+{I_1\coprod J_1}
+&
+J
+&
+{I_2\coprod J_2}
+\\
+&&
+J
+\arrow["m"', from=1-1, to=3-1]
+\arrow["{q_{\mathcal L,\mathrm{int}}}"', from=1-2, to=1-1]
+\arrow["{q_{\mathcal L,\mathrm{ext}}}"', from=1-3, to=1-2]
+\arrow["{\id_J}", from=1-3, to=3-3]
+\arrow["{q_{\mathcal R,\mathrm{ext}}}", from=1-3, to=1-4]
+\arrow["{q_{\mathcal R,\mathrm{int}}}", from=1-4, to=1-5]
+\arrow["{\id_{\mathcal R}}", from=1-5, to=3-5]
+\arrow["{\lambda_{\mathcal L}}"', from=3-3, to=3-1]
+\arrow["{\lambda_{\mathcal R}}", from=3-3, to=3-5]
+\arrow["{q_{\mathcal L,\mathrm{int}}}", from=4-2, to=3-1]
+\arrow["{\id_J}", from=4-3, to=3-3]
+\arrow["{q_{\mathcal R,\mathrm{int}}}"', from=4-4, to=3-5]
+\arrow["{q_{\mathcal L,\mathrm{ext}}}", from=5-3, to=4-2]
+\arrow["{\id_J}", from=5-3, to=4-3]
+\arrow["{q_{\mathcal R,\mathrm{ext}}}"', from=5-3, to=4-4]
+\arrow[
+  "\lrcorner"{anchor=center,pos=0.125,rotate=90},
+  draw=none,
+  from=3-1,
+  to=1-3
+]
+\arrow[
+  "\lrcorner"{anchor=center,pos=0.125,rotate=180},
+  draw=none,
+  from=3-5,
+  to=1-3
+]
+\end{tikzcd}
+\]
+where the two squares are trivial pushouts.
+
+The arrows
+\[
+J
+\xrightarrow{\id_J}
+J
+\xrightarrow{\lambda_{\mathcal L}}
+\mathcal L
+\]
+then form an extended pushout complement. Condition~(1) is satisfied
+because the left square is a pushout and \(\id_J\) is anchored.
+Conditions~(2) and~(3) are trivially satisfied because the match is
+the identity.
+
+For condition~(4), we have
+\[
+S_{\mathrm{in}}\cong I_1,
+\qquad
+S_{\mathrm{out}}\cong J_1\setminus J,
+\]
+so that
+\[
+I_1\setminus S_{\mathrm{in}}\cong0,
+\qquad
+J_1\setminus S_{\mathrm{out}}\cong J.
+\]
+Thus the retained interfaces equip the complement \(J\) with the
+identity extended cospan from \(0\) to \(J\), which gives the required
+factorisation on the nose.
+
+For condition~(5), take
+\[
+\alpha_{\mathrm{in}}
+\defeq
+\id_{I_1}
+:
+I_1\longrightarrow S_{\mathrm{in}}
+\]
+and
+\[
+\alpha_{\mathrm{out}}
+\defeq
+\id_{J_1\setminus J}
+:
+J_1\setminus J\longrightarrow S_{\mathrm{out}},
+\]
+under the displayed identifications. The required diagrams commute
+because \(m=\id_{\mathcal L}\), and the interface orders are unchanged.
+
+According to the EDPOI definition, the new internal input and output
+interfaces are
+\[
+I_2\coprod0\cong I_2
+\qquad\text{and}\qquad
+J\coprod(J_2\setminus J)\cong J_2,
+\]
+respectively. The second pushout therefore gives the extended cospan
+\(\mathcal E(\corner r)\), with external and internal legs
+\(q_{\mathcal R,\mathrm{ext}}\) and
+\(q_{\mathcal R,\mathrm{int}}\). Thus
+\[
+\mathcal E(\corner l)
+\;\overline{\rightsquigarrow}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+\mathcal E(\corner r),
+\]
+as required.
+\end{proof}
+
+\begin{lemma}[Congruence modulo structural rules]
+\label{lemma:rewriting_modulo_congruence}
+Suppose
+\[
+\mathcal F
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+ \langle\mathcal L,\mathcal \mathcal R\rangle}
+\mathcal G.
+\]
+Then, whenever the displayed operations are defined,
+\[
+\begin{aligned}
+\mathcal C\fatsemi\mathcal F
+&\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+ \langle\mathcal L,\mathcal R\rangle}
+\mathcal C\fatsemi\mathcal G,\\
+\mathcal F\fatsemi\mathcal C
+&\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+ \langle\mathcal L,\mathcal R\rangle}
+\mathcal G\fatsemi\mathcal C,\\
+\mathcal C\otimes\mathcal F
+&\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+ \langle\mathcal L,\mathcal R\rangle}
+\mathcal C\otimes\mathcal G,\\
+\mathcal F\otimes\mathcal C
+&\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+ \langle\mathcal L,\mathcal R\rangle}
+\mathcal G\otimes\mathcal C,
+\end{aligned}
+\]
+and
+\[
+\mathcal F^1\join\cdots\join\mathcal F\join\cdots\join\mathcal F^p
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+ \langle\mathcal L,\mathcal R\rangle}
+\mathcal F^1\join\cdots\join\mathcal G\join\cdots\join\mathcal F^p.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose witnesses
+\(\mathcal F',\mathcal G',\mathcal L',\mathcal R'\) from
+\cref{def:edpoi_modulo_structural}. Since
+\(\sim_{\mathfrak R}\) is a congruence, the corresponding composites,
+tensors and joins are structurally equivalent to those formed with
+\(\mathcal F'\) and \(\mathcal G'\). The required direct EDPOI rewrite
+between the latter is supplied by
+\cref{lemma:rewriting_congruence}. These data are precisely the
+witnesses required by \cref{def:edpoi_modulo_structural}.
+\end{proof}
+
+For an extended cospan \(\mathbf G:u\to v\), write
+\[
+\corner{\mathbf G}
+\defeq
+\cup_u
+\fatsemi
+(\id_u\otimes\mathbf G)
+:
+0\longrightarrow u+v
+\]
+for its categorical folding. This folds only the external input
+interface; composition in
+\(\catname{EHypI}_{\bullet}(\Sigma)\) leaves all strictly internal
+interfaces on their respective sides.
+
+% \begin{lemma}[Compatibility of EDPOI rewriting with bending]
+% \label{lemma:edpoi_bending}
+% If
+% \[
+% \mathbf G
+% \;\overline{\rightsquigarrow}_{
+%   \langle\mathbf L,\mathbf R\rangle
+% }
+% \mathbf H
+% \]
+% is an EDPOI rewrite between extended cospans \(u\to v\), then
+% \[
+% \corner{\mathbf G}
+% \;\overline{\rightsquigarrow}_{
+%   \langle\mathbf L,\mathbf R\rangle
+% }
+% \corner{\mathbf H}.
+% \]
+% The same statement holds for rewriting modulo \(\mathfrak R\).
+% \end{lemma}
+
+% \begin{proof}
+% By~\cref{lemma:rewriting_congruence}, tensoring the rewrite with
+% \(\id_u\) gives
+% \[
+% \id_u\otimes\mathbf G
+% \;\overline{\rightsquigarrow}_{
+%   \langle\mathbf L,\mathbf R\rangle
+% }
+% \id_u\otimes\mathbf H.
+% \]
+% Precomposing with \(\cup_u\) and applying the composition clause of the
+% same lemma gives the required rewrite. The statement modulo
+% \(\mathfrak R\) follows from
+% \cref{lemma:rewriting_modulo_congruence}.
+% \end{proof}
+
+
+\begin{lemma}[Root factorisation]
+\label{lemma:root_edpoi_factorisation}
+Suppose
+\[
+\mathcal F
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal G
+\]
+is an EDPOI rewrite, where
+\[
+\mathcal F,\mathcal G:0\to n,
+\qquad
+\mathcal L,\mathcal R:0\to j,
+\]
+and suppose that the match anchor is the root of the carrier of
+\(\mathcal F\). Then there is a well-typed extended cospan
+\[
+\mathcal C:j\longrightarrow n
+\]
+such that
+\[
+\mathcal F=\mathcal L\fatsemi\mathcal C,
+\qquad
+\mathcal G=\mathcal R\fatsemi\mathcal C
+\]
+in \(\catname{EHypI}_{\bullet}(\Sigma)\). Consequently,
+\[
+Q(\mathcal F)
+=
+Q(\mathcal L)\fatsemi Q(\mathcal C),
+\qquad
+Q(\mathcal G)
+=
+Q(\mathcal R)\fatsemi Q(\mathcal C).
+\]
+\end{lemma}
+\begin{proof}
+Write the rule cospans as
+\begin{gather*}
+0
+\longrightarrow
+I_{\mathcal L}
+\longrightarrow
+\mathcal L
+\longleftarrow
+O_{\mathcal L}
+\longleftarrow
+j\\
+0
+\longrightarrow
+I_{\mathcal R}
+\longrightarrow
+\mathcal R
+\longleftarrow
+O_{\mathcal R}
+\longleftarrow
+j
+\end{gather*}
+and the ambient cospans as
+\begin{gather*}
+0
+\longrightarrow
+I_{\mathcal F}
+\longrightarrow
+\mathcal F
+\longleftarrow
+O_{\mathcal F}
+\longleftarrow
+n\\
+0
+\longrightarrow
+I_{\mathcal G}
+\longrightarrow
+\mathcal G
+\longleftarrow
+O_{\mathcal G}
+\longleftarrow
+n~.
+\end{gather*}
+Let
+\[
+m:\mathcal L\longrightarrow\mathcal F
+\]
+be the match; it is strict since the anchor is $\top_{\mathcal{F}}$ by assumption. 
+Let \(S_I\) and \(S_O\) be the affected input and output
+internal interfaces supplied by the extended pushout complement, and
+put
+\[
+\overline I
+\defeq
+I_{\mathcal F}\setminus S_I,
+\qquad
+\overline O
+\defeq
+O_{\mathcal F}\setminus S_O.
+\]
+Write
+\[
+g_I^\bot:
+\overline I\longrightarrow\mathcal L^\bot,
+\qquad
+g_O^\bot:
+\overline O\longrightarrow\mathcal L^\bot
+\]
+for the retained interface legs, and write
+\[
+\overline g_{\mathrm{ext}}^O:
+n\longrightarrow\overline O
+\]
+for the corestriction of the ambient output external leg.
+
+Let
+\[
+c:j\longrightarrow\mathcal L^\bot
+\]
+be the anchored leg of the extended pushout complement; it is strict because $m$ is.
+Define
+\[
+\mathcal C
+\defeq
+\left(
+j
+\xrightarrow{\iota_1}
+j\coprod\overline I
+\xrightarrow{[c,g_I^\bot]}
+\mathcal L^\bot
+\xleftarrow{g_O^\bot}
+\overline O
+\xleftarrow{\overline g_{\mathrm{ext}}^O}
+n
+\right).
+\]
+This is a well-typed extended cospan because the extended pushout complement yields a well-typed extended cospan and the image of $j$ is top-level, since $c$ is strict, so it does not affect well-typedness.
+The data above assemble into the following diagram
+% https://q.uiver.app/#q=WzAsMTIsWzIsMCwiaiJdLFsxLDAsIklfe1xcbWF0aGNhbHtMfX0gXFxjb3Byb2QgT197XFxtYXRoY2Fse0x9fSJdLFswLDAsIlxcbWF0aGNhbHtMfSJdLFszLDAsIklfe1xcbWF0aGNhbHtSfX0gXFxjb3Byb2QgT197XFxtYXRoY2Fse1J9fSJdLFs0LDAsIlxcbWF0aGNhbHtSfSJdLFswLDIsIlxcbWF0aGNhbHtGfSJdLFsyLDIsIlxcbWF0aGNhbHtMfV57XFxib3R9Il0sWzQsMiwiXFxtYXRoY2Fse0d9Il0sWzIsNCwibiJdLFsxLDMsIklfe1xcbWF0aGNhbHtGfX1cXGNvcHJvZCBPX3tcXG1hdGhjYWx7Rn19Il0sWzMsMywiSV97XFxtYXRoY2Fse0d9fVxcY29wcm9kIE9fe1xcbWF0aGNhbHtHfX0iXSxbMiwzLCJcXG92ZXJsaW5le0l9XFxjb3Byb2QgXFxvdmVybGluZXtPfSJdLFswLDFdLFsxLDJdLFszLDRdLFswLDNdLFsyLDUsIm0iLDJdLFs2LDVdLFswLDYsImMiXSxbNCw3XSxbNiw3XSxbNSwwLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNywwLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbOCw5XSxbOSw1XSxbMTAsN10sWzgsMTBdLFs4LDExLCJcXGJhcntnfV57T31fe1xcbWF0aHJte2V4dH19IiwyXSxbMTEsNiwiZ197SX1ee1xcYm90fSBcXGNvcHJvZCBnX3tPfV57XFxib3R9IiwyXV0=
+\[\begin{tikzcd}
+	{\mathcal{L}} & {I_{\mathcal{L}} \coprod O_{\mathcal{L}}} & j & {I_{\mathcal{R}} \coprod O_{\mathcal{R}}} & {\mathcal{R}} \\
+	\\
+	{\mathcal{F}} && {\mathcal{L}^{\bot}} && {\mathcal{G}} \\
+	& {I_{\mathcal{F}}\coprod O_{\mathcal{F}}} & {\overline{I}\coprod \overline{O}} & {I_{\mathcal{G}}\coprod O_{\mathcal{G}}} \\
+	&& n
+	\arrow["m"', from=1-1, to=3-1]
+	\arrow[from=1-2, to=1-1]
+	\arrow[from=1-3, to=1-2]
+	\arrow[from=1-3, to=1-4]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow[from=1-4, to=1-5]
+	\arrow[from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow[from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow[from=4-2, to=3-1]
+	\arrow["{g_{I}^{\bot} \coprod g_{O}^{\bot}}"', from=4-3, to=3-3]
+	\arrow[from=4-4, to=3-5]
+	\arrow[from=5-3, to=4-2]
+	\arrow["{\bar{g}^{O}_{\mathrm{ext}}}"', from=5-3, to=4-3]
+	\arrow[from=5-3, to=4-4]
+\end{tikzcd}~.
+\]
+
+Since the cospans $\mathcal{L}$ and $\mathcal{C}$ share the interface, we can form their composite in $\catname{EHypI}_{\bullet}(\Sigma)$
+\[
+\mathcal L\fatsemi\mathcal C~.
+\]
+The carrier of this composite is exactly $\mathcal{F}$ because of the left square of the diagram above.
+Its input and output internal interfaces are, up to canonical reassociation,
+\[
+I_{\mathcal L}\coprod\overline I
+\qquad\text{and}\qquad
+\overline O\coprod(O_{\mathcal L}\setminus j).
+\]
+
+Condition~(5) supplies blockwise order-preserving isomorphisms
+\[
+\alpha_I:
+I_{\mathcal L}\xrightarrow{\cong}S_I,
+\qquad
+\alpha_O:
+O_{\mathcal L}\setminus j\xrightarrow{\cong}S_O.
+\]
+They induce isomorphisms
+\[
+\alpha_I\coprod\id_{\overline I}:
+I_{\mathcal L}\coprod\overline I
+\xrightarrow{\cong}
+S_I\coprod\overline I
+\cong I_{\mathcal F}
+\]
+and
+\[
+\id_{\overline O}\coprod\alpha_O:
+\overline O\coprod(O_{\mathcal L}\setminus j)
+\xrightarrow{\cong}
+\overline O\coprod S_O
+\cong O_{\mathcal F}.
+\]
+The diagrams in condition~(5) show that these isomorphisms commute with
+the internal legs, while condition~(4) gives commutativity on the
+retained interfaces. They preserve the order within every block, and
+the output-interface isomorphism is the identity on the image of the
+external interface \(n\). Together with the identity on the carrier
+\(\mathcal F\), they therefore define an isomorphism of extended
+cospans
+\[
+\mathcal L\fatsemi\mathcal C\cong\mathcal F.
+\]
+Since morphisms of \(\catname{EHypI}_{\bullet}(\Sigma)\) are
+isomorphism classes of extended cospans,
+\[
+\mathcal F=\mathcal L\fatsemi\mathcal C.
+\]
+Since \(Q\) preserves composition,
+\[
+Q(\mathcal F)
+=
+Q(\mathcal L)\fatsemi Q(\mathcal C).
+\]
+
+For the right-hand side, the second EDPOI pushout is exactly the carrier
+pushout computing
+\[
+\mathcal R\fatsemi\mathcal C.
+\]
+Moreover, the definition of the EDPOI result equips this pushout with
+the retained interfaces \(\overline I,\overline O\), together with the
+strictly internal interfaces of \(\mathcal R\). These are precisely the
+interfaces produced by the displayed composite. Hence
+\[
+\mathcal R\fatsemi\mathcal C
+\cong
+\mathcal G
+\]
+Consequently,
+\[
+Q(\mathcal G)
+=
+Q(\mathcal R)\fatsemi Q(\mathcal C).
+\]
+\end{proof}
+
+\begin{lemma}[Decomposition at an outermost enclosing box]
+\label{lemma:outermost_box_decomposition}
+Suppose
+\[
+\mathcal F
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal G
+\]
+is an EDPOI rewrite, where
+\[
+\mathcal F,\mathcal G:0\to n,
+\qquad
+\mathcal L,\mathcal R:0\to j,
+\]
+and suppose that the match anchor is not the root of the carrier of
+\(\mathcal F\).
+
+Let \(p\) be the outermost \(\boxsort\)-edge whose contents contain the
+image of the match, and put
+\[
+u\defeq |s(p)|,
+\qquad
+v\defeq |t(p)|.
+\]
+Let
+\[
+e\in\operatorname{Comp}_{\mathcal F}(p)
+\]
+be the unique component containing the image of the match: the anchor of the match does not have to be $e$ the match may lie futher down the hierarchy from $e$.
+Then there are well-typed component cospans
+\[
+\mathcal F_d:u\to v
+\qquad
+\bigl(d\in\operatorname{Comp}_{\mathcal F}(p)\bigr),
+\]
+a well-typed extended cospan
+\[
+\mathcal G_e:u\to v,
+\]
+and a well-typed context cospan
+\[
+\mathcal D:u+v\to n
+\]
+such that:
+\begin{enumerate}
+\item there is an EDPOI rewrite
+\[
+\mathcal F_e
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal G_e
+\]
+whose match has fewer enclosing \(\boxsort\)-edges;
+
+\item every component \(d\neq e\) is unchanged;
+
+\item writing
+\[
+\mathcal P_{\mathcal F}
+\defeq
+\bigjoin_{d\in\operatorname{Comp}_{\mathcal F}(p)}
+\mathcal F_d
+\]
+and
+\[
+\mathcal P_{\mathcal G}
+\defeq
+\mathcal G_e
+\join
+\bigjoin_{\substack{
+  d\in\operatorname{Comp}_{\mathcal F}(p)\\
+  d\neq e
+}}
+\mathcal F_d,
+\]
+one has
+\[
+\mathcal F
+=
+\corner{\mathcal P_{\mathcal F}}
+\fatsemi\mathcal D
+\]
+and
+\[
+\mathcal G
+=
+\corner{\mathcal P_{\mathcal G}}
+\fatsemi\mathcal D
+\]
+in \(\catname{EHypI}_{\bullet}(\Sigma)\). Consequently,
+\[
+Q(\mathcal F)
+=
+Q(\corner{\mathcal P_{\mathcal F}})
+\fatsemi Q(\mathcal D)
+\]
+and
+\[
+Q(\mathcal G)
+=
+Q(\corner{\mathcal P_{\mathcal G}})
+\fatsemi Q(\mathcal D).
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For each
+\[
+d\in\operatorname{Comp}_{\mathcal F}(p),
+\]
+let \(\mathcal F_d:u\to v\) be the component cospan determined by \(d\),
+as in~\cref{def:flat_resolutions}, and form
+\[
+\mathcal P_{\mathcal F}
+\defeq
+\bigjoin_{d\in\operatorname{Comp}_{\mathcal F}(p)}
+\mathcal F_d.
+\]
+
+The extended cospan \(\mathcal P_{\mathcal F}\) has a distinguished
+\(\boxsort\)-edge with formal ordered boundary \(u\to v\). Write
+\(P_{\mathcal F}\) for the carrier e-hypergraph of
+\(\corner{\mathcal P_{\mathcal F}}\). There is a canonical homomorphism
+\[
+\chi_p:
+P_{\mathcal F}\longrightarrow\mathcal F
+\]
+sending the distinguished \(\boxsort\)-edge to \(p\), its components
+to the corresponding components of \(p\), and its formal boundary
+ports to the entries of \(s(p)\) and \(t(p)\).
+
+The map \(\chi_p\) need not be injective on this formal boundary. For
+example, if a source and a target of \(p\) are the same vertex of
+\(\mathcal F\), the corresponding formal ports have the same image.
+
+Consider the rewrite rule given by $\langle \corner{\mathcal{P}_{\mathcal{F}}}$, matched into $\mathcal{F}$ by $\chi_p$.
+This induces an EDPOI diagram as
+% https://q.uiver.app/#q=WzAsNyxbMCwwLCJcXGNvcm5lcntcXG1hdGhjYWwgUF97XFxtYXRoY2FsIEZ9fSJdLFswLDIsIlxcbWF0aGNhbHtHfSJdLFsxLDAsInxzKHApfCBcXGNvcHJvZCB8dChwKXwiXSxbMSwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFsyLDAsIlxcY29ybmVye1xcbWF0aGNhbCBQX3tcXG1hdGhjYWwgRn19Il0sWzIsMiwiXFxtYXRoY2Fse0d9Il0sWzEsMywibiJdLFsyLDBdLFswLDEsIlxcY2hpIiwyXSxbMywxXSxbMiw0XSxbNCw1XSxbMyw1XSxbMiwzXSxbMSwyLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNSwyLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNiwzXSxbNiwxXSxbNiw1XV0=
+\[\begin{tikzcd}
+	{\corner{\mathcal P_{\mathcal F}}} & {|s(p)| \coprod |t(p)|} & {\corner{\mathcal P_{\mathcal F}}} \\
+	\\
+	{\mathcal{F}} & {\mathcal{D}} & {\mathcal{F}} \\
+	& n
+	\arrow["\chi"', from=1-1, to=3-1]
+	\arrow[from=1-2, to=1-1]
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=1-2, to=3-2]
+	\arrow[from=1-3, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-2]
+	\arrow[from=3-2, to=3-1]
+	\arrow[from=3-2, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-2]
+	\arrow[from=4-2, to=3-1]
+	\arrow[from=4-2, to=3-2]
+	\arrow[from=4-2, to=3-3]
+\end{tikzcd}~,
+\]
+where we omitted internal interfaces for clarity.
+The map $|s(p)| \coprod |t(p)|$ is mono, and therefore the corresponding complement given by $\mathcal{D}$ is uniquely determined by $\chi_p$.
+Applying
+\cref{lemma:root_edpoi_factorisation} gives a well-typed extended
+cospan
+\[
+\mathcal D:u+v\longrightarrow n
+\]
+such that
+\[
+\mathcal F
+=
+\corner{\mathcal P_{\mathcal F}}
+\fatsemi\mathcal D.
+\]
+
+Now consider the original rewrite. Since its match is anchored inside
+the component \(e\), preservation of the hierarchical relation implies
+that every element in the image of the match lies inside \(e\).
+Condition~(2) of the extended pushout complement further ensures that
+every successor below a matched non-root edge also lies inside \(e\).
+Hence neither \(p\), its boundary, nor any component \(d\neq e\) is
+changed.
+
+Restrict the two carrier pushout squares of the original EDPOI rewrite
+to the sub-e-hypergraph rooted at \(e\). Pushouts in the present
+construction are computed by taking disjoint unions of carrier sets
+and quotienting by the boundary identifications. All non-boundary
+elements affected by the rewrite lie inside \(e\), and all
+identifications with the surrounding carrier occur through the
+retained rule boundary. The restrictions are therefore again pushout
+squares.
+
+The retained interface maps restrict to the interfaces of
+\(\mathcal F_e\). Conditions~(2) and~(3) are inherited from the
+original match, and condition~(4) restricts to the corresponding
+interface blocks. The comparison isomorphisms of condition~(5)
+restrict to isomorphisms between the corresponding component blocks
+and preserve their inherited orders. Hence the restricted diagram is
+an EDPOI rewrite
+\[
+\mathcal F_e
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal G_e
+\]
+for some well-typed extended cospan
+\(\mathcal G_e:u\to v\).
+
+Passing from \(\mathcal F\) to the component rooted at \(e\) removes
+the enclosing box \(p\). The restricted match therefore has fewer
+enclosing \(\boxsort\)-edges.
+
+The original EDPOI construction changes only the component
+\(\mathcal F_e\). Consequently, the distinguished box in the result
+has component cospan \(\mathcal G_e\) at \(e\) and the old component
+cospan \(\mathcal F_d\) at every \(d\neq e\). Thus its contents are
+represented by
+\[
+\mathcal P_{\mathcal G}
+=
+\mathcal G_e
+\join
+\bigjoin_{\substack{
+  d\in\operatorname{Comp}_{\mathcal F}(p)\\
+  d\neq e
+}}
+\mathcal F_d.
+\]
+
+Consider now the rule $\langle \corner{\mathcal P_{\mathcal F}},\corner{\mathcal P_{\mathcal G}}\rangle$ matched into $\mathcal{F}$ by $\chi_p$.
+It induces an EDPOI diagram as
+% https://q.uiver.app/#q=WzAsNyxbMCwwLCJcXGNvcm5lcntcXG1hdGhjYWwgUF97XFxtYXRoY2FsIEZ9fSJdLFswLDIsIlxcbWF0aGNhbHtGfSJdLFsxLDAsInxzKHApfCBcXGNvcHJvZCB8dChwKXwiXSxbMSwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFsyLDAsIlxcY29ybmVye1xcbWF0aGNhbCBQX3tcXG1hdGhjYWwgR319Il0sWzIsMiwiXFxtYXRoY2Fse0d9Il0sWzEsMywibiJdLFsyLDBdLFswLDEsIlxcY2hpIiwyXSxbMywxXSxbMiw0XSxbNCw1XSxbMyw1XSxbMiwzXSxbMSwyLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNSwyLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNiwzXSxbNiwxXSxbNiw1XV0=
+\[\begin{tikzcd}
+	{\corner{\mathcal P_{\mathcal F}}} & {|s(p)| \coprod |t(p)|} & {\corner{\mathcal P_{\mathcal G}}} \\
+	\\
+	{\mathcal{F}} & {\mathcal{L}^{\bot}} & {\mathcal{G}} \\
+	& n
+	\arrow["\chi"', from=1-1, to=3-1]
+	\arrow[from=1-2, to=1-1]
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=1-2, to=3-2]
+	\arrow[from=1-3, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-2]
+	\arrow[from=3-2, to=3-1]
+	\arrow[from=3-2, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-2]
+	\arrow[from=4-2, to=3-1]
+	\arrow[from=4-2, to=3-2]
+	\arrow[from=4-2, to=3-3]
+\end{tikzcd}\]
+
+This gives us
+\[
+\mathcal G
+=
+\corner{\mathcal P_{\mathcal G}}
+\fatsemi\mathcal D
+\]
+in \(\catname{EHypI}_{\bullet}(\Sigma)\).
+
+Applying the quotient functor \(Q\) to the two factorisations and using
+preservation of composition gives
+\[
+Q(\mathcal F)
+=
+Q(\corner{\mathcal P_{\mathcal F}})
+\fatsemi Q(\mathcal D)
+\]
+and
+\[
+Q(\mathcal G)
+=
+Q(\corner{\mathcal P_{\mathcal G}})
+\fatsemi Q(\mathcal D),
+\]
+as required.
+\end{proof}
+
+\begin{theorem}[Soundness and completeness of EDPOI rewriting]
+\label{theorem:edpoi_rewriting_frob}
+Let \(a,b:m\to n\) and \(l,r:i\to j\) be raw
+\(\Sigma^{\join}\)-terms. Then
+\[
+[a]\Rightarrow_{\langle[l],[r]\rangle}[b]
+\quad\Longleftrightarrow\quad
+\mathcal E(\corner a)
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+\mathcal E(\corner b).
+\]
+\end{theorem}
+
+\begin{proof}
+We first prove the forward implication by induction on the derivation of
+\[
+[a]\Rightarrow_{\langle[l],[r]\rangle}[b]
+\]
+in~\cref{def:enriched_prop_rewriting}.
+
+Suppose first that the rewrite is witnessed by a decomposition of the following form:
+ \[
+\adjustbox{scale=0.7}{
+\tikzfig{./figures/string/decomposition}
+}~.
+\] 
+Applying $\cup$ to the outer context as in~\cref{theorem:dpoi_rewriting_frob},
+produces a morphism
+\[
+d:i+j\longrightarrow m+n
+\]
+of \(\mathbf H^{\join}_\Sigma\) such that
+\begin{equation}
+\corner{[a]}
+=
+\corner{[l]}\fatsemi d,
+\qquad
+\corner{[b]}
+=
+\corner{[r]}\fatsemi d.
+\tag{1}
+\label{eq:edpoi_rewriting_frob_1}
+\end{equation}
+
+Choose a raw term
+\[
+\delta:i+j\longrightarrow m+n
+\]
+representing \(d\). By
+\cref{lemma:edpoi_identity_application} and
+\cref{lemma:rewriting_congruence}, there is an EDPOI rewrite
+\begin{equation}
+\mathcal E(\corner l)\fatsemi\mathcal E(\delta)
+\;\overline{\rightsquigarrow}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+\mathcal E(\corner r)\fatsemi\mathcal E(\delta).
+\tag{2}
+\label{eq:edpoi_rewriting_frob_2}
+\end{equation}
+By~\cref{lemma:concrete_interpretation_quotient},
+\cref{lemma:concrete_interpretation_bending}, and~\eqref{eq:edpoi_rewriting_frob_1},
+\[
+\begin{aligned}
+Q(\mathcal E(\corner a))
+&=I(\corner{[a]})\\
+&=I(\corner{[l]}\fatsemi d)\\
+&=
+Q\bigl(
+  \mathcal E(\corner l)\fatsemi\mathcal E(\delta)
+\bigr).
+\end{aligned}
+\]
+Hence
+\[
+\mathcal E(\corner a)
+\sim_{\mathfrak R}
+\mathcal E(\corner l)\fatsemi\mathcal E(\delta).
+\]
+Similarly,
+\[
+\mathcal E(\corner r)\fatsemi\mathcal E(\delta)
+\sim_{\mathfrak R}
+\mathcal E(\corner b).
+\]
+Together with \eqref{eq:edpoi_rewriting_frob_2}, these are the witnesses required by
+\cref{def:edpoi_modulo_structural}.
+
+Suppose now that the decomposition is witnessed by:
+\begin{equation*}
+\adjustbox{scale=0.7}{
+\tikzfig{./figures/monoidal_egraphs/enriched_decomposition}~.
+}
+\end{equation*}
+
+and consider the smaller rewrite
+\[
+[a']\Rightarrow_{\langle[l],[r]\rangle}[b'].
+\]
+Let \(\gamma\) denote the join of the
+unchanged components. Bending the common outer context gives a
+morphism \(d\) satisfying
+\begin{equation}
+\begin{aligned}
+\corner{[a]}
+&=
+\bigl(
+  \corner{[a']}\join\corner\gamma
+\bigr)\fatsemi d,\\
+\corner{[b]}
+&=
+\bigl(
+  \corner{[b']}\join\corner\gamma
+\bigr)\fatsemi d.
+\end{aligned}
+\tag{3}
+\label{eq:edpoi_rewriting_frob_4}
+\end{equation}
+% Here bending distributes over the join by
+% \cref{lemma:concrete_interpretation_bending}.
+
+By the induction hypothesis,
+\[
+\mathcal E(\corner a')
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+\mathcal E(\corner b').
+\]
+Choose raw terms representing \(\gamma\) and \(d\), say $\gamma'$ and $d'$ such that 
+\[
+[\gamma'] = \gamma, \qquad [d'] = d.
+\]
+Applying
+\cref{lemma:rewriting_modulo_congruence} twice gives 
+\[
+(\mathcal E(\corner a') \join \mathcal{E}(\corner\gamma')) \fatsemi \mathcal{E}(d')
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+(\mathcal E(\corner b') \join \mathcal{E}(\corner \gamma')) \fatsemi \mathcal{E}(d').
+\]
+By~\eqref{eq:edpoi_rewriting_frob_4} and
+\cref{lemma:term_equations_realised}, the resulting endpoints are
+structurally equivalent to
+\(\mathcal E(\corner a)\) and
+\(\mathcal E(\corner b)\). 
+This proves the forward implication.
+
+For the converse, we first establish the following claim. Let
+\[
+f,g:m\to n,
+\qquad
+\ell,\rho: i\to j
+\]
+be morphisms of \(\mathbf H^{\join}_\Sigma\), and suppose that
+\[
+\mathcal F,\mathcal G:0\to m+n,
+\qquad
+\mathcal L,\mathcal R:0\to i+j
+\]
+are well-typed extended cospans such that
+\begin{equation}
+\mathcal F
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal G
+\tag{4}
+\label{eq:edpoi_rewriting_frob_5}
+\end{equation}
+and
+\begin{equation}
+\begin{aligned}
+Q(\mathcal F)&=I(\corner f),
+&
+Q(\mathcal G)&=I(\corner g),\\
+Q(\mathcal L)&=I(\corner \ell),
+&
+Q(\mathcal R)&=I(\corner \rho).
+\end{aligned}
+\tag{5}
+\label{eq:edpoi_rewriting_frob_6}
+\end{equation}
+We claim that
+\begin{equation}
+f \Rightarrow_{\langle \ell,\rho \rangle} g.
+\tag{6}
+\label{eq:edpoi_rewriting_frob_7}
+\end{equation}
+
+We prove the claim by induction on the number of
+\(\boxsort\)-edges enclosing the match anchor.
+
+Suppose first that the anchor is the root. By
+\cref{lemma:root_edpoi_factorisation}, there is a well-typed extended
+cospan
+\[
+\mathcal C:i+j\longrightarrow m+n
+\]
+such that
+\[
+\mathcal F
+=
+\mathcal L\fatsemi\mathcal C,
+\qquad
+\mathcal G
+=
+\mathcal R\fatsemi\mathcal C.
+\]
+Applying \(Q\) gives
+\[
+Q(\mathcal F)
+=
+Q(\mathcal L)\fatsemi Q(\mathcal C),
+\qquad
+Q(\mathcal G)
+=
+Q(\mathcal R)\fatsemi Q(\mathcal C).
+\]
+
+By fullness of \(I\), choose a morphism
+\[
+c:i+j \longrightarrow m+n
+\]
+of \(\mathbf H^{\join}_\Sigma\) such that
+\[
+I(c) = Q(\mathcal C).
+\]
+Using~\eqref{eq:edpoi_rewriting_frob_6}, we obtain
+\[
+\begin{aligned}
+I(\corner f)
+&=Q(\mathcal F)\\
+&=Q(\mathcal L)\fatsemi Q(\mathcal C)\\
+&=I(\corner \ell)\fatsemi I(c)\\
+&=I(\corner \ell\fatsemi c).
+\end{aligned}
+\]
+Since \(I\) is faithful,
+\[
+\corner f = \corner \ell \fatsemi c.
+\]
+The same calculation gives
+\[
+\corner g = \corner \rho \fatsemi c.
+\]
+
+Applying the inverse bending operation to these equalities gives a
+common composition-and-tensor context containing \(\ell\), respectively
+\(\rho\). Hence the first clause of
+\cref{def:enriched_prop_rewriting} gives
+\[
+f\Rightarrow_{\langle\ell,\rho\rangle}g.
+\]
+
+Suppose now that the anchor is not the root. Apply
+\cref{lemma:outermost_box_decomposition}. Let \(p\) be the outermost
+enclosing \(\boxsort\)-edge, let
+\[
+u\defeq |s(p)|,
+\qquad
+v\defeq |t(p)|,
+\]
+and let
+\[
+e\in\operatorname{Comp}_{\mathcal F}(p)
+\]
+be the selected component.
+
+For every
+\(d\in\operatorname{Comp}_{\mathcal F}(p)\), fullness of \(I\)
+supplies a morphism
+\[
+f_d:u\to v
+\]
+such that
+\[
+I(f_d) = Q(\mathcal F_d).
+\]
+Likewise, choose
+\[
+g_e:u\to v
+\]
+such that
+\[
+I(g_e) = Q(\mathcal G_e).
+\]
+Finally, let
+\[
+\mathcal C : u+v\longrightarrow m+n
+\]
+be the context supplied by
+\cref{lemma:outermost_box_decomposition}. By fullness of \(I\), choose
+\[
+c : u+v\longrightarrow m+n
+\]
+such that
+\[
+I(c) = Q(\mathcal C).
+\]
+
+Part~(1) of \cref{lemma:outermost_box_decomposition} gives an EDPOI
+rewrite
+\[
+\mathcal F_e
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\mathcal G_e
+\]
+whose match has fewer enclosing \(\boxsort\)-edges. 
+Since the action of $\corner{-}$ is given by tensoring and composition, this action is preserved by $\overline{\rightsquigarrow}$ by~\cref{lemma:rewriting_congruence} and therefore we get
+\begin{equation}
+\corner{\mathcal F_e}
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L,\mathcal R\rangle
+}
+\corner{\mathcal G_e}.
+\tag{7}
+\label{eq:edpoi_rewriting_frob_8}
+\end{equation}
+
+Moreover,
+\[
+\begin{aligned}
+Q(\corner{\mathcal F_e})
+&=\corner{Q(\mathcal F_e)}\\
+&=\corner{I(f_e)}\\
+&=I(\corner f_e),
+\end{aligned}
+\]
+because \(Q\) and \(I\) preserve the cups, tensor and
+composition. Similarly,
+\[
+Q(\corner{\mathcal G_e})
+=
+I(\corner g_e).
+\]
+Together with the two rule equalities in~\eqref{eq:edpoi_rewriting_frob_6}, these are precisely the
+denotation hypotheses of the inductive claim. Since the rewrite in
+~\eqref{eq:edpoi_rewriting_frob_8} has fewer enclosing boxes, the induction hypothesis gives
+\begin{equation}
+f_e\Rightarrow_{\langle \ell,\rho \rangle}g_e.
+\tag{8}
+\label{eq:edpoi_rewriting_frob_9}
+\end{equation}
+
+Put
+\[
+p_F
+\defeq
+\bigjoin_{d\in\operatorname{Comp}_{\mathcal F}(p)}f_d
+\]
+and
+\[
+p_G
+\defeq
+g_e
+\join
+\bigjoin_{\substack{
+  d\in\operatorname{Comp}_{\mathcal F}(p)\\
+  d\neq e
+}}
+f_d.
+\]
+% By~\eqref{eq:edpoi_rewriting_frob_9} and the join clause of
+% \cref{def:enriched_prop_rewriting}, we obtain
+% \begin{equation}
+% p_F \Rightarrow_{\langle \ell,\rho \rangle} p_G.
+% \tag{9}
+% \label{eq:edpoi_rewriting_frob_10}
+% \end{equation}
+
+Recall that
+\[
+\mathcal P_{\mathcal F}
+=
+\bigjoin_{d\in\operatorname{Comp}_{\mathcal F}(p)}
+\mathcal F_d
+\]
+and
+\[
+\mathcal P_{\mathcal G}
+=
+\mathcal G_e
+\join
+\bigjoin_{\substack{
+  d\in\operatorname{Comp}_{\mathcal F}(p)\\
+  d\neq e
+}}
+\mathcal F_d.
+\]
+Since \(Q\) and \(I\) preserve joins,
+\[
+\begin{aligned}
+Q(\mathcal P_{\mathcal F})
+&=
+\bigjoin_d Q(\mathcal F_d)\\
+&=
+\bigjoin_d I(f_d)\\
+&=
+I(p_F),
+\end{aligned}
+\]
+and, similarly,
+\[
+Q(\mathcal P_{\mathcal G})=I(p_G).
+\]
+Compatibility with bending therefore gives
+\begin{equation}
+Q(\corner{\mathcal P_{\mathcal F}})
+=
+I(\corner p_F),
+\qquad
+Q(\corner{\mathcal P_{\mathcal G}})
+=
+I(\corner p_G).
+\tag{9}
+\label{eq:edpoi_rewriting_frob_11}
+\end{equation}
+
+By \cref{lemma:outermost_box_decomposition},
+\[
+\mathcal F
+=
+\corner{\mathcal P_{\mathcal F}}
+\fatsemi\mathcal C,
+\qquad
+\mathcal G
+=
+\corner{\mathcal P_{\mathcal G}}
+\fatsemi\mathcal C.
+\]
+Applying \(Q\) and using~\eqref{eq:edpoi_rewriting_frob_6},~\eqref{eq:edpoi_rewriting_frob_11}, and
+\(I(c)=Q(\mathcal C)\), we obtain
+\[
+\begin{aligned}
+I(\corner f)
+&=Q(\mathcal F)\\
+&=
+Q(\corner{\mathcal P_{\mathcal F}})
+\fatsemi Q(\mathcal C)\\
+&=
+I(\corner p_F)\fatsemi I(c)\\
+&=
+I(\corner p_F\fatsemi c).
+\end{aligned}
+\]
+Faithfulness of \(I\) gives
+\[
+\corner f = \corner p_F \fatsemi c.
+\]
+The same calculation gives
+\[
+\corner g =\corner p_G\fatsemi c.
+\]
+
+Applying the inverse bending operation to these equalities exhibits
+\(f\) and \(g\) in the form of the second decomposition in
+\cref{def:enriched_prop_rewriting}. They have the same outer
+composition-and-tensor context and the same unchanged components
+\[
+\bigjoin_{\substack{
+  d\in\operatorname{Comp}_{\mathcal F}(p)\\
+  d\neq e
+}}
+f_d,
+\]
+while their distinguished components are \(f_e\) and \(g_e\),
+respectively. Since
+\[
+f_e\Rightarrow_{\langle\ell,\rho\rangle}g_e
+\]
+by~\eqref{eq:edpoi_rewriting_frob_9}, the second clause of
+\cref{def:enriched_prop_rewriting} gives
+\[
+f\Rightarrow_{\langle\ell,\rho\rangle}g.
+\]
+This completes the induction and proves the claim.
+
+Finally, suppose that
+\[
+\mathcal E(\corner a)
+\;\overline{\rightsquigarrow}^{\,\mathfrak R}_{
+  \left\langle
+    \mathcal E(\corner l),
+    \mathcal E(\corner r)
+  \right\rangle
+}
+\mathcal E(\corner b).
+\]
+Choose witnesses
+\[
+\mathcal F',\mathcal G',\mathcal L',\mathcal R'
+\]
+from \cref{def:edpoi_modulo_structural}. Thus
+\[
+\mathcal F'
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L',\mathcal R'\rangle
+}
+\mathcal G'
+\]
+and
+\[
+\begin{aligned}
+\mathcal E(\corner a)&\sim_{\mathfrak R}\mathcal F',
+&
+\mathcal G'&\sim_{\mathfrak R}\mathcal E(\corner b),\\
+\mathcal E(\corner l)&\sim_{\mathfrak R}\mathcal L',
+&
+\mathcal E(\corner r)&\sim_{\mathfrak R}\mathcal R'.
+\end{aligned}
+\]
+By \cref{lemma:concrete_interpretation_quotient} and
+\cref{lemma:concrete_interpretation_bending},
+\[
+\begin{aligned}
+Q(\mathcal F')
+&=Q(\mathcal E(\corner a))
+ =I([\corner a])
+ =I(\corner{[a]}),\\
+Q(\mathcal G')
+&=Q(\mathcal E(\corner b))
+ =I([\corner b])
+ =I(\corner{[b]}),\\
+Q(\mathcal L')
+&=Q(\mathcal E(\corner l))
+ =I([\corner l])
+ =I(\corner{[l]}),\\
+Q(\mathcal R')
+&=Q(\mathcal E(\corner r))
+ =I([\corner r])
+ =I(\corner{[r]}).
+\end{aligned}
+\]
+Applying the claim with
+\[
+f = [a],
+\qquad
+g = [b],
+\qquad
+\ell = [l],
+\qquad
+\rho=[r]
+\]
+and with the direct EDPOI rewrite
+\[
+\mathcal F'
+\;\overline{\rightsquigarrow}_{
+  \langle\mathcal L',\mathcal R'\rangle
+}
+\mathcal G'
+\]
+gives
+\[
+[a]\Rightarrow_{\langle[l],[r]\rangle}[b],
+\]
+as required.
+\end{proof}
 
 \paragraph{Related work.}
 The rooted e-hypergraphs of~\cref{def:rooted_ehypergraph} belong to a broad

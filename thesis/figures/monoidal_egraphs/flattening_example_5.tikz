@@ -1,0 +1,92 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (1, -1) {};
+		\node [style=none] (1) at (-1, -1) {};
+		\node [style=none] (2) at (-1, 1) {};
+		\node [style=none] (3) at (1, 1) {};
+		\node [style=none] (26) at (0.5, -0.5) {$c_0$};
+		\node [style=node, label={left:$z_1$}] (29) at (0, 0) {};
+		\node [style=node, label={above:$z_2$}] (39) at (1.5, 3.5) {};
+		\node [style=none] (44) at (0.5, 3) {};
+		\node [style=none] (45) at (0.5, 4.5) {};
+		\node [style=none] (46) at (2.5, 4.5) {};
+		\node [style=none] (47) at (2.5, 3) {};
+		\node [style=none] (48) at (1.5, 2.5) {};
+		\node [style=none] (49) at (0.25, 1.5) {};
+		\node [style=node, label={above:$z_1$}] (50) at (1.5, -4) {};
+		\node [style=none] (55) at (0.5, -4.5) {};
+		\node [style=none] (56) at (0.5, -3) {};
+		\node [style=none] (57) at (2.5, -3) {};
+		\node [style=none] (58) at (2.5, -4.5) {};
+		\node [style=none] (59) at (1.5, -2.5) {};
+		\node [style=none] (60) at (0.25, -1.5) {};
+		\node [style=none, label={right:$z_2$}] (61) at (0, 0) {};
+		\node [style=none] (63) at (-2.75, 3) {};
+		\node [style=none] (64) at (-2.75, 4.5) {};
+		\node [style=none] (65) at (-0.75, 4.5) {};
+		\node [style=none] (66) at (-0.75, 3) {};
+		\node [style=none] (67) at (-1.75, 2.5) {};
+		\node [style=none] (68) at (-0.5, 1.5) {};
+		\node [style=none] (69) at (-2.75, -4.5) {};
+		\node [style=none] (70) at (-2.75, -3) {};
+		\node [style=none] (71) at (-0.75, -3) {};
+		\node [style=none] (72) at (-0.75, -4.5) {};
+		\node [style=none] (73) at (-0.5, -1.5) {};
+		\node [style=none] (74) at (-1.75, -2.5) {};
+		\node [style=none] (75) at (-2.75, 6.5) {};
+		\node [style=none] (76) at (-2.75, 8) {};
+		\node [style=none] (77) at (-0.75, 8) {};
+		\node [style=none] (78) at (-0.75, 6.5) {};
+		\node [style=none] (79) at (-1.75, 6) {};
+		\node [style=none] (80) at (-1.75, 5) {};
+		\node [style=none] (81) at (-2.75, -8) {};
+		\node [style=none] (82) at (-2.75, -6.5) {};
+		\node [style=none] (83) at (-0.75, -6.5) {};
+		\node [style=none] (84) at (-0.75, -8) {};
+		\node [style=none] (85) at (-1.75, -5) {};
+		\node [style=none] (86) at (-1.75, -6) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (0.center)
+			 to (1.center)
+			 to (2.center)
+			 to (3.center)
+			 to cycle;
+		\draw [style=boundary frame] (47.center)
+			 to (46.center)
+			 to (45.center)
+			 to (44.center)
+			 to cycle;
+		\draw [style=diredge] (48.center) to (49.center);
+		\draw [style=boundary frame] (58.center)
+			 to (57.center)
+			 to (56.center)
+			 to (55.center)
+			 to cycle;
+		\draw [style=diredge] (59.center) to (60.center);
+		\draw [style=boundary frame] (66.center)
+			 to (65.center)
+			 to (64.center)
+			 to (63.center)
+			 to cycle;
+		\draw [style=diredge] (67.center) to (68.center);
+		\draw [style=boundary frame] (70.center)
+			 to (69.center)
+			 to (72.center)
+			 to (71.center)
+			 to cycle;
+		\draw [style=diredge] (74.center) to (73.center);
+		\draw [style=boundary frame] (77.center)
+			 to (76.center)
+			 to (75.center)
+			 to (78.center)
+			 to cycle;
+		\draw [style=diredge] (79.center) to (80.center);
+		\draw [style=boundary frame] (82.center)
+			 to (81.center)
+			 to (84.center)
+			 to (83.center)
+			 to cycle;
+		\draw [style=diredge] (86.center) to (85.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -1662,7 +1662,8 @@ This operation can be inverted by post-composing with $\cap_{m} \otimes \id_{n}$
   Suppose $\llangle a \rrangle = m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$, then $\llangle \corner{a} \rrangle$ produces a cospan isomorphic to $0 \xrightarrow{} \mathcal{G} \xleftarrow{[f,g]} m \coprod n$.
 \end{proposition}
 Using $\corner{-}$ allows us to pass freely between syntactic rewriting of $\Sigma$-terms withj non-trivial inputs and rewriting of $\Sigma$-terms that have only outputs. 
-\begin{theorem}[{\cite[Thm. 4.9]{bonchi_string_2022-1}}] \label{theorem:dpoi_rewriting}
+
+\begin{theorem}[{\cite[Thm. 4.9]{bonchi_string_2022-1}}] \label{theorem:dpoi_rewriting_frob}
   Let $\langle l, r \rangle$ be a rewrite rule in $\mathbf{H}_{\Sigma}$.
   Then,
   \[
@@ -1848,7 +1849,7 @@ we can get a DPOI square like below:
 \]
 The problem is that despite the pushout complement being a boundary complement and all the components being monogamous, the rewrite does not correspond to any rewrite in $\mathbf{S}_{\Sigma}$.
 For this to be a rewrite in $\mathbf{S}_{\Sigma}$, $e_3$ must be moved either before $e_1$ or after $e_2$, but there is not enough structure to do this.
-Of course, by~\cref{theorem:dpoi_rewriting} the rewrite exists in $\mathbf{H}_{\Sigma}$:
+Of course, by~\cref{theorem:dpoi_rewriting_frob} the rewrite exists in $\mathbf{H}_{\Sigma}$:
 \[
 \adjustbox{scale=0.7}{\tikzfig{./figures/string/non_convex_match_diagram_rewrite}}~.
 \]
@@ -1895,11 +1896,11 @@ a \Rightarrow_{\mathcal{R}} b \qquad \iff \qquad \llangle \corner{a} \rrangle \R
 \]
 \end{theorem}
 \begin{proof}
-For the only-if direction,~\cref{theorem:dpoi_rewriting} implies that 
+For the only-if direction,~\cref{theorem:dpoi_rewriting_frob} implies that 
 \[
 \llangle \corner{a} \rrangle \rightsquigarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~,
 \]
-which gives us an analogous decomposition as in the proof of~\cref{theorem:dpoi_rewriting}.
+which gives us an analogous decomposition as in the proof of~\cref{theorem:dpoi_rewriting_frob}.
 In particular, we have that
 \[
 \big\llangle \adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition}}\big\rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n~.
