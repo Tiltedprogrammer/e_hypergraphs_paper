@@ -294,3 +294,18 @@ backrefstyle=two]%
 
 % Set table of contents depth
 \setcounter{tocdepth}{2}
+
+% --- Appendices numbered A1, A2, ... ---------------------------------------
+\makeatletter
+\let\thesis@appendix\appendix
+\renewcommand{\appendix}{%
+  \thesis@appendix
+  \@mainmattertrue                             % undo \backmatter's suppression
+  \renewcommand{\thechapter}{A\arabic{chapter}}%
+  \counterwithin{table}{chapter}%
+  \counterwithin{figure}{chapter}%
+  \crefalias{chapter}{appendixchap}%
+  \crefalias{section}{appendixsec}%
+  \crefalias{subsection}{appendixsec}%
+}
+\makeatother

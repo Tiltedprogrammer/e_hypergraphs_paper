@@ -1052,7 +1052,7 @@ because the functor $F_{\mathcal{V}}$ is symmetric monoidal, as established in~\
 Identity maps agree by the definition of $\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}}$.
 \end{proof}
 \begin{proposition}[Theorem 5.7.1~\cite{cruttwell2008normed}]\label{prop:tensor_preserved_by_enrichment}
-    Let $\mathcal{V}$ and $\mathcal{W}$ be symmetric monoidal categories and let $F : \mathcal{V} \to \mathcal{W}$ be a symmetric monoidal functor.
+    Let $\mathcal{V}$ and $\mathcal{W}$ be symmetric monoidal categories and let $F : \mathcal{V} \to \mathcal{W}$ be a symmetric (lax) monoidal functor.
     Then, the induced $2$-functor $\widetilde{F} : \mathcal{V}\text{-}\catname{Cat} \to \mathcal{W}\text{-}\catname{Cat}$ maps (symmetric) monoidal $\mathcal{V}$-categories to (symmetric) monoidal $\mathcal{W}$-categories.
 \end{proposition}
 
@@ -1217,9 +1217,8 @@ preserves commuting diagrams of $2$-cells.
 \end{example}
 
 \begin{corollary}\label{cor:2-adjunction-monoidal}
-Let $\mathcal{V}$ be symmetric.
-The $2$-adjunction $\widetilde{F}_{\mathcal{V}} \dashv \widetilde{U}_{\mathcal{V}}$
-of~\cref{prop:2-adjunction} restricts to a $2$-adjunction
+Let $\mathcal{V}$ be as in~\cref{prop:2-adjunction}.
+The $2$-adjunction $\widetilde{F}_{\mathcal{V}} \dashv \widetilde{U}_{\mathcal{V}}$ restricts to a $2$-adjunction
 \[
 \widetilde{F}_{\mathcal{V}}, \widetilde{U}_{\mathcal{V}} :
 \catname{SMonCat} \rightleftarrows \mathcal{V}\text{-}\catname{SMonCat}
@@ -1231,69 +1230,189 @@ strong symmetric monoidal ($\mathcal{V}$-)functors as $1$-cells, and monoidal
 \end{corollary}
 \begin{proof}
 For the objects, $F_{\mathcal{V}}$ is symmetric monoidal
-by~\cref{cor:cocomplete_monoidal_free} and $U_{\mathcal{V}}$ is lax symmetric monoidal
-by~\cref{remark:U_lax_monoidal}, so by~\cref{prop:tensor_preserved_by_enrichment} both
-$\widetilde{F}_{\mathcal{V}}$ and $\widetilde{U}_{\mathcal{V}}$ carry symmetric monoidal
-($\mathcal{V}$-)categories to symmetric monoidal ($\mathcal{V}$-)categories.
+by~\cref{cor:cocomplete_monoidal_free} and $U_{\mathcal{V}}$ is lax symmetric
+monoidal by~\cref{remark:U_lax_monoidal}. Hence, by
+\cref{prop:tensor_preserved_by_enrichment}, both
+$\widetilde{F}_{\mathcal{V}}$ and $\widetilde{U}_{\mathcal{V}}$ carry
+symmetric monoidal ($\mathcal{V}$-)categories to symmetric monoidal
+($\mathcal{V}$-)categories.
 
-It remains to check that the isomorphism $\Xi_{\mathcal{L},\enriched{B}}$
-of~\cref{prop:2-adjunction} restricts to the monoidal $1$-cells and $2$-cells, and that the
-unit is monoidal.
+It remains to show that the transposition of
+\cref{prop:2-adjunction} preserves strong symmetric monoidal functors and
+monoidal natural transformations.
 
-Let $\mathcal{L}$ and $\enriched{B}$ be symmetric monoidal.
-A monoidal structure on a $\mathcal{V}$-functor $S : \widetilde{F}_{\mathcal{V}}\mathcal{L} \to
-\enriched{B}$ consists of $\mathcal{V}$-natural transformations
+Let
 \[
-S_{2} : \enriched{\otimes}_{\enriched{B}} \circ (S \boxtimes S) \Rightarrow S \circ
-\enriched{\otimes}_{\widetilde{F}_{\mathcal{V}}\mathcal{L}}~,
-\qquad
-S_{0} : I_{\enriched{B}} \Rightarrow S \circ I_{\widetilde{F}_{\mathcal{V}}\mathcal{L}}~,
+T : \mathcal{L} \longrightarrow
+\widetilde{U}_{\mathcal{V}}\enriched{B}
 \]
-subject to coherence.
-By~\cref{ex:free-enrichment-monoidal} we have
-$\widetilde{F}_{\mathcal{V}}(\mathcal{L} \times \mathcal{L}) = \widetilde{F}_{\mathcal{V}}\mathcal{L}
-\boxtimes \widetilde{F}_{\mathcal{V}}\mathcal{L}$, so $S_{2}$ is a $2$-cell of the hom-category
-$\mathcal{V}\text{-}\catname{Cat}(\widetilde{F}_{\mathcal{V}}(\mathcal{L} \times \mathcal{L}),
-\enriched{B})$, and $S_{0}$ one of
-$\mathcal{V}\text{-}\catname{Cat}(\widetilde{F}_{\mathcal{V}}\mathbb{1}, \enriched{B})$.
-Since $\Xi$ is an isomorphism of categories, it is a bijection on $2$-cells; instantiating it at
-$\mathcal{L} \times \mathcal{L}$ and at $\mathbb{1}$ therefore puts the pairs $(S_{2}, S_{0})$ in
-bijection with the corresponding pairs for
-$\Xi(S) = \widetilde{U}_{\mathcal{V}}(S) \circ \psi_{\mathcal{L}}$.
-The coherence axioms, and the compatibility with the symmetries, are equations between $2$-cells,
-hence are preserved and reflected by this bijection; and $S_{2}$, $S_{0}$ are invertible if and
-only if their images are, since $\Xi$ is an isomorphism.
-So $S$ is strong symmetric monoidal precisely when $\Xi(S)$ is.
-Concretely, by the description of the transpose following~\cref{prop:2-adjunction}, the
-components of $S_{2}$ and $S_{0}$ are determined by their values on the injections $\iota_{u}$,
-where they are exactly the components of the structure maps of $\Xi(S)$.
+be a strong symmetric monoidal functor, with structure isomorphisms
+\[
+T_{2}^{A,B} :
+TA \otimes_{\widetilde{U}_{\mathcal{V}}\enriched{B}} TB \longrightarrow T(A \otimes_{\mathcal{L}} B),
+\qquad
+T_{0} :
+I_{\widetilde{U}_{\mathcal{V}}\enriched{B}} \longrightarrow T(I_{\mathcal{L}}).
+\]
+Its transpose
+\[
+\overline{T} :
+\widetilde{F}_{\mathcal{V}}\mathcal{L}
+\longrightarrow \enriched{B}
+\]
+has the same action as $T$ on objects. 
+Write
+\[
+\enriched{C}\defeq\widetilde{F}_{\mathcal{V}}\mathcal{L}.
+\]
+The tensor comparison for $\overline{T}$ should be a
+$\mathcal{V}$-natural transformation
+\[
+\overline{T}_{2} :
+\overline{\otimes}_{\enriched{B}}
+\circ
+(\overline{T}\boxtimes\overline{T})
+\Longrightarrow
+\overline{T}
+\circ
+\overline{\otimes}_{\enriched{C}},
+\]
+between $\mathcal{V}$-functors
+$\enriched{C}\boxtimes\enriched{C}\to\enriched{B}$.
+Its component at $(A,B)$ must be a morphism
+\[
+\overline{T}_{2}^{A,B} :
+\I_{\mathcal{V}}
+\longrightarrow
+\enriched{B}\bigl(
+  \overline{T}A
+    \overline{\otimes}_{\enriched{B}}
+  \overline{T}B,\,
+  \overline{T}
+    (A\overline{\otimes}_{\enriched{C}}B)
+\bigr).
+\]
+The transpose $\overline{T}$ has the same action on objects as $T$, and
+the tensor product of $\enriched{C}$ has the same action on objects as
+that of $\mathcal{L}$. Thus this is equivalently a morphism
+\[
+\overline{T}_{2}^{A,B} :
+\I_{\mathcal{V}}
+\longrightarrow
+\enriched{B}\bigl(
+  TA\otimes_{\widetilde{U}_{\mathcal{V}}\enriched{B}}TB,\,
+  T(A\otimes_{\mathcal{L}}B)
+\bigr).
+\]
+By the definition of the underlying category, the original comparison
+isomorphism
+\[
+T_{2}^{A,B} :
+TA\otimes_{\widetilde{U}_{\mathcal{V}}\enriched{B}}TB
+\longrightarrow
+T(A\otimes_{\mathcal{L}}B)
+\]
+is precisely such a generalised element. We therefore define
+$\overline{T}_{2}^{A,B}$ to be the generalised element corresponding to
+$T_{2}^{A,B}$.
 
-The same argument applies to $2$-cells: a $\mathcal{V}$-natural transformation
-$\theta : S \Rightarrow S'$ is monoidal precisely when its compatibility with
-$S_{2}, S'_{2}$ and $S_{0}, S'_{0}$ holds, and these are again equations between $2$-cells,
-preserved and reflected by $\Xi$.
+To see that these components are $\mathcal{V}$-natural, recall that
+\[
+\widetilde{F}_{\mathcal{V}}(\mathcal{L}\times\mathcal{L})
+\cong
+\widetilde{F}_{\mathcal{V}}\mathcal{L}
+\boxtimes
+\widetilde{F}_{\mathcal{V}}\mathcal{L} = \enriched{C} \boxtimes \enriched{C}.
+\]
+Its hom-objects are freely generated by the morphisms $(f,g)$ of
+$\mathcal{L}\times\mathcal{L}$. Consequently, the enriched naturality
+equation need only be checked on the corresponding injections
+$\iota_f\otimes\iota_g$. On such a generator it is exactly the ordinary
+naturality equation
+\[
+T_{2}^{A',B'} \circ (T(f)\otimes T(g))
+=
+T(f\otimes g)\circ T_{2}^{A,B}.
+\]
+This holds because $T_{2}$ is natural.
+The same argument applies to the unit comparison $\overline{T}_{0}$.
 
-Finally, the unit $\psi_{\mathcal{L}}$ is strict monoidal: it is the identity on objects, and by
-the description of $\widetilde{F}_{\mathcal{V}}$ on hom-objects
-in~\cref{ex:free-enrichment-monoidal} it sends $f \otimes_{\mathcal{L}} g$ to
-$\iota_{f \otimes_{\mathcal{L}} g} = \iota_{f} \enriched{\otimes} \iota_{g}$.
-Hence the adjunction restricts as stated.
+The associativity, unit and symmetry axioms for
+$\overline{T}_{2}$ and $\overline{T}_{0}$ are equations between the same
+generalised elements as the corresponding axioms for $T_{2}$ and
+$T_{0}$. They therefore hold for $\overline{T}$.
+
+Moreover, the inverses of $T_{2}^{A,B}$ and $T_{0}$ supply inverse
+components for $\overline{T}_{2}$ and $\overline{T}_{0}$; their enriched
+naturality follows by the same argument. Thus $\overline{T}$ is a strong
+symmetric monoidal $\mathcal{V}$-functor.
+
+Conversely, let
+\[
+S :
+\widetilde{F}_{\mathcal{V}}\mathcal{L}
+\longrightarrow \enriched{B}
+\]
+be a strong symmetric monoidal $\mathcal{V}$-functor. Applying
+$\widetilde{U}_{\mathcal{V}}$ to its structure maps gives a strong
+symmetric monoidal functor
+\[
+\widetilde{U}_{\mathcal{V}}(S) :
+\widetilde{U}_{\mathcal{V}}\widetilde{F}_{\mathcal{V}}\mathcal{L}
+\longrightarrow
+\widetilde{U}_{\mathcal{V}}\enriched{B}.
+\]
+The unit
+\[
+\psi_{\mathcal{L}} :
+\mathcal{L}
+\longrightarrow
+\widetilde{U}_{\mathcal{V}}
+\widetilde{F}_{\mathcal{V}}\mathcal{L}
+\]
+is strict symmetric monoidal. It is the identity on objects, and on
+morphisms
+\[
+\psi_{\mathcal{L}}(f\otimes g)
+=
+\iota_{f\otimes g}
+=
+\iota_f\otimes\iota_g
+=
+\psi_{\mathcal{L}}(f)\otimes\psi_{\mathcal{L}}(g);
+\]
+the unit object and symmetries are preserved in the same way.
+It follows that
+\[
+\Xi(S)
+=
+\widetilde{U}_{\mathcal{V}}(S)\circ\psi_{\mathcal{L}}
+\]
+is strong symmetric monoidal.
+
+Finally, transposition leaves the components of natural transformations
+unchanged. Hence the equations saying that a natural transformation is
+monoidal are identical on the two sides. Thus $\Xi$ restricts to an
+isomorphism between the hom-categories of strong symmetric monoidal
+functors and monoidal natural transformations. Since the original
+isomorphism is natural, these restricted isomorphisms define the stated
+$2$-adjunction.
 \end{proof}
 
-\begin{remark}
-This is an instance of a general fact.
-A monoidal $\mathcal{V}$-category in the sense of~\cref{def:monoidal_enriched_category} is
-precisely a \emph{pseudomonoid} in the monoidal $2$-category $\mathcal{V}\text{-}\catname{Cat}$,
-and the assignment sending a monoidal $2$-category to the $2$-category of its pseudomonoids,
-monoidal morphisms and monoidal $2$-cells extends to a $2$-functor
-$\mathrm{Mon} : \catname{Mon2Cat} \to \catname{2Cat}$.
-The proof of~\cref{prop:tensor_preserved_by_enrichment} in fact establishes that
-$\widetilde{F}_{\mathcal{V}}$ is a weak monoidal homomorphism, and the same holds for
-$\widetilde{U}_{\mathcal{V}}$; together with the unit and counit being monoidal, this makes
-$\widetilde{F}_{\mathcal{V}} \dashv \widetilde{U}_{\mathcal{V}}$ an adjunction internal to
-$\catname{Mon2Cat}$, and the corollary follows by applying $\mathrm{Mon}$, since $2$-functors
-preserve adjunctions.
-\end{remark}
+% \begin{remark}
+% This is an instance of a general fact.
+% A monoidal $\mathcal{V}$-category in the sense of~\cref{def:monoidal_enriched_category} is
+% precisely a \emph{pseudomonoid} in the monoidal $2$-category $\mathcal{V}\text{-}\catname{Cat}$,
+% and the assignment sending a monoidal $2$-category to the $2$-category of its pseudomonoids,
+% monoidal morphisms and monoidal $2$-cells extends to a $2$-functor
+% $\mathrm{Mon} : \catname{Mon2Cat} \to \catname{2Cat}$.
+% The proof of~\cref{prop:tensor_preserved_by_enrichment} in fact establishes that
+% $\widetilde{F}_{\mathcal{V}}$ is a weak monoidal homomorphism, and the same holds for
+% $\widetilde{U}_{\mathcal{V}}$; together with the unit and counit being monoidal, this makes
+% $\widetilde{F}_{\mathcal{V}} \dashv \widetilde{U}_{\mathcal{V}}$ an adjunction internal to
+% $\catname{Mon2Cat}$, and the corollary follows by applying $\mathrm{Mon}$, since $2$-functors
+% preserve adjunctions.
+% \end{remark}
 
 \begin{proposition}
 Let $\mathcal{V}$ be a symmetric monoidal closed category, with the closed structure given by the adjunction

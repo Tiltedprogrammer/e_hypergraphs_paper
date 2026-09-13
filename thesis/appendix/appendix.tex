@@ -1,4 +1,4 @@
-\chapter{Egg Implementation of the Saturation Example}\label{appendix:smce-rules}
+\chapter{Egg implementation of the saturation example}\label{appendix:smce-rules}
 
 This appendix documents the computational verification of~\autoref{example:sat-comonoid} using the \texttt{egg} equality saturation library~\cite{EggPaper}.
 We describe how the symmetric monoidal theory of commutative comonoids is encoded in the \texttt{egg} framework, justify the design decisions that shape the implementation, and account for the rule application statistics in~\autoref{tab:appendix-rules}.
@@ -163,3 +163,22 @@ The strong asymmetry (899 introductions vs.\ 0 eliminations for left identity; 3
 \paragraph{Comonoid equations.}
 \emph{Commutativity} ($\mu;\sym = \mu$) and the \emph{counit law} ($\mu;(\eta \otimes \id) = \id$) are each applied exactly once, confirming that the verification terminates as soon as the two relevant equivalences are found.
 Coassociativity of $\mu$ ($\mu;(\id \otimes \mu) = \mu;(\mu \otimes \id)$) is present as a rule but not applied: the particular input term does not require it.
+
+\chapter{Additional figures for Chapter~\ref{chapter:monoidal}}
+\label{sec:appendix-monoidal-figures}
+
+\begin{figure}
+\[
+\adjustbox{max width=\textwidth}{
+    \tikzfig{./figures/appendix/egraph-translation-step-by-step-b-c}
+}
+\]
+\caption{Transformation of string diagram (b) into string diagram (c) via the rewrite rule $(x * y) / z \to x * (y / z)$ from~\cref{fig:egg_egraph_string}.}
+\label{fig:appendix-egraph-translation-step-by-step-b-c}
+\end{figure}
+
+\Cref{fig:appendix-egraph-translation-step-by-step-b-c} provides a futher elaboration on the transformation of string diagram (b) into string diagram (c) in~\cref{fig:egg_egraph_string} via the rewrite rule $(x * y) / z \to x * (y / z)$.
+The first row shows how $\catname{SLat}$-equations are applied to reveal the redex for the rule.
+Then the content of the dashed box is appropriately unified using the naturality of $\counit$ so that common structure can be factored out.
+Since in this setting morphisms have no variables, the unification is always possible.
+The last row futher compacts the diagram to match the corresponding e-graph (c) in~\cref{fig:egg_egraph}.
