@@ -1,0 +1,64 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-3, 1) {};
+		\node [style=none] (1) at (3, 1) {};
+		\node [style=none] (2) at (3, -1) {};
+		\node [style=none] (3) at (-3, -1) {};
+		\node [style=x-to-z-rhombus] (4) at (0, 0) {};
+		\node [style=X dot] (5) at (-2, 0) {};
+		\node [style=Z dot] (6) at (2, 0) {};
+		\node [style=X dot] (7) at (-4.75, 0) {};
+		\node [style=none] (8) at (-5.5, -1) {};
+		\node [style=none] (9) at (-5.5, 1) {};
+		\node [style=none] (10) at (-4, 1) {};
+		\node [style=none] (11) at (-4, -1) {};
+		\node [style=X dot] (12) at (-7.5, 0) {};
+		\node [style=none] (13) at (-8.25, -1) {};
+		\node [style=none] (14) at (-8.25, 1) {};
+		\node [style=none] (15) at (-6.75, 1) {};
+		\node [style=none] (16) at (-6.75, -1) {};
+		\node [style=Z dot] (17) at (7.5, 0) {};
+		\node [style=none] (18) at (6.75, -1) {};
+		\node [style=none] (19) at (6.75, 1) {};
+		\node [style=none] (20) at (8.25, 1) {};
+		\node [style=none] (21) at (8.25, -1) {};
+		\node [style=Z dot] (22) at (4.75, 0) {};
+		\node [style=none] (23) at (4, -1) {};
+		\node [style=none] (24) at (4, 1) {};
+		\node [style=none] (25) at (5.5, 1) {};
+		\node [style=none] (26) at (5.5, -1) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (0.center)
+			 to (1.center)
+			 to (2.center)
+			 to (3.center)
+			 to cycle;
+		\draw (5) to (4);
+		\draw (4) to (6);
+		\draw [style=boundary frame] (8.center)
+			 to (11.center)
+			 to (10.center)
+			 to (9.center)
+			 to cycle;
+		\draw [style=boundary frame] (13.center)
+			 to (16.center)
+			 to (15.center)
+			 to (14.center)
+			 to cycle;
+		\draw [style=boundary frame] (19.center)
+			 to (18.center)
+			 to (21.center)
+			 to (20.center)
+			 to cycle;
+		\draw [style=boundary frame] (23.center)
+			 to (26.center)
+			 to (25.center)
+			 to (24.center)
+			 to cycle;
+		\draw [style={light_red_arrow}] (17) to (22);
+		\draw [style={light_red_arrow}] (22) to (6);
+		\draw [style={light_red_arrow}] (7) to (5);
+		\draw [style={light_red_arrow}] (12) to (7);
+	\end{pgfonlayer}
+\end{tikzpicture}

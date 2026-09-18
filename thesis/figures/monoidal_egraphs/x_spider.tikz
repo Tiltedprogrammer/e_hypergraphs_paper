@@ -1,0 +1,110 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=X dot] (0) at (-11.75, 0) {};
+		\node [style=none] (1) at (-13.75, 2) {};
+		\node [style=none] (2) at (-13.75, -2) {};
+		\node [style=none] (3) at (-13.75, 0) {$\vdots$};
+		\node [style=none] (4) at (-13.75, 1) {};
+		\node [style=none] (5) at (-13.75, -1) {};
+		\node [style=none] (6) at (-9.75, 2) {};
+		\node [style=none] (7) at (-9.75, -2) {};
+		\node [style=none] (8) at (-9.75, 1) {};
+		\node [style=none] (9) at (-9.75, -1) {};
+		\node [style=none] (10) at (-9.75, 0) {$\vdots$};
+		\node [style=X dot] (11) at (3.75, 0) {};
+		\node [style=none] (12) at (2.75, -1) {};
+		\node [style=none] (13) at (2.75, 1) {};
+		\node [style=none] (14) at (4.75, 1) {};
+		\node [style=none] (15) at (4.75, -1) {};
+		\node [style=X dot] (16) at (-3, 2.25) {};
+		\node [style=X dot] (17) at (-3, 1) {};
+		\node [style=X dot] (18) at (-3, -1) {};
+		\node [style=X dot] (19) at (-3, -2) {};
+		\node [style=none] (20) at (-3, 0) {$\vdots$};
+		\node [style=none] (21) at (-3.75, 3) {};
+		\node [style=none] (22) at (-2.25, 3) {};
+		\node [style=none] (23) at (-3.75, -3) {};
+		\node [style=none] (24) at (-2.25, -3) {};
+		\node [style=X dot] (25) at (0, 2.25) {};
+		\node [style=X dot] (26) at (0, 1) {};
+		\node [style=X dot] (27) at (0, -1) {};
+		\node [style=X dot] (28) at (0, -2) {};
+		\node [style=none] (29) at (0, 0) {$\vdots$};
+		\node [style=none] (30) at (-0.75, 3) {};
+		\node [style=none] (31) at (0.75, 3) {};
+		\node [style=none] (32) at (-0.75, -3) {};
+		\node [style=none] (33) at (0.75, -3) {};
+		\node [style=X dot] (34) at (7.5, 2.25) {};
+		\node [style=X dot] (35) at (7.5, 1) {};
+		\node [style=X dot] (36) at (7.5, -1) {};
+		\node [style=X dot] (37) at (7.5, -2) {};
+		\node [style=none] (38) at (7.5, 0) {$\vdots$};
+		\node [style=none] (39) at (6.75, 3) {};
+		\node [style=none] (40) at (8.25, 3) {};
+		\node [style=none] (41) at (6.75, -3) {};
+		\node [style=none] (42) at (8.25, -3) {};
+		\node [style=X dot] (43) at (10.5, 2.25) {};
+		\node [style=X dot] (44) at (10.5, 1) {};
+		\node [style=X dot] (45) at (10.5, -1) {};
+		\node [style=X dot] (46) at (10.5, -2) {};
+		\node [style=none] (47) at (10.5, 0) {$\vdots$};
+		\node [style=none] (48) at (9.75, 3) {};
+		\node [style=none] (49) at (11.25, 3) {};
+		\node [style=none] (50) at (9.75, -3) {};
+		\node [style=none] (51) at (11.25, -3) {};
+		\node [style=none] (52) at (-7.75, 0) {};
+		\node [style=none] (53) at (-5.75, 0) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [bend right=45, looseness=0.75] (0) to (1.center);
+		\draw [bend left=45] (0) to (2.center);
+		\draw [bend left] (4.center) to (0);
+		\draw [bend right] (5.center) to (0);
+		\draw [bend left=45] (0) to (6.center);
+		\draw [bend right=45] (0) to (7.center);
+		\draw [bend left] (0) to (8.center);
+		\draw [bend right=330] (9.center) to (0);
+		\draw [style=graph frame] (12.center)
+			 to (13.center)
+			 to (14.center)
+			 to (15.center)
+			 to cycle;
+		\draw [style=boundary frame] (24.center)
+			 to (23.center)
+			 to (21.center)
+			 to (22.center)
+			 to cycle;
+		\draw [style=boundary frame] (31.center)
+			 to (33.center)
+			 to (32.center)
+			 to (30.center)
+			 to cycle;
+		\draw [style=boundary frame] (42.center)
+			 to (41.center)
+			 to (39.center)
+			 to (40.center)
+			 to cycle;
+		\draw [style=boundary frame] (49.center)
+			 to (51.center)
+			 to (50.center)
+			 to (48.center)
+			 to cycle;
+		\draw [style={light_red_arrow}] (16) to (25);
+		\draw [style={light_red_arrow}] (17) to (26);
+		\draw [style={light_red_arrow}] (18) to (27);
+		\draw [style={light_red_arrow}] (19) to (28);
+		\draw [style={light_red_arrow}] (25) to (11);
+		\draw [style={light_red_arrow}] (26) to (11);
+		\draw [style={light_red_arrow}] (27) to (11);
+		\draw [style={light_red_arrow}] (28) to (11);
+		\draw [style={light_red_arrow}] (34) to (11);
+		\draw [style={light_red_arrow}] (35) to (11);
+		\draw [style={light_red_arrow}] (36) to (11);
+		\draw [style={light_red_arrow}] (37) to (11);
+		\draw [style={light_red_arrow}] (43) to (34);
+		\draw [style={light_red_arrow}] (44) to (35);
+		\draw [style={light_red_arrow}] (45) to (36);
+		\draw [style={light_red_arrow}] (46) to (37);
+		\draw [style=map edge] (52.center) to (53.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

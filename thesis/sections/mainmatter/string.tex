@@ -591,6 +591,7 @@ Let $\mathbf{P}(m,n) = \varnothing$ if $m \neq n$ and $\mathbf{P}(n,n) = S_n$, t
 Then $\mathbf{P}$ is a $\mathrm{PROP}$, called the \emph{permutation} $\mathrm{PROP}$, as every morphism is a permutation on a finite set.
 \end{example}
 \begin{definition}
+\label{def:coloured-prop}
 For a set $\mathcal{C}$, a \emph{coloured} $\mathrm{PROP}$ is a symmetric strict monoidal category whose objects are words in $\mathcal{C}$, with the tensor product on objects given by concatenation.
 \end{definition}
 This is a generalisation of Lawvere theories in the multi-sorted case.
@@ -600,6 +601,10 @@ A $\mathrm{PROP}$ is a coloured $\mathrm{PROP}$ with a single colour.
 Let $\mathbf{S}_{\Sigma,\mathcal{E}}$ be a free syntactic PROP presented by SMT $(\Sigma, \mathcal{E})$ with $\Sigma_0 \cong \{*\}$, that is hom-sets $\mathbf{S}_{\Sigma,\mathcal{E}}(m,n)$ are sets of $\Sigma$-terms with domain $m$ and codomain $n$, quotiented by the equations of a symmetric monoidal category from~\cref{fig:string-diagram-axioms} and the equations in $\mathcal{E}$.
 We also let $\mathbf{S}_{\Sigma}$ be the free syntactic PROP presented by the SMT $(\Sigma, \varnothing)$.
 \end{definition}
+
+\begin{remark}
+Coloured $\mathrm{PROP}$s are presented by multi-sorted SMTs, where $\Sigma_0$ defines the set of colours or types.
+\end{remark}
 This is an analogue of a collection of free algebras $T_{\Sigma, \mathcal{E}}$, viewed as a Lawvere theory.
 We already saw an instance of such a syntactic PROP in~\cref{example:comonoids}, another example is the theory of bialgebras that has both monoid and comonoid structure, interacting in a certain way.
 \begin{example}
@@ -956,6 +961,10 @@ It is straightforward to adapt the definition to the multi-sorted case.
   We denote by $\catname{Hyp}(\Sigma)$ the category of hypergraphs over a signature $\Sigma$ and hypergraph homomorphisms.
 \end{definition}
 
+\begin{remark}
+When $\Sigma_0$ component of the signature is non-trivial, we get hypergraphs with coloured or typed vertices, that is, such hypergraphs additionally have a lavelling function $l_{V} : V \to \Sigma_0$ on vertices.
+\end{remark}
+
 \begin{figure}
 \centering
 \tikzfig{./figures/string/hypergraph_example_1}
@@ -1139,6 +1148,12 @@ The name $\catname{HypI}(\Sigma)$ is meant to suggest that hypergraphs are \emph
 The left leg denotes the \emph{input} interface, and the right leg denotes the \emph{output} interface.
 \end{remark}
 
+\begin{remark}
+In the coloured case, the functor $D$ is considered as a functor $D : (\mathbb{F} \downarrow \Sigma_0) \longrightarrow \catname{Hyp}(\Sigma)$, with the domain being a slice category with objects the pairs $([n], f)$ with $f$ labelling each element of $[n]$ with a colour from $\Sigma_0$.
+The morphisms are then colour-preserving functions between the finite sets.
+Equivalently, this category has objects words of $\Sigma_0$ with monoidal structure given by concatenation.
+\end{remark}
+
 We will next use the terms cospans and morphisms interchangeably when talking about morphisms in $\catname{HypI}(\Sigma)$.
 
 \begin{example}[Example 3.7~\cite{bonchi_string_2022-1}]\label{example:hypergraph_category_structure}
@@ -1276,6 +1291,11 @@ This means that every morphism $\gamma : \catname{HypI}(\Sigma) \to \mathbb{A}$ 
   The functor $\llbracket - \rrbracket : \mathbf{S}_{\Sigma} \to \catname{HypI}(\Sigma)$ is faithful.
 \end{proposition}
 
+\begin{remark}
+We get the same results when $\Sigma_{\mathrm{Frob}}$ is multi-sorted, that is when it comprises a monoid / comonoid generator for each colour.
+Note that Frobenius generators of different colours do not compose sequentially.
+\end{remark}
+
 PROPs equipped with a Frobenius algebra structure on each object constitute a subcategory of $\catname{PROP}$, called $\catname{FROP}$, with $\catname{H}_{\Sigma}$ and $\catname{H}_{\Sigma, \mathcal{E}}$ being the instances of FROPs.
 The notion of syntactic rewriting for FROPs is the same with the only difference that rewriting happens modulo SMC equations and the equations of Frobenius algebra.
 \begin{definition}[{\cite[p. 15]{bonchi_string_2022-1}}]\label{def:rewriting_frop}
@@ -1407,6 +1427,10 @@ Furthermore, a single hyperedge is a convex sub-hypergraph of $\mathcal{G}$ and 
 By the induction hypothesis, there exist morphisms $F_1 : m \to k \coprod i$, $F_2 : k \coprod j \to n$ and $l(e) : i \to j$ for each component of the decomposition and by functoriality of $\llbracket - \rrbracket$, $m \xrightarrow{} \mathcal{G} \xleftarrow{} n$ has a pre-image in $\mathbf{S}_{\Sigma}$ and the functor is full. 
 As $\llbracket - \rrbracket$ is fully faithful and is identity-on-objects, it is an isomorphism of PROPs.
 \end{proof}
+
+\begin{remark}
+Again, the same result holds for the multi-sorted version of $\mathbf{S}_{\Sigma}$.
+\end{remark}
 
 The major payoff of~\cref{theorem:frobenius_isomorphism} and~\cref{theorem:monogamous_isomorphism} is that we can now reason about string diagrams (equivalence classes of terms in $\mathbf{H}_{\Sigma}$ and $\mathbf{S}_{\Sigma}$, respectively) using the corresponding notion of cospans of hypergraphs.
 First, it makes it straightforward to check whether two string diagrams are equal by checking whether the corresponding cospans are isomorphic which can be checked by picking a \enquote{canonical} cospans by choosing a particular traversal for the carrier out of the equivalence class of cospans and therefore this characterisation may be used to efficiently represent string diagrams in a computer---this is the insight we will later use to generalise e-graphs so that they handle symmetric monoidal theories more efficiently.

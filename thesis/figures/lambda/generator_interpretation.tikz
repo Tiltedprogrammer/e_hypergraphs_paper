@@ -1,0 +1,86 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (43) at (-2.25, 3) {};
+		\node [style=none] (44) at (2.25, 3) {};
+		\node [style=none] (45) at (2.25, -3.25) {};
+		\node [style=none] (46) at (-2.25, -3.25) {};
+		\node [style=hedge] (0) at (0, 0) {$f$};
+		\node [style=node, label={above:$B_1$}] (1) at (-1, 2) {};
+		\node [style=node, label={above:$B_k$}] (3) at (1, 2) {};
+		\node [style=node, label={below:$A_1$}] (4) at (-1, -2.25) {};
+		\node [style=none] (5) at (0, -2) {$\cdots$};
+		\node [style=node, label={below:$A_n$}] (6) at (1, -2.25) {};
+		\node [style=none] (7) at (0, 1.75) {$\cdots$};
+		\node [style=node, label={above:$A_1$}] (11) at (-1, -9.75) {};
+		\node [style=node, label={above:$A_n$}] (12) at (1, -9.75) {};
+		\node [style=none] (13) at (0, -9.75) {$\cdots$};
+		\node [style=none] (18) at (-1.75, -10.25) {};
+		\node [style=none] (19) at (-1.75, -8.75) {};
+		\node [style=none] (20) at (1.75, -8.75) {};
+		\node [style=none] (21) at (1.75, -10.25) {};
+		\node [style=node, label={above:$A_1$}] (22) at (-1, -6.25) {};
+		\node [style=node, label={above:$A_n$}] (23) at (1, -6.25) {};
+		\node [style=none] (24) at (0, -6.25) {$\cdots$};
+		\node [style=none] (25) at (-1.75, -6.75) {};
+		\node [style=none] (26) at (-1.75, -5.25) {};
+		\node [style=none] (27) at (1.75, -5.25) {};
+		\node [style=none] (28) at (1.75, -6.75) {};
+		\node [style=node, label={above:$B_1$}] (29) at (-1, 5.5) {};
+		\node [style=node, label={above:$B_k$}] (30) at (1, 5.5) {};
+		\node [style=none] (31) at (0, 5.5) {$\cdots$};
+		\node [style=none] (32) at (-1.75, 5) {};
+		\node [style=none] (33) at (-1.75, 6.5) {};
+		\node [style=none] (34) at (1.75, 6.5) {};
+		\node [style=none] (35) at (1.75, 5) {};
+		\node [style=node, label={above:$B_1$}] (36) at (-1, 9) {};
+		\node [style=node, label={above:$B_k$}] (37) at (1, 9) {};
+		\node [style=none] (38) at (0, 9) {$\cdots$};
+		\node [style=none] (39) at (-1.75, 8.5) {};
+		\node [style=none] (40) at (-1.75, 10) {};
+		\node [style=none] (41) at (1.75, 10) {};
+		\node [style=none] (42) at (1.75, 8.5) {};
+		\node [style=none] (47) at (0, -4.75) {};
+		\node [style=none] (48) at (0, -3.75) {};
+		\node [style=none] (49) at (0, -7.25) {};
+		\node [style=none] (50) at (0, -8.25) {};
+		\node [style=none] (51) at (0, 4.5) {};
+		\node [style=none] (52) at (0, 3.5) {};
+		\node [style=none] (53) at (0, 8) {};
+		\node [style=none] (54) at (0, 7) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=graph frame] (46.center)
+			 to (43.center)
+			 to (44.center)
+			 to (45.center)
+			 to cycle;
+		\draw [in=-90, out=120] (0) to (1);
+		\draw [in=60, out=-90] (3) to (0);
+		\draw [in=90, out=-120] (0) to (4);
+		\draw [in=90, out=-60] (0) to (6);
+		\draw [style=boundary frame] (20.center)
+			 to (21.center)
+			 to (18.center)
+			 to (19.center)
+			 to cycle;
+		\draw [style=boundary frame] (27.center)
+			 to (28.center)
+			 to (25.center)
+			 to (26.center)
+			 to cycle;
+		\draw [style=boundary frame] (34.center)
+			 to (35.center)
+			 to (32.center)
+			 to (33.center)
+			 to cycle;
+		\draw [style=boundary frame] (41.center)
+			 to (42.center)
+			 to (39.center)
+			 to (40.center)
+			 to cycle;
+		\draw [style=diredge] (47.center) to (48.center);
+		\draw [style=diredge] (50.center) to (49.center);
+		\draw [style=diredge] (51.center) to (52.center);
+		\draw [style=diredge] (53.center) to (54.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

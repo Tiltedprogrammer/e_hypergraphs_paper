@@ -62,8 +62,8 @@ Such theories induce free (symmetric) monoidal categories---categories of \emph{
 
 \begin{example}\label{example:comonoids}
 Consider a \emph{monoidal} signature $\Sigma = \{\mu : 1 \to 2, \eta : 1 \to 0\}$---comultiplication and counit---where numbers indicate input and output arities of each generator.
-We can build terms from these generators by composing them horizontally ($(;)$) and vertically ($\otimes$) with each other and with additional generators $\sym : 2 \to 2$ and $\id : 1 \to 1$---symmetries and identities.
-Additionally consider the equations $\mathcal{E} = \{\mu ; \sym \equiv \mu, \mu ; (\eta \otimes \id) \equiv \id, \mu ; (\id \otimes \mu) \equiv \mu ; (\mu \otimes \id)\}$---commutativity, unitality on the left, and associativity.
+We can build terms from these generators by composing them horizontally ($\fatsemi$) and vertically ($\otimes$) with each other and with additional generators $\sym : 2 \to 2$ and $\id : 1 \to 1$---symmetries and identities.
+Additionally, consider the equations $\mathcal{E} = \{\mu ; \sym \equiv \mu, \mu ; (\eta \otimes \id) \equiv \id, \mu ; (\id \otimes \mu) \equiv \mu ; (\mu \otimes \id)\}$---commutativity, unitality on the left, and associativity.
 These constitute a symmetric monoidal theory and together with the structural equations of a symmetric monoidal category, induce a symmetric monoidal category with commutative comonoid structure.
 \end{example}
 
@@ -74,7 +74,7 @@ Given the setting of~\autoref{example:comonoids}, and the term $((\mu;\sym);(\id
 \[
 \tikzfig{./figures/introduction/e-graph-comonoid-example}
 \]
-By saturating the e-graph with the equations $\mathcal{E}$ and the structural equations of symmetric monoidal categories (defined formally in~\autoref{appendix:smce-rules}), we can establish that the term is equivalent to $(\mu \otimes \mu);(\id \otimes \eta \otimes \id \otimes \id)$, or to $\id \otimes \mu$.
+By saturating the e-graph with the equations $\mathcal{E}$ and the structural equations of a symmetric monoidal category (defined formally in~\cref{appendix:smce-rules}), we can establish that the term is equivalent to $(\mu \otimes \mu);(\id \otimes \eta \otimes \id \otimes \id)$, or to $\id \otimes \mu$.
 The e-graph grew from $10$ to $8{,}546$ nodes before reaching saturation.
 \autoref{tab:comonoid-rules} shows the number of times each rule was applied in each direction during saturation; the tensor-structural rules (tensor associativity and the tensor unit) account for the majority of applications, reflecting the overhead of encoding the monoidal structure in the flat e-graph representation, while the comonoid-specific rules (commutativity and the counit law) are applied only once each.
 \end{example}
@@ -100,17 +100,17 @@ Counit \hfill $(\mu;(\eta \otimes \id) = \id)$ & 1 & --- \\
 Total & 3{,}193 & 6{,}059 \\
 \bottomrule
 \end{tabular}
-\caption{Rewrite rule applications during saturation (\autoref{example:sat-comonoid}); $n \in \{1,2,3,4\}$. Columns $(\to)$ and $(\leftarrow)$ count applications in each direction; --- indicates zero. Purely definitional rules (e.g.\ $\id_2 = \id_1 \otimes \id_1$) are omitted; see \autoref{appendix:smce-rules}.}
+\caption{Rewrite rule applications during saturation (\cref{example:sat-comonoid}); $n \in \{1,2,3,4\}$. Columns $(\to)$ and $(\leftarrow)$ count applications in each direction; --- indicates zero. Purely definitional rules (e.g.\ $\id_2 = \id_1 \otimes \id_1$) are omitted; see \autoref{appendix:smce-rules}.}
 \label{tab:comonoid-rules}
 \end{table}
 
 The structural overhead is substantial: of the $9{,}260$ total rule applications, only $2$ correspond to the comonoid-specific equations; the remaining $9{,}258$ serve merely to keep the representation consistent with the SMC equations.
 The encoding is also fragile, requiring type guards on every structural rule to prevent ill-typed rewrites.
-We refer the interested reader to~\autoref{appendix:smce-rules} for details on comonoid symmetric monoidal theory encoding in \egg.
+We refer the interested reader to~\cref{appendix:smce-rules} for details on comonoid symmetric monoidal theory encoding in \egg.
 
 This suggests that perhaps the choice of encoding was wrong for the comonoids within the e-graph framework.
 Is it somehow possible to get rid of the extra rewrites so that they are absorbed by the encoding?
-One alternative is an \emph{internal language} of monoidal categories, in which monoidal terms are written in a form of type theory whose substitution corresponds to composition, requiring only a subset of rules that we had to include above~\cite{shulman2016categorical}.
+One alternative is an \emph{internal language for monoidal categories}, in which monoidal terms are written in a form of type theory whose substitution corresponds to composition, requiring only a subset of rules that we had to include above~\cite{shulman2016categorical}.
 This encoding is more economical, but it introduces \emph{variable binding} and \emph{substitution}---notions that are not natively supported by traditional e-graphs.
 This limitation was addressed by Schneider et al.~\cite{slotted-egraphs}, who introduced \emph{slotted e-graphs}, a variant with first-class support for variables and substitution.
 Even then it would be necessary to include the substitution as a term former into the syntax and enforce the equations for the substitution to make sure we account for all equivalences of the internal language---otherwise we would not be able to encode rewrite rules that have a substitution present in their left-hand side.  
@@ -247,12 +247,24 @@ The substitution $t[v / x]$ can then be built into the e-graph by traversing all
 This is automatically capture-avoiding, since for each lambda abstraction the bound variable has a unique name that is not used anywhere else in the e-graph.
 For example, when computing the substitution $(\lambda x . f x)[x / f]$, the bound $x$ will be distinct from the $x$ being substituted in, as a globally unique name is picked for the bound variable.
 \begin{figure}[t!]
-		\centering
+		\begin{subfigure}{0.45\textwidth}
+    \[
 		\adjustbox{scale=0.6}{
 			\tikzfig{./figures/introduction/slotted-e-graph-example}
 		}
-		\caption{Slotted e-graph.}%
+    \]
+		\subcaption{Slotted e-graph containing $\lambda f .\,f((\lambda x .\, f x)2)$.}%
 		\label{fig:slotted-example}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+     \[
+    \tikzfig{./figures/introduction/closed-string-diagram-example}
+    \]
+    \subcaption{String diagrammatic representation of $\lambda f .\,f((\lambda x .\, f x)2)$.}
+    \label{fig:closed-string-diagram-example}
+    \end{subfigure}
+    \caption{Slotted e-graph (a) and string diagram (b) repesentations of the same term.}
 \end{figure}
 
 Remarkably, the challenges we mentioned above can be resolved by using string diagrams in place of textual syntax.
@@ -266,12 +278,12 @@ The string diagrammatic representation of the term $\lambda f .\, f ((\lambda x 
 We labelled the wires with variables to see the correspondence more easily, but only the connectivity matters: $\lambda g .\, g ((\lambda y .\, g y) 2)$ would have given the same string diagram.
 Note how the two occurrences of the variable $f$ are shared, avoiding the issue we encountered when using de Bruijn indices.
 \end{example}
-\begin{figure}
-    \centering
-    \tikzfig{./figures/introduction/closed-string-diagram-example}
-    \caption{String diagrammatic representation of $\lambda f .\,f((\lambda x .\, f x)2)$.}
-    \label{fig:closed-string-diagram-example}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \tikzfig{./figures/introduction/closed-string-diagram-example}
+%     \caption{String diagrammatic representation of $\lambda f .\,f((\lambda x .\, f x)2)$.}
+%     \label{fig:closed-string-diagram-example}
+% \end{figure}
 Another feature of these string diagrams is that $\beta$-reduction becomes a \emph{rewiring} of the diagram, without the need for explicit substitution.
 When a $\lambda$-abstraction box is connected to an evaluation node $\evaltikz$, we can rewrite the diagram by erasing the box and connecting the other input of the evaluation node to the dangling wire of the box.
 We can similarly introduce the $\join$ operation to these string diagrams, to express multiple morphisms at once and apply rewrites non-destructively.

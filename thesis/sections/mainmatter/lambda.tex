@@ -1,2 +1,3567 @@
-\chapter{Categorical E-Graphs for $\lambda$-Calculi}
+\chapter{Categorical E-Graphs for \texorpdfstring{$\lambda$}{lambda}-Calculi}
 \label{ch:lambda}
+
+Different flavours of monoidal closed categories are well-known models of different variations of lambda-calculi.
+\begin{definition}%
+	\label{def:closed}
+	A (right) closed monoidal category is a monoidal category $\catname{C}$ satisfying that for
+	every pair of objects $X,A$ there is an object $X \multimap A$ and a morphism $\ev_{X,A} : (X \multimap A) \otimes X \to
+		A$, and for every triple of objects $A,X,B$ there is an operation $\Lambda_{A,X,B} : \catname{C}(A \otimes X,B) \to
+		\catname{C}(A,X \multimap{} B)$ such that for all $f : A \otimes X \to B$ and $g : Z \to A$ the following equations hold:
+	\begin{equation}
+		f = \Lambda_{A,X,B}(f) \otimes \id_{X} \fatsemi \ev_{X,A},
+  \label{eq:lambda_1}
+  \tag{1}
+  \end{equation}
+  \begin{equation}
+		\id_{X \multimap{} B} = \Lambda_{X \multimap{} B,X,B}(\ev_{X,B}),
+  \label{eq:lambda_2}
+  \tag{2}
+  \end{equation}
+  \begin{equation}
+		\Lambda_{Z,X,B}(g \otimes \id_{X} \fatsemi f) = g \fatsemi \Lambda_{A,X,B}(f).
+  \label{eq:lambda_3}
+  \tag{3}
+  \end{equation}
+\end{definition}
+
+This is equivalent to defining a (right) closed monoidal category as one admitting an adjunction $- \otimes B \dashv B \multimap{} -$ for every object $B$.
+If the tensor is symmetric, then the monoidal category is \emph{closed}.
+Note the assymetry, $\ev_{X,A} : (X \multimap A) \otimes X \to A$ is the counit of the adjunction, whereas $\Lambda_{A,X,B}$ is the \emph{currying} isomorphism of the adjunction given by $\Lambda_{A,X,B}(f) = \eta_{A} \fatsemi (X \multimap f)$.
+
+In addition to monoidal closed categories being models, which is useful for model-theoretic study of $\lambda$-calculi, we can pick up on some string diagrammatic wisdom to get better representations of $\lambda$-terms.
+String diagrams for closed monoidal categories are given by the combined syntax in~\cref{fig:lambda-string-combined}.
+
+\begin{figure}
+\begin{subfigure}{0.6\textwidth}
+    \[
+    \adjustbox{max width=\textwidth}{
+    \tikzfig{./figures/introduction/string-diagrams-syntax}
+    }
+    \]
+    \subcaption{String diagrams syntax for symmetric monoidal categories.}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.35\textwidth}
+  \[
+  \adjustbox{max width=\textwidth}{
+    \tikzfig{./figures/introduction/lambda-string}
+  }
+  \]
+    \subcaption{Extension of string diagrammatic syntax with $\lambda$-abstraction ($\Lambda$) and application $\ev$.}
+\end{subfigure}
+\caption{String diagrams for closed monoidal categories.}
+\label{fig:lambda-string-combined}
+\end{figure}
+
+The equations \eqref{eq:lambda_1}--\eqref{eq:lambda_3} are repesented as the equations between string diagrams in~\cref{fig:lambda-string-eq},
+\begin{figure}
+  \[
+\adjustbox{max width=\textwidth}{
+\tikzfig{./figures/lambda/lambda_eq_1},
+}
+\]
+\caption{String diagram equations for the closed monoidal category axioms.}
+\label{fig:lambda-string-eq}
+\end{figure}
+where the wires are labelled by the types of the corresponding objects and the lower boundary of the diagram represents the context of the represented $\lambda$-term.
+If one wish to further model $\lambda$-calculi where the context admits contraction and weakening, the string diagrams are extended with natural copy $\comonoid$ and $\counit$ delete generators.
+
+The first representational advantage of string diagrams is that they are a \emph{nameless} represenattion, that is, $\alpha$-equivalent terms are represented by the same string diagram.
+For example, the string diagram below represents the whole $\alpha$-equivalence class of $\lambda$-terms, including $\lambda f . f((\lambda x. f x) 2)$ and $\lambda g . g((\lambda y . g y) 2)$.
+\[
+    \tikzfig{./figures/introduction/closed-string-diagram-example}
+\]
+It is worth noticing, that the same class of terms may be represented by a single $\lambda$-term using de Bruijn indices, namely the term $\lambda . \%0((\lambda . \%1 \%0) 2)$, however the different occurences of the binder corresponding to $f$ use different indices, which might not be desirable.
+
+Another advantage is the conceptual simplicity of $\beta$-reduction, the rule for which is the first equation in~\cref{fig:lambda-string-eq}.
+In order to $\beta$-reduce a string diagrammatic application, it is sufficient to re-attach the matching wires.
+This principle of using wires for the variables goes further.
+Traditionally, substitution of $\lambda$-terms is made a first-class term former with its own set of equations.
+Different sets of equations result in different $\lambda$-calculi.
+Below we consider the \emph{linear substitution calculus} $\lambda_{\mathrm{sub}}$ of Accattoli et al.~\cite[Sec.~2]{accattoli2014nonstandard}.
+
+We summarise the linear substitution calculus as the $\lambda$-calculus with an additional term former representing explicit substitution; i.e.\ terms are generated by the grammar
+\[
+	t \Coloneqq x \mid t t \mid \lambda x. t \mid t [x/t],
+\]
+where $x$ is a variable drawn from some countably infinite set, $t u$ is an application, and $\lambda x. t$ is an abstraction, as in standard $\lambda$-calculus.
+The term $t [x / u]$ is an explicit substitution of the variable $x$ for the term $u$ in the term $t$.
+
+The notions of context $C[-]$, bound and free variable are as usual, with the addition that $\textsf{fv} (t [x/u]) \coloneq \textsf{fv} (t) \setminus \{ x \} \cup \textsf{fv} (u)$.
+Write $C \llbracket t \rrbracket$ for the term given by substitution of the hole in the context $C[-]$ for the term $t$, under the additional restriction that the free variables of $t$ are not captured (via abstraction or explicit substitution) by $C$.
+In addition to the $\beta$- and $\eta$-reduction rules of standard $\lambda$-calculus, there are reduction rules to account for this explicit substitution which \enquote{perform} the substitution or commute it with $\beta$-reduction:
+\begin{align*}
+	(\lambda x. t) L u              \quad & \to_{d\beta} \quad t[x/u] L,                                                \\
+	C \llbracket x \rrbracket [x/u] \quad & \to_{ls} \quad C \llbracket u \rrbracket [x/u],                             \\
+	t [x/u]                         \quad & \to_{gc} \quad t,                               & x \notin \textsf{fv} (t),
+\end{align*}
+where $L$ is a finite list of substitutions of the form $[x/u] [y/v] \ldots$.
+
+In programming terms, this explicit substitution can be used to model \textbf{let}-bindings and sharing.
+For instance, the ML-style term $\textbf{let} \; x = 1 \; \textbf{in} \; \text{plus} (x, x)$ is formally represented as the term $\text{plus} (x, x) [x / 1]$ in this calculus\footnote{Technically speaking, in this case we mean the extension of this calculus with flat natural numbers equipped with a binary operation $\text{plus}$.}.
+In this case, the variable $x$ is valued in the constant $1$, but one could imagine instead that $x$ is to be substituted for the result of some expensive computation which we do not desire to repeat twice unnecessarily --- in this sense, the sharing of both operands of the operation $\text{plus}$ is captured by the explicit substitution.
+
+\emph{Graphical equivalence} $\sim$ of $\lambda_{\text{lsub}}$-terms is augmentation of $\alpha$-equi\-va\-lence of terms with the additional stipulations that
+\begin{equation}
+\begin{aligned}
+	t [x/u] [y/v] \quad        & \sim \quad t [y/v] [x/u],        & x \notin \textsf{fv} (v) \land y \notin \textsf{fv} (u), \\
+	(\lambda y. t) [x/u] \quad & \sim \quad \lambda y. (t [x/u]), & y \notin \textsf{fv} (u),                             \\
+	(t v) [x/u] \quad          & \sim \quad t [x/u] v,            & x \notin \textsf{fv} (v),
+\end{aligned}
+\label{eq:gs_equivalence}
+\tag{$\ast$}
+\end{equation}
+closed under contexts, transitivity, symmetry, and reflexivity.
+Put simply, it is the stipulation that \textbf{let}-bindings may be freely reordered without changing the meaning of the term\footnote{Recall that our setting is \emph{pure}, in the sense that no sequencing of effects is meaningful.}.
+The $\lambda^\sim_{\text{lsub}}$-calculus is given by these graphical equivalence classes of terms with the reduction relation defined by that of the $\lambda_{\text{lsub}}$-calculus modulo graphical equivalence.
+
+This calculus is explicitly designed to capture the representation of terms as proof nets: for two terms $t, u$ in the $\lambda_{\text{lsub}}$-calculus, $t \sim u$ if and only if both map to the same proof net~\cite{accattoliJumpingBoxGraphical2011}.
+% By further extending the equivalence relation $\sim$, taking the symmetric closure by $\to_{ls}$ and $\to_{gc}$ and thus identifying terms under elimination of explicit substitution, we determine a \emph{string diagram equivalence} $\approx$ of $\lambda_{\text{lsub}}$-terms, determining a $\lambda^\approx_{\text{lsub}}$-calculus.
+\begin{proposition}{\cite[Sec.~5.1.1]{ghica2024stringdiagramslambdacalculifunctional}}
+	Let \emph{string diagram equivalence} $\approx$ of $\lambda_{\text{lsub}}$-terms be the extension of graph equivalence $\sim$ by taking the symmetric closure by $\to_{ls}$ and $\to_{gc}$, thus identifying terms under elimination of explicit substitution.
+	It defines the corresponding $\lambda^\approx_{\text{lsub}}$-calculus.
+	We then have that $t \approx u$ if and only if both map to the same string diagram.
+\end{proposition}
+For example, both sides of first equivalence in~\eqref{eq:gs_equivalence} are represented by the same string diagram on the left and both sides of the third rule are represented by the same string diagram on the right:
+\[
+\tikzfig{./figures/lambda/gs_equivalence_example_1} \qquad \qquad \tikzfig{./figures/lambda/gs_equivalence_example_2}~.
+\]
+The second equivalence is the third equation in~\cref{fig:lambda-string-eq}.
+
+This allows us to exploit the string diagram setting of e-hypergraphs to absorb many\footnote{The reason this is not \emph{all} reductions is because e-hypergraphs quotient away only the \emph{structural} isomorphisms of symmetric monoidal closed $\catname{SLat}$-categories (e.g.\ associators, unitors, etc.) which generate the \enquote{isotopy of string diagrams}; even in the graphical equivalence relation $\sim$, while~\autoref{eq:subst-lambda} is validated in every symmetric monoidal closed $\catname{SLat}$-category, it is not so by isotopy, but rather the adjunction $ - \otimes A \dashv A \multimap -$. In other words, terms floating freely through the boundaries of rounded boxes is validated by our semantics, but produces concretely different e-hypergraphs --- this is the purpose of rectification by quotienting along $\mathcal{S}$ in~\autoref{prop:quotient-structural}, and manifests as additional DPO rewrites to be imposed.} of the reductions arising due to the equivalence $\approx$ into our representation rather than explicitly providing them as equations attached to a closed symmetric monoidal theory presenting the $\lambda^\approx_{\text{lsub}}$-calculus.
+
+% Before we proceed to demonstrate this, we first wish to discuss the relevance of this calculus in the domain of e-graphs.
+% E-graphs excel as a toolkit for compiler optimisation, facilitating the rewriting of programs into more efficient forms by equality saturation.
+% The theoretical study of this is the field of term rewriting, where programs are often simplistically represented as (the abstract syntax of) terms in the $\lambda$-calculus.
+% However, in a modern optimising compiler (e.g.\ LLVM~\cite{lattnerLLVMCompilationFramework2004}, GNU Compiler Collection~\cite{merrillGenericGimpleNew2003}), programs are represented as some sort of graph-based intermediate representation (IR) rather than a syntax tree.
+% Here, basic blocks of instructions\footnote{Maximal sequences of instructions which are unconditionally executed together determined by program control flow.} form the nodes, and terminator instructions (e.g.\ jumps, branches, and other control flow operations) form the edges.
+% This allows for optimisations and analyses based on graphical structure, e.g.\ reachability analysis to perform dead-code elimination, or data-flow analysis to perform constant folding.
+% In essence, this is much closer to $\lambda^\approx_{\text{lsub}}$-calculus: the string diagram equivalence there is abstracting away from the particular syntax of a term, in much the same way that LLVM IR abstracts away from the raw syntax of the source program.
+% Thus, an understanding of e-graphs in this context is valuable for the applicability of equality saturation techniques with respect to graph-based IRs which dominate the landscape of modern compiler design.
+
+We will define a monoidal signature whose closed symmetric monoidal theory is the $\lambda^\approx_{\text{lsub}}$-calculus extended by tupling of terms and flat natural numbers equipped with basic arithmetic operations.
+Let $\Sigma \coloneq (\{ \mathbf{N} \}, \{ \comonoid, \counit \} \cup \mathbb{N} \cup \{ \text{plus}, \text{mult} \}, t)$ where
+\begin{align*}
+	t\colon \{ \comonoid, \counit \} \cup \mathbb{N} \cup \{ \text{plus}, \text{mult} \} & \to {\{ \mathbf{N} \}}^* \times {\{ \mathbf{N} \}}^*                                                    \\
+	t(n)                                                                                 & = ((), (\mathbf{N})),                                & n \in \mathbb{N},                                \\
+	t(o)                                                                                 & = ((\mathbf{N}, \mathbf{N}), (\mathbf{N})),          & o \in \{ \comonoid, \text{plus}, \text{mult} \}, \\
+	t(\counit)                                                                           & = ((\mathbf{N}), ()).
+\end{align*}
+The operations that the signature $\Sigma$ avails are copy and delete, denoted by $\comonoid$ and $\counit$ respectively, constants for each natural number, and the binary arithmetic operations $+$ and $\times$.
+We interpret the $\Sigma$-terms $\llbracket \tau \rrbracket$ as follows: operations as themselves, $\id_{I}$ and $\id_{\mathbf{N}}$ as the identity function $\lambda x. x$ on the empty tuple $()$ and $\mathbf{N}$ respectively, $\sym_{\mathbf{N}, \mathbf{N}}$ as the swap function $\lambda (x, y). (y, x)$, composition $\tau_1 \fatsemi \tau_2$ as the composition function $\lambda x. \llbracket \tau_2 \rrbracket \left(\llbracket \tau_1 \rrbracket x\right)$, and $\tau_1 \otimes \tau_2$ as tupling $\left(\llbracket \tau_1 \rrbracket, \llbracket \tau_2 \rrbracket\right)$.
+
+Note that, in contrast to conventional presentations of the $\lambda$-calculus as a language of (slotted~\cite[Example 1]{slotted-egraphs}) e-graphs~\cite[Figure 10]{EggPaper}, here there is no encoding of the term formers for application, abstraction, and explicit substitution.
+Instead, these constructs are handled ambiently by our semantic setting: any closed symmetric monoidal category (and in particular, $\catname{CS}(\Sigma, \mathcal{E})$ for any set of equations $\mathcal{E}$) admits an internal language in the multiplicative fragment of intuitionistic linear logic (a particular type of linear $\lambda$-calculus)~\cite[§ 1.7.3]{abramskyIntroductionCategoriesCategorical2010}.
+In other words, with respect to~\autoref{fig:egraph-strings}, this allows us to \emph{natively} represent abstraction by the rounded boxes of ($\Lambda(f)$), and application by the $\textsf{ev}$ operation with $\beta$- and $\eta$-conversion arising via equality of morphisms in the category (that is, without having to provide them as data in the form of equations in $\mathcal{E}$).
+For explicit substitution, we note that the linearity is not desirable; this is why the copy-delete comonoid $(\comonoid, \counit)$ is present: by Fox's theorem~\cite{foxCoalgebrasCartesianCategories1976}, a Cartesian category is precisely a monoidal one admitting such a \emph{natural} copy-delete structure.
+Thus, we must endow $\mathcal{E}$ with equations stating that $(\comonoid, \counit)$ forms a comonoid, and moreover that it is natural: $\comonoid$ behaves uniformly as a copy map, and $\counit$ behaves as deletion.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.3\linewidth}
+		\begin{adjustbox}{scale=0.8}
+			\begin{lstlisting}[language=ML]
+let x = 1 in
+let y = 2 in
+plus(x, y)
+                \end{lstlisting}
+		\end{adjustbox}
+		\hrule
+		\begin{adjustbox}{scale=0.8}
+			\begin{lstlisting}[language=ML]
+let y = 2 in
+let x = 1 in
+plus(x, y)
+                \end{lstlisting}
+		\end{adjustbox}
+		\hrule
+		\begin{adjustbox}{scale=0.8}
+			\begin{lstlisting}[language=ML]
+plus(1, 2)
+                \end{lstlisting}
+		\end{adjustbox}
+		\caption{Three programs for $1 + 2$}%
+		\label{fig:plus-1-2-programs}
+	\end{subfigure}
+	\hspace{1em}
+	\begin{subfigure}{0.2\linewidth}
+		\[
+			\begin{adjustbox}{scale=0.8}$
+					\begin{aligned}
+						        & \text{plus}(x, y)[y/2][x/1] \\
+						\approx &                             \\
+						        & \text{plus}(x, y)[x/1][y/2] \\
+						\approx &                             \\
+						        & \text{plus}(1, 2)
+					\end{aligned}
+				$\end{adjustbox}
+		\]
+		\caption{As terms in $\lambda_{\text{lsub}}$}%
+		\label{fig:plus-1-2-terms}
+	\end{subfigure}
+	\hspace{2em}
+	\begin{subfigure}{0.3\linewidth}
+		\centering
+		\scalebox{0.8}{
+			\tikzfig{./figures/lambda/plus-1-2}
+		}
+		\caption{String-diagrammatic representation}%
+		\label{fig:plus-1-2-string-diagram}
+	\end{subfigure}
+	\caption{$\approx$-equivalent terms}%
+	\label{fig:plus-1-2}
+\end{figure}
+
+\autoref{fig:plus-1-2-programs} shows some programs which are semantically equivalent but syntactically distinct.
+As alluded to in~\autoref{sec:vs-e-graphs-with-binding}, the traditional (slotted) e-graph approach to modelling the equivalence of these terms (\autoref{fig:plus-1-2-terms}) relies on explicitly encoding substitution operations as e-graph nodes, and their behaviour (the string diagram equivalence relation $\approx$) as rewrite rules, as in~\autoref{fig:e-graph-substitution} --- not only is this more complicated, but it also leads to a blow-up in the state space required to perform equality saturation in any extension of the $\lambda^\approx_{\text{lsub}}$-calculus, because we are really rewriting $\lambda_{\text{lsub}}$-terms and computational resources are spent rewriting between equivalent terms (an empirical analysis is provided in~\autoref{sec:e-graph-explicit-subst}).
+In contrast, in our framework, $\lambda^\approx_{\text{lsub}}$-terms are directly modelled as string diagrams (\autoref{fig:plus-1-2-string-diagram}\footnote{Note that dashed boxes are elided for convenience here because no rewriting has occurred.}).
+We do however note that the slotted approach is more flexible, in the sense that it may model more theories with binders (e.g.\ $\pi$-calculus), whereas our approach is essentially specialised to $\lambda$-calculus, relying heavily on the metatheoretic internal language of the ambient setting.
+
+The above concepts of $\alpha$-equivalence and substitution are aspects that were notoriously difficult to support in traditional e-graphs.
+The usual solution was to encode $\lambda$-terms using de Bruijn indices, which we noted is not ideal because it can obscure sharing.
+Moreover, performing $\beta$-reduction on de Bruijn terms requires shifting of indices, which complicates the rewrite rules or requires to introduce index shifting as a term former akin to explicit substitution.
+Then, traditional e-graphs had no notion of binding, or variables in general: all e-graphs technically represent ground terms, with variables encoded as constants at the leaves of the graph.
+Explicit substitution is then the preferred way of performing substitution of e-classes.
+The alternative is to define substitution as a meta-operation on e-graphs, which requires the traversal of the e-graph, iterating through e-classes to see if they contain the required bound variable.
+This involves obligations to make sure that such operation does not break the e-graph invariants.
+
+The recent work of Schneider et al.~\cite{slotted-egraphs} addressed these issues in their \emph{slotted e-graphs} framework that introduced variables as first-class elements.
+In slotted-egraphs, each e-class is parameterised by a set of free variables it uses and each e-node may invoke different instances of such an e-class by supplying concrete varible names for slots.
+Consider the slotted e-graph example below.
+ \[
+  \adjustbox{scale=0.6}{
+			\tikzfig{./figures/introduction/slotted-e-graph-example}
+  }~.
+\]
+E-classes are represented as boxes with headers indicating the free variables they use.
+There is also a single e-class used to represent the source of all varables: other variables are instantiated by invoking this e-class with different variable names.
+This is an intentional design decision to enable sharing of terms that have the same \emph{free} variables up-to renaming.
+For example, in a term $f(x,y) + f(z,w)$, with $x,y,z,w$ all free variables, the occurrence of $f$ is shared and exposes two generic free variables; the e-node $+$ then invokes the e-class containing $f$ with variables $x,y$ and $z,w$.
+E-nodes are matched to their corresponding e-classes by computing a normal form with respect to the free varibles, by canonically renaming them.
+Note that e-class containing $2$ does not expose any variables and the e-class containing $\lambda x$ exposes one less variable than its child e-class.
+Since variables are first-class citizens, slotted e-graphs have a substitution operation built-in that traverses the e-graph to perform the required substitution.
+Yet, the practically preffered way of performing substitution is still to use explicit substitution.
+
+We arggue that string diagrams for $\catname{SLat}$-enriched closed symmetric monoidal categories, provide a more principled support for varible binding and substitution.
+The syntax of such string diagrams is given in~\cref{fig:egraph-strings-closed}.
+\begin{figure}
+	\centering
+	\adjustbox{scale=0.65}{
+		\tikzfig{./figures/lambda/egraph-strings-2}
+	}
+	\caption{String diagrams for closed symmetric monoidal $\catname{SLat}$-categories; dashes stand for arbitrary number of wires and appropriate labels.}
+	\label{fig:egraph-strings-closed}
+\end{figure}
+String diagrams keep varibles and e-classes (dashed boxes) as separate entities, variables are just wires connecting the diagram.
+Substitution then does not require any special treatment, it is still just a rewiring of the diagram, regardless whether we connecting dashed boxes or not.
+Finally, as we noted above, string diagrams have some notation advantages.
+
+Consider the example of non-destructive $\beta$-reduction as performed in an e-graph and in a string diagram, in~\cref{fig:e-graph-substitution-string-combined}.
+As noted, in the e-graph, explicit substitution e-nodes are added and then recursively resolved using additional rewrite rules.
+This requires several steps and leaves explicit substitution nodes which are redundant when the substitution is done.
+In contrast, in the string diagram, $\beta$-reduction is perfomed by a single rewrite step; the other steps perform structural $\catname{SLat}$-transformations to make the correspondence between the two structures more evident.
+The corresponding slotted e-graph diagram may look as the one of traditional e-graphs if explicit substitution is used, or as string diagrammatic version, if the internal traversal is used to perform the substitution.
+\begin{figure}
+  \begin{subfigure}{\textwidth}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{./figures/introduction/e-graph-explicit-substitution}
+    }
+    \]
+    \subcaption{Explicit substitution in an e-graph.}
+    \label{fig:explicit-substitution-egg-lambda-chapter}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+    \[
+    \adjustbox{width=\linewidth}{
+    \tikzfig{./figures/introduction/e-string-substitution-2}
+    }
+    \]
+    \subcaption{$\beta$-reduction in string diagrams.}
+    \label{fig:beta-reduction-string-diagrams-lambda-chapter}    
+\end{subfigure}
+\caption{Performing $\beta$-reduction in an e-graph and in a string diagram.}
+\label{fig:e-graph-substitution-string-combined}
+\end{figure}
+
+Yet, explicit substitution might be unavoidable when one wants to represent, for example, the equational theory of $\lambda_{\mathrm{sub}}$.
+Before we demonstrate the advantages of string diagrams with respect to representing $\lambda_{\mathrm{lsub}}$, we need to be precise about what the concrete combinatorial representation of string diagrams is, because it is the latter that determines what structure is absorbed on the nose and what must be additionally enforced as rewrite rules.
+
+We next present the combinatorial representation of string diagrams for closed symmetric monoidal $\catname{SLat}$-categories, which is a reconciliation of our development in~\cref{chapter:monoidal} and hypernets introduced by Ghica et al.~\cite{fscd}.
+
+We start with the notion of closed $\Sigma$-terms.
+
+\begin{definition}[Objects]
+Let $\Sigma=(\Sigma_0,\Sigma_1)$ be a monoidal signature.
+The set $\operatorname{Ob}^{\Lambda}_{\Sigma}$ consists of
+object expressions generated by
+\[
+  A,B ::= I \mid a \in \Sigma_0
+          \mid A \otimes B
+          \mid A \multimap B,
+\]
+modulo the least congruence generated by
+\[
+  (A \otimes B) \otimes C = A \otimes (B \otimes C),
+  \qquad
+  I \otimes A = A = A \otimes I.
+\]
+No other equations are imposed on objects. Thus $\otimes$ is strictly
+associative and unital, while $\multimap$ is a free type constructor.
+
+A word
+\[
+  \langle a_1,\ldots,a_n\rangle\in\Sigma_0^*
+\]
+is regarded as the object
+\[
+  a_1\otimes\cdots\otimes a_n,
+\]
+with the empty word \(\varepsilon=\langle\,\rangle\) interpreted as
+\(I\). In particular, the domains and codomains of generators in
+\(\Sigma_1\) determine objects of
+\(\operatorname{Ob}^{\Lambda}_{\Sigma}\).
+
+An object is \emph{atomic} if it is a base type \(a\in\Sigma_0\) or an
+internal-hom type \(A\multimap B\). Write
+\(\operatorname{At}^{\Lambda}_{\Sigma}\) for the set of atomic types.
+Every object has a unique expression as a finite tensor word of atomic
+types.
+
+We display words of atomic types as lists
+\[
+  \langle T_1,\ldots,T_n\rangle
+  \in
+  \bigl(\operatorname{At}^{\Lambda}_{\Sigma}\bigr)^*,
+\]
+and use juxtaposition for concatenation of words. Define
+\[
+  \operatorname{wd}:
+  \operatorname{Ob}^{\Lambda}_{\Sigma}
+  \longrightarrow
+  \bigl(\operatorname{At}^{\Lambda}_{\Sigma}\bigr)^*
+\]
+by
+\[
+  \operatorname{wd}(I)=\varepsilon,
+  \qquad
+  \operatorname{wd}(A\otimes B)
+  =
+  \operatorname{wd}(A)\operatorname{wd}(B),
+  \qquad
+  \operatorname{wd}(A\multimap B)
+  =
+  \langle A\multimap B\rangle.
+\]
+
+Conversely, define the object represented by a word by
+\[
+  \left\lVert\langle T_1,\ldots,T_n\rangle\right\rVert_{\otimes}
+  \defeq
+  T_1\otimes\cdots\otimes T_n,
+  \qquad
+  \lVert\varepsilon\rVert_{\otimes}\defeq I.
+\]
+The functions \(\operatorname{wd}\) and
+\(\lVert-\rVert_{\otimes}\) are mutually inverse.
+\end{definition}
+
+\begin{example}[Words and objects]
+Let \(a,b,c,d\in\Sigma_0\). The expression
+\(a\multimap(b\otimes c)\) is one atomic type, and
+\[
+  \operatorname{wd}
+  \bigl((a\multimap(b\otimes c))\otimes a\otimes d\bigr)
+  =
+  \langle a\multimap(b\otimes c),a,d\rangle.
+\]
+This three-letter word represents the object
+\[
+  (a\multimap(b\otimes c))\otimes a\otimes d.
+\]
+By contrast, \((a\multimap b)\otimes c\) is represented by the
+two-letter word
+\[
+  \langle a\multimap b,c\rangle.
+\]
+\end{example}
+
+\begin{definition}[Raw closed terms]
+For $A,B \in \operatorname{Ob}^{\Lambda}_{\Sigma}$, the
+families $\operatorname{Tm}^{\Lambda}_{\Sigma}(A,B)$ of
+\emph{raw closed $\Sigma$-terms} are the least families
+generated by the following constructors:
+\begin{enumerate}
+  \item Each generator $f \in \Sigma_1$ is a term
+  \[
+    f : \mathrm{dom}(f) \to \mathrm{cod}(f),
+  \]
+  where its domain and codomain words are regarded as objects.
+
+  \item There are primitive identity terms
+  \[
+    \id_I : I \to I,
+    \qquad
+    \id_T : T \to T
+    \quad
+    (T \in \operatorname{At}^{\Lambda}_{\Sigma}).
+  \]
+
+  \item For all $T,U \in \operatorname{At}^{\Lambda}_{\Sigma}$,
+  there is a primitive symmetry term
+  \[
+    \sym_{T,U} : T \otimes U \to U \otimes T.
+  \]
+
+  \item If $f : A \to B$ and $g : B \to C$ are terms,
+  then
+  \[
+    f \fatsemi g : A \to C
+  \]
+  is a term.
+
+  \item If $f : A \to B$ and $g : C \to D$ are terms,
+  then
+  \[
+    f \otimes g : A \otimes C \to B \otimes D
+  \]
+  is a term.
+
+  \item For all $A \in \operatorname{At}^{\Lambda}_{\Sigma}$ and $B \in \operatorname{Ob}^{\Lambda}_{\Sigma}$,
+  there is an evaluation term
+  \[
+    \ev_{A,B} : (A \multimap B) \otimes A \to B.
+  \]
+
+  \item For all $A \in \operatorname{At}^{\Lambda}_{\Sigma}$ and $X,B \in \operatorname{Ob}^{\Lambda}_{\Sigma}$, if $h : X \otimes A \to B$ is a term, then
+  \[
+    \Lambda_{X,A,B}(h) : X \to A \multimap B
+  \]
+  is a term.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+  Above we assume that the evaluation and abstraction happens with respect to atomic types.
+  This is to simplify the necessary bookkeeping in the combanatorial definitions.
+\end{remark}
+
+We write $\id_A$ and $\sym_{A,B}$ for the standard terms on arbitrary
+objects derived from the primitive identities and symmetries using
+$\fatsemi$ and $\otimes$.
+
+\begin{definition}[Raw closed terms with joins]
+The families
+$\operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)$
+are generated by the same constructors as
+$\operatorname{Tm}^{\Lambda}_{\Sigma}(A,B)$, together with
+the following constructor:
+\[
+  \frac{f : A \to B \qquad g : A \to B}
+       {f \join g : A \to B}.
+\]
+All constructors act on terms of the enlarged families;
+in particular, joins may occur inside abstractions.
+No equations are imposed at this stage.
+\end{definition}
+
+We shall show that rewriting terms in
+$\operatorname{Tm}_{\Sigma}^{\Lambda,\join}$ modulo the symmetric monoidal
+and $\catname{SLat}$ equations can equivalently be performed on their
+closed e-hypergraph interpretations.
+
+\begin{definition}[Structural congruences]
+\label{def:lambda-structural-congruences}
+Let $\equiv_0$ be the congruence on
+$\operatorname{Tm}^{\Lambda}_{\Sigma}$ generated by all well-typed
+instances of the strict symmetric monoidal equations in
+\cref{fig:string-diagram-axioms}.
+
+Let $\equiv_{\mathsf{str}}$ be the congruence on
+$\operatorname{Tm}^{\Lambda,\join}_{\Sigma}$ generated by the following
+well-typed equations:
+\begin{enumerate}
+  \item The strict symmetric monoidal equations, allowing terms that
+  contain joins.
+
+  \item The semilattice equations
+  \[
+    f \join f \equiv_{\mathsf{str}} f,
+    \qquad
+    f \join g \equiv_{\mathsf{str}} g \join f,
+  \]
+  \[
+    (f \join g) \join h
+    \equiv_{\mathsf{str}}
+    f \join (g \join h),
+  \]
+  for all parallel terms $f,g,h : A \to B$.
+
+  \item Preservation of joins in each argument of
+  composition and tensor:
+  \begin{align*}
+    (f \join g) \fatsemi h
+      &\equiv_{\mathsf{str}}
+      (f \fatsemi h) \join (g \fatsemi h),\\
+    h \fatsemi (f \join g)
+      &\equiv_{\mathsf{str}}
+      (h \fatsemi f) \join (h \fatsemi g),\\
+    (f \join g) \otimes h
+      &\equiv_{\mathsf{str}}
+      (f \otimes h) \join (g \otimes h),\\
+    h \otimes (f \join g)
+      &\equiv_{\mathsf{str}}
+      (h \otimes f) \join (h \otimes g),
+  \end{align*}
+  \item Preservation of joins by abstraction:
+  \begin{equation}
+    \Lambda_{X,A,B}(f \join g)
+    \equiv_{\mathsf{str}}
+    \Lambda_{X,A,B}(f) \join \Lambda_{X,A,B}(g),
+    \label{eq:lambda-join-structural}
+  \end{equation}
+  for all $f,g : X \otimes A \to B$.
+\end{enumerate}
+Neither congruence includes the $\beta$-, $\eta$-, or
+currying naturality equations among its generators.
+This rules, perform computations, that is, effects, so we will introduce them as rewrite rules.
+\end{definition}
+
+\subsection*{Categorical foundations of slotted e-graphs}
+We take a brief pause to discuss the equation~\eqref{eq:lambda-join-structural} with respect to slotted e-graphs of Schneider et al.~\cite{slotted-egraphs}.
+Slotted e-graphs extend the traditional signature employed by e-graphs with an explicit construct for binding ($\text{bind}\; \$x\; tc$) and variables (\emph{slots}).
+	Their syntax is generated by the following grammar:
+	\begin{alignat*}{2}
+		\text{(functional symbols)} &        &                            & \; f,\;g, \ldots ;                                                                       \\
+		\text{(slots)}              &        &                            & \; \$x,\; \$y, \ldots ;                                                                   \\
+		\text{(term children)}      &        & tc               \Coloneqq & \; t \mid tc_{1},\; \ldots,\; tc_{n} \mid \text{bind}\; \$x\; tc \mid \$x ; \qquad n \geq 1 \\
+		\text{(terms)}              & \qquad & t                \Coloneqq & \; f \mid f(tc) .
+	\end{alignat*}
+	The traditional congruence relation maintained by e-graphs for a set of equations $E$ is given below (plus the obvious rules for transitivity, symmetry and reflexivity of $\cong$):
+	\begin{mathpar}
+		\inferrule*[right=start]
+		{a = b \in E}
+		{E \vdash a \cong b}
+		\quad
+		\inferrule*[right=cong. (variadic)]
+		{E \vdash tc_i \cong tc'_i,\; i = 1, \ldots, k}
+		{E \vdash tc_1, \ldots, tc_k \cong tc'_1, \ldots, tc'_k}
+		\quad 
+		\inferrule*[right=cong. (f)]
+		{E \vdash tc \cong tc'}
+		{E \vdash f(tc_1) \cong f(tc')}
+	\end{mathpar}
+  Recall that we interpret the e-graph congruence by putting the equivalent terms together with a $\join$.
+  The rule $tc \cong tc' \implies f(tc) \cong f(tc')$ is then exactly the property of composition in $\catname{SLat}$-category, namely $f(tc \join tc') = f(tc) \join f(tc')$.
+	Slotted e-graphs extend the above rules with the following:
+	\begin{equation}%
+		\label{eq:cong-bind}
+		\inferrule*[right=cong. (bind)]
+		{E \vdash tc \cong tc'}
+		{E \vdash \text{bind}\; \$x\; tc \cong \text{bind}\; \$x\; tc'},
+	\end{equation}
+	plus the rules for equivalence of terms up to renaming of slots.
+  This rule is exactly the property of preservation of joins by abstraction in~\eqref{eq:lambda-join-structural}.
+  We did not have to introduce this rule in ad hoc manner, nor did we have to justify it---it is provided by the axioms of the category we work in and thus the rule is sound with respect to semantics.
+
+\section{The carrier and its interfaces}
+Let $\Gamma_\Sigma$ be the typed monoidal signature whose object
+types are $\operatorname{At}^{\Lambda}_{\Sigma}$ and whose generators
+are
+\[
+  (\Gamma_\Sigma)_1
+  =
+  \Sigma_1
+  \sqcup
+  \{
+    \ev_{A,B}
+    \mid
+    A \in \operatorname{At}^{\Lambda}_{\Sigma},B\in\operatorname{Ob}^{\Lambda}_{\Sigma}
+  \}.
+\]
+A generator $f\in\Sigma_1$ retains its original domain and codomain,
+regarded as words of atomic types, while
+\[
+  \ev_{A,B}:
+  \operatorname{wd}(A\multimap B)\operatorname{wd}(A)
+  \longrightarrow
+  \operatorname{wd}(B).
+\]
+
+\begin{definition}[Closed rooted e-hypergraph]
+\label{def:lambda-rooted-graph}
+A \emph{closed rooted e-hypergraph} over \(\Sigma\) is a tuple
+\[
+  \mathcal G
+  =
+  (V,E,s,t,l_V,l_E,\top,<^\mu)
+\]
+with the same underlying hypergraph and hierarchical data as a rooted
+e-hypergraph of \cref{def:rooted_ehypergraph}, except for the following
+changes.
+
+Vertices and edges are labelled by
+\[
+  l_V:
+  V\longrightarrow\operatorname{At}^{\Lambda}_{\Sigma},
+  \qquad
+  l_E:
+  E\longrightarrow
+  (\Gamma_\Sigma)_1
+  \sqcup
+  \{\boxsort,\cmpsort,\lambdasort\}.
+\]
+The vertex labelling extends pointwise to words:
+\[
+  l_V^*:
+  V^*
+  \longrightarrow
+  \bigl(\operatorname{At}^{\Lambda}_{\Sigma}\bigr)^*,
+  \qquad
+  l_V^*\bigl(\langle v_1,\ldots,v_n\rangle\bigr)
+  =
+  \langle l_V(v_1),\ldots,l_V(v_n)\rangle.
+\]
+
+Write
+\[
+  E_{\Gamma_\Sigma},
+  \qquad
+  E_{\boxsortsubscript},
+  \qquad
+  E_{\cmpsortsubscript},
+  \qquad
+  E_{\lambdasortsubscript}
+\]
+for the respective inverse images under \(l_E\).
+Edges in \(E_{\Gamma_\Sigma}\) are called \emph{ordinary edges}, and
+edges in \(E_{\lambdasortsubscript}\) are called
+\emph{\(\lambda\)-edges}.
+
+The tree-structure condition of
+\cref{def:rooted_ehypergraph} is unchanged. In particular,
+\(\top\in E_{\cmpsortsubscript}\), it has no parent, and every other
+vertex or edge has a unique immediate parent. The remaining conditions
+are replaced by the following.
+
+\begin{enumerate}
+  \item \emph{Typing.}
+  Every ordinary edge \(e\in E_{\Gamma_\Sigma}\) satisfies
+  \[
+    l_V^*(s(e))
+    =
+    \operatorname{dom}_{\Gamma_\Sigma}(l_E(e)),
+    \qquad
+    l_V^*(t(e))
+    =
+    \operatorname{cod}_{\Gamma_\Sigma}(l_E(e)).
+  \]
+  Every component edge \(c\in E_{\cmpsortsubscript}\) satisfies
+  \[
+    s(c)=t(c)=\varepsilon.
+  \]
+
+  \item \emph{Alternation.}
+  The immediate parent of every vertex, ordinary edge,
+  \(\boxsort\)-edge and \(\lambdasort\)-edge is a component edge.
+  The immediate parent of every component edge other than \(\top\)
+  is either a \(\boxsort\)-edge or a \(\lambdasort\)-edge.
+
+  \item \emph{Incidence.}
+  If
+  \[
+    v\in s(e)
+    \quad\text{or}\quad
+    v\in t(e)
+  \]
+  for
+  \[
+    e\in
+    E_{\Gamma_\Sigma}
+    \cup E_{\boxsortsubscript}
+    \cup E_{\lambdasortsubscript},
+  \]
+  then \(v\) and \(e\) have the same immediate parent.
+
+  \item \emph{Hierarchical arity.}
+  Every \(\boxsort\)-edge has at least two component children, and
+  every \(\lambdasort\)-edge has exactly one component child.
+\end{enumerate}
+
+As before, \(\mathfrak T\) denotes the closed rooted e-hypergraph with
+no vertices and with its component root as its only edge.
+\end{definition}
+
+The only new hierarchical sort is $\lambdasort$. A $\lambda$-edge has one
+component, representing the body of an abstraction. Evaluation edges are
+ordinary edges labelled by the generators
+$\ev_{A,B}\in(\Gamma_\Sigma)_1$.
+
+\begin{remark}[Atomic wire types]
+Each vertex represents one wire and is therefore labelled by one atomic
+type. An arbitrary object $A$ is represented by the ordered list of
+vertices labelled by $\operatorname{wd}(A)$. In particular,
+$A\multimap B$ labels one vertex, whereas a non-trivial tensor is
+represented by several vertices.
+\end{remark}
+
+\begin{example}[Extending vertex labels to words]
+Let \(a,b,c,d\in\Sigma_0\), and suppose that
+\[
+  l_V(v_1)=a\multimap(b\otimes c),
+  \qquad
+  l_V(v_2)=a,
+  \qquad
+  l_V(v_3)=d.
+\]
+The pointwise extension of \(l_V\) gives
+\[
+  l_V^*\bigl(\langle v_1,v_2,v_3\rangle\bigr)
+  =
+  \langle a\multimap(b\otimes c),a,d\rangle.
+\]
+This is a three-letter word of atomic types. The object it represents is
+\[
+  \left\lVert
+    \langle a\multimap(b\otimes c),a,d\rangle
+  \right\rVert_{\otimes}
+  =
+  (a\multimap(b\otimes c))\otimes a\otimes d.
+\]
+\end{example}
+
+\begin{example}
+An example of a closed e-hypergraph is shown below.
+\[
+\adjustbox{scale=0.8}{
+\tikzfig{./figures/lambda/closed_e_hypergraph_example}~.
+}
+\]
+We depict $\lambdasort$-edges as rounded boxes. They are distinguished
+from $\boxsort$-edges by having exactly one component child.
+\end{example}
+
+\begin{definition}[Lax, anchored and strict homomorphisms]
+\label{def:lambda-rooted-homomorphism}
+Let $\mathcal F$ and $\mathcal G$ be closed rooted
+e-hypergraphs over $\Sigma$.
+
+A \emph{lax homomorphism}
+\[
+  \phi:\mathcal F\longrightarrow\mathcal G
+\]
+is a pair of functions
+\[
+  \phi_V:V_{\mathcal F}\longrightarrow V_{\mathcal G},
+  \qquad
+  \phi_E:E_{\mathcal F}\longrightarrow E_{\mathcal G}
+\]
+satisfying the incidence- and ancestry-preservation conditions
+(1) and (3) of \cref{def:rooted_homomorphism}, and preserving both
+labelling functions:
+\[
+  l_{V,\mathcal G}(\phi_V(v))=l_{V,\mathcal F}(v)
+  \qquad
+  (v\in V_{\mathcal F}),
+\]
+and
+\[
+  l_{E,\mathcal G}(\phi_E(e))=l_{E,\mathcal F}(e)
+  \qquad
+  (e\in E_{\mathcal F}).
+\]
+
+It is \emph{anchored} if it preserves immediate parents, as in
+condition~(3$'$) of \cref{def:rooted_homomorphism}, and \emph{strict}
+if it is anchored and
+\[
+  \phi_E(\top_{\mathcal F})=\top_{\mathcal G}.
+\]
+For an anchored homomorphism, the component edge
+$\phi_E(\top_{\mathcal F})$ is called its \emph{anchor}.
+
+Closed rooted e-hypergraphs with lax homomorphisms form a category
+$\catname{CEHyp}_{\leq}(\Sigma)$. Anchored and strict homomorphisms
+form wide subcategories
+\[
+  \catname{CEHyp}_{\mathrm{s}}(\Sigma)
+  \subseteq
+  \catname{CEHyp}_{\bullet}(\Sigma)
+  \subseteq
+  \catname{CEHyp}_{\leq}(\Sigma).
+\]
+\end{definition}
+
+\subsection{Typed interfaces and extended cospans}
+
+\begin{definition}[Typed finite interfaces]
+\label{def:lambda-typed-interfaces}
+The category \(\mathbb F^{\Lambda}_{\Sigma}\) has as objects pairs
+\[
+  U=([n],\tau),
+  \qquad
+  \tau:[n]\longrightarrow
+  \operatorname{At}^{\Lambda}_{\Sigma},
+\]
+where \(\tau(i)\) is the atomic type assigned to the \(i\)-th interface
+position.
+
+A morphism
+\[
+  \varphi:([n],\tau)\longrightarrow([m],\upsilon)
+\]
+is a function \(\varphi:[n]\to[m]\) that preserves types:
+\[
+  \tau(i)=\upsilon(\varphi(i))
+  \qquad
+  (i\in[n]).
+\]
+No order-preservation condition is imposed on \(\varphi\).
+Identities and composition are inherited from \(\catname{Set}\).
+
+For an ordered subset
+\[
+  S=\{i_1<\cdots<i_k\}\subseteq[n],
+\]
+define its \emph{type word} by
+\[
+  \operatorname{ty}_{U}(S)
+  \defeq
+  \langle\tau(i_1),\ldots,\tau(i_k)\rangle,
+  \qquad
+  \operatorname{ty}_{U}(\varnothing)\defeq\varepsilon.
+\]
+
+The category \(\mathbb F^{\Lambda}_{\Sigma}\) is strict symmetric
+monoidal. Its tensor product on objects is concatenation:
+\[
+  ([n],\tau) + ([m],\upsilon)
+  \defeq
+  ([n+m],\tau + \upsilon),
+\]
+where
+\[
+  (\tau + \upsilon)(i)
+  \defeq
+  \begin{cases}
+    \tau(i), & 1\leq i\leq n,\\
+    \upsilon(i-n), & n<i\leq n+m.
+  \end{cases}
+\]
+
+For morphisms
+\[
+  \varphi:([n],\tau)\to([n'],\tau'),
+  \qquad
+  \psi:([m],\upsilon)\to([m'],\upsilon'),
+\]
+their tensor product is the block sum
+\[
+  \varphi + \psi:[n+m]\longrightarrow[n'+m']
+\]
+defined by
+\[
+  (\varphi + \psi)(i)
+  \defeq
+  \begin{cases}
+    \varphi(i), & 1\leq i\leq n,\\
+    n'+\psi(i-n), & n<i\leq n+m.
+  \end{cases}
+\]
+
+The monoidal unit is the unique typed interface
+\[
+  ([0],!),
+  \qquad
+  !:[0]\longrightarrow\operatorname{At}^{\Lambda}_{\Sigma}.
+\]
+The symmetry
+\[
+  \sigma_{U,V}:U + V\longrightarrow V + U
+\]
+is the type-preserving block transposition whose underlying function is
+\[
+  \sigma_{n,m}(i)
+  \defeq
+  \begin{cases}
+    m+i, & 1\leq i\leq n,\\
+    i-n, & n<i\leq n+m.
+  \end{cases}
+\]
+\end{definition}
+
+\begin{example}[Type words of interfaces]
+Let $a,b,c,d\in\Sigma_0$ and let $U=([3],\tau)$ with
+\[
+  \tau(1)=a\multimap(b\otimes c),
+  \qquad \tau(2)=a,
+  \qquad \tau(3)=d.
+\]
+Then
+\[
+  \operatorname{ty}_{U}([3])
+  =
+  \langle a\multimap(b\otimes c),a,d\rangle,
+  \qquad
+  \operatorname{ty}_{U}(\{1,3\})
+  =
+  \langle a\multimap(b\otimes c),d\rangle.
+\]
+The order is inherited from $[3]$.
+\end{example}
+
+\begin{definition}[Typed discrete-interface functor]
+\label{def:lambda-discrete-interface-functor}
+Define a functor
+\[
+  D_\Lambda:
+  \mathbb F^\Lambda_\Sigma
+  \longrightarrow
+  \catname{CEHyp}_{\mathrm{s}}(\Sigma)
+\]
+as follows. For a typed interface
+\[
+  U=([n],\tau),
+\]
+let \(D_\Lambda(U)\) be the pointed discrete closed rooted
+e-hypergraph with
+\[
+  V_{D_\Lambda(U)}
+  =
+  \{v_i\mid i\in[n]\},
+  \qquad
+  E_{D_\Lambda(U)}
+  =
+  \{\top_U\}.
+\]
+Its root is the component edge \(\top_U\), and its remaining structure
+is given by
+\[
+  s(\top_U)=t(\top_U)=\varepsilon,
+  \qquad
+  l_E(\top_U)=\cmpsort,
+\]
+\[
+  l_V(v_i)=\tau(i),
+  \qquad
+  \top_U<^\mu v_i
+  \quad (i\in[n]).
+\]
+There are no other relations in \(<^\mu\).
+
+For a morphism
+\[
+  \varphi:U=([n],\tau)
+  \longrightarrow
+  V=([m],\upsilon)
+\]
+in \(\mathbb F^\Lambda_\Sigma\), define
+\[
+  D_\Lambda(\varphi):
+  D_\Lambda(U)\longrightarrow D_\Lambda(V)
+\]
+by
+\[
+  D_\Lambda(\varphi)_V(v_i)
+  =
+  v_{\varphi(i)},
+  \qquad
+  D_\Lambda(\varphi)_E(\top_U)
+  =
+  \top_V.
+\]
+This is a strict homomorphism: preservation of vertex labels follows
+from
+\[
+  \tau(i)=\upsilon(\varphi(i)),
+\]
+and the immediate-parent relation is preserved because
+\[
+  \top_V<^\mu v_{\varphi(i)}.
+\]
+These assignments preserve identities and composition and hence define
+the stated functor. In particular,
+\[
+  D_\Lambda(0)=D_\Lambda([0],!)=\mathfrak T.
+\]
+\end{definition}
+
+\begin{proposition}[Pushouts of closed rooted e-hypergraphs]
+\label{prop:lambda-carrier-pushouts}
+The pushout construction of \cref{prop:pushout_exists} restricts to
+closed rooted e-hypergraphs.
+
+Explicitly, let
+\[
+  X\xleftarrow{f}Z\xrightarrow{g}Y
+\]
+be a span in $\catname{CEHyp}_{\leq}(\Sigma)$ such that $Z$ is pointed
+discrete, $f$ is strict and $g$ is anchored. Then its pushout exists in
+both
+\[
+  \catname{CEHyp}_{\leq}(\Sigma)
+  \qquad\text{and}\qquad
+  \catname{CEHyp}_{\bullet}(\Sigma).
+\]
+If $g$ is strict, it is also a pushout in
+$\catname{CEHyp}_{\mathrm{s}}(\Sigma)$.
+\end{proposition}
+
+\begin{proof}
+Apply the construction of \cref{prop:pushout_exists}. Vertex
+identifications preserve $l_V$ because both legs preserve vertex
+types, and edge identifications preserve $l_E$ because both legs
+preserve edge labels. The only edge of the pointed discrete apex is
+its component root, so the construction neither identifies
+$\boxsort$- or $\lambdasort$-edges nor changes their component
+children. Consequently, the alternation and box-arity conditions are
+preserved. The remainder of the proof is unchanged.
+\end{proof}
+
+
+Consequently,
+\(\catname{CEHyp}_{\mathrm{s}}(\Sigma)\) is symmetric monoidal under
+fibered coproduct, with unit \(\mathfrak T\). We fix the following
+representatives for fibered coproducts of discrete interfaces. Given
+\[
+  U=([n],\tau)
+  \qquad\text{and}\qquad
+  V=([m],\upsilon),
+\]
+we take
+\[
+  D_\Lambda(U)\coprod_{\mathfrak T}D_\Lambda(V)
+\]
+to be the pointed discrete closed e-hypergraph with root \(\top\),
+vertex set
+\[
+  \{v_1,\ldots,v_{n+m}\},
+\]
+and vertex labelling
+\[
+  l_V(v_i)=
+  \begin{cases}
+    \tau(i), & 1\leq i\leq n,\\
+    \upsilon(i-n), & n<i\leq n+m.
+  \end{cases}
+\]
+The coprojections send \(v_i\) in \(D_\Lambda(U)\) to \(v_i\), and
+\(v_j\) in \(D_\Lambda(V)\) to \(v_{n+j}\); both send the root to
+\(\top\). Thus, with these representatives,
+\[
+  D_\Lambda(U)\coprod_{\mathfrak T}D_\Lambda(V)
+  =
+  D_\Lambda(U+V),
+  \qquad
+  \mathfrak T=D_\Lambda([0],!).
+\]
+Moreover, the fibered coproduct of
+\(D_\Lambda(\varphi)\) and \(D_\Lambda(\psi)\) is
+\(D_\Lambda(\varphi+\psi)\), and the symmetry is the image under
+\(D_\Lambda\) of the block transposition \(\sigma_{U,V}\).
+Consequently, \(D_\Lambda\) is strict symmetric monoidal.
+
+\begin{remark}
+\label{rem:lambda-suppress-D}
+The functor
+\[
+  D_\Lambda:
+  \mathbb F^\Lambda_\Sigma
+  \longrightarrow
+  \catname{CEHyp}_{\mathrm{s}}(\Sigma)
+\]
+is fully faithful. Henceforth, we identify a typed finite interface
+\[
+  U=([n],\tau)
+\]
+with the pointed discrete closed e-hypergraph \(D_\Lambda(U)\), and
+suppress \(D_\Lambda\) from the notation. We similarly write a morphism
+\(\varphi\) of typed interfaces for its image \(D_\Lambda(\varphi)\).
+That is, we will abbreviate $D([n], \tau)$ by writing $n$, so that the latter
+includes both an ordered finite set of interface positions
+and their atomic-type labelling.  
+We write \(|n|\) for the number of positions of \(n\).
+\end{remark}
+
+\begin{definition}[Monogamous acyclic closed extended cospan]
+\label{def:lambda-extended-cospan}
+A \emph{closed extended cospan} from a typed interface \(n\) to a
+typed interface \(k\) is a diagram
+\[
+  n
+  \xrightarrow{f_{\mathrm{ext}}}
+  n'
+  \xrightarrow{f_{\mathrm{int}}}
+  \mathcal G
+  \xleftarrow{g_{\mathrm{int}}}
+  k'
+  \xleftarrow{g_{\mathrm{ext}}}
+  k
+\]
+in \(\catname{CEHyp}_{\leq}(\Sigma)\), where
+\(n,n',k',k\) are objects of \(\mathbb F^\Lambda_\Sigma\), regarded as
+pointed discrete closed rooted e-hypergraphs according to
+\cref{rem:lambda-suppress-D}, and \(\mathcal G\) is a closed rooted
+e-hypergraph, subject to the following conditions:
+
+\begin{enumerate}
+  \item
+  \(f_{\mathrm{ext}}:n\to n'\) and
+  \(g_{\mathrm{ext}}:k\to k'\) are monomorphisms of typed interfaces;
+
+  \item
+  the composites
+  \[
+    f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}}
+    \qquad\text{and}\qquad
+    g_{\mathrm{ext}}\fatsemi g_{\mathrm{int}}
+  \]
+  are strict homomorphisms;
+
+  \item
+  every strictly internal interface vertex is mapped below a
+  non-root component of \(\mathcal G\).
+  That is, for any strictly internal interface vertex \(x\), we have
+  \[
+    <^{\mu}_{\mathcal{G}}(f_{\mathrm{int},V}(x)) \neq \top_{\mathcal{G}} \qquad \text{and} \qquad <^{\mu}_{\mathcal{G}}(g_{\mathrm{int},V}(x)) \neq \top_{\mathcal{G}}
+  \]
+\end{enumerate}
+
+The closed extended cospan is \emph{monogamous and acyclic}, or an
+\emph{MDA closed extended cospan}, if moreover:
+
+\begin{enumerate}
+  \item the underlying directed hypergraph of \(\mathcal G\) is
+  acyclic;
+
+  \item \(f_{\mathrm{int}}\) and \(g_{\mathrm{int}}\) are
+  monomorphisms;
+
+  \item every vertex of \(\mathcal G\) has in-degree and out-degree at
+  most one;
+
+  \item a vertex of \(\mathcal G\) has in-degree zero if and only if it
+  belongs to
+  \(\operatorname{im}(f_{\mathrm{int},V})\);
+
+  \item a vertex of \(\mathcal G\) has out-degree zero if and only if it
+  belongs to
+  \(\operatorname{im}(g_{\mathrm{int},V})\).
+\end{enumerate}
+We take the notion of isomorphism of closed extended cospans to be the same as in~\cref{def:isomorphic_ecospans}.
+\end{definition}
+
+\begin{definition}[Well-typed closed extended cospan]
+\label{def:lambda-well-typed-extended-cospan}
+Let
+\[
+  n
+  \xrightarrow{f_{\mathrm{ext}}}
+  n'
+  \xrightarrow{f_{\mathrm{int}}}
+  \mathcal G
+  \xleftarrow{g_{\mathrm{int}}}
+  k'
+  \xleftarrow{g_{\mathrm{ext}}}
+  k
+\]
+be an MDA closed extended cospan. Write
+\[
+  n'=([p],\tau),
+  \qquad
+  k'=([q],\upsilon),
+\]
+and let \(x_i\) and \(y_j\) denote the vertices corresponding,
+respectively, to positions \(i\in[p]\) of \(n'\) and \(j\in[q]\) of
+\(k'\).
+
+Define
+\[
+\begin{aligned}
+  \pi_f:[p]
+  &\longrightarrow E_{\mathcal G,\cmpsortsubscript},
+  &
+  \pi_f(i)
+  &\defeq
+  <^{\mu}_{\mathcal G}
+  \bigl(f_{\mathrm{int},V}(x_i)\bigr),
+  \\
+  \pi_g:[q]
+  &\longrightarrow E_{\mathcal G,\cmpsortsubscript},
+  &
+  \pi_g(j)
+  &\defeq
+  <^{\mu}_{\mathcal G}
+  \bigl(g_{\mathrm{int},V}(y_j)\bigr).
+\end{aligned}
+\]
+These maps are well defined by the alternation condition. For a
+$\cmpsort$-edge \(c\), the ordered subsets
+\(\pi_f^{-1}(c)\subseteq[p]\) and
+\(\pi_g^{-1}(c)\subseteq[q]\) record the input and output interface
+positions belonging to \(c\).
+
+A \(\boxsort\)-edge \(e\) is \emph{well typed} if, for every component
+edge \(c\) that is an immediate child of \(e\),
+\[
+  \operatorname{ty}_{n'}\bigl(\pi_f^{-1}(c)\bigr)
+  =
+  l_V^*\bigl(s(e)\bigr),
+  \qquad
+  \operatorname{ty}_{k'}\bigl(\pi_g^{-1}(c)\bigr)
+  =
+  l_V^*\bigl(t(e)\bigr).
+\]
+Thus every component of \(e\) has the same ordered input and output
+type words as \(e\) itself.
+
+Let \(e\) be a \(\lambdasort\)-edge and let \(c\) be its unique
+component child. We call \(e\) \emph{well typed} if there exist
+\[
+X,B\in\operatorname{Ob}^{\Lambda}_{\Sigma} \qquad \text{and} A \in \operatorname{At}^{\Lambda}_{\Sigma}
+\] 
+such that
+\[
+  l_V^*\bigl(s(e)\bigr)
+  =
+  \operatorname{wd}(X),
+  \qquad
+  l_V^*\bigl(t(e)\bigr)
+  =
+  \operatorname{wd}(A\multimap B),
+\]
+and
+\[
+  \operatorname{ty}_{n'}\bigl(\pi_f^{-1}(c)\bigr)
+  =
+  \operatorname{wd}(X\otimes A),
+  \qquad
+  \operatorname{ty}_{k'}\bigl(\pi_g^{-1}(c)\bigr)
+  =
+  \operatorname{wd}(B).
+\]
+In other words, \(e\) represents the abstraction of a component with
+type
+\[
+  X\otimes A\longrightarrow B
+\]
+to a morphism with type
+\[
+  X\longrightarrow A\multimap B.
+\]
+Since \(A\) is atomic,
+\(\operatorname{wd}(A)=\langle A\rangle\); hence the input interface
+of the component has exactly one additional position relative to the
+source of \(e\).
+
+The MDA closed extended cospan is \emph{well typed} if every
+\(\boxsort\)-edge and every \(\lambdasort\)-edge of \(\mathcal G\) is
+well typed.
+\end{definition}
+
+\begin{example}
+Let the below extended cospan represent
+\[
+n \xrightarrow{f_{\mathrm{ext}}} n' \xrightarrow{f_{\mathrm{int}}} \mathcal G \xleftarrow{g_{\mathrm{int}}} k' \xleftarrow{g_{\mathrm{ext}}} k~.
+\]
+\[
+\adjustbox{scale=0.65}{
+  \tikzfig{./figures/lambda/closed_e_hypergraph_cospan_example}~.
+}
+\]
+We note that this is a well-typed MDA closed extended cospan.
+First, the degrees of vertices and the embeddings of the interfaces satisfy the MDA conditions and the carrier $\mathcal{G}$ is acyclic.
+Then, note that
+\[
+\operatorname{ty}_{n}(\pi_f^{-1}(E_2)) = \langle A,B,C \rangle, \qquad \operatorname{ty}_{n}(\pi_f^{-1}(E_3)) = \langle A,B,C \rangle
+\]
+and
+\[
+\operatorname{ty}_{k}(\pi_g^{-1}(E_2)) = \langle A,B,Y \rangle, \qquad \operatorname{ty}_{k}(\pi_g^{-1}(E_3)) = \langle A,B,Y \rangle,
+\]
+therefore the $\boxsort$-edge $E_1$ is well-typed since
+\[
+l^*_{V}(s(E_1)) = \langle A,B,C \rangle, \qquad l^*_V(t(E_1)) = \langle A,B,Y \rangle.
+\]
+For the $\lambdasort$-edge $E_4$, we have
+\[
+l^{*}_V(s(E_4)) = \langle A, B \rangle, \qquad l^{*}_{V}(t(E_4)) = \langle X \multimap (A \otimes B \otimes Y) \rangle,
+\]
+and
+\[
+\operatorname{ty}_{n'}(\pi_f^{-1}(E_5)) = \langle A, B, X \rangle, \qquad \operatorname{ty}_{k'}(\pi_g^{-1}(E_5)) = \langle A, B, Y \rangle.
+\]
+Thus we take $X' \in \operatorname{Ob}^{\Lambda}_{\Sigma}$ to be $A \otimes B$, take $A' \in \operatorname{Ob}^{\Lambda}_{\Sigma}$ to be $X$, and take $B' \in \operatorname{Ob}^{\Lambda}_{\Sigma}$ to be $A \otimes B \otimes Y$.
+Hence, the $\lambdasort$-edge $E_4$ is well-typed.
+Therefore, the extended cospan is well-typed, since all $\boxsort$- and $\lambdasort$-edges in its carrier are well-typed.
+\end{example}
+
+\begin{definition}[Category of closed extended cospans]
+\label{def:lambda-extended-cospan-category}
+The category
+\[
+  \catname{CMEHypI}_{\bullet}(\Sigma)
+\]
+has the objects of \(\mathbb F^\Lambda_\Sigma\) as its objects. A
+morphism \(n\to k\) is an isomorphism class of well-typed MDA closed
+extended cospans from \(n\) to \(k\).
+
+Composition and identities  of extended cospans are
+defined as in
+\cref{def:rooted_ehypi}, using the pushouts of
+\cref{prop:lambda-carrier-pushouts}. 
+Composition preserves monogamy, acyclicity and it also preserves well-typedness: composition
+does not change the source or target word of a hierarchical edge, nor
+the ordered interface words assigned to any of its component children.
+
+Analogously, the monoidal structure on objects is inherited from that of $\mathbb{F}^{\Lambda}_{\Sigma}$ (\textit{cf.}~\cref{def:rooted_ehypi}), and the tensor of morphisms is given by componentwise fibered coproducts of extended cospans.
+Since the latter are taken up to isomorphism, the tensor is strict.
+Finally, the symmetry is induced by the symmetry of $+$ in $\mathbb{F}^{\Lambda}_{\Sigma}$, and therefore
+\(\catname{CMEHypI}_{\bullet}(\Sigma)\) is a strict symmetric monoidal
+category.
+\end{definition}
+
+The construction of extended pushout complements from
+\cref{def:extended_complement} applies to closed rooted
+e-hypergraphs. In this setting all interfaces and interface
+isomorphisms are typed, all pushouts are taken in
+\(\catname{CEHyp}_{\bullet}(\Sigma)\), and well-typedness means
+\cref{def:lambda-well-typed-extended-cospan}. If \(S\) is a typed
+subinterface of \(n'\), then \(n'\setminus S\) denotes the ordered
+complement of \(S\), equipped with the restricted type labelling.
+The descendant-closure condition applies equally to
+\(\boxsort\)- and \(\lambdasort\)-edges.
+
+\begin{definition}[Extended boundary pushout complement]
+\label{def:lambda-boundary-complement}
+Consider well-typed MDA closed extended cospans
+\[
+  i
+  \xrightarrow{f_{\mathrm{ext}}^{i}}
+  i'
+  \xrightarrow{f_{\mathrm{int}}^{i}}
+  \mathcal L
+  \xleftarrow{f_{\mathrm{int}}^{j}}
+  j'
+  \xleftarrow{f_{\mathrm{ext}}^{j}}
+  j
+\]
+and
+\[
+  n
+  \xrightarrow{g_{\mathrm{ext}}^{n}}
+  n'
+  \xrightarrow{g_{\mathrm{int}}^{n}}
+  \mathcal G
+  \xleftarrow{g_{\mathrm{int}}^{k}}
+  k'
+  \xleftarrow{g_{\mathrm{ext}}^{k}}
+  k,
+\]
+and let
+\[
+  m:\mathcal L\longrightarrow\mathcal G
+\]
+be an anchored homomorphism. Write
+\[
+  f
+  \defeq
+  \bigl[
+    f_{\mathrm{ext}}^{i}\fatsemi f_{\mathrm{int}}^{i},
+    f_{\mathrm{ext}}^{j}\fatsemi f_{\mathrm{int}}^{j}
+  \bigr]
+  :
+  i+j\longrightarrow\mathcal L.
+\]
+
+Suppose that
+\[
+  i \coprod j
+  \xrightarrow{[c_1,c_2]}
+  \mathcal L^\bot
+  \xrightarrow{l^\bot}
+  \mathcal G
+\]
+together with the retained interface maps
+\[
+  g_n^\bot:
+  n'\setminus S_n\longrightarrow\mathcal L^\bot,
+  \qquad
+  g_k^\bot:
+  k'\setminus S_k\longrightarrow\mathcal L^\bot
+\]
+and the typed block isomorphisms
+\[
+  \alpha_n:i'\setminus i\longrightarrow S_n,
+  \qquad
+  \alpha_k:j'\setminus j\longrightarrow S_k
+\]
+is an extended pushout complement of \((f,m)\) in the sense of
+\cref{def:extended_complement}, interpreted in
+\(\catname{CEHyp}_{\bullet}(\Sigma)\).
+
+Define the re-anchored interface maps
+\[
+  \widehat c_1
+  \defeq
+  \left\langle
+    \top_{\mathcal L^\bot};(c_1)_V
+  \right\rangle
+  :
+  i\longrightarrow\mathcal L^\bot,
+  \qquad
+  \widehat c_2
+  \defeq
+  \left\langle
+    \top_{\mathcal L^\bot};(c_2)_V
+  \right\rangle
+  :
+  j\longrightarrow\mathcal L^\bot.
+\]
+Thus \(\widehat c_1\) and \(\widehat c_2\) have the same vertex maps as
+\(c_1\) and \(c_2\), respectively, but send their roots to
+\(\top_{\mathcal L^\bot}\).
+
+The extended pushout complement is an \emph{extended boundary pushout
+complement} if the following conditions hold:
+
+\begin{enumerate}
+  \item \(m\) is a monomorphism;
+
+  \item \([c_1,c_2]\) is a monomorphism;
+
+  \item if
+  \[
+    m_E(\top_{\mathcal L})=\top_{\mathcal G},
+  \]
+  then
+  \[
+    n \coprod j
+    \xrightarrow{
+      \overline g_{\mathrm{ext}}^{\,n} \coprod \id_j
+    }
+    (n'\setminus S_n) \coprod j
+    \xrightarrow{
+      [g_n^\bot,\widehat c_2]
+    }
+    \mathcal L^\bot
+    \xleftarrow{
+      [g_k^\bot,\widehat c_1]
+    }
+    (k'\setminus S_k) \coprod i
+    \xleftarrow{
+      \overline g_{\mathrm{ext}}^{\,k} \coprod \id_i
+    }
+    k \coprod i
+  \]
+  is a well-typed MDA closed extended cospan;
+
+  \item if
+  \[
+    m_E(\top_{\mathcal L})\neq\top_{\mathcal G},
+  \]
+  then
+  \[
+    n
+    \xrightarrow{
+      \overline g_{\mathrm{ext}}^{\,n}
+      \fatsemi\iota_{n'\setminus S_n}
+    }
+    (n'\setminus S_n) \coprod j
+    \xrightarrow{
+      [g_n^\bot,\widehat c_2]
+    }
+    \mathcal L^\bot
+    \xleftarrow{
+      [g_k^\bot,\widehat c_1]
+    }
+    (k'\setminus S_k) \coprod i
+    \xleftarrow{
+      \overline g_{\mathrm{ext}}^{\,k}
+      \fatsemi\iota_{k'\setminus S_k}
+    }
+    k
+  \]
+  is an MDA closed extended cospan, not necessarily well typed. Here
+  \(\iota_{n'\setminus S_n}\) and
+  \(\iota_{k'\setminus S_k}\) are the first coprojections into the
+  displayed internal interfaces.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+The extended boundary pushout complement of \cref{def:lambda-boundary-complement} is unique up to isomorphism.
+\end{proposition}
+\begin{proof}
+This is analogous to~\cref{prop:extended_boundary_complement_unique}.
+\end{proof}
+
+\begin{definition}[Convex closed EDPOI rewriting]
+\label{def:lambda-convex-edpoi-rewriting}
+A \emph{closed rewrite rule} is a pair of well-typed MDA closed
+extended cospans with common external interfaces. In folded form, it is
+displayed as
+\[
+  \mathcal L
+  \xleftarrow{f_{\mathrm{int}}}
+  i'\coprod j'
+  \xleftarrow{f_{\mathrm{ext}}}
+  i\coprod j
+  \xrightarrow{p_{\mathrm{ext}}}
+  i''\coprod j''
+  \xrightarrow{p_{\mathrm{int}}}
+  \mathcal R.
+\]
+Put
+\[
+  f
+  \defeq
+  f_{\mathrm{ext}}\fatsemi f_{\mathrm{int}},
+  \qquad
+  p
+  \defeq
+  p_{\mathrm{ext}}\fatsemi p_{\mathrm{int}}.
+\]
+
+Let
+\[
+  n
+  \longrightarrow
+  n'
+  \longrightarrow
+  \mathcal G
+  \longleftarrow
+  k'
+  \longleftarrow
+  k
+\]
+be a well-typed MDA closed extended cospan. A \emph{convex closed
+EDPOI rewrite} of \(\mathcal G\) by
+\(\langle\mathcal L,\mathcal R\rangle\) consists of an EDPOI diagram
+\[
+\begin{tikzcd}
+  \mathcal L
+    \arrow[d,"m"']
+  &
+  i\coprod j
+    \arrow[l,"f"']
+    \arrow[r,"p"]
+    \arrow[d,"c"]
+  &
+  \mathcal R
+    \arrow[d,"\widetilde\iota_{\mathcal R}"]
+  \\
+  \mathcal G
+  &
+  \mathcal L^\bot
+    \arrow[l,"l^\bot"]
+    \arrow[r,"\widetilde\iota_{\bot}"']
+  &
+  \mathcal H
+\end{tikzcd}
+\]
+in \(\catname{CEHyp}_{\bullet}(\Sigma)\), satisfying the following
+conditions:
+
+\begin{enumerate}
+  \item both squares are pushouts;
+
+  \item the image of the anchored match
+  \(m:\mathcal L\to\mathcal G\) is a convex sub-e-hypergraph of
+  \(\mathcal G\);
+
+  \item the left-hand square, together with its retained and affected
+  typed-interface data, is an extended boundary pushout complement in
+  the sense of \cref{def:lambda-boundary-complement};
+
+  \item the internal interfaces and their maps into \(\mathcal H\) are
+  obtained from the EDPOI construction of \cref{def:dpoi_rooted}.
+  Explicitly, if \(S_n\subseteq n'\) and \(S_k\subseteq k'\) are the
+  affected subinterfaces, then the internal interfaces of the result
+  are
+  \[
+    n''
+    \defeq
+    (n'\setminus S_n)\coprod(i''\setminus i),
+    \qquad
+    k''
+    \defeq
+    (k'\setminus S_k)\coprod(j''\setminus j).
+  \]
+  The retained interface maps are composed with
+  \(\widetilde\iota_{\bot}\), while the strictly internal interface
+  maps of \(\mathcal R\) are composed with
+  \(\widetilde\iota_{\mathcal R}\) and re-anchored at
+  \(\top_{\mathcal H}\).
+\end{enumerate}
+
+The resulting well-typed MDA closed extended cospan is
+\[
+  n
+  \longrightarrow
+  n''
+  \longrightarrow
+  \mathcal H
+  \longleftarrow
+  k''
+  \longleftarrow
+  k.
+\]
+We write
+\[
+  \mathcal G
+  \mathrel{
+    \widetilde{\rightsquigarrow}_{
+      \langle\mathcal L,\mathcal R\rangle
+    }
+  }
+  \mathcal H.
+\]
+\end{definition}
+
+\begin{definition}[Currying a closed extended cospan]
+\label{def:lambda-currying-cospan}
+Let
+\[
+  \mathbf G
+  =
+  \left(
+  n
+  \xrightarrow{f_{\mathrm{ext}}}
+  n'
+  \xrightarrow{f_{\mathrm{int}}}
+  \mathcal G
+  \xleftarrow{g_{\mathrm{int}}}
+  k'
+  \xleftarrow{g_{\mathrm{ext}}}
+  k
+  \right)
+\]
+be a well-typed MDA closed extended cospan. Write
+\[
+  n=([r],\tau),
+  \qquad
+  k=([q],\upsilon),
+\]
+and suppose that \(r\geq1\).
+
+Define the typed prefix interface
+\[
+  \bar{n}\defeq([r-1],\bar{\tau}),
+  \qquad
+  \bar{\tau}(i)\defeq\tau(i)
+  \quad (i\in[r-1]),
+\]
+and put
+\[
+  A
+  \defeq
+  \left\lVert
+    \operatorname{ty}_{\bar{n}}([r-1])
+  \right\rVert_\otimes,
+  \qquad
+  B\defeq\tau(r),
+  \qquad
+  C
+  \defeq
+  \left\lVert
+    \operatorname{ty}_{k}([q])
+  \right\rVert_\otimes.
+\]
+Thus
+\[
+  \operatorname{ty}_{n}([r])
+  =
+  \operatorname{wd}(A\otimes B),
+  \qquad
+  \operatorname{ty}_{k}([q])
+  =
+  \operatorname{wd}(C).
+\]
+
+Let
+\[
+  \mathbf 1_{B\multimap C}
+  \defeq
+  ([1],\chi_{B,C}),
+  \qquad
+  \chi_{B,C}(1)\defeq B\multimap C,
+\]
+be the singleton typed interface labelled by \(B\multimap C\).
+
+Using the interface-block convention for extended cospans, choose a
+representative of \(\mathbf G\) in which the external interfaces occur
+as ordered blocks of \(n'\) and \(k'\).
+
+Construct a closed rooted e-hypergraph
+\(\mathcal G^\Lambda\) from \(\mathcal G\) by adjoining:
+
+\begin{enumerate}
+  \item a fresh component edge \(r_\Lambda\), which becomes the root of
+  \(\mathcal G^\Lambda\);
+
+  \item a fresh \(\lambdasort\)-edge \(e_\Lambda\);
+
+  \item fresh vertices \(u_1,\ldots,u_{r-1}\) with
+  \[
+    l_V(u_i)=\tau(i)
+    \qquad (i\in[r-1]);
+  \]
+
+  \item a fresh vertex \(z\) with
+  \[
+    l_V(z)=B\multimap C.
+  \]
+\end{enumerate}
+
+The new edges are labelled and incident as follows:
+\[
+  l_E(r_\Lambda)=\cmpsort,
+  \qquad
+  s(r_\Lambda)=t(r_\Lambda)=\varepsilon,
+\]
+and
+\[
+  l_E(e_\Lambda)=\lambdasort,
+  \qquad
+  s(e_\Lambda)=\langle u_1,\ldots,u_{r-1}\rangle,
+  \qquad
+  t(e_\Lambda)=\langle z\rangle.
+\]
+The new immediate-parent relations are
+\[
+  r_\Lambda<^\mu e_\Lambda,
+  \qquad
+  r_\Lambda<^\mu u_i
+  \quad(i\in[r-1]),
+  \qquad
+  r_\Lambda<^\mu z,
+  \qquad
+  e_\Lambda<^\mu\top_{\mathcal G}.
+\]
+All other incidence, labelling and immediate-parent data are inherited
+from \(\mathcal G\). In particular, \(\top_{\mathcal G}\) is the unique
+component child of \(e_\Lambda\).
+
+Define
+\[
+  \eta_{\mathrm{in}}:
+  \bar{n}\longrightarrow\mathcal G^\Lambda
+\]
+by sending the \(i\)-th vertex of \(\bar{n}\) to \(u_i\) and its root to
+\(r_\Lambda\). Define
+\[
+  \eta_{\mathrm{out}}:
+  \mathbf 1_{B\multimap C}
+  \longrightarrow
+  \mathcal G^\Lambda
+\]
+by sending its unique vertex to \(z\) and its root to \(r_\Lambda\).
+
+Re-anchor the old internal-interface maps at the new root by putting
+\[
+  \widehat f_{\mathrm{int}}
+  \defeq
+  \left\langle
+    r_\Lambda;(f_{\mathrm{int}})_V
+  \right\rangle
+  :
+  n'\longrightarrow\mathcal G^\Lambda
+\]
+and
+\[
+  \widehat g_{\mathrm{int}}
+  \defeq
+  \left\langle
+    r_\Lambda;(g_{\mathrm{int}})_V
+  \right\rangle
+  :
+  k'\longrightarrow\mathcal G^\Lambda,
+\]
+where the old vertex maps are regarded as maps into
+\(\mathcal G^\Lambda\) through the inclusion
+\(\mathcal G\hookrightarrow\mathcal G^\Lambda\).
+
+The \emph{currying} of \(\mathbf G\) is the closed extended cospan
+\[
+  \Lambda(\mathbf G)
+  \defeq
+  \left(
+  \bar{n}
+  \xrightarrow{\iota_{\bar{n}}}
+  \bar{n}\coprod n'
+  \xrightarrow{
+    [\eta_{\mathrm{in}},\widehat f_{\mathrm{int}}]
+  }
+  \mathcal G^\Lambda
+  \xleftarrow{
+    [\eta_{\mathrm{out}},\widehat g_{\mathrm{int}}]
+  }
+  \mathbf 1_{B\multimap C}\coprod k'
+  \xleftarrow{\iota_{\mathbf 1_{B\multimap C}}}
+  \mathbf 1_{B\multimap C}
+  \right),
+\]
+where the outer maps are the first coprojections.
+
+Thus
+\[
+  \Lambda(\mathbf G):
+  \bar{n}\longrightarrow\mathbf 1_{B\multimap C}
+\]
+represents the currying operation
+\[
+  A\otimes B\longrightarrow C
+  \quad\longmapsto\quad
+  A\longrightarrow B\multimap C.
+\]
+\end{definition}
+
+\begin{example}
+Below is an example of currying a closed extended cospan.
+\[
+\adjustbox{scale=0.65}{
+  \tikzfig{./figures/lambda/lambda_example}~.
+}
+\]
+\end{example}
+
+\begin{remark}
+The join of MDA closed extended cospans is defined in the same way as in~\cref{def:join_of_extended_cospans}.
+\end{remark}
+
+\begin{lemma}[Closed recursive convex decomposition]
+\label{lemma:lambda-convex-decomposition}
+Let \(\mathbf L\) and \(\mathbf F\) be well-typed MDA closed extended
+cospans, and let
+\[
+  m:\mathcal L\longrightarrow\mathcal F
+\]
+be an anchored monomorphism whose image is convex in the underlying
+directed hypergraph of \(\mathcal F\). Suppose that the image of \(m\)
+is closed under descendants below every matched non-root edge, as in
+\cref{lemma:extended_convex_decomposition}, with the condition applied
+to both \(\boxsort\)- and \(\lambdasort\)-edges.
+
+Then the recursive decomposition of
+\cref{lemma:extended_convex_decomposition} extends to the closed
+setting. More precisely, there are a well-typed MDA closed extended
+cospan \(\mathbf D\), constructed from \(\mathbf L\) and other
+well-typed MDA closed extended cospans by composition, tensor product,
+join and abstraction, and a boundary-preserving isomorphism
+\[
+  \Phi:\mathbf D\xrightarrow{\cong}\mathbf F
+\]
+such that, for the canonical occurrence
+\[
+  \iota_{\mathcal L}:
+  \mathcal L\longrightarrow\operatorname{car}(\mathbf D)
+\]
+of \(\mathcal L\) in \(\mathbf D\),
+\[
+  \iota_{\mathcal L}\fatsemi\Phi_{\mathrm{car}}=m.
+  \tag{\(\ast\)}
+  \label{eq:lambda-convex-decomposition-occurrence}
+\]
+
+The root and \(\boxsort\)-parent clauses are those of
+\cref{lemma:extended_convex_decomposition}. The only additional
+recursive clause is the following. Suppose that
+\[
+  a\defeq m_E(\top_{\mathcal L})\neq\top_{\mathcal F}
+\]
+and that the unique immediate parent \(p\) of \(a\) is a
+\(\lambdasort\)-edge. Then \(a\) is the unique component child of \(p\).
+It determines a well-typed component cospan
+\[
+  \mathbf F_a:X\otimes A\longrightarrow B,
+\]
+where
+\[
+  X,B\in\operatorname{Ob}^{\Lambda}_{\Sigma},
+  \qquad
+  A\in\operatorname{At}^{\Lambda}_{\Sigma},
+\]
+and \(m\) corestricts to a convex, descendant-closed anchored
+monomorphism
+\[
+  m_a:\mathcal L\longrightarrow\mathcal F_a.
+\]
+
+Applying the root clause inside \(\mathbf F_a\) gives a typed interface
+\(q\), well-typed MDA closed extended cospans
+\[
+  \mathbf C_1^a:
+  X\otimes A\longrightarrow q\coprod i,
+  \qquad
+  \mathbf C_2^a:
+  q\coprod j\longrightarrow B,
+\]
+and an isomorphism
+\[
+  \phi_a:
+  \mathbf D_a
+  \defeq
+  \mathbf C_1^a
+  \fatsemi
+  \bigl(\mathbf 1_q\otimes\mathbf L\bigr)
+  \fatsemi
+  \mathbf C_2^a
+  \xrightarrow{\cong}
+  \mathbf F_a
+\]
+such that
+\[
+  \iota_{\mathcal L}^a
+  \fatsemi
+  (\phi_a)_{\mathrm{car}}
+  =
+  m_a.
+  \tag{\(\dagger\)}
+  \label{eq:lambda-component-occurrence}
+\]
+
+Consequently, after identifying the subcospan generated by \(p\) with
+\(\Lambda(\mathbf F_a)\), abstraction induces an isomorphism
+\[
+  \phi_p:
+  \Lambda(\mathbf D_a)
+  \xrightarrow{\cong}
+  \Lambda(\mathbf F_a)
+\]
+which carries the canonical occurrence of \(\mathcal L\) to the
+corestriction \(m_p\) of \(m\):
+\[
+  \iota_{\mathcal L}^p
+  \fatsemi
+  (\phi_p)_{\mathrm{car}}
+  =
+  m_p.
+  \tag{\(\ddagger\)}
+  \label{eq:lambda-parent-occurrence}
+\]
+
+If \(p\) is itself nested, the same construction is applied recursively
+to the occurrence of the subcospan generated by \(p\) in its enclosing
+component. Each application moves one level towards
+\(\top_{\mathcal F}\), so the process terminates.
+\end{lemma}
+
+\begin{proof}
+The root clause is proved as in
+\cref{lemma:extended_convex_decomposition}. The flat convex
+decomposition of the underlying directed hypergraph is unchanged.
+Descendant closure ensures that neither a \(\boxsort\)-edge nor a
+\(\lambdasort\)-edge is separated from any of its component
+descendants. Hence every hierarchical edge, together with its complete
+internal interface blocks, belongs to one of the resulting factors.
+The restricted factors are therefore well-typed MDA closed extended
+cospans. The proof of the \(\boxsort\)-parent clause is likewise
+unchanged.
+
+It remains to consider a \(\lambdasort\)-parent \(p\). Let
+\[
+  \jmath_{\mathbf D_a}:
+  \mathcal D_a
+  \longrightarrow
+  \operatorname{car}\bigl(\Lambda(\mathbf D_a)\bigr)
+  \quad\text{and}\quad
+  \jmath_{\mathbf F_a}:
+  \mathcal F_a
+  \longrightarrow
+  \operatorname{car}\bigl(\Lambda(\mathbf F_a)\bigr)
+\]
+be the canonical inclusions of the respective component carriers.
+The abstraction construction applies \(\phi_a\) to the component and
+acts identically on the newly introduced \(\lambdasort\)-edge and its
+ports. Consequently,
+\[
+  \jmath_{\mathbf D_a}
+  \fatsemi
+  \bigl(\Lambda(\phi_a)\bigr)_{\mathrm{car}}
+  =
+  (\phi_a)_{\mathrm{car}}
+  \fatsemi
+  \jmath_{\mathbf F_a}.
+  \tag{\(\star\)}
+\]
+The canonical occurrence and the corestricted match are respectively
+\[
+  \iota_{\mathcal L}^p
+  =
+  \iota_{\mathcal L}^a
+  \fatsemi
+  \jmath_{\mathbf D_a},
+  \qquad
+  m_p
+  =
+  m_a
+  \fatsemi
+  \jmath_{\mathbf F_a}.
+\]
+Using \eqref{eq:lambda-component-occurrence} and \((\star)\), we obtain
+\[
+\begin{aligned}
+  \iota_{\mathcal L}^p
+  \fatsemi
+  \bigl(\Lambda(\phi_a)\bigr)_{\mathrm{car}}
+  &=
+  \iota_{\mathcal L}^a
+  \fatsemi
+  \jmath_{\mathbf D_a}
+  \fatsemi
+  \bigl(\Lambda(\phi_a)\bigr)_{\mathrm{car}}
+  \\
+  &=
+  \iota_{\mathcal L}^a
+  \fatsemi
+  (\phi_a)_{\mathrm{car}}
+  \fatsemi
+  \jmath_{\mathbf F_a}
+  \\
+  &=
+  m_a\fatsemi\jmath_{\mathbf F_a}
+  \\
+  &=
+  m_p.
+\end{aligned}
+\]
+Composing, if necessary, with the canonical boundary-preserving
+isomorphism from \(\Lambda(\mathbf F_a)\) to the subcospan generated by
+\(p\) gives \(\phi_p\) and preserves this equation.
+
+Repeating the appropriate \(\boxsort\)- or \(\lambdasort\)-parent
+clause moves the decomposition outwards through the finite hierarchy.
+Composition, tensor product, join and abstraction preserve the
+displayed occurrence equation. The resulting isomorphism
+\(\Phi:\mathbf D\cong\mathbf F\) therefore satisfies
+\[
+  \iota_{\mathcal L}\fatsemi\Phi_{\mathrm{car}}=m,
+\]
+as required.
+\end{proof}
+
+\subsection{Operations and concrete interpretation}
+
+\begin{definition}[Concrete interpretation of closed terms]
+\label{def:lambda-concrete-interpretation}
+For \(A\in\operatorname{Ob}^{\Lambda}_{\Sigma}\), let
+\(\partial A\) denote the typed interface determined by
+\(\operatorname{wd}(A)\). Explicitly, if
+\[
+  \operatorname{wd}(A)=\langle A_1,\ldots,A_r\rangle,
+\]
+then
+\[
+  \partial A
+  \defeq
+  ([r],i\mapsto A_i).
+\]
+In particular,
+\[
+  \partial I=0,
+  \qquad
+  \partial(A\otimes B)
+  =
+  \partial A\coprod\partial B,
+\]
+and \(\partial(A\multimap B)\) is the singleton interface labelled
+\(A\multimap B\).
+
+We define the interpretation of raw closed terms recursively. A term
+\[
+  t:A\longrightarrow B
+\]
+is interpreted as a well-typed MDA closed extended cospan
+\[
+  \widehat t:
+  \partial A\longrightarrow\partial B.
+\]
+
+Let \(f\in\Sigma_1\) be a generator with
+\[
+  \operatorname{dom}(f)
+  =
+  \langle A_1,\ldots,A_n\rangle,
+  \qquad
+  \operatorname{cod}(f)
+  =
+  \langle B_1,\ldots,B_k\rangle.
+\]
+Its interpretation is the one-edge closed extended cospan
+\[
+  \widehat f
+  \defeq
+  \adjustbox{scale=0.65}{
+    \tikzfig{./figures/lambda/generator_interpretation}
+  }.
+\]
+
+For \(A\in\operatorname{At}^{\Lambda}_{\Sigma}\) and
+\(B\in\operatorname{Ob}^{\Lambda}_{\Sigma}\), the evaluation term
+\[
+  \ev_{A,B}:
+  (A\multimap B)\otimes A\longrightarrow B
+\]
+is interpreted as
+\[
+  \widehat{\ev_{A,B}}
+  \defeq
+  \adjustbox{scale=0.65}{
+    \tikzfig{./figures/lambda/eval_generator_interpretation}
+  },
+\]
+where the ordered output vertices are labelled by
+\(\operatorname{wd}(B)\).
+
+Primitive identities and symmetries are interpreted by the corresponding
+identities and symmetries in
+\(\catname{CMEHypI}_{\bullet}(\Sigma)\):
+\[
+  \widehat{\id_I}=\id_{\partial I},
+  \qquad
+  \widehat{\id_T}=\id_{\partial T},
+  \qquad
+  \widehat{\sym_{T,U}}
+  =
+  \sym_{\partial T,\partial U}.
+\]
+
+The remaining constructors are interpreted recursively by
+\[
+  \widehat{f\fatsemi g}
+  \defeq
+  \widehat f\fatsemi\widehat g,
+  \qquad
+  \widehat{f\otimes g}
+  \defeq
+  \widehat f\otimes\widehat g,
+\]
+and
+\[
+  \widehat{\Lambda_{X,A,B}(h)}
+  \defeq
+  \Lambda(\widehat h).
+\]
+Here \(A\in\operatorname{At}^{\Lambda}_{\Sigma}\), so the final input
+position of
+\[
+  \widehat h:
+  \partial X\coprod\partial A\longrightarrow\partial B
+\]
+is a single vertex, and the currying construction of
+\cref{def:lambda-currying-cospan} applies.
+
+For terms with joins, define additionally
+\[
+  \widehat{f\join g}
+  \defeq
+  \widehat f\join\widehat g.
+\]
+This gives interpretation functions
+\[
+  \operatorname{Tm}^{\Lambda}_{\Sigma}(A,B)
+  \longrightarrow
+  \catname{CMEHypI}_{\bullet}(\Sigma)
+  \bigl(\partial A,\partial B\bigr)
+\]
+and
+\[
+  \operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)
+  \longrightarrow
+  \catname{CMEHypI}_{\bullet}(\Sigma)
+  \bigl(\partial A,\partial B\bigr).
+\]
+\end{definition}
+\section{Structural adequacy}
+\label{sec:lambda-structural-adequacy}
+
+\begin{proposition}[Faithfulness of the join-free interpretation]
+\label{lemma:lambda-join-free-faithfulness}
+For raw closed terms
+\[
+  s,t\in\operatorname{Tm}^{\Lambda}_{\Sigma}(A,B),
+\]
+one has
+\[
+  s\equiv_0 t
+  \quad\Longleftrightarrow\quad
+  \widehat s \cong \widehat t.
+\]
+\end{proposition}
+
+\begin{proof}
+The forward implication follows by induction on the derivation of
+\(s\equiv_0t\). The interpretation takes the symmetric monoidal
+constructors to those of the strict symmetric monoidal category
+\(\catname{CMEHypI}_{\bullet}(\Sigma)\), so it validates the symmetric
+monoidal equations up to isomorphism. Moreover, composition, tensor
+product and abstraction preserve isomorphisms of closed extended
+cospans. Hence
+\[
+  \widehat s\cong\widehat t.
+\]
+
+For the converse, suppose that
+\[
+  \phi:\widehat s\overset{\cong}{\longrightarrow}\widehat t
+\]
+is an isomorphism of closed extended cospans. Since \(s\) and \(t\) are
+join-free, their interpretations contain no \(\boxsort\)-edges. We
+proceed by induction on the maximum nesting depth of abstractions in
+\(s\) and \(t\). By the recursive definition of the interpretation,
+this is precisely the maximum nesting depth of \(\lambdasort\)-edges.
+Since \(\phi\) preserves edge labels and immediate parents, \(s\) and
+\(t\) have the same maximum depth.
+
+If this depth is zero, neither interpretation contains a
+\(\lambdasort\)-edge. Removing the root from each carrier therefore
+gives isomorphic ordinary typed MDA hypergraph cospans over the
+ordinary monoidal signature \(\Gamma_\Sigma\). These are precisely the
+ordinary hypergraph interpretations of \(s\) and \(t\). Faithfulness of
+the ordinary symmetric monoidal interpretation,
+\cref{prop:faithful_interpretation}, applied in the multi-sorted setting
+with sorts \(\operatorname{At}^{\Lambda}_{\Sigma}\), gives%
+\footnote{Strictly speaking, faithfulness applies to the join-free and
+abstraction-free fragment of
+\(\operatorname{Tm}^{\Lambda}_{\Sigma}/{\equiv_0}\), regarded as
+\(\mathbf S_{\Gamma_\Sigma}\).}
+\[
+  s\equiv_0t.
+\]
+
+Now suppose that the result holds below abstraction depth \(d>0\), and
+that \(s\) and \(t\) have maximum abstraction depth \(d\). Consider the
+outermost \(\lambdasort\)-edges of \(\widehat s\), namely those whose
+immediate parent is \(\top_{\widehat s}\). For every such edge \(e\),
+introduce a fresh generator \(x_e\) having the same ordered input and
+output types as \(e\). Let
+\[
+  \Gamma_\phi
+  \defeq
+  \Gamma_\Sigma
+  \sqcup
+  \left\{
+    x_e
+    \;\middle|\;
+    e\text{ is an outermost \(\lambdasort\)-edge of }\widehat s
+  \right\}.
+\]
+
+For every outermost \(\lambdasort\)-edge \(e\) of \(\widehat s\), remove
+its unique component child and all its descendants, discard the
+corresponding strictly internal interface blocks, and regard \(e\) as
+an ordinary edge labelled by \(x_e\). Perform the same construction in
+\(\widehat t\) at the edge \(\phi_E(e)\), using the same generator
+\(x_e\). Finally, remove the roots. This produces ordinary typed MDA
+hypergraph cospans over \(\Gamma_\phi\), and \(\phi\) restricts to an
+isomorphism between them.
+
+By the recursive definition of the interpretation, every outermost
+\(\lambdasort\)-edge \(e\) of \(\widehat s\) corresponds to a unique
+occurrence of an abstraction \(\Lambda(h_e)\) in \(s\). Similarly,
+\(\phi_E(e)\) corresponds to a unique occurrence
+\(\Lambda(h'_e)\) in \(t\). Replace these occurrences by \(x_e\) to
+obtain the flattened terms \(\bar s\) and \(\bar t\). Their ordinary
+hypergraph interpretations are precisely the two flattened cospans
+constructed above. Faithfulness of the ordinary many-sorted
+hypergraph interpretation therefore gives
+\[
+  \bar s
+  \equiv_{\mathsf{SMC}}^{\Gamma_\phi}
+  \bar t.
+\]
+
+For every outermost \(\lambdasort\)-edge \(e\), the isomorphism
+\(\phi\) restricts to an isomorphism of closed extended cospans
+\[
+  \widehat{h_e}\cong\widehat{h'_e}.
+\]
+These bodies have abstraction depth strictly smaller than \(d\), so
+the induction hypothesis gives
+\[
+  h_e\equiv_0h'_e.
+\]
+Since \(\equiv_0\) is a congruence, it follows that
+\[
+  \Lambda(h_e)\equiv_0\Lambda(h'_e).
+\]
+
+Let \(\mathbf S_{\Gamma_\phi}\) be the free symmetric monoidal category
+on the multi-sorted signature \(\Gamma_\phi\), and let
+\(\operatorname{Tm}^{\Lambda}_{\Sigma}/{\equiv_0}\) be the symmetric
+monoidal category whose objects are
+\(\operatorname{Ob}^{\Lambda}_{\Sigma}\) and whose morphisms are
+\[
+  \bigl(
+    \operatorname{Tm}^{\Lambda}_{\Sigma}/{\equiv_0}
+  \bigr)(A,B)
+  \defeq
+  \operatorname{Tm}^{\Lambda}_{\Sigma}(A,B)/{\equiv_0}.
+\]
+Let \([-]_0\) denote the corresponding quotient map.
+
+Send each colour \(T\in\operatorname{At}^{\Lambda}_{\Sigma}\) to the
+object \(T\), and hence send a word of colours to its tensor
+realisation. The assignments
+\[
+\begin{aligned}
+  x_e &\longmapsto [\Lambda(h_e)]_0,\\
+  f   &\longmapsto [f]_0
+        &&\bigl(f\in(\Gamma_\Sigma)_1\bigr)
+\end{aligned}
+\]
+extend, by freeness, to a strict symmetric monoidal functor
+\[
+  F_\phi:
+  \mathbf S_{\Gamma_\phi}
+  \longrightarrow
+  \operatorname{Tm}^{\Lambda}_{\Sigma}/{\equiv_0}.
+\]
+
+Replacing every \(x_e\) in \(\bar s\) by \(\Lambda(h_e)\) recovers
+\(s\), and hence
+\[
+  F_\phi([\bar s]_{\mathsf{SMC}})=[s]_0.
+\]
+Let \(t^\phi\) be the closed \(\Sigma\)-term obtained by interpreting
+each occurrence of \(x_e\) in \(\bar t\) as \(\Lambda(h_e)\). Then
+\[
+  F_\phi([\bar t]_{\mathsf{SMC}})=[t^\phi]_0.
+\]
+On the other hand, \(t\) is recovered from \(\bar t\) by interpreting
+each \(x_e\) as \(\Lambda(h'_e)\). Since
+\[
+  \Lambda(h_e)\equiv_0\Lambda(h'_e)
+\]
+for every \(e\), congruence gives
+\[
+  t^\phi\equiv_0t.
+\]
+
+Applying \(F_\phi\) to
+\(
+[\bar s]_{\mathsf{SMC}}=[\bar t]_{\mathsf{SMC}}
+\)
+therefore gives
+\[
+  [s]_0
+  =
+  F_\phi([\bar s]_{\mathsf{SMC}})
+  =
+  F_\phi([\bar t]_{\mathsf{SMC}})
+  =
+  [t^\phi]_0
+  =
+  [t]_0.
+\]
+Consequently,
+\[
+  s\equiv_0t.
+\]
+\end{proof}
+
+This section isolates the structural part of the correspondence between
+closed semilattice-enriched terms and closed e-hypergraphs.  In particular,
+the result below does not assert a presentation theorem, or an isomorphism
+between a category of closed terms and a category of closed hypergraphs.  It
+only compares structural equality of raw terms with structural EDPOI
+equivalence of their concrete interpretations.
+
+We use the structural congruences $\equiv_0$ and
+$\equiv_{\mathsf{str}}$ of
+\cref{def:lambda-structural-congruences}. They contain no closed-category
+equations: $\beta$, $\eta$ and currying naturality may instead be treated as
+operational rules.
+
+Let $\mathfrak S_{\Lambda}$ consist of the graph schemata obtained from
+the displayed semilattice and bilinearity equations and
+\eqref{eq:lambda-join-structural}, by substituting arbitrary parallel
+closed extended cospans for their metavariables. Both orientations are
+available. Commutativity may be omitted because the two operand components
+can be exchanged by an extended-cospan isomorphism. No other equations
+are included. An application uses the context-admissible matches and
+mixed boundary complements of \cref{def:lambda-direct-edpoi}.
+For each metavariable occurrence, its composite occurrence in the host
+must also be context-admissible. This holds for interpreted substitutions:
+the occurrence in a schema is a graphical context, and its composite with
+an outer occurrence is another such context by
+\cref{lemma:lambda-graph-context}.
+Write
+\[
+ \mathcal G\sim_{\mathfrak S_{\Lambda}}\mathcal H
+\]
+for the equivalence relation generated by these steps and isomorphisms
+of extended cospans. By
+\cref{lemma:lambda-all-context-closure}, it is a congruence for composition,
+tensor, join and currying; the composite metavariable occurrences remain
+in the corresponding composite graphical contexts.
+
+\subsection{Normal forms of raw terms}
+
+For types $A,B$, put
+\[
+ J_{\Sigma}(A,B)
+ \defeq
+ \operatorname{Tm}^{\Lambda}_{\Sigma}(A,B)/{\equiv_{0}}.
+\]
+Let $\mathcal P^{+}_{\mathrm{fin}}(X)$ denote the set of finite non-empty
+subsets of a set $X$.  We define
+\[
+ N_{A,B}:
+ \operatorname{Tm}^{\join,\Lambda}_{\Sigma}(A,B)
+ \longrightarrow
+ \mathcal P^{+}_{\mathrm{fin}}(J_{\Sigma}(A,B))
+\]
+by structural recursion.  We omit the type subscripts and set
+\begin{align*}
+ N(g)
+   &\defeq \{[g]_{0}\},\\
+ N(s\join t)
+   &\defeq N(s)\cup N(t),\\
+ N(s\fatsemi t)
+   &\defeq
+     \bigl\{[u\fatsemi v]_{0}
+       \mathrel{|}[u]_{0}\in N(s),\ [v]_{0}\in N(t)\bigr\},\\
+ N(s\otimes t)
+   &\defeq
+     \bigl\{[u\otimes v]_{0}
+       \mathrel{|}[u]_{0}\in N(s),\ [v]_{0}\in N(t)\bigr\},\\
+ N(\Lambda(s))
+   &\defeq
+     \bigl\{[\Lambda(u)]_{0}
+       \mathrel{|}[u]_{0}\in N(s)\bigr\}.
+\end{align*}
+Here $g$ ranges over atomic terms: identities, symmetries, generators
+and evaluations.  
+
+\begin{lemma}[Term normal forms]
+\label{lemma:lambda-term-normal-forms}
+For raw closed terms with joins
+\[
+  s,t\in
+  \operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B),
+\]
+one has
+\[
+  s\equiv_{\mathsf{str}}t
+  \quad\Longleftrightarrow\quad
+  N(s)=N(t).
+\]
+\end{lemma}
+
+\begin{proof}
+Every generating equation of \(\equiv_{\mathsf{str}}\) preserves \(N\).
+For the symmetric monoidal equations, expand each operand into its
+finite set of join-free classes. For every choice of join-free
+summands, the corresponding terms on the two sides are
+\(\equiv_0\)-equivalent.
+
+For example, bifunctoriality gives
+\[
+  (s\otimes t)\fatsemi(u\otimes v)
+  \equiv_{\mathsf{SMC}}
+  (s\fatsemi u)\otimes(t\fatsemi v).
+\]
+The left-hand side has normal form
+\[
+\begin{aligned}
+  N\bigl((s\otimes t)\fatsemi(u\otimes v)\bigr)
+  =
+  \bigl\{
+    [(s'\otimes t')\fatsemi(u'\otimes v')]_0
+    \mathrel{\big|}
+    {}&
+    [s']_0\in N(s),\
+    [t']_0\in N(t),\\
+    &
+    [u']_0\in N(u),\
+    [v']_0\in N(v)
+  \bigr\}.
+\end{aligned}
+\]
+The right-hand side has normal form
+\[
+\begin{aligned}
+  N\bigl((s\fatsemi u)\otimes(t\fatsemi v)\bigr)
+  =
+  \bigl\{
+    [(s'\fatsemi u')\otimes(t'\fatsemi v')]_0
+    \mathrel{\big|}
+    {}&
+    [s']_0\in N(s),\
+    [t']_0\in N(t),\\
+    &
+    [u']_0\in N(u),\
+    [v']_0\in N(v)
+  \bigr\}.
+\end{aligned}
+\]
+These sets are equal because
+\[
+  [(s'\otimes t')\fatsemi(u'\otimes v')]_0
+  =
+  [(s'\fatsemi u')\otimes(t'\fatsemi v')]_0
+\]
+by bifunctoriality in \(\equiv_0\). The other symmetric monoidal
+equations are treated analogously.
+
+The semilattice equations become the corresponding equations for
+union. For example, bilinearity of composition gives
+\begin{align*}
+  N((f\join g)\fatsemi h)
+  &=
+  \bigl\{
+    [u\fatsemi v]_0
+    \mathrel{\big|}
+    [u]_0\in N(f)\cup N(g),\
+    [v]_0\in N(h)
+  \bigr\}\\
+  &=
+  N((f\fatsemi h)\join(g\fatsemi h)),
+\end{align*}
+and the remaining bilinearity equations are analogous. Moreover,
+\begin{align*}
+  N(\Lambda(f\join g))
+  &=
+  \bigl\{
+    [\Lambda(u)]_0
+    \mathrel{\big|}
+    [u]_0\in N(f)\cup N(g)
+  \bigr\}\\
+  &=
+  N(\Lambda(f)\join\Lambda(g)).
+\end{align*}
+An induction on the derivation therefore gives
+\[
+  s\equiv_{\mathsf{str}}t
+  \quad\Longrightarrow\quad
+  N(s)=N(t).
+  \tag{\ref{lemma:lambda-term-normal-forms}.1}
+  \label{eq:lambda-term-normal-forms-1}
+\]
+
+For the converse, for every finite nonempty set \(S\) of
+\(\equiv_0\)-classes, choose one representative of each class, an
+enumeration and a binary bracketing, and write
+\[
+  \bigjoin S
+\]
+for the resulting raw term. Its \(\equiv_{\mathsf{str}}\)-class is
+independent of these choices: changing a representative uses
+\(\equiv_0\), changing the enumeration or bracketing uses associativity
+and commutativity, and repeated classes are removed by idempotence.
+
+We show by structural induction that
+\[
+  t\equiv_{\mathsf{str}}\bigjoin N(t).
+  \tag{\ref{lemma:lambda-term-normal-forms}.2}
+  \label{eq:lambda-term-normal-forms-2}
+\]
+
+If \(t\) is atomic, then \(N(t)=\{[t]_0\}\), so the result follows
+immediately.
+
+If \(t=t_1\join t_2\), the induction hypotheses give
+\[
+  t_1\equiv_{\mathsf{str}}\bigjoin N(t_1),
+  \qquad
+  t_2\equiv_{\mathsf{str}}\bigjoin N(t_2).
+\]
+Hence
+\[
+\begin{aligned}
+  t_1\join t_2
+  &\equiv_{\mathsf{str}}
+  \bigjoin N(t_1)\join\bigjoin N(t_2)\\
+  &\equiv_{\mathsf{str}}
+  \bigjoin\bigl(N(t_1)\cup N(t_2)\bigr)
+  =
+  \bigjoin N(t).
+\end{aligned}
+\]
+
+If \(t=t_1\fatsemi t_2\), write
+\[
+  \bigjoin N(t_1)=\bigjoin_i u_i,
+  \qquad
+  \bigjoin N(t_2)=\bigjoin_j v_j.
+\]
+The induction hypotheses and bilinearity give
+\[
+\begin{aligned}
+  t_1\fatsemi t_2
+  &\equiv_{\mathsf{str}}
+  \left(\bigjoin_i u_i\right)
+  \fatsemi
+  \left(\bigjoin_j v_j\right)\\
+  &\equiv_{\mathsf{str}}
+  \bigjoin_{i,j}(u_i\fatsemi v_j)\\
+  &\equiv_{\mathsf{str}}
+  \bigjoin N(t).
+\end{aligned}
+\]
+The tensor case is analogous.
+
+Finally, suppose \(t=\Lambda(u)\), and write
+\[
+  \bigjoin N(u)=\bigjoin_i u_i.
+\]
+The induction hypothesis and preservation of joins by abstraction give
+\[
+\begin{aligned}
+  \Lambda(u)
+  &\equiv_{\mathsf{str}}
+  \Lambda\left(\bigjoin_i u_i\right)\\
+  &\equiv_{\mathsf{str}}
+  \bigjoin_i\Lambda(u_i)\\
+  &\equiv_{\mathsf{str}}
+  \bigjoin N(\Lambda(u)).
+\end{aligned}
+\]
+This proves \eqref{eq:lambda-term-normal-forms-2}.
+
+If \(N(s)=N(t)\), choose the same representative expression for their
+common normal-form set. Then
+\[
+  s
+  \equiv_{\mathsf{str}}
+  \bigjoin N(s)
+  =
+  \bigjoin N(t)
+  \equiv_{\mathsf{str}}
+  t,
+\]
+and hence \(s\equiv_{\mathsf{str}}t\).
+\end{proof}
+
+The point of using a finite set of $\equiv_{0}$-classes, rather than an
+expression $t_1\join\cdots\join t_n$, is that the former is canonical.
+No orientation of the structural equations, and hence no termination or
+confluence argument for such an orientation, is needed.
+
+\subsection{Complete resolutions}
+
+A \emph{complete $\catname{SLat}$-resolution} removes every
+$\boxsort$-edge by replacing it by one selected component, with its
+boundary glued to the box's outer ports. More precisely, define the set
+of resolutions by recursion on box depth. Resolve each child component
+recursively. At a $\lambda$-edge retain that edge and its unique component
+with the chosen resolved body. At a $\boxsort$-edge select one of its
+resolved components and replace the \emph{whole} box cospan by that
+component using \cref{lemma:lambda-cut-replace}. Discard the other
+component subtrees. In each frame perform these replacements for its
+immediate boxes and retain all ordinary edges.
+
+The source of such a replacement consists of the box, its ports, a fresh
+component root and all its component subtrees. Its canonical occurrence
+is context-admissible. Its replacement has the same external type.
+This is the mixed version of the selection operation in
+\cref{def:flat_resolutions}, not a structural equation. In particular,
+one does not leave a unary $\boxsort$-edge behind. The selected component's
+root is identified with the ambient component, its former external
+boundary is glued in order to the cut ports, and its deeper interface
+blocks are retained. A $\lambda$-edge survives unless it belongs to a
+discarded component subtree.
+
+For a closed extended cospan $\mathcal G$, let
+\[
+ \operatorname{Flat}(\mathcal G)
+\]
+be the set of isomorphism classes of its complete
+resolutions, defined analogously to~\cref{def:flat_resolutions}. 
+Each is a join-free closed extended cospan of the original
+external type, still equipped with the blocks of its surviving
+$\lambda$-bodies.
+
+\begin{lemma}[Resolution and graph operations]
+\label{lemma:lambda-resolution-operations}
+We have the followung properties of complete resolutions:
+\begin{align}
+ \operatorname{Flat}(\mathcal G\join\mathcal H)
+ &=\operatorname{Flat}(\mathcal G)\cup\operatorname{Flat}(\mathcal H),
+ \label{eq:res-join}\\
+ \operatorname{Flat}(\mathcal G\fatsemi\mathcal H)
+ &=\{[\mathcal K\fatsemi\mathcal L]_{\cong}
+       \mid[\mathcal K]_{\cong}\in\operatorname{Flat}(\mathcal G),\
+            [\mathcal L]_{\cong}\in\operatorname{Flat}(\mathcal H)\},
+ \label{eq:res-composition}\\
+ \operatorname{Flat}(\mathcal G\otimes\mathcal H)
+ &=\{[\mathcal K\otimes\mathcal L]_{\cong}
+       \mid[\mathcal K]_{\cong}\in\operatorname{Flat}(\mathcal G),\
+            [\mathcal L]_{\cong}\in\operatorname{Flat}(\mathcal H)\},
+ \label{eq:res-tensor}\\
+ \operatorname{Flat}(\Lambda(\mathcal G))
+ &=\{[\Lambda(\mathcal K)]_{\cong}
+       \mid[\mathcal K]_{\cong}\in\operatorname{Flat}(\mathcal G)\}.
+ \label{eq:res-lambda}
+\end{align}
+\end{lemma}
+\begin{proof}
+Neither composition nor tensor introduce new $\boxsort$-edges, so the sets of complete resolutions are given by those of component combined using either composition or tensor.
+Under $\join$ the $\boxsort$-edges of $\mathcal{G}$ and $\mathcal{H}$ end up in different components, so their complete resolution is given by the union of the two.
+Finally, $\lambdasort$-edges are not removed, so the complete resolutions of $\Lambda(\mathcal{G})$ are given by those of $\mathcal{G}$ with the $\lambdasort$-edge and its root retained.
+\end{proof}
+
+\begin{lemma}[Resolution of an interpreted term]
+\label{lemma:lambda-resolution-interpretation}
+For every raw $\Sigma^{\join}$-term $t \in \operatorname{Tm}^{\Lambda,\join}_{\Sigma}$,
+\[
+ \operatorname{Flat}(\widehat t)
+ =\{[\widehat u]_{\cong}\mid[u]_0\in N(t)\}.
+\]
+\end{lemma}
+\begin{proof}
+The set on the right is well-defined: if $[u]_0 = [v]_0$, then $\widehat{u} \cong \widehat{v}$.
+We proceed by structural induction on $t$.
+Each atomic term has its own interpretation
+as its sole resolution.
+Consider the case $t = t_1 \fatsemi t_2$.
+By the induction hypothesis, we have
+\[
+\operatorname{Flat}(\widehat{t_1}) = \{[\widehat{u_1}]_{\cong} \mid [u_1]_0 \in N(t_1)\}
+\]
+and
+\[
+\operatorname{Flat}(\widehat{t_2}) = \{[\widehat{u_2}]_{\cong} \mid [u_2]_0 \in N(t_2)\}
+\]
+By~\cref{lemma:lambda-resolution-operations}, we have 
+\begin{align*}
+  \operatorname{Flat}(\widehat t)
+  &=
+  \operatorname{Flat}
+  (\widehat{t_1}\fatsemi\widehat{t_2})\\
+  &=
+  \bigl\{
+    [\mathcal K\fatsemi\mathcal L]_{\cong}
+    \mathrel{\big|}
+    [\mathcal K]_{\cong}
+      \in\operatorname{Flat}(\widehat{t_1}),
+    \
+    [\mathcal L]_{\cong}
+      \in\operatorname{Flat}(\widehat{t_2})
+  \bigr\}\\
+  &=
+  \bigl\{
+    [\widehat{u_1}\fatsemi\widehat{u_2}]_{\cong}
+    \mathrel{\big|}
+    [u_1]_0\in N(t_1),
+    \
+    [u_2]_0\in N(t_2)
+  \bigr\}\\
+  &=
+  \bigl\{
+    [\widehat{u_1\fatsemi u_2}]_{\cong}
+    \mathrel{\big|}
+    [u_1]_0\in N(t_1),
+    \
+    [u_2]_0\in N(t_2)
+  \bigr\}\\
+  &=
+  \{[\widehat u]_{\cong}\mid[u]_0\in N(t)\}.
+\end{align*}
+The other cases are analogous.
+\end{proof}
+
+\begin{lemma}[Resolution locality]
+\label{lemma:lambda-resolution-locality}
+Suppose $\mathcal L,\mathcal R:A\to B$ have the same external type and
+$\operatorname{Res}(\mathcal L)=\operatorname{Res}(\mathcal R)$.
+If a direct closed EDPOI replacement of $\mathcal L$ by $\mathcal R$
+takes $\mathcal G$ to $\mathcal H$, then
+\[
+ \operatorname{Res}(\mathcal G)=\operatorname{Res}(\mathcal H).
+\]
+Their strictly internal interfaces need not be the same before resolution.
+\end{lemma}
+\begin{proof}
+By \cref{lemma:lambda-graph-context}, there is one graphical context
+$\mathcal D[-]$ with
+$\mathcal G\cong\mathcal D[\mathcal L]$ and
+$\mathcal H\cong\mathcal D[\mathcal R]$, preserving the external
+interfaces and the given occurrence and complement. Induction on
+$\mathcal D[-]$, using \cref{lemma:lambda-resolution-operations}, shows
+that its resolution set depends on its hole operand only through that
+operand's resolution set. In a join context the alternatives outside
+the hole contribute the same union summands; in composition, tensor and
+currying the same pointwise operations are applied. Isomorphisms of
+resolved operands preserve their external boundary maps, so their
+pushouts with the same resolved context are isomorphic. This proves the
+equality in both directions without reversing an unverified match.
+\end{proof}
+
+Let $\mathfrak{R}_{\Lambda}$ be the set of structural rules obtained as in~\cref{def:structural_rules}, additionally with the following schema corresponding to the equation~\eqref{eq:lambda-join-structural}:
+\[
+\adjustbox{max width=\textwidth}{
+\tikzfig{./figures/lambda/semilat_distributivity_law1}~.
+}
+\]
+
+Write $\mathcal{G} \sim_{\mathfrak{R}_{\Lambda}} \mathcal{H}$ if $\mathcal{G} \widetilde{\leftrightsquigarrow}_{\mathfrak{R}_{\Lambda}}^{*} \mathcal{H}$, the reflexive, symmetric and transitive closure of $\widetilde{\rightsquigarrow}_{\mathfrak{R}_{\Lambda}}$ of~\cref{def:lambda-convex-edpoi-rewriting}.
+EDPOI rewriting is preserved by $\Lambda$-abstraction, similarly to how $\join$ preserved EDPOI rewriting in~\cref{lemma:rewriting_congruence}.
+
+\begin{lemma}[Invariance of resolution]
+\label{lemma:lambda-resolution-invariance}
+If $\mathcal G\sim_{\mathfrak S_\Lambda}\mathcal H$, then
+$\operatorname{Flat}(\mathcal G)=\operatorname{Flat}(\mathcal H)$.
+\end{lemma}
+\begin{proof}
+Check each generating structural schema using
+\cref{lemma:lambda-resolution-operations}. The semilattice equations
+are associativity, commutativity and idempotence of union. Bilinearity
+is distributivity of the pointwise composition or tensor over union.
+Finally the image of a union under $[\mathcal K]\mapsto[\Lambda(\mathcal K)]$
+is the union of the images, giving the currying schema. By
+\cref{lemma:lambda-resolution-locality}, these equalities hold in every
+admissible occurrence. Isomorphisms preserve resolution, and induction
+on a finite structural path proves the assertion.
+\end{proof}
+
+For a finite nonempty set $S$ of isomorphism classes of join-free closed
+extended cospans of one external type, choose representatives and a binary
+bracketing, and put
+\[
+ \operatorname{Can}(S)=\bigjoin_{[\mathcal K]\in S}\mathcal K.
+\]
+Its structural-equivalence class is independent of these choices:
+isomorphisms, associativity and commutativity relate any two choices.
+For a singleton it is its chosen representative.
+
+\begin{lemma}[$\Lambda$-context closure]
+\label{lemma:lambda-structural-context-closure}
+For closed extended cospans $\mathcal G,\mathcal H:A\otimes B\to C$,
+\[
+ \mathcal G\sim_{\mathfrak S_\Lambda}\mathcal H
+ \quad\Longrightarrow\quad
+ \Lambda_{A,B,C}(\mathcal G)\sim_{\mathfrak S_\Lambda}
+ \Lambda_{A,B,C}(\mathcal H).
+\]
+\end{lemma}
+\begin{proof}
+Apply \cref{lemma:lambda-all-context-closure} to every step and
+isomorphism of the structural path. The fresh $\lambda$-edge has the
+old root as its unique component child; the rule and its cut interface
+are unchanged. The resulting external type is $A\to B\multimap C$.
+The admissibility convention for schematic instances is preserved because
+each metavariable occurrence lies in the same composite graphical context.
+\end{proof}
+
+\begin{lemma}[Graphical normal form]
+\label{lemma:lambda-graphical-normal-form}
+For every raw term $t$,
+\[
+  \widehat t
+  \sim_{\mathfrak R_{\Lambda}}
+  \operatorname{Can}
+  \bigl(\operatorname{Flat}(\widehat t)\bigr).
+\]
+\end{lemma}
+\begin{proof}
+Note that given $\widehat{t}$, the set $\operatorname{Flat}(\widehat{t})$ is preserved by each structural rewrite rule.
+We orient the structural rules just as in~\cref{lemma:canonical_representative}, with the only addition being using the $\Lambda$-abstraction rule to propagate nested $\boxsort$-edges outwards, which turns the cospan of $\widetilde{t}$ into a join of box-free cospans,
+\[
+\widehat{t} \sim_{\mathfrak{R}_{\Lambda}} \bigjoin \mathcal{F}_i,
+\]
+such that each $F_i$ is a box-free cospan and $F_i \not \cong F_j$ for $i \neq j$.
+Since each $F_i$ is box-free, each correspond to a unique element of $\operatorname{Flat}(\widehat{t})$.
+Therefore, 
+\[
+\widehat{t} \sim_{\mathfrak{R}_{\Lambda}} \bigjoin_{{\mathcal{F}_i} \in \operatorname{FLat}(\widehat{t})} \mathcal{F}_i
+\]
+
+We proceed by structural induction on \(t\). If \(t\) is atomic, then
+\[
+  \operatorname{Flat}(\widehat t)
+  =
+  \{[\widehat t]_{\cong}\},
+\]
+so the claim follows immediately from the definition of
+\(\operatorname{Can}\).
+
+Suppose \(t=t_1\join t_2\). By the induction hypotheses and closure of
+\(\sim_{\mathfrak R_\Lambda}\) under join,
+\[
+  \widehat{t_1}\join\widehat{t_2}
+  \sim_{\mathfrak R_\Lambda}
+  \operatorname{Can}(\operatorname{Flat}(\widehat{t_1}))
+  \join
+  \operatorname{Can}(\operatorname{Flat}(\widehat{t_2})).
+\]
+Associativity, commutativity and idempotence of join turn the
+right-hand side into
+\[
+  \operatorname{Can}\bigl(
+    \operatorname{Flat}(\widehat{t_1})
+    \cup
+    \operatorname{Flat}(\widehat{t_2})
+  \bigr),
+\]
+which is
+\[
+  \operatorname{Can}(\operatorname{Flat}(\widehat t))
+\]
+by \cref{eq:res-join}.
+
+Suppose \(t=t_1\fatsemi t_2\). Using the induction hypotheses and
+closure under composition, we obtain
+\[
+  \widehat{t_1}\fatsemi\widehat{t_2}
+  \sim_{\mathfrak R_\Lambda}
+  \operatorname{Can}(\operatorname{Flat}(\widehat{t_1}))
+  \fatsemi
+  \operatorname{Can}(\operatorname{Flat}(\widehat{t_2})).
+\]
+Repeated application of bilinearity expresses the right-hand side as
+the join of all cospans
+\[
+  \mathcal K\fatsemi\mathcal L,
+  \qquad
+  [\mathcal K]_{\cong}
+    \in\operatorname{Flat}(\widehat{t_1}),
+  \qquad
+  [\mathcal L]_{\cong}
+    \in\operatorname{Flat}(\widehat{t_2}).
+\]
+Idempotence removes repeated isomorphism classes. By
+\cref{eq:res-composition}, the result is structurally equivalent to
+\[
+  \operatorname{Can}(\operatorname{Flat}(\widehat t)).
+\]
+The tensor case is analogous, using \cref{eq:res-tensor}.
+
+Finally, suppose \(t=\Lambda(u)\). By the induction hypothesis and
+\cref{lemma:lambda-structural-context-closure},
+\[
+  \Lambda(\widehat u)
+  \sim_{\mathfrak R_\Lambda}
+  \Lambda\bigl(
+    \operatorname{Can}(\operatorname{Flat}(\widehat u))
+  \bigr).
+\]
+Repeated application of the structural rule
+\[
+  \Lambda(\mathcal G\join\mathcal H)
+  \sim_{\mathfrak R_\Lambda}
+  \Lambda(\mathcal G)\join\Lambda(\mathcal H)
+\]
+moves every join outside the abstraction. Associativity,
+commutativity and idempotence then give
+\[
+  \Lambda\bigl(
+    \operatorname{Can}(\operatorname{Flat}(\widehat u))
+  \bigr)
+  \sim_{\mathfrak R_\Lambda}
+  \operatorname{Can}
+  \left(
+    \{
+      [\Lambda(\mathcal K)]_{\cong}
+      \mid
+      [\mathcal K]_{\cong}
+        \in\operatorname{Flat}(\widehat u)
+    \}
+  \right).
+\]
+By \cref{eq:res-lambda}, the latter is
+\[
+  \operatorname{Can}(\operatorname{Flat}(\widehat t)).
+\]
+\end{proof}
+
+
+\subsection{The adequacy theorem}
+
+\begin{theorem}[Structural adequacy]
+\label{theorem:lambda-structural-adequacy}
+For raw closed $\Sigma^{\join}$-terms $s,t \in \operatorname{Tm}^{\Lambda, \join}(A, B)$,
+\[
+ s\equiv_{\mathsf{str}}t
+ \quad\Longleftrightarrow\quad
+ \widehat s\sim_{\mathfrak R_{\Lambda}}\widehat t.
+\]
+\end{theorem}
+\begin{proof}
+Suppose first that $s\equiv_{\mathsf{str}}t$.  By
+\cref{lemma:lambda-term-normal-forms}, $N(s)=N(t)$, and hence
+\cref{lemma:lambda-resolution-interpretation} gives
+\[
+ \operatorname{Flat}(\widehat s)
+ =\operatorname{Flat}(\widehat t).
+\]
+Applying~\cref{lemma:lambda-graphical-normal-form} to both terms gives
+\[
+ \widehat s
+ \sim_{\mathfrak R_{\Lambda}}
+ \operatorname{Can}(\operatorname{Flat}(\widehat s))
+ \sim_{\mathfrak R_{\Lambda}}
+ \operatorname{Can}(\operatorname{Flat}(\widehat t))
+ \sim_{\mathfrak R_{\Lambda}}
+ \widehat t.
+\]
+
+Conversely, suppose
+$\widehat s\sim_{\mathfrak R_{\Lambda}}\widehat t$. 
+Structural rules of $\mathfrak{R}_{\Lambda}$ preserve the set of complete resolutions, so
+\[
+ \operatorname{Flat}(\widehat s)
+ =\operatorname{Flat}(\widehat t).
+\]
+Using~\cref{lemma:lambda-resolution-interpretation}, this says
+\[
+ \bigl\{[\widehat u]_{\cong}\mid[u]_{0}\in N(s)\bigr\}
+ =
+ \bigl\{[\widehat v]_{\cong}\mid[v]_{0}\in N(t)\bigr\}.
+\]
+The map $[u]_{0}\mapsto[\widehat u]_{\cong}$ is injective by
+\cref{lemma:lambda-join-free-faithfulness}.  Therefore $N(s)=N(t)$, and
+\cref{lemma:lambda-term-normal-forms} yields
+$s\equiv_{\mathsf{str}}t$.
+\end{proof}
+
+\subsection{Role of normal forms in operational rewriting}
+
+The normal forms above are used only to prove
+\cref{theorem:lambda-structural-adequacy}.  They do not restrict the
+representatives on which an operational rule may be matched.  This
+distinction matters because distributivity can duplicate a redex.  For a
+rule $l\to r$, for example, the single step
+\[
+ l\fatsemi(g\join h)
+ \longrightarrow
+ r\fatsemi(g\join h)
+\]
+has expanded source and target
+\[
+ (l\fatsemi g)\join(l\fatsemi h)
+ \qquad\text{and}\qquad
+ (r\fatsemi g)\join(r\fatsemi h).
+\]
+Rewriting the two displayed residuals separately uses two directed
+applications, whereas the factored representative admits one. Thus
+expanding representatives need not preserve the length of a direct
+rewrite sequence. Modulo structural equality the expanded source can
+instead be factored, rewritten once, and expanded again.
+
+For the subsequent soundness and completeness theorem, structural adequacy
+is instead used before and after one genuine rule application:
+\[
+ \widehat a
+ \sim_{\mathfrak S_{\Lambda}}
+ \mathcal A'
+ \mathrel{\overline{\rightsquigarrow}_{\widehat l\to\widehat r}}
+ \mathcal B'
+ \sim_{\mathfrak S_{\Lambda}}
+ \widehat b.
+\]
+The operational step itself is handled by the mixed-box context-extraction
+lemma.  Keeping these two arguments separate avoids any residual or
+commutation theorem between structural normalisation and operational
+rewriting.
+
+\section{The rewriting correspondence}
+\label{sec:lambda-rewriting-correspondence}
+
+We now compare directed rewriting of raw closed terms modulo
+$\equiv_{\mathsf{str}}$ with directed EDPOI rewriting modulo
+$\mathfrak S_{\Lambda}$.  Throughout this section a rule
+\[
+ \rho=(l\longrightarrow r):A\longrightarrow B
+\]
+is ground: $l$ and $r$ contain no term metavariables.  A schematic rule may
+instead be treated by replacing it with all of its well-typed substitutional
+instances.  Nothing in the argument below otherwise changes.
+
+\subsection{Rewriting modulo structural equality}
+
+\begin{definition}[Term rewriting modulo structural equality]
+\label{def:lambda-term-rewriting-modulo}
+For a rewrite rule $\rho=(l\to r)$, write
+\[
+ a\longrightarrow_{\rho/\mathsf{str}}b
+\]
+if there are raw terms $a',b'$ and a typed one-hole context $C[-]$ such
+that
+\[
+ a\equiv_{\mathsf{str}}a'=C[l],
+ \qquad
+ b'=C[r]\equiv_{\mathsf{str}}b.
+ \tag{\(\dagger\)}
+ \label{eq:lambda-term-step-modulo}
+\]
+\end{definition}
+
+The corresponding graph relation must make the same distinction between
+reversible structure and directed computation.
+
+\begin{definition}[EDPOI rewriting modulo structural rules]
+\label{def:lambda-edpoi-rewriting-modulo}
+For closed extended cospans $\mathcal G$ and $\mathcal H$, write
+\[
+ \mathcal G
+ \mathrel{\overline{\rightsquigarrow}^{\,\mathfrak S_{\Lambda}}_{\widehat\rho}}
+ \mathcal H
+\]
+if there are $\mathcal G'$ and $\mathcal H'$ such that
+\[
+ \mathcal G\sim_{\mathfrak S_{\Lambda}}\mathcal G',
+ \qquad
+ \mathcal G'
+ \mathrel{\overline{\rightsquigarrow}_{\widehat l\to\widehat r}}
+ \mathcal H',
+ \qquad
+ \mathcal H'\sim_{\mathfrak S_{\Lambda}}\mathcal H,
+ \tag{\(\ddagger\)}
+ \label{eq:lambda-graph-step-modulo}
+\]
+where the middle relation is a direct admissible EDPOI application of the
+directed rule $\widehat l\to\widehat r$. 
+\end{definition}
+
+\subsection{Context extraction}
+
+
+\subsection{Replacement and structural image stability}
+
+\begin{lemma}[Reification]
+\label{lemma:lambda-reification}
+Let
+\[
+ \mathbf G
+ =
+ \left(
+ n
+ \xrightarrow{f_{\mathrm{ext}}}
+ n'
+ \xrightarrow{f_{\mathrm{int}}}
+ \mathcal G
+ \xleftarrow{g_{\mathrm{int}}}
+ k'
+ \xleftarrow{g_{\mathrm{ext}}}
+ k
+ \right)
+\]
+be a well-typed MDA closed extended cospan, and put
+\[
+ A\defeq\left\lVert\operatorname{ty}_{n}\right\rVert_{\otimes},
+ \qquad
+ B\defeq\left\lVert\operatorname{ty}_{k}\right\rVert_{\otimes},
+\]
+so that $n=\partial A$ and $k=\partial B$.  Then there is a raw term
+$u\in\operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)$ such that
+\[
+ \widehat u\cong\mathbf G.
+\]
+\end{lemma}
+\begin{proof}
+We proceed by induction on the number $\nu(\mathbf G)$ of edges of
+$\mathcal G$ which are not component edges, that is, of ordinary,
+$\boxsort$- and $\lambdasort$-edges.  
+
+Suppose first that $\nu(\mathbf G)=0$.  
+By alternation, the only edge
+of $\mathcal G$ is $\top_{\mathcal G}$, and every vertex has immediate
+parent $\top_{\mathcal G}$.
+Every vertex has in- and out-degree zero, so the
+MDA conditions make both external legs bijections onto
+$V_{\mathcal G}$.  Hence $\mathbf G$ is the interpretation of a term
+built from primitive identities and symmetries by $\fatsemi$ and
+$\otimes$, exactly as in the base case of the proof of
+\cref{theorem:monogamous_isomorphism}.
+
+Suppose now that $\nu(\mathbf G)>0$.  
+Then we may choose a non-component edge $e$ with $\top_{\mathcal{G}} <^{\mu}_{\mathcal{G}} e$.
+Put
+\[
+ P\defeq\left\lVert l_V^*(s(e))\right\rVert_{\otimes},
+ \qquad
+ Q\defeq\left\lVert l_V^*(t(e))\right\rVert_{\otimes}.
+\]
+Let $\mathcal L$ be the sub-e-hypergraph of $\mathcal G$ consisting of
+$e$, the vertices of $s(e)$ and $t(e)$, and all descendants of $e$,
+with a fresh root whose immediate children are $e$ and these ports.
+Its ordered input and output ports form the external interfaces
+$\partial P$ and $\partial Q$.  The interface blocks of
+$\mathbf G$ belonging to components below $e$ are its strictly
+internal interfaces.  We obtain a well-typed MDA closed extended
+cospan
+\[
+ \mathbf L:\partial P\longrightarrow\partial Q.
+\]
+Now consider the following cases.
+
+\begin{enumerate}
+ \item If $e$ is an ordinary edge labelled by $g$, then $e$ has no
+ descendants and $\mathbf L\cong\widehat g$.  Put $w\defeq g$.
+
+ \item If $e$ is a $\boxsort$-edge, let $c_1,\ldots,c_s$ be its
+ components.
+Each $c_i$ together with its
+ descendants and its interface blocks determines a well-typed MDA
+ closed extended cospan $\mathbf G_{c_i}$. 
+ Well-typedness of $e$ gives
+ \[
+  \mathbf G_{c_i}:\partial P\longrightarrow\partial Q.
+ \]
+ By \cref{def:join_of_extended_cospans},
+ \[
+  \mathbf L\cong
+  \mathbf G_{c_1}\join\cdots\join\mathbf G_{c_s}.
+ \]
+ Since $\nu(\mathbf G_{c_i})<\nu(\mathbf G)$, the induction hypothesis
+ gives raw terms $u_i:P\to Q$ with
+ $\widehat{u_i}\cong\mathbf G_{c_i}$.  
+ Put
+ \[
+  w\defeq u_1\join\cdots\join u_s.
+ \]
+ This is the step where we utilise n-ary joins in the syntax, otherwise we would have to reify terms up to structural equvialence.
+
+ \item If $e$ is a $\lambdasort$-edge with unique component $c$,
+ well-typedness of $e$ gives objects $X,C$ and an atomic type $D$ with
+ \[
+  P=X,
+  \qquad
+  Q=D\multimap C,
+  \qquad
+  \mathbf G_c:\partial(X\otimes D)\longrightarrow\partial C.
+ \]
+ Comparing with \cref{def:lambda-currying-cospan} gives
+ \[
+  \mathbf L\cong\Lambda(\mathbf G_c).
+ \]
+%  This is the identification used in case~(2b) of
+%  \cref{lemma:lambda-convex-decomposition}.  
+ Since
+ $\nu(\mathbf G_c)<\nu(\mathbf G)$, the induction hypothesis gives a
+ raw term $v:X\otimes D\to C$ with $\widehat v\cong\mathbf G_c$.  Put
+ \[
+  w\defeq\Lambda_{X,D,C}(v).
+ \]
+\end{enumerate}
+
+Therefore, we get a raw term $w : P \to Q$ such that
+\[
+ \widehat w\cong\mathbf L.
+\]
+
+The inclusion $m:\mathcal L\to\mathcal G$ is an anchored monomorphism
+with anchor $\top_{\mathcal G}$.  Its image contains every descendant
+of $e$, and the non-root edges of $\mathcal L$ are $e$ and its
+descendants.  Hence the image is closed under descendants below every
+matched non-root edge.  The image is also convex. 
+Case~(1) of
+\cref{lemma:lambda-convex-decomposition} therefore gives a typed
+interface $q$ and well-typed MDA closed extended cospans
+\[
+ \mathbf C_1:\partial A\longrightarrow q\coprod\partial P,
+ \qquad
+ \mathbf C_2:q\coprod\partial Q\longrightarrow\partial B
+\]
+such that
+\[
+ \mathbf G
+ \cong
+ \mathbf C_1\fatsemi(\mathbf 1_q\otimes\mathbf L)\fatsemi\mathbf C_2.
+\]
+Composition and tensor glue only along interface vertices, so the
+non-component edges of $\mathcal G$ are partitioned between
+$\mathbf C_1$, $\mathbf L$ and $\mathbf C_2$.  Since $e$ lies in
+$\mathbf L$,
+\[
+ \nu(\mathbf C_1)<\nu(\mathbf G)
+ \qquad\text{and}\qquad
+ \nu(\mathbf C_2)<\nu(\mathbf G).
+\]
+The induction hypothesis gives raw terms $c_1$ and $c_2$ with
+$\widehat{c_1}\cong\mathbf C_1$ and $\widehat{c_2}\cong\mathbf C_2$.
+Write $K\defeq\lVert\operatorname{ty}_q\rVert_{\otimes}$, and put
+\[
+ u\defeq c_1\fatsemi(\id_K\otimes w)\fatsemi c_2 .
+\]
+Composition and tensor preserve isomorphisms of closed extended
+cospans.  By compositionality of the interpretation,
+\[
+ \widehat u
+ =
+ \widehat{c_1}\fatsemi(\id_{q}\otimes\widehat w)\fatsemi\widehat{c_2}
+ \cong
+ \mathbf C_1\fatsemi(\mathbf 1_q\otimes\mathbf L)\fatsemi\mathbf C_2
+ \cong
+ \mathbf G.
+\]
+\end{proof}
+
+In other words, the interpretation of
+\cref{def:lambda-concrete-interpretation} is surjective on isomorphism
+classes of well-typed MDA closed extended cospans.  Combined with
+\cref{theorem:lambda-structural-adequacy}, it yields an isomorphism
+\[
+ \operatorname{Tm}^{\Lambda,\join}_{\Sigma}/{\equiv_{\mathsf{str}}}
+ \;\cong\;
+ \catname{CMEHypI}_{\bullet}(\Sigma)/\mathfrak R_{\Lambda}.
+\]
+This is the $\Lambda$-analogue of
+\cref{theorem:mehypi_slat_isomorphism}.
+
+\begin{lemma}[Context extraction]
+\label{lemma:lambda-context-extraction}
+Let $p:P\to Q$ and $t:A\to B$ be raw terms, and let
+\[
+ m:\widehat p\longrightarrow\widehat t
+\]
+be a context-admissible match. Then there are a typed one-hole context
+$C[-]$ and a boundary-preserving isomorphism
+\[
+ \beta:\widehat{C[p]}\overset{\cong}{\longrightarrow}\widehat t
+ \qquad\text{with}\qquad
+ \iota_p\fatsemi\beta_{\mathrm{car}}=m,
+\]
+where $\iota_p$ is the canonical occurrence of $\widehat p$ in
+$\widehat{C[p]}$. Moreover,
+\[
+ t\equiv_{\mathsf{str}}C[p],
+\]
+and $\beta$ carries the canonical extended boundary complement of
+$\iota_p$ to one isomorphic to the chosen complement of $m$.
+\end{lemma}
+\begin{proof}
+Once $C[-]$ and $\beta$ are constructed, the remaining assertions are
+immediate. Since isomorphisms are contained in
+$\sim_{\mathfrak R_{\Lambda}}$, we have
+$\widehat{C[p]}\sim_{\mathfrak R_{\Lambda}}\widehat t$, and
+\cref{theorem:lambda-structural-adequacy} gives
+$t\equiv_{\mathsf{str}}C[p]$. The complement assertion follows from
+uniqueness of extended boundary complements. It therefore suffices to
+construct $C[-]$ and $\beta$.
+
+Write $d(m)$ for the number of $\boxsort$- and $\lambdasort$-edges of
+$\widehat t$ lying strictly above the anchor $m_E(\top_{\widehat p})$.
+We proceed by induction on $d(m)$, for all $p$, $t$ and $m$
+simultaneously.
+
+\emph{Case $d(m)=0$.} The anchor is $\top_{\widehat t}$. By
+context-admissibility, $m$ satisfies the hypotheses of
+\cref{lemma:lambda-convex-decomposition}. Case~(1) of that lemma gives
+a typed interface $q$, well-typed MDA closed extended cospans
+$\mathbf C_1,\mathbf C_2$, and an isomorphism
+\[
+ \delta:
+ \mathbf C_1\fatsemi(\mathbf 1_q\otimes\widehat p)\fatsemi\mathbf C_2
+ \overset{\cong}{\longrightarrow}
+ \widehat t
+\]
+which restricts to $m$ on the middle factor. By
+\cref{lemma:lambda-reification} there are raw terms $c_1,c_2$ and
+isomorphisms $\varepsilon_i:\widehat{c_i}\cong\mathbf C_i$. Put
+$K\defeq\lVert\operatorname{ty}_q\rVert_\otimes$ and
+\[
+ C[-]\defeq c_1\fatsemi(\id_K\otimes[-])\fatsemi c_2 .
+\]
+By \cref{def:lambda-concrete-interpretation},
+\[
+ \widehat{C[p]}
+ =
+ \widehat{c_1}\fatsemi(\id_{q}\otimes\widehat p)\fatsemi\widehat{c_2}.
+\]
+Composition and tensor act on isomorphisms. Hence
+\[
+ \beta\defeq
+ \bigl(\varepsilon_1\fatsemi(\id\otimes\id_{\widehat p})
+ \fatsemi\varepsilon_2\bigr)\fatsemi\delta
+\]
+is a boundary-preserving isomorphism. It is the identity on the middle
+factor, so $\iota_p\fatsemi\beta_{\mathrm{car}}=m$.
+
+\emph{Case $d(m)>0$.} The anchor $a\defeq m_E(\top_{\widehat p})$ is a
+non-root component edge. Let $h$ be its immediate parent, which is a
+$\boxsort$- or $\lambdasort$-edge. Let $\mathbf H$ be the closed
+extended cospan generated by $h$: its carrier consists of $h$, its
+ports and all descendants of $h$, and its external interfaces are
+$s(h)$ and $t(h)$. Write $\mathbf F_a$ for the component cospan of $a$,
+and $m_a:\widehat p\to\mathbf F_a$ for the strict corestriction of $m$.
+By case~(2) of \cref{lemma:lambda-convex-decomposition}, $m_a$
+satisfies the hypotheses of case~(1). Hence there are $q$,
+$\mathbf C_1^a$, $\mathbf C_2^a$ and an isomorphism
+\[
+ \delta_a:
+ \mathbf C_1^a\fatsemi(\mathbf 1_q\otimes\widehat p)\fatsemi\mathbf C_2^a
+ \cong\mathbf F_a
+\]
+restricting to $m_a$. As in the previous case,
+\cref{lemma:lambda-reification} yields raw terms $c_1^a$ and $c_2^a$.
+Put
+\[
+ D_a[-]\defeq c_1^a\fatsemi(\id_K\otimes[-])\fatsemi c_2^a .
+\]
+\begin{itemize}
+ \item If $h$ is a $\boxsort$-edge with components $a_1,\dots,a_s$, where
+ $a=a_r$, use \cref{lemma:lambda-reification} to choose raw terms $f_i$
+ with $\widehat{f_i}\cong\mathbf F_{a_i}$ for $i\neq r$, and put
+ \[
+  D[-]\defeq
+  \bigjoin\bigl(f_1,\dots,f_{r-1},D_a[-],f_{r+1},\dots,f_s\bigr).
+ \]
+ \item If $h$ is a $\lambdasort$-edge, then
+ $\mathbf F_a:\partial(X\otimes T)\to\partial B$ as in
+ \cref{def:lambda-well-typed-extended-cospan}. Put
+ \[
+  D[-]\defeq\Lambda_{X,T,B}(D_a[-]).
+ \]
+\end{itemize}
+By case~(2a), respectively case~(2b), of
+\cref{lemma:lambda-convex-decomposition}, $\mathbf H$ is isomorphic to
+$\mathsf J_s(\mathbf F_{a_1},\dots,\mathbf F_{a_s})$, respectively to
+$\Lambda(\mathbf F_a)$, with $\mathbf F_a$ sent to the component $a$.
+Arguing as in the case $d(m)=0$ inside the $a$-component, and using
+that $\mathsf J_s$ and $\Lambda$ act on isomorphisms, we obtain a
+boundary-preserving isomorphism
+\[
+ \beta_D:\widehat{D[p]}\overset{\cong}{\longrightarrow}\mathbf H
+\]
+such that $\iota^{D}_p\fatsemi(\beta_D)_{\mathrm{car}}$ is the
+corestriction of $m$ to $\mathbf H$.
+
+Put $w\defeq D[p]$, and let $n:\mathbf H\to\widehat t$ be the inclusion
+of carriers. It is an anchored monomorphism with anchor the immediate
+parent of $h$. Its image is descendant-closed and convex; the argument
+is the one given in the proof of \cref{lemma:lambda-reification}. Thus
+$n$ is context-admissible, and hence so is
+\[
+ n'\defeq(\beta_D)_{\mathrm{car}}\fatsemi n:
+ \widehat w\longrightarrow\widehat t .
+\]
+Since $d(n')=d(m)-1$, the induction hypothesis gives a context $E[-]$
+and an isomorphism
+\[
+ \beta_E:\widehat{E[w]}\overset{\cong}{\longrightarrow}\widehat t
+ \qquad\text{with}\qquad
+ \iota_w\fatsemi(\beta_E)_{\mathrm{car}}=n' .
+\]
+Put
+\[
+ C[-]\defeq E[D[-]]
+ \qquad\text{and}\qquad
+ \beta\defeq\beta_E .
+\]
+Then $C[p]=E[w]$ syntactically. By the recursive definition of the
+interpretation, the canonical occurrence of $p$ in $C[p]$ is the
+composite $\iota_p=\iota^{D}_p\fatsemi\iota_w$. Therefore
+\[
+ \iota_p\fatsemi\beta_{\mathrm{car}}
+ =
+ \iota^{D}_p\fatsemi\iota_w\fatsemi(\beta_E)_{\mathrm{car}}
+ =
+ \iota^{D}_p\fatsemi(\beta_D)_{\mathrm{car}}\fatsemi n
+ =
+ m .
+\]
+\end{proof}
+
+
+
+\begin{lemma}[Structural image stability]
+\label{lemma:lambda-structural-image-stability}
+If $t\in\operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)$ is a raw term
+and
+\[
+ \widehat t\sim_{\mathfrak R_{\Lambda}}\mathcal G,
+\]
+then there is a raw term $u\in\operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)$
+such that
+\[
+ \mathcal G\cong\widehat u
+ \qquad\text{and}\qquad
+ t\equiv_{\mathsf{str}}u.
+\]
+\end{lemma}
+\begin{proof}
+The relation $\sim_{\mathfrak R_{\Lambda}}$ is generated by isomorphisms
+and EDPOI steps between well-typed MDA closed extended cospans, which
+preserve the external interfaces.  Hence $\mathcal G$ is a well-typed MDA
+closed extended cospan $\partial A\to\partial B$.
+\Cref{lemma:lambda-reification} gives a raw term
+$u\in\operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)$ with
+$\mathcal G\cong\widehat u$.  Isomorphisms are included in
+$\sim_{\mathfrak R_{\Lambda}}$, so
+\[
+ \widehat t\sim_{\mathfrak R_{\Lambda}}\mathcal G
+ \sim_{\mathfrak R_{\Lambda}}\widehat u.
+\]
+\Cref{theorem:lambda-structural-adequacy} therefore gives
+$t\equiv_{\mathsf{str}}u$.
+\end{proof}
+
+\subsection{Soundness and completeness}
+
+\begin{proposition}[One-step rewriting correspondence]
+\label{prop:lambda-one-step-rewriting}
+For a ground rule $\rho=(l\to r)$ and raw closed terms $a,b$,
+\[
+ a\longrightarrow_{\rho/\mathsf{str}}b
+ \quad\Longleftrightarrow\quad
+ \widehat a
+ \mathrel{\overline{\rightsquigarrow}^{\,\mathfrak S_{\Lambda}}_{\widehat\rho}}
+ \widehat b.
+\]
+\end{proposition}
+\begin{proof}
+Suppose first that
+$a\longrightarrow_{\rho/\mathsf{str}}b$.  Choose the data in
+\eqref{eq:lambda-term-step-modulo}.  Structural adequacy gives
+\[
+ \widehat a
+ \sim_{\mathfrak S_{\Lambda}}
+ \widehat{C[l]}
+ \qquad\text{and}\qquad
+ \widehat{C[r]}
+ \sim_{\mathfrak S_{\Lambda}}
+ \widehat b.
+\]
+By~\cref{lemma:lambda-syntactic-occurrence-admissible}, the occurrence of
+$\widehat l$ in $\widehat{C[l]}$ is admissible, and
+\cref{lemma:lambda-contextual-replacement} supplies the direct step
+\[
+ \widehat{C[l]}
+ \mathrel{\overline{\rightsquigarrow}_{\widehat l\to\widehat r}}
+ \widehat{C[r]}.
+\]
+These three relations are exactly the witnesses required by
+\cref{def:lambda-edpoi-rewriting-modulo}.
+
+Conversely, suppose the graph step exists, and choose
+$\mathcal G',\mathcal H'$ as in
+\eqref{eq:lambda-graph-step-modulo}.  By structural image stability there is
+a raw term $a'$ such that
+\[
+ \mathcal G'\cong\widehat{a'},
+ \qquad
+ a\equiv_{\mathsf{str}}a'.
+ \tag{\ref{prop:lambda-one-step-rewriting}.1}
+ \label{eq:lambda-one-step-rewriting-1}
+\]
+\Cref{lemma:lambda-context-extraction} gives a context $C[-]$ such that $a' \equiv_{\mathrm{str}} C[l]$.
+Transport the match of $\widehat l$ along this isomorphism.  Mixed-box
+context extraction gives a context $C[-]$ satisfying
+\[
+ a'\equiv_{\mathsf{str}}C[l].
+ \tag{\ref{prop:lambda-one-step-rewriting}.2}
+ \label{eq:lambda-one-step-rewriting-2}
+\]
+Contextual replacement identifies the result of the middle EDPOI step as
+\[
+ \mathcal H'\cong\widehat{C[r]}.
+ \tag{\ref{prop:lambda-one-step-rewriting}.3}
+ \label{eq:lambda-one-step-rewriting-3}
+\]
+Since $\mathcal H'\sim_{\mathfrak S_{\Lambda}}\widehat b$,
+\eqref{eq:lambda-one-step-rewriting-3} and structural adequacy imply
+\[
+ C[r]\equiv_{\mathsf{str}}b.
+ \tag{\ref{prop:lambda-one-step-rewriting}.4}
+ \label{eq:lambda-one-step-rewriting-4}
+\]
+Equations~\eqref{eq:lambda-one-step-rewriting-1},
+\eqref{eq:lambda-one-step-rewriting-2} and
+\eqref{eq:lambda-one-step-rewriting-4} are precisely the data of a term
+step modulo structure.
+\end{proof}

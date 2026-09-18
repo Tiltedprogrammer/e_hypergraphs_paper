@@ -4,6 +4,34 @@
 % \tikzstyle{NAME}=[PROPERTY LIST]
 
 % Node styles
+\tikzstyle{z-to-x-rhombus}=[
+    draw=black,
+    shape=diamond,
+    inner sep=0.2mm,
+    outer sep=-2mm,
+    scale=0.25,
+    minimum height=8mm,
+    minimum width=14mm,
+    shading=axis,
+    shading angle=0,
+    left color=green!60,
+    right color=red!60,
+    tikzit category=hypergraph
+]
+\tikzstyle{x-to-z-rhombus}=[
+    draw=black,
+    shape=diamond,
+    inner sep=0.2mm,
+    outer sep=-2mm,
+    scale=0.25,
+    minimum height=8mm,
+    minimum width=14mm,
+    shading=axis,
+    shading angle=0,
+    right color=green!60,
+    left color=red!60,
+    tikzit category=hypergraph
+]
 \tikzstyle{hedge}=[fill=white, draw=black, shape=rectangle, rounded corners=2mm, inner sep=0.2mm, outer sep=-2mm, scale=0.8, minimum height=8mm, minimum width=8mm, tikzit category=hypergraph]
 \tikzstyle{hedge interface}=[fill=white, draw=black, shape=rectangle, rounded corners=1.5mm, inner sep=0.2mm, outer sep=-2mm, scale=0.8, minimum height=5mm, minimum width=5mm, tikzit category=hypergraph]
 \tikzstyle{hedge blue}=[hedge, fill={rgb,255: red,102; green,204; blue,255}, draw=black, shape=rectangle, tikzit category=hypergraph]
@@ -36,6 +64,12 @@
 \tikzstyle{very large horizontal box}=[fill=white, draw=black, shape=rectangle, minimum height=6mm, minimum width=41mm, tikzit category=string diagram]
 \tikzstyle{small box dashed}=[fill=white, draw=black, shape=rectangle, minimum height=6mm, minimum width=6mm, dashed, tikzit category=string diagram]
 \tikzstyle{small box gray}=[fill={rgb,255: red,238; green,238; blue,255}, draw=black, shape=rectangle, minimum height=6mm, minimum width=6mm, tikzit category=string diagram]
+\tikzstyle{Z dot}=[inner sep=0mm, minimum size=2mm, shape=circle, draw=black, fill={rgb,255: red,160; green,255; blue,160}]
+\tikzstyle{Z phase dot}=[minimum size=5mm, font={\footnotesize\boldmath}, shape=rectangle, rounded corners=2mm, inner sep=0.2mm, outer sep=-2mm, scale=0.8, tikzit shape=circle, draw=black, fill={rgb,255: red,160; green,255; blue,160}, tikzit draw=blue]
+\tikzstyle{X dot}=[Z dot, shape=circle, draw=black, fill={rgb,255: red,220; green,0; blue,0}]
+\tikzstyle{X phase dot}=[Z phase dot, tikzit shape=circle, tikzit draw=blue, fill={rgb,255: red,220; green,0; blue,0}, font={\footnotesize\color{white}\boldmath}]
+\tikzstyle{hadamard}=[fill=yellow, draw=black, shape=rectangle, inner sep=0.6mm, minimum height=1.5mm, minimum width=1.5mm]
+\tikzstyle{small hadamard}=[hadamard]
 
 % Edge styles
 \tikzstyle{dashed edge}=[-, dashed, very thick]
