@@ -1,6 +1,21 @@
 \chapter{Abstract}
 
-\lipsum[1]
+This thesis embarks on a categorical exploration of e-graphs, data structures that have recently seen a resurgence in the context of term rewriting and program optimisation.
+The key idea behind e-graphs is to apply rewrite rules non-destructively to an efficient representation of a congruence relation on terms, so that no information is lost during rewriting.
+These data structures are inherently algebraic: designed to handle rewriting of terms with a single output.
+Yet there are theories where terms genuinely have multiple outputs, such as the ZX-calculus, or theories of probabilistic processes---instances of symmetric monoidal theories.
+Handling such theories algebraically proves is generally impractical.
+
+We study e-graphs from the perspective of enriched category theory, in particular through the prism of semilattice-enriched categories.
+This journey reveals both properties of such categories that capture e-graph behaviour and properties that conflict with traditional e-graph semantics.
+Still, this categorical reading captures a fragment of traditional e-graphs and allows for principled generalisations to multi-output terms and to additional structure, such as variable binding.
+For multi-output terms, we generalise e-graphs from algebraic theories to symmetric monoidal theories.
+We show how these generalised e-graphs can address the challenges that traditional e-graphs face in the context of monoidal theories and also the challenges of handling variable binding in $\lambda$-calculi.
+
+We characterise these generalised e-graphs as morphisms in free semilattice-enriched symmetric monoidal categories and give them a concrete combinatorial representation as extended cospans of hierarchical hypergraphs, which we call \emph{e-hypergraphs}.
+We prove that this representation is sound and complete and establish a correspondence between enriched term rewriting and extended double-pushout rewriting with interfaces, modulo the relevant structural rules.
+This provides a graph-rewriting account of equality saturation for symmetric monoidal theories.
+We then extend this framework to handle variable binding, by introducing \emph{closed e-hypergraphs}, which are also shown to be sound and complete with respect to the class of terms they represent.
 
 
 %%% Local Variables:

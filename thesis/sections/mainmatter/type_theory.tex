@@ -4,6 +4,48 @@
 
 \section{Conclusion}
 
+Originally, this thesis aimed to give a complete categorical account of e-graphs, including sharing with the behaviour exhibited by traditional e-graphs, as well as cycles.
+It was initially expected that $\catname{SLat}$-enrichment preserved cartesian structure and that, moreover, the product in an $\catname{SLat}$-category would be given using the tensor product of semilattices.
+This expectation was partly motivated by the fact that the functor $\widetilde{F}_{\catname{SLat}}$ lifts an ordinary adjunction to a $\catname{SLat}$-adjunction. 
+Although this statement is correct, the particular $\catname{SLat}$-functors participating in the resulting adjunction are important for determining the induced categorical structure.
+Thus, as we established in~\cref{prop:binary_products_not_preserved}, the product is not preserved by the free enrichment and, furthermore, the product has the wrong property for e-graph semantics.
+
+The treatment under the original assumption allowed for particularly nice string diagrams that matched the traditional e-graph almost 1-to-1.
+For example, one could draw a diagram for traced cartesian $\catname{SLat}$-categories of the form:
+\[
+\adjustbox{max width=0.8\textwidth}{
+  \tikzfig{./figures/epilogue/e-graph-example-2}
+}
+\]
+where such a string diagram is shown on the right along with the corresponding e-graph on the left. 
+Note that the e-graph is cyclic and, in particular, represents terms $a$, $a * 1$, $(a * 1) * 1, \ldots$. 
+This is not the case for the string diagram.
+To illustrate this, consider a simpler diagram (1) below:
+\[
+\adjustbox{max width=0.8\textwidth}{
+  \tikzfig{./figures/epilogue/trace}
+}~,
+\]
+which would intuitively have corresponded to the e-graph that represents all terms $a, f(a), f(f(a))$ and so on.
+This is not the case in a cartesian traced $\catname{SLat}$-category.
+First, we apply the naturality of the copy $\comonoid$ to get the diagram (2).
+Then we apply the product structure of the $\catname{SLat}$-category (\emph{cf.}~\cref{prop:binary_products_not_preserved}) and get the diagram (3).
+The diagram (3) represents only terms $a$ and $f(f(f(f(f(\ldots)))))$.
+
+Consequently, the categorical construction developed in this thesis captures a fragment of traditional e-graphs rather than their full cyclic and sharing structure.
+This fragment is still interesting and was successfully generalised to the monoidal setting.
+Sharing in this fragment is represented by a non-natural comonoid such that, if the component is an e-box, all references to a shared element are resolved to the same choice, which might be a reasonable semantics for some variation of e-graphs.
+
+We characterised the generalised e-graphs as morphisms in free semilattice-enriched symmetric monoidal categories and gave them a concrete combinatorial representation as extended cospans of e-hypergraphs.
+We proved that this representation is sound and complete and established a correspondence between enriched term rewriting and extended double-pushout rewriting with interfaces, modulo the relevant structural rules.
+This provided a graph-rewriting account of equality saturation for symmetric monoidal theories.
+We also extended this framework to handle variable binding by introducing closed e-hypergraphs, which were also shown to be sound and complete with respect to the class of terms they represent.
+We gave a lot of examples comparing the traditional e-graphs and the generalised e-graphs.
+
+Future work could consider supporting the right notion of sharing and cycles.
+A possible direction is to investigate categorical accounts of iteration and recursive definitions, including iteration theories~\cite{bloomIterationTheories1993,goncharovShadesIterationElgot2023}, Elgot theories~\cite{adamekElgotTheoriesNew2011}, and Elgot monads~\cite{goncharovCompleteElgotMonads2016}.
+Another interesting direction would be to investigate the algorithmic aspects of EDPOI rewriting modulo $\catname{SLat}$-structure.
+
 \section{Type theory for \texorpdfstring{$\catname{SLat}$}{SLat}-multicategories}
 \label{sec:type-theory-epilogue}
 

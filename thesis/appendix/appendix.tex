@@ -1,11 +1,11 @@
 \chapter{Egg implementation of the saturation example}\label{appendix:smce-rules}
 
-This appendix documents the computational verification of~\autoref{example:sat-comonoid} using the \texttt{egg} equality saturation library~\cite{EggPaper}.
-We describe how the symmetric monoidal theory of commutative comonoids is encoded in the \texttt{egg} framework, justify the design decisions that shape the implementation, and account for the rule application statistics in~\autoref{tab:appendix-rules}.
+This appendix documents the computational counterpart of~\autoref{example:sat-comonoid} using the \egg equality saturation library~\cite{EggPaper}.
+We describe how the symmetric monoidal theory of commutative comonoids is encoded in the \egg framework, justify the design decisions that shape the implementation, and account for the rule application statistics in~\cref{tab:appendix-rules}.
 
 \paragraph{Term language.}
-In \texttt{egg}, the term language is a Rust \mintinline{rust}{enum} defined via the \mintinline{rust}{define_language!} macro, which associates string tokens with constructors and fixes their arities.
-\autoref{lst:language} shows the language for commutative comonoids.
+In \egg, the term language is a Rust \mintinline{rust}{enum} defined via the \mintinline{rust}{define_language!} macro, which associates string tokens with constructors and fixes their arities.
+\cref{lst:language} shows the language for commutative comonoids.
 
 \begin{listing}[h]
 \caption{Term language for commutative comonoids.}
@@ -26,23 +26,21 @@ define_language! {
 \end{minted}
 \end{listing}
 
-Two design decisions are visible here.
+This particular encoding is influenced by the following considerations.
 
-\emph{Finite enumeration of identities and symmetries.}
 The SMC equations reference identities $\id_n$ and symmetries $\sym_{n,m}$ for all $n,m\in\mathbb{N}$.
-Because \texttt{egg} requires a finite language, these must be enumerated at the arities actually needed by the example: identities at arities $0$--$4$ and symmetries for all $(n,m)$ with $n+m \leq 3$ and additionally $\sym_{2,2}$.
+Because \egg requires a finite language, these must include the arities actually needed by the example: identities at arities $0$--$4$ and symmetries for all $(n,m)$ with $n+m \leq 3$ and additionally $\sym_{2,2}$.
 This necessitates the \emph{definitional rules} (e.g.\ $\id_2 = \id_1 \otimes \id_1$, $\sym_{2,1} = (\sym_{1,1} \otimes \id_1);(\id_1 \otimes \sym_{1,1})$) that link these tokens.
-Each definitional rule is applied at most once during saturation and is omitted from~\autoref{tab:appendix-rules}.
+Each definitional rule is applied at most once during saturation and is omitted from~\cref{tab:appendix-rules}.
 
-\emph{Binary encoding of the tensor product.}
-String diagrams allow $n$-ary parallel composition, but \texttt{egg} operators have fixed binary arity.
+String diagrams allow $n$-ary parallel composition, but \egg operators have fixed binary arity.
 Encoding $\otimes$ as a binary \mintinline{rust}{"parallel"} operator requires explicit \emph{tensor associativity} rules $(f \otimes g) \otimes h = f \otimes (g \otimes h)$ and \emph{tensor unit} laws $\id_0 \otimes f = f$, $f \otimes \id_0 = f$ to expose all equivalent forms of a tensor expression.
-As~\autoref{tab:appendix-rules} shows, these two rule groups account for more than half of all applications---a direct cost of the encoding.
+As~\cref{tab:appendix-rules} shows, these two rule groups account for more than half of all applications---a direct cost of the encoding.
 
 \paragraph{Type analysis.}
 Each morphism in an SMC has a type $(dom, cod)\in\mathbb{N}^2$.
-The \texttt{egg} framework supports \emph{e-class analyses}: user-defined data associated with each equivalence class, maintained invariantly as classes are merged.
-A \mintinline{rust}{TypeAnalysis} computes the type of every expression bottom-up, as shown in~\autoref{lst:types}.
+The \egg framework supports \emph{e-class analyses}: user-defined data associated with each equivalence class, maintained invariantly as classes are merged.
+A \mintinline{rust}{TypeAnalysis} computes the type of every expression bottom-up, as shown in~\cref{lst:types}.
 
 \begin{listing}[h]
 \caption{Type computation for composition and tensor product.}
@@ -74,7 +72,7 @@ Without the guard, the rule would fire for morphisms of any type, producing ill-
 The guard is evaluated against the \mintinline{rust}{TypeAnalysis} data stored in each e-class.
 
 \paragraph{Rewrite rules.}
-\autoref{lst:rules} shows the remaining representative rules.
+\cref{lst:rules} shows the remaining representative rules.
 Each equation of the theory is split into two directed rules, one for each orientation, so that equality saturation can add both sides of the equivalence to the same e-class.
 
 \begin{listing}[h]
@@ -123,6 +121,7 @@ The equivalence follows by: commutativity ($\mu;\sym_{1,1} = \mu$) followed by t
 
 \paragraph{Rule application statistics.}
 \autoref{tab:appendix-rules} reports the number of times each non-definitional rule was applied during saturation.
+As we already noted in~\cref{chapter:introduction}, the domain specific rules of commutativity and counit are applied exactly once, whereas structural rules are applied hundreds of times.
 
 \begin{table}[h]
 \centering
@@ -147,22 +146,54 @@ Group & Rule & Equation & $(\to)$ & $(\leftarrow)$ \\
   & \multicolumn{2}{l}{Total (shown rules only)} & 3{,}193 & 6{,}059 \\
 \bottomrule
 \end{tabular}
-\caption{Rewrite rules applied during saturation in~\autoref{example:sat-comonoid}. The subscript $n$ in the identity rules ranges over $\{1,2,3,4\}$. The $(\to)$ and $(\leftarrow)$ columns give application counts for the left-to-right and right-to-left orientations of each equation; --- indicates zero applications.}
+\caption{Rewrite rules applied during saturation in~\cref{example:sat-comonoid}. The subscript $n$ in the identity rules ranges over $\{1,2,3,4\}$. The $(\to)$ and $(\leftarrow)$ columns give application counts for the left-to-right and right-to-left orientations of each equation; --- indicates zero applications.}
 \label{tab:appendix-rules}
 \end{table}
 
-\paragraph{SMC equations.}
-\emph{Left} and \emph{right identity} express that $\id_n$ is a unit for sequential composition.
-The strong asymmetry (899 introductions vs.\ 0 eliminations for left identity; 308 vs.\ 4 for right identity) is a hallmark of equality saturation: the algorithm adds both sides of every equation, so it frequently introduces $\id_n ; f$ as equivalent to $f$ to enable subsequent pattern matches, but rarely needs to simplify $\id_n ; f$ away.
-\emph{Composition associativity} is applied 1,905 times in total; more applications go right-to-left (flattening left-nested compositions) than left-to-right, reflecting which normal form is more useful for downstream matches.
-\emph{Bifunctoriality} converts between interleaved and separated compositions.
-\emph{Tensor associativity} (3,869 total) and the \emph{tensor unit} (2,005 total) together account for $56\%$ of all applications, directly reflecting the overhead of the binary \mintinline{rust}{"parallel"} encoding described above.
-\emph{Symmetry naturality} fires in only one direction and only 10 times, at the specific arity combinations needed to expose the commutativity of $\mu$.
-\emph{Symmetry involution} ($\sym;\sym = \id$, applied once in the introducing direction) provides the converse that allows the saturation to close the loop on symmetry-related equivalences.
+This result is unsurprising, the encoding we chose did not seem to be optimal in the first place.
+A possible alternative is to use the internal language of symmetric\footnote{Technically, these rules are for the linear monoidal categories, the symmetric version has additional conditions on the contexts.} monoidal categories given as follows:
 
-\paragraph{Comonoid equations.}
-\emph{Commutativity} ($\mu;\sym = \mu$) and the \emph{counit law} ($\mu;(\eta \otimes \id) = \id$) are each applied exactly once, confirming that the verification terminates as soon as the two relevant equivalences are found.
-Coassociativity of $\mu$ ($\mu;(\id \otimes \mu) = \mu;(\mu \otimes \id)$) is present as a rule but not applied: the particular input term does not require it.
+\[
+\inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A \vdash x: A}
+\]
+\[
+\inferrule*[right=$f_{\text{intro}}$]{f \in \mathcal{G}(A_1, \ldots, A_n; B)\;\Gamma_1 \vdash M_1 : A_1, \ldots, \Gamma_n \vdash M_n : A_n}{\Gamma_1, \ldots, \Gamma_n \vdash f(M_1, \ldots, M_n) : B}
+\]
+\[
+\inferrule*[right=$\otimes_{\text{intro}}$]{\Gamma \vdash N : A \qquad \Delta \vdash M : B}{\Gamma, \Delta \vdash \{N \otimes M\} : A \otimes B}
+\]
+\[
+\inferrule*[right=$\otimes_{\text{elim}}$]{\Psi \vdash M : A \otimes B \quad \Gamma, x : A, y : B, \Delta \vdash N : C}{\Gamma, \Psi, \Delta \vdash \text{match}_{A \otimes B}(M, xy.N) : C}
+\]
+\[
+\inferrule*[right=$\I_{\text{intro}}$]{\;}{() \vdash \star : \I} \qquad \inferrule*[right=$\I_{\text{elim}}$]{\Psi \vdash M : \I \qquad \Gamma,\Delta \vdash N : A}{\Gamma, \Psi, \Delta \vdash \text{match}_{\I}(M,N) : A}
+\]
+
+such that $\mathcal{G}$ contains the generators of the theory, i.e., $\mu : 1 \to 2$ and $\eta : 1 \to 0$ for the comonoid theory.
+
+In this language, our initial term can be expressed as follows:
+\[
+  x : A, y : A \vdash
+  \{ \mathrm{match}_{A \otimes A}(\mu(x), ab.\ \mathrm{match}_{\I}(\eta(b), a)) \otimes \mu(y) \}
+  : A \otimes (A \otimes A)
+\]
+This representation is slightly more economical, in particular, it does not require the explicit encoding of the $\id$ morphsisms, or equations for associativity of composition and its unitality.
+However, it requires a much more sophisticated encoding of the term language which does not seem to be supported by \egg.
+In particular, the variable contexts and variable binding are necessary.
+
+
+% \paragraph{SMC equations.}
+% \emph{Left} and \emph{right identity} express that $\id_n$ is a unit for sequential composition.
+% The strong asymmetry (899 introductions vs.\ 0 eliminations for left identity; 308 vs.\ 4 for right identity) is a hallmark of equality saturation: the algorithm adds both sides of every equation, so it frequently introduces $\id_n ; f$ as equivalent to $f$ to enable subsequent pattern matches, but rarely needs to simplify $\id_n ; f$ away.
+% \emph{Composition associativity} is applied 1,905 times in total; more applications go right-to-left (flattening left-nested compositions) than left-to-right, reflecting which normal form is more useful for downstream matches.
+% \emph{Bifunctoriality} converts between interleaved and separated compositions.
+% \emph{Tensor associativity} (3,869 total) and the \emph{tensor unit} (2,005 total) together account for $56\%$ of all applications, directly reflecting the overhead of the binary \mintinline{rust}{"parallel"} encoding described above.
+% \emph{Symmetry naturality} fires in only one direction and only 10 times, at the specific arity combinations needed to expose the commutativity of $\mu$.
+% \emph{Symmetry involution} ($\sym;\sym = \id$, applied once in the introducing direction) provides the converse that allows the saturation to close the loop on symmetry-related equivalences.
+
+% \paragraph{Comonoid equations.}
+% \emph{Commutativity} ($\mu;\sym = \mu$) and the \emph{counit law} ($\mu;(\eta \otimes \id) = \id$) are each applied exactly once, confirming that the verification terminates as soon as the two relevant equivalences are found.
+% Coassociativity of $\mu$ ($\mu;(\id \otimes \mu) = \mu;(\mu \otimes \id)$) is present as a rule but not applied: the particular input term does not require it.
 
 \chapter{Additional figures for Chapter~\ref{chapter:monoidal}}
 \label{sec:appendix-monoidal-figures}
