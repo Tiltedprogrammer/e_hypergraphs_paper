@@ -1,7 +1,7 @@
 \chapter{String Diagram Rewriting}\label{chapter:string_diagrams}
 
 E-graphs can be seen as a particular flavour of term graphs~\cite{plump_term,EggsAreAdhesive} that is equipped with a congruence relation.
-In our journey towards categorical interpretation of e-graphs and their generalisations, we may view string diagrams as a particular flavour of term graphs that are available for more general theories.
+In our journey towards a categorical interpretation of e-graphs and their generalisations, we may view string diagrams as a particular flavour of term graphs that are available for more general theories.
 String diagrams being a graphical syntax for morphisms in monoidal categories are completely formalised objects on their own: they are given by nodes and curves embedded into a plane quotiented by the topological deformations (isotopy).
 While this view of string diagrams is very handy when reasoning about monoidal categories using pen and paper, it is not very convenient for computer-aided reasoning.
 Luckily, this gap of inconvenience was filled by a series of works initiated by Bonchi et. al.~\cite{bonchi_string_2022-1,bonchi_string_2022-2} consequently picked up and extended by other authors~\cite{zanassi_comonoid,ghica2024stringdiagramslambdacalculifunctional,ghica_rewriting_2023}.
@@ -20,13 +20,13 @@ Now the (variations of) diagrams are prevalent in many areas of mathematics and 
 Below we give a brief account of string diagrams as a syntax for morphisms in a (symmetric) monoidal category as developed by Joyal and Street~\cite{joyal_geometry_1991}, who first made precise the folklore that string diagrams are sound and complete syntax for morphisms in a monoidal category.
 
 The basic building blocks of their theory are \emph{generalised graphs} $\Gamma$, which are given by a topological space with extra structure.
-There's a dedicated \emph{discrete} (finite) subset of \emph{nodes} $\Gamma_0$ and a finite number of subsets $\Gamma \setminus \Gamma_0$ called \emph{wires} each of which is a connected component in the appropriate sense locally behaving like an interval in $\mathbb{R}$\footnote{Formally this is stipulated by saying that this complement is 1-manifold.}, which in particular means that one can go only either up or down the wire.
+There's a dedicated \emph{discrete} (finite) subset of \emph{nodes} $\Gamma_0$ and a finite number of subsets $\Gamma \setminus \Gamma_0$ called \emph{wires} each of which is a connected component in the appropriate sense locally behaving like an interval in $\mathbb{R}$\footnote{Formally this is stipulated by saying that this complement is a 1-manifold.}, which in particular means that one can go only either up or down the wire.
 Each connected component also includes its endpoints which are furthermore ordered to prescribe the orientation to each wire.
 A node $x$ is said to have a \emph{degree} $n$ if the number of connected components of $V \setminus \{x\}$ is $n$ where $V$ is a small neighbourhood of $x$.
 Then, a certain subset of nodes $\partial \Gamma$ is identified as the \emph{boundary} of the graph, which is the set of nodes of degree one.
 We call a graph \emph{progressive} if it has no directed cycles and will consider only such graphs in this overview.
 
-In a plain monoidal case (without symmetry), such graphs are embedded into a strip of $\mathbb{R}^{2}$.
+In the plain monoidal case (without symmetry), such graphs are embedded into a strip of $\mathbb{R}^{2}$.
 \begin{definition}[Chapter 1. Section 2~\cite{joyal_geometry_1991}]
 Let $a < b$ be real numbers.
 A \textit{progressive plane graph} is a graph $\Gamma$ with boundary embedded in $\mathbb{R} \times [a,b]$ such that 
@@ -59,7 +59,7 @@ The graph (i) is a valid progressive plane graph; the graph (ii) fails to be a p
 Because each wire is monotone in height, the wires crossing any horizontal line $\mathbb{R} \times \{u\}$ inherit a left-to-right linear order from their first coordinate.
 We write $\mathrm{dom}\,\Gamma$ and $\mathrm{cod}\,\Gamma$ for the boundary nodes on the bottom line $\mathbb{R} \times \{a\}$ and top line $\mathbb{R} \times \{b\}$ respectively, each linearly ordered left to right. 
 For an inner node $x$, let $\mathrm{in}(x)$ and $\mathrm{out}(x)$ denote its incoming and outgoing wires, again linearly ordered by the same device.
-Given a plane graph $\Gamma$, $\Gamma[c,d]$ is a subgraph of $\Gamma$ between the horizontal lines $\mathbb{R} \times \{c\}$ and $\mathbb{R} \times \{d\}$, also called a \emph{layer}, such that neither of the lines intersect any inner nodes, with the wires crossing the lines $c$ and $d$ become its domain and codomain respectively.
+Given a plane graph $\Gamma$, $\Gamma[c,d]$ is a subgraph of $\Gamma$ between the horizontal lines $\mathbb{R} \times \{c\}$ and $\mathbb{R} \times \{d\}$, also called a \emph{layer}, such that neither of the lines intersects any inner nodes, with the wires crossing the lines $c$ and $d$ becoming its domain and codomain respectively.
 It is also possible to split a graph $\Gamma$ vertically if there exists a number $\xi$ such that
 \[\Gamma_1 \subseteq (-\infty, \xi) \times [a,b] \quad \text{and} \quad \Gamma_2 \subseteq (\xi, \infty) \times [a,b]\]
 so that the graph $\Gamma$ is a disjoint union of $\Gamma_1, \Gamma_2$, written $\Gamma_1 \otimes \Gamma_2$.
@@ -87,9 +87,9 @@ Put simply, each $h(-,t)$ is a way to embed $\Gamma$ into the plane and the defo
     \[
     \tikzfig{./figures/string/string_diagram_example_1}
     \]
-    Above, the valuation of the inner nodes is given by labels $f,g,h,k$ which are appropriately typed morphisms; we assume that all object of the category are given by tensors of a single object.
+    Above, the valuation of the inner nodes is given by labels $f,g,h,k$ which are appropriately typed morphisms; we assume that all objects of the category are given by tensors of a single object.
     When it is important, the wires can also be labelled by the types.
-    One particular slicing of the diagram is shown with dashed boxes, each box denote a \emph{primitive} diagram which is either a single inner node or a collection of wires with no inner nodes.
+    One particular slicing of the diagram is shown with dashed boxes, each box denotes a \emph{primitive} diagram which is either a single inner node or a collection of wires with no inner nodes.
     A (horizontal) layer is a tensor product of primitive diagrams and the valuation of the whole diagram is then obtained by composing the valuations of the layers sequentially. 
     That is, the value of the diagram is 
     \[
@@ -105,7 +105,7 @@ Composition is given by stacking the two diagrams, joining the codomain wires of
 This data possesses a universal property which is what makes it useful for pen-and-paper reasoning about monoidal categories as described next.
 
 \begin{definition}[Monoidal signature]\label{def:mon_signature}
-A monoidal signature $\Sigma$ is a pair of sets $(\Sigma_0, \Sigma_1)$ together with two functions $\mathrm{dom}$ and $\mathrm{cod}$ from $\Sigma_1 \to \Sigma_0^{*}$ that assign for each \emph{generator} $f \in \Sigma_1$ a list of objects (a word) in $\Sigma_0$ as its domain and codomain respectively.
+A monoidal signature $\Sigma$ is a pair of sets $(\Sigma_0, \Sigma_1)$ together with two functions $\mathrm{dom}$ and $\mathrm{cod}$ from $\Sigma_1 \to \Sigma_0^{*}$ that assign to each \emph{generator} $f \in \Sigma_1$ a list of objects (a word) in $\Sigma_0$ as its domain and codomain respectively.
 When $\Sigma_0 \cong \{*\}$ (and $\Sigma_0^{\ast} \cong \mathbb{N}$), the generators can be written as $f : n \to m$ where $n = \mathrm{dom}(f)$ and $m = \mathrm{cod}(f)$ simply mean the number of inputs and outputs of $f$, respectively.
 \end{definition}
 \begin{definition}\label{def:free}
@@ -153,7 +153,7 @@ generator $d$ to the deformation class of the single-node diagram labelled by
 $d$, the category $\mathbb{F}(\Sigma)$ is the \emph{free} monoidal category on
 $\Sigma$ in the sense of \cref{def:free}.
 \end{theorem}
-This means we can use string diagrams to reason about morphisms in a monoidal categry: whenever something holds in a free monoidal category, it holds in any monoidal category.
+This means we can use string diagrams to reason about morphisms in a monoidal category: whenever something holds in a free monoidal category, it holds in any monoidal category.
 
 \paragraph{Equational extensions.}
 The freeness theorem describes the morphisms generated with \emph{no} relations
@@ -235,7 +235,7 @@ Before we can assign a value to a polarised graph we need to define a category w
     Let $\mathcal{C}$ be a symmetric monoidal category.
     We define a category $\widetilde{\mathcal{C}}$ by the following data.
     \paragraph{Objects.} Objects are families $(A_s \vert s \in S)$ of objects of $\mathcal{C}$ indexed by finite sets $S$.
-    \paragraph{Morphisms.} A morphism $(A_s \vert s \in S) \to (B_t \vert t \in T)$ is given by equivalence class of triples $(\phi, f, \psi)$ consisting of linear orderings $\phi : [1 .. m] \to S$ and $\psi : [1 .. n] \to T$ and an arrow $f : \bigotimes_{i=1}^{m} A_{\phi(i)} \to \bigotimes_{j=1}^{n} B_{\psi(j)}$ in $\mathcal{C}$.
+    \paragraph{Morphisms.} A morphism $(A_s \vert s \in S) \to (B_t \vert t \in T)$ is given by an equivalence class of triples $(\phi, f, \psi)$ consisting of linear orderings $\phi : [1 .. m] \to S$ and $\psi : [1 .. n] \to T$ and an arrow $f : \bigotimes_{i=1}^{m} A_{\phi(i)} \to \bigotimes_{j=1}^{n} B_{\psi(j)}$ in $\mathcal{C}$.
     A triple $(\phi, f, \psi)$ is equivalent to $(\phi', f', \psi')$ if the following diagram commutes
     % https://q.uiver.app/#q=WzAsNSxbMCwwLCJcXGJpZ290aW1lc197aT0xfV57bX1BX3tcXHBoaShpKX0iXSxbMiwwLCJcXGJpZ290aW1lc197aj0xfV57bn1CX3tcXHBzaShqKX0iXSxbMCwyLCJcXGJpZ290aW1lc197aT0xfV57bX1BX3tcXHBoaScoaSl9Il0sWzIsMiwiXFxiaWdvdGltZXNfe2o9MX1ee259Ql97XFxwc2knKGopfSJdLFswLDFdLFswLDEsImYiXSxbMCwyLCJcXGxhbmdsZVxccGhpJ157LTF9XFxwaGlcXHJhbmdsZSIsMl0sWzEsMywiXFxsYW5nbGUgXFxwc2knXnstMX1cXHBzaVxccmFuZ2xlIl0sWzIsMywiZiciLDJdXQ==
 \[\begin{tikzcd}
@@ -434,7 +434,7 @@ Given a monoidal signature $\Sigma$, a free symmetric monoidal category $\mathbf
 Composition and tensor product are given as described above.
 The symmetry $\sym_{V,W} : VW \to WV$ for words $V = V_1 \ldots V_n$ and $W = W_1 \ldots W_m$ is given by the anchored diagram $\Gamma$ with $n + m$ wires, represented by disjoint closed intervals and with a corresponding valuation, such that $\mathrm{dom}\,\Gamma$ is ordered $V_1 < \ldots < V_n < W_1 < \ldots < W_m$ and $\mathrm{cod}\,\Gamma$ ordered $W_1 < \ldots < W_m < V_1 < \ldots < V_n$.
 \begin{theorem}
-The data above defines a free symmetric monoidal category on the signature $\Sigma$ in the same sense as \cref{theorem:free_string_planar}.
+The data above define a free symmetric monoidal category on the signature $\Sigma$ in the same sense as \cref{theorem:free_string_planar}.
 \end{theorem}
 
 \paragraph{Diagram replacement.}
@@ -495,7 +495,7 @@ sound.
 To the best of the author's knowledge, the formulation above represents a folklore result in the theory of string diagrams, and is not explicitly stated in the literature.
 This is unlike the planar case, where the notion of slicing and replacing can be traced to the other work by Joyal and Street~\cite{joyal_geometry_II}.
 This is perhaps unsurprising, as the topological nature of these diagrams makes the rewriting and reasoning about the rewriting intricate in both cases.
-While planar case formalises well the pen-and-paper reasoning using string diagrams, mechanisation of this process is difficult as the notion of equivalence of diagrams is not trivial and requires one to check if one embedding is a continuous deformation of another.
+While the planar case formalises well the pen-and-paper reasoning using string diagrams, mechanisation of this process is difficult as the notion of equivalence of diagrams is not trivial and requires one to check if one embedding is a continuous deformation of another.
 In the symmetric case, the notion of equivalence is much simpler, but as we saw, the notion of slicing and replacing is more subtle.
 This inspired a separate line of work by Bonchi et. al.~\cite{bonchi_string_2022-1,bonchi_string_2022-2,bonchi_string_2022-3,zanassi_comonoid} who treated string diagrams as mere graphical notation for morphism terms rather than as topological first-class objects, formalising them combinatorially as hypergraphs and formalising the rewriting of diagrams as double-pushout rewriting of hypergraphs.
 The approach keeps the simplicity of the notion of equivalence of diagrams and brings the convenience of double-pushout rewriting which is an established technique for graph transformations by treating the \emph{graphs} as first-class objects rather than something induced by points in a topological space.
@@ -551,7 +551,7 @@ String diagrams for $\Sigma$-terms can then be given by the set generated by the
 \begin{figure}[h!]
     \centering
     \tikzfig{./figures/introduction/string-diagrams-syntax}
-    \caption{String diagrams syntax for symmetric monoidal categories; dashes represent multiple wires.}
+    \caption{String diagram syntax for symmetric monoidal categories; dashes represent multiple wires.}
     \label{fig:string-diagram-syntax-2}
 \end{figure}
 
@@ -587,7 +587,7 @@ $\Sigma$-terms induce a free syntactic symmetric monoidal category which is an i
 This is a generalisation of Lawvere theories, as seen in~\cref{chapter:algebras}.
 
 \begin{example}\label{example:initial_prop}
-Let $\mathbf{P}$ be the category with objects natural numbers and tensor product given by addition.
+Let $\mathbf{P}$ be the category whose objects are natural numbers and tensor product given by addition.
 Let $\mathbf{P}(m,n) = \varnothing$ if $m \neq n$ and $\mathbf{P}(n,n) = S_n$, the symmetric group on $n$ elements, with composition given by group multiplication.
 Then $\mathbf{P}$ is a $\mathrm{PROP}$, called the \emph{permutation} $\mathrm{PROP}$, as every morphism is a permutation on a finite set.
 \end{example}
@@ -950,13 +950,13 @@ Then $c = d$ in $\mathbf{S}_{\Sigma, \mathcal{E}}$ if and only if $c \rewriteArr
 \end{proposition}
 
 The above proposition allows one to recharacterise $\mathbf{S}_{\Sigma, \mathcal{E}}$ as $\mathbf{S}_{\Sigma}/\mathcal{R}_{\mathcal{E}}$, the quotient of $\mathbf{S}_{\Sigma}$ by the rewriting system $\mathcal{R}_{\mathcal{E}}$.
-Just as in case of algebraic theories, we can build a corresponding reflector and compute its image using e-graphs.
+Just as in the case of algebraic theories, we can build a corresponding reflector and compute its image using e-graphs.
 As we saw in~\cref{chapter:introduction} this is inadequate as rewriting happens modulo SMC laws.
 That is, this rewriting system is easy to apply using pen and paper, but mechanising it using terms is difficult: after all, these string diagrams are just visual notation for terms.
-For example, in~\cref{example:bialgebra_rewriting} it was easy to eye-ball the redex for the rewrite rule, but in the actual terms we would need to apply bifunctoriality equation to reveal the redex.
+For example, in~\cref{example:bialgebra_rewriting} it was easy to eye-ball the redex for the rewrite rule, but in the actual terms we would need to apply the bifunctoriality equation to reveal the redex.
 One of the main contributions of Bonchi et al.~\cite{bonchi_string_2022-1, bonchi_string_2022-2} was to provide a combinatorial representation of string diagrams as \emph{hypergraphs} with equal string diagrams being represented by isomorphic hypergraphs---recall that equality of string diagrams is defined as term equality modulo SMC equations.
 In fact, this uses the insight of Joyal and Street, namely that in the symmetric case, connectivity is the only information that matters and that is encoded in the hypergraph representation.
-Practically, this means that one can easily test the equality of terms in $\mathbf{S}_{\Sigma}$ by checking the corresponding hypergraph for isomorphism and can perform rewriting modulo SMC equations essentially for free: a hypegraph apriori contains all redexes that otherwise could be hidden behind the application of SMC equations in term representation.
+Practically, this means that one can easily test the equality of terms in $\mathbf{S}_{\Sigma}$ by checking the corresponding hypergraph for isomorphism and can perform rewriting modulo SMC equations essentially for free: a hypegraph a priori contains all redexes that otherwise could be hidden behind the application of SMC equations in term representation.
 We will review this approach next.
 
 \section{String diagrams as hypergraphs}
@@ -984,7 +984,7 @@ It is straightforward to adapt the definition to the multi-sorted case.
 \end{definition}
 
 \begin{remark}
-When $\Sigma_0$ component of the signature is non-trivial, we get hypergraphs with coloured or typed vertices, that is, such hypergraphs additionally have a lavelling function $l_{V} : V \to \Sigma_0$ on vertices.
+When $\Sigma_0$ component of the signature is non-trivial, we get hypergraphs with coloured or typed vertices, that is, such hypergraphs additionally have a labelling function $l_{V} : V \to \Sigma_0$ on vertices.
 \end{remark}
 
 \begin{figure}
@@ -1214,8 +1214,8 @@ Consider, for example, the following morphism in $\catname{HypI}(\Sigma)$:
 \[
 \adjustbox{scale=0.8}{\tikzfig{./figures/string/SMC_non_example}}~.
 \]
-There is no string diagram generators such that composing them would result in a loop, also, recalling the string diagrams of Joyal and Steet, the polarised diagrams did not have cycles.
-Another reason why the cospan fails to be a string diagram is that the vertices $v_1$ and $v_2$ from the input interface are mapped to the same vertex in the carrier, intuitively such map would correspond to a monoid structure on the generating object which is not available in general.
+There is no string diagram generators such that composing them would result in a loop, also, recalling the string diagrams of Joyal and Street, the polarised diagrams did not have cycles.
+Another reason why the cospan fails to be a string diagram is that the vertices $v_1$ and $v_2$ from the input interface are mapped to the same vertex in the carrier, intuitively, such a map would correspond to a monoid structure on the generating object which is not available in general.
 In fact, morphisms in $\catname{HypI}(\Sigma)$ correspond to string diagrams for a free \emph{Frobenius} PROP.
 
 \begin{definition}\label{def:frobenius_prop}
@@ -1242,7 +1242,7 @@ It can be equivalently presented by an SMT $(\Sigma \cup \Sigma_{\text{Frob}}, \
   \[
   \adjustbox{scale=0.7}{\tikzfig{./figures/string/frobenius_interaction_dual}}~.
   \]
-  Non-commutative version features two interaction rules explicitly.
+  The non-commutative version features two interaction rules explicitly.
 \end{remark}
 
 \begin{definition}\label{def:frobenius_interpretation}
@@ -1277,7 +1277,7 @@ As all the arrows are identity-on-objects functors, it suffices to show that eve
 Let $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ be a morphism in $\catname{HypI}(\Sigma)$ and let $\mathcal{G} = (V_{\mathcal{G}}, E_{\mathcal{G}}, s, t, l)$ be its carrier hypergraph.
 Let $e_1, \ldots, e_n$ be some ordering on $E_{\mathcal{G}}$.
 Let $\tilde{m} \xrightarrow{\tilde{f}} \tilde{E} \xleftarrow{\tilde{g}} \tilde{n}$ be a cospan with the carrier formed by edges from $\mathcal{G}$, disconnected from each other and stacked vertically with $\tilde{m}$ being the collection of all input vertices for each edge and $\tilde{m}$ being the collection of all output vertices for each edge.
-There are functions $i : n \to V_{\mathcal{G}}$,  $\tilde{i} : \tilde{n} \to V_{\mathcal{G}}$, $j : m \to V_{\mathcal{G}}$, and $\tilde{j} : \tilde{m} \to V_{\mathcal{G}}$ that map vertices in the interfaces to their occurences in the set of all vertices.
+There are functions $i : n \to V_{\mathcal{G}}$,  $\tilde{i} : \tilde{n} \to V_{\mathcal{G}}$, $j : m \to V_{\mathcal{G}}$, and $\tilde{j} : \tilde{m} \to V_{\mathcal{G}}$ that map vertices in the interfaces to their occurrences in the set of all vertices.
 The decomposition of $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ is then given by the composition of cospans
 % \begin{gather}\label{eq:decomposition}
 % \displaystyle (m \xrightarrow{i} V_{\mathcal{G}} \xleftarrow{[\id, \tilde{j}]} V_{\mathcal{G}} \otimes \tilde{m}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{m} \xrightarrow{\id \otimes \tilde{f}} V_{\mathcal{G}} \otimes \tilde{E} \xleftarrow{\id \otimes \tilde{g}} V_{\mathcal{G}} \otimes \tilde{n}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{n} \xrightarrow{[\id, \tilde{i}]} V_{\mathcal{G}} \xleftarrow{i} n)~.
@@ -1328,7 +1328,7 @@ The notion of syntactic rewriting for FROPs is the same with the only difference
  \] 
 \end{definition}
 
-In order to get a full and faithful characterisation of morphisms in $\mathbf{S}_{\Sigma}$, we need to restrict the morphisms in $\catname{HypI}(\Sigma)$; such characterisation will automatically be an isomorphism as the categories have the same objects, i.e., the characterisation is essentially surjective by construction.
+In order to get a full and faithful characterisation of morphisms in $\mathbf{S}_{\Sigma}$, we need to restrict the morphisms in $\catname{HypI}(\Sigma)$; such a characterisation will automatically be an isomorphism as the categories have the same objects, i.e., the characterisation is essentially surjective by construction.
 \begin{definition}[Monogamous cospans (Def. 13~\cite{bonchi_string_2022-2})]
   \label{def:monogamous_cospans}
   A cospan $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$ is \emph{monogamous} if $f$ and $g$ are mono and for all vertices $v$ of $\mathcal{G}$,
@@ -1396,7 +1396,7 @@ Then there exists $k \in \mathbb{N}$ and an mda-cospan $i \xrightarrow{} L \xlef
 where all cospans are mda-cospans.
 \end{lemma}
 \begin{proof}
-Let $\mathcal{C}_{1}$ be the smallest hypergraph that contains the input vertices of $\mathcal{G}$ and contains all hyperedges $e$ that are not in $\mathcal{L}$ but such that there is path from $e$ to a vertex in $\mathcal{L}$.
+Let $\mathcal{C}_{1}$ be the smallest hypergraph that contains the input vertices of $\mathcal{G}$ and contains all hyperedges $e$ that are not in $\mathcal{L}$ but such that there is a path from $e$ to a vertex in $\mathcal{L}$.
 Let $\mathcal{C}_{2}$ be the smallest hypergraph that contains the outputs of $\mathcal{G}$ such that $\mathcal{G} = \mathcal{C}_{1} \cup \mathcal{L} \cup \mathcal{C}_{2}$.
 By minimality, the three hypergraphs $\mathcal{C}_{1}$, $\mathcal{L}$, and $\mathcal{C}_{2}$ overlap only on vertices.
 Let
@@ -1517,12 +1517,12 @@ The crucial difference is soundness: unrestricted DPO rewriting on open graphs i
 \end{example}
 
 While pushouts are characterised by their universal property, pushout complements are not and may not exist, or there may be many of them.
-There is a well-known result that for a category of directed graphs a pushout complement exists when so called \emph{no-dangling} and \emph{no-identification} conditions are satisfied~\cite{corradiniAlgebraicApproachesGraph1997}.
+There is a well-known result that for a category of directed graphs a pushout complement exists when so-called \emph{no-dangling} and \emph{no-identification} conditions are satisfied~\cite{corradiniAlgebraicApproachesGraph1997}.
 This result is usually cited verbatim for hypergraphs as well even though these are different objects.
 It is straightforward to adapt the notions to the case of hypergraphs and show that the same result holds.
 
 \begin{definition}[No-dangling condition (Definition 3.16~\cite{bonchi_string_2022-1})]\label{def:no_dangling}
-  Morphisms $K \xrightarrow{i} L \xrightarrow{f} G$ satisfy \emph{no-dangling} condition, if for every hyperedge $e$ not in the image of $f$, its sources and targets are either not in the image of $f$ or in the image of $f \circ i$.
+  Morphisms $K \xrightarrow{i} L \xrightarrow{f} G$ satisfy \emph{no-dangling} condition if for every hyperedge $e$ not in the image of $f$, its sources and targets are either not in the image of $f$ or in the image of $f \circ i$.
 \end{definition}
 Intuitively, this condition ensures that when we should not delete vertices that are incident to hyperedges which are not being deleted.
 \begin{example}\label{example:no-dangling}
@@ -1667,9 +1667,9 @@ there would be no pushout complement and therefore no match of the rule in the s
 We will first recall the rewriting as it applies to $\catname{HypI}(\Sigma)$ and then will turn our attention to the case of $\catname{MHypI}(\Sigma)$.
 The ultimate goal is to reconcile the rewriting of string diagrams as defined in~\cref{def:rewriting_prop} and~\cref{def:rewriting_frob}.
 String diagrams in $\mathbf{H}_{\Sigma}$ have two interfaces as well as their image under $\llangle - \rrangle$.
-For the cospans we managed to reduce to a single interface by considering a copairing, but it turns out that a similar \enquote{reduction} is posible in the syntactic domain.
+For the cospans we managed to reduce to a single interface by considering a copairing, but it turns out that a similar \enquote{reduction} is possible in the syntactic domain.
 
-Recall the structure of Frobenius algebra from~\cref{def:frobenius_prop}, we can abreviate the following combinations as $\cap : 2 \to 0$ and $\cup : 0 \to 2$:
+Recall the structure of Frobenius algebra from~\cref{def:frobenius_prop}, we can abbreviate the following combinations as $\cap : 2 \to 0$ and $\cup : 0 \to 2$:
 \[
 \adjustbox{scale=0.7}{
 \tikzfig{./figures/string/cap_definition} \qquad \tikzfig{./figures/string/cup_definition}}~.
@@ -1710,7 +1710,7 @@ This operation can be inverted by post-composing with $\cap_{m} \otimes \id_{n}$
 \begin{proposition}[{\cite[Prop. 4.8]{bonchi_string_2022-1}}]
   Suppose $\llangle a \rrangle = m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ in $\catname{HypI}(\Sigma)$, then $\llangle \corner{a} \rrangle$ produces a cospan isomorphic to $0 \xrightarrow{} \mathcal{G} \xleftarrow{[f,g]} m \coprod n$.
 \end{proposition}
-Using $\corner{-}$ allows us to pass freely between syntactic rewriting of $\Sigma$-terms withj non-trivial inputs and rewriting of $\Sigma$-terms that have only outputs. 
+Using $\corner{-}$ allows us to pass freely between syntactic rewriting of $\Sigma$-terms with non-trivial inputs and rewriting of $\Sigma$-terms that have only outputs. 
 
 \begin{theorem}[{\cite[Thm. 4.9]{bonchi_string_2022-1}}] \label{theorem:dpoi_rewriting_frob}
   Let $\langle l, r \rangle$ be a rewrite rule in $\mathbf{H}_{\Sigma}$.
@@ -1720,7 +1720,7 @@ Using $\corner{-}$ allows us to pass freely between syntactic rewriting of $\Sig
   \]
 \end{theorem}
 \begin{proof}
-For the only-if direction, $a \rewriteArrow{\langle l, r \rangle} b$ by definition means that there exists decomposition of $a$ and $b$ as
+For the only-if direction, $a \rewriteArrow{\langle l, r \rangle} b$ by definition means that there exists a decomposition of $a$ and $b$ as
 \[
 \adjustbox{scale=0.7}{\tikzfig{./figures/string/decomposition}}~. 
 \]
@@ -1841,8 +1841,8 @@ The feature of this rule is that there exist several pushout complements for it,
 \vspace{0.5em}
 \end{minipage}
 
-The target of the first DPOI square is a valid morphism in $\catname{MHypI}(\Sigma)$ and hence in $\mathbf{S}_{\Sigma}$, while the target of the second DPOI square is not---it fails to be a mda-cospan as vertex $w_1$ has in-degree $2$.
-The target of the second DPOI square is instead a morpfism in $\catname{HypI}(\Sigma)$ and corresponds to the following syntactic rewrite in $\mathbf{H}_{\Sigma}$, recall that rewriting in $\mathbf{H}_{\Sigma}$ is modulo SMC equations and equations of Frobenius algebra,
+The target of the first DPOI square is a valid morphism in $\catname{MHypI}(\Sigma)$ and hence in $\mathbf{S}_{\Sigma}$, while the target of the second DPOI square is not---it fails to be an mda-cospan as vertex $w_1$ has in-degree $2$.
+The target of the second DPOI square is instead a morphism in $\catname{HypI}(\Sigma)$ and corresponds to the following syntactic rewrite in $\mathbf{H}_{\Sigma}$, recall that rewriting in $\mathbf{H}_{\Sigma}$ is modulo SMC equations and equations of Frobenius algebra,
 \[
 \adjustbox{scale=0.7}{\tikzfig{./figures/string/frobenius_rewrite_example}}~.
 \]
@@ -2052,10 +2052,10 @@ and $/ \mathcal{R}$ denotes the quotient of $\catname{MHypI}(\Sigma)$ by the rew
 Namely, we say that $m_1 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} n_1 \rightsquigarrow_{\mathcal{R}} m_2 \xrightarrow{} \mathcal{G}_2 \xleftarrow{} n_2$ if $0 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} m_1 \coprod n_1 \rightsquigarrow 0 \xrightarrow{}_{\mathcal{R}} \mathcal{G}_2 \xleftarrow{} m_2 \coprod n_2$.
 \end{corollary}
 
-Hopefully the analogy between rewriting in a Lawvere theory (via $\mathbf{T}_{\Sigma}$) and rewriting in a PROP (via $\mathbf{S}_{\Sigma}$) is now clear and that hypegraphs, once equipped with an ability to express equivelences, are a natural representation for \emph{generalised} e-graphs, i.e. e-graphs for symmetric monoidal theories.
+Hopefully the analogy between rewriting in a Lawvere theory (via $\mathbf{T}_{\Sigma}$) and rewriting in a PROP (via $\mathbf{S}_{\Sigma}$) is now clear and that hypergraphs, once equipped with an ability to express equivalences, are a natural representation for \emph{generalised} e-graphs, i.e. e-graphs for symmetric monoidal theories.
 We lay out the foundations for this in the next chapter.
 
-Notably, the machinery of DPOI rewriting as presented in this section has been further extended by either relaxing or restricting the class of cospans to accomodate morphisms in categories between $\mathbf{H}_{\Sigma}$ and $\mathbf{S}_{\Sigma}$.
-This include rewriting in $\mathbf{S}_{\Sigma}$ together with commutative (co)monoid structures---exactly half of the Frobenius algebra structure---presented by Milosavljevi\'{c}~\cite{zanassi_comonoid} who required monogamy on either input interface or output interface (and respectively restricted either in-degrees or out-degrees) together with an appropriate notion of a pushout complement.
+Notably, the machinery of DPOI rewriting as presented in this section has been further extended by either relaxing or restricting the class of cospans to accommodate morphisms in categories between $\mathbf{H}_{\Sigma}$ and $\mathbf{S}_{\Sigma}$.
+This includes rewriting in $\mathbf{S}_{\Sigma}$ together with commutative (co)monoid structures---exactly half of the Frobenius algebra structure---presented by Milosavljevi\'{c}~\cite{zanassi_comonoid} who required monogamy on either the input interface or the output interface (and respectively restricted either in-degrees or out-degrees) together with an appropriate notion of a pushout complement.
 Another example is the work of Kaye~\cite{ghica_rewriting_2023} who considered rewriting in $\mathbf{Tr}_{\Sigma}$---a syntactic symmetric monoidal category with trace comonoid structure.
-The appropriate characterisation of morphisms as cospans considered parially monogamous cospans and traced boundary complements when performing DPOI rewriting.
+The appropriate characterisation of morphisms as cospans considered partially monogamous cospans and traced boundary complements when performing DPOI rewriting.
