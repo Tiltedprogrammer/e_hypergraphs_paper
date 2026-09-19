@@ -696,137 +696,158 @@ equations graphically as string diagrams, as in
 \end{figure}
 
 Other examples of $\mathrm{PROPs}$ include \emph{Frobenius algebras}~\cite{kockFrobeniusAlgebras2D2003}, \emph{Hopf algebras}~\cite{bonchiInteractingHopfAlgebras2017}, and generally theories that have generators with multiple outputs which are related in some way and hence can not be projected and processed separately, for example, maps that return a joint probability distribution of their inputs~\cite{MarkovProp}.
-Another important example are theories that have commutative comonoid structure, that is also natural.
-\begin{example}[Cartesian PROP $=$ Lawvere theory]
-\label{ex:cartesian-prop}
-Let $\Sigma$ contain, besides any other generators, a comonoid
-$\delta : 1 \to 2$ and $\varepsilon : 1 \to 0$, and let $\mathcal{E}$
-impose coassociativity, counitality, and cocommutativity, together with
-a \emph{naturality} requirement on each remaining generator: for every
-$f \in \Sigma_1$ with $f : m \to n$,
+% Another important example are theories that have commutative comonoid structure, that is also natural.
+Another important class of PROPs consists of those equipped with a natural commutative comonoid structure.
+
+\begin{theorem}[Fox~\cite{foxCoalgebrasCartesianCategories1976}]
+\label{theorem:fox}
+A symmetric monoidal category is cartesian precisely when every object \(X\) carries a coherent natural commutative comonoid structure
 \[
-f \fatsemi (\underbrace{\delta \otimes \cdots \otimes \delta}_{n})
-=
-(\underbrace{\delta \otimes \cdots \otimes \delta}_{m}) \fatsemi
-\sigma \fatsemi (f \otimes f),
+\delta_X : X \to X \otimes X,
 \qquad
-f \fatsemi (\underbrace{\varepsilon \otimes \cdots \otimes \varepsilon}_{n})
-= \underbrace{\varepsilon \otimes \cdots \otimes \varepsilon}_{m},
+\varepsilon_X : X \to \I.
 \]
-where $\sigma$ is the canonical permutation interleaving the two copies
-of the $m$ inputs. The first equation says $f$ commutes with copying---its
-outputs may be copied before or after applying $f$---and the second that
-$f$ commutes with discarding. Together they make each generator a
-\emph{comonoid homomorphism}.
-
-It suffices to impose these equations on the generators. Comonoid
-homomorphisms are closed under composition and tensor: if $F$ and $G$
-each commute with $\delta$ and $\varepsilon$, then so do $F \fatsemi G$
-and $F \otimes G$, the requisite interleaving permutations composing by
-coherence of the symmetry. By induction on the structure of
-$\Sigma$-terms, \emph{every} morphism $F : m \to n$ of
-$\mathbf{S}_{\Sigma,\mathcal{E}}$ is therefore a comonoid homomorphism;
-the structural generators $\id$, $\sym$, $\delta$, $\varepsilon$ are
-homomorphisms already, by the comonoid laws and naturality of the
-symmetry. The comonoid $(\delta, \varepsilon)$ is thus natural in every
-morphism.
-
-By Fox's theorem, a symmetric monoidal category in which every object
-carries a natural commutative comonoid structure is \emph{cartesian}:
-the counit $U : (\mathbf{S}_{\Sigma,\mathcal{E}})^{\mathrm{C}} \to
-\mathbf{S}_{\Sigma,\mathcal{E}}$ is an isomorphism, so $\otimes$ is the
-categorical product, $\delta$ is the diagonal, and $\varepsilon$ is the
-unique map to the terminal object $0$. Concretely, naturality lets every
-diagram be rewritten so that copying and discarding are pushed back to
-the inputs: each generator may freely duplicate or delete its arguments,
-and a morphism $m \to n$ is determined by $n$ terms over $m$ copyable,
-discardable inputs.
-
-This is exactly a Lawvere theory. Once copying and discarding are free
-and natural, a morphism $m \to 1$ is an $m$-ary operation that may use
-each of its $m$ inputs any number of times---including zero---so
-\[
-\mathbf{S}_{\Sigma,\mathcal{E}}(m, 1) \;\cong\; T_{\Sigma'}(m)/\bar R,
-\]
-the $m$-ary terms of the corresponding algebraic theory modulo its
-equations, while the product structure forces the multi-output collapse
-\[
-\mathbf{S}_{\Sigma,\mathcal{E}}(m,n) \;\cong\;
-\mathbf{S}_{\Sigma,\mathcal{E}}(m,1)^{\,n}
-\]
-characteristic of the cartesian case. Here $\Sigma' = \Sigma \setminus
-\{\delta, \varepsilon\}$ is the original signature with the now-structural
-comonoid removed. The cartesian PROPs are therefore precisely the Lawvere
-theories of \cref{chapter:algebras}: the comonoid that was extra
-structure in a general PROP becomes the free copy and delete of
-$\catname{FinSet}^{\mathrm{op}}$, and the syntactic PROP
-$\mathbf{S}_{\Sigma,\mathcal{E}}$ collapses to the free-algebra collection
-$T_{\Sigma'}/\bar R$ viewed as a Lawvere theory.
-\end{example}
-
-The fact that in the above example the PROP carries a cartesian monoidal
-structure follows from a result of Fox~\cite{foxCoalgebrasCartesianCategories1976},
-which identifies the cartesian categories among the symmetric monoidal
-ones as exactly those in which every object is, naturally, a commutative
-comonoid.
-
-\begin{definition}[$X$-coalgebra]
-Let $X$ be a symmetric monoidal category. An \emph{$X$-coalgebra} is a
-triple $(C, \delta, \varepsilon)$ with $C \in \obj{X}$, a
-comultiplication $\delta : C \to C \otimes C$, and a counit $\varepsilon
-: C \to \I$, forming a cocommutative comonoid: $\delta$ is coassociative,
-counital, and cocommutative (i.e.\ $\delta \fatsemi \sym_{C,C} =
-\delta$). A \emph{morphism of $X$-coalgebras} $(C, \delta_C, \varepsilon_C)
-\to (D, \delta_D, \varepsilon_D)$ is a map $f : C \to D$ commuting with
-the comonoid structure,
-\[
-f \fatsemi \delta_D = \delta_C \fatsemi (f \otimes f)
-\quad\text{and}\quad
-f \fatsemi \varepsilon_D = \varepsilon_C~.
-\]
-We write $(X)^{\mathrm{C}}$ for the category of $X$-coalgebras and
-coalgebra morphisms, and $U : (X)^{\mathrm{C}} \to X$ for the forgetful
-functor $(C, \delta, \varepsilon) \mapsto C$.
-\end{definition}
-
-\begin{lemma}
-$(X)^{\mathrm{C}}$ is cartesian. The product of $(C, \delta_C,
-\varepsilon_C)$ and $(D, \delta_D, \varepsilon_D)$ is $C \otimes D$ with
-\[
-\delta_{C \otimes D}
-= (\delta_C \otimes \delta_D) \fatsemi (\id_C \otimes \sym_{C,D} \otimes \id_D),
-\qquad
-\varepsilon_{C \otimes D} = \varepsilon_C \otimes \varepsilon_D,
-\]
-and projections $\pi_C = \id_C \otimes \varepsilon_D$ and $\pi_D =
-\varepsilon_C \otimes \id_D$; the unit object $\I$, with its trivial
-coalgebra structure, is terminal. Under this cartesian structure the
-forgetful functor $U : (X)^{\mathrm{C}} \to X$ is strict monoidal.
-\end{lemma}
-
-\begin{theorem}[Fox~\cite{foxCoalgebrasCartesianCategories1976}]\label{theorem:fox}
-The assignment $X \mapsto (X)^{\mathrm{C}}$ extends to a functor
-$(-)^{\mathrm{C}} : \catname{Mon} \to \catname{Cart}$ that is right
-adjoint to the inclusion $\iota : \catname{Cart} \hookrightarrow
-\catname{Mon}$,
-\[
-\iota \dashv (-)^{\mathrm{C}} : \catname{Mon} \to \catname{Cart},
-\]
-where $\catname{Mon}$ is the category of symmetric monoidal categories and
-strict monoidal functors and $\catname{Cart}$ its full subcategory of
-cartesian ones. In particular, $X$ is cartesian if and only if the
-counit $U : (X)^{\mathrm{C}} \to X$ is an isomorphism---equivalently, if
-and only if every object of $X$ carries a (necessarily unique) natural
-commutative comonoid structure.
+In this case, \(\otimes\) is the categorical product, \(\delta_X\) is the diagonal, and \(\varepsilon_X\) is the unique map to the terminal object.
 \end{theorem}
 
-\noindent
-The category $(X)^{\mathrm{C}}$ is thus the \emph{cofree} cartesian
-category on $X$---Fox's ``best approximation to $X$ by a cartesian
-category''. Applied to \cref{ex:cartesian-prop}, the naturality
-equations make every object of $\mathbf{S}_{\Sigma,\mathcal{E}}$ a
-comonoid and every morphism a coalgebra map, so the counit is an
-isomorphism and the PROP is cartesian.
+\begin{example}[Cartesian PROPs and Lawvere theories]
+\label{ex:cartesian-prop}
+By \cref{theorem:fox}, a PROP equipped with such natural copy and discard operations is cartesian.
+Since its objects are the natural numbers, with \(n = 1^{\otimes n}\), every object is a finite power of \(1\); hence the PROP is a Lawvere theory.
+Conversely, every Lawvere theory is a cartesian PROP whose diagonals and terminal maps provide this natural commutative comonoid structure.
+Thus, cartesian PROPs and Lawvere theories are the same structures viewed from monoidal and finite-product perspectives, respectively.
+\end{example}
+Therefore, PROPs are indeed generalisations of algebraic theopries.
+% \begin{example}[Cartesian PROP $=$ Lawvere theory]
+% \label{ex:cartesian-prop}
+% Let $\Sigma$ contain, besides any other generators, a comonoid
+% $\delta : 1 \to 2$ and $\varepsilon : 1 \to 0$, and let $\mathcal{E}$
+% impose coassociativity, counitality, and cocommutativity, together with
+% a \emph{naturality} requirement on each remaining generator: for every
+% $f \in \Sigma_1$ with $f : m \to n$,
+% \[
+% f \fatsemi (\underbrace{\delta \otimes \cdots \otimes \delta}_{n})
+% =
+% (\underbrace{\delta \otimes \cdots \otimes \delta}_{m}) \fatsemi
+% \sigma \fatsemi (f \otimes f),
+% \qquad
+% f \fatsemi (\underbrace{\varepsilon \otimes \cdots \otimes \varepsilon}_{n})
+% = \underbrace{\varepsilon \otimes \cdots \otimes \varepsilon}_{m},
+% \]
+% where $\sigma$ is the canonical permutation interleaving the two copies
+% of the $m$ inputs. The first equation says $f$ commutes with copying---its
+% outputs may be copied before or after applying $f$---and the second that
+% $f$ commutes with discarding. Together they make each generator a
+% \emph{comonoid homomorphism}.
+
+% It suffices to impose these equations on the generators. Comonoid
+% homomorphisms are closed under composition and tensor: if $F$ and $G$
+% each commute with $\delta$ and $\varepsilon$, then so do $F \fatsemi G$
+% and $F \otimes G$, the requisite interleaving permutations composing by
+% coherence of the symmetry. By induction on the structure of
+% $\Sigma$-terms, \emph{every} morphism $F : m \to n$ of
+% $\mathbf{S}_{\Sigma,\mathcal{E}}$ is therefore a comonoid homomorphism;
+% the structural generators $\id$, $\sym$, $\delta$, $\varepsilon$ are
+% homomorphisms already, by the comonoid laws and naturality of the
+% symmetry. The comonoid $(\delta, \varepsilon)$ is thus natural in every
+% morphism.
+
+% By Fox's theorem, a symmetric monoidal category in which every object
+% carries a natural commutative comonoid structure is \emph{cartesian}:
+% the counit $U : (\mathbf{S}_{\Sigma,\mathcal{E}})^{\mathrm{C}} \to
+% \mathbf{S}_{\Sigma,\mathcal{E}}$ is an isomorphism, so $\otimes$ is the
+% categorical product, $\delta$ is the diagonal, and $\varepsilon$ is the
+% unique map to the terminal object $0$. Concretely, naturality lets every
+% diagram be rewritten so that copying and discarding are pushed back to
+% the inputs: each generator may freely duplicate or delete its arguments,
+% and a morphism $m \to n$ is determined by $n$ terms over $m$ copyable,
+% discardable inputs.
+
+% This is exactly a Lawvere theory. Once copying and discarding are free
+% and natural, a morphism $m \to 1$ is an $m$-ary operation that may use
+% each of its $m$ inputs any number of times---including zero---so
+% \[
+% \mathbf{S}_{\Sigma,\mathcal{E}}(m, 1) \;\cong\; T_{\Sigma'}(m)/\bar R,
+% \]
+% the $m$-ary terms of the corresponding algebraic theory modulo its
+% equations, while the product structure forces the multi-output collapse
+% \[
+% \mathbf{S}_{\Sigma,\mathcal{E}}(m,n) \;\cong\;
+% \mathbf{S}_{\Sigma,\mathcal{E}}(m,1)^{\,n}
+% \]
+% characteristic of the cartesian case. Here $\Sigma' = \Sigma \setminus
+% \{\delta, \varepsilon\}$ is the original signature with the now-structural
+% comonoid removed. The cartesian PROPs are therefore precisely the Lawvere
+% theories of \cref{chapter:algebras}: the comonoid that was extra
+% structure in a general PROP becomes the free copy and delete of
+% $\catname{FinSet}^{\mathrm{op}}$, and the syntactic PROP
+% $\mathbf{S}_{\Sigma,\mathcal{E}}$ collapses to the free-algebra collection
+% $T_{\Sigma'}/\bar R$ viewed as a Lawvere theory.
+% \end{example}
+
+% The fact that in the above example the PROP carries a cartesian monoidal
+% structure follows from a result of Fox~\cite{foxCoalgebrasCartesianCategories1976},
+% which identifies the cartesian categories among the symmetric monoidal
+% ones as exactly those in which every object is, naturally, a commutative
+% comonoid.
+
+% \begin{definition}[$X$-coalgebra]
+% Let $X$ be a symmetric monoidal category. An \emph{$X$-coalgebra} is a
+% triple $(C, \delta, \varepsilon)$ with $C \in \obj{X}$, a
+% comultiplication $\delta : C \to C \otimes C$, and a counit $\varepsilon
+% : C \to \I$, forming a cocommutative comonoid: $\delta$ is coassociative,
+% counital, and cocommutative (i.e.\ $\delta \fatsemi \sym_{C,C} =
+% \delta$). A \emph{morphism of $X$-coalgebras} $(C, \delta_C, \varepsilon_C)
+% \to (D, \delta_D, \varepsilon_D)$ is a map $f : C \to D$ commuting with
+% the comonoid structure,
+% \[
+% f \fatsemi \delta_D = \delta_C \fatsemi (f \otimes f)
+% \quad\text{and}\quad
+% f \fatsemi \varepsilon_D = \varepsilon_C~.
+% \]
+% We write $(X)^{\mathrm{C}}$ for the category of $X$-coalgebras and
+% coalgebra morphisms, and $U : (X)^{\mathrm{C}} \to X$ for the forgetful
+% functor $(C, \delta, \varepsilon) \mapsto C$.
+% \end{definition}
+
+% \begin{lemma}
+% $(X)^{\mathrm{C}}$ is cartesian. The product of $(C, \delta_C,
+% \varepsilon_C)$ and $(D, \delta_D, \varepsilon_D)$ is $C \otimes D$ with
+% \[
+% \delta_{C \otimes D}
+% = (\delta_C \otimes \delta_D) \fatsemi (\id_C \otimes \sym_{C,D} \otimes \id_D),
+% \qquad
+% \varepsilon_{C \otimes D} = \varepsilon_C \otimes \varepsilon_D,
+% \]
+% and projections $\pi_C = \id_C \otimes \varepsilon_D$ and $\pi_D =
+% \varepsilon_C \otimes \id_D$; the unit object $\I$, with its trivial
+% coalgebra structure, is terminal. Under this cartesian structure the
+% forgetful functor $U : (X)^{\mathrm{C}} \to X$ is strict monoidal.
+% \end{lemma}
+
+% \begin{theorem}[Fox~\cite{foxCoalgebrasCartesianCategories1976}]\label{theorem:fox}
+% The assignment $X \mapsto (X)^{\mathrm{C}}$ extends to a functor
+% $(-)^{\mathrm{C}} : \catname{Mon} \to \catname{Cart}$ that is right
+% adjoint to the inclusion $\iota : \catname{Cart} \hookrightarrow
+% \catname{Mon}$,
+% \[
+% \iota \dashv (-)^{\mathrm{C}} : \catname{Mon} \to \catname{Cart},
+% \]
+% where $\catname{Mon}$ is the category of symmetric monoidal categories and
+% strict monoidal functors and $\catname{Cart}$ its full subcategory of
+% cartesian ones. In particular, $X$ is cartesian if and only if the
+% counit $U : (X)^{\mathrm{C}} \to X$ is an isomorphism---equivalently, if
+% and only if every object of $X$ carries a (necessarily unique) natural
+% commutative comonoid structure.
+% \end{theorem}
+
+% \noindent
+% The category $(X)^{\mathrm{C}}$ is thus the \emph{cofree} cartesian
+% category on $X$---Fox's ``best approximation to $X$ by a cartesian
+% category''. Applied to \cref{ex:cartesian-prop}, the naturality
+% equations make every object of $\mathbf{S}_{\Sigma,\mathcal{E}}$ a
+% comonoid and every morphism a coalgebra map, so the counit is an
+% isomorphism and the PROP is cartesian.
 
 \begin{remark}\label{remark:composing_props}
 PROPs, together with identity-on-objects symmetric strict monoidal functors, 
@@ -859,7 +880,7 @@ monoids and the PROP for comonoids.
 \end{remark}
 
 \begin{proposition}\label{prop:prop-ump}
-Mirroring \cref{prop:lawvere-ump}, there is a free--forgetful adjunction
+There is a free--forgetful adjunction
 \[
 F : \catname{MonSig} \rightleftarrows \catname{PROP} : U,
 \qquad F \dashv U,
@@ -875,25 +896,25 @@ each generator of $\Sigma$ as a morphism of $\mathbb{A}$ of the
 corresponding type.
 \end{proposition}
 
-\begin{remark}
-One can draw the parallel further by defining a \emph{monoidal
-$\Sigma$-algebra}, or \emph{model}: a symmetric monoidal category
-$\mathcal C$ together with an interpretation $\alpha$ assigning
-\begin{itemize}
-  \item to each sort $s \in \Sigma_0$, an object $\alpha(s) \in \mathcal C$
-    (extended to words by $\alpha(s_1\cdots s_k) = \alpha(s_1) \otimes
-    \cdots \otimes \alpha(s_k)$), and
-  \item to each generator $f : w \to w'$ in $\Sigma_1$, a morphism
-    $\alpha(f) : \alpha(w) \to \alpha(w')$ in $\mathcal C$,
-\end{itemize}
-equivalently a symmetric monoidal functor $\mathbf{S}_\Sigma \to \mathcal
-C$. In the single-sorted case this is a triple $(\mathcal C, X, \alpha)$
-with a single carrier object $X = \alpha(*)$ and $\alpha(f) : X^{\otimes
-m} \to X^{\otimes n}$ for $f : m \to n$. The constructions of
-\cref{chapter:algebras} then carry over; we do not study models here,
-focusing on the syntactic PROPs $\mathbf{S}_\Sigma$ and
-$\mathbf{S}_{\Sigma,\mathcal{E}}$.
-\end{remark}
+% \begin{remark}
+% One can draw the parallel further by defining a \emph{monoidal
+% $\Sigma$-algebra}, or \emph{model}: a symmetric monoidal category
+% $\mathcal C$ together with an interpretation $\alpha$ assigning
+% \begin{itemize}
+%   \item to each sort $s \in \Sigma_0$, an object $\alpha(s) \in \mathcal C$
+%     (extended to words by $\alpha(s_1\cdots s_k) = \alpha(s_1) \otimes
+%     \cdots \otimes \alpha(s_k)$), and
+%   \item to each generator $f : w \to w'$ in $\Sigma_1$, a morphism
+%     $\alpha(f) : \alpha(w) \to \alpha(w')$ in $\mathcal C$,
+% \end{itemize}
+% equivalently a symmetric monoidal functor $\mathbf{S}_\Sigma \to \mathcal
+% C$. In the single-sorted case this is a triple $(\mathcal C, X, \alpha)$
+% with a single carrier object $X = \alpha(*)$ and $\alpha(f) : X^{\otimes
+% m} \to X^{\otimes n}$ for $f : m \to n$. The constructions of
+% \cref{chapter:algebras} then carry over; we do not study models here,
+% focusing on the syntactic PROPs $\mathbf{S}_\Sigma$ and
+% $\mathbf{S}_{\Sigma,\mathcal{E}}$.
+% \end{remark}
 
 Finally, one can define rewriting on PROPs.
 \begin{definition}[{\cite[Def. 2.17]{bonchi_string_2022-1}}]\label{def:rewriting_prop}

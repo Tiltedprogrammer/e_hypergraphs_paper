@@ -85,7 +85,7 @@ A typical example of a (unbounded) semilattice is the set of all non-empty subse
 	Semilattices with their respective homomorphisms form a category that we denote $\catname{SLat}$.
 \end{definition}
 \begin{remark}
-    This is the same data as the category $\catname{Alg}(\Sigma_{\catname{SLat}}, \mathcal{E})$ for $\Sigma_{\catname{SLat}}$ given by a single operator $\Sigma_{\catname{SLat}}(2) = \{ \join \}$ and 
+    This is the same data as the category $(\Sigma_{\catname{SLat}}, \mathcal{E})-\catname{Alg}$ for $\Sigma_{\catname{SLat}}$ given by a single operator $\Sigma_{\catname{SLat}}(2) = \{ \join \}$ and 
     \begin{align*}
     \mathcal{E} = \{
     x \join (y \join z) &\equiv (x \join y) \join z,\\
@@ -124,7 +124,7 @@ $U_{\catname{SLat}} \cong \catname{SLat}(\I_{\catname{SLat}}, -)$.
 The category $\catname{SLat}$ is complete and cocomplete and $U_{\catname{SLat}}$ creates limits.
 \end{proposition}
 \begin{proof}
-$\catname{SLat} \cong \catname{Alg}(\Sigma_{\catname{SLat}}, \mathcal{E})$, whose signature has a single operation of finite arity.
+$\catname{SLat} \cong (\Sigma_{\catname{SLat}}, \mathcal{E})-\catname{Alg}$, whose signature has a single operation of finite arity.
 Categories of algebras for a finitary signature are complete and cocomplete, with limits created by the forgetful functor; see, for example~\cite[Thm. 3.4.5, Prop. 3.4.1]{Borceux_1994}.
 \end{proof}
 \begin{remark}\label{remark:slat-limits}
