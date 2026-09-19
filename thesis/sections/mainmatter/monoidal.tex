@@ -9867,7 +9867,7 @@ What it buys is immediate---two of the edges it introduces run between vertices 
 \]
 This does not saturate the whole diagram: there are still redexes for bialgebra rules, and of course, the identity rule can be applied right to left.
 This is no different from traditional e-graphs, some set of rewrite rules may not guarantee the termination of equality saturation, so one has to apply heuristics to determine when to stop.
-Altought, in the case of e-graphs, in some cases it is possible to guarantee that equality saturation terminates~\cite{tree_automata_e_graphs}.
+Although, in the case of e-graphs, in some cases it is possible to guarantee that equality saturation terminates~\cite{tree_automata_e_graphs}.
 \subsection*{Discussion}
 Occasionally large portions of the diagram are duplicated, since some rules
 touch most of it; but even then sharing is preserved to some extent---the untouched regions are never copied and once a rewrite rule is applied, common substructures can be factored out. 
@@ -9968,3 +9968,9 @@ in~\cref{def:extended_complement}.
 Our construction can therefore be viewed as a refinement of their approach, supplying categorical account of hierarchical interfaces and performing necessary bookkeeping during composition and EDPOI rewriting; we furthermore make sure that all the required pushouts exist in our setting.
 
 \section{Conclusion}
+In this chapter we have seen how a fragment of e-graphs can be represented using string diagrams for freely $\catname{SLat}$-enriched cartesian categories.
+We noted that cartesian structure does not completely survive the free enrichment wich avails for a different reading of traditional e-graphs when sharing is involved.
+We formalised string diagrams for $\catname{SLat}$-PROPs $\mathbf{S}^{\join}_{\Sigma}$ and $\mathbf{H}^{\join}_{\Sigma}$ in terms of concrete combinatorial objects---extended cospans of rooted e-hypergraphs,
+We showed that they are sound and complete in terms of representation of morphisms in these $\catname{SLat}$-PROPs and showed the equivalence between morphisms rewriting and EDPOI rewriting of e-hypergraphs.
+As expected, this representation factors out the structural SMC equations, while remaining sensitive to the complexity-relevant equations induced by $\catname{SLat}$-enrichment.
+An interesting direction for future work is the development of efficient algorithms to support this kind of EDPOI rewriting.

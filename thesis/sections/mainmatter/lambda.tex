@@ -1,5 +1,5 @@
 \chapter{Categorical E-Graphs for \texorpdfstring{$\lambda$}{lambda}-Calculi}
-\label{ch:lambda}
+\label{chapter:lambda}
 
 As noted in~\cref{chapter:introduction}, traditional e-graphs encounter issues in the context of $\lambda$-calculi, mainly because the former were not designed with variable binding and substitution in mind.
 It is well-known that different variations of $\lambda$-calculi are modelled by different flavours of closed monoidal categories.
@@ -3869,19 +3869,32 @@ Slotted e-graphs extend the traditional signature employed by e-graphs with an e
 		\text{(terms)}              & \qquad & t                \Coloneqq & \; f \mid f(tc) .
 	\end{alignat*}
 	The traditional congruence relation maintained by e-graphs for a set of equations $E$ is given below (plus the obvious rules for transitivity, symmetry and reflexivity of $\cong$; in this subsection only, $\cong$ denotes the e-graph congruence rather than isomorphism):
-	\begin{mathpar}
-		\inferrule*[right=start]
-		{a = b \in E}
-		{E \vdash a \cong b}
-		\quad
-		\inferrule*[right=cong. (variadic)]
-		{E \vdash tc_i \cong tc'_i,\; i = 1, \ldots, k}
-		{E \vdash tc_1, \ldots, tc_k \cong tc'_1, \ldots, tc'_k}
-		\quad 
-		\inferrule*[right=cong. (f)]
-		{E \vdash tc \cong tc'}
-		{E \vdash f(tc) \cong f(tc')}
-	\end{mathpar}
+	% \begin{mathpar}
+	% 	\inferrule*[right=start]
+	% 	{a = b \in E}
+	% 	{E \vdash a \cong b}
+	% 	\quad
+	% 	\inferrule*[right=cong. (variadic)]
+	% 	{E \vdash tc_i \cong tc'_i,\; i = 1, \ldots, k}
+	% 	{E \vdash tc_1, \ldots, tc_k \cong tc'_1, \ldots, tc'_k}
+	% 	\quad 
+	% 	\inferrule*[right=cong. (f)]
+	% 	{E \vdash tc \cong tc'}
+	% 	{E \vdash f(tc) \cong f(tc')}
+	% \end{mathpar}
+\begin{mathpar}
+    \inferrule*[right=start]
+    {a = b \in E}
+    {E \vdash a \cong b}
+    \quad
+    \inferrule*[right=cong. (variadic)]
+    {E \vdash tc_i \cong tc'_i,\; i = 1, \ldots, k}
+    {E \vdash tc_1, \ldots, tc_k \cong tc'_1, \ldots, tc'_k}
+    \and
+    \inferrule*[right=cong. (f)]
+    {E \vdash tc \cong tc'}
+    {E \vdash f(tc) \cong f(tc')}
+\end{mathpar}
   Recall that we interpret the e-graph congruence by putting the equivalent terms together with a $\join$.
   The rule $tc \cong tc' \implies f(tc) \cong f(tc')$ is then exactly the property of composition in an $\catname{SLat}$-category, namely $f(tc \join tc') = f(tc) \join f(tc')$.
 	Slotted e-graphs extend the above rules with the following:
@@ -3895,8 +3908,16 @@ Slotted e-graphs extend the traditional signature employed by e-graphs with an e
   This rule is exactly the property of preservation of joins by abstraction in~\eqref{eq:lambda-join-structural}.
   We did not have to introduce this rule in an ad hoc manner, nor did we have to justify it---it is provided by the axioms of the category we work in and thus the rule is sound with respect to semantics.
 
-  The same restrictions apply as in the case of traditional e-graphs: if we were to draw a precise correspondence between string diagrams for $\catname{SLag}$-categories and slotted e-graphs, we would need to be careful about sharing and cycles.
-  
+  The same restrictions apply as in the case of traditional e-graphs: if we were to draw a precise correspondence between string diagrams for $\catname{SLat}$-categories and slotted e-graphs, we would need to be careful about sharing and cycles.
+  That is, we may introduce a comonoid generator, but it must not be natural on join morphisms.
+  We argued that string diagrams may serve as a better and more principled representation in certain applications, but it is worth to note that slotted e-graphs are much more general.
+  In particular, string diagrams require closed structure on the underlying category whereas slotted e-graphs may represent binding in theories that have no known closed structure, such as the $\pi$-calculus.
+
 
 
 \section{Conclusion}
+In this chapter we introduced string diagrams for $\catname{SLat}$-enriched symmetric monoidal closed categories and formalised them as concrete combinatorial objects.
+The representation is shown to be sound and complete with respect to representation of closed-monoidal terms with join modulo $\equiv_{\mathsf{str}}$ which includes the SMC equations, $\catname{SLat}$-equations and the $\catname{SLat}$-rule for $\Lambda$-abstraction.
+The equivalence of rewriting of closed-monoidal terms modulo $\equiv_{\mathsf{str}}$ and convex EDPOI rewriting was shown.
+We also highlighted representational advantages of such string diagrams in the context of $\lambda$-calculi.
+An important future work is exploring whether this combinatorial representation may lead to better algorithmics for doing equality saturation for $\lambda$-calculus.

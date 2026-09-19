@@ -224,10 +224,8 @@ $\equivid$, an e-class map $M$ sending each identifier to its e-class
 e-nodes to identifiers. A $\find$ operation canonicalises identifiers
 to a representative, and an e-node is canonical when its children are;
 the hashcons invariant requires $H$ to index every canonical e-node by
-its class, so that an e-node congruent to a given one can be located in
-near-constant time. None of this extra state changes which congruence
-is represented---it is what makes the operations of
- efficient---so we suppress it in
+its class, so that an e-node congruent to a given one can be located efficiently.
+We suppress implementation aspects in
 the main development and refer to~\cite{EggPaper} for details.
 \end{remark}
 
@@ -316,8 +314,6 @@ bijection with $q(A_k)$, a finite subset of the carrier of the initial
 $(\Sigma, \mathcal{E})$-algebra $T_\Sigma(\varnothing)/\bar R$: the
 fragment spanned by $t$ and the terms reachable from it under
 $\mathcal{E}$. 
-% The e-graph does not hold this algebra, but computes a
-% finite window onto it.
 
 Above we have seen an abstract account of e-graph.  In practice, the efficiency of computing the reflector is important.
 We will review the key elements that make e-graphs efficient in this regard next.
