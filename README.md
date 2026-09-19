@@ -4,4 +4,4 @@
 - Slides can be found [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/egraphs_2024.pdf)
 - Notes on enrichment and closed monoidal e-hypergraphs are [here](https://github.com/Tiltedprogrammer/e_hypergraphs_paper/releases/latest/download/closed_monoidal.pdf)
 
-![logo](img/logo.webp)
+![Representative illustration of e-hypergraphs and string-diagram rewriting](img/thesis-representative.png)

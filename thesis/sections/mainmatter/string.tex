@@ -222,7 +222,7 @@ symmetry---which is one of the simplifications the symmetric setting brings.
 % We will recap the symmetric case next.
 % \end{remark}
 
-In the symmetric case, the graphs we consider are required to be \emph{polarised}, meaning that the wires from $\mathrm{in}(x)$ and $\mathrm{out}(x)$ are linearly ordered for each inner node $x$: there will be no embedding to induce the order, so it must come built-in.
+In the symmetric case, the graphs we consider are required to be \emph{polarised}, meaning that the wires from $\mathrm{in}(x)$ and $\mathrm{out}(x)$ are linearly ordered for each inner node $x$: there is no embedding to induce the order, so it must come built-in.
 The valuation of such a graph is then again given by layers but approached differently.
 Suppose $\Gamma$ is a polarised graph with boundary and let $\mathring{\Gamma}$ be the set of inner nodes of $\Gamma$ with a partial order $\leq$ given by $x \leq y$ if there is a directed path from $x$ to $y$ in $\Gamma$.
 Define a \emph{level} of $\Gamma$ to be a downward closed subset of $\mathring{\Gamma}$, i.e., a subset $L \subseteq \mathring{\Gamma}$ such that if $x \in L$ and $y \leq x$, then $y \in L$.
@@ -408,7 +408,7 @@ Recall the diagram from~\cref{example:layering_polarised_graph}.
 Suppose the anchoring is given by ordering $A_1 < A_2 < A_3 < C$ on the domain and $D_1 < D_2 < B$ on the codomain.
 Then, the value of the diagram, $v(\Gamma)$, is given by a morphism $u : A_1 \otimes A_2 \otimes A_3 \otimes C \to D_1 \otimes D_2 \otimes B$ in $\mathcal{C}$.
 Thanks to evaluating the layers in $\widetilde{\mathcal{C}}$, the value $v(\Gamma)$ is invariant under different choices of ordering within each layer.
-Suppose we ordered the layers as $v_1 = \id_C \otimes f$, $v_2 = \id_A \otimes g$, and $v_3 = \id_{D_1 \otimes D_2} \otimes h$.
+Suppose we order the layers as $v_1 = \id_C \otimes f$, $v_2 = \id_A \otimes g$, and $v_3 = \id_{D_1 \otimes D_2} \otimes h$.
 The value of the diagram is then given by the composite
 \begin{align*}
 A_1 \otimes A_2 \otimes A_3 \otimes C &\xrightarrow{\sym_{A_1 \otimes A_2 \otimes A_3, C}} C \otimes A_1 \otimes A_2 \otimes A_3\\
@@ -417,7 +417,7 @@ A_1 \otimes A_2 \otimes A_3 \otimes C &\xrightarrow{\sym_{A_1 \otimes A_2 \otime
 &\xrightarrow{v_2} A \otimes D_1 \otimes D_2\\
 &\xrightarrow{\sym_{A, D_1 \otimes D_2}} D_1 \otimes D_2 \otimes A \xrightarrow{v_3} D_1 \otimes D_2 \otimes B .
 \end{align*} 
-This is the same morphism had we chosen any other ordering, for example, the left-to-right ordering of $v_1 = f \otimes \id_C$, $v_2 = \id_{A} \otimes g$, and $v_3 = h \otimes \id_{D_1 \otimes D_2}$, which is
+This is the same morphism we obtain with any other ordering, for example, the left-to-right ordering of $v_1 = f \otimes \id_C$, $v_2 = \id_{A} \otimes g$, and $v_3 = h \otimes \id_{D_1 \otimes D_2}$, which is
 \begin{align*}
 A_1 \otimes A_2 \otimes A_3 \otimes C &\xrightarrow{v_1} A \otimes C\\
 &\xrightarrow{v_2} A \otimes D_1 \otimes D_2\\
@@ -953,7 +953,7 @@ The above proposition allows one to recharacterise $\mathbf{S}_{\Sigma, \mathcal
 Just as in the case of algebraic theories, we can build a corresponding reflector and compute its image using e-graphs.
 As we saw in~\cref{chapter:introduction} this is inadequate as rewriting happens modulo SMC laws.
 That is, this rewriting system is easy to apply using pen and paper, but mechanising it using terms is difficult: after all, these string diagrams are just visual notation for terms.
-For example, in~\cref{example:bialgebra_rewriting} it was easy to eye-ball the redex for the rewrite rule, but in the actual terms we would need to apply the bifunctoriality equation to reveal the redex.
+For example, in~\cref{example:bialgebra_rewriting} it is easy to eye-ball the redex for the rewrite rule, but in the actual terms we would need to apply the bifunctoriality equation to reveal the redex.
 One of the main contributions of Bonchi et al.~\cite{bonchi_string_2022-1, bonchi_string_2022-2} was to provide a combinatorial representation of string diagrams as \emph{hypergraphs} with equal string diagrams being represented by isomorphic hypergraphs---recall that equality of string diagrams is defined as term equality modulo SMC equations.
 In fact, this uses the insight of Joyal and Street, namely that in the symmetric case, connectivity is the only information that matters and that is encoded in the hypergraph representation.
 Practically, this means that one can easily test the equality of terms in $\mathbf{S}_{\Sigma}$ by checking the corresponding hypergraph for isomorphism and can perform rewriting modulo SMC equations essentially for free: a hypegraph a priori contains all redexes that otherwise could be hidden behind the application of SMC equations in term representation.
@@ -1296,7 +1296,7 @@ The decomposition of $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ is then gi
 \end{tikzcd}
 \end{adjustbox}
 \end{equation}
-For example, below is a cospan (on the left) and its decomposition (on the right); we showed the embedding of the interfaces using dashed arrows to avoid excessive cluttering of the cospans and used the labels to assign identities to vertices in $V_{\mathcal{G}}$.
+For example, below is a cospan (on the left) and its decomposition (on the right); we show the embedding of the interfaces using dashed arrows to avoid excessive cluttering of the cospans and use the labels to assign identities to vertices in $V_{\mathcal{G}}$.
 \[
 \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_1}} \quad \cong \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_3}} \fatsemi\; \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_2}} \fatsemi \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_4}}~.
 \]
@@ -1658,7 +1658,7 @@ The corresponding DPOI rewriting step is then given by the following diagram
 \adjustbox{scale=0.7}{\tikzfig{./figures/string/dpoi_example_3}}~.
 \]
 The diagram is not much different from the one in~\cref{example:dpo} except for the additional interface $J$ and the corresponding morphisms to the source and target hypergraphs, however, the presence of the interface may affect the existence of the pushout complement.
-For example, if the source was instead
+For example, if the source were instead
 \[
 \adjustbox{scale=0.7}{\tikzfig{./figures/string/dpoi_example_4}}~,
 \]
@@ -1667,7 +1667,7 @@ there would be no pushout complement and therefore no match of the rule in the s
 We will first recall the rewriting as it applies to $\catname{HypI}(\Sigma)$ and then will turn our attention to the case of $\catname{MHypI}(\Sigma)$.
 The ultimate goal is to reconcile the rewriting of string diagrams as defined in~\cref{def:rewriting_prop} and~\cref{def:rewriting_frob}.
 String diagrams in $\mathbf{H}_{\Sigma}$ have two interfaces as well as their image under $\llangle - \rrangle$.
-For the cospans we managed to reduce to a single interface by considering a copairing, but it turns out that a similar \enquote{reduction} is possible in the syntactic domain.
+For cospans, we reduce the two interfaces to a single interface by considering a copairing, but it turns out that a similar \enquote{reduction} is possible in the syntactic domain.
 
 Recall the structure of Frobenius algebra from~\cref{def:frobenius_prop}, we can abbreviate the following combinations as $\cap : 2 \to 0$ and $\cup : 0 \to 2$:
 \[
