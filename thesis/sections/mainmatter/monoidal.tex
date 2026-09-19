@@ -6,7 +6,7 @@ We saw in~\cref{chapter:introduction} that treating symmetric monoidal theories 
 The proposal is to use string diagrams (or rather their concrete combinatorial representation as hypergraphs) and equip them with the ability to represent equivalent morphisms as a single object, akin to e-graphs.
 We characterise such string diagrams as morphisms in a free semilattice-enriched symmetric monoidal category.
 We then represent these string diagrams concretely as cospans of hierarchical hypergraphs and accordingly adapt the notion of DPOI rewriting for them.
-A fragment of traditional e-graphs can then be matched with string diagrams for a free semilattice-enriched categories whose underlying category is \emph{cartesian}---a semilattice-enriched version of a Lawvere theory.
+A fragment of traditional e-graphs can then be matched with string diagrams for a free semilattice-enriched categories whose underlying category is \emph{cartesian}.
 We saw in~\cref{chapter:algebras} that e-graphs can be seen as a device to compute the quotient for the hom-sets of a Lawvere theory.
 Here, we characterise e-graphs as morphisms.
 E-graph operations, such as \texttt{add} and \texttt{merge}, are then interpreted as string diagram rewriting.
@@ -8930,7 +8930,7 @@ m_a:\mathcal L\longrightarrow\mathcal F_a.
 The image of \(m_a\) is convex and satisfies the same successor-closure
 condition. Hence the first case gives the decomposition
 \[
-  \mathbf{Phi}_a:
+  \mathbf{\Phi}_a:
   \mathbf C_1^a
   \fatsemi
   \bigl(\mathbf 1_q\otimes\mathbf L\bigr)
@@ -9074,14 +9074,11 @@ carries the canonical occurrence
   \iota_{\mathcal L}:
   \mathcal L
   \longrightarrow
-  \operatorname{car}
-  \left(
     \mathcal{C_1}
     \fatsemi
     (q \otimes \mathcal{L})
     \fatsemi
     \mathcal{C_2}
-  \right)
 \]
 to the given match \(m\). Hence
 \[
@@ -9969,12 +9966,6 @@ in~\cref{def:extended_complement}.
 Our construction can therefore be viewed as a refinement of their approach, supplying a categorical account of hierarchical interfaces and performing the necessary bookkeeping during composition and EDPOI rewriting; we furthermore make sure that all the required pushouts exist in our setting.
 
 \section{Conclusion}
-In this chapter we have seen how a fragment of e-graphs can be represented using string diagrams for freely $\catname{SLat}$-enriched cartesian categories.
-We noted that cartesian structure does not completely survive the free enrichment wich avails for a different reading of traditional e-graphs when sharing is involved.
-We formalised string diagrams for $\catname{SLat}$-PROPs $\mathbf{S}^{\join}_{\Sigma}$ and $\mathbf{H}^{\join}_{\Sigma}$ in terms of concrete combinatorial objects---extended cospans of rooted e-hypergraphs,
-We showed that they are sound and complete in terms of representation of morphisms in these $\catname{SLat}$-PROPs and showed the equivalence between morphisms rewriting and EDPOI rewriting of e-hypergraphs.
-As expected, this representation factors out the structural SMC equations, while remaining sensitive to the complexity-relevant equations induced by $\catname{SLat}$-enrichment.
-An interesting direction for future work is the development of efficient algorithms to support this kind of EDPOI rewriting.
 In this chapter we have seen how a fragment of e-graphs can be represented using string diagrams for freely $\catname{SLat}$-enriched cartesian categories.
 We noted that cartesian structure does not completely survive the free enrichment wich avails for a different reading of traditional e-graphs when sharing is involved.
 We formalised string diagrams for $\catname{SLat}$-PROPs $\mathbf{S}^{\join}_{\Sigma}$ and $\mathbf{H}^{\join}_{\Sigma}$ in terms of concrete combinatorial objects---extended cospans of rooted e-hypergraphs,
