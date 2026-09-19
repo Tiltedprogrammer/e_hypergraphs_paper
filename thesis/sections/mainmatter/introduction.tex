@@ -129,7 +129,7 @@ Another alternative, and the route chosen in this dissertation, is to enter the 
 
 String diagrams provide a topological calculus for monoidal categories, representing objects as \emph{strings} and morphisms as \emph{nodes}, where input strings flow in and output strings flow out.
 In this thesis, our string diagrams are oriented left-to-right, bottom-to-top to make the pictures look more similar to those commonly drawn for e-graphs.
-The structure of symmetric monoidal categories is absorbed into the graphical syntax, with the composition and tensoring represented by juxtaposition, and symmetries as weaving of strings.
+The structure of symmetric monoidal categories is absorbed into the graphical syntax, with the composition and tensoring represented by juxtaposition, and symmetries as crossings of strings.
 This visual approach hides the bureaucracy of complex operations and reveals insights sometimes obscured by traditional one-dimensional (textual) syntax.
 Originating from notations by Hotz~\cite{hotzsd} (for automata) and Penrose~\cite{penrose1984spinors} (for tensor networks), extensions of string diagrammatic calculi exist for various forms of monoidal categories and even bicategories~\cite{Selinger_2010}, and provide a mathematically rigorous reasoning toolkit~\cite{joyal_geometry_1991}.
 
@@ -182,7 +182,7 @@ Applying rewrite rules corresponding to an equation $l \equiv r$ then amounts to
 
 In this thesis, we build on this foundation to give a combinatorial representation of string diagrams with e-boxes with appropriate notion of DPO rewriting.
 We call this representation \emph{e-hypergraphs} and argue that the natural semantics for such string diagrams is given by morphisms in a symmetric monoidal category enriched over a category of semilattices.
-On top of this, we recover traditional e-graphs as a special case of our framework; this constitutes a categorical semantics for e-graphs.
+On top of this, we recover a fragment of traditional e-graphs as a special case of our framework; this constitutes a categorical semantics for e-graphs.
 
 We will next give an overview of another domain, \emph{lambda calculi}, where traditional e-graphs underperform, to see if string diagrams can provide any insight into mitigating the issues there.
 \section*{Lambda calculi}
@@ -218,7 +218,7 @@ This is not immediate, since $t$ no longer denotes a single syntax tree on which
 Some representatives may contain occurrences of $x$, others may not, and others may expose substitutable occurrences only after further rewrites.
 
 A traditional solution to this is to add explicit substitutions to the syntax, so that we can rewrite them as part of the equality saturation process.
-Consider the example in~\autoref{fig:explicit-substitution-egg}, where the first e-graph represents the application of a $\lambda$-abstraction to $1$.
+Consider the example in~\cref{fig:explicit-substitution-egg}, where the first e-graph represents the application of a $\lambda$-abstraction to $1$.
 This matches the rewrite rule for $\beta$-reduction, which adds the right-hand side of the rule, containing just an e-node for explicit substitution.
 Then we can apply the rewrite rules for the explicit substitution, propagating it through the e-graph.
 The last e-graph represents the result of fully propagating the substitution, once we reached the e-classes with the actual variables.
@@ -320,124 +320,132 @@ The big advantage of slotted e-graphs is that they support binding for a wider r
     \caption{Extension of string diagrammatic syntax with $\lambda$-abstraction ($\Lambda$) and application $\ev$.}
     \label{fig:lambda-string}
 \end{figure}
-We will next briefly discuss the final contribution of this thesis, the term calculus for e-graphs.
-\section*{Term calculus}
-We already mentioned that (generalised) e-graphs can be regarded as morphisms in a certain semilattice-enriched monoidal category.
-Categorical type theory studies the relationship between type theories and categories, often by interpreting the latter as semantic models of the former.
-In this way, categorical semantics provides interpretations of typing judgments and term equality in terms of universal properties and commuting structure in a category.
-This provides a powerful tool for studying type-theoretic properties; for example, Martin-Löf type theory and cubical type theory correspond to different kinds of categorical models.
-The relationship also works in the opposite direction: categorical structures can often be studied using type-theoretic reasoning, where an associated type theory serves as an internal language of the category.
-A canonical example is the simply typed $\lambda$-calculus as the internal language of cartesian closed categories.
-At a practical level, this often allows one to replace lengthy diagram chases with type-theoretic derivations when proving categorical facts.
-We define an internal language of semilattice-enriched categories, which constitutes the third contribution of this thesis.
-It can be used to formulate the equality saturation purely in terms of term rewriting and can provide a foundation for a programming language with built-in support for e-classes.
-In particular, it makes it possible to write down e-graphs as terms in a principled way as we do in~\autoref{lst:terms-e-graph}.
-The e-graph (a) does not contain any equivalences, so it is just a term with sharing, which we achieve with a \texttt{let}.
-We then e-classes as terms in context; the context is defined by the number of unique e-classes the e-nodes inside that e-class reference, for example, the e-class containing $*$ and $<\!\!<$ reference three unique e-classes---one containing $a$, one containing $2$ and one containing $1$.
-This results in the term $arg_1, arg_2, arg_3 \vdash arg_1 * arg_2 \oplus arg_1 <\!\!< arg_3$ that applies e-nodes to the respective arguments, which we denote with \mintinline{haskell}{e}.
-The translation of other e-classes into terms follows the same pattern.
-Notably, the e-classes whose e-nodes reference the e-class itself, are given by \texttt{letrec}.
-We prove that this term calculus defines a free semilattice-enriched category, thus verifying that the construction is well-defined.
+% We will next briefly discuss the final contribution of this thesis, the term calculus for e-graphs.
+% \section*{Term calculus}
+% We already mentioned that (generalised) e-graphs can be regarded as morphisms in a certain semilattice-enriched monoidal category.
+% Categorical type theory studies the relationship between type theories and categories, often by interpreting the latter as semantic models of the former.
+% In this way, categorical semantics provides interpretations of typing judgments and term equality in terms of universal properties and commuting structure in a category.
+% This provides a powerful tool for studying type-theoretic properties; for example, Martin-Löf type theory and cubical type theory correspond to different kinds of categorical models.
+% The relationship also works in the opposite direction: categorical structures can often be studied using type-theoretic reasoning, where an associated type theory serves as an internal language of the category.
+% A canonical example is the simply typed $\lambda$-calculus as the internal language of cartesian closed categories.
+% At a practical level, this often allows one to replace lengthy diagram chases with type-theoretic derivations when proving categorical facts.
+% We define an internal language of semilattice-enriched categories, which constitutes the third contribution of this thesis.
+% It can be used to formulate the equality saturation purely in terms of term rewriting and can provide a foundation for a programming language with built-in support for e-classes.
+% In particular, it makes it possible to write down e-graphs as terms in a principled way as we do in~\autoref{lst:terms-e-graph}.
+% The e-graph (a) does not contain any equivalences, so it is just a term with sharing, which we achieve with a \texttt{let}.
+% We then e-classes as terms in context; the context is defined by the number of unique e-classes the e-nodes inside that e-class reference, for example, the e-class containing $*$ and $<\!\!<$ reference three unique e-classes---one containing $a$, one containing $2$ and one containing $1$.
+% This results in the term $arg_1, arg_2, arg_3 \vdash arg_1 * arg_2 \oplus arg_1 <\!\!< arg_3$ that applies e-nodes to the respective arguments, which we denote with \mintinline{haskell}{e}.
+% The translation of other e-classes into terms follows the same pattern.
+% Notably, the e-classes whose e-nodes reference the e-class itself, are given by \texttt{letrec}.
+% We prove that this term calculus defines a free semilattice-enriched category, thus verifying that the construction is well-defined.
 
-\begin{listing*}[t]
-\captionsetup[sub]{labelformat=parens}
-\centering
-% If needed (usually not in acmart):
-% \captionsetup{type=listing}
+% \begin{listing*}[t]
+% \captionsetup[sub]{labelformat=parens}
+% \centering
+% % If needed (usually not in acmart):
+% % \captionsetup{type=listing}
 
-\begin{minipage}[t]{0.45\textwidth}
-  \begin{minted}{haskell}
-let x = 2 in
-   (a * x) / x
-  \end{minted}
-  \subcaption{}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.45\textwidth}
-  \begin{minted}[escapeinside=||]{haskell}
-let x = 2
-let y = a
-let e arg_1 arg_2 arg_3 =
-  arg_1 * arg_2 |$\join$| arg_3 << 1 in
-  (e y x y) / x
-  \end{minted}
-  \subcaption{}
-\end{minipage}
+% \begin{minipage}[t]{0.45\textwidth}
+%   \begin{minted}{haskell}
+% let x = 2 in
+%    (a * x) / x
+%   \end{minted}
+%   \subcaption{}
+% \end{minipage}
+% \hfill
+% \begin{minipage}[t]{0.45\textwidth}
+%   \begin{minted}[escapeinside=||]{haskell}
+% let x = 2
+% let y = a
+% let e arg_1 arg_2 arg_3 =
+%   arg_1 * arg_2 |$\join$| arg_3 << 1 in
+%   (e y x y) / x
+%   \end{minted}
+%   \subcaption{}
+% \end{minipage}
 
-\vspace{1em}
+% \vspace{1em}
 
-\begin{minipage}[t]{0.45\textwidth}
-  \begin{minted}[escapeinside=||]{haskell}
-let x = 2
-let y = a
-let e arg_1 arg_2 arg_3 =
-  arg_1 * arg_2 |$\join$| arg_3 << 1
-let z arg_1 arg_2 arg_3 arg_4 =
-  arg_1 / arg_2 |$\join$| arg_3 * arg_4 in
-z (e y x y) x y (x / x)
-  \end{minted}
-  \subcaption{}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.45\textwidth}
-  \begin{minted}[escapeinside=||]{haskell}
-let x = 2
-let y = a
-let e arg_1 arg_2 arg_3 =
-  arg_1 * arg_2 |$\join$| arg_3 << 1
-let z arg_1 arg_2 arg_3 arg_4 =
-  arg_1 / arg_2 |$\join$| arg_3 * arg_4
-let w arg_1 arg_2 = arg_1 / arg_2 |$\join$| 1 in
-z (e y x y) x y (w x x)
-  \end{minted}
-  \subcaption{}
-\end{minipage}
+% \begin{minipage}[t]{0.45\textwidth}
+%   \begin{minted}[escapeinside=||]{haskell}
+% let x = 2
+% let y = a
+% let e arg_1 arg_2 arg_3 =
+%   arg_1 * arg_2 |$\join$| arg_3 << 1
+% let z arg_1 arg_2 arg_3 arg_4 =
+%   arg_1 / arg_2 |$\join$| arg_3 * arg_4 in
+% z (e y x y) x y (x / x)
+%   \end{minted}
+%   \subcaption{}
+% \end{minipage}
+% \hfill
+% \begin{minipage}[t]{0.45\textwidth}
+%   \begin{minted}[escapeinside=||]{haskell}
+% let x = 2
+% let y = a
+% let e arg_1 arg_2 arg_3 =
+%   arg_1 * arg_2 |$\join$| arg_3 << 1
+% let z arg_1 arg_2 arg_3 arg_4 =
+%   arg_1 / arg_2 |$\join$| arg_3 * arg_4
+% let w arg_1 arg_2 = arg_1 / arg_2 |$\join$| 1 in
+% z (e y x y) x y (w x x)
+%   \end{minted}
+%   \subcaption{}
+% \end{minipage}
 
-\vspace{1em}
+% \vspace{1em}
 
-\begin{minipage}[t]{0.45\textwidth}
-  \begin{minted}[escapeinside=||]{haskell}
-let x = 2
-let e arg_1 arg_2 arg_3 =
-  arg_1 * arg_2 |$\join$| arg_3 << 1
-|\kw{letrec}| z arg_1 arg_2 arg_4 =
-  arg_1 / arg_2 |$\join$| (z arg_1 arg_2 arg_4) * arg_4 |$\join$| a
-let w arg_1 arg_2 = arg_1 / arg_2 |$\join$| 1 in
-|\kw{letrec}| y = z (e y x y) x (w x x) in y
-  \end{minted}
-  \subcaption{}
-\end{minipage}
+% \begin{minipage}[t]{0.45\textwidth}
+%   \begin{minted}[escapeinside=||]{haskell}
+% let x = 2
+% let e arg_1 arg_2 arg_3 =
+%   arg_1 * arg_2 |$\join$| arg_3 << 1
+% |\kw{letrec}| z arg_1 arg_2 arg_4 =
+%   arg_1 / arg_2 |$\join$| (z arg_1 arg_2 arg_4) * arg_4 |$\join$| a
+% let w arg_1 arg_2 = arg_1 / arg_2 |$\join$| 1 in
+% |\kw{letrec}| y = z (e y x y) x (w x x) in y
+%   \end{minted}
+%   \subcaption{}
+% \end{minipage}
 
-\caption{Terms corresponding to e-graphs in \autoref{fig:e-graph_example}}
-\label{lst:terms-e-graph}
-\end{listing*}
+% \caption{Terms corresponding to e-graphs in \autoref{fig:e-graph_example}}
+% \label{lst:terms-e-graph}
+% \end{listing*}
 \section*{Contributions of this Thesis}
-With this thesis we aim to compensate the disproportion between the number of works devoted to the applications (or algorithms) of e-graphs~\cite{EggPaper,slotted-egraphs,singher2023colored,koehler2022sketchguided,Caviar,EqualitySaturationTensorGraphSuperoptimization} and the works devoted to the study of their semantics~\cite{zhang_relational_2022,tree_automata_e_graphs, EggsAreAdhesive}, which we do from a categorical point of view here.
+This thesis aims to compensate the disproportion between the number of works devoted to the applications (or algorithms) of e-graphs~\cite{EggPaper,slotted-egraphs,singher2023colored,koehler2022sketchguided,Caviar,EqualitySaturationTensorGraphSuperoptimization} and the works devoted to the study of their semantics~\cite{zhang_relational_2022,tree_automata_e_graphs, EggsAreAdhesive}, which it does from a categorical point of view here.
 Below we summarise the contributions of this thesis and give an overview of its structure.
 
-\paragraph{Monoidal e-graphs and e-hypergraphs.}
-The first contribution, presented in Chapter~\ref{ch:monoidal}, is a categorical semantics for e-graphs valid for arbitrary \emph{monoidal} theories~\cite{tiurin2025equivalencehypergraphsdporewriting}.
-We give a categorical axiomatisation of e-graphs as morphisms in cartesian semilattice-enriched symmetric monoidal categories (\textbf{SLat}-SMCs), and construct a sound and complete combinatorial representation of these morphisms as \emph{equivalence hypergraphs} (\emph{e-hypergraphs})---hierarchical hypergraphs in which the hierarchical structure encodes the e-class organisation and the tensor structure encodes the monoidal theory.
-The main technical result is a soundness and completeness theorem for DPO rewriting of e-hypergraphs with respect to the equational theory of \textbf{SLat}-SMCs, which characterises equality saturation as a DPO rewriting procedure.
-This generalises the ordinary setting of e-graphs from algebraic (cartesian) theories to the full generality of symmetric monoidal theories, opening the door to applications in quantum computing, signal flow, and digital circuits.
+\paragraph{Semilattice enriched categories.}
+We propose \emph{semilattice-enriched categories} as a categorical setting for studying e-graphs.
+While enriched category theory is a well-established field of mathematics, its application to the semantics of e-graphs appears to be new.
+We recapitulate the necessary properties of semilattice-enriched categories in~\cref{chapter:enriched}, showcasing that the structure of semilattice-enriched categories is suitable for modelling a fragment of e-graphs.
+We also identify a tension between the categorical structure and the usual semantics of e-graphs: in particular, free semilattice enrichment does not preserve binary products in the required sense.
+This prevents the framework from capturing the full generality of traditional e-graphs, but also suggests a categorical foundation for \emph{substructural} variants.
+More broadly, semilattice enrichment may provide a semantic core upon which additional structure can be built.
+
+\paragraph{Monoidal e-graphs.}
+The second contribution, presented in~\cref{chapter:monoidal}, is a generalisation of e-graphs for \emph{monoidal} theories~\cite{tiurin2025equivalencehypergraphsdporewriting}.
+We characterise these e-graphs as morphisms in a free semilattice-enriched symmetric monoidal category and give them a concrete combinatorial representation as extended cospans of hierarchical hypergraphs, which we call \emph{e-hypergraphs}.
+The main technical result is the soundness and completeness of this combinatorial representation with respect to the class of morphisms it represents, and
+the equivalence theorem for DPO rewriting of e-hypergraphs with respect to the equational theory of semilattice-enriched symmetric monoidal categories.
+This correspondence provides a graph-rewriting account of equality saturation for symmetric monoidal theories.
+It also opens the framework to theories arising in areas such as quantum computing, signal flow, and digital circuits, while providing a basis for substructural e-graphs.
+
 
 \paragraph{Categorical e-graphs for $\lambda$-calculi.}
-The second contribution, in Chapter~\ref{ch:lambda}, extends the categorical framework to languages with variable binding, specifically monoidal closed theories and the $\lambda$-calculus.
-Variable binding is modelled by working with \emph{free closed} symmetric monoidal \textbf{SLat}-categories, in which the closed structure provides an internal hom for encoding $\lambda$-abstraction and explicit substitution, while the semilattice enrichment continues to model e-class membership.
-We introduce \emph{closed e-hypergraphs} as the appropriate combinatorial representation, accounting for the interplay between the hierarchical e-box structure and the closure structure, and establish a DPO rewriting theory that is sound and complete with respect to rewriting of closed semilattice-enriched $\Sigma$-terms modulo SMC equations.
-This gives the first categorical account of e-graphs for languages with binding that is grounded in an established mathematical framework.
-
-\paragraph{A type theory for e-graphs.}
-The third contribution, in Chapter~\ref{ch:typetheory}, develops a \emph{type-theoretic} counterpart to the categorical framework.
-We define a type theory for \textbf{SLat}-multicategories~\cite{LambekMulticategories,hermida_representable_2000} and establish that it has the expected syntactic properties---terms uniquely determine their derivations, and substitution is admissible and satisfies associativity and interchange.
-The key syntactic insight is that the semilattice join $\join$ of the type theory directly corresponds to e-class membership: a term $M \join N : A$ represents an equivalence class containing both $M$ and $N$ as terms of type $A$.
-An explicit $\mathbf{let}$ construct captures the sharing structure of e-graphs, and a recursive $\mathbf{letrec}$ construct captures \emph{cyclic} e-graphs, modelled categorically by \emph{traced} cartesian \textbf{SLat}-multicategories.
-Together, these constructs express equality saturation as a fixed point of term rewriting modulo the structural equations of the type theory.
+The final main contribution, presented in~\cref{chapter:lambda}, extends the categorical framework to languages with variable binding, specifically monoidal closed theories and the $\lambda$-calculus.
+We work with free semilattice-enriched symmetric monoidal closed categories: the closed structure provides the internal hom needed to model abstraction and application, while the graphical wiring accounts for substitution and the semilattice enrichment continues to model e-class membership.
+We introduce \emph{closed e-hypergraphs} as a concrete representation of the resulting terms, accounting for the interaction between hierarchical e-boxes and closed structure.
+We prove that this representation is sound and complete modulo the relevant structural equations, and that convex closed EDPOI rewriting modulo structural rules corresponds exactly to rewriting of closed-monoidal terms.
+This yields a categorical account of e-graphs for languages with binding, grounded in an established semantic framework.
 
 \section*{Structure of the Thesis}
 
-Chapter~\ref{ch:monoidal} gives the necessary background on the notions of enriched category theory and hypergraphs as representations of morphisms in symmetric monoidal categories. It covers the categorical semantics for monoidal e-graphs and introduces the e-hypergraph representation together with its DPO rewriting theory.
-Chapter~\ref{ch:lambda} extends the framework to variable binding via closed e-hypergraphs.
-Chapter~\ref{ch:typetheory} gives the necessary background on multicategories and their enriched variants and develops the internal language for multicategories of a certain kind.
-Chapter~\ref{ch:typetheory} can be read independently of the other chapters. 
-The reader is assumed to have familiarity with basic category theory.
+\Cref{chapter:algebras} recalls the necessary background on algebraic theories provides an algebraic treatment of traditional e-graphs.
+\Cref{chapter:enriched} recapitulates the required enriched category theory, specialising it to semilattice enrichment and examining both its suitability and its limitations as a semantics for e-graphs.
+\Cref{chapter:string_diagrams} reviews string diagrams, their representation by hypergraphs, and DPOI rewriting, providing the technical background for the later constructions.
+\Cref{chapter:monoidal} introduces monoidal e-graphs, develops their representation by e-hypergraphs, and establishes the correspondence between enriched term rewriting and EDPOI rewriting.
+\Cref{chapter:lambda} extends this framework to variable binding through closed e-hypergraphs and applies it to $\lambda$-calculi.
+Finally, \cref{chapter:type_theory} sketches a complementary type-theoretic perspective based on semilattice-enriched multicategories.
+
+The reader is assumed to be familiar with basic category theory and monoidal categories.
