@@ -12,7 +12,7 @@ Here, we characterise e-graphs as morphisms.
 E-graph operations, such as \texttt{add} and \texttt{merge}, are then interpreted as string diagram rewriting.
 
 \begin{remark}
-The results in this chapter form a reworked version of the results presented in~\cite{tiurin2025equivalencehypergraphsdporewriting}.
+The results in this chapter form a refined version of the results presented in~\cite{tiurin2025equivalencehypergraphsdporewriting}.
 \end{remark}
 
 \section{\texorpdfstring{$\catname{SLat}$}{SLat}-PROPs}
@@ -89,7 +89,7 @@ Equivalently, $\mathbf{S}_{\Sigma}^{\join}$ can be characterised by a set of $\S
 \begin{definition}[$\Sigma^{\join}$-terms]
 Given a monoidal signature $\Sigma$, the set of
 $\Sigma^{\join}$-terms $\operatorname{Tm}_{\Sigma}^{\join}$ is obtained by extending the grammar of
-$\Sigma$-terms from \cref{def:sigma_terms} with the additional
+$\Sigma$-terms from \cref{def:sigma-terms} with the additional
 well-typed constructor
 \[
 \frac{t_1:A\to B\qquad t_2:A\to B}
@@ -181,7 +181,7 @@ Then consider the initial term $(a * 2) / 2$.
 The e-graph for this term is given in~\cref{fig:egg_egraph} (a).
 Each e-class of e-graph (a) contains a single e-node as none of the equations has been applied yet and noting that e-class containing the e-node $2$ is shared to avoid duplication.
 E-graph (b) is obtained from (a) by applying the equation $x * 2 = x <\!\!< 1$ (from left to right).
-As we saw in~\cref{chapter:algebras}, applying this equations amounts to finding a match within the e-graph (a), in this case $x$ is matched with the middle e-class containing $*$, instantiating the right-hand side of the rule with the obtained substitution, adding the right-hand side to the e-graph and merging the e-classes corresponding to the left- and righ-hand sides of the rule.
+As we saw in~\cref{chapter:algebras}, applying these equations amounts to finding a match within the e-graph (a), in this case $x$ is matched with the middle e-class containing $*$, instantiating the right-hand side of the rule with the obtained substitution, adding the right-hand side to the e-graph and merging the e-classes corresponding to the left- and righ-hand sides of the rule.
 Graphically this can be depicted as. 
 \[
 \adjustbox{scale=0.8}{
@@ -216,9 +216,9 @@ The other steps of e-graph transformation are similar.
 
 We will now show that the same structure can be expressed using string diagrams for morphisms in $\mathbf{Q}_{\Sigma, \mathcal{E}}^{\join}$. 
 The equivalent string diagram for each of the e-graphs is shown in~\cref{fig:egg_egraph_string}.
-In the case of e-graph (a), the difference is almost cosmetical: instead of connecting e-nodes to e-classes, we connect the dashed boxes with each other and share the box with node $2$ using the comultiplication $\adjustbox{scale=0.3}{\tikzfig{./figures/monoidal_egraphs/copy_generator}}$.
+In the case of e-graph (a), the difference is mostly presentational: instead of connecting e-nodes to e-classes, we connect the dashed boxes with each other and share the box with node $2$ using the comultiplication $\adjustbox{scale=0.3}{\tikzfig{./figures/monoidal_egraphs/copy_generator}}$.
 We chose to wrap single nodes in boxes to make the correspondence more clear, but strictly speaking, this is not necessary and we will disallow such wrapped singletons and will write them without the box to avoid ambiguity between string diagrams and terms.
-The string diagram for e-graph (b) is a little bit more interesting: the middle dashed box has now 2 components delimited by the vertical dashed line.
+The string diagram for e-graph (b) is a bit more interesting: the middle dashed box has now 2 components delimited by the vertical dashed line.
 As boxes connected to each other, rather than nodes being connected to other nodes inside the boxes (that would break string diagram boundaries), we parameterise the whole box by a shared context and then components choose what to take from that context by explicitly using delete nodes $\adjustbox{scale=0.3}{\tikzfig{./figures/monoidal_egraphs/delete_generator}}$.
 One can collapse all boxes using the equations of a semilattice-enriched category to get the set of terms represented by the string diagram.
 The transformation from (a) to (b) is then done by the following rewriting of string diagrams:
@@ -2320,6 +2320,7 @@ Furthermore, the strictly internal interfaces are disjoint between the two cospa
 \end{proof}
 
 \begin{remark}
+\label{remark:interface_convention}
 For an extended cospan
 \[
 n \xrightarrow{f_{\mathrm{ext}}} n' \xrightarrow{f_{\mathrm{int}}} \mathcal{F} \xleftarrow{g_{\mathrm{int}}} m' \xleftarrow{g_{\mathrm{ext}}} m~,
@@ -9058,7 +9059,7 @@ They are monogamous and acyclic by the same argument as in
 \cref{lemma:convex_decomposition}. 
 Finally, the composite is canonically isomorphic to \(\mathbf F\):
 \[
-  \mathbf{Phi}:
+  \mathbf{\Phi}:
   \mathbf C_1
   \fatsemi
   (\mathbf 1_q\otimes\mathbf L)
@@ -9699,7 +9700,7 @@ This way, each vertex will be assigned a label.
 \end{remark}
 
 \section{Applications}
-
+\label{sec:monoidal_applications}
 At the beginning of this chapter we saw how a fragment of e-graphs can be
 represented using string diagrams, and hence using e-hypergraphs. This
 representation serves as a justification of adequacy for our proposal: since the

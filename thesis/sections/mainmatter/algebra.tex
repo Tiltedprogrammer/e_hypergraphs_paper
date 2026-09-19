@@ -3,6 +3,7 @@
 In this chapter we will present an algebraic view of e-graphs, which will be the basis for our generalisation in later chapters.
 The chapter introduces the notion of an algebraic theory and recalls e-graphs as a data structure for representing congruences on terms.
 \section{Algebraic theories}
+The presentation in this section follows the lecture notes of Moss~\cite{mossCategoricalAlgebraLogica} for the Midlands Graduate School 2026 course on categorical algebra and logic, where this material is developed in more depth
 Traditionally, these are defined based on a signature $\Sigma$.
 \begin{definition}
 An (algebraic) signature $\Sigma$ is given by a function $\Sigma : \mathbb{N} \to \catname{Set}$.
@@ -147,6 +148,9 @@ x \vdash x * 2 \equiv x <\!\!< 1 \qquad x \vdash x / x \equiv 1 \qquad x, y, z \
 \end{example}
 
 Having constructed the congruence $\bar{R}$ in the proof of \cref{prop:free_algebraic_theory}, we next show how e-graphs compute (a part of) the reflector in the case of $(\Sigma, \mathcal{E})$-algebra $T_\Sigma(\varnothing)$, with equality saturation playing the role of the closure operation. 
+
+
+\section{E-graphs}
 We recall the definition of an e-graph due to Willsey et al.~\cite{EggPaper}.
 
 Fix a signature $\Sigma$. The data of an e-graph is built from three layers.
@@ -161,7 +165,7 @@ n \;\Coloneqq\; f(a_1, \dots, a_m), \qquad f \in \Sigma(m),
 \]
 where the nullary case $m = 0$ gives a bare constant $f$. An
 \emph{e-class} is a non-empty set of e-nodes, regarded as mutually
-equal. An \emph{e-graph} $\egraph$ is a finite set of e-classes
+equal. An \emph{e-graph} is a finite set of e-classes
 together with an equivalence relation $\equivid$ on identifiers,
 identifying the classes its e-nodes refer to.
 \end{definition}
@@ -205,7 +209,7 @@ and $f(b_1, \dots, b_n)$ belong to the same e-class.
 
 \noindent
 Equivalently: equal arguments yield equal applications, $a_i \equivid b_i
-\Rightarrow f(a_1, \ldots, a_n) \equivid f(b_1, \ldots, b_n)$. An e-graph maintaining this
+\Rightarrow f(a_1, \ldots, a_n) \equiv_{\mathrm{enode}} f(b_1, \ldots, b_n)$. An e-graph maintaining this
 invariant represents not merely an equivalence relation on terms but a
 \emph{congruence}---which is exactly the structure
 ~\cref{def:congruence} requires.
@@ -229,12 +233,11 @@ the main development and refer to~\cite{EggPaper} for details.
 
 Given a term $t \in T_\Sigma(\varnothing)$ and a set of equations
 $\mathcal{E}$, denote $A_0$ the set of all sub-terms of $t$.
-For $T_\Sigma(\varnothing)$ to satisfy $(t_1, t_2) \in \mathcal{E}_n$, it
-means that $\hat{\tau}_n(t_1, a) = \hat{\tau}_n(t_2, a)$ for all
+For $T_\Sigma(\varnothing)$ to satisfy $(t_1, t_2) \in \mathcal{E}_n$ would
+mean that $\hat{\tau}_n(t_1, a) = \hat{\tau}_n(t_2, a)$ for all
 valuations $a : n \to T_\Sigma(\varnothing)$.
-Restricting to $A_0$, it suffices that the equalities hold for
-valuations $a : n \to A_0$ into the represented terms.
-This is what an e-graph stipulates: given the set of terms $A_0$, for
+There are infinitely many such valuations, so an e-graph cannot impose them all, so it imposes only those it can instantiate.
+Given a set of terms $A_0$, for
 each $(t_1, t_2) \in \mathcal{E}_n$ and each valuation $a : n \to A_0$,
 it forms the instances $\hat{\tau}_n(t_1, a)$ and $\hat{\tau}_n(t_2, a)$
 and identifies them.
@@ -247,11 +250,12 @@ already are---the e-graph additionally maintains the \emph{congruence
 invariant} of \cref{def:cong-invariant}, closing the relation under the
 operations present. Second, and less obviously, the set of represented
 terms does not stay fixed: the instance $\hat{\tau}_n(t_2, a)$ produced
-by firing $(t_1, t_2)$ need not lie in $A_0$, and once added it---together
-with its sub-terms---enlarges the set against which subsequent valuations
+by firing $(t_1, t_2)$ need not lie in $A_0$, and once it is added into the e-graph---together
+with its sub-terms---it enlarges the set against which subsequent valuations
 are taken. An equation can only be instantiated at terms already
 present, and firing is what makes new terms present.
 
+Let $R_0$ be the identity relation on $A_0$.
 The e-graph therefore computes not a single relation on $A_0$ but an
 increasing chain
 \[
@@ -270,30 +274,29 @@ the current quotient,
 and firing forms the instance-classes $\overline{\tau}_n(t_1, \sigma)$
 and $\overline{\tau}_n(t_2, \sigma)$, adding the right-hand side to pass
 from $A_k$ to $A_{k+1}$ when its term is not yet represented, and adding
-their pair to the relation. Both components are monotone. When the chain
+their pair to the relation. Both components are monotone. If the chain
 reaches a fixed point, $A_{k+1} = A_k$ and $R_{k+1} = R_k$---the e-graph
-is \emph{saturated}---no instance and no congruence step adds anything
-further, so $R_k$ is closed under precisely the clauses defining $\bar R$
-in the proof of \cref{prop:free_algebraic_theory}. Hence
+is \emph{saturated}, and, provided that in
+every equation of $\mathcal{E}$ the two sides contain the same variables,
 \[
 R_k \;=\; \bar R \!\restriction_{A_k},
 \]
 the restriction to the represented terms of the congruence generated by
 $\mathcal{E}$ on $T_\Sigma(\varnothing)$.
 
-Instantiating variables by e-classes rather than by terms loses nothing,
-and is the reason the congruence invariant is worth maintaining. Because
-$R_k$ is a congruence, evaluation factors through the quotient
-$q_k : A_k \to A_k/R_k$: if $a \equiv_{R_k} a'$ then $\hat{\tau}_n(t_i,
-a) \equiv_{R_k} \hat{\tau}_n(t_i, a')$, so $\hat{\tau}_n(t_i, -)$
-descends to a map $\overline{\tau}_n(t_i, -) : (A_k/R_k)^n \to A_k/R_k$
-with $q_k \circ \hat{\tau}_n(t_i, -) = \overline{\tau}_n(t_i, -) \circ
-q_k^{\,n}$. A single class-valuation $\sigma$ thus stands for all the
-term-valuations that agree up to the congruence so far---of which there
-may be unboundedly many---and the e-graph instantiates each equation
-once per class-valuation rather than once per term-valuation. Were $R_k$
-a bare equivalence, evaluation would not descend to the quotient and
-matching against e-classes would be unsound.
+% Instantiating variables by e-classes rather than by terms loses nothing,
+% and is the reason the congruence invariant is worth maintaining. Because
+% $R_k$ is a congruence, evaluation factors through the quotient
+% $q_k : A_k \to A_k/R_k$: if $a \equiv_{R_k} a'$ then $\hat{\tau}_n(t_i,
+% a) \equiv_{R_k} \hat{\tau}_n(t_i, a')$, so $\hat{\tau}_n(t_i, -)$
+% descends to a map $\overline{\tau}_n(t_i, -) : (A_k/R_k)^n \to A_k/R_k$
+% with $q_k \circ \hat{\tau}_n(t_i, -) = \overline{\tau}_n(t_i, -) \circ
+% q_k^{\,n}$. A single class-valuation $\sigma$ thus stands for all the
+% term-valuations that agree up to the congruence so far---of which there
+% may be unboundedly many---and the e-graph instantiates each equation
+% once per class-valuation rather than once per term-valuation. Were $R_k$
+% a bare equivalence, evaluation would not descend to the quotient and
+% matching against e-classes would be unsound.
 
 In the language of \cref{prop:free_algebraic_theory}, a saturated e-graph
 computes the unit of the reflection
@@ -302,37 +305,39 @@ q \;:\; (T_\Sigma(\varnothing), \tau)
 \longrightarrow (T_\Sigma(\varnothing)/\bar R,\ \tau/\bar R),
 \qquad t \mapsto [t],
 \]
-restricted to the finite set $A_k$ of terms it represents. Each
+restricted to the set $A_k$ of terms it represents. This set may be
+infinite, since an e-node may refer back to its own e-class (as happens
+with $x \ast 1 = x$), but the e-graph itself is finite. 
+Each
 represented term $t$ is assigned its e-class, a finite representative of
 the class $[t] = q(t)$, and two represented terms share an e-class if and
 only if they have the same image under $q$. The e-classes are thus in
 bijection with $q(A_k)$, a finite subset of the carrier of the initial
 $(\Sigma, \mathcal{E})$-algebra $T_\Sigma(\varnothing)/\bar R$: the
 fragment spanned by $t$ and the terms reachable from it under
-$\mathcal{E}$. The e-graph does not hold this algebra, but computes a
-finite window onto it.
+$\mathcal{E}$. 
+% The e-graph does not hold this algebra, but computes a
+% finite window onto it.
 
-Above we have seen a very abstract account of e-graph, but of course, in real applications the efficiency of computing the reflector is important.
+Above we have seen an abstract account of e-graph.  In practice, the efficiency of computing the reflector is important.
 We will review the key elements that make e-graphs efficient in this regard next.
 \begin{example}
 \label{ex:egraph-run}
-We illustrate the three mechanisms at work---multi-site matching, the
-addition of instantiated right-hand sides, and congruence
-closure---on a single small run.
+We illustrate the core mechanisms of e-graphs on a single small run.
 We also illustrate the action of union-find and hashcons components of the implementation, which are the key to efficiency.
-\paragraph{Union-find.} The union-find $U$ maintains the equivalence $\equivid$ on identifiers by the means of the data structure introduced by Tarjan~\cite{Tarjan}.
+\paragraph{Union-find.} The union-find $U$ maintains the equivalence $\equivid$ on identifiers by means of the data structure introduced by Tarjan~\cite{Tarjan}.
 The crux of the data structure are two operations: $\union$ and $\find$.
-Given two identifiers $a$ and $b$, $\union(a,b)$ sets $a$ to be the parent of $b$.
 Given an identifier $a$, $\find(a)$ returns the root, i.e., the canonical identifier, of the induced tree of identifiers, which makes it easy to check if two identifiers belong to the same e-class by checking if $\find(a) = \find(b)$.
+Given two identifiers $a$ and $b$, $\union(a,b)$ sets $\find(a)$ to be the parent of $\find(b)$.
 \paragraph{Hashcons.} The hashcons, attributed to hashing for the \texttt{cons} operator in LISP~\cite{hashconsing}, is a map $H$ from \emph{canonical} e-nodes---those all of whose child identifiers are canonical---to the identifier of the e-class containing them.
 
 Take the signature with a constant
 $2$, a binary $\ast$, a binary $+$, and a unary $d$, and the single
 equation
 \[
-x \ast 2 \;=\; x + x \qquad (x \in T_\Sigma(1)).
+x \vdash x \ast 2 \;=\; x + x.
 \]
-As the seed take the closed term
+As the seed take the ground term
 \[
 t \;=\; \bigl(d(2 \ast 2) + d(2 + 2)\bigr) \;+\; \bigl((2 \ast 2) \ast 2\bigr),
 \]
@@ -350,7 +355,7 @@ they are built. We write $\alpha_i$ for e-class identifiers.
 \begin{tabular}{c|c|c}
 Term & E-node & E-class\\
 \hline
-2 & 2 & $\alpha_0$\\
+$2$ & $2$ & $\alpha_0$\\
 $2 \ast 2$ & $\ast(\alpha_0, \alpha_0)$ & $\alpha_1$\\
 $d(2 \ast 2)$    & $d(\alpha_1)$        & $\alpha_2$ \\
 $2 + 2$          & $+(\alpha_0, \alpha_0)$    & $\alpha_3$ \\
@@ -361,7 +366,7 @@ $t$              & $+(\alpha_5, \alpha_6)$    & $\alpha_7$ \\
 \end{tabular}
 \end{center}
 
-Note that some e-classes, e.g. $\alpha_0$ and $\alpha_1$, are shared between multiple e-nodes.
+Note that some e-classes, e.g. $\alpha_0$ and $\alpha_1$, are referred to by multiple e-nodes.
 
 \paragraph{E-matching.}
 We match the pattern $x \ast 2$---the left-hand side of the
@@ -374,16 +379,16 @@ argument is the class of $2$:
 \]
 Each of these is really a valuation $a : 1 \to A_0 / R_0$, but at this point $R_0$ is the identity, so the valuations land in e-classes that are still singletons.
 
-\paragraph{Adding $\hat\tau(t_2, \sigma)$.}
+\paragraph{Adding $\overline{\tau}(t_2, \sigma)$.}
 We collect both matches against the current e-graph, and only then apply them; this batching is what allows the invariants to be restored once, after all merges, rather than after each.
 Firing the equation at a match $\sigma$ forms both instances and
-identifies them. At $\sigma_1$ the instances are $\hat\tau(x\ast 2,
+identifies them. At $\sigma_1$ the instances are $\overline{\tau}(x\ast 2,
 \sigma_1)$, the term $2\ast 2$ represented by $\ast(\alpha_0,\alpha_0)$ in class $\alpha_1$,
-and $\hat\tau(x+x, \sigma_1)$, the term $2+2$ represented by $+(\alpha_0,\alpha_0)$ in class $\alpha_3$, already present;
+and $\overline{\tau}(x+x, \sigma_1)$, the term $2+2$ represented by $+(\alpha_0,\alpha_0)$ in class $\alpha_3$, already present;
 firing merges their classes, calling $\union(\alpha_1, \alpha_3)$ so that $\alpha_1$ becomes the parent of $\alpha_3$.
 
 At $\sigma_2$ the right-hand instance
-$\hat\tau(x+x, \sigma_2)$ is the term $(2\ast2)+(2\ast2)$, represented by $+(\alpha_1, \alpha_1)$, which is \emph{not} in
+$\overline{\tau}(x+x, \sigma_2)$ is the term $(2\ast2)+(2\ast2)$, represented by $+(\alpha_1, \alpha_1)$, which is \emph{not} in
 $A_0$: firing \emph{adds} it as a new e-node, enlarging the represented set to
 $A_1 \supsetneq A_0$, and invokes $\union(\alpha_6, \alpha_8)$, with $\alpha_8$ being the identifier for the new e-node.
 Right after this step, and \emph{before} restoring the invariants, the affected
@@ -408,7 +413,7 @@ with the following parent links on identifiers
 (read $b \to a$ as ``$a$ is the parent of $b$''), and every other
 identifier being its own parent.
 \paragraph{Restoring the invariants.}
-We now need to make sure that the entries in the hashcons table are canonicalised e-nodes pointing to a canonical e-class identifier---this is necessary to maintain sharing---this is necessary to maintain sharing---this is necessary to maintain sharing---this is necessary to maintain sharing.
+We now need to make sure that the entries in the hashcons table are canonicalised e-nodes pointing to a canonical e-class identifier---this is necessary to maintain sharing.
 Furthermore, we need to make sure that the represented relation is a congruence, that is, if $\find(\alpha_i) = \find(\alpha_j)$ then $f(\alpha_i)$ and $f(\alpha_j)$ are in the same e-class.
 Rebuilding re-canonicalises the children of each affected e-node through
 $\find$ and re-inserts it. The node $d(\alpha_3)$ in class $\alpha_4$
@@ -458,11 +463,11 @@ This is repeated until a fixed point or a timeout is reached.
   We will maintain this assumption throughout the rest of the thesis.
 \end{remark}
 
+\section{Lawvere theories}
 Finally, we have \emph{Lawvere theories}---introduced by
 Lawvere~\cite{LawvereFunctorialSemanticsAlgebraic1963}---categories with
-finite products generated by a single object. In the skeletal
-presentation we use, the objects are the natural numbers, each $n$ being
-the $n$-fold product of a generic object $1$. They provide a
+finite products with every object $n$ being an $n$-fold product of a single object $1$. 
+They provide a
 presentation-independent view of algebraic theories: the same theory may
 arise from different signatures and equations, but determines one Lawvere
 theory. A morphism in $\mathcal{L}(n,1)$ is an $n$-ary operation, and a
@@ -473,41 +478,42 @@ provable equality.
 For $(\Sigma, \mathcal{E})$ the corresponding Lawvere theory
 $\mathcal{L}_{(\Sigma,\mathcal{E})}$ is the finitely generated free
 $(\Sigma,\mathcal{E})$-algebras organised into a category by
-substitution. Its hom-set $\mathcal{L}_{(\Sigma,\mathcal{E})}(n,1) =
+substitution. 
+Its hom-set $\mathcal{L}_{(\Sigma,\mathcal{E})}(n,1) =
 T_\Sigma(n)/\bar R$ is the carrier of the free
 $(\Sigma,\mathcal{E})$-algebra on $n$ generators---the $\Sigma$-terms in
 $n$ variables, which serve as the generators, modulo the congruence
 $\bar R$ generated by $\mathcal{E}$---and a morphism $n \to m$ is an
 $m$-tuple of these.
 
-Composition is substitution. Given
-\[
-f = \langle f_1, \ldots, f_n \rangle \in \mathcal{L}_{(\Sigma,\mathcal{E})}(m,n),
-\qquad
-g = \langle g_1, \ldots, g_k \rangle \in \mathcal{L}_{(\Sigma,\mathcal{E})}(n,k),
-\]
-with $f_j \in T_\Sigma(m)/\bar R$ and $g_l \in T_\Sigma(n)/\bar R$, the
-composite $g \circ f \in \mathcal{L}_{(\Sigma,\mathcal{E})}(m,k)$ is
-obtained by substituting the $f_j$ for the variables of each $g_l$. This
-substitution is the evaluation map in the free algebra
-$T_\Sigma(m)/\bar R$,
-\[
-\hat\tau_n \;:\; \big(T_\Sigma(n)/\bar R\big) \times \big(T_\Sigma(m)/\bar R\big)^{n}
-\longrightarrow T_\Sigma(m)/\bar R,
-\]
-giving
-\[
-g \circ f \;=\;
-\big\langle\,
-\hat\tau_n\big(g_1, (f_1, \ldots, f_n)\big),\ \ldots,\
-\hat\tau_n\big(g_k, (f_1, \ldots, f_n)\big)
-\,\big\rangle .
-\]
-Note that the components of $f$ and $g$ inhabit \emph{different} free
-algebras, $T_\Sigma(m)/\bar R$ and $T_\Sigma(n)/\bar R$; composition is
-therefore not the structure map of any single algebra, but the
-substitution of $f$'s terms into $g$'s, carried out in
-$T_\Sigma(m)/\bar R$.
+% Composition is substitution. Given
+% \[
+% f = \langle f_1, \ldots, f_n \rangle \in \mathcal{L}_{(\Sigma,\mathcal{E})}(m,n),
+% \qquad
+% g = \langle g_1, \ldots, g_k \rangle \in \mathcal{L}_{(\Sigma,\mathcal{E})}(n,k),
+% \]
+% with $f_j \in T_\Sigma(m)/\bar R$ and $g_l \in T_\Sigma(n)/\bar R$, the
+% composite $g \circ f \in \mathcal{L}_{(\Sigma,\mathcal{E})}(m,k)$ is
+% obtained by substituting the $f_j$ for the variables of each $g_l$. This
+% substitution is the evaluation map in the free algebra
+% $T_\Sigma(m)/\bar R$,
+% \[
+% \hat\tau_n \;:\; \big(T_\Sigma(n)/\bar R\big) \times \big(T_\Sigma(m)/\bar R\big)^{n}
+% \longrightarrow T_\Sigma(m)/\bar R,
+% \]
+% giving
+% \[
+% g \circ f \;=\;
+% \big\langle\,
+% \hat\tau_n\big(g_1, (f_1, \ldots, f_n)\big),\ \ldots,\
+% \hat\tau_n\big(g_k, (f_1, \ldots, f_n)\big)
+% \,\big\rangle .
+% \]
+% Note that the components of $f$ and $g$ inhabit \emph{different} free
+% algebras, $T_\Sigma(m)/\bar R$ and $T_\Sigma(n)/\bar R$; composition is
+% therefore not the structure map of any single algebra, but the
+% substitution of $f$'s terms into $g$'s, carried out in
+% $T_\Sigma(m)/\bar R$.
 
 The main benefit of this view is that it makes the notion of a model
 parametric in the target category. The ordinary definition of a
@@ -519,76 +525,76 @@ finite-product-preserving functor $\mathcal{L}_{(\Sigma,\mathcal{E})} \to
 \mathcal{C}$, recovering the ordinary $(\Sigma,\mathcal{E})$-algebras when
 $\mathcal{C} = \catname{Set}$.
 
-A canonical example is the theory of monoids interpreted in
-$\catname{Cat}$. A finite-product-preserving functor $F :
-\mathcal{L}_{\mathrm{Mon}} \to \catname{Cat}$ picks out a category
-$\mathcal{A} = F(1)$, with $F(n) = \mathcal{A}^n$, and interprets the two
-operations as
-\[
-\otimes := F(m) : \mathcal{A} \times \mathcal{A} \to \mathcal{A},
-\qquad
-F(e) : \mathbf{1} \to \mathcal{A},
-\]
-the latter a functor from the terminal category, i.e. a chosen object
-$I \in \mathcal{A}$. The equations of the monoid theory, being equalities
-of morphisms in $\mathcal{L}_{\mathrm{Mon}}$, are sent by $F$ to
-\emph{equalities} of functors. The right unit law $m \circ (\id \times e)
-= \id$ in $\mathcal{L}_{\mathrm{Mon}}(1,1)$, for instance, becomes
-\[
-\otimes \circ (\mathrm{id}_{\mathcal{A}} \times I) = \mathrm{id}_{\mathcal{A}},
-\qquad\text{that is}\qquad
-X \otimes I = X \ \text{ for all } X,
-\]
-and associativity $m \circ (m \times \id) = m \circ (\id \times m)$
-becomes $(X \otimes Y) \otimes Z = X \otimes (Y \otimes Z)$. These hold
-\emph{on the nose}, so $F$ is exactly a \emph{strict} monoidal category.
+% A canonical example is the theory of monoids interpreted in
+% $\catname{Cat}$. A finite-product-preserving functor $F :
+% \mathcal{L}_{\mathrm{Mon}} \to \catname{Cat}$ picks out a category
+% $\mathcal{A} = F(1)$, with $F(n) = \mathcal{A}^n$, and interprets the two
+% operations as
+% \[
+% \otimes := F(m) : \mathcal{A} \times \mathcal{A} \to \mathcal{A},
+% \qquad
+% F(e) : \mathbf{1} \to \mathcal{A},
+% \]
+% the latter a functor from the terminal category, i.e. a chosen object
+% $I \in \mathcal{A}$. The equations of the monoid theory, being equalities
+% of morphisms in $\mathcal{L}_{\mathrm{Mon}}$, are sent by $F$ to
+% \emph{equalities} of functors. The right unit law $m \circ (\id \times e)
+% = \id$ in $\mathcal{L}_{\mathrm{Mon}}(1,1)$, for instance, becomes
+% \[
+% \otimes \circ (\mathrm{id}_{\mathcal{A}} \times I) = \mathrm{id}_{\mathcal{A}},
+% \qquad\text{that is}\qquad
+% X \otimes I = X \ \text{ for all } X,
+% \]
+% and associativity $m \circ (m \times \id) = m \circ (\id \times m)$
+% becomes $(X \otimes Y) \otimes Z = X \otimes (Y \otimes Z)$. These hold
+% \emph{on the nose}, so $F$ is exactly a \emph{strict} monoidal category.
 
-\begin{proposition}[Morphisms out of a free Lawvere theory]
-\label{prop:lawvere-ump}
-Let $\mathcal{L}_\Sigma$ be the free Lawvere theory on a signature
-$\Sigma$, and let $\mathcal{L}$ be any Lawvere theory. Finite-product-preserving
-functors $\mathcal{L}_\Sigma \to \mathcal{L}$ correspond naturally and
-bijectively to interpretations of the generators: a choice, for each
-operation $f \in \Sigma$ of arity $n$, of a morphism $\Phi(f) \in
-\mathcal{L}(n,1)$. Each such choice extends uniquely, with $\Phi(n) =
-\Phi(1)^n = n$ forced by product preservation and the action on all other
-morphisms determined by functoriality.
-\end{proposition}
-This is the universal property of the free Lawvere theory: the functor
-$F : \catname{Sig} \to \catname{Law}$ sending a signature to the theory
-it freely generates is left adjoint to the underlying-signature functor
-$U : \catname{Law} \to \catname{Sig}$, which sends a theory $\mathcal{L}$
-to the signature whose operations of arity $n$ are the morphisms
-$\mathcal{L}(n,1)$. The bijection
-\[
-\catname{Law}(\mathcal{L}_\Sigma,\ \mathcal{L}) \;\cong\;
-\catname{Sig}(\Sigma,\ U\mathcal{L})
-\]
-is precisely the correspondence of the proposition.
+% \begin{proposition}[Morphisms out of a free Lawvere theory]
+% \label{prop:lawvere-ump}
+% Let $\mathcal{L}_\Sigma$ be the free Lawvere theory on a signature
+% $\Sigma$, and let $\mathcal{L}$ be any Lawvere theory. Finite-product-preserving
+% functors $\mathcal{L}_\Sigma \to \mathcal{L}$ correspond naturally and
+% bijectively to interpretations of the generators: a choice, for each
+% operation $f \in \Sigma$ of arity $n$, of a morphism $\Phi(f) \in
+% \mathcal{L}(n,1)$. Each such choice extends uniquely, with $\Phi(n) =
+% \Phi(1)^n = n$ forced by product preservation and the action on all other
+% morphisms determined by functoriality.
+% \end{proposition}
+% This is the universal property of the free Lawvere theory: the functor
+% $F : \catname{Sig} \to \catname{Law}$ sending a signature to the theory
+% it freely generates is left adjoint to the underlying-signature functor
+% $U : \catname{Law} \to \catname{Sig}$, which sends a theory $\mathcal{L}$
+% to the signature whose operations of arity $n$ are the morphisms
+% $\mathcal{L}(n,1)$. The bijection
+% \[
+% \catname{Law}(\mathcal{L}_\Sigma,\ \mathcal{L}) \;\cong\;
+% \catname{Sig}(\Sigma,\ U\mathcal{L})
+% \]
+% is precisely the correspondence of the proposition.
 
-A Lawvere theory also makes rewriting available on morphisms, and in a
-form that absorbs a chosen equational modulus. Split the equations as
-$\mathcal{E} = \mathcal{E}_0 \cup \mathcal{R}$, with $\mathcal{E}_0$ a
-background theory and $\mathcal{R}$ oriented into rules. Working in
-$\mathcal{L}_{(\Sigma,\mathcal{E}_0)}$, whose morphisms $n \to 1$ are
-terms modulo $\mathcal{E}_0$, an oriented rule $\ell \to r$ rewrites these
-morphisms by replacement under composition; the induced relation is
-exactly rewriting modulo $\mathcal{E}_0$,
-\[
-f \to_{\mathcal{R}/\mathcal{E}_0} g
-\iff
-\exists\, h, k:\quad f =_{\mathcal{E}_0} h,\quad h \to_{\mathcal{R}} k,\quad k =_{\mathcal{E}_0} g,
-\]
-since $=_{\mathcal{E}_0}$ is precisely equality of morphisms in
-$\mathcal{L}_{(\Sigma,\mathcal{E}_0)}$. This is the same system as
-rewriting the terms of the free $(\Sigma,\mathcal{E}_0)$-algebra
-$T_\Sigma(n)/\bar R_{\mathcal{E}_0}$ by $\mathcal{R}$, the morphisms
-$n \to 1$ being exactly those terms.
-% This is yet another way of looking at e-graphs: picking some equations $\mathcal{E}_0$ and some rules $\mathcal{R}$ that become the rewrite rules, an e-graph performs rewritings steps from $\mathcal{R}$ modulo $\mathcal{E}_0$.
+% A Lawvere theory also makes rewriting available on morphisms, and in a
+% form that absorbs a chosen equational modulus. Split the equations as
+% $\mathcal{E} = \mathcal{E}_0 \cup \mathcal{R}$, with $\mathcal{E}_0$ a
+% background theory and $\mathcal{R}$ oriented into rules. Working in
+% $\mathcal{L}_{(\Sigma,\mathcal{E}_0)}$, whose morphisms $n \to 1$ are
+% terms modulo $\mathcal{E}_0$, an oriented rule $\ell \to r$ rewrites these
+% morphisms by replacement under composition; the induced relation is
+% exactly rewriting modulo $\mathcal{E}_0$,
+% \[
+% f \to_{\mathcal{R}/\mathcal{E}_0} g
+% \iff
+% \exists\, h, k:\quad f =_{\mathcal{E}_0} h,\quad h \to_{\mathcal{R}} k,\quad k =_{\mathcal{E}_0} g,
+% \]
+% since $=_{\mathcal{E}_0}$ is precisely equality of morphisms in
+% $\mathcal{L}_{(\Sigma,\mathcal{E}_0)}$. This is the same system as
+% rewriting the terms of the free $(\Sigma,\mathcal{E}_0)$-algebra
+% $T_\Sigma(n)/\bar R_{\mathcal{E}_0}$ by $\mathcal{R}$, the morphisms
+% $n \to 1$ being exactly those terms.
+% % This is yet another way of looking at e-graphs: picking some equations $\mathcal{E}_0$ and some rules $\mathcal{R}$ that become the rewrite rules, an e-graph performs rewritings steps from $\mathcal{R}$ modulo $\mathcal{E}_0$.
 
-\begin{remark}
-Throughput this chapter we have considered only \emph{single-sorted} algebraic theories, with a single carrier set meaning that every variable has the same type.
-The generalisation to \emph{multi-sorted} algebraic theories is straightforward: the signature $\Sigma$ is taken to be $\Sigma : \mathbb{S}^{*} \times \mathbb{S} \to \catname{Set}$ with the idea that each $f \in \Sigma([s_1, \ldots, s_m], s)$ is an operation with $m$ inpputs typed $s_1, \ldots, s_m$ and output type $s$.
-The carrier of a corresponding $\Sigma$-algebra is a family of sets indexed by $\mathbb{S}$.
-The rest is built up on that analogously to a single-sorted case.
-\end{remark}
+% \begin{remark}
+% Throughput this chapter we have considered only \emph{single-sorted} algebraic theories, with a single carrier set meaning that every variable has the same type.
+% The generalisation to \emph{multi-sorted} algebraic theories is straightforward: the signature $\Sigma$ is taken to be $\Sigma : \mathbb{S}^{*} \times \mathbb{S} \to \catname{Set}$ with the idea that each $f \in \Sigma([s_1, \ldots, s_m], s)$ is an operation with $m$ inpputs typed $s_1, \ldots, s_m$ and output type $s$.
+% The carrier of a corresponding $\Sigma$-algebra is a family of sets indexed by $\mathbb{S}$.
+% The rest is built up on that analogously to a single-sorted case.
+% \end{remark}

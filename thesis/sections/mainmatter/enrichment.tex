@@ -1,10 +1,12 @@
 \chapter{Enriched Category Theory}\label{chapter:enriched}
-Our aim is to give a categorical interpretation of e-graphs, from which we obtain both generalisations of e-graphs and a justification of the congruences that arise in them.
+Our aim is to give a categorical interpretation to a fragment of e-graphs, from which we obtain both generalisations of e-graphs and a justification of the congruences that arise in them.
 At the ground level, an e-graph represents many equivalent terms of a language.
-There is a well-known categorical interpretation of terms of a language as morphisms in a category with finite products introduced by Lawvere~\cite{LawvereFunctorialSemanticsAlgebraic1963}.
-Therefore, the missing ingredient is the categorical interpretation of a term denoting multiple equivalent terms simultaneously.
-Since two terms can be identified only if they have the same type, this amounts to extra structure on the hom-set in which these terms live.
-This is where we appeal to enriched category theory.
+As we saw in the previous chapter, the terms of a language (modulo equations) can be seen as morphism in a category with finite products.
+In general, however, this view does not distinguish between equivalent terms, which is essential for e-graphs since it is desirable to pick the best term out of a family of equivalent ones.
+Thus, for a categorical reading, we work with a free theory $\mathcal{L}_{\Sigma}$ without any equations imposed.
+% There is a well-known categorical interpretation of terms of a language as morphisms in a category with finite products introduced by Lawvere~\cite{LawvereFunctorialSemanticsAlgebraic1963}.
+The missing ingredient then is the categorical interpretation of a term (a morphism) denoting multiple equivalent terms (parallel morphisms) simultaneously.
+This amounts to extra structure on the hom-set and is where we appeal to enriched category theory.
 
 Enriched categories were introduced by Eilenberg and Kelly~\cite{EilenbergKellyClosedCategories} as a generalisation of ordinary categories in which hom-sets (ignoring the size issues) are replaced by objects of a monoidal category $\mathcal{V}$, called the base of enrichment. 
 An early striking example of enrichment is given by generalised metric spaces, each of which may be seen as a category enriched over $([0,\infty], \ge, +, 0)$---the extended non-negative reals with the reversed order, with addition as the monoidal product and $0$ as the unit.
@@ -1826,6 +1828,7 @@ Combining it with the universal property of the terminal object, we have $! \cir
 
 After this long digression, we can now state that despite the fact that the free $\catname{SLat}$-enrichment $2$-functor $\widetilde{F}_{\catname{SLat}}$ preserves adjunctions, it fails to preserve all binary products.
 \begin{proposition}
+\label{prop:binary_products_not_preserved}
 Free $\catname{SLat}$-enrichment does not preserve all binary products.
 \end{proposition}
 \begin{proof}
