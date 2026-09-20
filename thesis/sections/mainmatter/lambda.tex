@@ -102,7 +102,7 @@ where $x$ is a variable drawn from some countably infinite set, $t u$ is an appl
 The term $t [x / u]$ is an explicit substitution of the term $u$ for the variable $x$ in the term $t$.
 
 The notions of context $C[-]$, bound and free variable are as usual, with the addition that $\textsf{fv} (t [x/u]) \defeq \textsf{fv} (t) \setminus \{ x \} \cup \textsf{fv} (u)$.
-Write $C \llbracket t \rrbracket$ for the term given by substitution of the hole in the context $C[-]$ for the term $t$, under the additional restriction that the free variables of $t$ are not captured (via abstraction or explicit substitution) by $C$.
+Write $C \llbracket t \rrbracket$ for the term obtained by filling the hole $C \llbracket - \rrbracket$ with $t$, under the additional restriction that the free variables of $t$ are not captured (via abstraction or explicit substitution) by $C$.
 In addition to the $\beta$- and $\eta$-reduction rules of standard $\lambda$-calculus, there are reduction rules to account for this explicit substitution which \enquote{perform} the substitution or commute it with $\beta$-reduction:
 \begin{equation}
 \label{eq:lambda_lsub_reduction}
@@ -161,7 +161,7 @@ For example, both sides of the equivalence~\eqref{eq:non_interacting_subst} are 
 The equivalence~\eqref{eq:subst-lambda} is the third equation in~\cref{fig:lambda-string-eq}.
 
 The string diagram equivalence $\approx$ as defined in~\cref{prop:lambda_string_diagram_equivalence} concerns string diagrams as in~\cref{fig:lambda-string}, equipped with natural copy $\comonoid$ and delete $\counit$ and quotiented by their respective equations plus the third equation in~\cref{fig:lambda-string-eq}.
-Thus, this notion of equality of string diagrams is coarser than them just being the same graph.
+Thus, this notion of equality of string diagrams is coarser than them just being the same up to graph isomorphism.
 However, the equivalences~\eqref{eq:non_interacting_subst} and~\eqref{eq:subst-application} are indeed rendered as equal graphs.
 We illustrate the practical implications of performing equality saturation under these equivalences next.
 
@@ -258,7 +258,7 @@ We illustrate the practical implications of performing equality saturation under
 
 The above concepts of $\alpha$-equivalence and substitution are aspects that were notoriously difficult to support in traditional e-graphs.
 The usual solution was to encode $\lambda$-terms using de Bruijn indices, which we noted is not ideal because it can obscure sharing.
-Moreover, performing $\beta$-reduction on de Bruijn terms requires shifting of indices, which complicates the rewrite rules or requires to introduce index shifting as a term former akin to explicit substitution.
+Moreover, performing $\beta$-reduction on de Bruijn terms requires shifting of indices, which complicates the rewrite rules or requires introducing index shifting as a term former akin to explicit substitution.
 Then, traditional e-graphs had no notion of binding, or variables in general: all e-graphs technically represent ground terms, with variables encoded as constants at the leaves of the graph.
 Explicit substitution is then the preferred way of performing substitution of e-classes.
 The alternative is to define substitution as a meta-operation on e-graphs, which requires the traversal of the e-graph, iterating through e-classes to see if they contain the required bound variable.
@@ -273,7 +273,7 @@ Consider the slotted e-graph example below.
   }~.
 \]
 E-classes are represented as boxes with headers indicating the free variables they use.
-There is also a single e-class used to represent the source of all varables: other variables are instantiated by invoking this e-class with different variable names.
+There is also a single e-class used to represent the source of all variables: other variables are instantiated by invoking this e-class with different variable names.
 This is an intentional design decision to enable sharing of terms that have the same \emph{free} variables up-to renaming.
 For example, in a term $f(x,y) + f(z,w)$, with $x,y,z,w$ all free variables, the occurrence of $f$ is shared and exposes two generic free variables; the e-node $+$ then invokes the e-class containing $f$ with variables $x,y$ and $z,w$.
 E-nodes are matched to their corresponding e-classes by computing a normal form with respect to the free variables, by canonically renaming them.
@@ -281,7 +281,7 @@ Note that e-class containing $2$ does not expose any variables and the e-class c
 Since variables are first-class citizens, slotted e-graphs have a substitution operation built-in that traverses the e-graph to perform the required substitution.
 Yet, the practically preferred way of performing substitution is still to use explicit substitution.
 
-We argue that string diagrams for $\catname{SLat}$-enriched closed symmetric monoidal categories, provide a more principled support for variable binding and substitution.
+We argue that string diagrams for $\catname{SLat}$-enriched closed symmetric monoidal categories provide a more principled support for variable binding and substitution.
 The syntax of such string diagrams is given in~\cref{fig:egraph-strings-closed}.
 \begin{figure}
 	\centering
@@ -291,7 +291,7 @@ The syntax of such string diagrams is given in~\cref{fig:egraph-strings-closed}.
 	\caption{String diagrams for closed symmetric monoidal $\catname{SLat}$-categories. }
 	\label{fig:egraph-strings-closed}
 \end{figure}
-String diagrams keep variables and e-classes (dashed boxes) as separate entities, variables are just wires connecting the diagram.
+String diagrams keep variables and e-classes (dashed boxes) as separate entities---variables are just wires connecting the diagram.
 Substitution then does not require any special treatment, it is still just a rewiring of the diagram, regardless of whether we are connecting dashed boxes or not.
 Finally, as we noted above, string diagrams have some notational advantages.
 
@@ -602,7 +602,7 @@ We first define a typed raw syntax with
 abstraction and finite joins, then introduce the corresponding closed
 e-hypergraphs and interpret the syntax into them.
 We follow the same approach as in~\cref{chapter:monoidal}.
-In particular, the objects we construct absorb the symmetric monoidal structure on terms, but they can further be looked at though the prism of $\lambda$-calculus: $\beta$-reduction becomes a simple rewrite rule, vertices naturally represent substitution and binding and the hierarchical structure supports equivalent terms.
+In particular, the objects we construct absorb the symmetric monoidal structure on terms, but they can further be looked at through the prism of $\lambda$-calculus: $\beta$-reduction becomes a simple rewrite rule, vertices naturally represent substitution and binding and the hierarchical structure supports equivalent terms.
 
 \section{Raw syntax}
 We start with the notion of closed-monoidal terms.
@@ -787,7 +787,7 @@ $\operatorname{Tm}_{\Sigma}^{\Lambda,\join}$ modulo the symmetric monoidal
 and $\catname{SLat}$ equations can equivalently be performed on their
 combinatorial representation in terms of \emph{closed e-hypergraphs}.
 Recall that string diagrams as in~\cref{sec:string-diagrams-Bonchi} are defined as terms quotiented by the axioms of a symmetric monoidal category.
-Thus, the set of terms $\operatorname{Tm}^{\Lambda, \join}_{\Sigma}$ defines exactly string diagrams for $\catname{SLat}$-enriched symmetric monoidal category. 
+Thus, the set of terms $\operatorname{Tm}^{\Lambda, \join}_{\Sigma}$, appropriately quotiented, defines exactly string diagrams for $\catname{SLat}$-enriched symmetric monoidal category. 
 
 \begin{definition}[Structural congruences]
 \label{def:lambda-structural-congruences}
@@ -850,12 +850,12 @@ well-typed equations:
   \end{align*}
   \item Preservation of joins by abstraction: for $n\geq2$,
   \begin{equation}
-    \Lambda_{X,A,B}(f_1 \join \cdots \join f_n)
+    \Lambda_{A,X,B}(f_1 \join \cdots \join f_n)
     \equiv_{\mathsf{str}}
-    \Lambda_{X,A,B}(f_1) \join \cdots \join \Lambda_{X,A,B}(f_n),
+    \Lambda_{A,X,B}(f_1) \join \cdots \join \Lambda_{A,X,B}(f_n),
     \label{eq:lambda-join-structural}
   \end{equation}
-  for all $f_1,\ldots,f_n : X \otimes A \to B$.
+  for all $f_1,\ldots,f_n : A \otimes X \to B$.
 \end{enumerate}
 Items~2 and~3 are precisely the equations of \cref{fig:string-equations},
 read as equations between raw closed-monoidal terms; item~4 is the additional equation
@@ -863,8 +863,8 @@ for abstraction.
 \end{definition}
 
 Note that the structural congruences of \cref{def:lambda-structural-congruences} mention neither of equations~\eqref{eq:lambda_1}--\eqref{eq:lambda_3}.
-Quotienting with respect to these equations would result in an $\catname{SLat}$-enriched closed symmetric monoidal category, so that rewriting would have to be performed moduloe closed structure as well.
-As these equations have operational significance, we do not apply that additional quotient, and strictly speaking, consider just $\catname{SLat}$-enriched symmetric monoidal categories, altough throughout this chapter we just consider raw closed-monoidal terms.
+Quotienting with respect to these equations would result in an $\catname{SLat}$-enriched closed symmetric monoidal category, so that rewriting would have to be performed modulo closed structure as well.
+As these equations have operational significance, we do not apply that additional quotient, and strictly speaking, consider just $\catname{SLat}$-enriched symmetric monoidal categories, although throughout this chapter we just consider raw closed-monoidal terms.
 
 % \subsection*{Categorical foundations of slotted e-graphs}
 % We take a brief pause to discuss the equation~\eqref{eq:lambda-join-structural} with respect to slotted e-graphs of Schneider et al.~\cite{slotted-egraphs}.
@@ -1035,7 +1035,7 @@ The only new hierarchical sort is $\lambdasort$. A $\lambda$-edge has one
 component, representing the body of an abstraction. Evaluation edges are
 ordinary edges labelled by the generators
 $\ev_{A,B}\in(\Gamma_\Sigma)_1$.
-These $\lambdasort$-edges were introduced by Ghica et al.~\cite{fscd} and served as the inspiration for our $\boxsort$-edges in~\cref{chapter:monoidal}.
+These $\lambdasort$-edges were introduced by Alvarez-Picallo et al.~\cite{fscd} and served as the inspiration for our $\boxsort$-edges in~\cref{chapter:monoidal}.
 
 \begin{remark}[Atomic wire types]
 Each vertex represents one wire and is therefore labelled by one atomic
@@ -1689,13 +1689,13 @@ Define the typed prefix interface
 \]
 and put
 \[
-  X
+  A
   \defeq
   \left\lVert
     \operatorname{ty}_{\bar{n}}([r-1])
   \right\rVert_\otimes,
   \qquad
-  A\defeq\tau(r),
+  X\defeq\tau(r),
   \qquad
   B
   \defeq
@@ -1969,7 +1969,7 @@ and
 Here \(X\in\operatorname{At}^{\Lambda}_{\Sigma}\), so the final input
 position of
 \[
-  \widehat h:
+  \widehat f:
   \partial A\coprod\partial X \longrightarrow\partial B
 \]
 is a single vertex, and the currying construction of
@@ -2373,13 +2373,13 @@ and that the unique immediate parent \(p\) of \(a\) is a
 Then the anchor \(a\) is the unique component child of \(p\).
 It determines a well-typed component cospan
 \[
-  \mathbf F_a:\partial(X\otimes A)\longrightarrow\partial B,
+  \mathbf F_a:\partial(A\otimes X)\longrightarrow\partial B,
 \]
 where
 \[
-  X,B\in\operatorname{Ob}^{\Lambda}_{\Sigma},
+  A,B\in\operatorname{Ob}^{\Lambda}_{\Sigma},
   \qquad
-  A\in\operatorname{At}^{\Lambda}_{\Sigma},
+  X\in\operatorname{At}^{\Lambda}_{\Sigma},
 \]
 and \(m\) corestricts to a convex, descendant-closed anchored
 monomorphism
@@ -2391,7 +2391,7 @@ Applying the root clause inside \(\mathbf F_a\) gives a typed interface
 \(q\), well-typed MDA closed extended cospans
 \[
   \mathbf C_1^a:
-  \partial(X\otimes A)\longrightarrow q\coprod i,
+  \partial(A\otimes X)\longrightarrow q\coprod i,
   \qquad
   \mathbf C_2^a:
   q\coprod j\longrightarrow \partial B,
@@ -3352,7 +3352,7 @@ and therefore
 
 \begin{theorem}[Structural adequacy]
 \label{theorem:lambda-structural-adequacy}
-For raw closed $\Sigma^{\join}$-terms $s,t \in \operatorname{Tm}^{\Lambda, \join}_{\Sigma}(A, B)$,
+For raw closed-monoidal $\Sigma^{\join}$-terms $s,t \in \operatorname{Tm}^{\Lambda, \join}_{\Sigma}(A, B)$,
 \[
  s\equiv_{\mathsf{str}}t
  \quad\Longleftrightarrow\quad
@@ -3501,11 +3501,16 @@ Let
  k
  \right)
 \]
-be a well-typed MDA closed extended cospan, and put
+be a well-typed MDA closed extended cospan. and put
+Let
 \[
- A\defeq\left\lVert\operatorname{ty}_{n}([n])\right\rVert_{\otimes},
+n = ([p_n], \tau), \qquad k = ([p_k], \upsilon)
+\]
+and put
+\[
+ A\defeq\left\lVert\operatorname{ty}_{n}([p_n])\right\rVert_{\otimes},
  \qquad
- B\defeq\left\lVert\operatorname{ty}_{k}([k])\right\rVert_{\otimes},
+ B\defeq\left\lVert\operatorname{ty}_{k}([p_k])\right\rVert_{\otimes},
 \]
 so that $n=\partial A$ and $k=\partial B$.  Then there is a raw term
 $u\in\operatorname{Tm}^{\Lambda,\join}_{\Sigma}(A,B)$ such that
@@ -3525,8 +3530,7 @@ Every vertex has in- and out-degree zero, so the
 MDA conditions make both external legs bijections onto
 $V_{\mathcal G}$.  Hence $\mathbf G$ is the interpretation of a term
 built from primitive identities and symmetries by $\fatsemi$ and
-$\otimes$, exactly as in the base case of the proof of
-\cref{theorem:monogamous_isomorphism}.
+$\otimes$, exactly as in the base case of the proof of~\cref{theorem:monogamous_isomorphism}.
 
 Suppose now that $\nu(\mathbf G)>0$.  
 Then we may choose a non-component edge $e$ with $\top_{\mathcal{G}} <^{\mu}_{\mathcal{G}} e$.
@@ -3577,7 +3581,7 @@ Each $c_i$ together with its
  This is the step where we use $n$-ary joins in the syntax; otherwise we would have to reify terms only up to structural equivalence.
 
  \item If $e$ is a $\lambdasort$-edge with unique component $c$,
- well-typedness of $e$ gives objects $X,C$ and an atomic type $D$ with
+ well-typedness of $e$ gives objects $D,C$ and an atomic type $X$ with
  \[
   P=D,
   \qquad
@@ -3634,7 +3638,8 @@ $\mathbf L$,
 \]
 The induction hypothesis gives raw closed-monidal terms $c_1$ and $c_2$ with
 $\widehat{c_1}\cong\mathbf C_1$ and $\widehat{c_2}\cong\mathbf C_2$.
-Write $K\defeq\lVert\operatorname{ty}_q([\,|q|\,])\rVert_{\otimes}$, so that $\partial K=q$, and put
+Unpack $q$ as $([p_q],\sigma)$, and put
+ $K\defeq\lVert\operatorname{ty}_q([p_q])\rVert_{\otimes}$, so that $\partial K=q$, and put
 \[
  u\defeq c_1\fatsemi(\id_K\otimes w)\fatsemi c_2 .
 \]
@@ -3858,7 +3863,7 @@ equations are handled by $\mathfrak R_{\Lambda}$. As in
 hierarchical representation by following its interfaces, without first
 unfolding every hierarchical edge.
 
-\section{Categorical foundations of slotted e-graphs}
+\section{Justification of congruence in slotted e-graphs}
 We finish with a brief discussion of the equation~\eqref{eq:lambda-join-structural} with respect to slotted e-graphs of Schneider et al.~\cite{slotted-egraphs}.
 Slotted e-graphs extend the traditional signature employed by e-graphs with an explicit construct for binding ($\text{bind}\; \$x\; tc$) and variables (\emph{slots}).
 	Their syntax is generated by the following grammar:
@@ -3910,7 +3915,7 @@ Slotted e-graphs extend the traditional signature employed by e-graphs with an e
 
   The same restrictions apply as in the case of traditional e-graphs: if we were to draw a precise correspondence between string diagrams for $\catname{SLat}$-categories and slotted e-graphs, we would need to be careful about sharing and cycles.
   That is, we may introduce a comonoid generator, but it must not be natural on join morphisms.
-  We argued that string diagrams may serve as a better and more principled representation in certain applications, but it is worth to note that slotted e-graphs are much more general.
+  We argued that string diagrams may serve as a better and more principled representation in certain applications, but it is worth noting that slotted e-graphs are much more general.
   In particular, string diagrams require closed structure on the underlying category whereas slotted e-graphs may represent binding in theories that have no known closed structure, such as the $\pi$-calculus.
 
 
@@ -3920,4 +3925,4 @@ In this chapter we introduced string diagrams for $\catname{SLat}$-enriched symm
 The representation is shown to be sound and complete with respect to representation of closed-monoidal terms with join modulo $\equiv_{\mathsf{str}}$ which includes the SMC equations, $\catname{SLat}$-equations and the $\catname{SLat}$-rule for $\Lambda$-abstraction.
 The equivalence of rewriting of closed-monoidal terms modulo $\equiv_{\mathsf{str}}$ and convex EDPOI rewriting was shown.
 We also highlighted representational advantages of such string diagrams in the context of $\lambda$-calculi.
-An important future work is exploring whether this combinatorial representation may lead to better algorithmics for doing equality saturation for $\lambda$-calculus.
+An important future work is to investigate whether this combinatorial representation may lead to better algorithmics for doing equality saturation for $\lambda$-calculus.

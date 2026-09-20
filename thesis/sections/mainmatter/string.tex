@@ -10,7 +10,7 @@ This view turns out to absorb many structural equivalences between morphisms of 
 A great benefit of this view is that it allows for a definition of rewriting of such hypergraphs which automatically happens modulo much of the symmetric monoidal structure, making it practically appealing.
 We will view our generalised e-graphs as string diagrams for a particular monoidal category and hence as a certain kind of hypergraphs, defining a suitable notion of rewriting for them.
 We will then use this representation in showing that the ordinary e-graphs are recovered as a special case of these hypergraphs.
-Before we can do that, we need to recall the necessary machinery introduced by Bonchi et. el. in their works.
+Before we can do that, we need to recall the necessary machinery introduced by Bonchi et al. in their works.
 This is the content of this chapter.
 
 \section{String diagrams}
@@ -606,7 +606,7 @@ We also let $\mathbf{S}_{\Sigma}$ be the free syntactic PROP presented by the SM
 \begin{remark}
 Coloured $\mathrm{PROP}$s are presented by multi-sorted SMTs, where $\Sigma_0$ defines the set of colours or types.
 \end{remark}
-This is an analogue of a collection of free algebras $T_{\Sigma, \mathcal{E}}$, viewed as a Lawvere theory.
+% This is an analogue of a collection of free algebras $T_{\Sigma, \mathcal{E}}$, viewed as a Lawvere theory.
 We already saw an instance of such a syntactic PROP in~\cref{example:comonoids}, another example is the theory of bialgebras that has both monoid and comonoid structure, interacting in a certain way.
 \begin{example}
 Consider a signature
@@ -717,7 +717,7 @@ Since its objects are the natural numbers, with \(n = 1^{\otimes n}\), every obj
 Conversely, every Lawvere theory is a cartesian PROP whose diagonals and terminal maps provide this natural commutative comonoid structure.
 Thus, cartesian PROPs and Lawvere theories are the same structures viewed from monoidal and finite-product perspectives, respectively.
 \end{example}
-Therefore, PROPs are indeed generalisations of algebraic theopries.
+Therefore, PROPs are indeed generalisations of algebraic theories.
 % \begin{example}[Cartesian PROP $=$ Lawvere theory]
 % \label{ex:cartesian-prop}
 % Let $\Sigma$ contain, besides any other generators, a comonoid
@@ -1052,31 +1052,8 @@ Their pushout $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ is computed 
 (\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2)(x) = \mathcal{G}_1(x) \coprod_{\mathcal{G}_0(x)} \mathcal{G}_2(x)
 \]
 in $\mathbb{F}$ of the span $\mathcal{G}_1(x) \xleftarrow{f_x} \mathcal{G}_0(x) \xrightarrow{g_x} \mathcal{G}_2(x)$, which is given by $\mathcal{G}_1(x) \coprod \mathcal{G}_2(x)$ quotiented by the least equivalence relation $\sim_x$ such that $\iota^x_1(z_1) \sim_x \iota^x_2(z_2)$ if there exists $w \in \mathcal{G}_0(x)$ with $z_1 = f_x(w)$ and $z_2 = g_x(w)$, where $\iota^x_1, \iota^x_2$ are the injections into $\mathcal{G}_1(x) \coprod \mathcal{G}_2(x)$; we denote this quotient $(\mathcal{G}_1(x) \coprod \mathcal{G}_2(x)) / {\sim_x}$.
-Then, given an arrow $\sigma : (k,l) \to \star$, we get an arrow $\alpha \defeq (\mathcal{G}_1 \coprod \mathcal{G}_2)(\sigma)$, $\alpha : (\mathcal{G}_1 \coprod \mathcal{G}_2)((k,l)) \to (\mathcal{G}_1 \coprod \mathcal{G}_2)(\star)$ and then the arrow $\hat{\alpha} : (\mathcal{G}_1 \coprod \mathcal{G}_2)((k,l)) \to (\mathcal{G}_1 \coprod \mathcal{G}_2)(\star) / \sim_{\star}$ by post-composing with the quotient projection.
-We then let $\tilde{\alpha}([w]) = \hat{\alpha}(w)$ for $[w] \in (\mathcal{G}_1 \coprod \mathcal{G}_2)((k,l)) / {\sim_{(k,l)}}$.
-That is, the action of $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ on arrows is given by $\tilde{\alpha}$.
-Suppose $w_1 \sim_{(k,l)} w_2$, then $\hat{\alpha}(w_1) = \hat{\alpha}(w_2)$, that is, $\tilde{\alpha}$ is well-defined.
-To illustrate that, assume there exists $z \in \mathcal{G}_0((k,l))$ such that $w_1 = \iota^{(k,l)}_1 \circ f_{(k,l)}(z)$ and $w_2 = \iota^{(k,l)}_2 \circ g_{(k,l)}(z)$, then we need to check if
-\begin{gather*}
-\hat{\alpha}(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) = \hat{\alpha}(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
-\iff\\
-\alpha(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) \sim_{\star} \alpha(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
-\iff\\
-(\mathcal{G}_1 \coprod \mathcal{G}_2)(\sigma)(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) \sim_{\star} (\mathcal{G}_1 \coprod \mathcal{G}_2)(\sigma)(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
-\iff\\
-(\mathcal{G}_1(\sigma) \coprod \mathcal{G}_2(\sigma))(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) \sim_{\star} (\mathcal{G}_1(\sigma) \coprod \mathcal{G}_2(\sigma))(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
-\iff\\
-\iota^{\star}_1(\mathcal{G}_1(\sigma)(f_{(k,l)}(z))) \sim_{\star} \iota^{\star}_2(\mathcal{G}_2(\sigma)(g_{(k,l)}(z)))
-\end{gather*}
-By naturality of $f$ and $g$, we have that $\mathcal{G}_1(\sigma) \circ f_{(k,l)} = f_{\star} \circ \mathcal{G}_0(\sigma)$ and $\mathcal{G}_2(\sigma) \circ g_{(k,l)} = g_{\star} \circ \mathcal{G}_0(\sigma)$, so we have
-\begin{gather*}
-\iota^{\star}_1(\mathcal{G}_1(\sigma)(f_{(k,l)}(z))) \sim_{\star} \iota^{\star}_2(\mathcal{G}_2(\sigma)(g_{(k,l)}(z)))\\
-\iff\\
-\iota^{\star}_1(f_{\star}(\mathcal{G}_0(\sigma)(z))) \sim_{\star} \iota^{\star}_2(g_{\star}(\mathcal{G}_0(\sigma)(z))).
-\end{gather*}
-The last line holds by definition of $\sim_{\star}$.
-The rest follows by a more detailed case analysis on $w_1 \sim_{(k,l)} w_2$.
-Checking that $\tilde{\alpha}$ preserves identities and composition, so that $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ is indeed a functor, is routine.
+
+The explicit verification is given in Appendix~\ref{sec:appendix-pointwise-pushouts}.
 Now, given a span $(\mathcal{G}_1, l_1) \xleftarrow{f} (\mathcal{G}_0, l_0) \xrightarrow{g} (\mathcal{G}_2, l_2)$ in $\catname{Hyp} \downarrow \mathcal{G}_{\Sigma}$, the pushout is $(\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2, l)$, where $l : \mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2 \to \mathcal{G}_{\Sigma}$ is the unique map given by the universal property of the pushout.
 
 This can be adapted to the case of labelled hypergraphs given by tuples in the same vein as the coproduct.
@@ -1163,7 +1140,7 @@ The above makes $\catname{HypI}(\Sigma)$ a PROP.
 \end{definition}
 
 \begin{remark}
-The functor $D : \mathbb{F} \to \catname{Hyp}(\Sigma)$ equips the vertices of each discrete hypergraph $D([n])$ with a linear order: a vertex $v$ precedes a vertex $w$ whenever $v$ is the image of a smaller element in $[n] = \{0, \dots, n-1\}$.
+The functor $D : \mathbb{F} \to \catname{Hyp}(\Sigma)$ equips the vertices of each discrete hypergraph $D([n])$ with a linear order: a vertex $v$ precedes a vertex $w$ whenever $v$ is the image of a smaller element in $[n] = \{1, \dots, n\}$.
 Consequently, the legs of a cospan pick out an \emph{ordered} boundary, which is what is needed to represent the ordered inputs and outputs of a string diagram.
 Henceforth, we omit the functor $D$ and write cospans simply as $m \xrightarrow{} \mathcal{G} \xleftarrow{} n$.
 The name $\catname{HypI}(\Sigma)$ is meant to suggest that hypergraphs are \emph{I}nterfaced by the legs of the cospan.
@@ -1260,54 +1237,8 @@ We then let $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma
 \begin{theorem}[Theorem 4.1~\cite{bonchi_string_2022-1}]\label{thm:frobenius_isomorphism}\label{theorem:frobenius_isomorphism}
   The functor $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma)$ is an isomorphism of PROPs, i.e., $\mathbf{H}_{\Sigma} \cong \catname{HypI}(\Sigma)$.
 \end{theorem}
-\begin{proof}
-We present a sketch of the proof here, and refer the reader to~\cite{bonchi_string_2022-1} for the full details.
-The idea is to show that $\catname{HypI}(\Sigma)$ has the universal property of the coproduct, namely that for any PROP $\mathbb{A}$ and PROP morphisms $\alpha : \mathbf{S}_{\Sigma} \to \mathbb{A}$ and $\beta : \catname{Frob} \to \mathbb{A}$, there exists a unique PROP morphism $\gamma$ such that the following diagram commutes:
-\[\begin{tikzcd}
-	{\mathbf{S}_{\Sigma}} && {\catname{HypI}(\Sigma)} && {\catname{Frob}} \\
-	\\
-	&& {\mathbb{A}}
-	\arrow["{\llbracket - \rrbracket}", from=1-1, to=1-3]
-	\arrow["\alpha"', from=1-1, to=3-3]
-	\arrow["\gamma", from=1-3, to=3-3]
-	\arrow["{[-]}"', from=1-5, to=1-3]
-	\arrow["\beta"', from=1-5, to=3-3]
-\end{tikzcd}~.\]
-As all the arrows are identity-on-objects functors, it suffices to show that every morphism in $\catname{HypI}(\Sigma)$ can be decomposed in a unique way into components such that every component is in the image of either $\llbracket - \rrbracket$ or $[-]$.
-Let $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ be a morphism in $\catname{HypI}(\Sigma)$ and let $\mathcal{G} = (V_{\mathcal{G}}, E_{\mathcal{G}}, s, t, l)$ be its carrier hypergraph.
-Let $e_1, \ldots, e_n$ be some ordering on $E_{\mathcal{G}}$.
-Let $\tilde{m} \xrightarrow{\tilde{f}} \tilde{E} \xleftarrow{\tilde{g}} \tilde{n}$ be a cospan with the carrier formed by edges from $\mathcal{G}$, disconnected from each other and stacked vertically with $\tilde{m}$ being the collection of all input vertices for each edge and $\tilde{m}$ being the collection of all output vertices for each edge.
-There are functions $i : n \to V_{\mathcal{G}}$,  $\tilde{i} : \tilde{n} \to V_{\mathcal{G}}$, $j : m \to V_{\mathcal{G}}$, and $\tilde{j} : \tilde{m} \to V_{\mathcal{G}}$ that map vertices in the interfaces to their occurrences in the set of all vertices.
-The decomposition of $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ is then given by the composition of cospans
-% \begin{gather}\label{eq:decomposition}
-% \displaystyle (m \xrightarrow{i} V_{\mathcal{G}} \xleftarrow{[\id, \tilde{j}]} V_{\mathcal{G}} \otimes \tilde{m}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{m} \xrightarrow{\id \otimes \tilde{f}} V_{\mathcal{G}} \otimes \tilde{E} \xleftarrow{\id \otimes \tilde{g}} V_{\mathcal{G}} \otimes \tilde{n}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{n} \xrightarrow{[\id, \tilde{i}]} V_{\mathcal{G}} \xleftarrow{i} n)~.
-% \end{gather}
-\begin{equation}\label{eq:decomposition}
-  \begin{adjustbox}{scale=0.9}
-\begin{tikzcd}
-	m & {V_{\mathcal{G}}} & {V_{\mathcal{G}}\otimes\tilde{m}} & {V_{\mathcal{G}}\otimes\tilde{E}} & {V_{\mathcal{G}}\otimes\tilde{n}} & {V_{\mathcal{G}}} & n
-	\arrow["i", from=1-1, to=1-2]
-	\arrow["{{[\id,\tilde{j}]}}"', from=1-3, to=1-2]
-	\arrow["{{\id\otimes\tilde{f}}}", from=1-3, to=1-4]
-	\arrow["{{\id\otimes\tilde{g}}}"', from=1-5, to=1-4]
-	\arrow["{{[\id,\tilde{i}]}}", from=1-5, to=1-6]
-	\arrow[from=1-6, to=1-5]
-	\arrow["i"', from=1-7, to=1-6]
-\end{tikzcd}
-\end{adjustbox}
-\end{equation}
-For example, below is a cospan (on the left) and its decomposition (on the right); we show the embedding of the interfaces using dashed arrows to avoid excessive cluttering of the cospans and use the labels to assign identities to vertices in $V_{\mathcal{G}}$.
-\[
-\adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_1}} \quad \cong \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_3}} \fatsemi\; \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_2}} \fatsemi \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_4}}~.
-\]
-By computing the pushouts for the compositions on the right, we can verify that the composition is indeed isomorphic to the cospan on the left. 
-Intuitively, the middle cospan records all edges and vertices of the carrier hypergraph and the cospans on the sides record the incidence of the hyperedges and vertices.
-For example, in the first composition, vertices $u_1, u_3$ of hyperedges $a$ and $b$ get identified with the vertex $z_1$ according to the interface embedding.
 
-The middle cospan of the decomposition~\ref{eq:decomposition} is in the image of $\llbracket - \rrbracket$ as it is a tensor of identities and generators from $\Sigma$.
-The cospans on the sides are essentially cospans of finite sets and hence in the image of $[-]$ as $\catname{Frob} \cong \catname{Cospan}(\mathbb{F})$---a result of Lack~\cite{lackDedicatedAurelioCarboni}.
-This means that every morphism $\gamma : \catname{HypI}(\Sigma) \to \mathbb{A}$ is uniquely determined by its action on the components of the decomposition of each morphism.
-\end{proof}
+The proof is given in Appendix~\ref{sec:appendix-frobenius-isomorphism}.
 
 \begin{proposition}[Corollary 4.3~\cite{bonchi_string_2022-1}]
 \label{prop:faithful_interpretation}
@@ -1320,7 +1251,7 @@ The same result holds when $\mathbf{S}_{\Sigma}$ is a coloured PROP.
 
 PROPs equipped with a Frobenius algebra structure on each object constitute a subcategory of $\catname{PROP}$, called $\catname{FROP}$, with $\catname{H}_{\Sigma}$ and $\catname{H}_{\Sigma, \mathcal{E}}$ being the instances of FROPs.
 The notion of syntactic rewriting for FROPs is the same with the only difference that rewriting happens modulo SMC equations and the equations of Frobenius algebra.
-\begin{definition}[{\cite[p. 15]{bonchi_string_2022-1}}]\label{def:rewriting_frop}
+\begin{definition}[{\cite[p. 15]{bonchi_string_2022-1}}]\label{def:rewriting_frob}
  A rewriting system $\mathcal{R}$ on a FROP $\mathbb{A}$ consists of a set of \emph{rewrite rules}, i.e., pairs $\langle l, r \rangle$ of morphisms $l,r : i \to j$ in $\mathbb{A}$ with the same domain and codomain.
  Given $a,b : m \to n \in \mathbb{A}(m,n)$, we say that $a$ rewrites to $b$ via $\mathcal{R}$, written $a \rewriteArrow{\mathcal{R}} b$, if they are decomposable as follows for some rule $\langle l,r \rangle \in \mathcal{R}$.
  \[
@@ -1560,61 +1491,8 @@ Again, computing the pushout does not give us back the source hypergraph because
   Let $K \xrightarrow{i} L \xrightarrow{f} G$ be morphisms in $\catname{Hyp}(\Sigma)$.
   A pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$ exists if and only if the no-dangling and no-identification conditions are satisfied.
 \end{proposition}
-\begin{proof}
-  For the if direction, suppose the two conditions hold, and define $L^{\bot}$ as the following sub-hypergraph of $G$
-  \[
-  L^{\bot} \defeq (V_{L^{\bot}}, E_{L^{\bot}}, s_{L^{\bot}}, t_{L^{\bot}}, l_{L^{\bot}}) \hookrightarrow G, 
-  \]
-  where 
-  \begin{gather*}
-    V_{L^{\bot}} \defeq \bigl(V_G \setminus f(V_L)\bigr) \cup f(i(V_K))\\
-    E_{L^{\bot}} \defeq \bigl(E_G \setminus f(E_L)\bigr) \cup f(i(E_K))\\
-    s_{L^{\bot}} \defeq s_G \restriction_{E_{L^{\bot}}} \quad t_{L^{\bot}} \defeq t_G \restriction_{E_{L^{\bot}}} \quad l_{L^{\bot}} \defeq l_G \restriction_{E_{L^{\bot}}}
-  \end{gather*}
-  This is a well-defined sub-hypergraph: a hyperedge of $L^{\bot}$ either lies outside the image of $f$, in which case the no-dangling condition places each of its sources and targets outside the image of $f$ or inside the image of $f \circ i$, hence in $V_{L^{\bot}}$; or it lies in the image of $f \circ i$, in which case its sources and targets lie in the image of $f \circ i$ as well, since $f \circ i$ is a homomorphism.
-  Let $g \colon L^{\bot} \hookrightarrow G$ be the inclusion and $c \colon K \to L^{\bot}$ the corestriction of $f \circ i$, which lands in $L^{\bot}$ by construction; then $g \circ c = f \circ i$, so the square commutes.
 
-  It remains to show the square is a pushout.
-  Let $P \defeq L \coprod_{K} L^{\bot}$ be the pushout of $L \xleftarrow{i} K \xrightarrow{c} L^{\bot}$ computed as in~\cref{def:pushout_hyp}: the vertices and edges of the resulting hypergraph are quotients $V_{L} \coprod_{V_{K}} V_{L^{\bot}} / \sim$ and $E_{L}\coprod_{E_{K}} E_{L^{\bot}} / \sim$ by the least equivalence relation identifying $\iota_{1}^{V}(i_{V}(z))$ with $\iota_{2}^{V}(c_{V}(z))$ for $z \in V_{K}$ and similarly for edges.
-  Let $u \colon P \to G$ be the homomorphism induced by $f$ and $g$ via the universal property, given explicitly on vertices by $u_{V}([\iota^{V}_{1}(w)]) = f_{V}(w)$ and $u_{V}([\iota^{V}_{2}(z)]) = g_{V}(z)$, and analogously on edges.
-  We show that $u_{V}$ and $u_{E}$ are bijections; since a homomorphism that is bijective on vertices and on edges is an isomorphism of hypergraphs, this suffices.
-
-  For surjectivity, a vertex of $G$ either lies in $f(V_{L})$, hence in the image of $u_{V} \circ [\iota^{V}_{1}]$, or lies in $V_{G} \setminus f(V_{L}) \subseteq V_{L^{\bot}}$, hence in the image of $u_{V} \circ [\iota^{V}_{2}]$; the same argument applies to edges.
-
-  For injectivity, note that $u_{V}$ is injective if and only if any two elements of $V_{L} \coprod V_{L^{\bot}}$ with the same image under the copairing $[f_{V}, g_{V}] \colon V_{L} \coprod V_{L^{\bot}} \to V_{G}$ are related by $\sim$: the copairing factors as $u_{V}$ after the quotient projection.
-  So suppose two elements of $V_{L} \coprod V_{L^{\bot}}$ have the same image under $[f_{V}, g_{V}]$; we show that they are related by $\sim$.
-  There are three cases.
-  If both are of the form $\iota^{V}_{2}(z_{1}), \iota^{V}_{2}(z_{2})$, then $g_{V}(z_{1}) = g_{V}(z_{2})$ implies $z_{1} = z_{2}$, since $g$ is an inclusion.
-  If both are of the form $\iota^{V}_{1}(w_{1}), \iota^{V}_{1}(w_{2})$ with $w_{1} \neq w_{2}$, then $f_{V}(w_{1}) = f_{V}(w_{2})$, so by the no-identification condition $w_{1} = i_{V}(z_{1})$ and $w_{2} = i_{V}(z_{2})$ for some $z_{1}, z_{2} \in V_{K}$.
-  Then $c_{V}(z_{1}) = f_{V}(i_{V}(z_{1})) = f_{V}(w_{1}) = f_{V}(w_{2}) = c_{V}(z_{2})$, where the outer equalities hold because $c$ is the corestriction of $f \circ i$, and hence
-  \[
-  \iota^{V}_{1}(w_{1}) = \iota^{V}_{1}(i_{V}(z_{1})) \sim \iota^{V}_{2}(c_{V}(z_{1})) = \iota^{V}_{2}(c_{V}(z_{2})) \sim \iota^{V}_{1}(i_{V}(z_{2})) = \iota^{V}_{1}(w_{2}).
-  \]
- Finally, suppose the elements are $\iota^{V}_{1}(w)$ and $\iota^{V}_{2}(z)$ with $f_{V}(w) = g_{V}(z)$.
-  Since $g_{V}(z) \in V_{L^{\bot}}$ and $f_{V}(w) \in f(V_{L})$, the construction of $V_{L^{\bot}}$ yields $f_{V}(w) \in f(i(V_{K}))$, say $f_{V}(w) = f_{V}(i_{V}(y))$ for some $y \in V_{K}$.
-  If $w = i_{V}(y)$, then
-  \[
-  g_{V}(c_{V}(y)) = f_{V}(i_{V}(y)) = f_{V}(w) = g_{V}(z),
-  \]
-  where the first equality is the commutativity $g \circ c = f \circ i$; injectivity of $g_{V}$ then gives $c_{V}(y) = z$, and hence $\iota^{V}_{1}(w) = \iota^{V}_{1}(i_{V}(y)) \sim \iota^{V}_{2}(c_{V}(y)) = \iota^{V}_{2}(z)$.
-  Otherwise, $w$ and $i_{V}(y)$ are distinct vertices identified by $f$, so by the no-identification condition $w = i_{V}(y')$ for some $y' \in V_{K}$, and the previous argument applies with $y'$ in place of $y$.
-  In all cases the two elements are related by $\sim$, so $u_{V}$ is injective; the argument for $u_{E}$ is identical, using the no-identification condition for edges in the second case.
-  Hence $u$ is an isomorphism, the constructed square is a pushout, and $L^{\bot}$ is a pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$.
-
-  For the converse, suppose that a pushout complement $K \xrightarrow{c} L^{\bot} \xrightarrow{g} G$ exists but at least one of the conditions fails.
-  Since pushouts are unique up to an isomorphism commuting with the pushout injections, we may by~\cref{def:pushout_hyp} assume that $V_{G} = V_{L} \coprod V_{L^{\bot}} / {\sim}$ and $E_{G} = E_{L} \coprod E_{L^{\bot}} / {\sim}$, with $f$ and $g$ the composites of the coproduct injections with the quotient projections.
-  We first record a consequence of this description: if $w \in V_{L}$ and $\iota^{V}_{1}(w)$ is related by $\sim$ to any element of the coproduct other than itself, then $w \in i(V_{K})$.
-  Indeed, every generating pair of $\sim$ is of the form $\iota^{V}_{1}(i_{V}(z)) \sim \iota^{V}_{2}(c_{V}(z))$, so a non-trivial chain of generating pairs passing through $\iota^{V}_{1}(w)$ must contain a generator whose left component is $\iota^{V}_{1}(w)$ itself, forcing $w = i_{V}(z)$ for some $z \in V_{K}$.
-  The same holds for edges.
-
-  Suppose the no-identification condition fails: there are distinct items of $L$, say vertices $w_{1} \neq w_{2}$ (the case of edges is identical), with $f_{V}(w_{1}) = f_{V}(w_{2})$ and at least one of them outside the image of $i$.
-  Then $\iota^{V}_{1}(w_{1})$ and $\iota^{V}_{1}(w_{2})$ are distinct elements of the coproduct in the same $\sim$-class, so both are related by $\sim$ to an element other than themselves, and by the consequence above both lie in the image of $i_{V}$---a contradiction.
-
-  Suppose the no-dangling condition fails: there is a hyperedge $e \in E_{G}$ outside the image of $f$ with a source or target $v \in f(V_{L}) \setminus f(i(V_{K}))$, say $v = f_{V}(w)$ with $w \notin i(V_{K})$.
-  Since $f$ and $g$ are jointly surjective on edges and $e \notin f(E_{L})$, we have $e = g_{E}(e')$ for some $e' \in E_{L^{\bot}}$.
-  As $g$ is a homomorphism, $g_{V}^{*}(s_{L^{\bot}}(e')) = s_{G}(e)$ and likewise for targets, so the corresponding source or target $z$ of $e'$ satisfies $g_{V}(z) = v = f_{V}(w)$.
-  Then $\iota^{V}_{1}(w)$ and $\iota^{V}_{2}(z)$ are distinct elements of the coproduct in the same $\sim$-class, so $\iota^{V}_{1}(w)$ is related by $\sim$ to an element other than itself, and by the consequence above $w \in i(V_{K})$, so we, again, reach a contradiction.
-\end{proof}
+The proof is given in Appendix~\ref{sec:appendix-pushout-complement}.
 
 Traditionally, the objects in the diagram~\ref{eq:dpo_rewriting} are (hyper-)graphs, but in the context of string diagrams we have hypergraphs with interfaces, prescribing which vertices are the inputs and outputs of the hypergraph.
 To maintain the input and output interfaces of the hypergraph during DPO rewriting, the formalism has been extended to the one of DPOI rewriting, with \emph{I} standing for \emph{interfaces}, where in addition to the preservation of $K$ in the rewriting step, the interfaces of the source graph must be preserved.
@@ -1719,91 +1597,9 @@ Using $\corner{-}$ allows us to pass freely between syntactic rewriting of $\Sig
   a \rewriteArrow{\langle l, r \rangle} b \quad \iff \quad \llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle
   \]
 \end{theorem}
-\begin{proof}
-For the only-if direction, $a \rewriteArrow{\langle l, r \rangle} b$ by definition means that there exists a decomposition of $a$ and $b$ as
-\[
-\adjustbox{scale=0.7}{\tikzfig{./figures/string/decomposition}}~. 
-\]
-Applying $\corner{-}$ to the above gives us the decomposition of $\corner{a}$ as
-\[
-\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition}}~,
-\]
-or, by abbreviating
-\[
-\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_2}}~,
-\]
-as
-\[
-\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_3}}~.
-\]
-Analogously, we also get
-\[
-\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_4}}~.
-\]
-The dashed lines result in the following
-\begin{equation}
-\corner{a} = \corner{l} \fatsemi \tilde{a} \qquad \corner{b} = \corner{r} \fatsemi \tilde{a}\label{eq:tilde_decomposition}~,
-\end{equation}
-where $\tilde{a} = (\id_{i} \otimes \cup_{k} \otimes \id_{j}) \fatsemi (a_1^{\star} \otimes a_2)$.
-Applying the functor $\llangle - \rrangle$ to the above gives us the following cospans
-\begin{gather*}\label{gather:cospans_frobenius_rewriting}
-\llangle \corner{l} \rrangle = 0 \xrightarrow{} L \xleftarrow{} i \coprod j \qquad \llangle \corner{r} \rrangle = 0 \xrightarrow{} R \xleftarrow{} i \coprod j\\
-\llangle \tilde{a} \rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n\\
-\llangle \corner{a} \rrangle = 0 \xrightarrow{} G \xleftarrow{} m \coprod n \qquad \llangle \corner{b} \rrangle = 0 \xrightarrow{} H \xleftarrow{} m \coprod n~.
-\end{gather*}
-By functoriality and by~\cref{eq:tilde_decomposition}, we have
-\[
-\llangle \corner{a} \rrangle = \llangle \corner{l} \rrangle \fatsemi \llangle \tilde{a} \rrangle \qquad \llangle \corner{b} \rrangle = \llangle \corner{r} \rrangle \fatsemi \llangle \tilde{a} \rrangle~,
-\]
-since composition of cospans is given by pushouts, we get the diagram
-\[\begin{tikzcd}
-	L && {i \coprod j} && R \\
-	\\
-	G && {L^{\bot}} && H \\
-	&& {m \coprod n}
-	\arrow[from=1-1, to=3-1]
-	\arrow[from=1-3, to=1-1]
-	\arrow[from=1-3, to=1-5]
-	\arrow[from=1-3, to=3-3]
-	\arrow[from=1-5, to=3-5]
-	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
-	\arrow[from=3-3, to=3-1]
-	\arrow[from=3-3, to=3-5]
-	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
-	\arrow[from=4-3, to=3-1]
-	\arrow[from=4-3, to=3-3]
-	\arrow[from=4-3, to=3-5]
-\end{tikzcd}\]
-and by~\cref{def:dpoi_rewriting} we have $\llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle$.
 
-For the if direction, suppose $\llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle$.
-Then, by~\cref{def:dpoi_rewriting}, there exists a pushout complement $L^{\bot}$ such that the diagram as above commutes with two squares being pushouts.
-We denote the cospans involved in the DPOI square as in~\cref{gather:cospans_frobenius_rewriting}.
-Given $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$ pick $\hat{a}$ in $\mathbf{H}_{\Sigma}$ such that $\llangle \hat{a} \rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$, which exists by fullness of $\llangle - \rrangle$.
-Because composition in $\catname{HypI}(\Sigma)$ is given by pushouts, we have
-\begin{equation}\label{eq:only_if_direction}
-\adjustbox{scale=0.85}{$\displaystyle
-\begin{gathered}
-  \llangle \corner{a} \rrangle = (0 \to G \leftarrow m \coprod n)
-  = (0 \to L \leftarrow i \coprod j) \fatsemi (i \coprod j \to L^{\bot} \leftarrow m \coprod n)
-  = \llangle \corner{l} \rrangle \fatsemi \llangle \hat{a} \rrangle = \llangle \corner{l} \fatsemi \hat{a} \rrangle\\
-  \llangle \corner{b} \rrangle = (0 \to H \leftarrow m \coprod n)
-  = (0 \to R \leftarrow i \coprod j) \fatsemi (i \coprod j \to L^{\bot} \leftarrow m \coprod n)
-  = \llangle \corner{r} \rrangle \fatsemi \llangle \hat{a} \rrangle = \llangle \corner{r} \fatsemi \hat{a} \rrangle
-\end{gathered}
-$}
-\end{equation}
-By faithfulness of $\llangle - \rrangle$, the decompositions in~\cref{eq:only_if_direction} lift to decompositions of $\corner{a} = \corner{l} \fatsemi \hat{a}$ and $\corner{b} = \corner{r} \fatsemi \hat{a}$:
-\[
-\adjustbox{scale=0.8}{\tikzfig{./figures/string/cup_decomposition_5}}~.
-\]
-By inverting $\corner{-}$, we get the decompositions of $a$ and $b$ as
-\[
-\adjustbox{scale=0.8}{\tikzfig{./figures/string/cup_decomposition_6}}~,
-\]
-with dashed lines outlining the parts relevant to~\cref{def:rewriting_frop}, i.e. the part above the top dashed line corresponds to $a_2$ and the part below the bottom dashed line corresponds to $a_1$. 
-This, by definition, means that $a \rewriteArrow{\langle l, r \rangle} b$.
-\end{proof}
+The proof is given in Appendix~\ref{sec:appendix-dpoi-rewriting-frob}.
+
 \begin{corollary}
 \[
 \mathbf{H}_{\Sigma, \mathcal{E}} \cong \catname{HypI}(\Sigma) / \mathcal{R}~,
@@ -1813,9 +1609,9 @@ where
 \mathcal{R} = \{ \langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle \mid l = r \in \mathcal{E} \} \cup \{ \langle \llangle r \rrangle, \llangle l \rrangle \rangle \mid l = r \in \mathcal{E}\}~,
 \]
 and $/ \mathcal{R}$ denotes the quotient of $\catname{HypI}(\Sigma)$ by the rewriting rules $\rightsquigarrow_\mathcal{R}^{*}$ with $\rightsquigarrow^{*}$ being the reflexive transitive closure of $\rightsquigarrow$.
-Namely, we say that $m_1 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} n_1 \rightsquigarrow_{\mathcal{R}} m_2 \xrightarrow{} \mathcal{G}_2 \xleftarrow{} n_2$ if $0 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} m_1 \coprod n_1 \rightsquigarrow 0 \xrightarrow{}_{\mathcal{R}} \mathcal{G}_2 \xleftarrow{} m_2 \coprod n_2$.
+Namely, we say that $m_1 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} n_1 \rightsquigarrow_{\mathcal{R}} m_2 \xrightarrow{} \mathcal{G}_2 \xleftarrow{} n_2$ if $0 \xrightarrow{} \mathcal{G}_1 \xleftarrow{} m_1 \coprod n_1 \rightsquigarrow_{\mathcal{R}} 0 \xrightarrow{} \mathcal{G}_2 \xleftarrow{} m_2 \coprod n_2$.
 \end{corollary}
-This is similar to how $\mathbf{T}_{\Sigma, \mathcal{E}}$ is the quotient of $\mathbf{T}_{\Sigma}$ by the equations $\mathcal{E}$.
+% This is similar to how $\mathbf{T}_{\Sigma, \mathcal{E}}$ is the quotient of $\mathbf{T}_{\Sigma}$ by the equations $\mathcal{E}$.
 
 Before we recall a similar result for rewriting in $\catname{MHypI}(\Sigma)$ and $\mathbf{S}_{\Sigma}$ we note that DPOI rewriting as formulated in~\cref{def:dpoi_rewriting} is too general for the case of $\catname{MHypI}(\Sigma)$ and in order to make sure that rewriting is sound and complete for rewriting in $\mathbf{S}_{\Sigma}$ the notion of pushout complement and the notion of a match must be adjusted.
 
@@ -1946,99 +1742,8 @@ Let $\mathcal{R}$ be any rewriting system on $\mathbf{S}_{\Sigma}$, then
 a \Rightarrow_{\mathcal{R}} b \qquad \iff \qquad \llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~.
 \]
 \end{theorem}
-\begin{proof}
-For the only-if direction,~\cref{theorem:dpoi_rewriting_frob} implies that 
-\[
-\llangle \corner{a} \rrangle \rightsquigarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~,
-\]
-which gives us an analogous decomposition as in the proof of~\cref{theorem:dpoi_rewriting_frob}.
-In particular, we have that
-\[
-\big\llangle \adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition}}\big\rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n~.
-\]
-We can check that $m \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} n \coprod i$ is an mda-cospan by \enquote{unbending} the wires:
-\[
-\adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition_2}}~.
-\]
-This is indeed monogamous as $a_1$ and $a_2$ are morphisms in $\mathbf{S}_{\Sigma}$.
-Then, we have
-\[
-\llangle \corner{a} \rrangle
-= (0 \xrightarrow{} G \xleftarrow{} m \coprod n)
-= (0 \xrightarrow{} L \xleftarrow{} i \coprod j) \fatsemi (i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n)
-= \llangle \corner{l} \rrangle \fatsemi \llangle \tilde{a} \rrangle
-\]
-and let $f : L \to G$ be the pushout injection of the composition; we check that $f$ is mono and that its image is a convex sub-hypergraph of $G$.
 
-For monicity, recall that the composition is computed by the pushout of
-$L \xleftarrow{[a_1,a_2]} i \coprod j \xrightarrow{[c_1,c_2]} L^{\bot}$,
-of which $f$ is the injection opposite to $[c_1,c_2]$.
-Since $[c_1,c_2]$ is mono, as established when verifying the boundary
-complement conditions, and pushouts along monos in $\catname{Hyp}(\Sigma)$
-are mono, $f$ is mono.
-
-For convexity, first observe that, by monogamy of $G$, a path that leaves
-$f(L)$ can only do so through a vertex shared with $L^{\bot}$ whose unique
-out-hyperedge lies in $L^{\bot}$, and can only re-enter $f(L)$ through a
-shared vertex whose unique in-hyperedge lies in $L^{\bot}$.
-The shared vertices are exactly $i \coprod j$; every $i$-vertex has its
-out-hyperedge in $f(L)$, and every $j$-vertex has its in-hyperedge in
-$f(L)$, so convexity reduces to the claim that $L^{\bot}$ contains no path
-from a $j$-vertex to an $i$-vertex.
-This is where we use that $\llangle \tilde{a} \rrangle$ arises from the
-decomposition: the carrier $L^{\bot}$ is the carrier of $\llangle a_1
-\rrangle$ glued to the carrier of $\llangle a_2 \rrangle$ along the
-$k$-vertices only, with the $i$-vertices lying in the $a_1$-part and the
-$j$-vertices in the $a_2$-part.
-Assign rank $0$ to the hyperedges of the $a_1$-part and rank $1$ to those
-of the $a_2$-part.
-By monogamy of the two layers, every vertex of $L^{\bot}$ whose in- and
-out-hyperedges both exist within $L^{\bot}$ has the in-hyperedge of rank
-at most the out-hyperedge: internal vertices of a layer have both in the
-same layer, and $k$-vertices have their in-hyperedge in the $a_1$-part and
-out-hyperedge in the $a_2$-part.
-Hence ranks are non-decreasing along paths.
-A path starting at a $j$-vertex begins with a hyperedge of rank $1$, since
-$j$-vertices are inputs of the $a_2$-part and carry no hyperedge of the
-$a_1$-part; a path ending at an $i$-vertex ends with a hyperedge of rank
-$0$, since the unique in-hyperedge of an $i$-vertex within $L^{\bot}$ lies
-in the $a_1$-part.
-No path can therefore lead from a $j$-vertex to an $i$-vertex, and $f(L)$
-is convex.
-That is, we have that $\llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle$.
-
-For the if direction, suppose $\llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle$.
-Then, by definition, there exists a convex match $f : L \to G$ and a boundary pushout complement $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$ such that the diagram commutes and the marked squares are pushouts, for some rule $\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle$ in $\llangle \corner{\mathcal{R}} \rrangle$ with $\langle l, r \rangle : i \to j$ in $\mathcal{R}$.
-
-Since $a$ is a morphism of $\mathbf{S}_{\Sigma}$, the unfolded cospan $m \xrightarrow{q_1} G \xleftarrow{q_2} n = \llbracket a \rrbracket$ is an mda-cospan by~\cref{theorem:monogamous_isomorphism}.
-The match $f$ is mono with convex image, so~\cref{lemma:convex_decomposition} yields $k \in \mathbb{N}$ and a factorisation into mda-cospans
-\[
-(m \xrightarrow{} C_1 \xleftarrow{} k \coprod i)
-\;\fatsemi\;
-\bigl((k \xrightarrow{\id} k \xleftarrow{\id} k) \oplus (i \xrightarrow{} L \xleftarrow{} j)\bigr)
-\;\fatsemi\;
-(k \coprod j \xrightarrow{} C_2 \xleftarrow{} n)~,
-\]
-where the middle factor restricts to the unique cospan structure on $f(L) \cong L$ guaranteed by the lemma, compatible with the interface $i \coprod j \to L$ of the rule.
-Applying~\cref{prop:monogamous_isomorphism} once more, this time using fullness, we obtain morphisms $a_1 : m \to k \coprod i$ and $a_2 : k \coprod j \to n$ in $\mathbf{S}_{\Sigma}$ with
-\[
-\llbracket a_1 \rrbracket = (m \xrightarrow{} C_1 \xleftarrow{} k \coprod i)
-\qquad
-\llbracket a_2 \rrbracket = (k \coprod j \xrightarrow{} C_2 \xleftarrow{} n)~.
-\]
-By functoriality, $\llbracket a \rrbracket = \llbracket a_1 \fatsemi (\id_k \otimes l) \fatsemi a_2 \rrbracket$, and since $\llbracket - \rrbracket$ is faithful, $a = a_1 \fatsemi (\id_k \otimes l) \fatsemi a_2$ already in $\mathbf{S}_{\Sigma}$.
-This exhibits a redex, so the rule applies syntactically: setting $b' \defeq a_1 \fatsemi (\id_k \otimes r) \fatsemi a_2$, we have $a \Rightarrow_{\mathcal{R}} b'$.
-
-It remains to show that $b' = b$.
-The factorisation above assembles, exactly as in the only-if direction, into a second convex DPOI square for the same match $f$ and the same rule leg $i \coprod j \to L$, whose pushout complement is the folded context $i \coprod j \xrightarrow{} L^{\bot\prime} \xleftarrow{} m \coprod n$ built from $a_1$ and $a_2$, and whose result is $\llangle \corner{b'} \rrangle$.
-By~\cref{prop:boundary_pushout_complement_unique}, boundary complements are unique, so $L^{\bot\prime}$ and $L^{\bot}$ are isomorphic as pushout complements, i.e.\ via an isomorphism commuting with the arrows from $i \coprod j$ and to $G$.
-Pushing out $R \xleftarrow{} i \coprod j$ along the two isomorphic complements yields isomorphic cospans, hence
-\[
-\llangle \corner{b} \rrangle = (0 \xrightarrow{} E \xleftarrow{} m \coprod n) = \llangle \corner{b'} \rrangle~.
-\]
-Since $\llangle - \rrangle$ is an isomorphism of PROPs by~\cref{theorem:frobenius_isomorphism}, it follows that $\corner{b} = \corner{b'}$ in $\mathbf{H}_{\Sigma}$; unfolding, and using that $\mathbf{S}_{\Sigma} \to \mathbf{H}_{\Sigma}$ is faithful, $b = b'$ in $\mathbf{S}_{\Sigma}$.
-Hence $a \Rightarrow_{\mathcal{R}} b$, as required.
-\end{proof}
+The proof is given in Appendix~\ref{sec:appendix-convex-dpoi-rewriting}.
 
 \begin{corollary}
 \[

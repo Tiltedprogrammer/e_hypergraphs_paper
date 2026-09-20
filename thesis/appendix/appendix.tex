@@ -1,10 +1,9 @@
 \chapter{Egg implementation of the saturation example}\label{appendix:smce-rules}
 
-This appendix documents the computational counterpart of~\autoref{example:sat-comonoid} using the \egg equality saturation library~\cite{EggPaper}.
-We describe how the symmetric monoidal theory of commutative comonoids is encoded in the \egg framework, justify the design decisions that shape the implementation, and account for the rule application statistics in~\cref{tab:appendix-rules}.
+This appendix documents the computational counterpart of~\autoref{example:sat-comonoid} using the $\egg$ equality saturation library~\cite{EggPaper}.
+We describe how the symmetric monoidal theory of commutative comonoids is encoded in the $\egg$ framework and explain the design decisions that shape the implementation.
 
-\paragraph{Term language.}
-In \egg, the term language is a Rust \mintinline{rust}{enum} defined via the \mintinline{rust}{define_language!} macro, which associates string tokens with constructors and fixes their arities.
+In $\egg$, the term language is a Rust \mintinline{rust}{enum} defined via the \mintinline{rust}{define_language!} macro, which associates string tokens with constructors and fixes their arities.
 \cref{lst:language} shows the language for commutative comonoids.
 
 \begin{listing}[h]
@@ -29,17 +28,16 @@ define_language! {
 This particular encoding is influenced by the following considerations.
 
 The SMC equations reference identities $\id_n$ and symmetries $\sym_{n,m}$ for all $n,m\in\mathbb{N}$.
-Because \egg requires a finite language, these must include the arities actually needed by the example: identities at arities $0$--$4$ and symmetries for all $(n,m)$ with $n+m \leq 3$ and additionally $\sym_{2,2}$.
+Because $\egg$ requires a finite language, these must include the arities actually needed by the example: identities at arities $0$--$4$ and symmetries for all $(n,m)$ with $n+m \leq 3$ and additionally $\sym_{2,2}$.
 This necessitates the \emph{definitional rules} (e.g.\ $\id_2 = \id_1 \otimes \id_1$, $\sym_{2,1} = (\sym_{1,1} \otimes \id_1);(\id_1 \otimes \sym_{1,1})$) that link these tokens.
 Each definitional rule is applied at most once during saturation and is omitted from~\cref{tab:appendix-rules}.
 
-String diagrams allow $n$-ary parallel composition, but \egg operators have fixed binary arity.
+String diagrams allow $n$-ary parallel composition, but $\egg$ operators have fixed binary arity.
 Encoding $\otimes$ as a binary \mintinline{rust}{"parallel"} operator requires explicit \emph{tensor associativity} rules $(f \otimes g) \otimes h = f \otimes (g \otimes h)$ and \emph{tensor unit} laws $\id_0 \otimes f = f$, $f \otimes \id_0 = f$ to expose all equivalent forms of a tensor expression.
 As~\cref{tab:appendix-rules} shows, these two rule groups account for more than half of all applications---a direct cost of the encoding.
 
-\paragraph{Type analysis.}
 Each morphism in an SMC has a type $(dom, cod)\in\mathbb{N}^2$.
-The \egg framework supports \emph{e-class analyses}: user-defined data associated with each equivalence class, maintained invariantly as classes are merged.
+The $\egg$ framework supports \emph{e-class analyses}: user-defined data associated with each equivalence class, maintained invariantly as classes are merged.
 A \mintinline{rust}{TypeAnalysis} computes the type of every expression bottom-up, as shown in~\cref{lst:types}.
 
 \begin{listing}[h]
@@ -71,7 +69,6 @@ rw!("id_1-left-compose-right"; "(?x)" => "(; id_1 ?x)"
 Without the guard, the rule would fire for morphisms of any type, producing ill-typed terms and incorrect equalities.
 The guard is evaluated against the \mintinline{rust}{TypeAnalysis} data stored in each e-class.
 
-\paragraph{Rewrite rules.}
 \cref{lst:rules} shows the remaining representative rules.
 Each equation of the theory is split into two directed rules, one for each orientation, so that equality saturation can add both sides of the equivalence to the same e-class.
 
@@ -106,12 +103,11 @@ The symmetry naturality rule $\sym_{1,1};(f \otimes g) = (g \otimes f);\sym_{cod
 The rule is therefore split into one instance for each possible combination of codomains, each guarded by type conditions on $f$ and $g$.
 Six such instances are required for the example, covering codomains $(cod(f), cod(g)) \in \{(1,1),(1,0),(0,1),(1,2),(2,1),(2,2)\}$.
 
-\paragraph{The verified term.}
 The initial e-graph contains the term
 \[
   ((\mu;\sym_{1,1});(\eta \otimes \id_1)) \otimes (\mu;(\id_1 \otimes \id_1)),
 \]
-represented in the egg S-expression syntax as
+represented in the $\egg$ S-expression syntax as
 \begin{minted}{text}
 (parallel (; (; mu sym_1_1) (parallel i id_1))
           (; mu (parallel id_1 id_1)))
@@ -119,8 +115,7 @@ represented in the egg S-expression syntax as
 After saturation, the code checks that this e-class equals \mintinline{text}{(parallel id_1 mu)}, i.e.\ $\id_1 \otimes \mu$, returning \mintinline{rust}{true}.
 The equivalence follows by: commutativity ($\mu;\sym_{1,1} = \mu$) followed by the counit law ($\mu;(\eta \otimes \id_1) = \id_1$) for the left component, and the right identity law ($\mu;(\id_1 \otimes \id_1) = \mu;\id_2 = \mu$) for the right component.
 
-\paragraph{Rule application statistics.}
-\autoref{tab:appendix-rules} reports the number of times each non-definitional rule was applied during saturation.
+\Cref{tab:appendix-rules} reports the number of times each non-definitional rule was applied during saturation.
 As we already noted in~\cref{chapter:introduction}, the domain specific rules of commutativity and counit are applied exactly once, whereas structural rules are applied hundreds of times.
 
 \begin{table}[h]
@@ -151,7 +146,7 @@ Group & Rule & Equation & $(\to)$ & $(\leftarrow)$ \\
 \end{table}
 
 This result is unsurprising, the encoding we chose did not seem to be optimal in the first place.
-A possible alternative is to use the internal language of symmetric\footnote{Technically, these rules are for the linear monoidal categories, the symmetric version has additional conditions on the contexts.} monoidal categories given as follows:
+A possible alternative is to use the internal language of symmetric\footnote{Technically, these rules are for the linear monoidal categories, the symmetric version has additional conditions on the contexts.} monoidal categories~\cite{shulman2016categorical} given as follows:
 
 \[
 \inferrule*[right=$id$]{\vdash A\;\text{type}}{x : A \vdash x: A}
@@ -179,7 +174,7 @@ In this language, our initial term can be expressed as follows:
 \]
 This representation is slightly more economical, in particular, it does not require the explicit encoding of the $\id$ morphsisms, or equations for associativity of composition and its unitality.
 However, it requires a much more sophisticated encoding of the term language which does not seem to be supported by \egg.
-In particular, the variable contexts and variable binding are necessary.
+Specifically, the variable contexts and variable binding are necessary.
 
 
 % \paragraph{SMC equations.}
@@ -195,7 +190,417 @@ In particular, the variable contexts and variable binding are necessary.
 % \emph{Commutativity} ($\mu;\sym = \mu$) and the \emph{counit law} ($\mu;(\eta \otimes \id) = \id$) are each applied exactly once, confirming that the verification terminates as soon as the two relevant equivalences are found.
 % Coassociativity of $\mu$ ($\mu;(\id \otimes \mu) = \mu;(\mu \otimes \id)$) is present as a rule but not applied: the particular input term does not require it.
 
-\chapter{Additional figures for Chapter~\ref{chapter:monoidal}}
+\chapter{Additional material for Chapter~\ref{chapter:enriched}}
+
+\section{Change of base and opposite categories}
+\label{sec:appendix-change-of-base-op}
+
+\begin{proposition}
+Let $\mathcal{C}$ be an ordinary category and let $\widetilde{F}_{\mathcal{V}}$ be a change-of-base $2$-functor induced by a symmetric strong monoidal functor $F_{\mathcal{V}} : \catname{Set} \to \mathcal{V}$.
+Then, we have that $\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}} = \widetilde{F}_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}})$.
+\end{proposition}
+\begin{proof}
+The categories agree on objects.
+The hom-objects of $\widetilde{F}_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}})$ are given by 
+\[
+(\widetilde{F}_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}))(A,B) = F_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}(A,B)) = F_{\mathcal{V}}(\mathcal{C}(B,A))~.
+\]
+The hom-objects of $\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}}$ are given by 
+\[
+(\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}})(A,B) = (\widetilde{F}_{\mathcal{V}}(\mathcal{C}))(B,A) = F_{\mathcal{V}}(\mathcal{C}(B,A))~.
+\]
+Therefore, they also agree on hom-objects.
+We need to check if the composition and identities agree.
+For any triple of objects $A,B,C$, we have that the following diagram commutes
+\[\begin{tikzcd}[column sep=small]
+	&& {(\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}})(B,C) \otimes (\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}})(A,B)} \\
+	{(\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}})(A,B) \otimes (\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}})(B,C)} && {(\widetilde{F}_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}))(B,C) \otimes (\widetilde{F}_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}))(A,B)} \\
+	{\widetilde{F}_{\mathcal{V}}(\mathcal{C})(B,A) \otimes \widetilde{F}_{\mathcal{V}}(\mathcal{C})(C,B)} && {F_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}(B,C)) \otimes F_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}(A,B))} \\
+	{F_{\mathcal{V}}(\mathcal{C}(B,A)) \otimes F_{\mathcal{V}}(\mathcal{C}(C,B))} && {F_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}(B,C) \times \mathcal{C}^{\mathrm{op}}(A,B))} \\
+	{F_{\mathcal{V}}(\mathcal{C}(B,A) \times \mathcal{C}(C,B))} && {F_{\mathcal{V}}(\mathcal{C}^{\mathrm{op}}(A,C))} \\
+	{\widetilde{F}_{\mathcal{V}}(\mathcal{C}(C,A))} && {F_{\mathcal{V}}(\mathcal{C}(C,A))}
+	\arrow["{\id \otimes \id}"', from=1-3, to=2-1]
+	\arrow["{=}"{description}, draw=none, from=1-3, to=2-3]
+	\arrow["{\sym_{\mathcal{V}}}"', from=2-1, to=3-1]
+	\arrow["{=}"{description}, draw=none, from=2-3, to=3-3]
+	\arrow["{=}"{description}, draw=none, from=3-1, to=4-1]
+	\arrow["{\Phi_{\mathcal{C}^{\mathrm{op}}(B,C),\mathcal{C}^{\mathrm{op}}(A,B)}}", from=3-3, to=4-3]
+	\arrow["{\Phi_{\mathcal{C}(B,A),\mathcal{C}(C,B)}}"', from=4-1, to=5-1]
+	\arrow["{F_{\mathcal{V}}(\circ_{\mathcal{C}^{\mathrm{op}}})}", from=4-3, to=5-3]
+	\arrow["{F_{\mathcal{V}}(\circ_{\mathcal{C}})}"', from=5-1, to=6-1]
+	\arrow["{=}"{description}, draw=none, from=5-3, to=6-3]
+	\arrow["{=}"{description}, draw=none, from=6-1, to=6-3]
+\end{tikzcd}~.\]
+First note that $\circ_{\mathcal{C}^{\mathrm{op}}} = \circ_{\mathcal{C}} \circ \sym_{\catname{Set}}$, thus the equality between the left and right paths amounts to 
+\[
+F_{\mathcal{V}}(\circ_{\mathcal{C}}) \circ F_{\mathcal{V}}(\sym_{\catname{Set}}) \circ \Phi_{\mathcal{C}^{\mathrm{op}}(B,C),\mathcal{C}^{\mathrm{op}}(A,B)} = F_{\mathcal{V}}(\circ_{\mathcal{C}}) \circ \Phi_{\mathcal{C}(B,A),\mathcal{C}(C,B)} \circ \sym_{\mathcal{V}}
+\] 
+and we have that 
+\[
+F_{\mathcal{V}}(\sym_{\catname{Set}}) \circ \Phi_{\mathcal{C}^{\mathrm{op}}(B,C),\mathcal{C}^{\mathrm{op}}(A,B)} = \Phi_{\mathcal{C}(B,A),\mathcal{C}(C,B)} \circ \sym_{\mathcal{V}}~,
+\] 
+because the functor $F_{\mathcal{V}}$ is symmetric monoidal, as established in~\cref{cor:cocomplete_monoidal_free}.
+Identity maps agree by the definition of $\widetilde{F}_{\mathcal{V}}(\mathcal{C})^{\mathrm{op}}$.
+\end{proof}
+
+\chapter{Additional material for Chapter~\ref{chapter:string_diagrams}}
+
+\section{Pointwise pushouts of hypergraphs}
+\label{sec:appendix-pointwise-pushouts}
+
+Let $\mathcal{G}_0$, $\mathcal{G}_1$, and $\mathcal{G}_2$ be hypergraphs, viewed as functors $\mathcal{G}_i : \catname{I} \to \mathbb{F}$.
+Let $f : \mathcal{G}_0 \to \mathcal{G}_1$ and $g : \mathcal{G}_0 \to \mathcal{G}_2$ be hypergraph homomorphisms, i.e., natural transformations.
+Their pushout $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ is computed pointwise in $\mathbb{F}^{\catname{I}}$: for each object $x$ of $\catname{I}$ it is the pushout
+\[
+(\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2)(x) = \mathcal{G}_1(x) \coprod_{\mathcal{G}_0(x)} \mathcal{G}_2(x)
+\]
+in $\mathbb{F}$ of the span $\mathcal{G}_1(x) \xleftarrow{f_x} \mathcal{G}_0(x) \xrightarrow{g_x} \mathcal{G}_2(x)$, which is given by $\mathcal{G}_1(x) \coprod \mathcal{G}_2(x)$ quotiented by the least equivalence relation $\sim_x$ such that $\iota^x_1(z_1) \sim_x \iota^x_2(z_2)$ if there exists $w \in \mathcal{G}_0(x)$ with $z_1 = f_x(w)$ and $z_2 = g_x(w)$, where $\iota^x_1, \iota^x_2$ are the injections into $\mathcal{G}_1(x) \coprod \mathcal{G}_2(x)$; we denote this quotient $(\mathcal{G}_1(x) \coprod \mathcal{G}_2(x)) / {\sim_x}$.
+Then, given an arrow $\sigma : (k,l) \to \star$, we get an arrow $\alpha \defeq (\mathcal{G}_1 \coprod \mathcal{G}_2)(\sigma)$, $\alpha : (\mathcal{G}_1 \coprod \mathcal{G}_2)((k,l)) \to (\mathcal{G}_1 \coprod \mathcal{G}_2)(\star)$ and then the arrow $\hat{\alpha} : (\mathcal{G}_1 \coprod \mathcal{G}_2)((k,l)) \to (\mathcal{G}_1 \coprod \mathcal{G}_2)(\star) / \sim_{\star}$ by post-composing with the quotient projection.
+We then let $\tilde{\alpha}([w]) = \hat{\alpha}(w)$ for $[w] \in (\mathcal{G}_1 \coprod \mathcal{G}_2)((k,l)) / {\sim_{(k,l)}}$.
+That is, the action of $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ on arrows is given by $\tilde{\alpha}$.
+Suppose $w_1 \sim_{(k,l)} w_2$, then $\hat{\alpha}(w_1) = \hat{\alpha}(w_2)$, that is, $\tilde{\alpha}$ is well-defined.
+To illustrate that, assume there exists $z \in \mathcal{G}_0((k,l))$ such that $w_1 = \iota^{(k,l)}_1 \circ f_{(k,l)}(z)$ and $w_2 = \iota^{(k,l)}_2 \circ g_{(k,l)}(z)$, then we need to check if
+\begin{gather*}
+\hat{\alpha}(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) = \hat{\alpha}(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
+\iff\\
+\alpha(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) \sim_{\star} \alpha(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
+\iff\\
+(\mathcal{G}_1 \coprod \mathcal{G}_2)(\sigma)(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) \sim_{\star} (\mathcal{G}_1 \coprod \mathcal{G}_2)(\sigma)(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
+\iff\\
+(\mathcal{G}_1(\sigma) \coprod \mathcal{G}_2(\sigma))(\iota^{(k,l)}_1 \circ f_{(k,l)}(z)) \sim_{\star} (\mathcal{G}_1(\sigma) \coprod \mathcal{G}_2(\sigma))(\iota^{(k,l)}_2 \circ g_{(k,l)}(z))\\
+\iff\\
+\iota^{\star}_1(\mathcal{G}_1(\sigma)(f_{(k,l)}(z))) \sim_{\star} \iota^{\star}_2(\mathcal{G}_2(\sigma)(g_{(k,l)}(z)))
+\end{gather*}
+By naturality of $f$ and $g$, we have that $\mathcal{G}_1(\sigma) \circ f_{(k,l)} = f_{\star} \circ \mathcal{G}_0(\sigma)$ and $\mathcal{G}_2(\sigma) \circ g_{(k,l)} = g_{\star} \circ \mathcal{G}_0(\sigma)$, so we have
+\begin{gather*}
+\iota^{\star}_1(\mathcal{G}_1(\sigma)(f_{(k,l)}(z))) \sim_{\star} \iota^{\star}_2(\mathcal{G}_2(\sigma)(g_{(k,l)}(z)))\\
+\iff\\
+\iota^{\star}_1(f_{\star}(\mathcal{G}_0(\sigma)(z))) \sim_{\star} \iota^{\star}_2(g_{\star}(\mathcal{G}_0(\sigma)(z))).
+\end{gather*}
+The last line holds by definition of $\sim_{\star}$.
+The rest follows by a more detailed case analysis on $w_1 \sim_{(k,l)} w_2$.
+Checking that $\tilde{\alpha}$ preserves identities and composition, so that $\mathcal{G}_1 \coprod_{\mathcal{G}_0} \mathcal{G}_2$ is indeed a functor, is routine.
+
+\section{Frobenius isomorphism}
+\label{sec:appendix-frobenius-isomorphism}
+
+\begin{theorem}[Theorem 4.1~\cite{bonchi_string_2022-1}]
+  The functor $\llangle - \rrangle : \mathbf{H}_{\Sigma} \to \catname{HypI}(\Sigma)$ is an isomorphism of PROPs, i.e., $\mathbf{H}_{\Sigma} \cong \catname{HypI}(\Sigma)$.
+\end{theorem}
+\begin{proof}
+We present a sketch of the proof here, and refer the reader to~\cite{bonchi_string_2022-1} for the full details.
+The idea is to show that $\catname{HypI}(\Sigma)$ has the universal property of the coproduct, namely that for any PROP $\mathbb{A}$ and PROP morphisms $\alpha : \mathbf{S}_{\Sigma} \to \mathbb{A}$ and $\beta : \catname{Frob} \to \mathbb{A}$, there exists a unique PROP morphism $\gamma$ such that the following diagram commutes:
+\[\begin{tikzcd}
+	{\mathbf{S}_{\Sigma}} && {\catname{HypI}(\Sigma)} && {\catname{Frob}} \\
+	\\
+	&& {\mathbb{A}}
+	\arrow["{\llbracket - \rrbracket}", from=1-1, to=1-3]
+	\arrow["\alpha"', from=1-1, to=3-3]
+	\arrow["\gamma", from=1-3, to=3-3]
+	\arrow["{[-]}"', from=1-5, to=1-3]
+	\arrow["\beta"', from=1-5, to=3-3]
+\end{tikzcd}~.\]
+As all the arrows are identity-on-objects functors, it suffices to show that every morphism in $\catname{HypI}(\Sigma)$ can be decomposed in a unique way into components such that every component is in the image of either $\llbracket - \rrbracket$ or $[-]$.
+Let $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ be a morphism in $\catname{HypI}(\Sigma)$ and let $\mathcal{G} = (V_{\mathcal{G}}, E_{\mathcal{G}}, s, t, l)$ be its carrier hypergraph.
+Let $e_1, \ldots, e_n$ be some ordering on $E_{\mathcal{G}}$.
+Let $\tilde{m} \xrightarrow{\tilde{f}} \tilde{E} \xleftarrow{\tilde{g}} \tilde{n}$ be a cospan with the carrier formed by edges from $\mathcal{G}$, disconnected from each other and stacked vertically with $\tilde{m}$ being the collection of all input vertices for each edge and $\tilde{m}$ being the collection of all output vertices for each edge.
+There are functions $i : n \to V_{\mathcal{G}}$,  $\tilde{i} : \tilde{n} \to V_{\mathcal{G}}$, $j : m \to V_{\mathcal{G}}$, and $\tilde{j} : \tilde{m} \to V_{\mathcal{G}}$ that map vertices in the interfaces to their occurrences in the set of all vertices.
+The decomposition of $m \xrightarrow{f} \mathcal{G} \xleftarrow{g} n$ is then given by the composition of cospans
+% \begin{gather}\label{eq:decomposition}
+% \displaystyle (m \xrightarrow{i} V_{\mathcal{G}} \xleftarrow{[\id, \tilde{j}]} V_{\mathcal{G}} \otimes \tilde{m}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{m} \xrightarrow{\id \otimes \tilde{f}} V_{\mathcal{G}} \otimes \tilde{E} \xleftarrow{\id \otimes \tilde{g}} V_{\mathcal{G}} \otimes \tilde{n}) \fatsemi (V_{\mathcal{G}} \otimes \tilde{n} \xrightarrow{[\id, \tilde{i}]} V_{\mathcal{G}} \xleftarrow{i} n)~.
+% \end{gather}
+\begin{equation}\label{eq:decomposition}
+  \begin{adjustbox}{scale=0.9}
+\begin{tikzcd}
+	m & {V_{\mathcal{G}}} & {V_{\mathcal{G}}\otimes\tilde{m}} & {V_{\mathcal{G}}\otimes\tilde{E}} & {V_{\mathcal{G}}\otimes\tilde{n}} & {V_{\mathcal{G}}} & n
+	\arrow["i", from=1-1, to=1-2]
+	\arrow["{{[\id,\tilde{j}]}}"', from=1-3, to=1-2]
+	\arrow["{{\id\otimes\tilde{f}}}", from=1-3, to=1-4]
+	\arrow["{{\id\otimes\tilde{g}}}"', from=1-5, to=1-4]
+	\arrow["{{[\id,\tilde{i}]}}", from=1-5, to=1-6]
+	\arrow[from=1-6, to=1-5]
+	\arrow["i"', from=1-7, to=1-6]
+\end{tikzcd}
+\end{adjustbox}
+\end{equation}
+For example, below is a cospan (on the left) and its decomposition (on the right); we show the embedding of the interfaces using dashed arrows to avoid excessive cluttering of the cospans and use the labels to assign identities to vertices in $V_{\mathcal{G}}$.
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_1}} \quad \cong \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_3}} \fatsemi\; \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_2}} \fatsemi \adjustbox{scale=0.8}{\tikzfig{./figures/string/piling_example_4}}~.
+\]
+By computing the pushouts for the compositions on the right, we can verify that the composition is indeed isomorphic to the cospan on the left. 
+Intuitively, the middle cospan records all edges and vertices of the carrier hypergraph and the cospans on the sides record the incidence of the hyperedges and vertices.
+For example, in the first composition, vertices $u_1, u_3$ of hyperedges $a$ and $b$ get identified with the vertex $z_1$ according to the interface embedding.
+
+The middle cospan of the decomposition~\ref{eq:decomposition} is in the image of $\llbracket - \rrbracket$ as it is a tensor of identities and generators from $\Sigma$.
+The cospans on the sides are essentially cospans of finite sets and hence in the image of $[-]$ as $\catname{Frob} \cong \catname{Cospan}(\mathbb{F})$---a result of Lack~\cite{lackDedicatedAurelioCarboni}.
+This means that every morphism $\gamma : \catname{HypI}(\Sigma) \to \mathbb{A}$ is uniquely determined by its action on the components of the decomposition of each morphism.
+\end{proof}
+
+\section{Pushout complements}
+\label{sec:appendix-pushout-complement}
+
+\begin{proposition}
+  Let $K \xrightarrow{i} L \xrightarrow{f} G$ be morphisms in $\catname{Hyp}(\Sigma)$.
+  A pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$ exists if and only if the no-dangling and no-identification conditions are satisfied.
+\end{proposition}
+\begin{proof}
+  For the if direction, suppose the two conditions hold, and define $L^{\bot}$ as the following sub-hypergraph of $G$
+  \[
+  L^{\bot} \defeq (V_{L^{\bot}}, E_{L^{\bot}}, s_{L^{\bot}}, t_{L^{\bot}}, l_{L^{\bot}}) \hookrightarrow G, 
+  \]
+  where 
+  \begin{gather*}
+    V_{L^{\bot}} \defeq \bigl(V_G \setminus f(V_L)\bigr) \cup f(i(V_K))\\
+    E_{L^{\bot}} \defeq \bigl(E_G \setminus f(E_L)\bigr) \cup f(i(E_K))\\
+    s_{L^{\bot}} \defeq s_G \restriction_{E_{L^{\bot}}} \quad t_{L^{\bot}} \defeq t_G \restriction_{E_{L^{\bot}}} \quad l_{L^{\bot}} \defeq l_G \restriction_{E_{L^{\bot}}}
+  \end{gather*}
+  This is a well-defined sub-hypergraph: a hyperedge of $L^{\bot}$ either lies outside the image of $f$, in which case the no-dangling condition places each of its sources and targets outside the image of $f$ or inside the image of $f \circ i$, hence in $V_{L^{\bot}}$; or it lies in the image of $f \circ i$, in which case its sources and targets lie in the image of $f \circ i$ as well, since $f \circ i$ is a homomorphism.
+  Let $g \colon L^{\bot} \hookrightarrow G$ be the inclusion and $c \colon K \to L^{\bot}$ the corestriction of $f \circ i$, which lands in $L^{\bot}$ by construction; then $g \circ c = f \circ i$, so the square commutes.
+
+  It remains to show the square is a pushout.
+  Let $P \defeq L \coprod_{K} L^{\bot}$ be the pushout of $L \xleftarrow{i} K \xrightarrow{c} L^{\bot}$ computed as in~\cref{def:pushout_hyp}: the vertices and edges of the resulting hypergraph are quotients $V_{L} \coprod_{V_{K}} V_{L^{\bot}} / \sim$ and $E_{L}\coprod_{E_{K}} E_{L^{\bot}} / \sim$ by the least equivalence relation identifying $\iota_{1}^{V}(i_{V}(z))$ with $\iota_{2}^{V}(c_{V}(z))$ for $z \in V_{K}$ and similarly for edges.
+  Let $u \colon P \to G$ be the homomorphism induced by $f$ and $g$ via the universal property, given explicitly on vertices by $u_{V}([\iota^{V}_{1}(w)]) = f_{V}(w)$ and $u_{V}([\iota^{V}_{2}(z)]) = g_{V}(z)$, and analogously on edges.
+  We show that $u_{V}$ and $u_{E}$ are bijections; since a homomorphism that is bijective on vertices and on edges is an isomorphism of hypergraphs, this suffices.
+
+  For surjectivity, a vertex of $G$ either lies in $f(V_{L})$, hence in the image of $u_{V} \circ [\iota^{V}_{1}]$, or lies in $V_{G} \setminus f(V_{L}) \subseteq V_{L^{\bot}}$, hence in the image of $u_{V} \circ [\iota^{V}_{2}]$; the same argument applies to edges.
+
+  For injectivity, note that $u_{V}$ is injective if and only if any two elements of $V_{L} \coprod V_{L^{\bot}}$ with the same image under the copairing $[f_{V}, g_{V}] \colon V_{L} \coprod V_{L^{\bot}} \to V_{G}$ are related by $\sim$: the copairing factors as $u_{V}$ after the quotient projection.
+  So suppose two elements of $V_{L} \coprod V_{L^{\bot}}$ have the same image under $[f_{V}, g_{V}]$; we show that they are related by $\sim$.
+  There are three cases.
+  If both are of the form $\iota^{V}_{2}(z_{1}), \iota^{V}_{2}(z_{2})$, then $g_{V}(z_{1}) = g_{V}(z_{2})$ implies $z_{1} = z_{2}$, since $g$ is an inclusion.
+  If both are of the form $\iota^{V}_{1}(w_{1}), \iota^{V}_{1}(w_{2})$ with $w_{1} \neq w_{2}$, then $f_{V}(w_{1}) = f_{V}(w_{2})$, so by the no-identification condition $w_{1} = i_{V}(z_{1})$ and $w_{2} = i_{V}(z_{2})$ for some $z_{1}, z_{2} \in V_{K}$.
+  Then $c_{V}(z_{1}) = f_{V}(i_{V}(z_{1})) = f_{V}(w_{1}) = f_{V}(w_{2}) = c_{V}(z_{2})$, where the outer equalities hold because $c$ is the corestriction of $f \circ i$, and hence
+  \[
+  \iota^{V}_{1}(w_{1}) = \iota^{V}_{1}(i_{V}(z_{1})) \sim \iota^{V}_{2}(c_{V}(z_{1})) = \iota^{V}_{2}(c_{V}(z_{2})) \sim \iota^{V}_{1}(i_{V}(z_{2})) = \iota^{V}_{1}(w_{2}).
+  \]
+ Finally, suppose the elements are $\iota^{V}_{1}(w)$ and $\iota^{V}_{2}(z)$ with $f_{V}(w) = g_{V}(z)$.
+  Since $g_{V}(z) \in V_{L^{\bot}}$ and $f_{V}(w) \in f(V_{L})$, the construction of $V_{L^{\bot}}$ yields $f_{V}(w) \in f(i(V_{K}))$, say $f_{V}(w) = f_{V}(i_{V}(y))$ for some $y \in V_{K}$.
+  If $w = i_{V}(y)$, then
+  \[
+  g_{V}(c_{V}(y)) = f_{V}(i_{V}(y)) = f_{V}(w) = g_{V}(z),
+  \]
+  where the first equality is the commutativity $g \circ c = f \circ i$; injectivity of $g_{V}$ then gives $c_{V}(y) = z$, and hence $\iota^{V}_{1}(w) = \iota^{V}_{1}(i_{V}(y)) \sim \iota^{V}_{2}(c_{V}(y)) = \iota^{V}_{2}(z)$.
+  Otherwise, $w$ and $i_{V}(y)$ are distinct vertices identified by $f$, so by the no-identification condition $w = i_{V}(y')$ for some $y' \in V_{K}$, and the previous argument applies with $y'$ in place of $y$.
+  In all cases the two elements are related by $\sim$, so $u_{V}$ is injective; the argument for $u_{E}$ is identical, using the no-identification condition for edges in the second case.
+  Hence $u$ is an isomorphism, the constructed square is a pushout, and $L^{\bot}$ is a pushout complement of $K \xrightarrow{i} L \xrightarrow{f} G$.
+
+  For the converse, suppose that a pushout complement $K \xrightarrow{c} L^{\bot} \xrightarrow{g} G$ exists but at least one of the conditions fails.
+  Since pushouts are unique up to an isomorphism commuting with the pushout injections, we may by~\cref{def:pushout_hyp} assume that $V_{G} = V_{L} \coprod V_{L^{\bot}} / {\sim}$ and $E_{G} = E_{L} \coprod E_{L^{\bot}} / {\sim}$, with $f$ and $g$ the composites of the coproduct injections with the quotient projections.
+  We first record a consequence of this description: if $w \in V_{L}$ and $\iota^{V}_{1}(w)$ is related by $\sim$ to any element of the coproduct other than itself, then $w \in i(V_{K})$.
+  Indeed, every generating pair of $\sim$ is of the form $\iota^{V}_{1}(i_{V}(z)) \sim \iota^{V}_{2}(c_{V}(z))$, so a non-trivial chain of generating pairs passing through $\iota^{V}_{1}(w)$ must contain a generator whose left component is $\iota^{V}_{1}(w)$ itself, forcing $w = i_{V}(z)$ for some $z \in V_{K}$.
+  The same holds for edges.
+
+  Suppose the no-identification condition fails: there are distinct items of $L$, say vertices $w_{1} \neq w_{2}$ (the case of edges is identical), with $f_{V}(w_{1}) = f_{V}(w_{2})$ and at least one of them outside the image of $i$.
+  Then $\iota^{V}_{1}(w_{1})$ and $\iota^{V}_{1}(w_{2})$ are distinct elements of the coproduct in the same $\sim$-class, so both are related by $\sim$ to an element other than themselves, and by the consequence above both lie in the image of $i_{V}$---a contradiction.
+
+  Suppose the no-dangling condition fails: there is a hyperedge $e \in E_{G}$ outside the image of $f$ with a source or target $v \in f(V_{L}) \setminus f(i(V_{K}))$, say $v = f_{V}(w)$ with $w \notin i(V_{K})$.
+  Since $f$ and $g$ are jointly surjective on edges and $e \notin f(E_{L})$, we have $e = g_{E}(e')$ for some $e' \in E_{L^{\bot}}$.
+  As $g$ is a homomorphism, $g_{V}^{*}(s_{L^{\bot}}(e')) = s_{G}(e)$ and likewise for targets, so the corresponding source or target $z$ of $e'$ satisfies $g_{V}(z) = v = f_{V}(w)$.
+  Then $\iota^{V}_{1}(w)$ and $\iota^{V}_{2}(z)$ are distinct elements of the coproduct in the same $\sim$-class, so $\iota^{V}_{1}(w)$ is related by $\sim$ to an element other than itself, and by the consequence above $w \in i(V_{K})$, so we, again, reach a contradiction.
+\end{proof}
+
+
+\section{DPOI rewriting}
+\label{sec:appendix-dpoi-rewriting-frob}
+
+\begin{theorem}[{\cite[Thm. 4.9]{bonchi_string_2022-1}}]
+  Let $\langle l, r \rangle$ be a rewrite rule in $\mathbf{H}_{\Sigma}$.
+  Then,
+  \[
+  a \rewriteArrow{\langle l, r \rangle} b \quad \iff \quad \llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle
+  \]
+\end{theorem}
+\begin{proof}
+For the only-if direction, $a \rewriteArrow{\langle l, r \rangle} b$ by definition means that there exists a decomposition of $a$ and $b$ as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/decomposition}}~. 
+\]
+Applying $\corner{-}$ to the above gives us the decomposition of $\corner{a}$ as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition}}~,
+\]
+or, by abbreviating
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_2}}~,
+\]
+as
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_3}}~.
+\]
+Analogously, we also get
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/cup_decomposition_4}}~.
+\]
+The dashed lines result in the following
+\begin{equation}
+\corner{a} = \corner{l} \fatsemi \tilde{a} \qquad \corner{b} = \corner{r} \fatsemi \tilde{a}\label{eq:tilde_decomposition}~,
+\end{equation}
+where $\tilde{a} = (\id_{i} \otimes \cup_{k} \otimes \id_{j}) \fatsemi (a_1^{\star} \otimes a_2)$.
+Applying the functor $\llangle - \rrangle$ to the above gives us the following cospans
+\begin{gather*}\label{gather:cospans_frobenius_rewriting}
+\llangle \corner{l} \rrangle = 0 \xrightarrow{} L \xleftarrow{} i \coprod j \qquad \llangle \corner{r} \rrangle = 0 \xrightarrow{} R \xleftarrow{} i \coprod j\\
+\llangle \tilde{a} \rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n\\
+\llangle \corner{a} \rrangle = 0 \xrightarrow{} G \xleftarrow{} m \coprod n \qquad \llangle \corner{b} \rrangle = 0 \xrightarrow{} H \xleftarrow{} m \coprod n~.
+\end{gather*}
+By functoriality and by~\cref{eq:tilde_decomposition}, we have
+\[
+\llangle \corner{a} \rrangle = \llangle \corner{l} \rrangle \fatsemi \llangle \tilde{a} \rrangle \qquad \llangle \corner{b} \rrangle = \llangle \corner{r} \rrangle \fatsemi \llangle \tilde{a} \rrangle~,
+\]
+since composition of cospans is given by pushouts, we get the diagram
+\[\begin{tikzcd}
+	L && {i \coprod j} && R \\
+	\\
+	G && {L^{\bot}} && H \\
+	&& {m \coprod n}
+	\arrow[from=1-1, to=3-1]
+	\arrow[from=1-3, to=1-1]
+	\arrow[from=1-3, to=1-5]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow[from=3-3, to=3-1]
+	\arrow[from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow[from=4-3, to=3-1]
+	\arrow[from=4-3, to=3-3]
+	\arrow[from=4-3, to=3-5]
+\end{tikzcd}\]
+and by~\cref{def:dpoi_rewriting} we have $\llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle$.
+
+For the if direction, suppose $\llangle \corner{a} \rrangle \rightsquigarrow_{\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle} \llangle \corner{b} \rrangle$.
+Then, by~\cref{def:dpoi_rewriting}, there exists a pushout complement $L^{\bot}$ such that the diagram as above commutes with two squares being pushouts.
+We denote the cospans involved in the DPOI square as in~\cref{gather:cospans_frobenius_rewriting}.
+Given $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$ pick $\hat{a}$ in $\mathbf{H}_{\Sigma}$ such that $\llangle \hat{a} \rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$, which exists by fullness of $\llangle - \rrangle$.
+Because composition in $\catname{HypI}(\Sigma)$ is given by pushouts, we have
+\begin{equation}\label{eq:only_if_direction}
+\adjustbox{scale=0.85}{$\displaystyle
+\begin{gathered}
+  \llangle \corner{a} \rrangle = (0 \to G \leftarrow m \coprod n)
+  = (0 \to L \leftarrow i \coprod j) \fatsemi (i \coprod j \to L^{\bot} \leftarrow m \coprod n)
+  = \llangle \corner{l} \rrangle \fatsemi \llangle \hat{a} \rrangle = \llangle \corner{l} \fatsemi \hat{a} \rrangle\\
+  \llangle \corner{b} \rrangle = (0 \to H \leftarrow m \coprod n)
+  = (0 \to R \leftarrow i \coprod j) \fatsemi (i \coprod j \to L^{\bot} \leftarrow m \coprod n)
+  = \llangle \corner{r} \rrangle \fatsemi \llangle \hat{a} \rrangle = \llangle \corner{r} \fatsemi \hat{a} \rrangle
+\end{gathered}
+$}
+\end{equation}
+By faithfulness of $\llangle - \rrangle$, the decompositions in~\cref{eq:only_if_direction} lift to decompositions of $\corner{a} = \corner{l} \fatsemi \hat{a}$ and $\corner{b} = \corner{r} \fatsemi \hat{a}$:
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/cup_decomposition_5}}~.
+\]
+By inverting $\corner{-}$, we get the decompositions of $a$ and $b$ as
+\[
+\adjustbox{scale=0.8}{\tikzfig{./figures/string/cup_decomposition_6}}~,
+\]
+with dashed lines outlining the parts relevant to~\cref{def:rewriting_frob}, i.e. the part above the top dashed line corresponds to $a_2$ and the part below the bottom dashed line corresponds to $a_1$. 
+This, by definition, means that $a \rewriteArrow{\langle l, r \rangle} b$.
+\end{proof}
+
+
+\section{Convex DPOI rewriting}
+\label{sec:appendix-convex-dpoi-rewriting}
+
+\begin{theorem}[{\cite[Thm. 35]{bonchi_string_2022-2}}]
+Let $\mathcal{R}$ be any rewriting system on $\mathbf{S}_{\Sigma}$, then
+\[
+a \Rightarrow_{\mathcal{R}} b \qquad \iff \qquad \llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~.
+\]
+\end{theorem}
+\begin{proof}
+For the only-if direction,~\cref{theorem:dpoi_rewriting_frob} implies that 
+\[
+\llangle \corner{a} \rrangle \rightsquigarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle~,
+\]
+which gives us an analogous decomposition as in the proof of~\cref{theorem:dpoi_rewriting_frob}.
+In particular, we have that
+\[
+\big\llangle \adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition}}\big\rrangle = i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n~.
+\]
+We can check that $m \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} n \coprod i$ is an mda-cospan by \enquote{unbending} the wires:
+\[
+\adjustbox{scale=0.7}{\tikzfig{./figures/string/convex_cup_decomposition_2}}~.
+\]
+This is indeed monogamous as $a_1$ and $a_2$ are morphisms in $\mathbf{S}_{\Sigma}$.
+Then, we have
+\[
+\llangle \corner{a} \rrangle
+= (0 \xrightarrow{} G \xleftarrow{} m \coprod n)
+= (0 \xrightarrow{} L \xleftarrow{} i \coprod j) \fatsemi (i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n)
+= \llangle \corner{l} \rrangle \fatsemi \llangle \tilde{a} \rrangle
+\]
+and let $f : L \to G$ be the pushout injection of the composition; we check that $f$ is mono and that its image is a convex sub-hypergraph of $G$.
+
+For monicity, recall that the composition is computed by the pushout of
+$L \xleftarrow{[a_1,a_2]} i \coprod j \xrightarrow{[c_1,c_2]} L^{\bot}$,
+of which $f$ is the injection opposite to $[c_1,c_2]$.
+Since $[c_1,c_2]$ is mono, as established when verifying the boundary
+complement conditions, and pushouts along monos in $\catname{Hyp}(\Sigma)$
+are mono, $f$ is mono.
+
+For convexity, first observe that, by monogamy of $G$, a path that leaves
+$f(L)$ can only do so through a vertex shared with $L^{\bot}$ whose unique
+out-hyperedge lies in $L^{\bot}$, and can only re-enter $f(L)$ through a
+shared vertex whose unique in-hyperedge lies in $L^{\bot}$.
+The shared vertices are exactly $i \coprod j$; every $i$-vertex has its
+out-hyperedge in $f(L)$, and every $j$-vertex has its in-hyperedge in
+$f(L)$, so convexity reduces to the claim that $L^{\bot}$ contains no path
+from a $j$-vertex to an $i$-vertex.
+This is where we use that $\llangle \tilde{a} \rrangle$ arises from the
+decomposition: the carrier $L^{\bot}$ is the carrier of $\llangle a_1
+\rrangle$ glued to the carrier of $\llangle a_2 \rrangle$ along the
+$k$-vertices only, with the $i$-vertices lying in the $a_1$-part and the
+$j$-vertices in the $a_2$-part.
+Assign rank $0$ to the hyperedges of the $a_1$-part and rank $1$ to those
+of the $a_2$-part.
+By monogamy of the two layers, every vertex of $L^{\bot}$ whose in- and
+out-hyperedges both exist within $L^{\bot}$ has the in-hyperedge of rank
+at most the out-hyperedge: internal vertices of a layer have both in the
+same layer, and $k$-vertices have their in-hyperedge in the $a_1$-part and
+out-hyperedge in the $a_2$-part.
+Hence ranks are non-decreasing along paths.
+A path starting at a $j$-vertex begins with a hyperedge of rank $1$, since
+$j$-vertices are inputs of the $a_2$-part and carry no hyperedge of the
+$a_1$-part; a path ending at an $i$-vertex ends with a hyperedge of rank
+$0$, since the unique in-hyperedge of an $i$-vertex within $L^{\bot}$ lies
+in the $a_1$-part.
+No path can therefore lead from a $j$-vertex to an $i$-vertex, and $f(L)$
+is convex.
+That is, we have that $\llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle$.
+
+For the if direction, suppose $\llangle \corner{a} \rrangle \Rrightarrow_{\llangle \corner{\mathcal{R}} \rrangle} \llangle \corner{b} \rrangle$.
+Then, by definition, there exists a convex match $f : L \to G$ and a boundary pushout complement $i \coprod j \xrightarrow{} L^{\bot} \xleftarrow{} m \coprod n$ such that the diagram commutes and the marked squares are pushouts, for some rule $\langle \llangle \corner{l} \rrangle, \llangle \corner{r} \rrangle \rangle$ in $\llangle \corner{\mathcal{R}} \rrangle$ with $\langle l, r \rangle : i \to j$ in $\mathcal{R}$.
+
+Since $a$ is a morphism of $\mathbf{S}_{\Sigma}$, the unfolded cospan $m \xrightarrow{q_1} G \xleftarrow{q_2} n = \llbracket a \rrbracket$ is an mda-cospan by~\cref{theorem:monogamous_isomorphism}.
+The match $f$ is mono with convex image, so~\cref{lemma:convex_decomposition} yields $k \in \mathbb{N}$ and a factorisation into mda-cospans
+\[
+(m \xrightarrow{} C_1 \xleftarrow{} k \coprod i)
+\;\fatsemi\;
+\bigl((k \xrightarrow{\id} k \xleftarrow{\id} k) \oplus (i \xrightarrow{} L \xleftarrow{} j)\bigr)
+\;\fatsemi\;
+(k \coprod j \xrightarrow{} C_2 \xleftarrow{} n)~,
+\]
+where the middle factor restricts to the unique cospan structure on $f(L) \cong L$ guaranteed by the lemma, compatible with the interface $i \coprod j \to L$ of the rule.
+Applying~\cref{theorem:monogamous_isomorphism} once more, this time using fullness, we obtain morphisms $a_1 : m \to k \coprod i$ and $a_2 : k \coprod j \to n$ in $\mathbf{S}_{\Sigma}$ with
+\[
+\llbracket a_1 \rrbracket = (m \xrightarrow{} C_1 \xleftarrow{} k \coprod i)
+\qquad
+\llbracket a_2 \rrbracket = (k \coprod j \xrightarrow{} C_2 \xleftarrow{} n)~.
+\]
+By functoriality, $\llbracket a \rrbracket = \llbracket a_1 \fatsemi (\id_k \otimes l) \fatsemi a_2 \rrbracket$, and since $\llbracket - \rrbracket$ is faithful, $a = a_1 \fatsemi (\id_k \otimes l) \fatsemi a_2$ already in $\mathbf{S}_{\Sigma}$.
+This exhibits a redex, so the rule applies syntactically: setting $b' \defeq a_1 \fatsemi (\id_k \otimes r) \fatsemi a_2$, we have $a \Rightarrow_{\mathcal{R}} b'$.
+
+It remains to show that $b' = b$.
+The factorisation above assembles, exactly as in the only-if direction, into a second convex DPOI square for the same match $f$ and the same rule leg $i \coprod j \to L$, whose pushout complement is the folded context $i \coprod j \xrightarrow{} L^{\bot\prime} \xleftarrow{} m \coprod n$ built from $a_1$ and $a_2$, and whose result is $\llangle \corner{b'} \rrangle$.
+By~\cref{prop:boundary_pushout_complement_unique}, boundary complements are unique, so $L^{\bot\prime}$ and $L^{\bot}$ are isomorphic as pushout complements, i.e.\ via an isomorphism commuting with the arrows from $i \coprod j$ and to $G$.
+Pushing out $R \xleftarrow{} i \coprod j$ along the two isomorphic complements yields isomorphic cospans, hence
+\[
+\llangle \corner{b} \rrangle = (0 \xrightarrow{} E \xleftarrow{} m \coprod n) = \llangle \corner{b'} \rrangle~.
+\]
+Since $\llangle - \rrangle$ is an isomorphism of PROPs by~\cref{theorem:frobenius_isomorphism}, it follows that $\corner{b} = \corner{b'}$ in $\mathbf{H}_{\Sigma}$; unfolding, and using that $\mathbf{S}_{\Sigma} \to \mathbf{H}_{\Sigma}$ is faithful, $b = b'$ in $\mathbf{S}_{\Sigma}$.
+Hence $a \Rightarrow_{\mathcal{R}} b$, as required.
+\end{proof}
+
+\chapter{Additional material for Chapter~\ref{chapter:monoidal}}
 \label{sec:appendix-monoidal-figures}
 
 \begin{figure}
@@ -214,220 +619,1835 @@ Then the content of the dashed box is appropriately unified using the naturality
 Since in this setting morphisms have no variables, the unification is always possible.
 The last row futher compacts the diagram to match the corresponding e-graph (c) in~\cref{fig:egg_egraph}.
 
-\chapter{Multicategorical background for the epilogue}
-\label{appendix:type-theory-multicategories}
+\section{Pushout complements}
+\label{sec:appendix-monoidal-pushout-complements}
 
-This appendix records the categorical definitions used in
-\cref{sec:type-theory-epilogue}.  The purpose is to make precise the sense in
-which substitution is multicategorical composition and the additional
-structure expressed by the words \emph{representable}, \emph{affine}, and
-\emph{$\catname{SLat}$-enriched}.
-
-\section{Multicategories and placed composition}
-
-\begin{definition}[Multicategory]
-A \emph{multicategory} $\mathcal M$ consists of:
+\begin{lemma}[Shape of a complement]
+Let $i \coprod j \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ be as
+in~\cref{prop:e_pushout_complement_exists} and let
+$i \coprod j \xrightarrow{c} \mathcal{L}^{\bot} \xrightarrow{l^{\bot}} \mathcal{G}$
+be a pushout complement.
+Then
 \begin{enumerate}
- \item a collection $\obj{\mathcal M}$ of objects;
- \item a set $\mathcal M(A_1,\ldots,A_n;B)$ of multimorphisms for every
-       finite list of objects $A_1,\ldots,A_n$ and every object $B$;
- \item an identity $\id_A\in\mathcal M(A;A)$ for every object $A$; and
- \item composition operations
- \[
-  \mathcal M(B_1,\ldots,B_m;C)
-  \times\prod_{i=1}^{m}\mathcal M(A_{i1},\ldots,A_{in_i};B_i)
-  \longrightarrow
-  \mathcal M(\vec A_1,\ldots,\vec A_m;C),
- \]
- written $(g,f_1,\ldots,f_m)\mapsto g\circ(f_1,\ldots,f_m)$.
+  \item $l^{\bot}$ is strict;
+  \item $l^{\bot}_{V}\bigl(V_{\mathcal{L}^{\bot}}\bigr)
+        = \bigl(V_{\mathcal{G}} \setminus m(V_{\mathcal{L}})\bigr) \cup m\bigl(f(V_{i \coprod j})\bigr)$
+        and
+        $l^{\bot}_{E}\bigl(E_{\mathcal{L}^{\bot}}\bigr)
+        = \bigl(E_{\mathcal{G}} \setminus m(E_{\mathcal{L}})\bigr) \cup \{a\}$;
+  \item if $f$ is a monomorphism, then so is $l^{\bot}$.
 \end{enumerate}
-These operations satisfy
+\end{lemma}
+\begin{proof}
+Throughout we may assume, by the observation made in the proof of~\cref{prop:pushout_complement_exists}, that $\mathcal{G}$ is the constructed pushout, so
+that $V_{\mathcal{G}} = V_{\mathcal{L}} \coprod V_{\mathcal{L}^{\bot}} / R_{V}$
+and $E_{\mathcal{G}} = E_{\mathcal{L}} \coprod E_{\mathcal{L}^{\bot}} / R_{E}$,
+with $m$ and $l^{\bot}$ the composites of the coproduct injections with the
+quotient projections, and that every generating pair of $R_{V}$, respectively
+$R_{E}$, has the form
+$\bigl(\iota_{1}(f(z)), \iota_{2}(c(z))\bigr)$.
+
+\begin{enumerate}
+\item The span
+$\mathcal{L} \xleftarrow{f} i \coprod j \xrightarrow{c} \mathcal{L}^{\bot}$
+has $f$ strict and $c$ anchored, so by~\cref{prop:pushout_exists} the
+coprojection out of $\mathcal{L}^{\bot}$ is the strict one.
+
+\item For the inclusion $\supseteq$: an element outside the image of $m$ lies in
+the image of $l^{\bot}$ by joint surjectivity; and
+$f \fatsemi m = c \fatsemi l^{\bot}$ puts $m(f(V_{i \coprod j}))$ and
+$a = m_{E}(f_{E}(\top_{i \coprod j}))$ in the image of $l^{\bot}$.
+For $\subseteq$, consider $y = l^{\bot}(x)$, if $y$ is a vertex and $y \not \in m(V_{\mathcal{L}})$ then $y \in V_{\mathcal{G}} \setminus m(V_{\mathcal{L}})$ and similarly if $y$ is an edge. 
+So assume $y = m(w)$ for $w$ in $\mathcal{L}$ and suppose $x$ and $w$ are vertices.
+Since they are identified in the quotient, there must be an element $z \in V_{i \coprod j}$ such that $\iota_{1}(f(z)) = x$ and $\iota_{2}(c(z)) = w$ and therefore $l^{\bot}(x) \in m(f(V_{i \coprod j}))$.
+Now if $y$ was an edge, then $y = a$.
+
+\item Since $f$ is monic, its vertex and edge components are injective. Fix one
+sort $S \in \{V,E\}$ and suppose
+$l^{\bot}_{S}(x_{1}) = l^{\bot}_{S}(x_{2})$. Then
+$\iota_{2}(x_{1})$ and $\iota_{2}(x_{2})$ are joined by an alternating
+$R_{S}$-chain. Every portion of this chain passing from the
+$\mathcal{L}^{\bot}$-summand back to that summand has the form
 \[
- \id_B\circ(f)=f,
- \qquad
- f\circ(\id_{A_1},\ldots,\id_{A_n})=f,
+\iota_{2}(c_{S}(z_{1}))
+\sim
+\iota_{1}(f_{S}(z_{1}))
+=
+\iota_{1}(f_{S}(z_{2}))
+\sim
+\iota_{2}(c_{S}(z_{2})).
 \]
-and the evident associativity equation
+Injectivity of $f_{S}$ gives $z_{1}=z_{2}$, and hence
+$c_{S}(z_{1})=c_{S}(z_{2})$. Thus every term of the chain lying in the
+$\mathcal{L}^{\bot}$-summand is equal to $x_{1}$, so $x_{2}=x_{1}$.
+Consequently both components of $l^{\bot}$ are injective, and therefore
+$l^{\bot}$ is a monomorphism.
+\end{enumerate}
+\end{proof}
+
+\begin{lemma}[Uniqueness of pushout complements]
+Let $i \coprod j \xrightarrow{f} \mathcal{L} \xrightarrow{m} \mathcal{G}$ be as
+in~\cref{prop:e_pushout_complement_exists} with $f$ a monomorphism, and let
+$(\mathcal{L}^{\bot}, c, l^{\bot})$ and $(\mathcal{K}, c', k)$ be pushout
+complements of $(f, m)$.
+Then there is a unique isomorphism $\phi : \mathcal{L}^{\bot} \to \mathcal{K}$
+in $\catname{EHyp}_{\mathrm{s}}(\Sigma)$ with $\phi \fatsemi k = l^{\bot}$, and
+it satisfies $c \fatsemi \phi = c'$.
+\end{lemma}
+\begin{proof}
+By~\cref{lemma:complement_shape}, $l^{\bot}$ and $k$ are strict monomorphisms
+with the same image, which is described in part (2) of that lemma without
+reference to the complement.
+Define
+\[
+\phi_{V} \defeq l^{\bot}_{V} \fatsemi (k_{V})^{-1}~,
+\qquad
+\phi_{E} \defeq l^{\bot}_{E} \fatsemi (k_{E})^{-1}~,
+\]
+the inverses being taken on that common image; these are bijections and satisfy
+$\phi \fatsemi k = l^{\bot}$ by construction.
+
+\emph{$\phi$ is a homomorphism.}
+For sources, using that $l^{\bot}$ and $k$ are homomorphisms,
+\[
+k_{V}^{*}\bigl(s_{\mathcal{K}}(\phi_{E}(e))\bigr)
+= s_{\mathcal{G}}\bigl(k_{E}(\phi_{E}(e))\bigr)
+= s_{\mathcal{G}}\bigl(l^{\bot}_{E}(e)\bigr)
+= (l^{\bot}_{V})^{*}\bigl(s_{\mathcal{L}^{\bot}}(e)\bigr)
+= k_{V}^{*}\bigl(\phi_{V}^{*}(s_{\mathcal{L}^{\bot}}(e))\bigr)~,
+\]
+and $k_{V}$ is injective, so
+$s_{\mathcal{K}}(\phi_{E}(e)) = \phi_{V}^{*}(s_{\mathcal{L}^{\bot}}(e))$.
+Targets are identical, and labels follow from
+$l_{\mathcal{K}}(\phi_{E}(e)) = l_{\mathcal{G}}(k_{E}(\phi_{E}(e)))
+= l_{\mathcal{G}}(l^{\bot}_{E}(e)) = l_{\mathcal{L}^{\bot}}(e)$.
+
+\emph{$\phi$ is strict.}
+Both $l^{\bot}$ and $k$ are strict, so
+$k_{E}(\phi_{E}(\top_{\mathcal{L}^{\bot}})) = l^{\bot}_{E}(\top_{\mathcal{L}^{\bot}})
+= \top_{\mathcal{G}} = k_{E}(\top_{\mathcal{K}})$, and $k_{E}$ is injective,
+therefore $\phi_{E}(\top_{\mathcal{L}^{\bot}}) = \top_{\mathcal{K}}$.
+For $x \neq \kappa^{E}(\top_{\mathcal{L}^{\bot}})$,
+\[
+k_{E}\Bigl(\phi_{E}\bigl({<^{\mu}_{\mathcal{L}^{\bot}}}(x)\bigr)\Bigr)
+= l^{\bot}_{E}\bigl({<^{\mu}_{\mathcal{L}^{\bot}}}(x)\bigr)
+= {<^{\mu}_{\mathcal{G}}}\bigl(l^{\bot}(x)\bigr)
+= {<^{\mu}_{\mathcal{G}}}\bigl(k(\phi(x))\bigr)
+= k_{E}\bigl({<^{\mu}_{\mathcal{K}}}(\phi(x))\bigr)~,
+\]
+using strictness of $l^{\bot}$ and of $k$, and injectivity of $k_{E}$ gives
+$\phi_{E}({<^{\mu}_{\mathcal{L}^{\bot}}}(x)) = {<^{\mu}_{\mathcal{K}}}(\phi(x))$.
+The same argument with the roles of $\mathcal{L}^{\bot}$ and $\mathcal{K}$
+exchanged shows that $\phi^{-1} = k \fatsemi (l^{\bot})^{-1}$ is a strict
+homomorphism, so $\phi$ is an isomorphism of
+$\catname{EHyp}_{\mathrm{s}}(\Sigma)$.
+
+For $z \in V_{i \coprod j} \coprod E_{i \coprod j}$,
+\[
+k\bigl(\phi(c(z))\bigr) = l^{\bot}\bigl(c(z)\bigr) = m\bigl(f(z)\bigr) = k\bigl(c'(z)\bigr)~,
+\]
+and $k$ is injective, so $c \fatsemi \phi = c'$.
+
+\emph{Uniqueness.}
+If $\psi$ also satisfies $\psi \fatsemi k = l^{\bot}$, then
+$\psi \fatsemi k = \phi \fatsemi k$ and $k$ is monic, so $\psi = \phi$.
+\end{proof}
+
+\section{Congruence}
+\label{sec:appendix-rewriting-congruence}
+
+\begin{lemma}[Congruence]
+Let $\mathfrak{S}$ be any set of EDPOI rewrite rules and suppose
+$\mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G}$.
+Then, whenever the composites are defined,
+\begin{enumerate}
+  \item $\mathcal{E} \fatsemi \mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{E} \fatsemi \mathcal{G}$
+        and $\mathcal{F} \fatsemi \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G} \fatsemi \mathcal{E}$;
+  \item $\mathcal{E} \otimes \mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{E} \otimes \mathcal{G}$
+        and $\mathcal{F} \otimes \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G} \otimes \mathcal{E}$;
+  \item for $1 \leq r \leq p$ 
+  \[\hspace{-2em}
+  \mathcal{F}^{1} \join \cdots \join \mathcal{F}^{r-1} \join \mathcal{F} \join \mathcal{F}^{r+1} \join \cdots \join \mathcal{F}^{p}
+        \;\overline{\rightsquigarrow}_{\mathfrak{S}}\;
+        \mathcal{F}^{1} \join \cdots \join \mathcal{F}^{r-1} \join \mathcal{G} \join \mathcal{F}^{r+1} \join \cdots \join \mathcal{F}^{p}~.
+        \]
+\end{enumerate}
+Consequently $\sim_{\mathfrak{S}}$ is a congruence for $\fatsemi$, $\otimes$ and
+$\join$.
+\end{lemma}
+\begin{proof}
+Let $\mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G}$. 
+By~\cref{def:dpoi_rooted} there is a rule 
+\[
+\mathcal{L} \xleftarrow{f_{\mathrm{int}}} i' \coprod j' \xleftarrow{f_{\mathrm{ext}}} i \coprod j \xrightarrow{p_{\mathrm{ext}}} i'' \coprod j'' \xrightarrow{p_{\mathrm{int}}} \mathcal{R}~,
+\]
+such that the following diagram commutes, satisfying the conditions of~\cref{def:dpoi_rooted}.
+% https://q.uiver.app/#q=WzAsMTIsWzAsMCwiXFxtYXRoY2Fse0x9Il0sWzEsMCwiaScgXFxjb3Byb2QgaiciXSxbMiwwLCJpIFxcY29wcm9kIGoiXSxbMCwyLCJcXG1hdGhjYWx7Rn0iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFsyLDUsIm4gXFxjb3Byb2QgayJdLFsxLDMsIm4nIFxcY29wcm9kIGsnIl0sWzQsMiwiXFxtYXRoY2Fse0d9Il0sWzQsMCwiXFxtYXRoY2Fse1J9Il0sWzMsMywibicnIFxcY29wcm9kIGsnJyJdLFszLDAsImknJ1xcY29wcm9kIGonJyJdLFsyLDMsIihuJyBcXHNldG1pbnVzIFNfbikgXFxjb3Byb2QgKGsgXFxzZXRtaW51cyBTX2spIl0sWzAsMywibSIsMl0sWzEsMCwiZl97XFxtYXRocm17aW50fX0iLDJdLFsyLDEsImZfe1xcbWF0aHJte2V4dH19IiwyXSxbMiw0LCJjIl0sWzQsMywibF57XFxib3R9IiwyXSxbNSw2LCJnX3tcXG1hdGhybXtleHR9fSJdLFs2LDMsImdfe1xcbWF0aHJte2ludH19Il0sWzMsMiwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzQsNywiXFx3aWRldGlsZGV7XFxpb3RhX3tcXGJvdH19Il0sWzgsNywiXFx3aWRldGlsZGV7XFxpb3RhX3tcXG1hdGhjYWx7Un19fSJdLFs1LDksImhfe1xcbWF0aHJte2V4dH19IiwyXSxbOSw3LCJoX3tcXG1hdGhybXtpbnR9fSIsMl0sWzcsMiwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzIsMTAsInBfe1xcbWF0aHJte2V4dH19Il0sWzEwLDgsInBfe1xcbWF0aHJte2ludH19Il0sWzUsMTEsIlxcb3ZlcmxpbmV7Z31fe1xcbWF0aHJte2V4dH19IiwyXSxbMTEsNCwiZ157XFxib3R9IiwyXV0=
+\begin{equation}
+  \begin{tikzcd}
+	{\mathcal{L}} & {i' \coprod j'} & {i \coprod j} & {i''\coprod j''} & {\mathcal{R}} \\
+	\\
+	{\mathcal{F}} && {\mathcal{L}^{\bot}} && {\mathcal{G}} \\
+	& {n' \coprod k'} & {(n' \setminus S_n) \coprod (k' \setminus S_k)} & {n'' \coprod k''} \\
+	\\
+	&& {n \coprod k}
+	\arrow["m"', from=1-1, to=3-1]
+	\arrow["{f_{\mathrm{int}}}"', from=1-2, to=1-1]
+	\arrow["{f_{\mathrm{ext}}}"', from=1-3, to=1-2]
+	\arrow["{p_{\mathrm{ext}}}", from=1-3, to=1-4]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow["{p_{\mathrm{int}}}", from=1-4, to=1-5]
+	\arrow["{\widetilde{\iota_{\mathcal{R}}}}", from=1-5, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow["{l^{\bot}}"', from=3-3, to=3-1]
+	\arrow["{\widetilde{\iota_{\bot}}}", from=3-3, to=3-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow["{g_{\mathrm{int}}}", from=4-2, to=3-1]
+	\arrow["{g^{\bot}}"', from=4-3, to=3-3]
+	\arrow["{[h_{n}, h_{k}]}"', from=4-4, to=3-5]
+	\arrow["{g_{\mathrm{ext}}}", from=6-3, to=4-2]
+	\arrow["{\overline{g}_{\mathrm{ext}}}"', from=6-3, to=4-3]
+	\arrow["{h^{n}_{\mathrm{ext}} \coprod h^{k}_{\mathrm{ext}}}"', from=6-3, to=4-4]
+\end{tikzcd}~.
+\tag{1}
+\label{eq:extended_complement_diagram}
+\end{equation}
+
+\begin{enumerate}[parsep=\parskip,
+    listparindent=\parindent]
+\item We prove
+\[
+\mathcal E\fatsemi\mathcal F
+\;\overline{\rightsquigarrow}_{\mathfrak S}\;
+\mathcal E\fatsemi\mathcal G.
+\]
+
+Write the extended cospans representing \(\mathcal E\) and \(\mathcal F\) as
+\[
+n_1
+\xrightarrow{f_{1,\mathrm{ext}}}
+n_1'
+\xrightarrow{f_{1,\mathrm{int}}}
+\mathcal E
+\xleftarrow{g_{1,\mathrm{int}}}
+k_1'
+\xleftarrow{g_{1,\mathrm{ext}}}
+n
+\]
+and
+\[
+n
+\xrightarrow{f_{2,\mathrm{ext}}}
+n'
+\xrightarrow{f_{2,\mathrm{int}}}
+\mathcal F
+\xleftarrow{g_{2,\mathrm{int}}}
+k'
+\xleftarrow{g_{2,\mathrm{ext}}}
+k,
+\]
+so that $g_{\mathrm{ext}} = f_{2,\mathrm{ext}} \coprod g_{2,\mathrm{ext}}$ and $g_{\mathrm{int}} = [f_{2, \mathrm{int}}, g_{2, \mathrm{int}}]$.
+
+Let
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJrXzEiXSxbMiwwLCJcXG1hdGhjYWx7Rn0iXSxbMCwyLCJcXG1hdGhjYWx7RX0iXSxbMiwyLCJcXG1hdGhjYWx7RX0gXFxjb3Byb2Rfe2tfMX0gXFxtYXRoY2Fse0Z9Il0sWzAsMSwidiJdLFswLDIsInUiLDJdLFsyLDMsIlxcdmFyZXBzaWxvbiIsMl0sWzEsMywiXFxwaGkiXSxbMywwLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\begin{equation}
+  \begin{tikzcd}
+	{n} && {\mathcal{F}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E} \coprod_{n} \mathcal{F}}
+	\arrow["f_{2,\mathrm{ext}} \fatsemi f_{2, \mathrm{int}}", from=1-1, to=1-3]
+	\arrow["g_{1,\mathrm{ext}} \fatsemi g_{1,\mathrm{int}}"', from=1-1, to=3-1]
+	\arrow["\phi", from=1-3, to=3-3]
+	\arrow["\varepsilon"', from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-1]
+\end{tikzcd}
+\tag{2}
+\label{eq:pushout_square_e_circ_f}
+\end{equation}
+be the pushout computing the carrier of
+\(\mathcal E\fatsemi\mathcal F\). 
+The composite $\mathcal{E} \fatsemi \mathcal{F}$ is then given by the following extended cospan
+\[
+n_1 \xrightarrow{f_{1,\mathrm{ext}} \fatsemi \iota_{1}} n_1' \coprod (n' \setminus n) \xrightarrow{q_1} \mathcal{E} \coprod_{n} \mathcal{F} \xleftarrow{q_2} k' \coprod (k'_1 \setminus n) \xleftarrow{g_{2,\mathrm{ext}} \fatsemi \iota_{1}} k~,
+\]
+where 
+\[
+q_1 = [f_{1, \mathrm{int}} \fatsemi \varepsilon, (f_{2, \mathrm{int}} \fatsemi \phi) \restriction_{(n' \setminus n)}]
+\]
+and
+\[
+q_2 = [g_{2,\mathrm{int}} \fatsemi \phi, (g_{1, \mathrm{int}} \fatsemi \varepsilon) \restriction_{(k_1' \setminus n)}]~.
+\]
+
+Writing
+\[
+n \xrightarrow{\overline{g}^{n}_{\mathrm{ext}}} (n' \setminus S_n) \xrightarrow{g^{\bot}_{n}} \mathcal{L}^{\bot} \xleftarrow{g^{\bot}_{k}} (k' \setminus S_k) \xleftarrow{\overline{g}^{k}_{\mathrm{ext}}} k~,
+\]
+we similarly get a composite $\mathcal{E} \fatsemi \mathcal{L}^{\bot}$ given by the extended cospan
+\begin{equation}
+n_1 \xrightarrow{f_{1, \mathrm{ext}} \fatsemi \iota_{1}} n'_1 \coprod ((n' \setminus S_n) \setminus n) \xrightarrow{q_1^{\bot}} \mathcal{E} \coprod_{n} \mathcal{L}^{\bot} \xleftarrow{q_2^{\bot}} (k' \setminus S_k) \coprod (k'_1 \setminus n) \xleftarrow{\overline{g}^{k}_{\mathrm{ext}} \fatsemi \iota_{1}} k~,
+\tag{3}
+\label{eq:extended_complement_composite_cospan}
+\end{equation}
+with 
+\[
+q_1^{\bot} = [f_{1, \mathrm{int}} \fatsemi \varepsilon^{\bot}, (g_{n}^{\bot} \fatsemi \phi^{\bot}) \restriction_{((n' \setminus S_{n}) \setminus n)}]
+\] 
+and 
+\[
+q_2^{\bot} = [g_{k}^{\bot} \fatsemi \phi^{\bot}, (g_{1,\mathrm{int}} \fatsemi \varepsilon^{\bot}) \restriction_{((k_1' \setminus n))}]~,
+\]
+where $(\mathcal{E} \coprod_{n} \mathcal{L}^{\bot}, \phi^{\bot}, \varepsilon^{\bot})$ is the pushout 
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJrXzEiXSxbMiwwLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFswLDIsIlxcbWF0aGNhbHtFfSJdLFsyLDIsIlxcbWF0aGNhbHtFfSBcXGNvcHJvZF97a18xfSBcXG1hdGhjYWx7Rn0iXSxbMCwxLCJnX3sxLFxcbWF0aHJte2V4dH19XFxmYXRzZW1pIGdfezF9XntcXGJvdH0iXSxbMCwyLCJnX3sxLFxcbWF0aHJte2V4dH19IFxcZmF0c2VtaSBnX3sxLFxcbWF0aHJte2ludH19IiwyXSxbMiwzLCJcXHZhcmVwc2lsb25ee1xcYm90fSIsMl0sWzEsMywiXFxwaGlee1xcYm90fSJdLFszLDAsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+\begin{equation}
+  \begin{tikzcd}
+	{n} && {\mathcal{L}^{\bot}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E} \coprod_{n} \mathcal{L}^{\bot}}
+	\arrow["{\overline{g}^{n}_{\mathrm{ext}}\fatsemi g_{n}^{\bot}}", from=1-1, to=1-3]
+	\arrow["{g_{1,\mathrm{ext}} \fatsemi g_{1,\mathrm{int}}}"', from=1-1, to=3-1]
+	\arrow["{\phi^{\bot}}", from=1-3, to=3-3]
+	\arrow["{\varepsilon^{\bot}}"', from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-1]
+\end{tikzcd}
+\tag{4}
+\label{eq:pushout_square_e_circ_lbot}
+\end{equation}
+
+We claim that
+\[
+i\coprod j
+\xrightarrow{c\fatsemi\phi^\bot}
+\mathcal E\coprod_n\mathcal L^\bot
+\xrightarrow{\id_{\mathcal{E}} \coprod l^{\bot}}
+\mathcal E\coprod_n\mathcal F
+\]
+is an extended pushout complement of \(f\) and
+\(m\fatsemi\phi\).
+
+% https://q.uiver.app/#q=WzAsOCxbMCwxLCJuIl0sWzEsMSwiXFxtYXRoY2FsIExeXFxib3QiXSxbMiwxLCJcXG1hdGhjYWwgRiJdLFswLDIsIlxcbWF0aGNhbCBFIl0sWzEsMiwiXFxtYXRoY2FsIEVcXGNvcHJvZF9uXFxtYXRoY2FsIExeXFxib3QiXSxbMiwyLCJcXG1hdGhjYWwgRVxcY29wcm9kX25cXG1hdGhjYWwgRi4iXSxbMSwwLCJpIFxcY29wcm9kIGoiXSxbMiwwLCJcXG1hdGhjYWx7TH0iXSxbMCwxLCJcXG92ZXJsaW5lIGdfe1xcbWF0aHJte2V4dH19XntcXCxufVxuICAgICAgXFxmYXRzZW1pIGdfbl5cXGJvdCJdLFswLDMsImdfezEsXFxtYXRocm17ZXh0fX1cXGZhdHNlbWkgZ197MSxcXG1hdGhybXtpbnR9fSIsMl0sWzEsMiwibF5cXGJvdCJdLFsxLDQsIlxccGhpXlxcYm90Il0sWzIsNSwiXFxwaGkiXSxbMyw0LCJcXHZhcmVwc2lsb25eXFxib3QiLDJdLFs0LDUsIlxcaWRfe1xcbWF0aGNhbCBFfVxcY29wcm9kX24gbF5cXGJvdCIsMl0sWzQsMCwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzUsMSwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzEsMywiKDEpIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzIsNCwiKDIpIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzYsMSwiYyIsMl0sWzYsNywiZiJdLFs3LDIsIm0iXSxbMiw2LCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNywxLCIoMykiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+\begin{equation}
+\begin{tikzcd}
+	& {i \coprod j} & {\mathcal{L}} \\
+	n & {\mathcal L^\bot} & {\mathcal F} \\
+	{\mathcal E} & {\mathcal E\coprod_n\mathcal L^\bot} & {\mathcal E\coprod_n\mathcal F}
+	\arrow["f", from=1-2, to=1-3]
+	\arrow["c"', from=1-2, to=2-2]
+	\arrow["{(3)}"{description}, draw=none, from=1-3, to=2-2]
+	\arrow["m", from=1-3, to=2-3]
+	\arrow["{\overline g_{\mathrm{ext}}^{\,n}
+	      \fatsemi g_n^\bot}", from=2-1, to=2-2]
+	\arrow["{g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}}"', from=2-1, to=3-1]
+	\arrow["{l^\bot}", from=2-2, to=2-3]
+	\arrow["{(1)}"{description}, draw=none, from=2-2, to=3-1]
+	\arrow["{\phi^\bot}", from=2-2, to=3-2]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-3, to=1-2]
+	\arrow["{(2)}"{description}, draw=none, from=2-3, to=3-2]
+	\arrow["\phi", from=2-3, to=3-3]
+	\arrow["{\varepsilon^\bot}"', from=3-1, to=3-2]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-2, to=2-1]
+	\arrow["{\id_{\mathcal E}\coprod_n l^\bot}"', from=3-2, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=2-2]
+\end{tikzcd}~.
+\tag{5}
+\label{eq:stacked_pushout_diagram}
+\end{equation}
+The square (1) is a pushout by the diagram~\eqref{eq:pushout_square_e_circ_lbot}.
+From the extended pushout complement~\eqref{eq:extended_complement_diagram} we have that $\overline g_{\mathrm{ext}}^{n} \fatsemi g_{n}^{\bot} \fatsemi l^{\bot} = f_{2,\mathrm{ext}} \fatsemi f_{2, \mathrm{int}}$.
+Consider maps $\varepsilon : \mathcal{E} \to \mathcal{E} \coprod_{n} \mathcal{F}$ and $l^{\bot} \fatsemi \phi : \mathcal{L}^{\bot} \to \mathcal{E} \coprod_{n} \mathcal{F}$, they agree on $n$ since
 \begin{align*}
- &(h\circ(g_1,\ldots,g_m))
-     \circ(f_{11},\ldots,f_{1n_1},\ldots,f_{m1},\ldots,f_{mn_m})\\
- &\qquad={}
- h\circ\bigl(g_1\circ(f_{11},\ldots,f_{1n_1}),\ldots,
-              g_m\circ(f_{m1},\ldots,f_{mn_m})\bigr).
+g_{1,\mathrm{ext}} \fatsemi g_{1,\mathrm{int}} \fatsemi \varepsilon &= f_{2,\mathrm{ext}} \fatsemi f_{2, \mathrm{int}} \fatsemi \phi\\
+&= \overline{g}_{\mathrm{ext}}^{n} \fatsemi g_{n}^{\bot} \fatsemi l^{\bot} \fatsemi \phi~,
 \end{align*}
-\end{definition}
+and therefore the universal property of the pushout $\mathcal{E} \coprod_{n} \mathcal{L}^{\bot}$ gives us a unique map $\id_{\mathcal{E}} \coprod l^{\bot} : \mathcal{E} \coprod_{n} \mathcal{L}^{\bot} \to \mathcal{E} \coprod_{n} \mathcal{F}$ so that the square (2) commutes.
+From the same universal property we have that $\varepsilon^{\bot} \fatsemi (\id_{\mathcal{E}} \coprod l^{\bot}) = \varepsilon$ and the outermost rectangle is a pushout by the diagram~\eqref{eq:pushout_square_e_circ_f}.
+By the cancellation property of pushouts, the data above imply that the square (2) is a pushout.
+Square (3) is a pushout given by the extended pushout complement~\eqref{eq:extended_complement_diagram} and by the pasting property of pushouts, the rectangle (3)--(2) is a pushout.
+Both maps out of $n$ in the pushout defining
+$\mathcal E\coprod_n\mathcal F$ are strict, so $\phi$ is strict.
+Likewise,
+\[
+g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}
+\qquad\text{and}\qquad
+\overline g_{\mathrm{ext}}^{\,n}\fatsemi g_n^\bot
+\]
+are strict, so $\phi^\bot$ is strict.
+Since $m$ and $c$ are anchored, it follows that
+\[
+m\fatsemi\phi
+\qquad\text{and}\qquad
+c\fatsemi\phi^\bot
+\]
+are anchored.
+Together with the pushout property of the outer rectangle, this establishes
+condition~(1) of~\cref{def:extended_complement}.
 
-Equivalently, the simultaneous composition above may be generated by
-\emph{placed composition}.  If
-\[
- g\in\mathcal M(B_1,\ldots,B_m;C),
- \qquad
- f\in\mathcal M(A_1,\ldots,A_n;B_i),
-\]
-then
-\[
- g\circ_i f\in
- \mathcal M(B_1,\ldots,B_{i-1},A_1,\ldots,A_n,
-            B_{i+1},\ldots,B_m;C).
-\]
-Besides $\id_B\circ_1f=f$ and $f\circ_i\id_{B_i}=f$, placed composition
-satisfies the following three cases.  If $h$ is $n$-ary, $g$ is $m$-ary, and
-$f$ is $k$-ary, then
-\[
- (h\circ_i g)\circ_j f=
- \begin{cases}
-  (h\circ_jf)\circ_{i+k-1}g,&j<i,\\
-  h\circ_i(g\circ_{j-i+1}f),&i\leq j<i+m,\\
-  (h\circ_{j-m+1}f)\circ_i g,&j\geq i+m.
- \end{cases}
-\]
-The middle case is associativity: $f$ is inserted into an input of $g$.
-The outer cases are interchange: $f$ and $g$ are inserted independently into
-different inputs of $h$, so the order of the two insertions is immaterial.
-These are exactly the three shapes of the substitution equations in the
-epilogue.
+We next verify condition~(2). Since \(i\coprod j\) is pointed discrete and
+\(f:i\coprod j\to\mathcal L\) is strict, the explicit construction of the
+outer pushout identifies only the root and top-level interface vertices of
+\(\mathcal L\) with elements of
+\(\mathcal E\coprod_n\mathcal L^\bot\). In particular, it introduces no new
+immediate children below the image of a non-root edge of \(\mathcal L\).
 
-A \emph{multifunctor} $F:\mathcal M\to\mathcal N$ is a map on objects and a
-family of maps
+Hence, if \(e\in E_{\mathcal L}\) with
+\(e\neq\top_{\mathcal L}\) and
 \[
- \mathcal M(A_1,\ldots,A_n;B)
- \longrightarrow
- \mathcal N(FA_1,\ldots,FA_n;FB)
+(m\fatsemi\phi)_E(e)
+<^\mu_{\mathcal E\coprod_n\mathcal F}
+x,
 \]
-preserving identities and composition.  A \emph{multigraph} is what remains
-after forgetting identities and composition: it is a collection of objects
-and a collection of generating arrows of each profile.  This gives the
-forgetful functor denoted by $U$ in the initiality conjecture.
-
-\section{Representability}
-
-\begin{definition}[Representable multicategory]
-Let $A_1,\ldots,A_n$ be objects of a multicategory $\mathcal M$.  A
-\emph{representation} of this list is an object
-$A_1\otimes\cdots\otimes A_n$ and a multimorphism
+then \(x=(m\fatsemi\phi)(y)\) for some
+\(y\in V_{\mathcal L}\coprod E_{\mathcal L}\) satisfying
 \[
- \xi_{A_1,\ldots,A_n}
- \in
- \mathcal M(A_1,\ldots,A_n;A_1\otimes\cdots\otimes A_n)
+e<^\mu_{\mathcal L}y.
 \]
-such that placed composition with $\xi_{A_1,\ldots,A_n}$ induces a bijection
+Consequently,
+\[
+x\in\operatorname{im}(m\fatsemi\phi),
+\]
+as required.
+
+The same principle applies to condition (3); since $m \fatsemi \phi$ is a pushout coprojection over pointed discrete $i \coprod j$, the only vertices that get identified come from $i \coprod j$ and since $f$ is strict are necessarily top-level.
+
+We next verify condition~(4).
+The internal input and output interfaces of
+\(\mathcal E\fatsemi\mathcal F\) are
+\[
+n_1'\coprod(n'\setminus n)
+\qquad\text{and}\qquad
+k'\coprod(k_1'\setminus n),
+\]
+respectively. According to condition~(4), the retained interfaces must
+therefore be obtained by removing from these interfaces the affected
+subinterfaces determined by the transported match \(m\fatsemi\phi\).
+Under \(m\fatsemi\phi\), the images of the original subinterfaces
+\(S_n\) and \(S_k\) lie in the \(n'\)- and \(k'\)-blocks of the above
+interfaces, respectively.
+
+Write \(S_{\mathrm{in}}\) and \(S_{\mathrm{out}}\) for these affected
+subinterfaces, so that
+\[
+S_{\mathrm{in}}=\iota_2(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}=\iota_1(S_k).
+\]
+Since \(\alpha_n\) and \(\alpha_k\) are canonical block isomorphisms,
+\(S_n\) and \(S_k\) are unions of complete interface blocks. Hence, by
+our convention on interface objects, omitting these blocks gives
+\[
+\begin{aligned}
+\bigl(n_1'\coprod(n'\setminus n)\bigr)\setminus S_{\mathrm{in}}
+&\cong
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr),\\
+\bigl(k'\coprod(k_1'\setminus n)\bigr)\setminus S_{\mathrm{out}}
+&\cong
+(k'\setminus S_k)\coprod(k_1'\setminus n).
+\end{aligned}
+\]
+These are precisely the internal interfaces of the previously
+constructed composite extended cospan in
+\eqref{eq:extended_complement_composite_cospan}. This retained extended
+cospan is well-typed because it is the composite of the well-typed
+extended cospan \(\mathcal E\) with the well-typed retained extended
+cospan carried by \(\mathcal L^\bot\).
+
+Let
+\[
+\jmath_{\mathrm{in}}:
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\hookrightarrow
+n_1'\coprod(n'\setminus n)
+\]
+and
+\[
+\jmath_{\mathrm{out}}:
+(k'\setminus S_k)\coprod(k_1'\setminus n)
+\hookrightarrow
+k'\coprod(k_1'\setminus n)
+\]
+be the evident blockwise inclusions of the retained internal
+interfaces. We need to check that
+\[
+\begin{aligned}
+&
+\Bigl(
+(f_{1,\mathrm{ext}}\fatsemi\iota_1)
+\coprod
+(\overline g_{\mathrm{ext}}^{\,k}\fatsemi\iota_1)
+\Bigr)
+\fatsemi
+(\jmath_{\mathrm{in}}\coprod\jmath_{\mathrm{out}})
+\\
+&\qquad =
+(f_{1,\mathrm{ext}}\fatsemi\iota_1)
+\coprod
+(g_{2,\mathrm{ext}}\fatsemi\iota_1),
+\end{aligned}
+\]
+and
+\[
+[q_1^\bot,q_2^\bot]
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+=
+(\jmath_{\mathrm{in}}\coprod\jmath_{\mathrm{out}})
+\fatsemi
+[q_1,q_2].
+\]
+Both equalities may be verified on the respective coproduct blocks.
+
+For the external legs, the input component is immediate because
+\(\jmath_{\mathrm{in}}\) is the identity on the \(n_1'\)-block. On the
+output component, we have
+\[
+(\overline g_{\mathrm{ext}}^{\,k}\fatsemi\iota_1)
+\fatsemi\jmath_{\mathrm{out}}
+=
+g_{2,\mathrm{ext}}\fatsemi\iota_1,
+\]
+by condition~(4) for the original extended pushout complement, since
+\(\jmath_{\mathrm{out}}\) restricts on the distinguished block to the
+inclusion \(k'\setminus S_k\hookrightarrow k'\).
+
+For the internal legs, consider the input component
+\[
+q_1^\bot
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+=
+\jmath_{\mathrm{in}}\fatsemi q_1.
+\]
+Recall that
+\[
+q_1^\bot
+=
+\left[
+f_{1,\mathrm{int}}\fatsemi\varepsilon^\bot,
+\;
+(g_n^\bot\fatsemi\phi^\bot)
+\restriction_{(n'\setminus S_n)\setminus n}
+\right]
+\]
+and
+\[
+q_1
+=
+\left[
+f_{1,\mathrm{int}}\fatsemi\varepsilon,
+\;
+(f_{2,\mathrm{int}}\fatsemi\phi)
+\restriction_{n'\setminus n}
+\right].
+\]
+On the \(n_1'\)-block, the required equality is
+\[
+f_{1,\mathrm{int}}
+\fatsemi\varepsilon^\bot
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+=
+f_{1,\mathrm{int}}\fatsemi\varepsilon,
+\]
+which follows from the defining equations of
+\(\id_{\mathcal E}\coprod l^\bot\).
+
+On the retained distinguished block
+\((n'\setminus S_n)\setminus n\), condition~(4) for the original
+extended pushout complement gives
+\[
+g_n^\bot\fatsemi l^\bot
+=
+\jmath_n\fatsemi f_{2,\mathrm{int}},
+\]
+where
+\[
+\jmath_n:n'\setminus S_n\hookrightarrow n'.
+\]
+Together with
+\[
+\phi^\bot
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+=
+l^\bot\fatsemi\phi,
+\]
+this gives
+\[
+\begin{aligned}
+&
+\left(
+g_n^\bot\fatsemi\phi^\bot
+\right)
+\restriction_{(n'\setminus S_n)\setminus n}
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+\\
+&\qquad =
+\left(
+\jmath_n\fatsemi f_{2,\mathrm{int}}\fatsemi\phi
+\right)
+\restriction_{(n'\setminus S_n)\setminus n}.
+\end{aligned}
+\]
+By the interface-block convention, this is precisely the restriction
+of
+\[
+\jmath_{\mathrm{in}}\fatsemi q_1
+\]
+to the same block. Thus
+\[
+q_1^\bot
+\fatsemi
+(\id_{\mathcal E}\coprod l^\bot)
+=
+\jmath_{\mathrm{in}}\fatsemi q_1.
+\]
+The corresponding equality for \(q_2^\bot\) and \(q_2\) follows by the
+same argument on the output-interface blocks. Hence condition~(4)
+holds.
+
+It remains to check condition~(5).
+The transported match \(m\fatsemi\phi\) has anchor
+\[
+a'\defeq\phi_E(a).
+\]
+Recall that the affected subinterfaces of the composite are
+\[
+S_{\mathrm{in}}=\iota_2(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}=\iota_1(S_k).
+\]
+The maps required by condition~(5) are therefore
+\[
+\alpha_n\fatsemi\iota_2:
+i'\setminus i\longrightarrow S_{\mathrm{in}}
+\qquad\text{and}\qquad
+\alpha_k\fatsemi\iota_1:
+j'\setminus j\longrightarrow S_{\mathrm{out}},
+\]
+where \(\iota_2\) and \(\iota_1\) denote the corestrictions of the
+coprojections to \(S_{\mathrm{in}}\) and \(S_{\mathrm{out}}\),
+respectively.
+
+Define the re-anchored interface maps
+\[
+\widehat q_1^{\,a'}
+\defeq
+\left\langle
+a';
+q_{1,V}\restriction_{V_{S_{\mathrm{in}}}}
+\right\rangle
+:
+S_{\mathrm{in}}
+\longrightarrow
+\mathcal E\coprod_n\mathcal F
+\]
+and
+\[
+\widehat q_2^{\,a'}
+\defeq
+\left\langle
+a';
+q_{2,V}\restriction_{V_{S_{\mathrm{out}}}}
+\right\rangle
+:
+S_{\mathrm{out}}
+\longrightarrow
+\mathcal E\coprod_n\mathcal F.
+\]
+It is sufficient to show that the following pasted diagrams commute:
+\[
+\begin{tikzcd}
+	{i'\setminus i} && {\mathcal{L}} \\
+	\\
+	{S_n} && {\mathcal{F}} \\
+	\\
+	{S_{\mathrm{in}}} && {\mathcal{E}\coprod_{n}\mathcal{F}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_n}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat{g}_{n}^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_{2}}"', from=3-1, to=5-1]
+	\arrow["\phi"', from=3-3, to=5-3]
+	\arrow["{\widehat{q}^{\,a'}_1}", from=5-1, to=5-3]
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+	{j'\setminus j} && {\mathcal{L}} \\
+	\\
+	{S_k} && {\mathcal{F}} \\
+	\\
+	{S_{\mathrm{out}}} && {\mathcal{E}\coprod_{n}\mathcal{F}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_k}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat{g}_{k}^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_{1}}"', from=3-1, to=5-1]
+	\arrow["\phi"', from=3-3, to=5-3]
+	\arrow["{\widehat{q}^{\,a'}_2}", from=5-1, to=5-3]
+\end{tikzcd}
+\]
+We will check the left diagram; the right diagram is analogous.
+The upper square commutes by condition~(5) for the original extended
+pushout complement. 
+We check the lower square.
+
+The maps $(\hat{g}_{n}^{\,a})_{E} \fatsemi \phi_{E}$ and $(\iota_2)_E \fatsemi (\widehat q_1^{\,a'})_E$ agree on the $\top_{S_n}$ by construction: $a' = \phi_{E}(a)$.
+For every \(x\in V_{S_n}\), since \(S_n\subseteq n'\setminus n\) and
+the second component of \(q_1\) is
+\[
+(f_{2,\mathrm{int}}\fatsemi\phi)
+\restriction_{n'\setminus n},
+\]
+we have
+\[
+\begin{aligned}
+\bigl(
+\widehat g_n^{\,a}\fatsemi\phi
+\bigr)_V(x)
+&=
+\phi_V\bigl(f_{2,\mathrm{int},V}(x)\bigr)
+\\
+&=
+q_{1,V}\bigl(\iota_{2,V}(x)\bigr)
+\\
+&=
+\bigl(
+\iota_2\fatsemi\widehat q_1^{\,a'}
+\bigr)_V(x).
+\end{aligned}
+\]
+Thus
+\[
+\widehat g_n^{\,a}\fatsemi\phi
+=
+\iota_2\fatsemi\widehat q_1^{\,a'},
+\]
+and we get that the whole diagram commutes.
+
+Since \(\alpha_n\) and \(\alpha_k\) are canonical block
+isomorphisms, and the corestrictions
+\[
+\iota_2:S_n\longrightarrow S_{\mathrm{in}},
+\qquad
+\iota_1:S_k\longrightarrow S_{\mathrm{out}}
+\]
+are isomorphisms onto the corresponding blocks, the composites
+\[
+\alpha_n\fatsemi\iota_2
+\qquad\text{and}\qquad
+\alpha_k\fatsemi\iota_1
+\]
+are canonical isomorphisms of pointed discrete interfaces.
+Hence we establish condition~(5).
+
+We have now verified all five conditions of \cref{def:extended_complement}. 
+Hence
+\[
+i\coprod j
+\xrightarrow{c\fatsemi\phi^\bot}
+\mathcal E\coprod_n\mathcal L^\bot
+\xrightarrow{\id_{\mathcal E}\coprod l^\bot}
+\mathcal E\coprod_n\mathcal F
+\]
+is an extended pushout complement of \(f\) and \(m\fatsemi\phi\).
+It remains to show that completing this complement with the right-hand
+pushout produces \(\mathcal E\fatsemi\mathcal G\).
+First, recall the morphisms
+\[
+h^{n}_{\mathrm{ext}} : n \to n'', \qquad h_{n} : n'' \to \mathcal{G}
+\]
+\[
+h_{\mathrm{ext}}^{k} : k \to k'', \qquad h_{k} : k'' \to \mathcal{G}
+\]
+We then have the following pushout diagram
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJuIl0sWzIsMCwiXFxtYXRoY2Fse0d9Il0sWzAsMiwiXFxtYXRoY2Fse0V9Il0sWzIsMiwiXFxtYXRoY2Fse0V9IFxcY29wcm9kX3tufVxcbWF0aGNhbHtHfSJdLFswLDEsImhfe24sXFxtYXRocm17ZXh0fX1cXGZhdHNlbWkgaF97bicnLCBcXG1hdGhybXtpbnR9fSJdLFswLDIsImdfezEsXFxtYXRocm17ZXh0fX1cXGZhdHNlbWkgZ197MSxcXG1hdGhybXtpbnR9fSIsMl0sWzEsMywiXFxwc2kiXSxbMiwzLCJcXHZhcmVwc2lsb24nIiwyXSxbMywwLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\[\begin{tikzcd}
+	n && {\mathcal{G}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E} \coprod_{n}\mathcal{G}}
+	\arrow["{h^{n}_\mathrm{ext} \fatsemi h_{n}}", from=1-1, to=1-3]
+	\arrow["{g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}}"', from=1-1, to=3-1]
+	\arrow["\psi", from=1-3, to=3-3]
+	\arrow["{\varepsilon'}"', from=3-1, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-3, to=1-1]
+\end{tikzcd}\]
+and the composite diagram below
+% https://q.uiver.app/#q=WzAsOCxbMiwwLCJpIFxcY29wcm9kIGoiXSxbNCwwLCJcXG1hdGhjYWx7Un0iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFs0LDIsIlxcbWF0aGNhbHtHfSJdLFsyLDQsIlxcbWF0aGNhbHtFfVxcY29wcm9kX3tufVxcbWF0aGNhbHtMfV57XFxib3R9Il0sWzQsNCwiXFxtYXRoY2Fse0V9XFxjb3Byb2RfblxcbWF0aGNhbHtHfSJdLFswLDIsIm4iXSxbMCw0LCJcXG1hdGhjYWx7RX0iXSxbMCwxLCJwIl0sWzEsMywiXFx3aWRldGlsZGV7XFxpb3RhX3tcXG1hdGhjYWx7Un19fSJdLFsyLDMsIlxcd2lkZXRpbGRle1xcaW90YV97XFxib3R9fSJdLFswLDIsImMiXSxbMiw0LCJcXHBoaV57XFxib3R9Il0sWzMsNSwiXFxwc2kiXSxbMywwLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNSwyLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCw1LCJcXGlkX3tcXG1hdGhjYWx7RX19XFxjb3Byb2RcXHdpZGV0aWxkZXtcXGlvdGFfe1xcYm90fX0iLDJdLFs2LDIsIlxcb3ZlcmxpbmV7Z31eeyBufV97XFxtYXRocm17ZXh0fX0gXFxmYXRzZW1pIGdfe259XntcXGJvdH0iXSxbNiw3LCJnX3sxLFxcbWF0aHJte2V4dH19XFxmYXRzZW1pIGdfezEsXFxtYXRocm17aW50fX0iLDJdLFs3LDQsIlxcdmFyZXBzaWxvbl57XFxib3R9IiwyXSxbNCw2LCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMiw3LCIoMSkiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMyw0LCIoMikiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwyLCIoMykiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+\[\begin{tikzcd}
+	&& {i \coprod j} && {\mathcal{R}} \\
+	\\
+	n && {\mathcal{L}^{\bot}} && {\mathcal{G}} \\
+	\\
+	{\mathcal{E}} && {\mathcal{E}\coprod_{n}\mathcal{L}^{\bot}} && {\mathcal{E}\coprod_n\mathcal{G}}
+	\arrow["p", from=1-3, to=1-5]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow["{(3)}"{description}, draw=none, from=1-5, to=3-3]
+	\arrow["{\widetilde{\iota_{\mathcal{R}}}}", from=1-5, to=3-5]
+	\arrow["{\overline{g}^{ n}_{\mathrm{ext}} \fatsemi g_{n}^{\bot}}", from=3-1, to=3-3]
+	\arrow["{g_{1,\mathrm{ext}}\fatsemi g_{1,\mathrm{int}}}"', from=3-1, to=5-1]
+	\arrow["{\widetilde{\iota_{\bot}}}", from=3-3, to=3-5]
+	\arrow["{(1)}"{description}, draw=none, from=3-3, to=5-1]
+	\arrow["{\phi^{\bot}}", from=3-3, to=5-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=3-5, to=1-3]
+	\arrow["{(2)}"{description}, draw=none, from=3-5, to=5-3]
+	\arrow["\psi", from=3-5, to=5-5]
+	\arrow["{\varepsilon^{\bot}}"', from=5-1, to=5-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=5-3, to=3-1]
+	\arrow["{\id_{\mathcal{E}}\coprod\widetilde{\iota_{\bot}}}"', from=5-3, to=5-5]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=5-5, to=3-3]
+\end{tikzcd}\]
+By a similar argument to the one before, 
 \begin{align*}
- &\mathcal M(B_1,\ldots,B_k,
-             A_1\otimes\cdots\otimes A_n,
-             C_1,\ldots,C_l;D)\\
- &\hspace{5em}\cong
- \mathcal M(B_1,\ldots,B_k,A_1,\ldots,A_n,C_1,\ldots,C_l;D),
+\overline g_{\mathrm{ext}}^{\,n}
+\fatsemi g_n^\bot
+\fatsemi\widetilde\iota_{\bot}
+\fatsemi\psi
+&=
+h_{\mathrm{ext}}^n
+\fatsemi h_n
+\fatsemi\psi
+\\
+&=
+g_{1,\mathrm{ext}}
+\fatsemi g_{1,\mathrm{int}}
+\fatsemi\varepsilon',
 \end{align*}
-natural in all the displayed objects.  A multicategory is
-\emph{representable} if it has chosen binary and nullary representations.  We
-write the binary representing object as $A\otimes B$, its universal arrow as
-$\xi_{A,B}$, and the nullary representing object as $\I$, with universal
-nullary arrow $\star\in\mathcal M(;\I)$.
-\end{definition}
+and $\id_{\mathcal{E}} \coprod \widetilde{\iota_{\bot}}$ with $\varepsilon^{\bot} \fatsemi (\id_{\mathcal{E}} \coprod \widetilde{\iota_{\bot}}) = \varepsilon'$ is the unique morphism induced by the universal property.
+So the diagram (2) commutes and is a pushout by the cancellation property and the stacked rectangle (3)--(2) is a pushout by the pasting property.
 
-Binary and nullary representations generate representations of all finite
-lists.  The unary category underlying $\mathcal M$ has
+The composite \(\mathcal E\fatsemi\mathcal G\) is represented by
 \[
- \mathcal C(A,B)=\mathcal M(A;B),
+n_1
+\xrightarrow{f_{1,\mathrm{ext}}\fatsemi\iota_1}
+n_1'\coprod(n''\setminus n)
+\xrightarrow{q_3}
+\mathcal E\coprod_n\mathcal G
+\xleftarrow{q_4}
+k''\coprod(k_1'\setminus n)
+\xleftarrow{h_{\mathrm{ext}}^k\fatsemi\iota_1}
+k,
 \]
-and the representing objects supply its tensor and unit.  Conversely, a
-monoidal category $\mathcal C$ determines a multicategory by
+where
 \[
- \mathcal M(A_1,\ldots,A_n;B)
- =
- \mathcal C(A_1\otimes\cdots\otimes A_n,B).
+q_3
+=
+\left[
+f_{1,\mathrm{int}}\fatsemi\varepsilon',
+\;
+(h_n\fatsemi\psi)\restriction_{n''\setminus n}
+\right]
 \]
-Hermida proves that these constructions extend to a $2$-equivalence between
-representable multicategories and monoidal categories
-\cite[Theorem~9.8]{hermida_representable_2000}.
+and
+\[
+q_4
+=
+\left[
+h_k\fatsemi\psi,
+\;
+(g_{1,\mathrm{int}}\fatsemi\varepsilon')
+\restriction_{k_1'\setminus n}
+\right].
+\]
 
-In the syntax of~\cref{sec:type-theory-epilogue}, the universal arrows are
+On the other hand, by the EDPOI rewriting definition, the internal interfaces of the
+resulting extended cospan are
 \[
- x:A,y:B\vdash\{x,y\}:A\otimes B,
- \qquad
- ()\vdash\star:\I.
+\overline n''
+\defeq
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ
 \]
-The inverse directions of the two universal bijections are expressed by
-$\operatorname{match}$ and $\operatorname{match}_{\I}$.  Their $\beta$- and
-$\eta$-equations say precisely that the two directions are mutually inverse.
-
-\section{Affine and enriched multicategories}
-\label{appendix:type-theory-affine-multicategories}
-
-Let $\mathfrak I$ be the category of finite cardinals and injections, with
-disjoint union as its monoidal product.  If
-$a:\underline m\hookrightarrow\underline n$ is an injection, an action on the
-inputs of a multicategory has the form
+and
 \[
- [-](a):
- \mathcal M(A_{a(1)},\ldots,A_{a(m)};B)
- \longrightarrow
- \mathcal M(A_1,\ldots,A_n;B).
+\overline k''
+\defeq
+\left(
+(k'\setminus S_k)\coprod(k_1'\setminus n)
+\right)
+\coprod j''_\circ,
 \]
-It renames the $m$ inputs and adds the $n-m$ inputs outside the image of $a$
-as unused inputs.  The action satisfies
+where
 \[
- [f](\id) = f,
- \qquad
- [[f](a)](b)=[f](b\circ a),
+i''_\circ=i''\setminus i,
+\qquad
+j''_\circ=j''\setminus j.
 \]
-whenever the composites are defined.
 
-Compatibility with simultaneous multicategorical composition has two parts.
-Writing $+$ for the disjoint union of injections,
+Let
 \[
- g\circ([f_1](a_1),\ldots,[f_n](a_n))
- =
- [g\circ(f_1,\ldots,f_n)](a_1+\cdots+a_n).
+\mu_n:
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\longrightarrow
+\overline n'',
+\qquad
+\mu_i:i''_\circ\longrightarrow\overline n''
 \]
-For the action on the outer morphism one uses the wreath-product injection:
+be the corresponding coprojections.
+
+The new strictly internal input interface map contributed by the right-hand
+side of the rule is
 \[
- [g](a)\circ(f_1,\ldots,f_n)
- =
- [g\circ(f_{a(1)},\ldots,f_{a(m)})]
-   \bigl(a\wr(k_1,\ldots,k_n)\bigr),
+\overline\rho_i
+\defeq
+\left\langle
+\top_{\mathcal E\coprod_n\mathcal G};
+\left(
+p_{\mathrm{int}}
+\fatsemi\widetilde\iota_{\mathcal R}
+\fatsemi\psi
+\right)_V
+\restriction_{V_{i''_\circ}}
+\right\rangle
+:
+i''_\circ
+\longrightarrow
+\mathcal E\coprod_n\mathcal G
 \]
-where $k_i$ is the arity of $f_i$.  Concretely,
-$a\wr(k_1,\ldots,k_n)$ replaces the $i$th point of the codomain of $a$ by a
-block of $k_i$ points and sends each block in the domain to its corresponding
-codomain block.  These equations say that adding and permuting unused inputs
-commutes with substitution.
-
-\begin{definition}[Affine multicategory]
-An \emph{affine multicategory} is a multicategory equipped with the action of
-$\mathfrak I$ just described.  A representable affine multicategory is an
-affine multicategory with chosen representations whose structural action is
-compatible with those choices.
-\end{definition}
-
-Because injections never identify inputs, they give exchange and weakening
-but not contraction.  If the action is restricted to bijections one obtains
-the symmetric fragment.  If it is enlarged to all functions between finite
-cardinals, non-injective functions identify inputs and hence give contraction;
-together with weakening this is the cartesian fragment.  Representable affine
-multicategories correspond to affine, also called semicartesian, symmetric
-monoidal categories.  Their unit is terminal: weakening the nullary universal
-arrow supplies a morphism $!_A:A\to\I$, and universality makes it the unique
-such morphism.
-
-Finally, the enrichment relevant here replaces every multimorphism set by a
-semilattice.  Following the general enriched definition recalled by Johnson
-and Yau~\cite{johnson2023homotopytheoryenrichedmackey}, an
-$\catname{SLat}$-multicategory has a semilattice
+Equivalently, since \(\psi\) is strict,
 \[
- \mathcal M(A_1,\ldots,A_n;B)
+\overline\rho_i=\rho_i\fatsemi\psi~.
 \]
-for every profile.  Identities select elements of the appropriate
-semilattices, while composition is a semilattice homomorphism in each argument
-separately.  In element notation this gives, for example,
-\begin{align*}
- (f\join f')\circ_i g
-   &=(f\circ_i g)\join(f'\circ_i g),\\
- f\circ_i(g\join g')
-   &=(f\circ_i g)\join(f\circ_i g').
-\end{align*}
-For an affine $\catname{SLat}$-multicategory, each injection action $[-](a)$ is
-also required to be a semilattice homomorphism.  For a representable one, the
-universal bijections in the preceding section are isomorphisms of
-semilattices.  This is the semantic source of the distributed inference rules
-and substitution laws in the epilogue.
+
+The internal input leg produced by the EDPOI construction is therefore
+\[
+\overline h_{n_1}
+\defeq
+\left[
+q_1^\bot
+\fatsemi
+\bigl(
+\id_{\mathcal E}\coprod\widetilde\iota_\bot
+\bigr),
+\;
+\overline\rho_i
+\right]
+:
+\overline n''
+\longrightarrow
+\mathcal E\coprod_n\mathcal G
+\]
+The corresponding external input leg is
+\[
+\overline h_{\mathrm{ext}}^{\,n_1}
+\defeq
+f_{1,\mathrm{ext}}
+\fatsemi\iota_1
+\fatsemi\mu_n
+:
+n_1\longrightarrow\overline n'',
+\]
+where \(\iota_1\) is the first coprojection into the corresponding
+retained interface. Likewise, we have the morphisms corresponding to
+the external and internal output interfaces
+\[
+\overline h_{\mathrm{ext}}^{\,k}
+:
+k\longrightarrow\overline k''
+\]
+and
+\[
+\overline h_k
+:
+\overline k''
+\longrightarrow
+\mathcal E\coprod_n\mathcal G.
+\]
+
+It remains to show that the extended cospan representing the composite,
+\[
+n_1
+\xrightarrow{f_{1,\mathrm{ext}}\fatsemi\iota_1}
+n_1'\coprod(n''\setminus n)
+\xrightarrow{q_3}
+\mathcal E\coprod_n\mathcal G
+\xleftarrow{q_4}
+k''\coprod(k_1'\setminus n)
+\xleftarrow{h_{\mathrm{ext}}^k\fatsemi\iota_1}
+k,
+\]
+is isomorphic to the extended cospan produced by the EDPOI construction,
+\[
+n_1
+\xrightarrow{\overline h_{\mathrm{ext}}^{\,n_1}}
+\overline n''
+\xrightarrow{\overline h_{n_1}}
+\mathcal E\coprod_n\mathcal G
+\xleftarrow{\overline h_k}
+\overline k''
+\xleftarrow{\overline h_{\mathrm{ext}}^{\,k}}
+k.
+\]
+We consider the input side; the output side is analogous.
+
+Recall that
+\[
+n''
+=
+(n'\setminus S_n)\coprod i''_\circ
+\]
+and
+\[
+\overline n''
+=
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ.
+\]
+Since \(n\) lies in the \(n'\setminus S_n\)-block, the convention on
+interface objects gives the canonical block isomorphisms
+\[
+\begin{aligned}
+\overline n''
+&=
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ
+\\
+&\cong
+n_1'\coprod
+\left(
+\bigl((n'\setminus S_n)\setminus n\bigr)
+\coprod i''_\circ
+\right)
+\\
+&\cong
+n_1'\coprod(n''\setminus n).
+\end{aligned}
+\]
+Let
+\[
+\beta_n:
+\overline n''
+\longrightarrow
+n_1'\coprod(n''\setminus n)
+\]
+denote the resulting canonical isomorphism. It is the identity on the
+\(n_1'\)-block and sends the
+\((n'\setminus S_n)\setminus n\)- and \(i''_\circ\)-blocks into the
+\(n''\setminus n\)-block through \(\nu_n\) and \(\nu_i\),
+respectively.
+
+We need to check that
+\[
+f_{1,\mathrm{ext}}\fatsemi\iota_1
+=
+\overline h_{\mathrm{ext}}^{\,n_1}\fatsemi\beta_n.
+\]
+By definition of \(\overline h_{\mathrm{ext}}^{\,n_1}\), we have
+\[
+\begin{aligned}
+\overline h_{\mathrm{ext}}^{\,n_1}\fatsemi\beta_n
+&=
+f_{1,\mathrm{ext}}
+\fatsemi\iota_1
+\fatsemi\mu_n
+\fatsemi\beta_n
+\\
+&=
+f_{1,\mathrm{ext}}\fatsemi\iota_1,
+\end{aligned}
+\]
+because \(\mu_n\fatsemi\beta_n\) restricts on the \(n_1'\)-block to
+the first coprojection into
+\(n_1'\coprod(n''\setminus n)\).
+
+It remains to verify compatibility with the internal input legs, that
+is,
+\[
+\overline h_{n_1}
+=
+\beta_n\fatsemi q_3.
+\]
+Since
+\[
+\overline n''
+=
+\left(
+n_1'\coprod\bigl((n'\setminus S_n)\setminus n\bigr)
+\right)
+\coprod i''_\circ,
+\]
+it is sufficient to check this equality on its three blocks.
+
+On the \(n_1'\)-block, we have
+\[
+f_{1,\mathrm{int}}
+\fatsemi\varepsilon^\bot
+\fatsemi
+\bigl(
+\id_{\mathcal E}\coprod\widetilde\iota_\bot
+\bigr)
+=
+f_{1,\mathrm{int}}\fatsemi\varepsilon',
+\]
+which is the first component of \(q_3\).
+
+On the \((n'\setminus S_n)\setminus n\)-block, the defining equations
+of the two pushouts and of \(h_n\) give
+\[
+\phi^\bot
+\fatsemi
+\bigl(
+\id_{\mathcal E}\coprod\widetilde\iota_\bot
+\bigr)
+=
+\widetilde\iota_\bot\fatsemi\psi
+\]
+and
+\[
+\nu_n\fatsemi h_n
+=
+g_n^\bot\fatsemi\widetilde\iota_\bot.
+\]
+Therefore,
+\[
+\begin{aligned}
+\overline h_{n_1}
+\restriction_{(n'\setminus S_n)\setminus n}
+&=
+\left(
+g_n^\bot
+\fatsemi\widetilde\iota_\bot
+\fatsemi\psi
+\right)
+\restriction_{(n'\setminus S_n)\setminus n}
+\\
+&=
+\left(
+\nu_n\fatsemi h_n\fatsemi\psi
+\right)
+\restriction_{(n'\setminus S_n)\setminus n}
+\\
+&=
+\left(
+\beta_n\fatsemi q_3
+\right)
+\restriction_{(n'\setminus S_n)\setminus n},
+\end{aligned}
+\]
+where the last equality follows because \(\beta_n\) sends this block
+into \(n''\setminus n\) through \(\nu_n\), thereby selecting the
+second component of \(q_3\).
+
+Finally, on the \(i''_\circ\)-block, we have
+\[
+\overline\rho_i
+=
+\rho_i\fatsemi\psi
+=
+\nu_i\fatsemi h_n\fatsemi\psi.
+\]
+Since \(\beta_n\) sends \(i''_\circ\) into \(n''\setminus n\) through
+\(\nu_i\), it again selects the second component of \(q_3\), and hence
+\[
+\begin{aligned}
+\left(
+\beta_n\fatsemi q_3
+\right)
+\restriction_{i''_\circ}
+&=
+\nu_i\fatsemi h_n\fatsemi\psi
+\\
+&=
+\rho_i\fatsemi\psi
+\\
+&=
+\overline\rho_i
+\\
+&=
+\overline h_{n_1}\restriction_{i''_\circ}.
+\end{aligned}
+\]
+Thus
+\[
+\overline h_{n_1}
+=
+\beta_n\fatsemi q_3.
+\]
+
+For the output side, the convention on interface objects similarly
+gives a canonical block isomorphism
+\[
+\beta_k:
+\overline k''
+\longrightarrow
+k''\coprod(k_1'\setminus n)
+\]
+which sends the \(k'\setminus S_k\)- and \(j''_\circ\)-blocks into
+\(k''\) through \(\nu_k\) and \(\nu_j\), respectively, and sends the
+\(k_1'\setminus n\)-block into the second summand. The same
+componentwise calculation gives
+\[
+\overline h_{\mathrm{ext}}^{\,k}\fatsemi\beta_k
+=
+h_{\mathrm{ext}}^k\fatsemi\iota_1
+\]
+and
+\[
+\overline h_k
+=
+\beta_k\fatsemi q_4.
+\]
+
+The maps \(\beta_n\) and \(\beta_k\) are precisely the canonical
+reassociations and permutations of complete interface blocks allowed
+by our convention. Thus \(\beta_n\), the identity on
+\(\mathcal E\coprod_n\mathcal G\), and \(\beta_k\) define an
+isomorphism of extended cospans. Hence the right-hand pushout produces
+a representative of \(\mathcal E\fatsemi\mathcal G\), as required, and
+we have
+\[
+\mathcal E\fatsemi\mathcal F
+\;\overline{\rightsquigarrow}_{\mathfrak S}\;
+\mathcal E\fatsemi\mathcal G.
+\]
+The case
+\[
+\mathcal F\fatsemi\mathcal E
+\;\overline{\rightsquigarrow}_{\mathfrak S}\;
+\mathcal G\fatsemi\mathcal E
+\]
+is analogous.
+\item The cases of $\mathcal{E} \otimes \mathcal{F} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{E} \otimes \mathcal{G}$ and $\mathcal{F} \otimes \mathcal{E} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{G} \otimes \mathcal{E}$ are also analogous to the above, noting that the tensor is given by a pushout.
+\item We will prove $\mathcal{F}^{1} \join \cdots \join \mathcal{F} \join \cdots \mathcal{F}^{p} \;\overline{\rightsquigarrow}_{\mathfrak{S}}\; \mathcal{F}^{1} \join \cdots \join \mathcal{G} \join \cdots \join \mathcal{F}^{p}$.
+
+Put
+\[
+\mathcal J_{\mathcal F}
+\defeq
+\mathcal F^1\join\cdots\join
+\mathcal F^{r-1}\join\mathcal F\join
+\mathcal F^{r+1}\join\cdots\join\mathcal F^p
+\]
+and
+\[
+\mathcal J_{\mathcal G}
+\defeq
+\mathcal F^1\join\cdots\join
+\mathcal F^{r-1}\join\mathcal G\join
+\mathcal F^{r+1}\join\cdots\join\mathcal F^p.
+\]
+Using the retained extended cospan carried by \(\mathcal L^\bot\), put
+\[
+\mathcal J_{\bot}
+\defeq
+\mathcal F^1\join\cdots\join
+\mathcal F^{r-1}\join\mathcal L^\bot\join
+\mathcal F^{r+1}\join\cdots\join\mathcal F^p.
+\]
+
+Let
+\[
+\jmath_{\mathcal F}:\mathcal F\longrightarrow\mathcal J_{\mathcal F}
+\qquad\text{and}\qquad
+\jmath_{\bot}:\mathcal L^\bot\longrightarrow\mathcal J_{\bot}
+\]
+denote the inclusions of the \(r\)-th components. The transported match is
+\[
+m^{\join}
+\defeq
+m\fatsemi\jmath_{\mathcal F}:
+\mathcal L\longrightarrow\mathcal J_{\mathcal F},
+\]
+with anchor
+\[
+a^{\join}
+\defeq
+\jmath_{\mathcal F,E}(a).
+\]
+
+Choose the fresh root, the fresh \(\boxsort\)-edge, and the remaining
+components of \(\mathcal J_{\bot}\) and \(\mathcal J_{\mathcal F}\)
+compatibly. There is then a homomorphism
+\[
+l_{\join}^{\bot}:
+\mathcal J_{\bot}\longrightarrow\mathcal J_{\mathcal F}
+\]
+which acts as \(l^\bot\) on the distinguished component
+\(\mathcal L^\bot\), and as the identity on the fresh join structure and
+all the other components. In particular,
+\[
+\jmath_{\bot}\fatsemi l_{\join}^{\bot}
+=
+l^\bot\fatsemi\jmath_{\mathcal F}.
+\]
+
+Define
+\[
+c^{\join}
+\defeq
+c\fatsemi\jmath_{\bot}:
+i\coprod j\longrightarrow\mathcal J_{\bot}.
+\]
+We claim that
+\[
+i\coprod j
+\xrightarrow{c^{\join}}
+\mathcal J_{\bot}
+\xrightarrow{l_{\join}^{\bot}}
+\mathcal J_{\mathcal F}
+\]
+is an extended pushout complement of \(f\) and \(m^{\join}\).
+Consider the following diagram
+% https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG1hdGhjYWx7TH0iXSxbMiwwLCJpIFxcY29wcm9kIGoiXSxbMCwyLCJcXG1hdGhjYWx7Rn0iXSxbMiwyLCJcXG1hdGhjYWx7TH1ee1xcYm90fSJdLFswLDQsIlxcbWF0aGNhbHtKfV97XFxtYXRoY2Fse0Z9fSJdLFsyLDQsIlxcbWF0aGNhbHtKfV97XFxib3R9Il0sWzAsMiwibSIsMl0sWzEsMCwiZiIsMl0sWzEsMywiYyJdLFszLDIsImxeXFxib3QiXSxbMiw0LCJcXGptYXRoX3tcXG1hdGhjYWx7Rn19IiwyXSxbMyw1LCJcXGptYXRoX3tcXGJvdH0iXSxbNSw0LCJsXntcXGJvdH1fe1xcam9pbn0iXSxbMiwxLCIiLDIseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCwzLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+\[\begin{tikzcd}
+	{\mathcal{L}} && {i \coprod j} \\
+	\\
+	{\mathcal{F}} && {\mathcal{L}^{\bot}} \\
+	\\
+	{\mathcal{J}_{\mathcal{F}}} && {\mathcal{J}_{\bot}}
+	\arrow["m"', from=1-1, to=3-1]
+	\arrow["f"', from=1-3, to=1-1]
+	\arrow["c", from=1-3, to=3-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=3-1, to=1-3]
+	\arrow["{\jmath_{\mathcal{F}}}"', from=3-1, to=5-1]
+	\arrow["{l^\bot}", from=3-3, to=3-1]
+	\arrow["{\jmath_{\bot}}", from=3-3, to=5-3]
+	\arrow["\lrcorner"{anchor=center, pos=0.125, rotate=90}, draw=none, from=5-1, to=3-3]
+	\arrow["{l^{\bot}_{\join}}", from=5-3, to=5-1]
+\end{tikzcd}\]
+We will show that the bottom square is a pushout.
+The square commutes by construction, so it remains to check the universal property.
+Let $Q$ be a rooted e-hypergraph and let $j_1$ and $j_2$ be homomorphisms such that $l^{\bot} \fatsemi j_1 = \jmath_{\bot} \fatsemi j_2$.
+We need to check that there is a unique map $w : \mathcal{J}_{\mathcal{F}} \longrightarrow Q$ such that
+\[
+\jmath_{\mathcal{F}} \fatsemi w = j_1 \qquad \text{and} \qquad l^{\bot}_{\join} \fatsemi w = j_2~.
+\]
+Define \(w\) on the image of \(\jmath_{\mathcal F}\) by
+\[
+w(\jmath_{\mathcal F}(x))\defeq j_1(x),
+\]
+and on the image of $l^{\bot}_{\join}$ by
+\[
+w(l^{\bot}_{\join}(y))\defeq j_2(y).
+\]
+These two images jointly contain every vertex and edge of
+\(\mathcal J_{\mathcal F}\).
+
+The definition is well-defined because \(l^{\bot}_{\join}\) is the identity
+on the fresh join structure and on every component other than the
+distinguished one, while on the image of \(\jmath_\bot\) it acts as
+\(l^\bot\). On the overlap of the two images, the two prescriptions
+agree by
+\[
+l^\bot\fatsemi j_1=\jmath_\bot\fatsemi j_2.
+\]
+Moreover, if
+\[
+l^{\bot}_{\join}(y)=l^{\bot}_{\join}(y'),
+\]
+the only non-trivial case is when \(y=\jmath_\bot(z)\) and
+\(y'=\jmath_\bot(z')\) with \(l^\bot(z)=l^\bot(z')\). In that case,
+\[
+j_2(y)
+=
+j_1(l^\bot(z))
+=
+j_1(l^\bot(z'))
+=
+j_2(y'),
+\]
+so the value of \(w\) is independent of the chosen preimage.
+
+Since \(j_1\) and \(j_2\) are homomorphisms and agree on the overlap,
+\(w\) is a homomorphism. By construction,
+\[
+\jmath_{\mathcal F}\fatsemi w=j_1
+\qquad\text{and}\qquad
+l^{\bot}_{\join}\fatsemi w=j_2.
+\]
+The two images jointly cover \(\mathcal J_{\mathcal F}\), so these
+equations also make \(w\) unique.
+The upper square is a pushout by the original EDPOI square, and by the pasting property, the whole rectangle is a pushout.
+By construction, $m^{\join}$ is anchored and therefore we successfully checked condition (1) of~\cref{def:extended_complement}.
+
+We next verify condition~(2). Let
+\[
+e\in E_{\mathcal L},
+\qquad
+e\neq\top_{\mathcal L},
+\]
+and let
+\[
+x\in
+V_{\mathcal J_{\mathcal F}}
+\coprod
+E_{\mathcal J_{\mathcal F}}
+\]
+satisfy
+\[
+(m^{\join})_{E}(e)
+<^\mu_{\mathcal J_{\mathcal F}}
+x.
+\]
+We must show that \(x\in\operatorname{im}(m^{\join})\).
+By construction, $x$ has a preimage in $\mathcal{F}$, say $x = \jmath_{\mathcal{F}}(x')$, and $\jmath_{\mathcal{F}}$ reflects the immediate predecessor relation.
+Therefore, $m_{E}(e) <^{\mu}_{\mathcal{F}} x'$ and by condition (2) of the original extended pushout complement, $x' \in \operatorname{im}(m)$ and hence $x = \jmath_{\mathcal{F}}(x') \in \operatorname{im}(m^{\join})$.
+
+By construction, \(\jmath_{\mathcal F}\) is injective on vertices and
+edges, while \(m\) is injective on the contents of each
+\(\boxsort\)-edge of \(\mathcal L\).
+Thus \(m^{\join} = m \fatsemi \jmath_{\mathcal F}\) is injective on the
+contents of each \(\boxsort\)-edge of \(\mathcal L\), establishing
+condition~(3).
+
+We now check condition~(4).
+Let
+\[
+N_{\mathcal F}
+=
+S\coprod n^1\coprod\cdots\coprod n'\coprod\cdots\coprod n^p
+\]
+and
+\[
+K_{\mathcal F}
+=
+T\coprod k^1\coprod\cdots\coprod k'\coprod\cdots\coprod k^p
+\]
+be the internal interfaces of \(\mathcal J_{\mathcal F}\), according
+to~\cref{def:join_of_extended_cospans}.
+
+Write
+\[
+S_{\mathrm{in}}\defeq\iota_n(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}\defeq\iota_k(S_k)
+\]
+for the affected subinterfaces of \(N_{\mathcal F}\) and
+\(K_{\mathcal F}\), where \(\iota_n\) and \(\iota_k\) are the
+coprojections of the distinguished interface blocks. The transported
+match \(m^{\join}\) affects only the distinguished component
+\(\mathcal F\). Moreover, since \(\alpha_n\) and \(\alpha_k\) are
+canonical block isomorphisms, \(S_{\mathrm{in}}\) and
+\(S_{\mathrm{out}}\) are unions of complete interface blocks.
+Therefore, by our convention on interface objects,
+\[
+\begin{aligned}
+N_{\bot}
+\defeq
+N_{\mathcal F}\setminus S_{\mathrm{in}}
+&\cong
+S\coprod n^1\coprod\cdots
+\coprod(n'\setminus S_n)
+\coprod\cdots\coprod n^p,\\
+K_{\bot}
+\defeq
+K_{\mathcal F}\setminus S_{\mathrm{out}}
+&\cong
+T\coprod k^1\coprod\cdots
+\coprod(k'\setminus S_k)
+\coprod\cdots\coprod k^p.
+\end{aligned}
+\]
+This makes
+\[
+n
+\xrightarrow{\mathcal J^n_{\bot,\mathrm{ext}}}
+N_{\bot}
+\xrightarrow{\mathcal J^n_{\bot,\mathrm{int}}}
+\mathcal J_{\bot}
+\xleftarrow{\mathcal J^k_{\bot,\mathrm{int}}}
+K_{\bot}
+\xleftarrow{\mathcal J^k_{\bot,\mathrm{ext}}}
+k
+\]
+a well-typed extended cospan, since every component is well-typed.
+
+Let
+\[
+\xi_n:N_{\bot}\hookrightarrow N_{\mathcal F}
+\qquad\text{and}\qquad
+\xi_k:K_{\bot}\hookrightarrow K_{\mathcal F}
+\]
+be the evident blockwise inclusions, and let
+\[
+n
+\xrightarrow{\mathcal J^n_{\mathcal F,\mathrm{ext}}}
+N_{\mathcal F}
+\xrightarrow{\mathcal J^n_{\mathcal F,\mathrm{int}}}
+\mathcal J_{\mathcal F}
+\xleftarrow{\mathcal J^k_{\mathcal F,\mathrm{int}}}
+K_{\mathcal F}
+\xleftarrow{\mathcal J^k_{\mathcal F,\mathrm{ext}}}
+k
+\]
+be the corresponding cospan for \(\mathcal J_{\mathcal F}\).
+
+For the input interfaces, condition~(4) requires
+\[
+\mathcal J^n_{\bot,\mathrm{ext}}\fatsemi\xi_n
+=
+\mathcal J^n_{\mathcal F,\mathrm{ext}}
+\]
+and
+\[
+\mathcal J^n_{\bot,\mathrm{int}}\fatsemi l^\bot_{\join}
+=
+\xi_n\fatsemi\mathcal J^n_{\mathcal F,\mathrm{int}}.
+\]
+The first equation is immediate: both sides are the coprojection of
+the unchanged external-interface block \(S\) into
+\(N_{\mathcal F}\).
+
+The second equation may be checked on the interface blocks. On \(S\)
+and on every block \(n^q\neq n'\), the maps
+\(\mathcal J^n_{\bot,\mathrm{int}}\) and
+\(\mathcal J^n_{\mathcal F,\mathrm{int}}\) agree, while \(\xi_n\)
+and \(l^\bot_{\join}\) act as the identity on the corresponding
+blocks and their images.
+
+On the retained distinguished block \(n'\setminus S_n\), we have
+\[
+\begin{aligned}
+&
+\left(
+\mathcal J^n_{\bot,\mathrm{int}}
+\fatsemi l^\bot_{\join}
+\right)
+\restriction_{n'\setminus S_n}
+\\
+&\qquad =
+g_n^\bot
+\fatsemi\jmath_{\bot}
+\fatsemi l^\bot_{\join}
+\\
+&\qquad =
+g_n^\bot
+\fatsemi l^\bot
+\fatsemi\jmath_{\mathcal F}
+\\
+&\qquad =
+\jmath_n
+\fatsemi g_{\mathrm{int}}
+\fatsemi\jmath_{\mathcal F}
+\\
+&\qquad =
+\left(
+\xi_n
+\fatsemi\mathcal J^n_{\mathcal F,\mathrm{int}}
+\right)
+\restriction_{n'\setminus S_n}.
+\end{aligned}
+\]
+Here the second equality follows from
+\[
+\jmath_{\bot}\fatsemi l^\bot_{\join}
+=
+l^\bot\fatsemi\jmath_{\mathcal F},
+\]
+and the third is condition~(4) for the original extended pushout
+complement. The two composites also agree on the root by strictness.
+Thus
+\[
+\mathcal J^n_{\bot,\mathrm{int}}\fatsemi l^\bot_{\join}
+=
+\xi_n\fatsemi\mathcal J^n_{\mathcal F,\mathrm{int}}.
+\]
+
+The output-interface equations follow by the same blockwise argument,
+using \(g_k^\bot\), \(\jmath_k\), and \(\xi_k\). Hence condition~(4)
+holds.
+
+It remains to check condition~(5).
+The transported match \(m\fatsemi\jmath_{\mathcal F}\) has anchor
+\[
+a'\defeq\jmath_{\mathcal F,E}(a).
+\]
+Recall that the affected subinterfaces of \(\mathcal J_{\mathcal F}\)
+are
+\[
+S_{\mathrm{in}}=\iota_n(S_n)
+\qquad\text{and}\qquad
+S_{\mathrm{out}}=\iota_k(S_k),
+\]
+where \(\iota_n\) and \(\iota_k\) denote the corestrictions of the
+corresponding coprojections to these affected blocks. The maps required
+by condition~(5) are therefore
+\[
+\alpha_n\fatsemi\iota_n:
+i'\setminus i\longrightarrow S_{\mathrm{in}}
+\qquad\text{and}\qquad
+\alpha_k\fatsemi\iota_k:
+j'\setminus j\longrightarrow S_{\mathrm{out}}.
+\]
+Since \(\alpha_n\) and \(\alpha_k\) are canonical block
+isomorphisms, and \(\iota_n\) and \(\iota_k\) are isomorphisms onto
+the corresponding affected blocks, these composites are canonical
+isomorphisms of pointed discrete interfaces.
+
+Define the re-anchored interface maps
+\[
+\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}
+\defeq
+\left\langle
+a';
+\mathcal J^n_{\mathcal F,\mathrm{int},V}
+\restriction_{V_{S_{\mathrm{in}}}}
+\right\rangle
+:
+S_{\mathrm{in}}
+\longrightarrow
+\mathcal J_{\mathcal F}
+\]
+and
+\[
+\widehat{(\mathcal J^k_{\mathcal F,\mathrm{int}})}^{\,a'}
+\defeq
+\left\langle
+a';
+\mathcal J^k_{\mathcal F,\mathrm{int},V}
+\restriction_{V_{S_{\mathrm{out}}}}
+\right\rangle
+:
+S_{\mathrm{out}}
+\longrightarrow
+\mathcal J_{\mathcal F}.
+\]
+It is sufficient to show that the following pasted diagrams commute:
+\[
+\begin{tikzcd}
+	{i'\setminus i} && {\mathcal L} \\
+	\\
+	{S_n} && {\mathcal F} \\
+	\\
+	{S_{\mathrm{in}}} && {\mathcal J_{\mathcal F}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_n}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat g_n^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_n}"', from=3-1, to=5-1]
+	\arrow["{\jmath_{\mathcal F}}"', from=3-3, to=5-3]
+	\arrow[
+	  "{\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}}",
+	  from=5-1,
+	  to=5-3
+	]
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+	{j'\setminus j} && {\mathcal L} \\
+	\\
+	{S_k} && {\mathcal F} \\
+	\\
+	{S_{\mathrm{out}}} && {\mathcal J_{\mathcal F}}
+	\arrow["{f_{\mathrm{int}}\restriction}", from=1-1, to=1-3]
+	\arrow["{\alpha_k}"', from=1-1, to=3-1]
+	\arrow["m", from=1-3, to=3-3]
+	\arrow["{\widehat g_k^{\,a}}"', from=3-1, to=3-3]
+	\arrow["{\iota_k}"', from=3-1, to=5-1]
+	\arrow["{\jmath_{\mathcal F}}"', from=3-3, to=5-3]
+	\arrow[
+	  "{\widehat{(\mathcal J^k_{\mathcal F,\mathrm{int}})}^{\,a'}}",
+	  from=5-1,
+	  to=5-3
+	]
+\end{tikzcd}
+\]
+We check the left diagram; the right diagram is analogous. The upper
+square commutes by condition~(5) for the original extended pushout
+complement. It remains to check the lower square.
+
+On the root, both composites have value \(a'\), since
+\[
+\jmath_{\mathcal F,E}
+\bigl(
+\widehat g_{n,E}^{\,a}(\top_{S_n})
+\bigr)
+=
+\jmath_{\mathcal F,E}(a)
+=
+a'
+\]
+and
+\[
+\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}_E
+\bigl(
+\iota_{n,E}(\top_{S_n})
+\bigr)
+=
+a'.
+\]
+For every \(x\in V_{S_n}\),
+\[
+\begin{aligned}
+\widehat{(\mathcal J^n_{\mathcal F,\mathrm{int}})}^{\,a'}_V
+\bigl(\iota_{n,V}(x)\bigr)
+&=
+\mathcal J^n_{\mathcal F,\mathrm{int},V}
+\bigl(\iota_{n,V}(x)\bigr)
+\\
+&=
+\jmath_{\mathcal F,V}
+\bigl(g_{\mathrm{int},V}(x)\bigr)
+\\
+&=
+\jmath_{\mathcal F,V}
+\bigl(\widehat g_{n,V}^{\,a}(x)\bigr).
+\end{aligned}
+\]
+Thus the lower square, and hence the whole left rectangle, commutes.
+The right rectangle follows by the same argument. This proves
+condition~(5).
+
+Thus, we have proved that
+\[
+i\coprod j
+\xrightarrow{c^{\join}}
+\mathcal J_{\bot}
+\xrightarrow{l^\bot_{\join}}
+\mathcal J_{\mathcal F}
+\]
+is an extended pushout complement.
+
+It remains to construct the second pushout and identify the resulting
+extended cospan with \(\mathcal J_{\mathcal G}\).
+
+Let
+\[
+\jmath_{\mathcal G}:
+\mathcal G\longrightarrow\mathcal J_{\mathcal G}
+\]
+denote the inclusion of the distinguished component. Choosing the fresh
+join structure compatibly, define
+\[
+\widetilde{\iota_{\bot}}^{\join}:
+\mathcal J_{\bot}\longrightarrow\mathcal J_{\mathcal G}
+\]
+to act as
+\(\widetilde{\iota_{\bot}}:\mathcal L^\bot\to\mathcal G\)
+on the distinguished component and as the identity on the fresh join
+structure and every other component. In particular,
+\[
+\jmath_{\bot}\fatsemi
+\widetilde{\iota_{\bot}}^{\join}
+=
+\widetilde{\iota_{\bot}}\fatsemi
+\jmath_{\mathcal G}.
+\]
+
+Consider the commutative diagram
+\[
+\begin{tikzcd}
+	{i\coprod j} & {\mathcal R} \\
+	{\mathcal L^\bot} & {\mathcal G} \\
+	{\mathcal J_{\bot}} & {\mathcal J_{\mathcal G}}
+	\arrow["p", from=1-1, to=1-2]
+	\arrow["c"', from=1-1, to=2-1]
+	\arrow["{\widetilde{\iota_{\mathcal R}}}", from=1-2, to=2-2]
+	\arrow["{\widetilde{\iota_{\bot}}}"', from=2-1, to=2-2]
+	\arrow["{\jmath_{\bot}}"', from=2-1, to=3-1]
+	\arrow[
+	  "\lrcorner"{anchor=center, pos=0.125, rotate=180},
+	  draw=none,
+	  from=2-2,
+	  to=1-1
+	]
+	\arrow["{\jmath_{\mathcal G}}", from=2-2, to=3-2]
+	\arrow[
+	  "{\widetilde{\iota_{\bot}}^{\join}}"',
+	  from=3-1,
+	  to=3-2
+	]
+	\arrow[
+	  "\lrcorner"{anchor=center, pos=0.125, rotate=180},
+	  draw=none,
+	  from=3-2,
+	  to=2-1
+	]
+\end{tikzcd}
+\]
+The upper square is the second pushout square of the original EDPOI
+rewrite. The lower square is a pushout by the same universal-property
+argument used for the first pushout square. Therefore, the whole
+rectangle is a pushout.
+
+By definition, the extended cospan for \(\mathcal J_{\mathcal G}\) has
+internal interfaces
+\[
+N_{\mathcal G}
+=
+S\coprod n^1\coprod\cdots\coprod n''\coprod\cdots\coprod n^p
+\]
+and
+\[
+K_{\mathcal G}
+=
+T\coprod k^1\coprod\cdots\coprod k''\coprod\cdots\coprod k^p,
+\]
+with the evident interface maps. The EDPOI construction, on the other
+hand, gives the internal interfaces
+\[
+N'_{\mathcal G}
+=
+N_{\bot}\coprod i''_\circ
+\qquad\text{and}\qquad
+K'_{\mathcal G}
+=
+K_{\bot}\coprod j''_\circ.
+\]
+Since
+\[
+n''
+=
+(n'\setminus S_n)\coprod i''_\circ
+\qquad\text{and}\qquad
+k''
+=
+(k'\setminus S_k)\coprod j''_\circ,
+\]
+our convention on interface objects gives canonical block
+isomorphisms
+\[
+\beta_n:
+N'_{\mathcal G}\longrightarrow N_{\mathcal G}
+\qquad\text{and}\qquad
+\beta_k:
+K'_{\mathcal G}\longrightarrow K_{\mathcal G}.
+\]
+They are the identity on the fresh join blocks and on every unaffected
+component block, and reassociate the newly introduced blocks
+\(i''_\circ\) and \(j''_\circ\) into the distinguished component.
+Consequently, they are precisely the interface isomorphisms permitted
+by our convention.
+
+The external legs commute with \(\beta_n\) and \(\beta_k\) because
+these isomorphisms are the identity on the fresh external-interface
+blocks \(S\) and \(T\). For the internal legs, compatibility holds on
+the fresh join structure and the unaffected components by construction.
+On the retained parts of the distinguished component, it follows from
+\[
+h_n\restriction_{n'\setminus S_n}
+=
+g_n^\bot\fatsemi\widetilde{\iota_\bot},
+\qquad
+h_k\restriction_{k'\setminus S_k}
+=
+g_k^\bot\fatsemi\widetilde{\iota_\bot},
+\]
+and on the newly introduced parts it follows from
+\[
+h_n\restriction_{i''_\circ}
+=
+\rho_i,
+\qquad
+h_k\restriction_{j''_\circ}
+=
+\rho_j.
+\]
+The maps also agree on the roots by strictness. Therefore
+\(\beta_n\), the identity on \(\mathcal J_{\mathcal G}\), and
+\(\beta_k\) define an isomorphism of extended cospans.
+
+Thus, we conclude that
+\[
+\mathcal J_{\mathcal F}
+\;\overline{\rightsquigarrow}_{\mathfrak S}\;
+\mathcal J_{\mathcal G}.
+\]
+\end{enumerate}
+\end{proof}

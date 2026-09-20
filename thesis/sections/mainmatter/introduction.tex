@@ -34,7 +34,7 @@ This technique, \emph{equality saturation}, was systematised into a general prog
 The \egg library sparked a wave of applications and extensions, including proof generation from congruence closure~\cite{flatt_small_2022}, relational e-matching for efficient rule application~\cite{zhang_relational_2022}, sketch-guided equality saturation for scaling to large programs~\cite{koehler2022sketchguided}, and conditional rewriting via coloured e-graphs~\cite{singher2023colored}.
 
 \begin{example}\label{example:egraph_example_introduction}
-The e-graph presentation of rewriting in~\autoref{example:term_rewrite} can be seen in~\autoref{fig:e-graph_example}.
+The e-graph presentation of rewriting in~\cref{example:term_rewrite} can be seen in~\cref{fig:e-graph_example}.
 The subfigure (a) represents the initial term $(a * 2) / 2$.
 Rounded boxes are e-nodes which point to e-classes---dashed round boxes.
 Note how the e-class containing $2$ gets shared between e-nodes $*$ and $/$.
@@ -70,13 +70,13 @@ These constitute a symmetric monoidal theory and, together with the structural e
 One can still apply e-graphs to such theories by encoding both compositions as binary operators and adding the structural equations of symmetric monoidal categories to the rule set.
 
 \begin{example}\label{example:sat-comonoid}
-Given the setting of~\autoref{example:comonoids}, and the term $((\mu;\sym);(\id \otimes \eta)) \otimes (\mu ; \id \otimes \id)$, we can get the following e-graph:
+Given the setting of~\cref{example:comonoids}, and the term $((\mu;\sym);(\id \otimes \eta)) \otimes (\mu ; \id \otimes \id)$, we can get the following e-graph:
 \[
 \tikzfig{./figures/introduction/e-graph-comonoid-example}
 \]
-By saturating the e-graph with the equations $\mathcal{E}$ and the structural equations of a symmetric monoidal category (defined formally in~\cref{appendix:smce-rules}), we can establish that the term is equivalent to $(\mu \otimes \mu);(\id \otimes \eta \otimes \id \otimes \id)$, or to $\id \otimes \mu$.
+By saturating the e-graph with the equations $\mathcal{E}$ and the structural equations of a symmetric monoidal category (defined formally in Appendix~\ref{appendix:smce-rules}), we can establish that the term is equivalent to $(\mu \otimes \mu);(\id \otimes \eta \otimes \id \otimes \id)$, or to $\id \otimes \mu$.
 The e-graph grew from $10$ to $8{,}546$ nodes before reaching saturation.
-\autoref{tab:comonoid-rules} shows the number of times each rule was applied in each direction during saturation; the tensor-structural rules (tensor associativity and the tensor unit) account for the majority of applications, reflecting the overhead of encoding the monoidal structure in the flat e-graph representation, while the comonoid-specific rules (commutativity and the counit law) were applied only once each.
+\cref{tab:comonoid-rules} shows the number of times each rule was applied in each direction during saturation; the tensor-structural rules (tensor associativity and the tensor unit) account for the majority of applications, reflecting the overhead of encoding the monoidal structure in the flat e-graph representation, while the comonoid-specific rules (commutativity and the counit law) were applied only once each.
 \end{example}
 
 \begin{table}[h]
@@ -100,13 +100,13 @@ Counit \hfill $(\mu;(\eta \otimes \id) = \id)$ & 1 & --- \\
 Total & 3{,}193 & 6{,}059 \\
 \bottomrule
 \end{tabular}
-\caption{Rewrite rule applications during saturation (\cref{example:sat-comonoid}); $n \in \{1,2,3,4\}$. Columns $(\to)$ and $(\leftarrow)$ count applications in each direction; --- indicates zero. Purely definitional rules (e.g.\ $\id_2 = \id_1 \otimes \id_1$) are omitted; see \autoref{appendix:smce-rules}.}
+\caption{Rewrite rule applications during saturation (\cref{example:sat-comonoid}); $n \in \{1,2,3,4\}$. Columns $(\to)$ and $(\leftarrow)$ count applications in each direction; --- indicates zero. Purely definitional rules (e.g.\ $\id_2 = \id_1 \otimes \id_1$) are omitted; see Appendix~\ref{appendix:smce-rules}.}
 \label{tab:comonoid-rules}
 \end{table}
 
 The structural overhead is substantial: of the $9{,}260$ total rule applications, only $2$ correspond to the comonoid-specific equations; the remaining $9{,}258$ serve merely to keep the representation consistent with the SMC equations.
 The encoding is also fragile, requiring type guards on every structural rule to prevent ill-typed rewrites.
-We refer the interested reader to~\cref{appendix:smce-rules} for details on comonoid symmetric monoidal theory encoding in \egg.
+We refer the interested reader to Appendix~\ref{appendix:smce-rules} for details on comonoid symmetric monoidal theory encoding in \egg.
 
 This suggests that perhaps the choice of encoding is wrong for the comonoids within the e-graph framework.
 Is it somehow possible to get rid of the extra rewrites so that they are absorbed by the encoding?
@@ -133,7 +133,7 @@ The structure of symmetric monoidal categories is absorbed into the graphical sy
 This visual approach hides the bureaucracy of complex operations and reveals insights sometimes obscured by traditional one-dimensional (textual) syntax.
 Originating from notations by Hotz~\cite{hotzsd} (for automata) and Penrose~\cite{penrose1984spinors} (for tensor networks), extensions of string diagrammatic calculi exist for various forms of monoidal categories and even bicategories~\cite{Selinger_2010}, and provide a mathematically rigorous reasoning toolkit~\cite{joyal_geometry_1991}.
 
-The basic building blocks of string diagrams are given in~\autoref{fig:string-diagram-syntax}.
+The basic building blocks of string diagrams are given in~\cref{fig:string-diagram-syntax}.
 Ticks on the wires are a shorthand for an arbitrary number of wires.
 These string diagrams are topological objects and two diagrams represent the same morphism if one diagram can be continuously deformed into the other, by sliding the boxes along the wires and untangling the wires that cross twice:
 \[
@@ -142,7 +142,7 @@ These string diagrams are topological objects and two diagrams represent the sam
 }.
 \]
 
-With this \enquote{enhanced} syntax, we can write down the term from~\autoref{example:sat-comonoid} and apply the rewrites to it with redexes outlined by dashed boxes:
+With this \enquote{enhanced} syntax, we can write down the term from~\cref{example:sat-comonoid} and apply the rewrites to it with redexes outlined by dashed boxes:
 \[
 \tikzfig{./figures/introduction/comonoid-string-diagram}.
 \]
@@ -156,12 +156,13 @@ We introduce the following construct
 \tikzfig{./figures/introduction/e-box}
 \]
 which applies an operation to sub-diagrams that we denote by $\join$, to distinguish it from arithmetical $+$ which we may occasionally use.
-This box must satisfy the equations from~\autoref{fig:e-box-equations} to ensure that it correctly captures the equivalences.
+This box must satisfy the equations from~\cref{fig:e-box-equations} to ensure that it correctly captures the equivalences.
 \begin{figure}
-    \centering
+  \[
     \adjustbox{width=0.9\linewidth}{
-    \tikzfig{./figures/introduction/e-box-equations}
+    \tikzfig{./figures/monoidal_egraphs/egraph-strings-equations}
     }
+    \]
     \caption{Equations for e-boxes.}
     \label{fig:e-box-equations}
 \end{figure}
@@ -184,13 +185,15 @@ In this thesis, we build on this foundation to give a combinatorial representati
 We call this representation \emph{e-hypergraphs} and argue that the natural semantics for such string diagrams is given by morphisms in a symmetric monoidal category enriched over a category of semilattices.
 On top of this, we recover a fragment of traditional e-graphs as a special case of our framework; this constitutes a categorical semantics for e-graphs.
 
-We next give an overview of another domain, \emph{lambda calculi}, where traditional e-graphs underperform, to see if string diagrams can provide any insight into mitigating the issues there.
-\section*{Lambda calculi}
-It is hard to overestimate the importance of lambda calculi---an umbrella term for different variants of lambda calculus---in computer science and the number of construction they underline, in particular, functional programming languages.
+We next give an overview of another domain, $\lambda$-calculi, where traditional e-graphs underperform, to see if string diagrams can provide any insight into mitigating the issues there.
+\section*{Lambda Calculi}
+It is hard to overstate the importance of $\lambda$-calculi---an umbrella
+term for variants of the $\lambda$-calculus---in computer science,
+particularly as foundations for functional programming languages.
 It may seem that e-graphs would shine in optimisation of programs in functional programming languages, yet their applicability faces a few challenges in the context of lambda calculi.
 \begin{example}
 Consider a $\lambda$-term $\lambda f .\, f ((\lambda x .\, f x) 2)$. 
-Terms in lambda calculi are always considered up to $\alpha$-equivalence, and thus terms $\lambda f .\,f ((\lambda x .\,f x) 2)$ and $\lambda g .\,g ((\lambda y .\, g y) 2)$ must end up in the same e-class, but structurally they are different.
+Terms in $\lambda$-calculi are always considered up to $\alpha$-equivalence, and thus terms $\lambda f .\,f ((\lambda x .\,f x) 2)$ and $\lambda g .\,g ((\lambda y .\, g y) 2)$ must end up in the same e-class, but structurally they are different.
 Therefore, to achieve this, we would need to introduce variable transposition $(a \; b)$ as part of the syntax and define its action and induced equivalences via rewrite rules. 
 The equivalence of the $\lambda$-abstractions above would then be justified by the following derivation:
 \[
@@ -203,7 +206,7 @@ The equivalence of the $\lambda$-abstractions above would then be justified by t
         {(f\;h) \cdot f((\lambda x .\, f x) 2) \equiv_{\alpha} (g\;h) \cdot g((\lambda y .\, g y) 2) \quad h \not \in \{f,g,x,y\}}}
 {\lambda f .\, f((\lambda x .\, f x) 2) \equiv_{\alpha} \lambda g .\, g((\lambda y .\, g y) 2)}.
 \]
-The introduction of variable transposition would pollute the e-graph and lead to the same behaviour that we observed in~\autoref{example:sat-comonoid}.
+The introduction of variable transposition would pollute the e-graph and lead to the same behaviour that we observed in~\cref{example:sat-comonoid}.
 
 A typical alternative to this is to use de Bruijn indices~\cite{de1972lambda}, so that both terms above become $\lambda . \%0 ((\lambda . \%1 \%0) 2)$.
 This solves the issue with the high cost of maintaining $\alpha$-equivalence, but comes with its own expense: the same variable can be assigned different indices depending on the scope.
@@ -236,7 +239,7 @@ This, of course, requires some side conditions, in particular, the ones that ver
 
 The challenges above were first noted by Koehler et al.~\cite{koehler2022sketchguided} in the context of e-graphs.
 Following their work, Schneider et al.~\cite{slotted-egraphs} introduced \emph{slotted e-graphs}, a variant of e-graphs with first-class support for variables and substitution.
-An example of a slotted e-graph for a term $\lambda f .\, f ((\lambda x .\, f x) 2)$ is given in~\autoref{fig:slotted-example}. 
+An example of a slotted e-graph for a term $\lambda f .\, f ((\lambda x .\, f x) 2)$ is given in~\cref{fig:slotted-example}. 
 In this extension, e-classes are parameterised by variables (slots), both private that are not visible outside the e-class and public.
 Each e-class can be instantiated by providing variable names in place of its parameters, depicted with labels next to edges pointing to e-classes.
 For example, the e-class $e_1$ containing the application $f x$ is parameterised by two variable names $s_1, s_2$.
@@ -244,7 +247,7 @@ The e-node for $\lambda x .\, f x$ \enquote{invokes} this e-class by providing $
 The occurrence of the variable $f$ is shared, unlike in the case of de Bruijn indices, by tracing two paths to e-class $e_0$ starting from e-class $e_5$.
 The non-duplication of $\alpha$-equivalent terms is achieved by computing the \emph{shapes} of terms---terms with variables canonically renamed.
 The substitution $t[v / x]$ can then be built into the e-graph by traversing all e-nodes in the e-class of $t$, replacing each reference to the e-class of $x$ with the e-class of $v$.
-This is automatically capture-avoiding, since for each lambda abstraction the bound variable has a unique name that is not used anywhere else in the e-graph.
+This is automatically capture-avoiding, since for each $\lambda$-abstraction the bound variable has a unique name that is not used anywhere else in the e-graph.
 For example, when computing the substitution $(\lambda x . f x)[x / f]$, the bound $x$ is distinct from the $x$ being substituted in, as a globally unique name is picked for the bound variable.
 \begin{figure}[t!]
 		\begin{subfigure}{0.45\textwidth}
@@ -268,13 +271,13 @@ For example, when computing the substitution $(\lambda x . f x)[x / f]$, the bou
 \end{figure}
 
 Remarkably, the challenges we mentioned above can be resolved by using string diagrams in place of textual syntax.
-Consider the traditional string diagrammatic syntax from \autoref{fig:string-diagram-syntax} and extend it with the constructs for $\lambda$-abstraction and application as in~\autoref{fig:lambda-string}, plus the ability to fork wires $\comonoid$ and to delete wires $\delete$.
+Consider the traditional string diagrammatic syntax from \cref{fig:string-diagram-syntax} and extend it with the constructs for $\lambda$-abstraction and application as in~\cref{fig:lambda-string}, plus the ability to fork wires $\comonoid$ and to delete wires $\delete$.
 Strictly speaking, these string diagrams are typed; for example, the left input of the evaluation node is of type $X \multimap A$, which is a function type from $X$ to $A$---providing a value of type $X$ to such a function yields a value of type $A$.
 The $\lambda$-abstraction box takes a function of type $(A,X) \to B$ and curries it into a \emph{thunk} of type $A \to X \multimap B$.
 The wire attached to the side represents the bound variable.
 The wires correspond to variables and therefore the representation is nameless---two $\alpha$-equivalent terms are topologically the same when presented with string diagrams.
 \begin{example}
-The string diagrammatic representation of the term $\lambda f .\, f ((\lambda x .\, f x) 2)$ is given in~\autoref{fig:closed-string-diagram-example}.
+The string diagrammatic representation of the term $\lambda f .\, f ((\lambda x .\, f x) 2)$ is given in~\cref{fig:closed-string-diagram-example}.
 We label the wires with variables to see the correspondence more easily, but only the connectivity matters: $\lambda g .\, g ((\lambda y .\, g y) 2)$ would give the same string diagram.
 Note how the two occurrences of the variable $f$ are shared, avoiding the issue we encountered when using de Bruijn indices.
 \end{example}
@@ -287,7 +290,7 @@ Note how the two occurrences of the variable $f$ are shared, avoiding the issue 
 Another feature of these string diagrams is that $\beta$-reduction becomes a \emph{rewiring} of the diagram, without the need for explicit substitution.
 When a $\lambda$-abstraction box is connected to an evaluation node $\evaltikz$, we can rewrite the diagram by erasing the box and connecting the other input of the evaluation node to the dangling wire of the box.
 We can similarly introduce the $\join$ operation to these string diagrams, to express multiple morphisms at once and apply rewrites non-destructively.
-This can be observed in action in~\autoref{fig:beta-reduction-string-diagrams}, which is a string diagrammatic version of~\autoref{fig:explicit-substitution-egg}.
+This can be observed in action in~\cref{fig:beta-reduction-string-diagrams}, which is a string diagrammatic version of~\cref{fig:explicit-substitution-egg}.
 The very first step introduces a new component into the dashed box which is the second argument of the evaluation node connected to the dangling wire of the erased box.
 Then we can pull some nodes out of the dashed box, by using the deleting nodes $\delete$ to properly connect the inputs of the components inside the box with the nodes outside: a diagram that terminates with the $\delete$ node can be completely discarded.
 This illustrates that we can achieve a compact representation of equivalences using string diagrams.
@@ -331,7 +334,7 @@ The big advantage of slotted e-graphs is that they support binding for a wider r
 % At a practical level, this often allows one to replace lengthy diagram chases with type-theoretic derivations when proving categorical facts.
 % We define an internal language of semilattice-enriched categories, which constitutes the third contribution of this thesis.
 % It can be used to formulate the equality saturation purely in terms of term rewriting and can provide a foundation for a programming language with built-in support for e-classes.
-% In particular, it makes it possible to write down e-graphs as terms in a principled way as we do in~\autoref{lst:terms-e-graph}.
+% In particular, it makes it possible to write down e-graphs as terms in a principled way as we do in~\cref{lst:terms-e-graph}.
 % The e-graph (a) does not contain any equivalences, so it is just a term with sharing, which we achieve with a \texttt{let}.
 % We then e-classes as terms in context; the context is defined by the number of unique e-classes the e-nodes inside that e-class reference, for example, the e-class containing $*$ and $<\!\!<$ reference three unique e-classes---one containing $a$, one containing $2$ and one containing $1$.
 % This results in the term $arg_1, arg_2, arg_3 \vdash arg_1 * arg_2 \oplus arg_1 <\!\!< arg_3$ that applies e-nodes to the respective arguments, which we denote with \mintinline{haskell}{e}.
@@ -408,7 +411,7 @@ The big advantage of slotted e-graphs is that they support binding for a wider r
 %   \subcaption{}
 % \end{minipage}
 
-% \caption{Terms corresponding to e-graphs in \autoref{fig:e-graph_example}}
+% \caption{Terms corresponding to e-graphs in \cref{fig:e-graph_example}}
 % \label{lst:terms-e-graph}
 % \end{listing*}
 \section*{Contributions of this Thesis}
@@ -446,6 +449,5 @@ This yields a categorical account of e-graphs for languages with binding, ground
 \Cref{chapter:string_diagrams} reviews string diagrams, their representation by hypergraphs, and DPOI rewriting, providing the technical background for the later constructions.
 \Cref{chapter:monoidal} introduces monoidal e-graphs, develops their representation by e-hypergraphs, and establishes the correspondence between enriched term rewriting and EDPOI rewriting.
 \Cref{chapter:lambda} extends this framework to variable binding through closed e-hypergraphs and applies it to $\lambda$-calculi.
-Finally, \cref{chapter:type_theory} sketches a complementary type-theoretic perspective based on semilattice-enriched multicategories.
 
 The reader is assumed to be familiar with basic category theory and monoidal categories.
